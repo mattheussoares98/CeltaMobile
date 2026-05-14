@@ -22,7 +22,6 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final args = ref.watch(saleRequestArgsProvider);
     final saleRequestDetails = ref.watch(
@@ -61,10 +60,9 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
             },
       icon: isLoading
           ? const FittedBox(child: LoadingWidget(padding: 0))
-          : Icon(
-              isIOS
-                  ? CupertinoIcons.doc_text_search
-                  : Icons.picture_as_pdf_rounded,
+          : PlatformIcon(
+              cupertinoIcon: CupertinoIcons.doc_text_search,
+              materialIcon: Icons.picture_as_pdf_rounded,
               color: saleRequestDetails == null ? theme.disabledColor : null,
             ),
     );

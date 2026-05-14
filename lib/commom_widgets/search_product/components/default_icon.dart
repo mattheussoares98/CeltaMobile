@@ -23,7 +23,6 @@ class DefaultIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final width = MediaQuery.sizeOf(context).width;
     if (width < 220 && !showWhenIsSmallPage) return const SizedBox.shrink();
     return IconButton(
@@ -31,10 +30,9 @@ class DefaultIcon extends StatelessWidget {
       onPressed: onPress,
       icon: isLoading
           ? const LoadingWidget(padding: 0, size: Sizes.p16)
-          : Icon(
-              theme.platform == TargetPlatform.iOS
-                  ? cupertinoIcon
-                  : materialIcon,
+          : PlatformIcon(
+              cupertinoIcon: cupertinoIcon,
+              materialIcon: materialIcon,
               color: iconColor,
               size: 20,
             ),

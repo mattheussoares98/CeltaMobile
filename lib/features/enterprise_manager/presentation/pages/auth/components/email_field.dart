@@ -18,8 +18,6 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return DefaultTextFormField(
       enabled: !isLoading,
       controller: emailController,
@@ -31,10 +29,9 @@ class EmailField extends StatelessWidget {
       },
       validator: FormValidators.compose([EmailValidator()]),
       keyboardType: TextInputType.emailAddress,
-      prefixIcon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.mail_solid
-            : Icons.email_outlined,
+      prefixIcon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.mail_solid,
+        materialIcon: Icons.email_outlined,
       ),
     );
   }

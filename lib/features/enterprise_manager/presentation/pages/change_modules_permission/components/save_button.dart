@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../controllers/controllers.dart';
 
 class SaveButton extends ConsumerWidget {
@@ -29,8 +30,6 @@ class SaveButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     final isLoading = ref.watch(
       updatePermissionsControllerProvider.select((value) => value.isLoading),
     );
@@ -54,10 +53,9 @@ class SaveButton extends ConsumerWidget {
                     localHttpsUrl: localHttpsUrlController.text,
                   );
             },
-      icon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.checkmark_alt
-            : Icons.save,
+      icon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.checkmark_alt,
+        materialIcon: Icons.save,
       ),
     );
   }

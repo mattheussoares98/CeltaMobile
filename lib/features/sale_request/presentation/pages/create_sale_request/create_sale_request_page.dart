@@ -53,8 +53,6 @@ class CreateSaleRequestPage extends ConsumerWidget {
     ]);
 
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return Scaffold(
       appBar: AppBar(
@@ -76,10 +74,9 @@ class CreateSaleRequestPage extends ConsumerWidget {
             return const SizedBox.shrink();
           }
           return FloatingActionButton(
-            child: Icon(
-              isIOS
-                  ? CupertinoIcons.person_add
-                  : Icons.person_add_alt_1_outlined,
+            child: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.person_add,
+              materialIcon: Icons.person_add_alt_1_outlined,
             ),
             onPressed: () {
               ref

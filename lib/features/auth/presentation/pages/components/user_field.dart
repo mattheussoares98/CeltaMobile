@@ -35,10 +35,9 @@ class UserField extends ConsumerWidget {
       validator: FormValidators.compose([NonEmptyValidator()]),
       maxLength: 40,
       labelText: 'Usuário'.hardcoded,
-      prefixIcon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.person
-            : Icons.person,
+      prefixIcon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.person,
+        materialIcon: Icons.person,
         color: isLoading ? theme.disabledColor : null,
       ),
     );

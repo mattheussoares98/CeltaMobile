@@ -166,12 +166,10 @@ class _SearchIcon extends StatelessWidget {
   const _SearchIcon();
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Icon(
-      theme.platform == TargetPlatform.iOS
-          ? CupertinoIcons.search
-          : Icons.search,
-      color: theme.disabledColor,
+    return PlatformIcon(
+      cupertinoIcon: CupertinoIcons.search,
+      materialIcon: Icons.search,
+      color: Theme.of(context).disabledColor,
       size: 20,
     );
   }

@@ -41,8 +41,10 @@ class ExitDrawerItem extends ConsumerWidget {
               ref.read(userSessionProvider.notifier).logout(deviceType),
         );
       },
-      materialIcon: Icons.logout,
-      cupertinoIcon: CupertinoIcons.power,
+      platformIcon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.power,
+        materialIcon: Icons.logout,
+      ),
     );
   }
 }

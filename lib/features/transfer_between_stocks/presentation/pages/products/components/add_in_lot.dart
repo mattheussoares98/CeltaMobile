@@ -22,7 +22,6 @@ class AddInLot extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final mediaSize = MediaQuery.sizeOf(context);
 
     return Row(
@@ -53,10 +52,9 @@ class AddInLot extends ConsumerWidget {
                 : 'Lote'.hardcoded,
             icon: mediaSize.width < 300
                 ? null
-                : Icon(
-                    theme.platform == TargetPlatform.iOS
-                        ? CupertinoIcons.add
-                        : Icons.add,
+                : const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.add,
+                    materialIcon: Icons.add,
                   ),
             iconAlignment: IconAlignment.end,
             onPressed: addInLot,

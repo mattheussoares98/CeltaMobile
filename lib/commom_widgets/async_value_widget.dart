@@ -128,8 +128,6 @@ class _Error extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: SingleChildScrollView(
@@ -151,10 +149,9 @@ class _Error extends StatelessWidget {
               PrimaryTextButton(
                 text: 'Tentar novamente'.hardcoded,
                 onPressed: tryAgain,
-                icon: Icon(
-                  theme.platform == TargetPlatform.iOS
-                      ? CupertinoIcons.refresh
-                      : Icons.refresh,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.refresh,
+                  materialIcon: Icons.refresh,
                 ),
               ),
           ],

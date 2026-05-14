@@ -134,10 +134,9 @@ class _GetDateItem extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: !enabled ? null : updateDate,
-                  icon: Icon(
-                    theme.platform == TargetPlatform.iOS
-                        ? CupertinoIcons.calendar_badge_plus
-                        : Icons.calendar_month,
+                  icon: PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.calendar_badge_plus,
+                    materialIcon: Icons.calendar_month,
                     color: enabled ? null : theme.disabledColor,
                   ),
                 ),
@@ -162,10 +161,9 @@ class _GetDateItem extends StatelessWidget {
                 if (isEndDate && currentSelectedDate != null)
                   IconButton(
                     onPressed: () => onDateChanged(null),
-                    icon: Icon(
-                      theme.platform == TargetPlatform.iOS
-                          ? CupertinoIcons.clear
-                          : Icons.clear,
+                    icon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.clear,
+                      materialIcon: Icons.clear,
                       color: Colors.red,
                     ),
                   ),

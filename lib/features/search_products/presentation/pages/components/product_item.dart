@@ -21,7 +21,6 @@ class ProductItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return ProductItemWidget(
       product: product,
@@ -40,13 +39,12 @@ class ProductItem extends ConsumerWidget {
                 text: product.PendantPrintLabel!
                     ? 'Desmarcar para impressão'.hardcoded
                     : 'Marcar para impressão'.hardcoded,
-                icon: Icon(
-                  product.PendantPrintLabel!
-                      ? (isIOS
-                            ? CupertinoIcons.printer_fill
-                            : Icons.print_disabled)
-                      : isIOS
-                      ? CupertinoIcons.printer
+                icon: PlatformIcon(
+                  cupertinoIcon: product.PendantPrintLabel!
+                      ? CupertinoIcons.printer_fill
+                      : CupertinoIcons.printer,
+                  materialIcon: product.PendantPrintLabel!
+                      ? Icons.print_disabled
                       : Icons.print,
                   color: isLoading
                       ? theme.disabledColor

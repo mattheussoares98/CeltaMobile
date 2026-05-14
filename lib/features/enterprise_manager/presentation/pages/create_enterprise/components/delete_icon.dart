@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
+
 class DeleteIcon extends StatelessWidget {
   final VoidCallback? onPress;
   const DeleteIcon({super.key, required this.onPress});
@@ -11,10 +13,9 @@ class DeleteIcon extends StatelessWidget {
 
     return IconButton(
       onPressed: onPress,
-      icon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.delete
-            : Icons.delete,
+      icon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.delete,
+        materialIcon: Icons.delete,
         color: onPress == null ? theme.disabledColor : Colors.red,
       ),
     );

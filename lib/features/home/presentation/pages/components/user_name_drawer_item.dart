@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../core/presentation/controllers/user_session/user_session.dart';
 import 'components.dart';
 
@@ -16,8 +17,10 @@ class UserNameDrawerItem extends ConsumerWidget {
 
     return DrawerItem(
       message: userName,
-      materialIcon: Icons.person,
-      cupertinoIcon: CupertinoIcons.person,
+      platformIcon: const PlatformIcon(
+        materialIcon: Icons.person,
+        cupertinoIcon: CupertinoIcons.person,
+      ),
       onTap: null,
     );
   }

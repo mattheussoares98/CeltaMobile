@@ -103,7 +103,6 @@ class _FinishOffer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaSize = MediaQuery.sizeOf(context);
-    final theme = Theme.of(context);
 
     return AsyncValueWidget(
       value: ref.watch(
@@ -137,10 +136,9 @@ class _FinishOffer extends ConsumerWidget {
                 ),
                 icon: mediaSize.width < 300
                     ? null
-                    : Icon(
-                        theme.platform == TargetPlatform.iOS
-                            ? CupertinoIcons.clear
-                            : Icons.close,
+                    : const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.clear,
+                        materialIcon: Icons.close,
                         color: Colors.red,
                       ),
                 onPressed: () {

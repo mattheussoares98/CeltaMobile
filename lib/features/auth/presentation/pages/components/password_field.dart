@@ -56,26 +56,15 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
       ),
       suffixIcon: IconButton(
         onPressed: isLoading ? null : toggleShowPassword,
-        icon: _PasswordIcon(showPassword: showPassword),
+        icon: PlatformIcon(
+          cupertinoIcon: showPassword
+              ? CupertinoIcons.eye
+              : CupertinoIcons.eye_slash,
+          materialIcon: showPassword ? Icons.visibility : Icons.visibility_off,
+        ),
         color: isLoading ? theme.disabledColor : null,
       ),
       obscureText: !showPassword,
     );
-  }
-}
-
-class _PasswordIcon extends StatelessWidget {
-  final bool showPassword;
-  const _PasswordIcon({required this.showPassword});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    if (theme.platform == TargetPlatform.iOS) {
-      return Icon(showPassword ? CupertinoIcons.eye : CupertinoIcons.eye_slash);
-    } else {
-      return Icon(showPassword ? Icons.visibility : Icons.visibility_off);
-    }
   }
 }

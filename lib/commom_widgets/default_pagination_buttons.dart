@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../constants/constants.dart';
 import '../features/sale_request/presentation/controllers/controllers.dart';
 import '../localization/string_hardcoded.dart';
+import 'commom_widgets.dart';
 
 class DefaultPaginationButtons<T> extends ConsumerWidget {
   final void Function(int page) onChangePage;
@@ -34,7 +35,6 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
     }
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     final int startItem = (results.actualPage - 1) * results.recordsByPage + 1;
     final int endItem = min(
@@ -68,9 +68,10 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
                 children: [
                   _PageActionIcon(
                     provider: provider,
-                    icon: isIOS
-                        ? CupertinoIcons.chevron_left
-                        : Icons.chevron_left,
+                    platformIcon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.chevron_left,
+                      materialIcon: Icons.chevron_left,
+                    ),
                     onPressed: results.actualPage > 1
                         ? () => onChangePage(results.actualPage - 1)
                         : null,
@@ -116,9 +117,10 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
 
                   _PageActionIcon(
                     provider: provider,
-                    icon: isIOS
-                        ? CupertinoIcons.chevron_right
-                        : Icons.chevron_right,
+                    platformIcon: const PlatformIcon(
+                      cupertinoIcon: CupertinoIcons.chevron_right,
+                      materialIcon: Icons.chevron_right,
+                    ),
                     onPressed: results.actualPage < results.totalPages
                         ? () => onChangePage(results.actualPage + 1)
                         : null,
@@ -146,12 +148,12 @@ class _DefaultVerticalDivider extends StatelessWidget {
 }
 
 class _PageActionIcon extends ConsumerWidget {
-  final IconData icon;
+  final PlatformIcon platformIcon;
   final VoidCallback? onPressed;
   final ProviderListenable<AsyncValue<dynamic>> provider;
 
   const _PageActionIcon({
-    required this.icon,
+    required this.platformIcon,
     required this.onPressed,
     required this.provider,
   });
@@ -165,10 +167,11 @@ class _PageActionIcon extends ConsumerWidget {
       onPressed: isLoading ? null : onPressed,
 
       visualDensity: VisualDensity.compact,
-      icon: Icon(
-        icon,
-        size: 18,
+      icon: PlatformIcon(
+        cupertinoIcon: platformIcon.cupertinoIcon,
+        materialIcon: platformIcon.materialIcon,
         color: isLoading ? theme.disabledColor : theme.primaryColor,
+        size: 18,
       ),
     );
   }

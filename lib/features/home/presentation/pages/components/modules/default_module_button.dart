@@ -12,25 +12,20 @@ import '../components.dart';
 class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
   final Modules module;
-  final IconData cupertinoIcon;
-  final IconData materialIcon;
+  final PlatformIcon platformIcon;
   final bool passEnterpriseToNextRoute;
 
   const DefaultModuleButton({
     super.key,
     required this.route,
     required this.module,
-    required this.cupertinoIcon,
-    required this.materialIcon,
+    required this.platformIcon,
     this.passEnterpriseToNextRoute = true,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final icon = isIOS ? cupertinoIcon : materialIcon;
 
     void accessModule() async {
       Routes? saleRequestNextRoute;
@@ -92,7 +87,7 @@ class DefaultModuleButton extends ConsumerWidget {
                       if (isLoading)
                         const LoadingWidget()
                       else
-                        ModuleIcon(icon: icon),
+                        ModuleIcon(platformIcon: platformIcon),
                       gapH12,
                       ModuleName(module: module),
                     ],

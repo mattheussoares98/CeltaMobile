@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 
 class UnselectedMessage extends StatelessWidget {
@@ -10,7 +11,6 @@ class UnselectedMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     return SliverToBoxAdapter(
       child: Row(
@@ -25,10 +25,9 @@ class UnselectedMessage extends StatelessWidget {
             ),
           ),
           gapW12,
-          Icon(
-            isIOS
-                ? CupertinoIcons.exclamationmark_triangle
-                : Icons.report_problem_rounded,
+          const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
+            materialIcon: Icons.report_problem_rounded,
             color: Colors.amber,
           ),
         ],

@@ -95,10 +95,9 @@ class _ProductItem extends ConsumerWidget {
             flex: 45,
             child: PrimaryTextButton(
               text: 'Alterar preços'.hardcoded,
-              icon: Icon(
-                theme.platform == TargetPlatform.iOS
-                    ? CupertinoIcons.pencil
-                    : Icons.edit,
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.pencil,
+                materialIcon: Icons.edit,
               ),
               iconAlignment: IconAlignment.end,
               onPressed: () {

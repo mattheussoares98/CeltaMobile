@@ -28,10 +28,9 @@ class EnterpriseField extends ConsumerWidget {
       enabled: !isLoading,
       labelText: 'Empresa'.hardcoded,
       maxLength: 25,
-      prefixIcon: Icon(
-        theme.platform == TargetPlatform.iOS
-            ? CupertinoIcons.building_2_fill
-            : Icons.business,
+      prefixIcon: PlatformIcon(
+        cupertinoIcon: CupertinoIcons.building_2_fill,
+        materialIcon: Icons.business,
         color: isLoading ? theme.disabledColor : null,
       ),
       textInputAction: TextInputAction.next,

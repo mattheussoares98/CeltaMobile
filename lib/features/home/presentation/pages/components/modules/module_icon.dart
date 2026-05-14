@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 
 class ModuleIcon extends StatelessWidget {
-  const ModuleIcon({super.key, required this.icon});
+  const ModuleIcon({super.key, required this.platformIcon});
 
-  final IconData icon;
+  final PlatformIcon platformIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class ModuleIcon extends StatelessWidget {
         color: color.withAlpha(50),
         shape: BoxShape.circle,
       ),
-      child: Icon(icon, color: color),
+      child: platformIcon,
     );
   }
 }

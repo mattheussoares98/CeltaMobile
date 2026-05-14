@@ -42,7 +42,6 @@ class ProductsManagementPage extends ConsumerWidget {
     ];
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
 
     ref.observeLoading([insertTransferRequestControllerProvider(draftKey)]);
 
@@ -136,10 +135,9 @@ class ProductsManagementPage extends ConsumerWidget {
             items: [
               BottomNavigationBarItem(
                 label: 'Inserir'.hardcoded,
-                icon: Icon(
-                  isIOS
-                      ? CupertinoIcons.cart_badge_plus
-                      : Icons.add_shopping_cart_outlined,
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.cart_badge_plus,
+                  materialIcon: Icons.add_shopping_cart_outlined,
                 ),
               ),
               BottomNavigationBarItem(
