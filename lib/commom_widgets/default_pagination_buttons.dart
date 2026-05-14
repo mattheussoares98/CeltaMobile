@@ -28,7 +28,6 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
         enterpriseCode,
       ).select((s) => s.value),
     );
-    //TODO test
 
     if (results == null || results.totalPages <= 1) {
       return const SizedBox.shrink();

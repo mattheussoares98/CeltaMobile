@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import '../../entities.dart';
 
 class SoapCustomerEntity extends Equatable {
-  //TODO change to SoapCustomerEntity
   final int? Code;
   final String? PersonalizedCode;
   final String? Name;
