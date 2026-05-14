@@ -165,17 +165,6 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
                     : colorScheme.onSurface.withAlpha(100),
                 fontSize: 12,
               ),
-              padding: EdgeInsets.only(
-                top: dtf.prefixIcon != null ? 0 : Sizes.p8,
-                left: dtf.prefixIcon != null ? 0 : Sizes.p8,
-                bottom: dtf.prefixIcon == null
-                    ? Sizes.p12
-                    : dtf.hintText == null
-                    ? 0
-                    : dtf.controller?.text.isEmpty ?? true
-                    ? Sizes.p8
-                    : Sizes.p4,
-              ),
               textAlignVertical: TextAlignVertical.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               obscureText: dtf.obscureText,
@@ -194,27 +183,12 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
                 border: border,
               ),
               keyboardType: dtf.keyboardType,
-              prefix: dtf.prefixIcon != null
-                  ? dtf.prefixIcon is Icon
-                        ? IgnorePointer(
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: dtf.prefixIcon!,
-                            ),
-                          )
-                        : dtf.prefixIcon
-                  : null,
-              suffix: Padding(
-                padding: EdgeInsets.only(
-                  right:
-                      dtf.suffixIcon != null &&
-                          dtf.suffixIcon is! Icon &&
-                          dtf.suffixIcon is! IconButton
-                      ? Sizes.p8
-                      : 0,
-                ),
-                child: dtf.suffixIcon,
-              ),
+              prefix: dtf.prefixIcon == null
+                  ? null
+                  : _BuildIcon(widget: dtf.prefixIcon!),
+              suffix: dtf.suffixIcon == null
+                  ? null
+                  : _BuildIcon(widget: dtf.suffixIcon!),
             ),
             if (state.hasError)
               Padding(
@@ -230,6 +204,22 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
           ],
         );
       },
+    );
+  }
+}
+
+class _BuildIcon extends StatelessWidget {
+  final Widget widget;
+  const _BuildIcon({required this.widget});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(
+        minWidth: Sizes.p48,
+        minHeight: Sizes.p48,
+      ),
+      child: Center(child: widget),
     );
   }
 }
