@@ -25,82 +25,76 @@ class ResearchItem extends ConsumerWidget {
     final mediaSize = MediaQuery.sizeOf(context);
     final theme = Theme.of(context);
 
-    return RepaintBoundary(
-      child: Stack(
-        children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () {
-                context.goNamed(
-                  Routes.competingPricesConcurrents.name,
-                  pathParameters: {
-                    'researchCode': research.Code.toString(),
-                    'enterpriseCode': enterpriseCode.toString(),
-                  },
-                );
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TitleAndSubTitle(
-                      title: 'Código',
-                      subTitle: research.Code.toString(),
-                    ),
-                    TitleAndSubTitle(title: 'Nome', subTitle: research.Name),
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle: research.RestrictProducts
-                          ? 'Produtos restringidos'.hardcoded
-                          : 'Produtos NÃO restringidos'.hardcoded,
-                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                        color: research.RestrictProducts
-                            ? theme.primaryColor
-                            : Colors.red,
-                      ),
-                    ),
-                    TitleAndSubTitle(
-                      title: 'Data de criação',
-                      subTitle: DateFormat(
-                        'dd/MM/yyyy HH:mm',
-                      ).format(research.CreationDate),
-                    ),
-                    if (research.Observation != null &&
-                        research.Observation!.isNotEmpty)
-                      TitleAndSubTitle(
-                        title: 'Observação',
-                        subTitle: research.Observation,
-                      ),
-                  ],
+    return Card(
+      child: InkWell(
+        onTap: () {
+          context.goNamed(
+            Routes.competingPricesConcurrents.name,
+            pathParameters: {
+              'researchCode': research.Code.toString(),
+              'enterpriseCode': enterpriseCode.toString(),
+            },
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TitleAndSubTitle(
+                title: 'Código',
+                subTitle: research.Code.toString(),
+              ),
+              TitleAndSubTitle(title: 'Nome', subTitle: research.Name),
+              TitleAndSubTitle(
+                title: null,
+                subTitle: research.RestrictProducts
+                    ? 'Produtos restringidos'.hardcoded
+                    : 'Produtos NÃO restringidos'.hardcoded,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: research.RestrictProducts
+                      ? theme.primaryColor
+                      : Colors.red,
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: PrimaryTextButton(
-              text: 'Alterar pesquisa'.hardcoded,
-              onPressed: () {
-                showModalPage(
-                  InsertUpdateResearchPage(
-                    research: research,
-                    enterpriseCode: enterpriseCode,
+              TitleAndSubTitle(
+                title: 'Data de criação',
+                subTitle: DateFormat(
+                  'dd/MM/yyyy HH:mm',
+                ).format(research.CreationDate),
+              ),
+              if (research.Observation != null &&
+                  research.Observation!.isNotEmpty)
+                TitleAndSubTitle(
+                  title: 'Observação',
+                  subTitle: research.Observation,
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PrimaryTextButton(
+                    text: 'Alterar pesquisa'.hardcoded,
+                    onPressed: () {
+                      showModalPage(
+                        InsertUpdateResearchPage(
+                          research: research,
+                          enterpriseCode: enterpriseCode,
+                        ),
+                        context,
+                      );
+                    },
+                    icon: mediaSize.width > 300
+                        ? const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.pencil,
+                            materialIcon: Icons.edit_outlined,
+                          )
+                        : null,
                   ),
-                  context,
-                );
-              },
-              icon: mediaSize.width > 300
-                  ? const PlatformIcon(
-                      cupertinoIcon: CupertinoIcons.pencil,
-                      materialIcon: Icons.edit_outlined,
-                    )
-                  : null,
-            ),
+                ],
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

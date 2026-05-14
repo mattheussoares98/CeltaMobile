@@ -118,69 +118,65 @@ class ConcurrentItem extends StatelessWidget {
     final theme = Theme.of(context);
     final mediaSize = MediaQuery.sizeOf(context);
 
-    return RepaintBoundary(
-      child: Stack(
-        children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TitleAndSubTitle(
-                      title: 'Código'.hardcoded,
-                      subTitle: concurrent.ConcurrentCode.toString(),
-                    ),
-                    TitleAndSubTitle(
-                      title: 'Nome'.hardcoded,
-                      subTitle: concurrent.Name.toString(),
-                    ),
-                    TitleAndSubTitle(
-                      title: null,
-                      subTitle: concurrentBindedInResearch == true
-                          ? 'Associado à pesquisa'.hardcoded
-                          : 'Não associado à pesquisa'.hardcoded,
-                      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                        color: concurrentBindedInResearch == true
-                            ? Colors.green
-                            : Colors.red,
-                      ),
-                    ),
-                    if (concurrent.Observation != null &&
-                        concurrent.Observation!.isNotEmpty)
-                      TitleAndSubTitle(
-                        title: 'Observação'.hardcoded,
-                        subTitle: concurrent.Observation.toString(),
-                      ),
-                    AddressDetails(address: concurrent.Address),
-                  ],
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TitleAndSubTitle(
+                title: 'Código'.hardcoded,
+                subTitle: concurrent.ConcurrentCode.toString(),
+              ),
+              TitleAndSubTitle(
+                title: 'Nome'.hardcoded,
+                subTitle: concurrent.Name.toString(),
+              ),
+              TitleAndSubTitle(
+                title: null,
+                subTitle: concurrentBindedInResearch == true
+                    ? 'Associado à pesquisa'.hardcoded
+                    : 'Não associado à pesquisa'.hardcoded,
+                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  color: concurrentBindedInResearch == true
+                      ? Colors.green
+                      : Colors.red,
                 ),
               ),
-            ),
+              if (concurrent.Observation != null &&
+                  concurrent.Observation!.isNotEmpty)
+                TitleAndSubTitle(
+                  title: 'Observação'.hardcoded,
+                  subTitle: concurrent.Observation.toString(),
+                ),
+              AddressDetails(address: concurrent.Address),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PrimaryTextButton(
+                    text: 'Alterar concorrente'.hardcoded,
+                    onPressed: () {
+                      showModalPage(
+                        InsertUpdateConcurrentPage(
+                          concurrentUpdating: concurrent,
+                        ),
+                        context,
+                      );
+                    },
+                    icon: mediaSize.width < 300
+                        ? null
+                        : const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.pencil,
+                            materialIcon: Icons.edit,
+                          ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: PrimaryTextButton(
-              text: 'Alterar concorrente'.hardcoded,
-              onPressed: () {
-                showModalPage(
-                  InsertUpdateConcurrentPage(concurrentUpdating: concurrent),
-                  context,
-                );
-              },
-              icon: mediaSize.width < 300
-                  ? null
-                  : const PlatformIcon(
-                      cupertinoIcon: CupertinoIcons.pencil,
-                      materialIcon: Icons.edit,
-                    ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
