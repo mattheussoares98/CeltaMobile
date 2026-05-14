@@ -79,10 +79,79 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     }
   }
 
+  Future<void> _showModalPage(bool isSaleDetailsPage) async {
+    showModalPage(
+      Form(
+        key: formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  isSaleDetailsPage
+                      ? 'Imprimir pedido'.hardcoded
+                      : 'Imprimir último pedido salvo na empresa'.hardcoded,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                gapH16,
+                Consumer(
+                  builder: (_, ref, _) {
+                    final isLoading = ref.watch(
+                      printSaleRequestControllerProvider.select(
+                        (s) => s.isLoading,
+                      ),
+                    );
+
+                    return Column(
+                      children: [
+                        DefaultTextFormField(
+                          labelText: 'IP da impressora'.hardcoded,
+                          hintText: '192.168.0.1',
+                          maxLength: 15,
+                          controller: ipController,
+                          enabled: !isLoading,
+                          onFieldSubmitted: (_) => print(),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          inputFormatters: [
+                            // This allows *only* digits and dots
+                            FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
+                          ],
+                          validator: FormValidators.compose([
+                            NonEmptyValidator(),
+                            IpValidator(),
+                          ]),
+                          keyboardType: TextInputType.datetime,
+                        ),
+                        gapH32,
+                        PrimaryButton(
+                          text: 'Imprimir'.hardcoded,
+                          isLoading: isLoading,
+                          onPressed: print,
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ProviderBase<AsyncValue<dynamic>> provider =
-        widget.customerCode != null && widget.saleRequestId != null
+    final isSaleDetailsPage =
+        widget.customerCode != null && widget.saleRequestId != null;
+
+    final ProviderBase<AsyncValue<dynamic>> provider = isSaleDetailsPage
         ? saleRequestDetailsStateControllerProvider(
             SaleRequestArgs(
               enterpriseCode: widget.enterpriseCode,
@@ -103,68 +172,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
             cupertinoIcon: CupertinoIcons.printer,
             materialIcon: Icons.print,
           ),
-          onPressed: canPrint
-              ? () {
-                  showModalPage(
-                    Consumer(
-                      builder: (_, ref, _) {
-                        final isLoading = ref.watch(
-                          printSaleRequestControllerProvider.select(
-                            (s) => s.isLoading,
-                          ),
-                        );
-
-                        return Form(
-                          key: formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Text(
-                                    'Imprimir último pedido salvo na empresa'
-                                        .hardcoded,
-                                  ),
-                                  gapH16,
-                                  DefaultTextFormField(
-                                    labelText: 'IP da impressora'.hardcoded,
-                                    hintText: '192.168.0.1',
-                                    maxLength: 15,
-                                    controller: ipController,
-                                    enabled: !isLoading,
-                                    onFieldSubmitted: (_) => print(),
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    inputFormatters: [
-                                      // This allows *only* digits and dots
-                                      FilteringTextInputFormatter.allow(
-                                        RegExp(r'[\d.]'),
-                                      ),
-                                    ],
-                                    validator: FormValidators.compose([
-                                      NonEmptyValidator(),
-                                      IpValidator(),
-                                    ]),
-                                    keyboardType: TextInputType.datetime,
-                                  ),
-                                  gapH32,
-                                  PrimaryButton(
-                                    text: 'Imprimir'.hardcoded,
-                                    isLoading: isLoading,
-                                    onPressed: print,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    context,
-                  );
-                }
-              : null,
+          onPressed: canPrint ? () => _showModalPage(isSaleDetailsPage) : null,
         );
       },
     );
