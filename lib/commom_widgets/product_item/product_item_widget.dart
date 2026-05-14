@@ -221,7 +221,7 @@ class ProductItemWidget extends ConsumerWidget {
                                         if (showWholePrices)
                                           WholePriceAndMinQuantity(this),
                                         if (showLiquidCosts)
-                                          LiquidCostProperty(this),
+                                          ReplacementCostProperty(this),
                                         if (showCurrentAndSaleStocks)
                                           CurrentAndSaleStocks(this),
                                         if (showEans) EansProperty(this),
