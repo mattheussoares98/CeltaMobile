@@ -5,10 +5,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/request_type/request_type.dart';
+import '../../../../features/enterprises/presentation/controllers/controllers.dart';
 import '../../../../routing/routing.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
+import '../../../domain/entities/entities.dart';
+import '../../controllers/request_type/request_type.dart';
 
 class RequestsTypePage extends ConsumerWidget {
   final int enterpriseCode;
@@ -16,7 +16,6 @@ class RequestsTypePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //TODO move this page to core path
     final provider = requestTypeStateControllerProvider(
       Modules.saleRequest,
       enterpriseCode,

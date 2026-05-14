@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/sale_request/presentation/pages/pages.dart';
+import '../../../core/presentation/pages/pages.dart';
 import '../../routing.dart';
 
 RouteBase saleRequestRequestsTypesRoute(List<RouteBase> routes) => GoRoute(
