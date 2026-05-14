@@ -58,7 +58,7 @@ class PendingBuyRequestStateController
               selectedRequestType != currentState.selectedRequestType) ||
           (selectedSupplier != null &&
               selectedSupplier != currentState.selectedSupplier)) {
-        ref.invalidate(enterprisesStateControllerProvider);
+        ref.invalidate(buyRequestEnterprisesStateControllerProvider);
       }
 
       final newState = state.value!

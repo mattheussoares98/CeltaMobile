@@ -5,10 +5,11 @@ import '../../../../core/presentation/controllers/user_session/user_session.dart
 import '../../providers.dart';
 import 'controllers.dart';
 
-part 'enterprises_state_controller.g.dart';
+part 'buy_request_enterprises_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class EnterprisesStateController extends _$EnterprisesStateController {
+class BuyRequestEnterprisesStateController
+    extends _$BuyRequestEnterprisesStateController {
   @override
   FutureOr<List<EnterpriseEntity>> build(int enterpriseCode) async {
     final repository = ref.read(soapLoadEnterpriseByFiltersRepositoryProvider);

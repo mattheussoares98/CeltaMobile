@@ -86,7 +86,7 @@ void main() {
 
         // ACT: Wait for the build method to complete
         final result = await container.read(
-          enterprisesStateControllerProvider(enterpriseCode).future,
+          buyRequestEnterprisesStateControllerProvider(enterpriseCode).future,
         );
 
         // ASSERT
@@ -113,7 +113,7 @@ void main() {
       // ACT & ASSERT: Expect the future to throw an AppException
       await expectLater(
         container.read(
-          enterprisesStateControllerProvider(enterpriseCode).future,
+          buyRequestEnterprisesStateControllerProvider(enterpriseCode).future,
         ),
         throwsA(isA<AppException>()),
       );
@@ -140,7 +140,7 @@ void main() {
       // ACT & ASSERT
       await expectLater(
         container.read(
-          enterprisesStateControllerProvider(enterpriseCode).future,
+          buyRequestEnterprisesStateControllerProvider(enterpriseCode).future,
         ),
         throwsA(isA<AppException>()),
       );

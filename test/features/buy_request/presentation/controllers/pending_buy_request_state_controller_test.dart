@@ -18,7 +18,8 @@ import '../../../../mocks/mocks.dart';
 class MockLocalPendingBuyRequestRepository extends Mock
     implements ILocalPendingBuyRequestRepository {}
 
-class SpyEnterprisesStateController extends EnterprisesStateController {
+class SpyBuyRequestEnterprisesStateController
+    extends BuyRequestEnterprisesStateController {
   int buildCount = 0;
 
   @override
@@ -30,7 +31,7 @@ class SpyEnterprisesStateController extends EnterprisesStateController {
 
 void main() {
   late MockLocalPendingBuyRequestRepository mockRepository;
-  late SpyEnterprisesStateController spyEnterprisesController;
+  late SpyBuyRequestEnterprisesStateController spyEnterprisesController;
   late PendingBuyRequestEntity entity;
   late int enterpriseCode;
 
@@ -42,7 +43,7 @@ void main() {
   });
   setUp(() {
     mockRepository = MockLocalPendingBuyRequestRepository();
-    spyEnterprisesController = SpyEnterprisesStateController();
+    spyEnterprisesController = SpyBuyRequestEnterprisesStateController();
 
     entity = EntityFactory.makePendingBuyRequestEntity();
     enterpriseCode = faker.randomGenerator.integer(100);
@@ -55,7 +56,7 @@ void main() {
         localPendingBuyRequestRepositoryProvider.overrideWithValue(
           mockRepository,
         ),
-        enterprisesStateControllerProvider(
+        buyRequestEnterprisesStateControllerProvider(
           enterpriseCode,
         ).overrideWith(() => spyEnterprisesController),
         userSessionProvider.overrideWith(
@@ -184,7 +185,7 @@ void main() {
   group('PendingBuyRequestStateController Invalidation Logic', () {
     //! Removed because wasn`t working
     // test(
-    //   'should re-build enterprisesStateControllerProvider when supplier changes',
+    //   'should re-build BuyRequestenterprisesStateControllerProvider when supplier changes',
     //   () async {
     //     // ARRANGE
     //     final newSupplier = EntityFactory.makeSupplierEntity();
@@ -219,7 +220,7 @@ void main() {
     // );
 
     test(
-      'should NOT re-build enterprisesStateControllerProvider when data remains the same',
+      'should NOT re-build BuyRequestenterprisesStateControllerProvider when data remains the same',
       () async {
         // ARRANGE
         when(

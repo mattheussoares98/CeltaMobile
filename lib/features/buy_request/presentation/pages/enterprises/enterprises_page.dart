@@ -94,11 +94,11 @@ class EnterprisesPage extends ConsumerWidget {
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(
-              enterprisesStateControllerProvider(enterpriseCode),
+              buyRequestEnterprisesStateControllerProvider(enterpriseCode),
             ),
             tryAgain: () {
               ref.invalidate(
-                enterprisesStateControllerProvider(enterpriseCode),
+                buyRequestEnterprisesStateControllerProvider(enterpriseCode),
               );
             },
             data: (enterprises) {
