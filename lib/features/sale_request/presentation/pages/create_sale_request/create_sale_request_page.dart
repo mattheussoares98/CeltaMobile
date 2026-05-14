@@ -39,7 +39,12 @@ class CreateSaleRequestPage extends ConsumerWidget {
     });
 
     ref.listen(printSaleRequestControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
+      n.showSnackbarOnError(context, p);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Impressão enviada com sucesso'.hardcoded,
+      );
     });
 
     ref.observeLoading([
