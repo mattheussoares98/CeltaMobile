@@ -92,6 +92,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
                       .updateDeliveryTaxValue(double.tryParse(value) ?? 0);
                 },
                 textInputAction: TextInputAction.next,
+                //TODO use focus nodes instead
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: true, allowEmptyValue: true),
                 ]),
