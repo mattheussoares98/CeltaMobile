@@ -10,7 +10,7 @@ import '../../../providers.dart';
 
 part 'sale_request_details_state_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true, dependencies: [saleRequestArgs])
 class SaleRequestDetailsStateController
     extends _$SaleRequestDetailsStateController {
   @override

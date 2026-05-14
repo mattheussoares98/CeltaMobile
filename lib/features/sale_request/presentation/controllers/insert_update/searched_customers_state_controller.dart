@@ -10,7 +10,10 @@ import 'insert_update.dart';
 
 part 'searched_customers_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(
+  keepAlive: true,
+  dependencies: [saleRequestArgs, InsertUpdateStateController],
+)
 class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override

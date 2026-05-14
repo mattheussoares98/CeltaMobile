@@ -6,7 +6,7 @@ import '../../../../providers.dart';
 
 part 'filtered_payment_finalizations_state_controller.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [saleRequestArgs, InsertUpdateStateController])
 class FilteredPaymentFinalizationsStateController
     extends _$FilteredPaymentFinalizationsStateController {
   @override
