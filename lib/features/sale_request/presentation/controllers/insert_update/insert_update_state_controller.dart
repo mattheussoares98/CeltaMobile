@@ -22,7 +22,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return BSFSaleRequestEntity.empty();
     }
 
-    return await ref.read(saleRequestDetailsStateControllerProvider(args).future);
+    return await ref.read(
+      saleRequestDetailsStateControllerProvider(args).future,
+    );
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
@@ -221,7 +223,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
-    ref.invalidate(searchedCustomersStateControllerProvider);
+
+    // ref.invalidate(searchedCustomersStateControllerProvider); //TODO invalidate in another way
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
 
     ref.invalidateSelf();
