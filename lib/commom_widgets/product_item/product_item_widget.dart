@@ -254,9 +254,14 @@ class ProductItemWidget extends ConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                if (showingLittleInformations) InfoButton(this),
-                                if (onDelete != null)
+                                if (showingLittleInformations) ...[
+                                  InfoButton(this),
+                                  gapW12,
+                                ],
+                                if (onDelete != null) ...[
                                   DeleteItemButton(onDelete: onDelete),
+                                  gapW12,
+                                ],
                                 if (showDropIcon == true)
                                   SelectedIconIndicator(
                                     selected: isSelected ?? false,
