@@ -120,8 +120,8 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       notClickableBottom: isSelected
           ? Row(
               children: [
-                Expanded(
-                  flex: 3,
+                Flexible(
+                  flex: 2,
                   child: Form(
                     key: formKey,
                     child: UpdateCostField(
