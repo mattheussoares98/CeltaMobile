@@ -142,6 +142,11 @@ void main() {
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        // saleRequestArgsProvider.overrideWith((ref) => SaleRequestArgs(
+        //       customerCode: fakeBSFSaleRequestEntity.customer?.code ?? 0,
+        //       enterpriseCode: fakeEnterprise.Code!,
+        //       saleRequestId: saleRequestId,
+        //     )),
       ],
     );
   });

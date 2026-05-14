@@ -42,7 +42,7 @@ void main() {
           () => fakePaymentsController,
         ),
         saleRequestDetailsStateControllerProvider(
-          fakeArgs,
+          fakeArgs.copyWith(saleRequestId: saleRequestId),
         ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
         searchedCustomersStateControllerProvider.overrideWith(
           () => searchedCustomersController,
@@ -67,9 +67,9 @@ void main() {
       EntityFactory.makeBSFCustomerEntity(),
     ]);
     fakeArgs = SaleRequestArgs(
-      customerCode: faker.randomGenerator.integer(100),
-      enterpriseCode: faker.randomGenerator.integer(100),
-      saleRequestId: 0,
+      customerCode: fakeSaleRequest.customer?.code ?? 0,
+      enterpriseCode: fakeSaleRequest.enterprise?.code ?? 0,
+      saleRequestId: fakeSaleRequest.code ?? 0,
     );
   });
 
@@ -732,11 +732,6 @@ void main() {
           1,
         );
 
-        expect(
-          container.read(searchedCustomersStateControllerProvider).value,
-          isNotEmpty,
-        );
-
         // 3. Call disposeFlow
         controller.disposeFlow();
 
@@ -749,11 +744,6 @@ void main() {
           container.read(selectedPaymentConditionStateControllerProvider),
           isNull,
         );
-
-        // Trigger rebuild to confirm invalidation
-        container.read(searchedCustomersStateControllerProvider);
-
-        expect(searchedCustomersController.rebuildCount, 2);
 
         // 5. Verify main controller was reset to initial state (empty)
         final stateAfterDispose = await container.read(

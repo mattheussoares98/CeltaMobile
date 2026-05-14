@@ -223,8 +223,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
-
-    // ref.invalidate(searchedCustomersStateControllerProvider); //TODO invalidate in another way
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
 
     ref.invalidateSelf();

@@ -13,7 +13,7 @@ import 'controllers.dart';
 
 part 'save_sale_request_controller.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [InsertUpdateStateController])
 class SaveSaleRequestController extends _$SaveSaleRequestController {
   @override
   FutureOr<void> build(int enterpriseCode) {}
