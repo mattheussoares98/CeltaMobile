@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../commom_widgets/commom_widgets.dart';
 import '../../../../constants/constants.dart';
 import '../../../../core/domain/entities/entities.dart';
-import '../controllers/controllers.dart';
+import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
 
 class EnterprisesPage extends ConsumerWidget {
   final String nextRoute;

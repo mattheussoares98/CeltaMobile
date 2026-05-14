@@ -24,6 +24,7 @@ import 'package:celta_inventario/core/domain/repositories/resource/resource.dart
 import 'package:celta_inventario/core/domain/repositories/settings/settings.dart';
 import 'package:celta_inventario/core/domain/repositories/user_session/user_session.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';

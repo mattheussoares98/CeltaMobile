@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
+import '../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../../utils/utils.dart';
-import '../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../controllers/controller.dart';
 import '../../models/models.dart';
 import 'components/components.dart';

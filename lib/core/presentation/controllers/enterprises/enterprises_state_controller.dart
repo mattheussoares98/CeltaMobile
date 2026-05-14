@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/domain/entities/entities.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../../core/providers/enterprise/enterprise.dart';
 import '../../../../features/enterprises/presentation/controllers/controllers.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../providers.dart';
+import '../../../../features/enterprises/providers.dart';
 
 part 'enterprises_state_controller.g.dart';
 

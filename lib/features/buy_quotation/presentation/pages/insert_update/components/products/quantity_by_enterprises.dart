@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../../../../utils/utils.dart';
-import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../../domain/entities/entities.dart';
 
 class QuantityByEnterprises extends ConsumerWidget {

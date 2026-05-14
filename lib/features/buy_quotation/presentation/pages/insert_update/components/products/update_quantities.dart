@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
+import '../../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../../../../core/validators/validators.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../../utils/utils.dart';
-import '../../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../../domain/entities/entities.dart';
 import '../../../../controllers/controller.dart';
 import '../../../../models/models.dart';

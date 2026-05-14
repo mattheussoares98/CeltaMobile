@@ -7,7 +7,6 @@ import '../../../../../../constants/constants.dart';
 import '../../../../../../core/domain/entities/entities.dart';
 import '../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
 import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../enterprises/presentation/controllers/controllers.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controller.dart';
 
