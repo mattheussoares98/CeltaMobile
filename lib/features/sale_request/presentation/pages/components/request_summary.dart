@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
-import '../../../providers.dart';
+import '../../../domain/entities/entities.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
@@ -16,6 +16,7 @@ class RequestSummary extends ConsumerWidget {
   final bool showDetails;
   final int enterpriseCode;
   final int saleRequestId;
+  final int? customerCode;
   const RequestSummary({
     super.key,
     this.onTap,
@@ -23,6 +24,7 @@ class RequestSummary extends ConsumerWidget {
     this.showDetails = false,
     required this.enterpriseCode,
     required this.saleRequestId,
+    this.customerCode,
   });
 
   @override
@@ -107,10 +109,13 @@ class RequestSummary extends ConsumerWidget {
                     if (showDetails)
                       Consumer(
                         builder: (context, ref, child) {
-                          final args = ref.watch(saleRequestArgsProvider);
                           final requestDetails = ref.watch(
                             saleRequestDetailsStateControllerProvider(
-                              args,
+                              SaleRequestArgs(
+                                enterpriseCode: enterpriseCode,
+                                customerCode: customerCode ?? 0,
+                                saleRequestId: saleRequestId,
+                              ),
                             ).select((s) => s.value),
                           );
 

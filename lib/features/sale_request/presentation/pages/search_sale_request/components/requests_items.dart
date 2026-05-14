@@ -58,6 +58,7 @@ class _SaleRequestItem extends ConsumerWidget {
       child: RequestSummary(
         enterpriseCode: enterpriseCode,
         saleRequestId: saleRequestId,
+        customerCode: customerCode,
         onTap: () {
           context.goNamed(
             Routes.saleRequestDetails.name,

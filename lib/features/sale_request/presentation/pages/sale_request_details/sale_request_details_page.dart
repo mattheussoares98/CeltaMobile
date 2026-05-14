@@ -62,6 +62,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
                     children: [
                       _HeroRequestSummary(
                         enterpriseCode: enterpriseCode,
+                        customerCode: customerCode,
                         saleRequestId: saleRequestId,
                       ),
                       Customer(enterpriseCode: enterpriseCode),
@@ -84,9 +85,11 @@ class SaleRequestDetailsPage extends ConsumerWidget {
 class _HeroRequestSummary extends ConsumerWidget {
   final int enterpriseCode;
   final int saleRequestId;
+  final int customerCode;
   const _HeroRequestSummary({
     required this.enterpriseCode,
     required this.saleRequestId,
+    required this.customerCode,
   });
 
   @override
@@ -99,6 +102,7 @@ class _HeroRequestSummary extends ConsumerWidget {
           showDetails: true,
           showCustomer: false,
           enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
           saleRequestId: saleRequestId,
         ),
       ),
