@@ -131,7 +131,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
-    //TODO test
+    //TODO should not change the customer if is blocked
 
     state = AsyncData(
       state.value!.copyWith(
