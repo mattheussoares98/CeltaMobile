@@ -4,9 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../constants/constants.dart';
 
 Future<void> showModalPage(Widget body, BuildContext context) async {
-  final theme = Theme.of(context);
-  final isIOS = theme.platform == TargetPlatform.iOS;
-
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true, // Allows the modal to be full-screen
@@ -24,9 +21,7 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              return isIOS
-                  ? _Body(body: body)
-                  : SafeArea(child: _Body(body: body));
+              return SafeArea(child: _Body(body: body));
             },
           ),
         ],
