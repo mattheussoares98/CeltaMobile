@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '/constants/app_sizes.dart';
 import 'commom_widgets.dart';
 
@@ -79,7 +80,6 @@ class PrimaryTextButton extends StatelessWidget {
                     onPressed?.call();
                   },
             sizeStyle: CupertinoButtonSize.small,
-            padding: const EdgeInsets.all(0),
             child: Stack(
               children: [
                 Row(
