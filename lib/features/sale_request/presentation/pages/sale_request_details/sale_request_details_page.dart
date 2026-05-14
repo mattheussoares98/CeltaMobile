@@ -43,7 +43,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           ),
         ),
       ],
-      //TODO create separated file
       child: Scaffold(
         appBar: AppBar(
           title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
