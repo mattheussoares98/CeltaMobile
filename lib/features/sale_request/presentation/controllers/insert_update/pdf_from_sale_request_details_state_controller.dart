@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../domain/entities/entities.dart';
 import '../../../providers.dart';
 import 'insert_update.dart';
 
@@ -12,7 +13,7 @@ part 'pdf_from_sale_request_details_state_controller.g.dart';
 class PdfFromSaleRequestDetailsStateController
     extends _$PdfFromSaleRequestDetailsStateController {
   @override
-  FutureOr<Uint8List?> build() async {
+  FutureOr<Uint8List?> build(SaleRequestArgs args) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -28,7 +29,7 @@ class PdfFromSaleRequestDetailsStateController
     });
 
     final saleRequest = await ref.watch(
-      saleRequestDetailsStateControllerProvider.future,
+      saleRequestDetailsStateControllerProvider(args).future,
     );
 
     return await ref

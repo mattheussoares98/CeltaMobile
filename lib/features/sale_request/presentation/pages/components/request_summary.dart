@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../localization/string_hardcoded.dart';
+import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 
 class RequestSummary extends ConsumerWidget {
@@ -106,10 +107,11 @@ class RequestSummary extends ConsumerWidget {
                     if (showDetails)
                       Consumer(
                         builder: (context, ref, child) {
+                          final args = ref.watch(saleRequestArgsProvider);
                           final requestDetails = ref.watch(
-                            saleRequestDetailsStateControllerProvider.select(
-                              (s) => s.value,
-                            ),
+                            saleRequestDetailsStateControllerProvider(
+                              args,
+                            ).select((s) => s.value),
                           );
 
                           return Column(

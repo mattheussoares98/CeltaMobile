@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../routing/routing.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 
 class ShowPdfButton extends ConsumerStatefulWidget {
@@ -23,8 +24,9 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
+    final args = ref.watch(saleRequestArgsProvider);
     final saleRequestDetails = ref.watch(
-      saleRequestDetailsStateControllerProvider.select((s) => s.value),
+      saleRequestDetailsStateControllerProvider(args).select((s) => s.value),
     );
 
     return IconButton(
@@ -35,7 +37,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                 isLoading = true;
               });
               final bytes = await ref.read(
-                pdfFromSaleRequestDetailsStateControllerProvider.future,
+                pdfFromSaleRequestDetailsStateControllerProvider(args).future,
               );
 
               if (bytes == null) {

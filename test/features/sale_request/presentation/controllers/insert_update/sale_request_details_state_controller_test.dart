@@ -87,14 +87,18 @@ void main() {
 
       final states = <AsyncValue<BSFSaleRequestEntity>>[];
       container.listen(
-        saleRequestDetailsStateControllerProvider,
+        saleRequestDetailsStateControllerProvider(fakeArgs),
         (_, next) => states.add(next),
       );
 
       // ACT
-      await container.read(saleRequestDetailsStateControllerProvider.future);
+      await container.read(
+        saleRequestDetailsStateControllerProvider(fakeArgs).future,
+      );
 
-      final state = container.read(saleRequestDetailsStateControllerProvider);
+      final state = container.read(
+        saleRequestDetailsStateControllerProvider(fakeArgs),
+      );
       expect(
         state,
         AsyncData<BSFSaleRequestEntity>(fakeBSFSaleRequestModel.toEntity()),
@@ -129,7 +133,9 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(saleRequestDetailsStateControllerProvider.future),
+        container.read(
+          saleRequestDetailsStateControllerProvider(fakeArgs).future,
+        ),
         throwsA(equals(exception)),
       );
     });

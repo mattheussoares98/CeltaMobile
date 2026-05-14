@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../utils/utils.dart';
+import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 import 'components.dart';
 
@@ -12,10 +13,12 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(saleRequestDetailsStateControllerProvider),
-      tryAgain: () => ref.invalidate(saleRequestDetailsStateControllerProvider),
+      value: ref.watch(saleRequestDetailsStateControllerProvider(args)),
+      tryAgain: () =>
+          ref.invalidate(saleRequestDetailsStateControllerProvider(args)),
       data: (requestDetails) {
         final products = requestDetails.products;
 

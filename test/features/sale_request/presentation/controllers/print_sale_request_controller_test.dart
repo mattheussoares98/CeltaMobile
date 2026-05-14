@@ -31,7 +31,7 @@ class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
   final BSFSaleRequestEntity requestToReturn;
   FakeSaleRequestDetails(this.requestToReturn);
   @override
-  FutureOr<BSFSaleRequestEntity> build() => requestToReturn;
+  FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) => requestToReturn;
 }
 
 // "Spy" for the IP controller
@@ -59,6 +59,7 @@ void main() {
   late int saleRequestCode;
   late int customerCode;
   late int enterpriseCode;
+  late SaleRequestArgs fakeArgs;
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeLastSavedSaleRequestEntity());
@@ -76,6 +77,11 @@ void main() {
     enterpriseCode = faker.randomGenerator.integer(100);
 
     fakeBSFSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+    fakeArgs = SaleRequestArgs(
+      customerCode: customerCode,
+      saleRequestId: saleRequestCode,
+      enterpriseCode: enterpriseCode,
+    );
   });
 
   tearDown(() {
@@ -90,6 +96,7 @@ void main() {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
+        saleRequestArgsProvider.overrideWithValue(fakeArgs),
         printSaleRequestRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
@@ -107,9 +114,9 @@ void main() {
         ipPrintSaleRequestControllerProvider.overrideWith(
           () => spyIpPrint ?? SpyIpPrintSaleRequest(),
         ),
-        saleRequestDetailsStateControllerProvider.overrideWith(
-          () => FakeSaleRequestDetails(fakeBSFSaleRequest),
-        ),
+        saleRequestDetailsStateControllerProvider(
+          fakeArgs,
+        ).overrideWith(() => FakeSaleRequestDetails(fakeBSFSaleRequest)),
       ],
     );
   }

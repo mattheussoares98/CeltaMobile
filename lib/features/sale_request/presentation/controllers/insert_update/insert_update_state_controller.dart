@@ -10,7 +10,7 @@ part 'insert_update_state_controller.g.dart';
 
 @Riverpod(
   keepAlive: true,
-  dependencies: [saleRequestArgs, SaleRequestDetailsStateController],
+  dependencies: [saleRequestArgs],
 ) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
   @override
@@ -22,7 +22,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return BSFSaleRequestEntity.empty();
     }
 
-    return await ref.read(saleRequestDetailsStateControllerProvider.future);
+    return await ref.read(saleRequestDetailsStateControllerProvider(args).future);
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {

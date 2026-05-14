@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../../enterprises/presentation/controllers/controllers.dart';
+import '../../domain/entities/entities.dart';
 import '../../providers.dart';
 import 'controllers.dart';
 
@@ -66,7 +67,11 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
       final validateduser = await ref.read(validatedUserSessionProvider.future);
 
       final saleRequest = await ref.read(
-        saleRequestDetailsStateControllerProvider.future,
+        saleRequestDetailsStateControllerProvider(SaleRequestArgs(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestCode,
+        )).future,
       );
 
       await ref

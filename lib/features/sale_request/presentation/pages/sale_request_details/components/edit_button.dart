@@ -16,7 +16,7 @@ class EditButton extends ConsumerWidget {
     final args = ref.watch(saleRequestArgsProvider);
 
     final saleRequestLoadedCorrectly = ref.watch(
-      saleRequestDetailsStateControllerProvider.select(
+      saleRequestDetailsStateControllerProvider(args).select(
         (value) => value.hasValue && !value.isLoading,
       ),
     );
