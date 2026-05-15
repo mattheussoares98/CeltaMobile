@@ -23,14 +23,14 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final saleRequestDetails = ref.watch(
+    final (loadedCorrectly, personalizedCode) = ref.watch(
       saleRequestDetailsStateControllerProvider(
-        ref.watch(saleRequestArgsProvider),
-      ).select((s) => s.value),
+        ref.read(saleRequestArgsProvider),
+      ).select((s) => (s.hasValue && !s.isLoading, s.value?.personalizedCode)),
     );
 
     return IconButton(
-      onPressed: isLoading || saleRequestDetails == null
+      onPressed: isLoading || !loadedCorrectly
           ? null
           : () async {
               setState(() {
@@ -51,7 +51,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                   Routes.pdfViewer.name,
                   extra: <String, dynamic>{
                     'bytes': bytes,
-                    'fileName': saleRequestDetails.personalizedCode,
+                    'fileName': personalizedCode,
                   },
                 );
               }
@@ -64,7 +64,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
           : PlatformIcon(
               cupertinoIcon: CupertinoIcons.doc_text_search,
               materialIcon: Icons.picture_as_pdf_rounded,
-              color: saleRequestDetails == null ? theme.disabledColor : null,
+              color: loadedCorrectly ? null : theme.disabledColor,
             ),
     );
   }
