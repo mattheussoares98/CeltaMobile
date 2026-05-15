@@ -21,22 +21,50 @@ class DefaultCheckBox extends StatelessWidget {
     final theme = Theme.of(context);
     final isIOS = theme.platform == TargetPlatform.iOS;
 
-    if (isIOS) {
-      return CupertinoListTile(
-        padding: EdgeInsets.zero,
-        title: Text(name, style: theme.textTheme.bodyMedium),
-        subtitle: subtitle != null ? Text(subtitle!) : null,
-        trailing: CupertinoSwitch(value: enabled, onChanged: onChanged),
-      );
-    } else {
-      return CheckboxListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-        title: Text(name, style: theme.textTheme.bodyMedium),
-        subtitle: subtitle != null ? Text(subtitle!) : null,
-        value: enabled,
-        onChanged: onChanged,
-        dense: true,
-      );
-    }
+    return AnimatedContainer(
+      margin: const EdgeInsets.only(top: Sizes.p4),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: enabled ? theme.primaryColor.withAlpha(20) : theme.cardColor,
+        borderRadius: BorderRadius.circular(Sizes.p12),
+        border: Border.all(
+          color: enabled
+              ? theme.primaryColor
+              : theme.dividerColor.withAlpha(40),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.primaryColor.withAlpha(enabled ? 30 : 15),
+            blurRadius: enabled ? 8 : 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Sizes.p12),
+        child: isIOS
+            ? CupertinoListTile(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.p12,
+                  vertical: Sizes.p4,
+                ),
+                title: Text(name, style: theme.textTheme.bodyMedium),
+                subtitle: subtitle != null ? Text(subtitle!) : null,
+                trailing: CupertinoSwitch(value: enabled, onChanged: onChanged),
+              )
+            : CheckboxListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.p12,
+                ),
+                title: Text(name, style: theme.textTheme.bodyMedium),
+                subtitle: subtitle != null ? Text(subtitle!) : null,
+                value: enabled,
+                onChanged: onChanged,
+                dense: true,
+              ),
+      ),
+    );
   }
 }
