@@ -13,7 +13,6 @@ class CustomersPage extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: SearchCustomerField()),
-          SelectedCustomerItem(),
           SearchedCustomersItems(),
         ],
       ),
