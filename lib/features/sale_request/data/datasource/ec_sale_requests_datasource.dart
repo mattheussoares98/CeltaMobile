@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import '../../../../core/domain/contracts/contracts.dart';
 import '../../../../core/domain/entities/entities.dart';
@@ -68,7 +69,10 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
       },
     );
 
-    return BSFSaleRequestModel.fromJson((json.decode(response) as List).first);
+    return await Isolate.run(() {
+      final decoded = json.decode(response as String) as List;
+      return BSFSaleRequestModel.fromJson(decoded.first);
+    });
   }
 
   @override
