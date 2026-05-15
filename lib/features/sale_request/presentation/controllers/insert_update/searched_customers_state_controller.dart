@@ -53,7 +53,11 @@ class SearchedCustomersStateController
 
       succeeds = true;
 
-      return [...customers.where((c) => c.code != selectedCustomer?.code)];
+      //TODO create/fix tests. Now is always showing at first position if there is any selected customer
+      return [
+        ?selectedCustomer,
+        ...customers.where((c) => c.code != selectedCustomer?.code),
+      ];
     });
     return succeeds;
   }

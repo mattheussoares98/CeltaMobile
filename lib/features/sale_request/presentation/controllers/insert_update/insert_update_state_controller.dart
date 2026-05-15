@@ -133,12 +133,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         .select(null);
     //TODO should not change the customer if is blocked
 
-    state = AsyncData(
-      state.value!.copyWith(
-        annulCustomer: customer?.code == state.value?.customer?.code,
-        customer: customer,
-      ),
+    final newState = state.value!.copyWith(
+      annulCustomer:
+          //TODO fix the tests. When pass a null value, should annul the customer too
+          customer == null || customer.code == state.value?.customer?.code,
+      customer: customer,
     );
+    state = AsyncData(newState);
   }
 
   void updateRequestType(BSFRequestTypeEntity requestType) {
