@@ -23,10 +23,9 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // final args = ref.watch(saleRequestArgsProvider);
     final saleRequestDetails = ref.watch(
       saleRequestDetailsStateControllerProvider(
-        ref.read(saleRequestArgsProvider),
+        ref.watch(saleRequestArgsProvider),
       ).select((s) => s.value),
     );
 
