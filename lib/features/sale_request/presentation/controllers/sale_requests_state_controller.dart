@@ -7,6 +7,7 @@ import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
 import '../../../../core/presentation/controllers/user_session/user_session.dart';
 import '../../domain/entities/entities.dart';
 import '../../providers.dart';
+import 'controllers.dart';
 
 part 'sale_requests_state_controller.g.dart';
 
@@ -41,13 +42,15 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.watch(
+      final validatedUser = await ref.read(
         validatedUserSessionProvider.future,
       );
 
       ref
           .read(appUsageStateControllerProvider.notifier)
           .addUsage(UsageType.shallowSearchSaleRequest);
+
+      ref.invalidate(saleRequestDetailsStateControllerProvider);
 
       return await ref
           .read(ecSaleRequestsRepositoryProvider)
