@@ -25,7 +25,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
 
     final args = ref.watch(saleRequestArgsProvider);
     final saleRequestDetails = ref.watch(
-      saleRequestDetailsStateControllerProvider(args).select((s) => s.value),
+      saleRequestDetailsStateControllerProvider.select((s) => s.value),
     );
 
     return IconButton(
@@ -36,7 +36,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                 isLoading = true;
               });
               final bytes = await ref.read(
-                pdfFromSaleRequestDetailsStateControllerProvider(args).future,
+                pdfFromSaleRequestDetailsStateControllerProvider.future,
               );
 
               if (bytes == null) {

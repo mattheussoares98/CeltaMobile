@@ -110,13 +110,9 @@ class RequestSummary extends ConsumerWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           final requestDetails = ref.watch(
-                            saleRequestDetailsStateControllerProvider(
-                              SaleRequestArgs(
-                                enterpriseCode: enterpriseCode,
-                                customerCode: customerCode ?? 0,
-                                saleRequestId: saleRequestId,
-                              ),
-                            ).select((s) => s.value),
+                            saleRequestDetailsStateControllerProvider.select(
+                              (s) => s.value,
+                            ),
                           );
 
                           return Column(

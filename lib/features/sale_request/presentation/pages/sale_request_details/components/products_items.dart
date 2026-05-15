@@ -16,9 +16,8 @@ class ProductsItems extends ConsumerWidget {
     final args = ref.watch(saleRequestArgsProvider);
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(saleRequestDetailsStateControllerProvider(args)),
-      tryAgain: () =>
-          ref.invalidate(saleRequestDetailsStateControllerProvider(args)),
+      value: ref.watch(saleRequestDetailsStateControllerProvider),
+      tryAgain: () => ref.invalidate(saleRequestDetailsStateControllerProvider),
       data: (requestDetails) {
         final products = requestDetails.products;
 

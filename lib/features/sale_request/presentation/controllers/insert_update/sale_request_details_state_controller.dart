@@ -10,11 +10,13 @@ import '../../../providers.dart';
 
 part 'sale_request_details_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: true, dependencies: [saleRequestArgs])
 class SaleRequestDetailsStateController
     extends _$SaleRequestDetailsStateController {
   @override
-  FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) async {
+  FutureOr<BSFSaleRequestEntity> build() async {
+    final args = ref.watch(saleRequestArgsProvider);
+
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

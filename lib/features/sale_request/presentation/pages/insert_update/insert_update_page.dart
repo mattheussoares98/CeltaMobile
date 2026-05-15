@@ -12,7 +12,7 @@ import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 import 'components/components.dart';
 
-class InsertUpdatePage extends StatelessWidget {
+class InsertUpdatePage extends ConsumerWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
@@ -24,7 +24,7 @@ class InsertUpdatePage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ProviderScope(
       overrides: [
         saleRequestArgsProvider.overrideWithValue(
@@ -35,19 +35,29 @@ class InsertUpdatePage extends StatelessWidget {
           ),
         ),
       ],
-      child: const _InsertUpdateContent(),
+      child: _InsertUpdateContent(
+        enterpriseCode: enterpriseCode,
+        customerCode: customerCode,
+        saleRequestId: saleRequestId,
+      ),
     );
   }
 }
 
 class _InsertUpdateContent extends ConsumerWidget {
-  const _InsertUpdateContent();
+  final int enterpriseCode;
+  final int customerCode;
+  final int saleRequestId;
+
+  const _InsertUpdateContent({
+    required this.enterpriseCode,
+    required this.customerCode,
+    required this.saleRequestId,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
-
-    ref.listen(saveSaleRequestControllerProvider(args.enterpriseCode), (p, n) {
+    ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
       n.showAlertDialogOnError(context);
       n.showSnackbarOnSuccess(
         context,
@@ -58,15 +68,13 @@ class _InsertUpdateContent extends ConsumerWidget {
         context.pop();
       });
     });
-    ref.observeLoading([
-      saveSaleRequestControllerProvider(args.enterpriseCode),
-    ]);
+    ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
 
     return Consumer(
       child: Scaffold(
         appBar: AppBar(
           title: DefaultAppBarTitle(
-            title: args.saleRequestId == 0
+            title: saleRequestId == 0
                 ? 'Inserir pedido'.hardcoded
                 : 'Atualizar pedido'.hardcoded,
           ),
@@ -100,11 +108,11 @@ class _InsertUpdateContent extends ConsumerWidget {
       ),
       builder: (context, ref, child) {
         final hasChanges =
-            args.saleRequestId != 0 &&
+            saleRequestId != 0 &&
             ref.watch(
-                  saleRequestDetailsStateControllerProvider(
-                    args,
-                  ).select((s) => s.value),
+                  saleRequestDetailsStateControllerProvider.select(
+                    (s) => s.value,
+                  ),
                 ) !=
                 ref.watch(
                   insertUpdateStateControllerProvider.select((s) => s.value),

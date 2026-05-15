@@ -13,10 +13,8 @@ class EditButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
-
     final saleRequestLoadedCorrectly = ref.watch(
-      saleRequestDetailsStateControllerProvider(args).select(
+      saleRequestDetailsStateControllerProvider.select(
         (value) => value.hasValue && !value.isLoading,
       ),
     );
@@ -24,6 +22,7 @@ class EditButton extends ConsumerWidget {
     return IconButton(
       onPressed: saleRequestLoadedCorrectly
           ? () {
+              final args = ref.read(saleRequestArgsProvider);
               ref
                   .read(tryAccessModuleControllerProvider.notifier)
                   .tryAccess(

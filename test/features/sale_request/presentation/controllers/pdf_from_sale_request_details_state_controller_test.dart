@@ -21,7 +21,7 @@ class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
   FakeSaleRequestDetails(this.requestToReturn);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) => requestToReturn;
+  FutureOr<BSFSaleRequestEntity> build() => requestToReturn;
 }
 
 class MockGeneratePdfRepository extends Mock
@@ -66,9 +66,9 @@ void main() {
         ),
         // We override the family provider instance we expect to be called
         if (enterprise != null)
-          saleRequestDetailsStateControllerProvider(
-            fakeArgs,
-          ).overrideWith(() => FakeSaleRequestDetails(lastSaved)),
+          saleRequestDetailsStateControllerProvider.overrideWith(
+            () => FakeSaleRequestDetails(lastSaved),
+          ),
       ],
     );
     addTearDown(container.dispose);
@@ -89,7 +89,7 @@ void main() {
 
       // ACT
       final result = await container.read(
-        pdfFromSaleRequestDetailsStateControllerProvider(fakeArgs).future,
+        pdfFromSaleRequestDetailsStateControllerProvider.future,
       );
 
       // ASSERT
@@ -110,9 +110,7 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(
-          pdfFromSaleRequestDetailsStateControllerProvider(fakeArgs).future,
-        ),
+        container.read(pdfFromSaleRequestDetailsStateControllerProvider.future),
         throwsA(isA<Exception>()),
       );
     });

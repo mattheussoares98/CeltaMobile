@@ -10,7 +10,7 @@ class FakeSaleRequestDetailsController
   FakeSaleRequestDetailsController(this.entity);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) {
+  FutureOr<BSFSaleRequestEntity> build() {
     return entity;
   }
 }

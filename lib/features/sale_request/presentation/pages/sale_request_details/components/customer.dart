@@ -25,7 +25,7 @@ class Customer extends ConsumerWidget {
       ),
     );
     final detailsCustomer = ref.watch(
-      saleRequestDetailsStateControllerProvider(args).select(
+      saleRequestDetailsStateControllerProvider.select(
         (s) => s.value?.customer,
       ),
     );

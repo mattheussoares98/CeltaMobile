@@ -41,9 +41,9 @@ void main() {
         filteredPaymentFinalizationsStateControllerProvider.overrideWith(
           () => fakePaymentsController,
         ),
-        saleRequestDetailsStateControllerProvider(
-          fakeArgs.copyWith(saleRequestId: saleRequestId),
-        ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
+        saleRequestDetailsStateControllerProvider.overrideWith(
+          () => FakeSaleRequestDetailsController(fakeSaleRequest),
+        ),
         searchedCustomersStateControllerProvider.overrideWith(
           () => searchedCustomersController,
         ),

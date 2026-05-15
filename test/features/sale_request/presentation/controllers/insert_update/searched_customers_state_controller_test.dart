@@ -45,7 +45,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        saleRequestDetailsStateControllerProvider(fakeArgs).overrideWith(
+        saleRequestDetailsStateControllerProvider.overrideWith(
           () => FakeSaleRequestDetailsController(
             BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
           ),

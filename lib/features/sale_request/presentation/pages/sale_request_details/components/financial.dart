@@ -6,7 +6,6 @@ import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../constants/constants.dart';
 import '../../../../../../localization/string_hardcoded.dart';
 import '../../../../../../utils/utils.dart';
-import '../../../../providers.dart';
 import '../../../controllers/controllers.dart';
 
 class Financial extends ConsumerWidget {
@@ -14,11 +13,10 @@ class Financial extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
     final financials = ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        args,
-      ).select((s) => s.value?.financials),
+      saleRequestDetailsStateControllerProvider.select(
+        (s) => s.value?.financials,
+      ),
     );
 
     if (financials?.isEmpty ?? true) {
