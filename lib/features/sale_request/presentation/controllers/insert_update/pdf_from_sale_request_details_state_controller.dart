@@ -28,7 +28,9 @@ class PdfFromSaleRequestDetailsStateController
     });
 
     final saleRequest = await ref.watch(
-      saleRequestDetailsStateControllerProvider.future,
+      saleRequestDetailsStateControllerProvider(
+        ref.read(saleRequestArgsProvider),
+      ).future,
     );
 
     return await ref

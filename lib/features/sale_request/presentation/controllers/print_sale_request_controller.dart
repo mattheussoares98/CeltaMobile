@@ -60,7 +60,9 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
       final validateduser = await ref.read(validatedUserSessionProvider.future);
 
       final saleRequest = await ref.read(
-        saleRequestDetailsStateControllerProvider.future,
+        saleRequestDetailsStateControllerProvider(
+          ref.read(saleRequestArgsProvider),
+        ).future,
       );
 
       await ref

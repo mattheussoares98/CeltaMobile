@@ -22,7 +22,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return BSFSaleRequestEntity.empty();
     }
 
-    return await ref.read(saleRequestDetailsStateControllerProvider.future);
+    return await ref.read(
+      saleRequestDetailsStateControllerProvider(args).future,
+    );
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {

@@ -25,9 +25,9 @@ class Customer extends ConsumerWidget {
       ),
     );
     final detailsCustomer = ref.watch(
-      saleRequestDetailsStateControllerProvider.select(
-        (s) => s.value?.customer,
-      ),
+      saleRequestDetailsStateControllerProvider(
+        ref.read(saleRequestArgsProvider),
+      ).select((s) => s.value?.customer),
     );
     if (requestCustomer == null || detailsCustomer == null) {
       return const SizedBox.shrink();

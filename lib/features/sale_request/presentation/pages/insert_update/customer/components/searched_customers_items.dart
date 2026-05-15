@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../../constants/constants.dart';
 import '../../../../../../../localization/string_hardcoded.dart';
+import '../../../../../providers.dart';
 import '../../../../controllers/controllers.dart';
 import 'components.dart';
 
@@ -13,9 +14,9 @@ class SearchedCustomersItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCustomerCode = ref.watch(
-      saleRequestDetailsStateControllerProvider.select(
-        (s) => s.value?.customer?.code,
-      ),
+      saleRequestDetailsStateControllerProvider(
+        ref.read(saleRequestArgsProvider),
+      ).select((s) => s.value?.customer?.code),
     );
 
     final filteredCustomers = ref.watch(

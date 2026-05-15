@@ -13,10 +13,13 @@ class ProductsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(saleRequestDetailsStateControllerProvider),
+      value: ref.watch(
+        saleRequestDetailsStateControllerProvider(
+          ref.read(saleRequestArgsProvider),
+        ),
+      ),
       tryAgain: () => ref.invalidate(saleRequestDetailsStateControllerProvider),
       data: (requestDetails) {
         final products = requestDetails.products;

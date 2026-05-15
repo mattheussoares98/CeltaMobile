@@ -14,9 +14,9 @@ class EditButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final saleRequestLoadedCorrectly = ref.watch(
-      saleRequestDetailsStateControllerProvider.select(
-        (value) => value.hasValue && !value.isLoading,
-      ),
+      saleRequestDetailsStateControllerProvider(
+        ref.read(saleRequestArgsProvider),
+      ).select((value) => value.hasValue && !value.isLoading),
     );
 
     return IconButton(

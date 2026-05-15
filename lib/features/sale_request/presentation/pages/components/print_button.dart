@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/misc.dart';
 import '../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../constants/constants.dart';
 import '../../../../../core/validators/validators.dart';
+import '../../../providers.dart';
 import '../../controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
@@ -143,7 +144,9 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
         widget.customerCode != null && widget.saleRequestId != null;
 
     final ProviderBase<AsyncValue<dynamic>> provider = isSaleDetailsPage
-        ? saleRequestDetailsStateControllerProvider
+        ? saleRequestDetailsStateControllerProvider(
+            ref.read(saleRequestArgsProvider),
+          )
         : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
 
     return Consumer(

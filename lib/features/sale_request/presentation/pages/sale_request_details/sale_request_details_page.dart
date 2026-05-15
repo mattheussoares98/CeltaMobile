@@ -106,9 +106,11 @@ class _HeroRequestSummary extends ConsumerWidget {
         child: RequestSummary(
           showDetails: true,
           showCustomer: false,
-          enterpriseCode: enterpriseCode,
-          customerCode: customerCode,
-          saleRequestId: saleRequestId,
+          args: SaleRequestArgs(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestId,
+          ),
         ),
       ),
     );

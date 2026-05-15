@@ -14,17 +14,13 @@ class RequestSummary extends ConsumerWidget {
   final VoidCallback? onTap;
   final bool showCustomer;
   final bool showDetails;
-  final int enterpriseCode;
-  final int saleRequestId;
-  final int? customerCode;
+  final SaleRequestArgs args;
   const RequestSummary({
     super.key,
     this.onTap,
     this.showCustomer = true,
     this.showDetails = false,
-    required this.enterpriseCode,
-    required this.saleRequestId,
-    this.customerCode,
+    required this.args,
   });
 
   @override
@@ -33,9 +29,9 @@ class RequestSummary extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final saleRequest = ref.watch(
-      saleRequestsStateControllerProvider(enterpriseCode).select(
+      saleRequestsStateControllerProvider(args.enterpriseCode).select(
         (s) => s.value?.collection.firstWhereOrNull(
-          (sr) => sr.Id == saleRequestId,
+          (sr) => sr.Id == args.saleRequestId,
         ),
       ),
     );
@@ -110,9 +106,9 @@ class RequestSummary extends ConsumerWidget {
                       Consumer(
                         builder: (context, ref, child) {
                           final requestDetails = ref.watch(
-                            saleRequestDetailsStateControllerProvider.select(
-                              (s) => s.value,
-                            ),
+                            saleRequestDetailsStateControllerProvider(
+                              args,
+                            ).select((s) => s.value),
                           );
 
                           return Column(

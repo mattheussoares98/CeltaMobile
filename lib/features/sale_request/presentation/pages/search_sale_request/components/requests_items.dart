@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../../commom_widgets/commom_widgets.dart';
 import '../../../../../../routing/routing.dart';
+import '../../../../domain/entities/entities.dart';
 import '../../../controllers/controllers.dart';
 import '../../components/components.dart';
 
@@ -56,9 +57,11 @@ class _SaleRequestItem extends ConsumerWidget {
     return Hero(
       tag: 'sale_request_$saleRequestId',
       child: RequestSummary(
-        enterpriseCode: enterpriseCode,
-        saleRequestId: saleRequestId,
-        customerCode: customerCode,
+        args: SaleRequestArgs(
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          saleRequestId: saleRequestId,
+        ),
         onTap: () {
           context.goNamed(
             Routes.saleRequestDetails.name,

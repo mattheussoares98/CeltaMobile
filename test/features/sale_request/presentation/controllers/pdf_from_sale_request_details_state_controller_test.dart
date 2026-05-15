@@ -21,7 +21,7 @@ class FakeSaleRequestDetails extends SaleRequestDetailsStateController {
   FakeSaleRequestDetails(this.requestToReturn);
 
   @override
-  FutureOr<BSFSaleRequestEntity> build() => requestToReturn;
+  FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) => requestToReturn;
 }
 
 class MockGeneratePdfRepository extends Mock

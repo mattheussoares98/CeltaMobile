@@ -110,9 +110,9 @@ class _InsertUpdateContent extends ConsumerWidget {
         final hasChanges =
             saleRequestId != 0 &&
             ref.watch(
-                  saleRequestDetailsStateControllerProvider.select(
-                    (s) => s.value,
-                  ),
+                  saleRequestDetailsStateControllerProvider(
+                    ref.read(saleRequestArgsProvider),
+                  ).select((s) => s.value),
                 ) !=
                 ref.watch(
                   insertUpdateStateControllerProvider.select((s) => s.value),
