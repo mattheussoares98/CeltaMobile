@@ -10,15 +10,12 @@ import 'insert_update.dart';
 
 part 'searched_customers_state_controller.g.dart';
 
-@Riverpod(
-  keepAlive: true,
-  dependencies: [saleRequestArgs, InsertUpdateStateController],
-)
+@Riverpod(dependencies: [saleRequestArgs, InsertUpdateStateController])
 class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override
   FutureOr<List<BSFCustomerEntity>> build() async {
-    final customer = await ref.read(
+    final customer = await ref.watch(
       insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
     );
 
@@ -30,7 +27,7 @@ class SearchedCustomersStateController
     bool succeeds = false;
 
     state = await AsyncValue.guard(() async {
-      final args = ref.watch(saleRequestArgsProvider);
+      final args = ref.read(saleRequestArgsProvider);
 
       final validatedUserSession = await ref.read(
         validatedUserSessionProvider.future,

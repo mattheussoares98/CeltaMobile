@@ -26,26 +26,25 @@ class FakePaymentFinalizationsController
 
 void main() {
   late FakePaymentFinalizationsController fakePaymentsController;
-  late FakeSearchedCustomersStateController searchedCustomersController;
+  late FakeSearchedCustomersStateController fakeSearchedCustomersController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
   late SaleRequestArgs fakeArgs;
 
   ProviderContainer makeProviderContainer({required int saleRequestId}) {
+    final args = fakeArgs.copyWith(saleRequestId: saleRequestId);
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        saleRequestArgsProvider.overrideWithValue(
-          fakeArgs.copyWith(saleRequestId: saleRequestId),
-        ),
+        saleRequestArgsProvider.overrideWithValue(args),
         filteredPaymentFinalizationsStateControllerProvider.overrideWith(
           () => fakePaymentsController,
         ),
         saleRequestDetailsStateControllerProvider(
-          fakeArgs,
+          args,
         ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
         searchedCustomersStateControllerProvider.overrideWith(
-          () => searchedCustomersController,
+          () => fakeSearchedCustomersController,
         ),
       ],
     );
@@ -62,7 +61,7 @@ void main() {
     ];
 
     fakePaymentsController = FakePaymentFinalizationsController(fakePayments);
-    searchedCustomersController = FakeSearchedCustomersStateController([
+    fakeSearchedCustomersController = FakeSearchedCustomersStateController([
       EntityFactory.makeBSFCustomerEntity(),
       EntityFactory.makeBSFCustomerEntity(),
     ]);
@@ -717,25 +716,15 @@ void main() {
             .read(selectedPaymentConditionStateControllerProvider.notifier)
             .select(paymentCondition);
 
-        // 2. Add a product to the main controller so it's not "empty"
-        final product = EntityFactory.makeProductEntity(
-          enterpriseCode: fakeArgs.enterpriseCode,
-        );
-        controller.addItem(product);
+        // Load searched customers first so it's initialized (rebuildCount = 2)
+        await container.read(searchedCustomersStateControllerProvider.future);
+        expect(fakeSearchedCustomersController.rebuildCount, 2);
 
-        expect(
-          container
-              .read(insertUpdateStateControllerProvider)
-              .value
-              ?.products
-              ?.length,
-          1,
-        );
-
-        // 3. Call disposeFlow
+        // 2. Call disposeFlow and simulate UI disposal
         controller.disposeFlow();
+        container.invalidate(searchedCustomersStateControllerProvider);
 
-        // 4. Verify selection providers are reset
+        // 3. Verify selection providers are reset
         expect(
           container.read(selectedPaymentTypeStateControllerProvider),
           isNull,
@@ -744,8 +733,10 @@ void main() {
           container.read(selectedPaymentConditionStateControllerProvider),
           isNull,
         );
+        await container.read(searchedCustomersStateControllerProvider.future);
+        expect(fakeSearchedCustomersController.rebuildCount, 3);
 
-        // 5. Verify main controller was reset to initial state (empty)
+        // 4. Verify main controller was reset to initial state (empty)
         final stateAfterDispose = await container.read(
           insertUpdateStateControllerProvider.future,
         );

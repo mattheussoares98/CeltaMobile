@@ -55,7 +55,7 @@ class FakeSearchedCustomersStateController
     extends SearchedCustomersStateController {
   final List<BSFCustomerEntity> entities;
 
-  int _rebuildCount = 0;
+  int _rebuildCount = 1;
   int get rebuildCount => _rebuildCount;
 
   FakeSearchedCustomersStateController(this.entities);
