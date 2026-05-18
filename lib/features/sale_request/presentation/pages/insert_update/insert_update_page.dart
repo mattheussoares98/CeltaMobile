@@ -82,17 +82,17 @@ class _InsertUpdateContent extends ConsumerWidget {
           actions: [
             Consumer(
               builder: (_, ref, _) {
+                final (int quantity, double totalPrice) = ref.watch(
+                  insertUpdateStateControllerProvider.select(
+                    (s) => (
+                      s.value?.products?.length ?? 0,
+                      s.value?.totalProductsLiquid ?? 0,
+                    ),
+                  ),
+                );
                 return QuantityBadge(
-                  quantity: ref.watch(
-                    insertUpdateStateControllerProvider.select(
-                      (s) => s.value?.products?.length,
-                    ),
-                  ),
-                  totalPrice: ref.watch(
-                    insertUpdateStateControllerProvider.select(
-                      (s) => s.value?.totalProductsLiquid,
-                    ),
-                  ),
+                  quantity: quantity,
+                  totalPrice: totalPrice,
                   platformIcon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.cart,
                     materialIcon: Icons.shopping_cart,
@@ -107,16 +107,7 @@ class _InsertUpdateContent extends ConsumerWidget {
         bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
       ),
       builder: (context, ref, child) {
-        final hasChanges =
-            saleRequestId != 0 &&
-            ref.watch(
-                  saleRequestDetailsStateControllerProvider(
-                    ref.read(saleRequestArgsProvider),
-                  ).select((s) => s.value),
-                ) !=
-                ref.watch(
-                  insertUpdateStateControllerProvider.select((s) => s.value),
-                );
+        final hasChanges = ref.watch(saleRequestHasChangesProvider);
 
         return PopScope(
           canPop: !hasChanges,
