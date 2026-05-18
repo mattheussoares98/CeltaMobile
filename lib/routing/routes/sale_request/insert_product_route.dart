@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/domain/entities/entities.dart';
@@ -12,19 +13,13 @@ RouteBase insertProductRoute() => GoRoute(
     final extraMap = state.extra as Map<String, dynamic>;
     final product = extraMap['product'] as BSFProductItemEntity;
     final originalProduct = extraMap['originalProduct'] as ProductEntity;
-    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    final saleRequestId = int.tryParse(
-      state.pathParameters['saleRequestId'] ?? '',
-    );
-    final customerCode = int.parse(state.pathParameters['customerCode']!);
+    final container = extraMap['container'] as ProviderContainer;
 
     return InsertProductPage(
       product: product,
       originalProduct: originalProduct,
       heroTag: extraMap['heroTag'] as String?,
-      customerCode: customerCode,
-      enterpriseCode: enterpriseCode,
-      saleRequestId: saleRequestId ?? 0,
+      container: container,
     );
   },
 );

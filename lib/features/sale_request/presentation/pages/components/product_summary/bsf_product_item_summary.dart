@@ -123,6 +123,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                   'product': item,
                   'originalProduct': product,
                   'heroTag': heroTag,
+                  'container': ProviderScope.containerOf(context),
                 },
                 pathParameters: {
                   'saleRequestId': saleRequestId.toString(),
