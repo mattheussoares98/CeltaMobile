@@ -142,4 +142,23 @@ extension StringModifier on String {
       return null;
     }
   }
+
+  String toMaskedCnpjCpf() {
+    // Strip non-digits to handle both formatted and raw values
+    final digits = replaceAll(RegExp(r'\D'), '');
+
+    if (digits.length == 11) {
+      // CPF Standard Mask: 123.***.***-00
+      final first = digits.substring(0, 3);
+      final last = digits.substring(9);
+      return '$first.***.***-$last';
+    } else if (digits.length == 14) {
+      // CNPJ Standard Mask: 12.***.***/****-99
+      final first = digits.substring(0, 2);
+      final last = digits.substring(12);
+      return '$first.***.***/****-$last';
+    } else {
+      return this;
+    }
+  }
 }
