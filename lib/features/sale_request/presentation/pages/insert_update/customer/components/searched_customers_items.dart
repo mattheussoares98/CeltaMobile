@@ -19,7 +19,7 @@ class SearchedCustomersItems extends ConsumerWidget {
           itemCount: customers.length,
           isSliver: true,
           itemBuilder: (context, index) {
-            final customer = customers.toList()[index];
+            final customer = customers[index];
             return CustomerItem(
               key: ValueKey(customer.code),
               customer: customer,
