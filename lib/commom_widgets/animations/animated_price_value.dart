@@ -61,32 +61,34 @@ class _AnimatedPriceValueState extends State<AnimatedPriceValue>
     final defaultColor =
         widget.style?.color ?? Theme.of(context).textTheme.bodyMedium?.color;
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        final color = _colorAnimation.value ?? defaultColor;
-        final animatedStyle = widget.style?.copyWith(color: color);
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          final color = _colorAnimation.value ?? defaultColor;
+          final animatedStyle = widget.style?.copyWith(color: color);
 
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          alignment: Alignment.centerLeft,
-          child: RichText(
-            text: TextSpan(
-              style: animatedStyle,
-              children: [
-                TextSpan(
-                  text: 'R\$ ',
-                  style: animatedStyle?.copyWith(
-                    fontSize: 11,
-                    fontWeight: FontWeight.normal,
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            alignment: Alignment.centerLeft,
+            child: RichText(
+              text: TextSpan(
+                style: animatedStyle,
+                children: [
+                  TextSpan(
+                    text: 'R\$ ',
+                    style: animatedStyle?.copyWith(
+                      fontSize: 11,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
-                ),
-                TextSpan(text: widget.priceText),
-              ],
+                  TextSpan(text: widget.priceText),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
