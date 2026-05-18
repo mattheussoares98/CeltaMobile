@@ -131,6 +131,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
+    ref.read(selectedCovenantStateControllerProvider.notifier).select(null);
     //TODO should not change the customer if is blocked
 
     final newState = state.value!.copyWith(
@@ -160,10 +161,22 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final totalPayments = state.value!.totalPayments;
 
     if (value > totalProducts - totalPayments) {
+      //TODO FIX FLOAT ERROR
       return (false, 'Valor excede o disponível'.hardcoded);
     }
 
     final current = state.value!;
+    final isCovenant =
+        payment.action?.type == PaymentFinalizationActionType.covenant;
+    final selectedCovenant = ref.read(selectedCovenantStateControllerProvider);
+    final hasCovenants =
+        current.customer?.covenants != null &&
+        current.customer!.covenants!.isNotEmpty;
+
+    if (isCovenant && hasCovenants && selectedCovenant == null) {
+      return (false, 'Selecione um convênio'.hardcoded);
+    }
+
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
 
     if (financials.isEmpty) {
@@ -189,7 +202,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         tefSequencialUniqueNumber: null,
         tefAutorizationCreditCode: null,
         devolutionCreditCode: null,
-        identificationCode: null,
+        //TODO confirm if this is the correct way to save the covenant payment method
+        identificationCode: isCovenant
+            ? (selectedCovenant?.personalizedCode ??
+                  selectedCovenant?.code?.toString())
+            : null,
         paymentCondition: ref.read(
           selectedPaymentConditionStateControllerProvider,
         ),
@@ -208,6 +225,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
+    ref.read(selectedCovenantStateControllerProvider.notifier).select(null);
 
     return (true, null);
   }
@@ -234,6 +252,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
+    ref.invalidate(selectedCovenantStateControllerProvider);
 
     ref.invalidateSelf();
   }
