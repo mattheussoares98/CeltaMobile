@@ -66,9 +66,9 @@ void main() {
         ),
         // We override the family provider instance we expect to be called
         if (enterprise != null)
-          saleRequestDetailsStateControllerProvider.overrideWith(
-            () => FakeSaleRequestDetails(lastSaved),
-          ),
+          saleRequestDetailsStateControllerProvider(
+            fakeArgs,
+          ).overrideWith(() => FakeSaleRequestDetails(lastSaved)),
       ],
     );
     addTearDown(container.dispose);
