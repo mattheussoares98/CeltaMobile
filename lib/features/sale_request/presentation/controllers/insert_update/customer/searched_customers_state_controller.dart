@@ -15,7 +15,7 @@ class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override
   FutureOr<List<BSFCustomerEntity>> build() async {
-    final customer = await ref.watch(
+    final customer = await ref.read(
       insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
     );
 
