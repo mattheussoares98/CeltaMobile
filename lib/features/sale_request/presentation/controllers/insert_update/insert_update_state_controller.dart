@@ -238,3 +238,24 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref.invalidateSelf();
   }
 }
+
+@Riverpod(
+  dependencies: [
+    saleRequestArgs,
+    SaleRequestDetailsStateController,
+    InsertUpdateStateController,
+  ],
+)
+bool saleRequestHasChanges(Ref ref) {
+  final args = ref.watch(saleRequestArgsProvider);
+  if (args.saleRequestId == 0) return false;
+
+  final original =
+      ref.watch(saleRequestDetailsStateControllerProvider(args)).value;
+  final current = ref.watch(insertUpdateStateControllerProvider).value;
+
+  // While either provider is still loading, there are no "changes" yet.
+  if (original == null || current == null) return false;
+
+  return current != original;
+}
