@@ -169,11 +169,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final isCovenant =
         payment.action?.type == PaymentFinalizationActionType.covenant;
     final selectedCovenant = ref.read(selectedCovenantStateControllerProvider);
-    final hasCovenants =
-        current.customer?.covenants != null &&
-        current.customer!.covenants!.isNotEmpty;
 
-    if (isCovenant && hasCovenants && selectedCovenant == null) {
+    if (isCovenant && selectedCovenant == null) {
+      //TODO create tests
       return (false, 'Selecione um convênio'.hardcoded);
     }
 
