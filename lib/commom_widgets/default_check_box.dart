@@ -5,7 +5,7 @@ import '../constants/constants.dart';
 
 class DefaultCheckBox extends StatelessWidget {
   final String name;
-  final String? subtitle;
+  final Widget? subtitle;
   final bool enabled;
   final void Function(bool?)? onChanged;
   const DefaultCheckBox({
@@ -52,7 +52,7 @@ class DefaultCheckBox extends StatelessWidget {
                     vertical: Sizes.p4,
                   ),
                   title: Text(name, style: theme.textTheme.bodyMedium),
-                  subtitle: subtitle != null ? Text(subtitle!) : null,
+                  subtitle: subtitle,
                   trailing: CupertinoSwitch(
                     value: enabled,
                     onChanged: onChanged,
@@ -61,9 +61,9 @@ class DefaultCheckBox extends StatelessWidget {
               : CheckboxListTile(
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: Sizes.p12,
-                  ),
+                    ),
                   title: Text(name, style: theme.textTheme.bodyMedium),
-                  subtitle: subtitle != null ? Text(subtitle!) : null,
+                  subtitle: subtitle,
                   value: enabled,
                   onChanged: onChanged,
                   dense: true,
