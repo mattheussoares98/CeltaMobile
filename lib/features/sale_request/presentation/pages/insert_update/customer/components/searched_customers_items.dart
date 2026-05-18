@@ -10,16 +10,24 @@ class SearchedCustomersItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final consumerCustomerCode = ref.watch(
+      consumerCustomerStateControllerProvider.select((s) => s.value?.code),
+    );
+
     return AsyncValueWidget(
       value: ref.watch(searchedCustomersStateControllerProvider),
       tryAgain: null,
       isSliver: true,
       data: (customers) {
+        final filteredCustomers = customers
+            .where((e) => e.code != consumerCustomerCode)
+            .toList();
+
         return ResponsiveListFlow(
-          itemCount: customers.length,
+          itemCount: filteredCustomers.length,
           isSliver: true,
           itemBuilder: (context, index) {
-            final customer = customers[index];
+            final customer = filteredCustomers[index];
             return CustomerItem(
               key: ValueKey(customer.code),
               customer: customer,
