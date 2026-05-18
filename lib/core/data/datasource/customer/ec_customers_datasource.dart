@@ -18,7 +18,7 @@ class EcCustomersDatasource implements IEcCustomersDatasource {
     required bool searchByPersonalizedCode,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/Customers/SearchForMobileApp',
+      url: 'http://localhost:58915/Customers/SearchForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
