@@ -17,7 +17,13 @@ part 'searched_customers_state_controller.g.dart';
 class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override
-  FutureOr<List<BSFCustomerEntity>> build() async => [];
+  FutureOr<List<BSFCustomerEntity>> build() async {
+    final customer = await ref.read(
+      insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
+    );
+
+    return [?customer];
+  }
 
   Future<bool> loadCustomer(String value, bool searchByPersonalizedCode) async {
     state = const AsyncValue.loading();

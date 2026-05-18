@@ -60,16 +60,19 @@ void main() {
   }
 
   group('CustomersStateController', () {
-    test('build should return empty list', () async {
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
+    test(
+      'build should return the selected customer on saleRequestDetails',
+      () async {
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
 
-      final state = await container.read(
-        searchedCustomersStateControllerProvider.future,
-      );
+        final state = await container.read(
+          searchedCustomersStateControllerProvider.future,
+        );
 
-      expect(state, []);
-    });
+        expect(state, [fakeCustomer]);
+      },
+    );
 
     test('Should behave correctly on load', () async {
       final container = makeProviderContainer(session: fakeSession);
