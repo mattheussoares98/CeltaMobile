@@ -1,7 +1,7 @@
+export 'customer/customer.dart';
 export 'insert_product_ui_controller.dart';
 export 'insert_update_state_controller.dart';
 export 'payment/payment.dart';
 export 'pdf_from_sale_request_details_state_controller.dart';
 export 'sale_request_details_state_controller.dart';
-export 'searched_customers_state_controller.dart';
 export 'update_sale_request_controller.dart';

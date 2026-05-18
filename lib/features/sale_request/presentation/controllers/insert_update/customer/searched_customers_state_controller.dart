@@ -1,12 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../../core/providers/customer/customer.dart';
-import '../../../../../exceptions/exceptions.dart';
-import '../../../../../localization/string_hardcoded.dart';
-import '../../../providers.dart';
-import 'insert_update.dart';
+import '../../../../../../core/domain/entities/entities.dart';
+import '../../../../../../core/presentation/controllers/user_session/user_session.dart';
+import '../../../../../../core/providers/customer/customer.dart';
+import '../../../../../../exceptions/exceptions.dart';
+import '../../../../../../localization/string_hardcoded.dart';
+import '../../../../providers.dart';
+import '../insert_update.dart';
 
 part 'searched_customers_state_controller.g.dart';
 
