@@ -141,6 +141,8 @@ class _NewPaymentSection extends ConsumerWidget {
         ),
         gapSliverH8,
         const SliverToBoxAdapter(child: PaymentMethodDropdown()),
+        gapSliverH8,
+        const SliverToBoxAdapter(child: CovenantDropdown()),
         // SliverToBoxAdapter(
         //   child: PrimaryButton(
         //     onPressed: () => ref.invalidate(
