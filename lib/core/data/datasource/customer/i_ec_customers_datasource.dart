@@ -1,7 +1,7 @@
 import '../../../domain/entities/entities.dart';
 import '../../models/models.dart';
 
-abstract class IEcBSFCustomersDatasource {
+abstract class IEcCustomersDatasource {
   Future<List<BSFCustomerModel>> searchForMobileApp({
     required EcRequestParams params,
     required String searchValue,

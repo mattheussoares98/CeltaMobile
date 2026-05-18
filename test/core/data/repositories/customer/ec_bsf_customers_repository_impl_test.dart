@@ -9,7 +9,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late IEcBSFCustomersRepository sut;
+  late IEcCustomersRepository sut;
   late EcBSFCustomersDatasourceSpy datasource;
 
   late EcRequestParams params;
@@ -23,7 +23,7 @@ void main() {
   }
 
   void initSut() {
-    sut = EcBSFCustomersRepositoryImpl(datasource);
+    sut = EcCustomersRepositoryImpl(datasource);
   }
 
   void initEntities() {

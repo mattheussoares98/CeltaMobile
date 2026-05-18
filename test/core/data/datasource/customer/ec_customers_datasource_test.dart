@@ -10,7 +10,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late IEcBSFCustomersDatasource sut;
+  late IEcCustomersDatasource sut;
   late HttpClientSpy httpClient;
 
   late EcRequestParams params;
@@ -24,7 +24,7 @@ void main() {
   }
 
   void initSut() {
-    sut = EcBSFCustomersDatasource(httpClient);
+    sut = EcCustomersDatasource(httpClient);
   }
 
   void initEntities() {

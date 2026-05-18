@@ -1106,7 +1106,7 @@ class FakeAppUsageStateController extends AppUsageStateController {
 }
 
 class EcBSFCustomersDatasourceSpy extends Mock
-    implements IEcBSFCustomersDatasource {
+    implements IEcCustomersDatasource {
   void mockSearchForMobileApp(List<BSFCustomerModel> response) {
     when(
       () => this.searchForMobileApp(
@@ -1131,7 +1131,7 @@ class EcBSFCustomersDatasourceSpy extends Mock
 }
 
 class EcBSFCustomersRepositorySpy extends Mock
-    implements IEcBSFCustomersRepository {
+    implements IEcCustomersRepository {
   void mockSearchForMobileApp(List<BSFCustomerEntity> response) {
     when(
       () => this.searchForMobileApp(

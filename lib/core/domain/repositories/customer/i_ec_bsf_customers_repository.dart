@@ -1,6 +1,6 @@
 import '../../entities/entities.dart';
 
-abstract class IEcBSFCustomersRepository {
+abstract class IEcCustomersRepository {
   Future<List<BSFCustomerEntity>> searchForMobileApp({
     required EcRequestParams params,
     required String searchValue,

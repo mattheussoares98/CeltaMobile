@@ -41,7 +41,7 @@ void main() {
     return ProviderContainer(
       overrides: [
         saleRequestArgsProvider.overrideWithValue(fakeArgs),
-        ecBSFCustomersRepositoryProvider.overrideWithValue(mockRepository),
+        ecCustomersRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),

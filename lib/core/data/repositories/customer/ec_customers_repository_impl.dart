@@ -2,10 +2,10 @@ import '../../../domain/entities/entities.dart';
 import '../../../domain/repositories/customer/customer.dart';
 import '../../datasource/customer/customer.dart';
 
-class EcBSFCustomersRepositoryImpl implements IEcBSFCustomersRepository {
-  final IEcBSFCustomersDatasource datasource;
+class EcCustomersRepositoryImpl implements IEcCustomersRepository {
+  final IEcCustomersDatasource datasource;
 
-  EcBSFCustomersRepositoryImpl(this.datasource);
+  EcCustomersRepositoryImpl(this.datasource);
 
   @override
   Future<List<BSFCustomerEntity>> searchForMobileApp({

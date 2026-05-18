@@ -37,7 +37,7 @@ class SearchedCustomersStateController
       );
 
       final customers = await ref
-          .read(ecBSFCustomersRepositoryProvider)
+          .read(ecCustomersRepositoryProvider)
           .searchForMobileApp(
             params: EcRequestParams(
               workingUrl: validatedUserSession!.enterprise!.workingUrl!,

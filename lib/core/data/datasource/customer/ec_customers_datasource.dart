@@ -5,10 +5,10 @@ import '../../../domain/entities/entities.dart';
 import '../../models/models.dart';
 import 'customer.dart';
 
-class EcBSFCustomersDatasource implements IEcBSFCustomersDatasource {
+class EcCustomersDatasource implements IEcCustomersDatasource {
   final HttpClient httpClient;
 
-  EcBSFCustomersDatasource(this.httpClient);
+  EcCustomersDatasource(this.httpClient);
 
   @override
   Future<List<BSFCustomerModel>> searchForMobileApp({

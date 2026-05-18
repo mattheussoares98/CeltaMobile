@@ -19,13 +19,11 @@ ISoapCustomerRepository soapCustomerRepository(Ref ref) {
 }
 
 @riverpod
-IEcBSFCustomersDatasource ecBSFCustomersDatasource(Ref ref) {
-  return EcBSFCustomersDatasource(ref.watch(httpClientProvider));
+IEcCustomersDatasource ecCustomersDatasource(Ref ref) {
+  return EcCustomersDatasource(ref.watch(httpClientProvider));
 }
 
 @riverpod
-IEcBSFCustomersRepository ecBSFCustomersRepository(Ref ref) {
-  return EcBSFCustomersRepositoryImpl(
-    ref.watch(ecBSFCustomersDatasourceProvider),
-  );
+IEcCustomersRepository ecCustomersRepository(Ref ref) {
+  return EcCustomersRepositoryImpl(ref.watch(ecCustomersDatasourceProvider));
 }
