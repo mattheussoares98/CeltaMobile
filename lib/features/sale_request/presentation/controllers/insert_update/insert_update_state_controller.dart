@@ -143,6 +143,26 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(newState);
   }
 
+  void updateCovenant(BsfCovenantEntity? covenant) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    final current = state.value!;
+    if (current.customer == null) return;
+
+    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
+    ref
+        .read(selectedPaymentConditionStateControllerProvider.notifier)
+        .select(null);
+
+    final newCovenantCode = current.customer?.covenantCode == covenant?.code
+        ? null
+        : covenant?.code;
+
+    final newCustomer = current.customer!.copyWith(
+      covenantCode: newCovenantCode,
+    );
+    state = AsyncData(current.copyWith(customer: newCustomer));
+  }
+
   void updateRequestType(BSFRequestTypeEntity requestType) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     state = AsyncData(state.value!.copyWith(requestType: requestType));
