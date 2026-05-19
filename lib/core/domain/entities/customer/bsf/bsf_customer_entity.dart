@@ -4,6 +4,7 @@ import '../../entities.dart';
 
 class BSFCustomerEntity extends Equatable {
   final String? personalizedCode;
+  final int? covenantCode;
   final int? code;
   final String? name;
   final String? nameReduced;
@@ -19,6 +20,7 @@ class BSFCustomerEntity extends Equatable {
 
   const BSFCustomerEntity({
     required this.personalizedCode,
+    required this.covenantCode,
     required this.code,
     required this.name,
     required this.nameReduced,
@@ -35,23 +37,25 @@ class BSFCustomerEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        cnpjCpfNumber,
-        name,
-        code,
-        personalizedCode,
-        nameReduced,
-        suframaCode,
-        limitOfPurchase,
-        inscriptionRgNumber,
-        paymentFinalizations,
-        paymentConditions,
-        saleBlockade,
-        saleBlockadeInstruction,
-        covenants,
-      ];
+    cnpjCpfNumber,
+    name,
+    code,
+    personalizedCode,
+    covenantCode,
+    nameReduced,
+    suframaCode,
+    limitOfPurchase,
+    inscriptionRgNumber,
+    paymentFinalizations,
+    paymentConditions,
+    saleBlockade,
+    saleBlockadeInstruction,
+    covenants,
+  ];
 
   BSFCustomerEntity copyWith({
     String? personalizedCode,
+    int? covenantCode,
     int? code,
     String? name,
     String? nameReduced,
@@ -67,6 +71,7 @@ class BSFCustomerEntity extends Equatable {
   }) {
     return BSFCustomerEntity(
       personalizedCode: personalizedCode ?? this.personalizedCode,
+      covenantCode: covenantCode ?? this.covenantCode,
       code: code ?? this.code,
       name: name ?? this.name,
       nameReduced: nameReduced ?? this.nameReduced,

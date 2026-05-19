@@ -5,6 +5,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
   const BSFCustomerModel({
     required super.code,
     required super.personalizedCode,
+    required super.covenantCode,
     required super.name,
     required super.nameReduced,
     required super.cnpjCpfNumber,
@@ -21,6 +22,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
   @override
   List<Object?> get props => [
     personalizedCode,
+    covenantCode,
     name,
     nameReduced,
     cnpjCpfNumber,
@@ -38,6 +40,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
       BSFCustomerModel(
         code: json['Code'],
         personalizedCode: json['PersonalizedCode'],
+        covenantCode: json['CovenantCode'],
         name: json['Name'],
         nameReduced: json['NameReduced'],
         cnpjCpfNumber: json['CnpjCpfNumber'],
@@ -74,6 +77,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
   Map<String, dynamic> toJson() => {
     'Code': code,
     'PersonalizedCode': personalizedCode,
+    'CovenantCode': covenantCode,
     'Name': name,
     'NameReduced': nameReduced,
     'CnpjCpfNumber': cnpjCpfNumber,
@@ -105,6 +109,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
       BSFCustomerModel(
         code: entity.code,
         personalizedCode: entity.personalizedCode,
+        covenantCode: entity.covenantCode,
         name: entity.name,
         nameReduced: entity.nameReduced,
         cnpjCpfNumber: entity.cnpjCpfNumber,
@@ -131,18 +136,19 @@ class BSFCustomerModel extends BSFCustomerEntity {
       );
 
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
-        code: code,
-        personalizedCode: personalizedCode,
-        name: name,
-        nameReduced: nameReduced,
-        cnpjCpfNumber: cnpjCpfNumber,
-        suframaCode: suframaCode,
-        limitOfPurchase: limitOfPurchase,
-        inscriptionRgNumber: inscriptionRgNumber,
-        paymentFinalizations: paymentFinalizations,
-        paymentConditions: paymentConditions,
-        saleBlockade: saleBlockade,
-        saleBlockadeInstruction: saleBlockadeInstruction,
-        covenants: covenants,
-      );
+    code: code,
+    personalizedCode: personalizedCode,
+    covenantCode: covenantCode,
+    name: name,
+    nameReduced: nameReduced,
+    cnpjCpfNumber: cnpjCpfNumber,
+    suframaCode: suframaCode,
+    limitOfPurchase: limitOfPurchase,
+    inscriptionRgNumber: inscriptionRgNumber,
+    paymentFinalizations: paymentFinalizations,
+    paymentConditions: paymentConditions,
+    saleBlockade: saleBlockade,
+    saleBlockadeInstruction: saleBlockadeInstruction,
+    covenants: covenants,
+  );
 }

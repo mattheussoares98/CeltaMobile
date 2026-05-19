@@ -16,6 +16,7 @@ extension SoapCustomerEntityToBsf on SoapCustomerEntity {
       saleBlockade: saleBlockade?.toBsf(),
       saleBlockadeInstruction: saleBlockadeInstruction?.toBsf(),
       covenants: CustomerCovenants?.map((e) => e.toBsf()).toList(),
+      covenantCode: null,
     );
   }
 }
