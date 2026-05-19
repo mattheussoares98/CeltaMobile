@@ -23,17 +23,18 @@ class CovenantDropdown extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final customer = ref.watch(
-      insertUpdateStateControllerProvider.select((s) => s.value?.customer),
+    final selectedCovenant = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (s) => s.value?.customer?.covenants?.firstWhereOrNull(
+          (e) => e.code == s.value?.customer?.covenantCode,
+        ),
+      ),
     );
 
-    final hasCovenants =
-        customer?.covenants != null && customer!.covenants!.isNotEmpty;
-
-    final theme = Theme.of(context);
-    if (!hasCovenants) {
+    if (selectedCovenant == null) {
+      final theme = Theme.of(context);
       return Text(
-        'O cliente não possui convênios! Selecione outra forma de pagamento ou adicione um convênio para esse cliente'
+        'Você só pode utilizar essa forma de pagamento se selecionar o convênio do cliente!'
             .hardcoded,
         style: theme.textTheme.titleSmall?.copyWith(
           fontStyle: FontStyle.italic,
@@ -42,38 +43,17 @@ class CovenantDropdown extends ConsumerWidget {
       );
     }
 
-    final items = customer.covenants!
-        .map(
-          (c) => DropdownMenuItem(
-            value: c,
-            child: Center(child: Text(c.name ?? '')),
-          ),
-        )
-        .toList();
-
-    return Consumer(
-      builder: (context, ref, child) {
-        final selectedCovenant = ref.watch(
-          insertUpdateStateControllerProvider.select(
-            (s) => s.value?.customer?.covenants?.firstWhereOrNull(
-              (e) => e.code == s.value?.customer?.covenantCode,
-            ),
-          ),
-        );
-        return DefaultDropDown<BsfCovenantEntity>(
-          selectedItem: selectedCovenant,
-          label: 'Convênio'.hardcoded,
-          hint: Text('Selecionar convênio'.hardcoded),
-          validator: (_) {
-            if (selectedCovenant == null) {
-              return 'Selecione um convênio'.hardcoded;
-            }
-            return null;
-          },
-          items: items,
-          onChanged: null,
-        );
-      },
+    return DefaultDropDown<BsfCovenantEntity>(
+      selectedItem: selectedCovenant,
+      label: 'Convênio do cliente'.hardcoded,
+      hint: Text('Selecione o convênio do cliente'.hardcoded),
+      items: [
+        DropdownMenuItem(
+          value: selectedCovenant,
+          child: Center(child: Text(selectedCovenant.name ?? '')),
+        ),
+      ],
+      onChanged: null,
     );
   }
 }
