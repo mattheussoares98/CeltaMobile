@@ -31,7 +31,7 @@ class BsfCovenantModel extends BsfCovenantEntity {
         code: json['Code'] as int?,
         personalizedCode: json['PersonalizedCode'] as String?,
         legacyCode: json['LegacyCode'] as String?,
-        name: json['Name'] as String?,
+        name: json['Name'] as String? ?? '',
         fantasyName: json['FantasyName'] as String?,
         cnpjNumber: json['CnpjNumber'] as String?,
         formatedCnpjNumber: json['FormatedCnpjNumber'] as String?,

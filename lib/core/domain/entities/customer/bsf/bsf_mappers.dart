@@ -57,7 +57,7 @@ extension CustomerCovenantEntityToBsf on CustomerCovenantEntity {
       code: covenant?.Code,
       personalizedCode: covenant?.PersonalizedCode,
       legacyCode: null,
-      name: covenant?.Name,
+      name: covenant?.Name ?? '',
       fantasyName: covenant?.Name,
       cnpjNumber: null,
       formatedCnpjNumber: null,

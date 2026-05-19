@@ -1,12 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../../entities.dart';
 
-class BsfCovenantEntity extends Equatable {
+class BsfCovenantEntity extends Equatable implements SelectableItem<BsfCovenantEntity> {
   final int? code;
   final String? personalizedCode;
   final String? legacyCode;
-  final String? name;
+  @override
+  final String name;
   final String? fantasyName;
   final String? cnpjNumber;
   final String? formatedCnpjNumber;
@@ -124,4 +126,11 @@ class BsfCovenantEntity extends Equatable {
           saleBlockadeInstruction ?? this.saleBlockadeInstruction,
     );
   }
+
+  @override
+  BsfCovenantEntity get value => this;
+
+  @override
+  Color? get color => null;
 }
+
