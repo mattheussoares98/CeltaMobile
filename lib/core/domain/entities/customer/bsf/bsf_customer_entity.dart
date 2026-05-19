@@ -68,10 +68,13 @@ class BSFCustomerEntity extends Equatable {
     BsfSaleBlockadeEntity? saleBlockade,
     BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction,
     List<BsfCovenantEntity>? covenants,
+    bool? annulCovenantCode,
   }) {
     return BSFCustomerEntity(
       personalizedCode: personalizedCode ?? this.personalizedCode,
-      covenantCode: covenantCode ?? this.covenantCode,
+      covenantCode: annulCovenantCode == true
+          ? null
+          : covenantCode ?? this.covenantCode,
       code: code ?? this.code,
       name: name ?? this.name,
       nameReduced: nameReduced ?? this.nameReduced,
