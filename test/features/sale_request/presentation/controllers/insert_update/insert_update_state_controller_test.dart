@@ -583,7 +583,6 @@ void main() {
           final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
           final paymentCondition =
               EntityFactory.makeBSFPaymentConditionEntity();
-          final covenant = EntityFactory.makeBsfCovenantEntity();
 
           container
               .read(selectedPaymentTypeStateControllerProvider.notifier)
@@ -591,9 +590,6 @@ void main() {
           container
               .read(selectedPaymentConditionStateControllerProvider.notifier)
               .select(paymentCondition);
-          container
-              .read(selectedCovenantStateControllerProvider.notifier)
-              .select(covenant);
 
           expect(
             container.read(selectedPaymentTypeStateControllerProvider),
@@ -602,10 +598,6 @@ void main() {
           expect(
             container.read(selectedPaymentConditionStateControllerProvider),
             paymentCondition,
-          );
-          expect(
-            container.read(selectedCovenantStateControllerProvider),
-            covenant,
           );
 
           // Add a product first so there is available balance
@@ -631,10 +623,6 @@ void main() {
           );
           expect(
             container.read(selectedPaymentConditionStateControllerProvider),
-            isNull,
-          );
-          expect(
-            container.read(selectedCovenantStateControllerProvider),
             isNull,
           );
         },
@@ -720,7 +708,6 @@ void main() {
         // 1. Set some initial state in related providers
         final paymentType = EntityFactory.makeBSFPaymentFinalizationEntity();
         final paymentCondition = EntityFactory.makeBSFPaymentConditionEntity();
-        final covenant = EntityFactory.makeBsfCovenantEntity();
 
         container
             .read(selectedPaymentTypeStateControllerProvider.notifier)
@@ -728,9 +715,6 @@ void main() {
         container
             .read(selectedPaymentConditionStateControllerProvider.notifier)
             .select(paymentCondition);
-        container
-            .read(selectedCovenantStateControllerProvider.notifier)
-            .select(covenant);
 
         // Load searched customers first so it's initialized (rebuildCount = 2)
         await container.read(searchedCustomersStateControllerProvider.future);
@@ -747,10 +731,6 @@ void main() {
         );
         expect(
           container.read(selectedPaymentConditionStateControllerProvider),
-          isNull,
-        );
-        expect(
-          container.read(selectedCovenantStateControllerProvider),
           isNull,
         );
         await container.read(searchedCustomersStateControllerProvider.future);
@@ -809,9 +789,6 @@ void main() {
           container
               .read(selectedPaymentConditionStateControllerProvider.notifier)
               .select(EntityFactory.makeBSFPaymentConditionEntity());
-          container
-              .read(selectedCovenantStateControllerProvider.notifier)
-              .select(EntityFactory.makeBsfCovenantEntity());
 
           //confirm is selected
           expect(
@@ -820,10 +797,6 @@ void main() {
           );
           expect(
             container.read(selectedPaymentTypeStateControllerProvider),
-            isNotNull,
-          );
-          expect(
-            container.read(selectedCovenantStateControllerProvider),
             isNotNull,
           );
 
@@ -837,10 +810,6 @@ void main() {
           );
           expect(
             container.read(selectedPaymentTypeStateControllerProvider),
-            isNull,
-          );
-          expect(
-            container.read(selectedCovenantStateControllerProvider),
             isNull,
           );
         },

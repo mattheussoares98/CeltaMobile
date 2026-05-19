@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../core/domain/entities/entities.dart';
@@ -131,7 +132,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
-    ref.read(selectedCovenantStateControllerProvider.notifier).select(null);
     //TODO should not change the customer if is blocked
 
     final newState = state.value!.copyWith(
@@ -168,7 +168,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final current = state.value!;
     final isCovenant =
         payment.action?.type == PaymentFinalizationActionType.covenant;
-    final selectedCovenant = ref.read(selectedCovenantStateControllerProvider);
+    final selectedCovenant = state.value?.customer?.covenants?.firstWhereOrNull(
+      (e) => e.code == state.value?.customer?.covenantCode,
+    );
 
     if (isCovenant && selectedCovenant == null) {
       //TODO create tests
@@ -223,7 +225,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
-    ref.read(selectedCovenantStateControllerProvider.notifier).select(null);
 
     return (true, null);
   }
@@ -250,7 +251,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
-    ref.invalidate(selectedCovenantStateControllerProvider);
 
     ref.invalidateSelf();
   }

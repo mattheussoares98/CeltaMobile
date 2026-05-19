@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -53,7 +54,11 @@ class CovenantDropdown extends ConsumerWidget {
     return Consumer(
       builder: (context, ref, child) {
         final selectedCovenant = ref.watch(
-          selectedCovenantStateControllerProvider,
+          insertUpdateStateControllerProvider.select(
+            (s) => s.value?.customer?.covenants?.firstWhereOrNull(
+              (e) => e.code == s.value?.customer?.covenantCode,
+            ),
+          ),
         );
         return DefaultDropDown<BsfCovenantEntity>(
           selectedItem: selectedCovenant,
@@ -66,11 +71,7 @@ class CovenantDropdown extends ConsumerWidget {
             return null;
           },
           items: items,
-          onChanged: (value) {
-            ref
-                .read(selectedCovenantStateControllerProvider.notifier)
-                .select(value);
-          },
+          onChanged: null,
         );
       },
     );
