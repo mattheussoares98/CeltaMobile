@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
@@ -22,7 +21,7 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final selectedItem = items.firstWhere(
+    final selectedItem = items.cast<T>().firstWhere(
       (item) => item.value == selectedValue,
 
       orElse: () => items.first,
