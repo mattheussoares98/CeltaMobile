@@ -138,20 +138,24 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       annulCustomer:
           //TODO fix the tests. When pass a null value, should annul the customer too
           customer == null || customer.code == state.value?.customer?.code,
-      customer: customer,
+      customer: customer?.copyWith(annulCovenantCode: true),
     );
     state = AsyncData(newState);
   }
 
-  void updateCovenant(BsfCovenantEntity? covenant) {
+  void updateCovenant(
+    BSFCustomerEntity? customer,
+    BsfCovenantEntity? covenant,
+  ) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final current = state.value!;
-    if (current.customer == null) return;
+    if (customer?.code != state.value?.customer?.code) {
+      updateCustomer(customer);
+    }
 
-    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
-    ref
-        .read(selectedPaymentConditionStateControllerProvider.notifier)
-        .select(null);
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
 
     final newCovenantCode = current.customer?.covenantCode == covenant?.code
         ? null
@@ -159,6 +163,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     final newCustomer = current.customer!.copyWith(
       covenantCode: newCovenantCode,
+      annulCovenantCode:
+          newCovenantCode == null ||
+          state.value?.customer?.covenantCode == newCovenantCode,
+      selectedCovenant: covenant,
+      annulSelectedCovenant: newCovenantCode == null,
     );
     state = AsyncData(current.copyWith(customer: newCustomer));
   }

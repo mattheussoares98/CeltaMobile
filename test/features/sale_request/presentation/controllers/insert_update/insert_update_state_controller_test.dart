@@ -55,9 +55,21 @@ void main() {
   setUp(() {
     fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
     fakePayments = [
-      EntityFactory.makeBSFPaymentFinalizationEntity(),
-      EntityFactory.makeBSFPaymentFinalizationEntity(),
-      EntityFactory.makeBSFPaymentFinalizationEntity(),
+      EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+        action: EntityFactory.makeBSFPaymentActionEntity().copyWith(
+          type: PaymentFinalizationActionType.money,
+        ),
+      ),
+      EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+        action: EntityFactory.makeBSFPaymentActionEntity().copyWith(
+          type: PaymentFinalizationActionType.money,
+        ),
+      ),
+      EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+        action: EntityFactory.makeBSFPaymentActionEntity().copyWith(
+          type: PaymentFinalizationActionType.money,
+        ),
+      ),
     ];
 
     fakePaymentsController = FakePaymentFinalizationsController(fakePayments);
@@ -756,12 +768,18 @@ void main() {
         final customer1 = EntityFactory.makeBSFCustomerEntity();
         controller.updateCustomer(customer1);
         final state = container.read(insertUpdateStateControllerProvider);
-        expect(state.value!.customer, customer1);
+        expect(
+          state.value!.customer,
+          customer1.copyWith(annulCovenantCode: true),
+        );
 
         final customer2 = EntityFactory.makeBSFCustomerEntity();
         controller.updateCustomer(customer2);
         final state2 = container.read(insertUpdateStateControllerProvider);
-        expect(state2.value!.customer, customer2);
+        expect(
+          state2.value!.customer,
+          customer2.copyWith(annulCovenantCode: true),
+        );
 
         final customer3 = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: customer2.code,
@@ -814,6 +832,109 @@ void main() {
           );
         },
       );
+    });
+
+    group('updateCovenant', () {
+      test(
+        'Should set covenant when a new covenant is selected for the same customer',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final customer = EntityFactory.makeBSFCustomerEntity();
+          controller.updateCustomer(customer);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+
+          controller.updateCovenant(customer, covenant);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, covenant.code);
+          expect(state.value!.customer!.selectedCovenant, covenant);
+        },
+      );
+
+      test(
+        'Should toggle/annul covenant when the same covenant is selected again',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+          final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            covenantCode: covenant.code,
+            selectedCovenant: covenant,
+          );
+          controller.updateCustomer(customer);
+
+          // First call sets the covenant code because updateCustomer annulled it
+          controller.updateCovenant(customer, covenant);
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, covenant.code);
+          expect(state.value!.customer!.selectedCovenant, covenant);
+
+          // Second call toggles/annuls the covenant code
+          controller.updateCovenant(customer, covenant);
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, isNull);
+          expect(state.value!.customer!.selectedCovenant, isNull);
+        },
+      );
+
+      test(
+        'Should update customer and then set covenant when customer is different',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final initialCustomer = EntityFactory.makeBSFCustomerEntity()
+              .copyWith(code: 1);
+          controller.updateCustomer(initialCustomer);
+
+          final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            code: 2,
+          );
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+
+          controller.updateCovenant(newCustomer, covenant);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.code, newCustomer.code);
+          expect(state.value!.customer!.covenantCode, covenant.code);
+          expect(state.value!.customer!.selectedCovenant, covenant);
+        },
+      );
+
+      test('Should do nothing if state is not AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final customer = EntityFactory.makeBSFCustomerEntity();
+        final covenant = EntityFactory.makeBsfCovenantEntity();
+
+        controller.updateCovenant(customer, covenant);
+
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state, isA<AsyncLoading>());
+      });
     });
   });
 }
