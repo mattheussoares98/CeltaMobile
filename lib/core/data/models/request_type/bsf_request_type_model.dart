@@ -25,6 +25,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     super.allowUseDiscount,
     super.allowDistribution,
     super.allowSaleOffer,
+    // super.allowCovenant,//TODO should add this property and treat it
     super.considerAsStockPendency,
     super.showStockByClass,
     super.showStockByExtensibleGroup,
