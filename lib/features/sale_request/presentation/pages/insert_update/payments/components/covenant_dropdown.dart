@@ -50,7 +50,7 @@ class CovenantDropdown extends ConsumerWidget {
       items: [
         DropdownMenuItem(
           value: selectedCovenant,
-          child: Center(child: Text(selectedCovenant.name ?? '')),
+          child: Center(child: Text(selectedCovenant.name)),
         ),
       ],
       onChanged: null,
