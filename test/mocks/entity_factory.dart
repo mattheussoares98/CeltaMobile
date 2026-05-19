@@ -1182,6 +1182,7 @@ class EntityFactory {
 
   static BSFCustomerEntity makeBSFCustomerEntity() => BSFCustomerEntity(
     code: faker.randomGenerator.integer(100),
+    selectedCovenant: makeBsfCovenantEntity(),
     covenantCode: faker.randomGenerator.integer(100),
     personalizedCode: faker.randomGenerator.integer(100).toString(),
     name: faker.person.name(),

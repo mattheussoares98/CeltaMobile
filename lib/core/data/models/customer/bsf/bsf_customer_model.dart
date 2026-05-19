@@ -17,6 +17,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
     required super.saleBlockade,
     required super.saleBlockadeInstruction,
     required super.covenants,
+    required super.selectedCovenant,
   });
 
   @override
@@ -34,6 +35,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
     saleBlockade,
     saleBlockadeInstruction,
     covenants,
+    selectedCovenant,
   ];
 
   factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
@@ -47,6 +49,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
         suframaCode: json['SuframaCode'],
         limitOfPurchase: (json['LimitOfPurchase'] as num?)?.toDouble(),
         inscriptionRgNumber: json['InscriptionRgNumber'],
+        selectedCovenant: json['Covenant'] != null
+            ? BsfCovenantModel.fromJson(json['Covenant'])
+            : null,
         paymentFinalizations: json['PaymentFinalizations'] != null
             ? (json['PaymentFinalizations'] as List)
                   .map((x) => BSFPaymentFinalizationModel.fromJson(x))
@@ -84,6 +89,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
     'SuframaCode': suframaCode,
     'LimitOfPurchase': limitOfPurchase,
     'InscriptionRgNumber': inscriptionRgNumber,
+    'Covenant': selectedCovenant != null
+        ? BsfCovenantModel.fromEntity(selectedCovenant!).toJson()
+        : null,
     'PaymentFinalizations': paymentFinalizations
         ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x).toJson())
         .toList(),
@@ -116,6 +124,9 @@ class BSFCustomerModel extends BSFCustomerEntity {
         suframaCode: entity.suframaCode,
         limitOfPurchase: entity.limitOfPurchase,
         inscriptionRgNumber: entity.inscriptionRgNumber,
+        selectedCovenant: entity.selectedCovenant != null
+            ? BsfCovenantModel.fromEntity(entity.selectedCovenant!)
+            : null,
         paymentFinalizations: entity.paymentFinalizations
             ?.map((x) => BSFPaymentFinalizationModel.fromEntity(x))
             .toList(),
@@ -138,6 +149,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
   BSFCustomerEntity toEntity() => BSFCustomerEntity(
     code: code,
     personalizedCode: personalizedCode,
+    selectedCovenant: selectedCovenant,
     covenantCode: covenantCode,
     name: name,
     nameReduced: nameReduced,

@@ -17,6 +17,7 @@ class BSFCustomerEntity extends Equatable {
   final BsfSaleBlockadeEntity? saleBlockade;
   final BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction;
   final List<BsfCovenantEntity>? covenants;
+  final BsfCovenantEntity? selectedCovenant;
 
   const BSFCustomerEntity({
     required this.personalizedCode,
@@ -33,6 +34,7 @@ class BSFCustomerEntity extends Equatable {
     required this.saleBlockade,
     required this.saleBlockadeInstruction,
     required this.covenants,
+    required this.selectedCovenant,
   });
 
   @override
@@ -51,6 +53,7 @@ class BSFCustomerEntity extends Equatable {
     saleBlockade,
     saleBlockadeInstruction,
     covenants,
+    selectedCovenant,
   ];
 
   BSFCustomerEntity copyWith({
@@ -69,6 +72,7 @@ class BSFCustomerEntity extends Equatable {
     BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction,
     List<BsfCovenantEntity>? covenants,
     bool? annulCovenantCode,
+    BsfCovenantEntity? selectedCovenant,
   }) {
     return BSFCustomerEntity(
       personalizedCode: personalizedCode ?? this.personalizedCode,
@@ -88,6 +92,7 @@ class BSFCustomerEntity extends Equatable {
       saleBlockadeInstruction:
           saleBlockadeInstruction ?? this.saleBlockadeInstruction,
       covenants: covenants ?? this.covenants,
+      selectedCovenant: selectedCovenant ?? this.selectedCovenant,
     );
   }
 }
