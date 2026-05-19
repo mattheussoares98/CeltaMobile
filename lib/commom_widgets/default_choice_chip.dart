@@ -23,15 +23,15 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Wrap(
-      key: const ValueKey('wrap'),
-      spacing: Sizes.p8,
-      runSpacing: Sizes.p8,
-      alignment: WrapAlignment.center,
-      children: items.map((item) {
-        final isSelected = item.value == selectedValue;
-        return RepaintBoundary(
-          child: ChoiceChip(
+    return RepaintBoundary(
+      child: Wrap(
+        key: const ValueKey('wrap'),
+        spacing: Sizes.p8,
+        runSpacing: Sizes.p8,
+        alignment: WrapAlignment.center,
+        children: items.map((item) {
+          final isSelected = item.value == selectedValue;
+          return ChoiceChip(
             key: ValueKey(item),
             label: Text(item.name),
             selected: isSelected,
@@ -50,9 +50,9 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
                   : theme.textTheme.bodyMedium?.color,
               fontSize: 12,
             ),
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
