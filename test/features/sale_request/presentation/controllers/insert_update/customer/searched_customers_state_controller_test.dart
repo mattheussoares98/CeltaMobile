@@ -70,7 +70,7 @@ void main() {
           searchedCustomersStateControllerProvider.future,
         );
 
-        expect(state, [fakeCustomer]);
+        expect(state.customers, [fakeCustomer]);
       },
     );
 
@@ -89,13 +89,19 @@ void main() {
         searchedCustomersStateControllerProvider.notifier,
       );
 
-      final succeeds = await controller.loadCustomer('search query', false);
+      final searchByPersonalizedCode = faker.randomGenerator.boolean();
+      final searchValue = faker.lorem.word();
+      final succeeds = await controller.loadCustomer(
+        searchValue,
+        searchByPersonalizedCode,
+      );
 
       expect(succeeds, isTrue);
 
       final state = container.read(searchedCustomersStateControllerProvider);
 
-      expect(state.value, searchResults);
+      expect(state.value?.customers, [fakeCustomer, ...searchResults]);
+      expect(state.value?.errorMessage, isNull);
       verify(
         () => mockRepository.searchForMobileApp(
           params: EcRequestParams(
@@ -103,9 +109,9 @@ void main() {
             user: fakeSession.user.name!,
             accessKey: fakeSession.user.AccessKey!,
           ),
-          searchValue: 'search query',
+          searchValue: searchValue,
           enterpriseCode: fakeArgs.enterpriseCode,
-          searchByPersonalizedCode: false,
+          searchByPersonalizedCode: searchByPersonalizedCode,
         ),
       ).called(1);
     });
@@ -134,7 +140,7 @@ void main() {
 
         final state = container.read(searchedCustomersStateControllerProvider);
 
-        expect(state.value, [otherCustomer]);
+        expect(state.value?.customers, [fakeCustomer, otherCustomer]);
       },
     );
 
@@ -156,7 +162,7 @@ void main() {
 
         final state = container.read(searchedCustomersStateControllerProvider);
 
-        expect(state.hasError, true);
+        expect(state.value?.errorMessage, isNotEmpty);
       },
     );
   });

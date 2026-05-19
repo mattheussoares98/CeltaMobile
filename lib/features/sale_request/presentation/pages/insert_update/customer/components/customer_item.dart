@@ -4,7 +4,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +27,7 @@ class CustomerItem extends ConsumerWidget {
     return DefaultCheckBox(
       name: customer.name ?? '',
       subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (customer.cnpjCpfNumber != null)
             Text(customer.cnpjCpfNumber!.toMaskedCnpjCpf()),
@@ -41,42 +41,28 @@ class CustomerItem extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: Sizes.p4),
-            Wrap(
-              spacing: Sizes.p8,
-              runSpacing: Sizes.p4,
-              children: customer.covenants!
-                  .map(
-                    (c) => Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Sizes.p8,
-                        vertical: Sizes.p4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: theme.primaryColorLight,
-                        borderRadius: BorderRadius.circular(Sizes.p8),
-                        border: Border.all(color: theme.primaryColorDark),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          PlatformIcon(
-                            materialIcon: Icons.check_circle_outline,
-                            cupertinoIcon: CupertinoIcons.checkmark_circle,
-                            size: 13,
-                            color: theme.primaryColorDark,
-                          ),
-                          const SizedBox(width: Sizes.p4),
-                          Text(
-                            c.name ?? '',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                  .toList(),
+            Consumer(
+              builder: (context, ref, _) {
+                final selectedCovenant = ref.watch(
+                  insertUpdateStateControllerProvider.select(
+                    (s) => s.value?.customer?.code == customer.code
+                        ? s.value?.customer?.covenants?.firstWhereOrNull(
+                            (e) => e.code == s.value?.customer?.covenantCode,
+                          )
+                        : null,
+                  ),
+                );
+                return DefaultChoiceChip<BsfCovenantEntity>(
+                  items: customer.covenants!,
+                  selectedValue: selectedCovenant,
+                  allowNullSelection: true,
+                  onChanged: (covenant) {
+                    ref
+                        .read(insertUpdateStateControllerProvider.notifier)
+                        .updateCovenant(customer, covenant);
+                  },
+                );
+              },
             ),
           ],
         ],

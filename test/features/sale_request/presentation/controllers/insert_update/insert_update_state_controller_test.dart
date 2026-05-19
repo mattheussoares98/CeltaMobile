@@ -11,6 +11,8 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../../mocks/mocks.dart';
 import '../fakers.dart';
 
+import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
+
 class FakePaymentFinalizationsController
     extends FilteredPaymentFinalizationsStateController {
   final List<BSFPaymentFinalizationEntity> entities;
@@ -73,10 +75,15 @@ void main() {
     ];
 
     fakePaymentsController = FakePaymentFinalizationsController(fakePayments);
-    fakeSearchedCustomersController = FakeSearchedCustomersStateController([
-      EntityFactory.makeBSFCustomerEntity(),
-      EntityFactory.makeBSFCustomerEntity(),
-    ]);
+    fakeSearchedCustomersController = FakeSearchedCustomersStateController(
+      SearchedCustomersState(
+        customers: [
+          EntityFactory.makeBSFCustomerEntity(),
+          EntityFactory.makeBSFCustomerEntity(),
+        ],
+        errorMessage: null,
+      ),
+    );
     fakeArgs = SaleRequestArgs(
       customerCode: fakeSaleRequest.customer?.code ?? 0,
       enterpriseCode: fakeSaleRequest.enterprise?.code ?? 0,

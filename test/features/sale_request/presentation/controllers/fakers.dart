@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/models/searched_customers_state.dart';
 
 class FakeSaleRequestDetailsController
     extends SaleRequestDetailsStateController {
@@ -53,16 +54,16 @@ class FakeAllPaymentConditionsController
 
 class FakeSearchedCustomersStateController
     extends SearchedCustomersStateController {
-  final List<BSFCustomerEntity> entities;
+  final SearchedCustomersState searchState;
 
   int _rebuildCount = 1;
   int get rebuildCount => _rebuildCount;
 
-  FakeSearchedCustomersStateController(this.entities);
+  FakeSearchedCustomersStateController(this.searchState);
 
   @override
-  FutureOr<List<BSFCustomerEntity>> build() {
+  FutureOr<SearchedCustomersState> build() {
     ++_rebuildCount;
-    return entities;
+    return searchState;
   }
 }
