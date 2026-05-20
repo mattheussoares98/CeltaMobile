@@ -27,6 +27,7 @@ class BSFSaleRequestEntity extends Equatable {
   final BSFFreightEntity? freight;
   final List<BSFProductItemEntity>? products;
   final List<BSFDiscountEntity>? discounts;
+  final BSFEmployeeEntity? seller;
 
   const BSFSaleRequestEntity({
     required this.code,
@@ -52,6 +53,7 @@ class BSFSaleRequestEntity extends Equatable {
     required this.freight,
     required this.products,
     required this.discounts,
+    required this.seller,
   });
 
   @override
@@ -79,6 +81,7 @@ class BSFSaleRequestEntity extends Equatable {
     freight,
     products,
     discounts,
+    seller,
   ];
 
   factory BSFSaleRequestEntity.empty() => const BSFSaleRequestEntity(
@@ -105,6 +108,7 @@ class BSFSaleRequestEntity extends Equatable {
     freight: null,
     products: null,
     discounts: null,
+    seller: null,
   );
 
   BSFSaleRequestEntity copyWith({
@@ -132,6 +136,7 @@ class BSFSaleRequestEntity extends Equatable {
     List<BSFProductItemEntity>? products,
     List<BSFDiscountEntity>? discounts,
     bool? annulCustomer,
+    BSFEmployeeEntity? seller,
   }) {
     return BSFSaleRequestEntity(
       code: code ?? this.code,
@@ -158,6 +163,7 @@ class BSFSaleRequestEntity extends Equatable {
       freight: freight ?? this.freight,
       products: products ?? this.products,
       discounts: discounts ?? this.discounts,
+      seller: seller ?? this.seller,
     );
   }
 

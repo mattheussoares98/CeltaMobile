@@ -28,6 +28,7 @@ class BSFSaleRequestModel extends Equatable {
   final BSFFreightModel? freight;
   final List<BSFProductItemModel>? products;
   final List<BSFDiscountModel>? discounts;
+  final BSFEmployeeModel? seller;
 
   const BSFSaleRequestModel({
     required this.code,
@@ -53,6 +54,7 @@ class BSFSaleRequestModel extends Equatable {
     required this.freight,
     required this.products,
     required this.discounts,
+    required this.seller,
   });
 
   @override
@@ -80,6 +82,7 @@ class BSFSaleRequestModel extends Equatable {
     freight,
     products,
     discounts,
+    seller,
   ];
 
   factory BSFSaleRequestModel.fromJson(Map<String, dynamic> json) {
@@ -145,6 +148,9 @@ class BSFSaleRequestModel extends Equatable {
           : (json['Discounts'] as List)
                 .map((e) => BSFDiscountModel.fromJson(e))
                 .toList(),
+      seller: json['Seller'] != null
+          ? BSFEmployeeModel.fromJson(json['Seller'])
+          : null,
     );
   }
 
@@ -172,6 +178,7 @@ class BSFSaleRequestModel extends Equatable {
     'Freight': freight?.toJson(),
     'Products': products?.map((e) => e.toJson()).toList(),
     'Discounts': discounts?.map((e) => e.toJson()).toList(),
+    'Seller': seller?.toJson(),
   };
 
   factory BSFSaleRequestModel.fromEntity(BSFSaleRequestEntity entity) {
@@ -223,6 +230,9 @@ class BSFSaleRequestModel extends Equatable {
       discounts: entity.discounts
           ?.map((e) => BSFDiscountModel.fromEntity(e))
           .toList(),
+      seller: entity.seller == null
+          ? null
+          : BSFEmployeeModel.fromEntity(entity.seller!),
     );
   }
 
@@ -250,5 +260,6 @@ class BSFSaleRequestModel extends Equatable {
     freight: freight?.toEntity(),
     products: products?.map((e) => e.toEntity()).toList(),
     discounts: discounts?.map((e) => e.toEntity()).toList(),
+    seller: seller?.toEntity(),
   );
 }

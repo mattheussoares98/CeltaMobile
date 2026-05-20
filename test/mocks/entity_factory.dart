@@ -1178,6 +1178,42 @@ class EntityFactory {
           _makeBSFProductItemEntity(),
         ],
         discounts: const [],
+        seller: makeBSFEmployeeEntity(),
+      );
+
+  static BSFEmployeeEntity makeBSFEmployeeEntity() => BSFEmployeeEntity(
+    code: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.numberOfLength(6),
+    buyer: faker.randomGenerator.boolean(),
+    seller: faker.randomGenerator.boolean(),
+    sellerType: faker.randomGenerator.integer(5),
+    providerService: faker.randomGenerator.boolean(),
+    pdvOperator: faker.randomGenerator.boolean(),
+    observations: faker.lorem.sentence(),
+    paysBank: faker.randomGenerator.boolean(),
+    driverInfos: makeBSFDriverInfosEntity(),
+    admissionDate: faker.date.dateTime(),
+    dismissalDate: faker.date.dateTime(),
+    dateOfBirth: faker.date.dateTime(),
+    cpfNumber: faker.randomGenerator.numberOfLength(11),
+    formatedCpfNumber: faker.randomGenerator.numberOfLength(11),
+    rgNumber: faker.randomGenerator.numberOfLength(9),
+    pisNumber: faker.randomGenerator.numberOfLength(11),
+    formatedRgNumber: faker.randomGenerator.numberOfLength(9),
+    name: faker.person.name(),
+    nameReduced: faker.person.name(),
+    email: faker.internet.email(),
+    isFired: faker.randomGenerator.boolean(),
+    jobRoleString: faker.lorem.word(),
+    accountEmails: [faker.internet.email(), faker.internet.email()],
+  );
+
+  static BSFDriverInfosEntity makeBSFDriverInfosEntity() =>
+      BSFDriverInfosEntity(
+        isDriver: faker.randomGenerator.boolean(),
+        driverDocument: faker.randomGenerator.numberOfLength(9),
+        driverDocumentExpiration: faker.date.dateTime(),
+        driverCategory: faker.randomGenerator.integer(10),
       );
 
   static BSFCustomerEntity makeBSFCustomerEntity() => BSFCustomerEntity(
