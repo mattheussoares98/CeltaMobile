@@ -20,119 +20,112 @@ class Financial extends ConsumerWidget {
       ).select((s) => s.value?.financials),
     );
 
-    if (financials?.isEmpty ?? true) {
-      return const SizedBox.shrink();
-    }
+    final payments = financials?.first.paymentFinalizations;
+    final bool isFinancialEmpty = payments?.isEmpty ?? true;
 
     final theme = Theme.of(context);
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: financials!.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.creditcard,
-                    materialIcon: Icons.credit_card,
-                  ),
-                  gapW8,
-                  Flexible(
-                    child: Text(
-                      'Financeiro'.hardcoded,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.creditcard,
+                  materialIcon: Icons.credit_card,
+                  color: isFinancialEmpty ? Colors.red : null,
+                ),
+                gapW8,
+                Flexible(
+                  child: Text(
+                    isFinancialEmpty
+                        ? 'Sem financeiro'.hardcoded
+                        : 'Financeiro'.hardcoded,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: isFinancialEmpty
+                          ? FontWeight.bold
+                          : FontWeight.w300,
+                      color: isFinancialEmpty ? Colors.red : null,
                     ),
                   ),
-                ],
-              );
-            }
+                ),
+              ],
+            ),
+            if (!isFinancialEmpty)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: payments!.length,
+                itemBuilder: (context, index) {
+                  final payment = payments[index];
 
-            final financial = financials[index - 1];
-            final payments = financial.paymentFinalizations;
-
-            if (payments?.isEmpty ?? true) {
-              return const SizedBox.shrink();
-            }
-
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: payments!.length,
-              itemBuilder: (context, index) {
-                final payment = payments[index];
-
-                final discount = payment.financialDiscount ?? 0;
-                final increment = payment.financialIncrement ?? 0;
-                final portions = payment.quantityOfPortions ?? 0;
-                final name = payment.paymentFinalization?.Description;
-                return Container(
-                  margin: const EdgeInsets.only(bottom: Sizes.p4),
-                  padding: const EdgeInsets.all(Sizes.p8),
-                  decoration: BoxDecoration(
-                    color: index % 2 == 0
-                        ? Colors.grey.shade300
-                        : Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(Sizes.p8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: name,
-                          style: theme.textTheme.titleSmall,
-                          children: [
-                            if (payment.value != null) ...[
-                              TextSpan(
-                                text: ' (R\$',
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: theme.primaryColor,
-                                  fontSize: 11,
+                  final discount = payment.financialDiscount ?? 0;
+                  final increment = payment.financialIncrement ?? 0;
+                  final portions = payment.quantityOfPortions ?? 0;
+                  final name = payment.paymentFinalization?.Description;
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: Sizes.p4),
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    decoration: BoxDecoration(
+                      color: index % 2 == 0
+                          ? Colors.grey.shade300
+                          : Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(Sizes.p8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            text: name,
+                            style: theme.textTheme.titleSmall,
+                            children: [
+                              if (payment.value != null) ...[
+                                TextSpan(
+                                  text: ' (R\$',
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.primaryColor,
+                                    fontSize: 11,
+                                  ),
                                 ),
-                              ),
-                              TextSpan(
-                                text:
-                                    ' ${payment.value.toString().toBrazilianNumber()})',
-                                style: theme.textTheme.titleSmall?.copyWith(
-                                  color: theme.primaryColor,
+                                TextSpan(
+                                  text:
+                                      ' ${payment.value.toString().toBrazilianNumber()})',
+                                  style: theme.textTheme.titleSmall?.copyWith(
+                                    color: theme.primaryColor,
+                                  ),
                                 ),
-                              ),
+                              ],
+                              if (portions > 1)
+                                TextSpan(
+                                  text: ' em ${portions}x',
+                                  style: theme.textTheme.titleSmall,
+                                ),
                             ],
-                            if (portions > 1)
-                              TextSpan(
-                                text: ' em ${portions}x',
-                                style: theme.textTheme.titleSmall,
-                              ),
-                          ],
+                          ),
                         ),
-                      ),
-                      if (discount > 0)
-                        TitleAndSubTitle(
-                          title: 'Descontos'.hardcoded,
-                          subTitle: discount,
-                          subTitleIsPrice: true,
-                        ),
-                      if (increment > 0)
-                        TitleAndSubTitle(
-                          title: 'Acréscimos'.hardcoded,
-                          subTitle: increment,
-                          subTitleIsPrice: true,
-                        ),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
+                        if (discount > 0)
+                          TitleAndSubTitle(
+                            title: 'Descontos'.hardcoded,
+                            subTitle: discount,
+                            subTitleIsPrice: true,
+                          ),
+                        if (increment > 0)
+                          TitleAndSubTitle(
+                            title: 'Acréscimos'.hardcoded,
+                            subTitle: increment,
+                            subTitleIsPrice: true,
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+          ],
         ),
       ),
     );
