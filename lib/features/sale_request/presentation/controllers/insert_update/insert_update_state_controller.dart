@@ -143,6 +143,26 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(newState);
   }
 
+  void updateCustomerData(BSFCustomerEntity customer) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    final current = state.value!;
+    if (current.customer?.code != customer.code) return;
+
+    final currentCovenantCode = current.customer?.covenantCode;
+    final updatedCovenant = customer.covenants?.firstWhereOrNull(
+      (e) => e.code == currentCovenantCode,
+    );
+
+    final updatedCustomer = customer.copyWith(
+      covenantCode: updatedCovenant?.code,
+      selectedCovenant: updatedCovenant,
+      annulCovenantCode: updatedCovenant == null,
+      annulSelectedCovenant: updatedCovenant == null,
+    );
+
+    state = AsyncData(current.copyWith(customer: updatedCustomer));
+  }
+
   void updateCovenant(
     BSFCustomerEntity? customer,
     BsfCovenantEntity? covenant,

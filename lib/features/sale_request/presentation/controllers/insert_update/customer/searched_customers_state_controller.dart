@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../../core/domain/entities/entities.dart';
@@ -55,10 +56,22 @@ class SearchedCustomersStateController
           errorMessage = "Nenhum cliente foi encontrado".hardcoded;
         }
 
+        final matchingCustomer = selectedCustomer != null
+            ? customers.firstWhereOrNull((c) => c.code == selectedCustomer.code)
+            : null;
+
+        if (matchingCustomer != null) {
+          ref
+              .read(insertUpdateStateControllerProvider.notifier)
+              .updateCustomerData(matchingCustomer);
+        }
+
+        final updatedSelectedCustomer = matchingCustomer ?? selectedCustomer;
+
         return SearchedCustomersState(
           customers: [
-            ?selectedCustomer,
-            ...customers.where((c) => c.code != selectedCustomer?.code),
+            ?updatedSelectedCustomer,
+            ...customers.where((c) => c.code != updatedSelectedCustomer?.code),
           ],
           errorMessage: errorMessage,
         );

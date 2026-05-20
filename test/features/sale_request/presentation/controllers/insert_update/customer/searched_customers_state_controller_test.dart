@@ -117,7 +117,7 @@ void main() {
     });
 
     test(
-      'Should not return the customer with same code from insertUpdateController',
+      'Should return the updated customer and update insertUpdateStateController when search returns a customer with the same code',
       () async {
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
@@ -140,7 +140,11 @@ void main() {
 
         final state = container.read(searchedCustomersStateControllerProvider);
 
-        expect(state.value?.customers, [fakeCustomer, otherCustomer]);
+        expect(state.value?.customers, [updatedFakeCustomer, otherCustomer]);
+        expect(
+          container.read(insertUpdateStateControllerProvider).value?.customer,
+          updatedFakeCustomer.copyWith(code: 1),
+        );
       },
     );
 

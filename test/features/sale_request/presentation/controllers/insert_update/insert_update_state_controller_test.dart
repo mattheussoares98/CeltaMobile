@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +11,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../../mocks/mocks.dart';
 import '../fakers.dart';
-
-import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 
 class FakePaymentFinalizationsController
     extends FilteredPaymentFinalizationsStateController {
@@ -837,6 +836,118 @@ void main() {
             container.read(selectedPaymentTypeStateControllerProvider),
             isNull,
           );
+        },
+      );
+    });
+
+    group('updateCustomerData', () {
+      test(
+        'Should update selected customer details without annulling selection',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final originalCustomer = EntityFactory.makeBSFCustomerEntity()
+              .copyWith(code: 1);
+
+          controller.updateCustomer(originalCustomer);
+
+          final updatedCustomer = EntityFactory.makeBSFCustomerEntity()
+              .copyWith(code: 1);
+
+          controller.updateCustomerData(updatedCustomer);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.code, 1);
+          expect(state.value!.customer, updatedCustomer.copyWith(code: 1));
+        },
+      );
+
+      test(
+        'Should preserve selected covenant if still valid in updated customer covenants',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity().copyWith(
+            code: 123,
+          );
+          final originalCustomer = EntityFactory.makeBSFCustomerEntity()
+              .copyWith(code: 1, covenants: [covenant]);
+
+          controller.updateCustomer(originalCustomer);
+          controller.updateCovenant(originalCustomer, covenant);
+
+          final stateBefore = container.read(
+            insertUpdateStateControllerProvider,
+          );
+          expect(stateBefore.value!.customer!.covenantCode, 123);
+          expect(stateBefore.value!.customer!.selectedCovenant, covenant);
+
+          // Updated customer with new name but same covenant is still valid
+          final updatedCustomer = originalCustomer.copyWith(
+            name: 'Updated Customer Name',
+            covenants: [covenant],
+          );
+
+          controller.updateCustomerData(updatedCustomer);
+
+          final stateAfter = container.read(
+            insertUpdateStateControllerProvider,
+          );
+          expect(stateAfter.value!.customer!.name, 'Updated Customer Name');
+          expect(stateAfter.value!.customer!.covenantCode, 123);
+          expect(stateAfter.value!.customer!.selectedCovenant, covenant);
+        },
+      );
+
+      test(
+        'Should annul selected covenant if no longer valid in updated customer covenants',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity().copyWith(
+            code: 123,
+          );
+          final originalCustomer = EntityFactory.makeBSFCustomerEntity()
+              .copyWith(code: 1, covenants: [covenant]);
+
+          controller.updateCustomer(originalCustomer);
+          controller.updateCovenant(originalCustomer, covenant);
+
+          // Updated customer has different/no covenants now
+          final otherCovenant = EntityFactory.makeBsfCovenantEntity().copyWith(
+            code: 456,
+          );
+          final updatedCustomer = originalCustomer.copyWith(
+            name: 'Updated Customer Name',
+            covenants: [otherCovenant],
+          );
+
+          controller.updateCustomerData(updatedCustomer);
+
+          final stateAfter = container.read(
+            insertUpdateStateControllerProvider,
+          );
+          expect(stateAfter.value!.customer!.name, 'Updated Customer Name');
+          expect(stateAfter.value!.customer!.covenantCode, isNull);
+          expect(stateAfter.value!.customer!.selectedCovenant, isNull);
         },
       );
     });
