@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/extensions/string_modifier.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:celta_inventario/utils/string_modifier.dart';
 
 void main() {
   group('StringModifier - toBrazilianNumber', () {

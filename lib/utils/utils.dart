@@ -5,5 +5,5 @@ export './current_date_provider.dart';
 export './date_formatter.dart';
 export './delay.dart';
 export './platform_utils.dart';
-export './string_modifier.dart';
+export 'extensions/extensions.dart';
 export 'initializations/initializations.dart';
