@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:flutter/material.dart';
 
 class NameAndPacking extends StatelessWidget {
   final ProductEntity product;
@@ -26,15 +25,14 @@ class NameAndPacking extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return TitleAndSubTitle(
       copyableTitle: true,
       title: product.Name,
       removeColon: true,
       subTitle: subtitle,
-      titleStyle: theme.textTheme.titleMedium,
-      subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-        color: theme.colorScheme.secondary,
+      titleStyle: context.theme.textTheme.titleMedium,
+      subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+        color: context.theme.colorScheme.secondary,
       ),
     );
   }

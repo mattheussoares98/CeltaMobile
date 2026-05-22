@@ -1,12 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class ShallowResultsItems extends ConsumerWidget {
   final Function(ProductEntity) onSelected;
@@ -15,12 +15,11 @@ class ShallowResultsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final packingStyle = theme.textTheme.titleSmall?.copyWith(
-      color: theme.colorScheme.secondary,
+    final packingStyle = context.theme.textTheme.titleSmall?.copyWith(
+      color: context.theme.colorScheme.secondary,
     );
-    final titleStyle = theme.textTheme.bodyMedium;
-    final pluStyle = theme.textTheme.titleSmall;
+    final titleStyle = context.theme.textTheme.bodyMedium;
+    final pluStyle = context.theme.textTheme.titleSmall;
 
     final keyboardHeight = MediaQuery.viewInsetsOf(context).bottom;
     final screenHeight = MediaQuery.sizeOf(context).height;
@@ -169,7 +168,7 @@ class _SearchIcon extends StatelessWidget {
     return PlatformIcon(
       cupertinoIcon: CupertinoIcons.search,
       materialIcon: Icons.search,
-      color: Theme.of(context).disabledColor,
+      color: context.theme.disabledColor,
       size: 20,
     );
   }

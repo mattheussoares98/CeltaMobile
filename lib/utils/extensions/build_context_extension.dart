@@ -1,7 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
 
 extension BuildContextExtension on BuildContext {
   double get statusHeight => MediaQuery.of(this).viewPadding.top;

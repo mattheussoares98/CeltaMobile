@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
@@ -7,11 +8,10 @@ class TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Text(
       title,
-      style: theme.textTheme.titleMedium?.copyWith(
-        color: enabled == true ? null : theme.disabledColor,
+      style: context.theme.textTheme.titleMedium?.copyWith(
+        color: enabled == true ? null : context.theme.disabledColor,
       ),
     );
   }

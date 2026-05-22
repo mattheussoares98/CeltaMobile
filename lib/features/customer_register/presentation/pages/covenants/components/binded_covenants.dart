@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BindedCovenants extends ConsumerWidget {
   const BindedCovenants({super.key});
@@ -56,8 +55,6 @@ class _CovenantItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return RepaintBoundary(
       child: Card(
         child: Stack(
@@ -69,7 +66,7 @@ class _CovenantItem extends ConsumerWidget {
                 children: [
                   Text(
                     covenant.covenant?.Name ?? '',
-                    style: theme.textTheme.titleMedium,
+                    style: context.theme.textTheme.titleMedium,
                   ),
                   TitleAndSubTitle(
                     title: 'Código '.hardcoded,

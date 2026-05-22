@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/payments/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PaymentsPage extends ConsumerStatefulWidget {
   const PaymentsPage({super.key});
@@ -51,7 +51,7 @@ class _PaymentsPageState extends ConsumerState<PaymentsPage> {
               return Center(
                 child: Text(
                   errorMessage,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  style: context.theme.textTheme.titleSmall?.copyWith(
                     fontStyle: FontStyle.italic,
                     color: Colors.red,
                   ),
@@ -107,7 +107,7 @@ class _NewPaymentSection extends ConsumerWidget {
           'O total das formas de pagamento está maior que o total dos produtos!'
               .hardcoded,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+          style: context.theme.textTheme.titleSmall?.copyWith(
             color: Colors.red,
             fontStyle: FontStyle.italic,
           ),
@@ -115,13 +115,12 @@ class _NewPaymentSection extends ConsumerWidget {
       );
     }
 
-    final theme = Theme.of(context);
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
           child: Text(
             'Nova forma de pagamento'.hardcoded,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: context.theme.textTheme.titleSmall?.copyWith(
               fontStyle: FontStyle.italic,
             ),
           ),
@@ -134,7 +133,7 @@ class _NewPaymentSection extends ConsumerWidget {
             subTitle: totalLiquidAndPaidDifference.abs(),
             subTitleIsPrice: true,
             removeColon: true,
-            subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
               color: Colors.red,
             ),
           ),

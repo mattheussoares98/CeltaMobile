@@ -113,7 +113,6 @@ class _DefaultSearchProduct extends ConsumerWidget {
       ).select((s) => s.isLoading),
     );
 
-
     return PrimaryTextButton(
       text: title,
       isSmall: true,

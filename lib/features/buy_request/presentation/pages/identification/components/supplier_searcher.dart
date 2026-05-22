@@ -80,7 +80,6 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
       },
     );
 
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class Informations extends StatelessWidget {
   final ReportScheduleEntity report;
@@ -10,7 +10,6 @@ class Informations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,7 +30,7 @@ class Informations extends StatelessWidget {
         if (report.LastExecutionContainsData == false)
           Text(
             'Relatório SEM DADOS para exibir'.hardcoded,
-            style: theme.textTheme.titleMedium?.copyWith(
+            style: context.theme.textTheme.titleMedium?.copyWith(
               color: Colors.red,
               fontStyle: FontStyle.italic,
             ),

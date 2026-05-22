@@ -45,7 +45,6 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
 
   @override
   Widget build(BuildContext context) {
-
     ref.listen(customersStateControllerProvider(widget.enterpriseCode), (p, n) {
       n.doOnSuccess(p, () {
         widget.searchController.clear();

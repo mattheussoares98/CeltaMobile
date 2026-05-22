@@ -1,7 +1,7 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DeleteIcon extends StatelessWidget {
   final VoidCallback? onPress;
@@ -9,14 +9,12 @@ class DeleteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return IconButton(
       onPressed: onPress,
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
-        color: onPress == null ? theme.disabledColor : Colors.red,
+        color: onPress == null ? context.theme.disabledColor : Colors.red,
       ),
     );
   }

@@ -28,7 +28,6 @@ class UpdateQuantityField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final selectedIndex = ref.watch(selectedLotIndexStateControllerProvider);
 
     return Row(

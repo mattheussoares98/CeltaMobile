@@ -1,13 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TransferRequestRequestsTypesPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -81,7 +81,6 @@ class _RequestTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -110,7 +109,7 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.allowAlterCostOrSalePrice == true
                     ? "Pode alterar preço de custo ou venda"
                     : "Não pode alterar preço de custo ou venda",
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: request.allowAlterCostOrSalePrice == true
                       ? Colors.green
                       : Colors.red,

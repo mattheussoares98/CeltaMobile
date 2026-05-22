@@ -1,11 +1,10 @@
+import 'package:celta_inventario/commom_widgets/loading_extension/animated_ellipsis.dart';
 import 'package:celta_inventario/commom_widgets/loading_widget.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/commom_widgets/loading_extension/animated_ellipsis.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 /// PERFORMANCE: Using an extension on WidgetRef allows for a clean,
 /// functional approach in ConsumerWidgets without adding extra
@@ -64,7 +63,6 @@ class _LoadingOverlayController extends Notifier<void> {
     if (_entry != null) return;
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     _entry = OverlayEntry(
@@ -84,7 +82,10 @@ class _LoadingOverlayController extends Notifier<void> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Aguarde', style: theme.textTheme.titleMedium),
+                        Text(
+                          'Aguarde',
+                          style: context.theme.textTheme.titleMedium,
+                        ),
                         const AnimatedEllipsis(),
                       ],
                     ),

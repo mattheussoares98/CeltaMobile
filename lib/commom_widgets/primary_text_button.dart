@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/app_sizes.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/constants/app_sizes.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 /// Primary button based on [ElevatedButton].
 /// Useful for CTAs in the app.
@@ -34,26 +33,25 @@ class PrimaryTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     final iconColor = isLoading || onPressed == null
-        ? theme.disabledColor
-        : color ?? theme.primaryColor;
+        ? context.theme.disabledColor
+        : color ?? context.theme.primaryColor;
 
     final textColor = onPressed == null
-        ? theme.disabledColor
+        ? context.theme.disabledColor
         : isLoading
         ? Colors.transparent
-        : color ?? theme.primaryColor;
+        : color ?? context.theme.primaryColor;
 
     final textWidget = Text(
       text,
       textAlign: textAlign,
       style:
           (isSmall == true
-                  ? theme.textTheme.titleSmall
-                  : theme.textTheme.titleMedium)
+                  ? context.theme.textTheme.titleSmall
+                  : context.theme.textTheme.titleMedium)
               ?.copyWith(color: textColor),
     );
     final iconWidget = icon == null

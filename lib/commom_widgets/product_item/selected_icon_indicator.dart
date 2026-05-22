@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class SelectedIconIndicator extends StatelessWidget {
   final bool selected;
@@ -16,19 +15,18 @@ class SelectedIconIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     final notSelectedIcon = PlatformIcon(
       cupertinoIcon: CupertinoIcons.arrow_down,
       materialIcon: Icons.arrow_drop_down,
-      color: theme.colorScheme.primary,
+      color: context.theme.colorScheme.primary,
     );
 
     final selectedIcon = PlatformIcon(
       cupertinoIcon: CupertinoIcons.arrow_up,
       materialIcon: Icons.arrow_drop_up,
-      color: theme.colorScheme.primary,
+      color: context.theme.colorScheme.primary,
     );
 
     if (isIOS) {

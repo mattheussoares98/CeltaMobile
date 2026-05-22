@@ -1,11 +1,10 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 
 extension _ProductPriceExt on ProductEntity {
   double? getSuggestion(SaleType? saleType) {
@@ -45,7 +44,6 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final selectedSaleType = ref.watch(
       uIStateControllerProvider(
         product.PLU!,
@@ -82,7 +80,7 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
                       practicedPrice < minimumPrice
                   ? TextSpan(
                       text: " MENOR QUE O MÍNIMO".hardcoded,
-                      style: theme.textTheme.titleSmall!.copyWith(
+                      style: context.theme.textTheme.titleSmall!.copyWith(
                         color: Colors.red,
                       ),
                     )
@@ -122,27 +120,25 @@ class _SuggestionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (value == null || value == 0) {
       return Text(
         emptyMessage,
-        style: theme.textTheme.titleSmall?.copyWith(color: Colors.red),
+        style: context.theme.textTheme.titleSmall?.copyWith(color: Colors.red),
         textAlign: TextAlign.start,
       );
     }
     return RichText(
       text: TextSpan(
         text: title,
-        style: theme.textTheme.titleSmall,
+        style: context.theme.textTheme.titleSmall,
         children: [
           TextSpan(
             text: "R\$ ".hardcoded,
-            style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+            style: context.theme.textTheme.bodySmall?.copyWith(fontSize: 10),
           ),
           TextSpan(
             text: value.toString().toBrazilianNumber(),
-            style: theme.textTheme.bodyMedium,
+            style: context.theme.textTheme.bodyMedium,
           ),
           ?anotherMessage,
         ],

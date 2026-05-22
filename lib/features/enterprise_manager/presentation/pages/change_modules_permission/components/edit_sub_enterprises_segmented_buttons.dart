@@ -1,12 +1,12 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 enum ModulePermissionValue { inherit, trueValue, falseValue }
 
@@ -39,11 +39,10 @@ class EditSubEnterprisesSegmentedButttons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     Color getThumbColor(ModulePermissionValue value) {
       if (value == ModulePermissionValue.trueValue) return Colors.green;
       if (value == ModulePermissionValue.falseValue) return Colors.red;
-      return theme.disabledColor;
+      return context.theme.disabledColor;
     }
 
     final isAdminLogin = ref.watch(
@@ -102,7 +101,6 @@ class _Module extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return RepaintBoundary(
       child: Card(
         child: Padding(
@@ -112,7 +110,7 @@ class _Module extends StatelessWidget {
             children: [
               Text(
                 module.name,
-                style: theme.textTheme.titleMedium,
+                style: context.theme.textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
               gapH8,

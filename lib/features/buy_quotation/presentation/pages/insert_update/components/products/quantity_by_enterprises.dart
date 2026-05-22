@@ -1,9 +1,8 @@
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 
 class QuantityByEnterprises extends ConsumerWidget {
   final List<BuyQuotationProductEnterpriseEntity>? productEnterprises;
@@ -14,7 +13,6 @@ class QuantityByEnterprises extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
 
-    final theme = Theme.of(context);
     return Column(
       children: [
         ...?productEnterprises?.map((e) {
@@ -26,7 +24,7 @@ class QuantityByEnterprises extends ConsumerWidget {
               Expanded(
                 child: Text(
                   "(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}",
-                  style: theme.textTheme.titleSmall,
+                  style: context.theme.textTheme.titleSmall,
                 ),
               ),
               Text((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),

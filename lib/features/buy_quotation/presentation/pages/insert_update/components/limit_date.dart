@@ -18,7 +18,6 @@ class LimitDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final dateOfLimit = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         enterpriseCode,

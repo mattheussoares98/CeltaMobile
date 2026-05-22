@@ -21,8 +21,8 @@ class DateValidator implements StringValidator {
   String _errorMessage = '';
 
   List<DateFormat> get _acceptedFormats => [
-        if (includeDay) DateFormat('dd/MM/yyyy') else DateFormat('MM/yyyy'),
-      ];
+    if (includeDay) DateFormat('dd/MM/yyyy') else DateFormat('MM/yyyy'),
+  ];
 
   @override
   bool isValid(String? value) {

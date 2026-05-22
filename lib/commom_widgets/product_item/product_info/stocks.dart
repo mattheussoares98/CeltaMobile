@@ -1,13 +1,13 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class Stocks extends ConsumerWidget {
   const Stocks({super.key, required this.widget});
@@ -20,7 +20,6 @@ class Stocks extends ConsumerWidget {
       widget.product.Stocks ?? <StockEntity>[],
       (stock) => (stock).Enterprise,
     );
-    final theme = Theme.of(context);
 
     final enterpriseNames = groupedStocks.keys.toList();
 
@@ -50,11 +49,12 @@ class Stocks extends ConsumerWidget {
                 collapsedShape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(Sizes.p12),
                 ),
-                backgroundColor: theme.primaryColorLight.withAlpha(30),
-                collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
+                backgroundColor: context.theme.primaryColorLight.withAlpha(30),
+                collapsedBackgroundColor: context.theme.primaryColorDark
+                    .withAlpha(30),
                 childrenPadding: const EdgeInsets.all(Sizes.p8),
-                iconColor: theme.primaryColorDark,
-                collapsedIconColor: theme.primaryColor,
+                iconColor: context.theme.primaryColorDark,
+                collapsedIconColor: context.theme.primaryColor,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 title: Row(
                   children: [

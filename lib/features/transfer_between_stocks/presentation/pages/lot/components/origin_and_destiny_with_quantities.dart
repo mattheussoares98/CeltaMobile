@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class OriginAndDestinyWithQuantities extends StatelessWidget {
   final ProductLotInfoEntity item;
@@ -10,8 +9,7 @@ class OriginAndDestinyWithQuantities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final defaultTextStyle = theme.textTheme.titleMedium;
+    final defaultTextStyle = context.theme.textTheme.titleMedium;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

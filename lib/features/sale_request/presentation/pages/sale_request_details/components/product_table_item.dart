@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:flutter/material.dart';
 
 class ProductTableItem extends StatelessWidget {
   final BSFProductItemEntity cartProduct;
@@ -11,12 +10,11 @@ class ProductTableItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final valueStyle = theme.textTheme.bodyMedium?.copyWith(
+    final valueStyle = context.theme.textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.w600,
     );
-    final labelStyle = theme.textTheme.labelSmall?.copyWith(
-      color: theme.hintColor,
+    final labelStyle = context.theme.textTheme.labelSmall?.copyWith(
+      color: context.theme.hintColor,
       fontSize: 10,
     );
 
@@ -69,14 +67,16 @@ class ProductTableItem extends StatelessWidget {
                       .toBrazilianNumber(2),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(
-                    color: theme.colorScheme.secondary,
+                    color: context.theme.colorScheme.secondary,
                   ),
                 ),
               _Cell(
                 label: 'Total'.hardcoded,
                 value: cartProduct.totalLiquid.toString().toBrazilianNumber(2),
                 labelStyle: labelStyle,
-                subtitleStyle: valueStyle?.copyWith(color: theme.primaryColor),
+                subtitleStyle: valueStyle?.copyWith(
+                  color: context.theme.primaryColor,
+                ),
               ),
             ],
           ),

@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UpdateValuesWidgets extends ConsumerStatefulWidget {
   final ProductEntity product;
@@ -70,8 +69,6 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final bool hasInsertedQuantity =
         widget.product.Quantidade_ProcRecebDocProEmb != null &&
         widget.product.Quantidade_ProcRecebDocProEmb! > 0;
@@ -126,7 +123,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                     : null,
                 backgroundColor: hasInsertedQuantity
                     ? Colors.red
-                    : theme.disabledColor,
+                    : context.theme.disabledColor,
               ),
             ),
             gapW8,

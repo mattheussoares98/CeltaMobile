@@ -17,20 +17,20 @@ class BsfSaleBlockadeInstructionModel extends BsfSaleBlockadeInstructionEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        'Code': code,
-        'PersonalizedCode': personalizedCode,
-        'LegacyCode': legacyCode,
-        'Description': description,
-      };
+    'Code': code,
+    'PersonalizedCode': personalizedCode,
+    'LegacyCode': legacyCode,
+    'Description': description,
+  };
 
   factory BsfSaleBlockadeInstructionModel.fromEntity(
-          BsfSaleBlockadeInstructionEntity entity) =>
-      BsfSaleBlockadeInstructionModel(
-        code: entity.code,
-        personalizedCode: entity.personalizedCode,
-        legacyCode: entity.legacyCode,
-        description: entity.description,
-      );
+    BsfSaleBlockadeInstructionEntity entity,
+  ) => BsfSaleBlockadeInstructionModel(
+    code: entity.code,
+    personalizedCode: entity.personalizedCode,
+    legacyCode: entity.legacyCode,
+    description: entity.description,
+  );
 
   BsfSaleBlockadeInstructionEntity toEntity() =>
       BsfSaleBlockadeInstructionEntity(

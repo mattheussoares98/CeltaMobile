@@ -17,7 +17,13 @@ class SupabaseSubEnterpriseModel extends Equatable {
   });
 
   @override
-  List<Object?> get props => [id, idFromErp, name, cnpjNumber, personalizedCode];
+  List<Object?> get props => [
+    id,
+    idFromErp,
+    name,
+    cnpjNumber,
+    personalizedCode,
+  ];
 
   factory SupabaseSubEnterpriseModel.fromJson(Map map) {
     return SupabaseSubEnterpriseModel(

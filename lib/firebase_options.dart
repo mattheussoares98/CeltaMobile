@@ -90,5 +90,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'celtamobile-7d69a.appspot.com',
     measurementId: 'G-4V9LLV2FWP',
   );
-
 }

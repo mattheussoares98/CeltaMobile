@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class IncrementField extends ConsumerStatefulWidget {
   const IncrementField({super.key});
@@ -48,7 +47,6 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
 
     final uiState = ref.watch(uiProvider);
     final item = uiState.applyTo(product);
-    final theme = Theme.of(context);
 
     final incrementType = uiState.incrementType;
 
@@ -57,13 +55,13 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
       children: [
         RichText(
           text: TextSpan(
-            style: theme.textTheme.titleSmall,
+            style: context.theme.textTheme.titleSmall,
             children: [
               TextSpan(text: 'Acréscimo'.hardcoded),
               TextSpan(
                 text:
                     ' (${item.totalIncrement.toString().toBrazilianNumber().addBrazilianCoin()})',
-                style: theme.textTheme.labelMedium?.copyWith(
+                style: context.theme.textTheme.labelMedium?.copyWith(
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
                 ),

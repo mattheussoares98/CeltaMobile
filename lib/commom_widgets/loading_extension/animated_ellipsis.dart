@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class AnimatedEllipsis extends StatefulWidget {
   const AnimatedEllipsis({super.key});
@@ -34,8 +35,6 @@ class _AnimatedEllipsisState extends State<AnimatedEllipsis>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return AnimatedBuilder(
       animation: _dotCount,
       builder: (context, child) {
@@ -45,7 +44,7 @@ class _AnimatedEllipsisState extends State<AnimatedEllipsis>
           // PERFORMANCE: Using a fixed width prevents the text from shifting
           // adjacent widgets when the dot count changes (Layout Jitters).
           width: 24,
-          child: Text(dots, style: theme.textTheme.titleMedium),
+          child: Text(dots, style: context.theme.textTheme.titleMedium),
         );
       },
     );

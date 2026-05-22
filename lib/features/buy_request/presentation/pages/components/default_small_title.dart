@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultSmallTitle extends StatelessWidget {
   final String title;
@@ -6,12 +7,11 @@ class DefaultSmallTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Text(
       title,
-      style: theme.textTheme.titleSmall?.copyWith(
+      style: context.theme.textTheme.titleSmall?.copyWith(
         fontStyle: FontStyle.italic,
-        color: theme.primaryColor,
+        color: context.theme.primaryColor,
       ),
     );
   }

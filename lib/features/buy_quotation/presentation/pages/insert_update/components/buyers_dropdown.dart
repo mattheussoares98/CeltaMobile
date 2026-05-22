@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/buyer/buyer.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class BuyersDropdown extends ConsumerWidget {
   final int enterpriseCode;
@@ -18,8 +18,6 @@ class BuyersDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     final selectedBuyer = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         enterpriseCode,
@@ -41,7 +39,7 @@ class BuyersDropdown extends ConsumerWidget {
                   left: 5,
                   child: Text(
                     'Comprador'.hardcoded,
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: context.theme.textTheme.bodySmall?.copyWith(
                       fontStyle: FontStyle.italic,
                     ),
                   ),

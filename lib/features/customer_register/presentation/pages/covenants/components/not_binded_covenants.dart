@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NotBindedCovenants extends ConsumerWidget {
   final List<CovenantEntity>? covenants;
@@ -95,7 +94,6 @@ class _CovenantItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     return RepaintBoundary(
@@ -112,7 +110,7 @@ class _CovenantItem extends StatelessWidget {
                   children: [
                     Text(
                       covenant.Nome_Convenio ?? '',
-                      style: theme.textTheme.titleMedium,
+                      style: context.theme.textTheme.titleMedium,
                     ),
                     TitleAndSubTitle(
                       title: 'CNPJ '.hardcoded,

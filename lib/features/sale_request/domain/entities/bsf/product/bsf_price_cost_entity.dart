@@ -109,57 +109,57 @@ class BSFPriceCostEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        saleRetailPricePractice,
-        lastSaleRetailPrice,
-        wholeSalePricePractice,
-        lastWholeSalePrice,
-        eCommercePricePractice,
-        lastECommercePrice,
-        saleRetailOfferPractice,
-        lastSaleRetailOffer,
-        wholeSaleOfferPractice,
-        lastWholeSaleOffer,
-        eCommerceOfferPractice,
-        lastECommerceOffer,
-        replacementCost,
-        lastReplacementCost,
-        mediumReplacementCost,
-        subsidizedReplacementCost,
-        activeSubsidizedReplacementCost,
-        liquidCost,
-        lastLiquidCost,
-        lastUnitValue,
-        baseCalcIcmsSubstUnit,
-        valueOfIcmsSubstUnit,
-        valueOfIcmsOwnerUnit,
-        mininumQuantityForWholeSale,
-        mediumLiquidCost,
-        subsidizedLiquidCost,
-        activeSubsidizedLiquidCost,
-        fiscalBaseCalcSubstitute,
-        fiscalBaseCalcSubstitutePrevious,
-        replacementCostReal,
-        lastReplacementCostReal,
-        liquidCostReal,
-        lastLiquidCostReal,
-        replacementCostFiscal,
-        lastReplacementCostFiscal,
-        liquidCostFiscal,
-        lastLiquidCostFiscal,
-        operationCost,
-        bonusSubsidyValue,
-        bonusSubsidyActiveValue,
-        bonusSubsidyUnitaryValue,
-        bonusSubsidyActiveUnitaryValue,
-        isOfferInRetail,
-        salePracticedTypeInSaleRetail,
-        salePracticedInSaleRetail,
-        isOfferInWhole,
-        salePracticedTypeInWholeSale,
-        salePracticedInWholeSale,
-        isOfferInECommerce,
-        salePriceTypePracticedInECommerce,
-      ];
+    saleRetailPricePractice,
+    lastSaleRetailPrice,
+    wholeSalePricePractice,
+    lastWholeSalePrice,
+    eCommercePricePractice,
+    lastECommercePrice,
+    saleRetailOfferPractice,
+    lastSaleRetailOffer,
+    wholeSaleOfferPractice,
+    lastWholeSaleOffer,
+    eCommerceOfferPractice,
+    lastECommerceOffer,
+    replacementCost,
+    lastReplacementCost,
+    mediumReplacementCost,
+    subsidizedReplacementCost,
+    activeSubsidizedReplacementCost,
+    liquidCost,
+    lastLiquidCost,
+    lastUnitValue,
+    baseCalcIcmsSubstUnit,
+    valueOfIcmsSubstUnit,
+    valueOfIcmsOwnerUnit,
+    mininumQuantityForWholeSale,
+    mediumLiquidCost,
+    subsidizedLiquidCost,
+    activeSubsidizedLiquidCost,
+    fiscalBaseCalcSubstitute,
+    fiscalBaseCalcSubstitutePrevious,
+    replacementCostReal,
+    lastReplacementCostReal,
+    liquidCostReal,
+    lastLiquidCostReal,
+    replacementCostFiscal,
+    lastReplacementCostFiscal,
+    liquidCostFiscal,
+    lastLiquidCostFiscal,
+    operationCost,
+    bonusSubsidyValue,
+    bonusSubsidyActiveValue,
+    bonusSubsidyUnitaryValue,
+    bonusSubsidyActiveUnitaryValue,
+    isOfferInRetail,
+    salePracticedTypeInSaleRetail,
+    salePracticedInSaleRetail,
+    isOfferInWhole,
+    salePracticedTypeInWholeSale,
+    salePracticedInWholeSale,
+    isOfferInECommerce,
+    salePriceTypePracticedInECommerce,
+  ];
 
   BSFPriceCostEntity copyWith({
     double? saleRetailPricePractice,
@@ -241,7 +241,8 @@ class BSFPriceCostEntity extends Equatable {
           mediumReplacementCost ?? this.mediumReplacementCost,
       subsidizedReplacementCost:
           subsidizedReplacementCost ?? this.subsidizedReplacementCost,
-      activeSubsidizedReplacementCost: activeSubsidizedReplacementCost ??
+      activeSubsidizedReplacementCost:
+          activeSubsidizedReplacementCost ??
           this.activeSubsidizedReplacementCost,
       liquidCost: liquidCost ?? this.liquidCost,
       lastLiquidCost: lastLiquidCost ?? this.lastLiquidCost,
@@ -258,7 +259,8 @@ class BSFPriceCostEntity extends Equatable {
           activeSubsidizedLiquidCost ?? this.activeSubsidizedLiquidCost,
       fiscalBaseCalcSubstitute:
           fiscalBaseCalcSubstitute ?? this.fiscalBaseCalcSubstitute,
-      fiscalBaseCalcSubstitutePrevious: fiscalBaseCalcSubstitutePrevious ??
+      fiscalBaseCalcSubstitutePrevious:
+          fiscalBaseCalcSubstitutePrevious ??
           this.fiscalBaseCalcSubstitutePrevious,
       replacementCostReal: replacementCostReal ?? this.replacementCostReal,
       lastReplacementCostReal:
@@ -277,8 +279,8 @@ class BSFPriceCostEntity extends Equatable {
           bonusSubsidyActiveValue ?? this.bonusSubsidyActiveValue,
       bonusSubsidyUnitaryValue:
           bonusSubsidyUnitaryValue ?? this.bonusSubsidyUnitaryValue,
-      bonusSubsidyActiveUnitaryValue: bonusSubsidyActiveUnitaryValue ??
-          this.bonusSubsidyActiveUnitaryValue,
+      bonusSubsidyActiveUnitaryValue:
+          bonusSubsidyActiveUnitaryValue ?? this.bonusSubsidyActiveUnitaryValue,
       isOfferInRetail: isOfferInRetail ?? this.isOfferInRetail,
       salePracticedTypeInSaleRetail:
           salePracticedTypeInSaleRetail ?? this.salePracticedTypeInSaleRetail,
@@ -292,7 +294,8 @@ class BSFPriceCostEntity extends Equatable {
           ? null
           : (salePracticedInWholeSale ?? this.salePracticedInWholeSale),
       isOfferInECommerce: isOfferInECommerce ?? this.isOfferInECommerce,
-      salePriceTypePracticedInECommerce: salePriceTypePracticedInECommerce ??
+      salePriceTypePracticedInECommerce:
+          salePriceTypePracticedInECommerce ??
           this.salePriceTypePracticedInECommerce,
       salePracticedInECommerce:
           salePracticedInECommerce ?? this.salePracticedInECommerce,

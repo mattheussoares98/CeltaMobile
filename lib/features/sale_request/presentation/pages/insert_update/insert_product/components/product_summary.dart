@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductSummary extends ConsumerWidget {
   const ProductSummary({super.key});
@@ -14,21 +14,20 @@ class ProductSummary extends ConsumerWidget {
     final product = ref.watch(currentProductItemProvider);
     final uiState = ref.watch(insertProductUIControllerProvider(product));
     final item = uiState.applyTo(product);
-    final theme = Theme.of(context);
 
-    final labelStyle = theme.textTheme.labelMedium?.copyWith(
-      color: theme.hintColor,
+    final labelStyle = context.theme.textTheme.labelMedium?.copyWith(
+      color: context.theme.hintColor,
     );
-    final valueStyle = theme.textTheme.bodyLarge?.copyWith(
+    final valueStyle = context.theme.textTheme.bodyLarge?.copyWith(
       fontWeight: FontWeight.bold,
     );
 
     return Container(
       padding: const EdgeInsets.all(Sizes.p16),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withAlpha(76),
+        color: context.theme.colorScheme.surfaceContainerHighest.withAlpha(76),
         borderRadius: BorderRadius.circular(Sizes.p12),
-        border: Border.all(color: theme.dividerColor.withAlpha(25)),
+        border: Border.all(color: context.theme.dividerColor.withAlpha(25)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +54,7 @@ class ProductSummary extends ConsumerWidget {
               subTitleIsPrice: true,
               titleStyle: labelStyle,
               subTitleStyle: valueStyle?.copyWith(
-                color: theme.colorScheme.secondary,
+                color: context.theme.colorScheme.secondary,
               ),
             ),
           ],
@@ -66,7 +65,9 @@ class ProductSummary extends ConsumerWidget {
               subTitle: item.totalDiscountValue,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
-              subTitleStyle: valueStyle?.copyWith(color: theme.colorScheme.error),
+              subTitleStyle: valueStyle?.copyWith(
+                color: context.theme.colorScheme.error,
+              ),
             ),
           ],
           if (item.totalIncrement > 0) ...[
@@ -76,8 +77,9 @@ class ProductSummary extends ConsumerWidget {
               subTitle: item.totalIncrement,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
-              subTitleStyle:
-                  valueStyle?.copyWith(color: theme.colorScheme.primary),
+              subTitleStyle: valueStyle?.copyWith(
+                color: context.theme.colorScheme.primary,
+              ),
             ),
           ],
           const Divider(height: Sizes.p24),
@@ -85,12 +87,12 @@ class ProductSummary extends ConsumerWidget {
             title: 'Total Líquido'.hardcoded,
             subTitle: item.totalLiquid,
             subTitleIsPrice: true,
-            titleStyle: theme.textTheme.titleMedium?.copyWith(
+            titleStyle: context.theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
-            subTitleStyle: theme.textTheme.titleLarge?.copyWith(
+            subTitleStyle: context.theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
+              color: context.theme.colorScheme.primary,
             ),
           ),
         ],

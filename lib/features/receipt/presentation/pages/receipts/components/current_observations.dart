@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class CurrentObservations extends StatelessWidget {
   final ReceiptEntity receipt;
@@ -17,8 +17,6 @@ class CurrentObservations extends StatelessWidget {
         .replaceAll(RegExp(r'\\n'), '\n')
         .replaceAll(RegExp(r'\\'), '');
 
-    final theme = Theme.of(context);
-
     final shouldInsertObservations =
         receipt.DefaultObservations != null &&
         receipt.DefaultObservations!.isNotEmpty &&
@@ -32,7 +30,7 @@ class CurrentObservations extends StatelessWidget {
           title: shouldInsertObservations
               ? 'Observação padrão'.hardcoded
               : 'Observações'.hardcoded,
-          titleStyle: theme.textTheme.bodyMedium?.copyWith(
+          titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
             color: observations == null || observations.isEmpty
                 ? Colors.transparent
@@ -42,13 +40,13 @@ class CurrentObservations extends StatelessWidget {
         ),
         TitleAndSubTitle(
           title: null,
-          titleStyle: theme.textTheme.bodyMedium?.copyWith(
+          titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
           ),
-          subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+          subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
             fontStyle: FontStyle.italic,
             color: shouldInsertObservations
-                ? theme.disabledColor
+                ? context.theme.disabledColor
                 : Colors.black,
           ),
           subTitle: observations == null

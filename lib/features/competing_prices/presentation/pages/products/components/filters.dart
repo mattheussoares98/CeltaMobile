@@ -1,14 +1,14 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class Filters extends ConsumerWidget {
   final int enterpriseCode;
@@ -24,8 +24,6 @@ class Filters extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedItem = ref.watch(selectedItemUIControllerProvider);
-
-    final theme = Theme.of(context);
 
     final restrictProducts = ref.watch(
       researchsStateControllerProvider(enterpriseCode).select(
@@ -44,12 +42,12 @@ class Filters extends ConsumerWidget {
       collapsedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Sizes.p12),
       ),
-      backgroundColor: theme.primaryColorLight.withAlpha(30),
-      collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
+      backgroundColor: context.theme.primaryColorLight.withAlpha(30),
+      collapsedBackgroundColor: context.theme.primaryColorDark.withAlpha(30),
       childrenPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       tilePadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      iconColor: theme.primaryColorDark,
-      collapsedIconColor: theme.primaryColor,
+      iconColor: context.theme.primaryColorDark,
+      collapsedIconColor: context.theme.primaryColor,
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       initiallyExpanded: false,
       title: RichText(
@@ -57,14 +55,14 @@ class Filters extends ConsumerWidget {
           children: [
             TextSpan(
               text: 'Filtrar produtos   '.hardcoded,
-              style: theme.textTheme.titleMedium,
+              style: context.theme.textTheme.titleMedium,
             ),
             if (!restrictProducts)
               TextSpan(
                 text: selectedItem.onlyAssociateds
                     ? '(associados)'.hardcoded
                     : '(não associados)'.hardcoded,
-                style: theme.textTheme.bodySmall?.copyWith(
+                style: context.theme.textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
                   color: selectedItem.onlyAssociateds
                       ? Colors.green
@@ -75,7 +73,7 @@ class Filters extends ConsumerWidget {
                 selectedItem.searchType != SearchProductCompetingPriceType.all)
               TextSpan(
                 text: ' (${selectedItem.searchType.name})'.toLowerCase(),
-                style: theme.textTheme.bodySmall?.copyWith(
+                style: context.theme.textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
               ),

@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class InsertUpdateResearchPage extends ConsumerStatefulWidget {
   final ResearchEntity? research; //if is null, is inserting
@@ -70,7 +69,6 @@ class _InsertUpdateResearchPageState
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     bool isLoading = ref.watch(
       insertUpdateResearchControllerProvider.select((s) => s.isLoading),
     );
@@ -98,7 +96,7 @@ class _InsertUpdateResearchPageState
                 widget.research == null
                     ? 'Inserindo pesquisa'.hardcoded
                     : 'Editando pesquisa'.hardcoded,
-                style: theme.textTheme.titleLarge,
+                style: context.theme.textTheme.titleLarge,
               ),
               gapH32,
               DefaultTextFormField(

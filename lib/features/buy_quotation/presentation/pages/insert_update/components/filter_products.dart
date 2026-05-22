@@ -1,10 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class FilterProducts extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -28,7 +28,6 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final totalProductsLength = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
@@ -62,9 +61,9 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                     return Text(
                       'Produtos (${filteredProducts.length}${hasFiltered ? ' de $totalProductsLength' : ''})'
                           .hardcoded,
-                      style: theme.textTheme.titleSmall?.copyWith(
+                      style: context.theme.textTheme.titleSmall?.copyWith(
                         fontStyle: FontStyle.italic,
-                        color: theme.primaryColor,
+                        color: context.theme.primaryColor,
                       ),
                     );
                   },

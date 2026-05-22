@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/providers/services/services.dart';
-import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CupertinoFormField extends ConsumerStatefulWidget {
   final DefaultTextFormField defaultTextFormField;
@@ -92,8 +91,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = context.theme.colorScheme;
     final dtf = widget.defaultTextFormField;
     final isEnabled = dtf.enabled ?? true;
 
@@ -163,7 +161,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
                       ? null
                       : colorScheme.onSurface.withAlpha(100),
                 ),
-                placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
+                placeholderStyle: context.theme.textTheme.bodyMedium?.copyWith(
                   color: isEnabled
                       ? colorScheme.onSurface.withAlpha(125)
                       : colorScheme.onSurface.withAlpha(100),

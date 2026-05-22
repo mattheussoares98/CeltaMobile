@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsItems extends ConsumerWidget {
   final FocusNode quantityFocusNode;
@@ -130,8 +129,6 @@ class _ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     final isSelected = ref.watch(
       selectedUIStateControllerProvider(
         enterpriseCode,
@@ -166,12 +163,12 @@ class _ProductItem extends ConsumerWidget {
               subTitle: lastConfirmedAdjust?.quantity
                   .toString()
                   .toBrazilianNumber(3, true),
-              titleStyle: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.secondary,
+              titleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
-              subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.secondary,
+              subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
             )

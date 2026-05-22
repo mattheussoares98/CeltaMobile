@@ -1,12 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class EnterprisesPage extends ConsumerWidget {
   final String nextRoute;
@@ -56,8 +56,6 @@ class _EnterpriseItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return RepaintBoundary(
       child: Card(
         child: InkWell(
@@ -78,11 +76,13 @@ class _EnterpriseItem extends StatelessWidget {
                 RichText(
                   text: TextSpan(
                     text: enterprise.PersonalizedCode,
-                    style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+                    style: context.theme.textTheme.bodySmall?.copyWith(
+                      fontSize: 10,
+                    ),
                     children: [
                       TextSpan(
                         text: ' ${enterprise.name}',
-                        style: theme.textTheme.titleMedium,
+                        style: context.theme.textTheme.titleMedium,
                       ),
                     ],
                   ),
@@ -91,11 +91,13 @@ class _EnterpriseItem extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: 'CNPJ'.hardcoded,
-                      style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+                      style: context.theme.textTheme.bodySmall?.copyWith(
+                        fontSize: 10,
+                      ),
                       children: [
                         TextSpan(
                           text: ' ${enterprise.CnpjNumber}',
-                          style: theme.textTheme.titleSmall,
+                          style: context.theme.textTheme.titleSmall,
                         ),
                       ],
                     ),

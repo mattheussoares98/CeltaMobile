@@ -20,11 +20,11 @@ class BSFDriverInfosModel extends BSFDriverInfosEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        'IsDriver': isDriver,
-        'DriverDocument': driverDocument,
-        'DriverDocumentExpiration': driverDocumentExpiration?.toIso8601String(),
-        'DriverCategory': driverCategory,
-      };
+    'IsDriver': isDriver,
+    'DriverDocument': driverDocument,
+    'DriverDocumentExpiration': driverDocumentExpiration?.toIso8601String(),
+    'DriverCategory': driverCategory,
+  };
 
   factory BSFDriverInfosModel.fromEntity(BSFDriverInfosEntity entity) =>
       BSFDriverInfosModel(
@@ -35,9 +35,9 @@ class BSFDriverInfosModel extends BSFDriverInfosEntity {
       );
 
   BSFDriverInfosEntity toEntity() => BSFDriverInfosEntity(
-        isDriver: isDriver,
-        driverDocument: driverDocument,
-        driverDocumentExpiration: driverDocumentExpiration,
-        driverCategory: driverCategory,
-      );
+    isDriver: isDriver,
+    driverDocument: driverDocument,
+    driverDocumentExpiration: driverDocumentExpiration,
+    driverCategory: driverCategory,
+  );
 }

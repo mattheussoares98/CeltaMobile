@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/app_sizes.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/constants/app_sizes.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class PrimaryButton extends ConsumerWidget {
   const PrimaryButton({
@@ -24,13 +23,12 @@ class PrimaryButton extends ConsumerWidget {
   final Color? backgroundColor;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     final textWidget = Text(
       text,
       textAlign: TextAlign.center,
-      style: theme.textTheme.titleMedium?.copyWith(
+      style: context.theme.textTheme.titleMedium?.copyWith(
         color: isLoading ? Colors.transparent : Colors.white,
       ),
     );
@@ -38,8 +36,8 @@ class PrimaryButton extends ConsumerWidget {
     const minimumIconSize = 150;
 
     final buttonColor = onPressed == null || isLoading
-        ? theme.disabledColor.withAlpha(30)
-        : backgroundColor ?? theme.primaryColor;
+        ? context.theme.disabledColor.withAlpha(30)
+        : backgroundColor ?? context.theme.primaryColor;
 
     const loadingWidget = Positioned.fill(child: LoadingWidget(padding: 0));
 

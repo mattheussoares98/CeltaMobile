@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class CartSummaryTable extends StatelessWidget {
   final BSFProductItemEntity item;
@@ -11,7 +11,6 @@ class CartSummaryTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final practicedPrice = item.practicedPriceType;
     final size = MediaQuery.sizeOf(context);
 
@@ -31,13 +30,13 @@ class CartSummaryTable extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(Sizes.p4),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withAlpha(30),
+                      color: context.theme.colorScheme.primary.withAlpha(30),
                       borderRadius: BorderRadius.circular(Sizes.p4),
                     ),
                     child: Text(
                       practicedPrice.name.substring(0, 1),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.primaryColor,
+                      style: context.theme.textTheme.labelSmall?.copyWith(
+                        color: context.theme.primaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
                       ),
@@ -50,7 +49,7 @@ class CartSummaryTable extends StatelessWidget {
             title: 'Frete'.hardcoded,
             value: item.totalDeliveryTax,
             isPrice: true,
-            color: theme.colorScheme.secondary,
+            color: context.theme.colorScheme.secondary,
           ),
         if (item.totalDiscountValue > 0)
           SummaryTableItem(
@@ -70,7 +69,7 @@ class CartSummaryTable extends StatelessWidget {
           title: 'Total'.hardcoded,
           value: item.totalLiquid,
           isPrice: true,
-          color: theme.primaryColor,
+          color: context.theme.primaryColor,
         ),
       ],
     );

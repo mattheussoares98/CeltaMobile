@@ -1,12 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class SelectProductModalPage extends ConsumerWidget {
   final List<ProductEntity> products;
@@ -21,8 +21,6 @@ class SelectProductModalPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: CustomScrollView(
@@ -31,7 +29,7 @@ class SelectProductModalPage extends ConsumerWidget {
           SliverToBoxAdapter(
             child: Text(
               'Selecione o produto que deseja confirmar'.hardcoded,
-              style: theme.textTheme.titleMedium,
+              style: context.theme.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
           ),

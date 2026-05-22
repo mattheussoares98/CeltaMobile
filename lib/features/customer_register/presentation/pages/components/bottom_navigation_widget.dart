@@ -1,10 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class BottomNavigationWidget extends ConsumerWidget {
   final void Function(int index) onTapItem;
@@ -14,7 +14,6 @@ class BottomNavigationWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(customerStateControllerProvider).value;
     final selectedIndex = ref.watch(pageIndexStateControllerProvider);
-    final theme = Theme.of(context);
 
     return BottomNavigationBar(
       unselectedFontSize: 11,
@@ -27,7 +26,7 @@ class BottomNavigationWidget extends ConsumerWidget {
           icon: PlatformIcon(
             cupertinoIcon: CupertinoIcons.person,
             materialIcon: Icons.person,
-            color: selectedIndex == 0 ? theme.primaryColor : null,
+            color: selectedIndex == 0 ? context.theme.primaryColor : null,
           ),
         ),
         BottomNavigationBarItem(
@@ -84,7 +83,7 @@ class BottomNavigationWidget extends ConsumerWidget {
           icon: PlatformIcon(
             cupertinoIcon: CupertinoIcons.check_mark,
             materialIcon: Icons.save,
-            color: selectedIndex == 5 ? theme.primaryColor : null,
+            color: selectedIndex == 5 ? context.theme.primaryColor : null,
           ),
         ),
       ],

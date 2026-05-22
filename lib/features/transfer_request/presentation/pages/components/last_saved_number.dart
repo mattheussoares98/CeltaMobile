@@ -1,17 +1,15 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LastSavedNumber extends ConsumerWidget {
   const LastSavedNumber({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return AsyncValueWidget(
       value: ref.watch(lastSavedNumberStateControllerProvider),
       tryAgain: null,
@@ -25,8 +23,8 @@ class LastSavedNumber extends ConsumerWidget {
             copyableSubtitle: true,
             title: 'Últ ped salvo'.hardcoded,
             subTitle: RegExp(r'\((.*?)\)').firstMatch(number)?.group(1),
-            subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-              color: theme.primaryColor,
+            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+              color: context.theme.primaryColor,
             ),
           ),
         );

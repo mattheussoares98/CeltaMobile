@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectProductsModal extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -125,7 +124,6 @@ class _ProductItem extends ConsumerWidget {
       ),
     );
 
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     void toggleSelection() {
@@ -152,8 +150,8 @@ class _ProductItem extends ConsumerWidget {
           clickableBottom: alreadyInBuyQuotation
               ? Text(
                   'Esse produto já foi inserido!'.hardcoded,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.primaryColor,
+                  style: context.theme.textTheme.titleSmall?.copyWith(
+                    color: context.theme.primaryColor,
                     fontStyle: FontStyle.italic,
                   ),
                 )

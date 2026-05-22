@@ -1,5 +1,6 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultTitle extends StatelessWidget {
   final String title;
@@ -13,7 +14,7 @@ class DefaultTitle extends StatelessWidget {
         Expanded(
           child: Text(
             title.hardcoded,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: context.theme.textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
         ),

@@ -33,19 +33,19 @@ class BSFPaymentFinalizationEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        paymentForm,
-        Description,
-        code,
-        isDeactivate,
-        isDeactivateString,
-        actionCheckType,
-        cardTerminalType,
-        planCode,
-        financialTax,
-        identificationCode,
-        identificationTefFlagCode,
-        action,
-      ];
+    paymentForm,
+    Description,
+    code,
+    isDeactivate,
+    isDeactivateString,
+    actionCheckType,
+    cardTerminalType,
+    planCode,
+    financialTax,
+    identificationCode,
+    identificationTefFlagCode,
+    action,
+  ];
 
   BSFPaymentFinalizationEntity copyWith({
     BSFPaymentFormEntity? paymentForm,

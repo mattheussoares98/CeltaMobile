@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TotalPriceAndInsertButton extends ConsumerWidget {
   final VoidCallback insertProduct;
@@ -20,8 +19,6 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     final discountType = ref.watch(
       selectedItemUIControllerProvider(
         isCartPage: widget.isCartPage,
@@ -52,8 +49,8 @@ class TotalPriceAndInsertButton extends ConsumerWidget {
             TitleAndSubTitle(
               textAlign: TextAlign.center,
               title: 'Total'.hardcoded,
-              titleStyle: theme.textTheme.titleMedium,
-              subTitleStyle: theme.textTheme.titleLarge,
+              titleStyle: context.theme.textTheme.titleMedium,
+              subTitleStyle: context.theme.textTheme.titleLarge,
               subTitle: newItem.getTotalLiquid,
               subTitleIsPrice: true,
             ),

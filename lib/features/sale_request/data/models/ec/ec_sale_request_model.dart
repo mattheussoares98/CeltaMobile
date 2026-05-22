@@ -140,8 +140,6 @@ class EcSaleRequestModel extends Equatable {
             : EcAddressModel.fromEntity(entity.Address!),
       );
 
-
-
   SaleRequestEntity toEntity() => SaleRequestEntity(
     Id: Id,
     SaleRequestNumber: SaleRequestNumber,

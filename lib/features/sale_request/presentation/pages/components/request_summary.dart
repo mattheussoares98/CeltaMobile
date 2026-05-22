@@ -1,14 +1,14 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class RequestSummary extends ConsumerWidget {
   final VoidCallback? onTap;
@@ -26,7 +26,6 @@ class RequestSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-    final theme = Theme.of(context);
 
     final saleRequest = ref.watch(
       saleRequestsStateControllerProvider(args.enterpriseCode).select(
@@ -61,7 +60,7 @@ class RequestSummary extends ConsumerWidget {
                         gapW12,
                         Text(
                           'Resumo'.hardcoded,
-                          style: theme.textTheme.bodyLarge?.copyWith(
+                          style: context.theme.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w300,
                           ),
                         ),

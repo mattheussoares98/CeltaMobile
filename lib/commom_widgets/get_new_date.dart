@@ -112,7 +112,6 @@ class GetNewDate {
     required CupertinoDatePickerMode mode,
   }) async {
     DateTime? tempPickedDate = firstDate;
-    final theme = Theme.of(context);
 
     return await showCupertinoModalPopup<DateTime>(
       context: context,
@@ -120,10 +119,10 @@ class GetNewDate {
         return CupertinoTheme(
           data: CupertinoThemeData(
             brightness: Brightness.light,
-            primaryColor: theme.primaryColor,
+            primaryColor: context.theme.primaryColor,
             textTheme: CupertinoTextThemeData(
               dateTimePickerTextStyle: TextStyle(
-                color: theme.primaryColor,
+                color: context.theme.primaryColor,
                 fontSize: 20,
                 fontStyle: FontStyle.italic,
               ),
@@ -142,7 +141,7 @@ class GetNewDate {
                         mode == CupertinoDatePickerMode.date
                             ? 'Data'
                             : 'Horário',
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        style: context.theme.textTheme.titleMedium?.copyWith(
                           fontStyle: FontStyle.italic,
                         ),
                       ),

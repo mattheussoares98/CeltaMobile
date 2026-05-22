@@ -32,7 +32,6 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Card(
       clipBehavior: Clip.hardEdge,
       margin: EdgeInsets.zero,
@@ -69,7 +68,7 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
             child: Text(
               hint,
               style: onChanged == null
-                  ? TextStyle(color: theme.disabledColor)
+                  ? TextStyle(color: context.theme.disabledColor)
                   : null,
             ),
           ),

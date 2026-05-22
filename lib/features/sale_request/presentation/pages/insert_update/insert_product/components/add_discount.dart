@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddDiscount extends ConsumerStatefulWidget {
   const AddDiscount({super.key});
@@ -72,21 +71,20 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     final uiProvider = insertProductUIControllerProvider(product);
     final uiState = ref.watch(uiProvider);
     final item = uiState.applyTo(product);
-    final theme = Theme.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
-            style: theme.textTheme.titleSmall,
+            style: context.theme.textTheme.titleSmall,
             children: [
               TextSpan(text: 'Descontos'.hardcoded),
               TextSpan(
                 text:
                     ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()})',
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.error,
+                style: context.theme.textTheme.labelMedium?.copyWith(
+                  color: context.theme.colorScheme.error,
                   fontWeight: FontWeight.bold,
                 ),
               ),

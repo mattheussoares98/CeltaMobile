@@ -1,13 +1,13 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class ShowPdfButton extends ConsumerStatefulWidget {
   const ShowPdfButton({super.key});
@@ -21,8 +21,6 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final (loadedCorrectly, personalizedCode) = ref.watch(
       saleRequestDetailsStateControllerProvider(
         ref.read(saleRequestArgsProvider),
@@ -64,7 +62,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
           : PlatformIcon(
               cupertinoIcon: CupertinoIcons.doc_text_search,
               materialIcon: Icons.picture_as_pdf_rounded,
-              color: loadedCorrectly ? null : theme.disabledColor,
+              color: loadedCorrectly ? null : context.theme.disabledColor,
             ),
     );
   }

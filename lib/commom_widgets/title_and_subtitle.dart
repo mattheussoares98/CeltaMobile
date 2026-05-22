@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class TitleAndSubTitle extends StatelessWidget {
   final String? title;
@@ -67,8 +66,6 @@ class TitleAndSubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     bool showErrorMessage = false;
     bool subTitleIsNumber = subTitle is double || subTitle is int;
 
@@ -127,32 +124,27 @@ class TitleAndSubTitle extends StatelessWidget {
         if (!showErrorMessage && title != null)
           TextSpan(
             text: title!.trimRight() + (removeColon ? ' ' : ': '),
-            style: titleStyle ?? theme.textTheme.bodyMedium,
+            style: titleStyle ?? context.theme.textTheme.bodyMedium,
           ),
         if (subTitleIsPrice == true && !showErrorMessage)
           TextSpan(
             text: "R\$ ",
-            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-              color: subtitleColor,
-              fontSize: 11,
-            ),
+            style: (subTitleStyle ?? context.theme.textTheme.titleMedium)
+                ?.copyWith(color: subtitleColor, fontSize: 11),
           ),
         if (subtitleText != null)
           TextSpan(
             text: subTitleIsNumber && subTitleIsPrice == true
                 ? subtitleText.toBrazilianNumber(2, false)
                 : subtitleText,
-            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-              color: subtitleColor,
-            ),
+            style: (subTitleStyle ?? context.theme.textTheme.titleMedium)
+                ?.copyWith(color: subtitleColor),
           ),
         if (subTitleIsPercentage == true && !showErrorMessage)
           TextSpan(
             text: ' %',
-            style: (subTitleStyle ?? theme.textTheme.titleMedium)?.copyWith(
-              color: subtitleColor,
-              fontSize: 11,
-            ),
+            style: (subTitleStyle ?? context.theme.textTheme.titleMedium)
+                ?.copyWith(color: subtitleColor, fontSize: 11),
           ),
       ],
     );

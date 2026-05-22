@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class Shopping extends StatelessWidget {
   const Shopping({super.key, required this.widget});
@@ -13,14 +12,12 @@ class Shopping extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (widget.product.LastBuyEntrances == null ||
         widget.product.LastBuyEntrances!.isEmpty) {
       return Center(
         child: Text(
           'Nenhuma compra foi encontrada'.hardcoded,
-          style: theme.textTheme.titleMedium,
+          style: context.theme.textTheme.titleMedium,
         ),
       );
     }

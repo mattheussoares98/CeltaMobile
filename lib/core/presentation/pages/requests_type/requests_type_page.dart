@@ -1,14 +1,14 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 
 class RequestsTypePage extends ConsumerWidget {
   final int enterpriseCode;
@@ -93,7 +93,6 @@ class _RequestTypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -124,8 +123,8 @@ class _RequestTypeItem extends StatelessWidget {
                   }
                   return Text(
                     'Modelo padrão'.hardcoded,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.secondary,
+                    style: context.theme.textTheme.titleMedium?.copyWith(
+                      color: context.theme.colorScheme.secondary,
                       fontStyle: FontStyle.italic,
                     ),
                   );
@@ -147,10 +146,10 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.allowAlterCostOrSalePrice == true
                     ? 'Permite alterar o preço'.hardcoded
                     : 'Não permite alterar o preço'.hardcoded,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: request.allowAlterCostOrSalePrice == true
-                      ? theme.primaryColor
-                      : theme.colorScheme.error,
+                      ? context.theme.primaryColor
+                      : context.theme.colorScheme.error,
                 ),
               ),
               TitleAndSubTitle(
@@ -158,10 +157,10 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.allowUseDiscount == true
                     ? 'Permite desconto manual'.hardcoded
                     : 'Não permite desconto manual'.hardcoded,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: request.allowUseDiscount == true
-                      ? theme.primaryColor
-                      : theme.colorScheme.error,
+                      ? context.theme.primaryColor
+                      : context.theme.colorScheme.error,
                 ),
               ),
             ],

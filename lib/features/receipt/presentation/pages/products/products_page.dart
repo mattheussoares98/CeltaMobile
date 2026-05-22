@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int receiptCode;
@@ -121,8 +120,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     const horizontalPadding = EdgeInsets.symmetric(horizontal: Sizes.p4);
 
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: AppBarTitle(
@@ -131,7 +128,8 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         ),
       ),
       floatingActionButton: AnimatedBuilder(
-        animation: theme.platform == TargetPlatform.android ||
+        animation:
+            context.theme.platform == TargetPlatform.android ||
                 PlatformUtil.isCupertino
             ? quantityFocusNode
             : Listenable.merge([]),

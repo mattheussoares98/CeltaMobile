@@ -49,9 +49,7 @@ class BsfCovenantModel extends BsfCovenantEntity {
         requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
         allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
         address: json['Address'] != null
-            ? BSFAddressModel.fromJson(
-                json['Address'] as Map<String, dynamic>,
-              )
+            ? BSFAddressModel.fromJson(json['Address'] as Map<String, dynamic>)
             : null,
         deliveryAddress: json['DeliveryAddress'] != null
             ? BSFAddressModel.fromJson(
@@ -149,26 +147,26 @@ class BsfCovenantModel extends BsfCovenantEntity {
       );
 
   BsfCovenantEntity toEntity() => BsfCovenantEntity(
-        code: code,
-        personalizedCode: personalizedCode,
-        legacyCode: legacyCode,
-        name: name,
-        fantasyName: fantasyName,
-        cnpjNumber: cnpjNumber,
-        formatedCnpjNumber: formatedCnpjNumber,
-        stateRegistration: stateRegistration,
-        formatedStateRegistration: formatedStateRegistration,
-        dateOfCadaster: dateOfCadaster,
-        email: email,
-        dateOfBirthContact: dateOfBirthContact,
-        nameOfContact: nameOfContact,
-        haveObservations: haveObservations,
-        requiredConveneMatriculate: requiredConveneMatriculate,
-        allowSaleAdditional: allowSaleAdditional,
-        address: address,
-        deliveryAddress: deliveryAddress,
-        collectAddress: collectAddress,
-        saleBlockade: saleBlockade,
-        saleBlockadeInstruction: saleBlockadeInstruction,
-      );
+    code: code,
+    personalizedCode: personalizedCode,
+    legacyCode: legacyCode,
+    name: name,
+    fantasyName: fantasyName,
+    cnpjNumber: cnpjNumber,
+    formatedCnpjNumber: formatedCnpjNumber,
+    stateRegistration: stateRegistration,
+    formatedStateRegistration: formatedStateRegistration,
+    dateOfCadaster: dateOfCadaster,
+    email: email,
+    dateOfBirthContact: dateOfBirthContact,
+    nameOfContact: nameOfContact,
+    haveObservations: haveObservations,
+    requiredConveneMatriculate: requiredConveneMatriculate,
+    allowSaleAdditional: allowSaleAdditional,
+    address: address,
+    deliveryAddress: deliveryAddress,
+    collectAddress: collectAddress,
+    saleBlockade: saleBlockade,
+    saleBlockadeInstruction: saleBlockadeInstruction,
+  );
 }

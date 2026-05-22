@@ -1,8 +1,7 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class WholePriceAndMinQuantity extends StatelessWidget {
   final ProductItemWidget widget;
@@ -10,8 +9,6 @@ class WholePriceAndMinQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,16 +25,16 @@ class WholePriceAndMinQuantity extends StatelessWidget {
               title: ' (mín'.hardcoded,
               subTitle:
                   '${(widget.product.MinimumWholeQuantity ?? 0).toString().toBrazilianNumber(2, true)})',
-              subTitleStyle: theme.textTheme.titleSmall?.copyWith(
+              subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
                 color: (widget.product.MinimumWholeQuantity ?? 0) == 0
                     ? Colors.red
-                    : theme.colorScheme.secondary,
+                    : context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
-              titleStyle: theme.textTheme.titleSmall?.copyWith(
+              titleStyle: context.theme.textTheme.titleSmall?.copyWith(
                 color: (widget.product.MinimumWholeQuantity ?? 0) == 0
                     ? Colors.red
-                    : theme.colorScheme.secondary,
+                    : context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
             ),

@@ -15,9 +15,7 @@ class Discounts extends ConsumerWidget {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
-    final discounts = ref.watch(
-      uiProvider.select((s) => s.discounts),
-    );
+    final discounts = ref.watch(uiProvider.select((s) => s.discounts));
 
     if (discounts.isEmpty) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -33,9 +31,9 @@ class Discounts extends ConsumerWidget {
         final discount = discounts[index].discount;
 
         final discountValue = discount?.value?.toString().toBrazilianNumber(
-              2,
-              discount.type == PercentageOrValue.percentage,
-            );
+          2,
+          discount.type == PercentageOrValue.percentage,
+        );
 
         return Row(
           children: [

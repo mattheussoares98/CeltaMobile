@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class AppDecorations {
   static InputDecoration input({
@@ -13,8 +13,7 @@ class AppDecorations {
     String? errorText,
     bool? isMultiLine,
   }) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = context.theme.colorScheme;
 
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),

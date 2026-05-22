@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
   final QuantityPriceDiscountFieldsAndInsertButton widget;
@@ -17,15 +16,13 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final titleStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.primaryColor,
+    final titleStyle = context.theme.textTheme.bodyMedium?.copyWith(
+      color: context.theme.primaryColor,
     );
-    final subtitleSelected = theme.textTheme.titleMedium?.copyWith(
-      color: theme.primaryColor,
+    final subtitleSelected = context.theme.textTheme.titleMedium?.copyWith(
+      color: context.theme.primaryColor,
     );
-    final subtitleNotSelected = theme.textTheme.titleMedium?.copyWith(
+    final subtitleNotSelected = context.theme.textTheme.titleMedium?.copyWith(
       color: Colors.black,
     );
 
@@ -39,7 +36,7 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
             ? Colors.red
             : practicedPriceType == PracticedPriceType.whole
             ? Colors.green
-            : theme.colorScheme.secondary,
+            : context.theme.colorScheme.secondary,
       );
     }
 
@@ -108,13 +105,13 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
                 title: 'Preço praticado ='.hardcoded,
                 removeColon: true,
                 subTitle: practicedPriceType.name,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: practicedPriceType == PracticedPriceType.notDefined
                       ? Colors.red
-                      : theme.primaryColor,
+                      : context.theme.primaryColor,
                   fontStyle: FontStyle.italic,
                 ),
-                titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
               ),

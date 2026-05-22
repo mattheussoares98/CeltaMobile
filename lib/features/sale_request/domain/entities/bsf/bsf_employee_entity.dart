@@ -57,31 +57,31 @@ class BSFEmployeeEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        code,
-        personalizedCode,
-        buyer,
-        seller,
-        sellerType,
-        providerService,
-        pdvOperator,
-        observations,
-        paysBank,
-        driverInfos,
-        admissionDate,
-        dismissalDate,
-        dateOfBirth,
-        cpfNumber,
-        formatedCpfNumber,
-        rgNumber,
-        pisNumber,
-        formatedRgNumber,
-        name,
-        nameReduced,
-        email,
-        isFired,
-        jobRoleString,
-        accountEmails,
-      ];
+    code,
+    personalizedCode,
+    buyer,
+    seller,
+    sellerType,
+    providerService,
+    pdvOperator,
+    observations,
+    paysBank,
+    driverInfos,
+    admissionDate,
+    dismissalDate,
+    dateOfBirth,
+    cpfNumber,
+    formatedCpfNumber,
+    rgNumber,
+    pisNumber,
+    formatedRgNumber,
+    name,
+    nameReduced,
+    email,
+    isFired,
+    jobRoleString,
+    accountEmails,
+  ];
 
   BSFEmployeeEntity copyWith({
     int? code,
@@ -137,4 +137,3 @@ class BSFEmployeeEntity extends Equatable {
     );
   }
 }
-

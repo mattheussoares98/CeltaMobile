@@ -14,7 +14,6 @@ class CustomerItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final enabled = ref.watch(
       insertUpdateStateControllerProvider.select(
         (s) => s.value?.customer?.code == customer.code,
@@ -36,8 +35,8 @@ class CustomerItem extends ConsumerWidget {
             TitleAndSubTitle(
               title: null,
               subTitle: 'Convênios'.hardcoded,
-              subTitleStyle: theme.textTheme.titleSmall?.copyWith(
-                color: theme.primaryColorDark,
+              subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
+                color: context.theme.primaryColorDark,
               ),
             ),
             const SizedBox(height: Sizes.p4),

@@ -15,7 +15,6 @@ class Costs extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return ResponsiveScrollableWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

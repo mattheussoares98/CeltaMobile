@@ -1,15 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PracticedPrice extends ConsumerWidget {
   final SaleType saleType;
@@ -44,8 +43,6 @@ class PracticedPrice extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p8),
       child: Padding(
@@ -66,10 +63,11 @@ class PracticedPrice extends ConsumerWidget {
                     TitleAndSubTitle(
                       title: null,
                       subTitle: 'Em oferta'.hardcoded,
-                      subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.red,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      subTitleStyle: context.theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: Colors.red,
+                            fontStyle: FontStyle.italic,
+                          ),
                     ),
                   if (saleType == SaleType.whole &&
                       (product.MinimumWholeQuantity ?? 0) > 0)
@@ -77,10 +75,11 @@ class PracticedPrice extends ConsumerWidget {
                       title: 'Qtd mín atacado'.hardcoded,
                       subTitle: product.MinimumWholeQuantity.toString()
                           .toBrazilianNumber(2, true),
-                      subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontStyle: FontStyle.italic,
-                      ),
+                      subTitleStyle: context.theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: context.theme.colorScheme.secondary,
+                            fontStyle: FontStyle.italic,
+                          ),
                     ),
                 ],
               ),

@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DefaultCheckBox extends StatelessWidget {
   final String name;
@@ -19,7 +18,6 @@ class DefaultCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     return RepaintBoundary(
@@ -29,16 +27,18 @@ class DefaultCheckBox extends StatelessWidget {
         curve: Curves.easeInOut,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: enabled ? theme.primaryColor.withAlpha(20) : theme.cardColor,
+          color: enabled
+              ? context.theme.primaryColor.withAlpha(20)
+              : context.theme.cardColor,
           borderRadius: BorderRadius.circular(Sizes.p12),
           border: Border.all(
             color: enabled
-                ? theme.primaryColor
-                : theme.dividerColor.withAlpha(40),
+                ? context.theme.primaryColor
+                : context.theme.dividerColor.withAlpha(40),
           ),
           boxShadow: [
             BoxShadow(
-              color: theme.primaryColor.withAlpha(enabled ? 30 : 15),
+              color: context.theme.primaryColor.withAlpha(enabled ? 30 : 15),
               blurRadius: enabled ? 8 : 4,
               offset: const Offset(0, 2),
             ),
@@ -52,7 +52,7 @@ class DefaultCheckBox extends StatelessWidget {
                     horizontal: Sizes.p12,
                     vertical: Sizes.p4,
                   ),
-                  title: Text(name, style: theme.textTheme.bodyMedium),
+                  title: Text(name, style: context.theme.textTheme.bodyMedium),
                   subtitle: subtitle,
                   trailing: CupertinoSwitch(
                     value: enabled,
@@ -62,8 +62,8 @@ class DefaultCheckBox extends StatelessWidget {
               : CheckboxListTile(
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: Sizes.p12,
-                    ),
-                  title: Text(name, style: theme.textTheme.bodyMedium),
+                  ),
+                  title: Text(name, style: context.theme.textTheme.bodyMedium),
                   subtitle: subtitle,
                   value: enabled,
                   onChanged: onChanged,

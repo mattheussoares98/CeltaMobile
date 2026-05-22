@@ -1,11 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 
 class ClearLotButton extends ConsumerWidget {
   final int enterpriseCode;
@@ -13,7 +13,6 @@ class ClearLotButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     final hasProductsInCart = ref.watch(
@@ -28,7 +27,7 @@ class ClearLotButton extends ConsumerWidget {
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
-        color: hasProductsInCart ? Colors.red : theme.disabledColor,
+        color: hasProductsInCart ? Colors.red : context.theme.disabledColor,
       ),
       onPressed: hasProductsInCart
           ? () {

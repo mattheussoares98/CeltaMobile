@@ -1,12 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class FloatingSaveButton extends ConsumerWidget {
   final TextEditingController observationsController;
@@ -24,7 +24,7 @@ class FloatingSaveButton extends ConsumerWidget {
         enterpriseCode,
       ).select((s) => s.value?.products?.isEmpty ?? true),
     );
-    final theme = Theme.of(context);
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: ref.watch(keyboardVisibilityStateControllerProvider)
@@ -62,7 +62,7 @@ class FloatingSaveButton extends ConsumerWidget {
               },
         backgroundColor: cartIsEmpty
             ? Colors.grey
-            : theme.primaryColor.withAlpha(200),
+            : context.theme.primaryColor.withAlpha(200),
         child: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.checkmark,
           materialIcon: Icons.save,

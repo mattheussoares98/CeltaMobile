@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 /// PERFORMANCE: In Flutter, camera scanning is a 'Device Capability'.
 /// While traditionally called a 'Datasource', this acts as an
@@ -69,7 +70,7 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
               controller: _controller,
               onDetect: (capture) {
                 if (_isScanned) return;
-                
+
                 final List<Barcode> barcodes = capture.barcodes;
                 if (barcodes.isNotEmpty) {
                   _isScanned = true;
@@ -119,7 +120,7 @@ class _ScannerOverlay extends StatelessWidget {
       child: Container(
         decoration: ShapeDecoration(
           shape: QrScannerOverlayShape(
-            borderColor: Theme.of(context).primaryColor,
+            borderColor: context.theme.primaryColor,
             borderRadius: 12,
             borderLength: 30,
             borderWidth: 8,

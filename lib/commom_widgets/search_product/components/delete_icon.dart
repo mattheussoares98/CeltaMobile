@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DeleteIcon extends StatelessWidget {
   final bool isLoading;
@@ -17,7 +17,6 @@ class DeleteIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return DefaultIcon(
       onPress: isLoading
           ? null
@@ -30,7 +29,7 @@ class DeleteIcon extends StatelessWidget {
             },
       materialIcon: Icons.delete,
       cupertinoIcon: CupertinoIcons.delete,
-      iconColor: isLoading ? theme.disabledColor : Colors.red,
+      iconColor: isLoading ? context.theme.disabledColor : Colors.red,
     );
   }
 }

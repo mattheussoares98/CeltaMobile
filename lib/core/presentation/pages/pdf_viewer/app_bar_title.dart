@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
+import 'package:celta_inventario/core/presentation/controllers/share_download/share_download.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
-import 'package:celta_inventario/core/presentation/controllers/share_download/share_download.dart';
 
 class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
   @override
@@ -25,8 +24,7 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isWindows = theme.platform == TargetPlatform.windows;
+    final isWindows = context.theme.platform == TargetPlatform.windows;
 
     ref.listen(shareDownloadControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
@@ -53,7 +51,7 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
                       bytes: bytes,
                       extension: '.pdf',
                     ),
-                    theme.platform,
+                    context.theme.platform,
                   );
             },
             icon: const PlatformIcon(

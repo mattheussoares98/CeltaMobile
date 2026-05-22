@@ -1,11 +1,11 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class PaymentConditionDropdown extends ConsumerWidget {
   const PaymentConditionDropdown({super.key});
@@ -32,8 +32,6 @@ class PaymentConditionDropdown extends ConsumerWidget {
           return const _NotFoundPaymentConditions();
         }
 
-        final theme = Theme.of(context);
-
         final items = data
             .map(
               (e) => DropdownMenuItem<BSFPaymentConditionEntity>(
@@ -41,19 +39,19 @@ class PaymentConditionDropdown extends ConsumerWidget {
                 child: Center(
                   child: RichText(
                     text: TextSpan(
-                      style: theme.textTheme.bodyMedium,
+                      style: context.theme.textTheme.bodyMedium,
                       children: [
                         if (e.personalizedCode.isNotEmpty)
                           TextSpan(
                             text: '${e.personalizedCode} - ',
-                            style: theme.textTheme.titleSmall,
+                            style: context.theme.textTheme.titleSmall,
                           ),
                         TextSpan(text: e.description),
                         if ((e.condition?.composition ?? "0") != "0")
                           TextSpan(
                             text: ' ${e.condition?.composition}',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                              color: theme.primaryColor,
+                            style: context.theme.textTheme.titleSmall?.copyWith(
+                              color: context.theme.primaryColor,
                             ),
                           ),
                       ],

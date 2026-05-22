@@ -57,7 +57,6 @@ class _TelephoneItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return RepaintBoundary(
       child: Card(
         child: Padding(

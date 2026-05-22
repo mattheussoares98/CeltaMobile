@@ -54,7 +54,6 @@ class _EmailFieldState extends ConsumerState<EmailField> {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
       children: [
         Form(

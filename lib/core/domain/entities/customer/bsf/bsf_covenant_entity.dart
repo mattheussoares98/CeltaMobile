@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 
-class BsfCovenantEntity extends Equatable implements SelectableItem<BsfCovenantEntity> {
+class BsfCovenantEntity extends Equatable
+    implements SelectableItem<BsfCovenantEntity> {
   final int? code;
   final String? personalizedCode;
   final String? legacyCode;
@@ -133,4 +134,3 @@ class BsfCovenantEntity extends Equatable implements SelectableItem<BsfCovenantE
   @override
   Color? get color => null;
 }
-

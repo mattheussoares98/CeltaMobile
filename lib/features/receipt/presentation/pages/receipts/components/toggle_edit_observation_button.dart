@@ -22,7 +22,6 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final observations =
         receipt.Observacoes_ProcRecebDoc ?? receipt.DefaultObservations;
 

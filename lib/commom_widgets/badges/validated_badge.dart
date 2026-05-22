@@ -1,7 +1,7 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ValidatedBadge extends StatelessWidget {
   final bool isValid;
@@ -18,8 +18,6 @@ class ValidatedBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Badge(
       offset: const Offset(8, -6),
       backgroundColor: Colors.transparent,
@@ -36,7 +34,9 @@ class ValidatedBadge extends StatelessWidget {
       child: PlatformIcon(
         cupertinoIcon: platformIcon.cupertinoIcon,
         materialIcon: platformIcon.materialIcon,
-        color: isSelected ? theme.primaryColor : theme.disabledColor,
+        color: isSelected
+            ? context.theme.primaryColor
+            : context.theme.disabledColor,
       ),
     );
   }

@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/action_selector/action_selector.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/home/presentation/pages/components/action_selector/action_selector.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// PERFORMANCE: A standalone, optimized Modal Bottom Sheet for
 /// selecting the Sale Request workflow. Using a Stateless widget
@@ -25,8 +25,6 @@ class SaleRequestActionSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return RepaintBoundary(
       child: Container(
         padding: const EdgeInsets.fromLTRB(
@@ -36,7 +34,7 @@ class SaleRequestActionSelector extends StatelessWidget {
           Sizes.p32,
         ),
         decoration: BoxDecoration(
-          color: theme.scaffoldBackgroundColor,
+          color: context.theme.scaffoldBackgroundColor,
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(Sizes.p24),
           ),
@@ -58,7 +56,7 @@ class SaleRequestActionSelector extends StatelessWidget {
                 height: 4,
                 margin: const EdgeInsets.only(bottom: Sizes.p20),
                 decoration: BoxDecoration(
-                  color: theme.dividerColor.withAlpha(100),
+                  color: context.theme.dividerColor.withAlpha(100),
                   borderRadius: BorderRadius.circular(Sizes.p4),
                 ),
               ),
@@ -80,18 +78,16 @@ class _SearchSaleRequestAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ActionCard(
       title: 'Pesquisar pedidos'.hardcoded,
       subtitle: 'Pesquisar pedidos já criados'.hardcoded,
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.search,
         materialIcon: Icons.search,
-        color: theme.colorScheme.secondary,
+        color: context.theme.colorScheme.secondary,
         size: 28,
       ),
-      color: theme.colorScheme.secondary,
+      color: context.theme.colorScheme.secondary,
       onTap: () => Navigator.pop(context, Routes.searchSaleRequests),
     );
   }
@@ -102,18 +98,16 @@ class _CreateSaleRequestAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ActionCard(
       title: 'Criar pedido'.hardcoded,
       subtitle: 'Criar um novo pedido de vendas'.hardcoded,
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.add_circled,
         materialIcon: Icons.add_circle_outline,
-        color: theme.primaryColor,
+        color: context.theme.primaryColor,
         size: 28,
       ),
-      color: theme.primaryColor,
+      color: context.theme.primaryColor,
       onTap: () => Navigator.pop(context, Routes.saleRequestRequestsTypes),
     );
   }
@@ -124,10 +118,11 @@ class _Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Text(
       'Pedido de Vendas'.hardcoded,
-      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+      style: context.theme.textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

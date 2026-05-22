@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class PasswordField extends ConsumerStatefulWidget {
   final TextEditingController passwordController;
@@ -34,7 +33,6 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isLoading = ref.watch(
       loginControllerProvider.select((s) => s.isLoading),
     );
@@ -53,7 +51,7 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
         PlatformUtil.isCupertino
             ? CupertinoIcons.lock_fill
             : Icons.lock_outline,
-        color: isLoading ? theme.disabledColor : null,
+        color: isLoading ? context.theme.disabledColor : null,
       ),
       suffixIcon: IconButton(
         onPressed: isLoading ? null : toggleShowPassword,
@@ -63,7 +61,7 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
               : CupertinoIcons.eye_slash,
           materialIcon: showPassword ? Icons.visibility : Icons.visibility_off,
         ),
-        color: isLoading ? theme.disabledColor : null,
+        color: isLoading ? context.theme.disabledColor : null,
       ),
       obscureText: !showPassword,
     );

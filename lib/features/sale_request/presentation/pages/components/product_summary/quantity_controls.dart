@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuantityControlButton extends ConsumerWidget {
   final BSFProductItemEntity item;
@@ -27,7 +27,6 @@ class QuantityControlButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final currentQuantity = item.quantity ?? 0;
     final isRemoving = !isAdding && currentQuantity <= 1;
 
@@ -50,7 +49,9 @@ class QuantityControlButton extends ConsumerWidget {
             : Icons.remove_circle_outline,
         size: size,
         color: isRemoving
-            ? (currentQuantity == 0 ? Colors.grey : theme.colorScheme.error)
+            ? (currentQuantity == 0
+                  ? Colors.grey
+                  : context.theme.colorScheme.error)
             : null,
       ),
       padding: const EdgeInsets.all(Sizes.p4),

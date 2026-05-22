@@ -22,7 +22,6 @@ class ProductInformations extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isIOS = PlatformUtil.isCupertino;
 
     return InkWell(
@@ -58,14 +57,14 @@ class ProductInformations extends ConsumerWidget {
                   subTitle: lastChangedProduct?.quantity
                       .toString()
                       .toBrazilianNumber(3),
-                  titleStyle: theme.textTheme.bodyMedium?.copyWith(
+                  titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.w300,
-                    color: theme.primaryColor,
+                    color: context.theme.primaryColor,
                   ),
-                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                     fontStyle: FontStyle.italic,
-                    color: theme.primaryColor,
+                    color: context.theme.primaryColor,
                   ),
                 );
               },

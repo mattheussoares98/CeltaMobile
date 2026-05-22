@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DefaultDropDown<T> extends StatelessWidget {
   final void Function(T)? onChanged;
@@ -27,8 +26,6 @@ class DefaultDropDown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     if (PlatformUtil.isCupertino) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       return FormField(
@@ -40,9 +37,9 @@ class DefaultDropDown<T> extends StatelessWidget {
               SizedBox(
                 height: dropdownHeight,
                 child: CupertinoButton(
-                  disabledColor: theme.disabledColor.withAlpha(100),
+                  disabledColor: context.theme.disabledColor.withAlpha(100),
                   padding: const EdgeInsets.only(left: 15),
-                  color: theme.disabledColor.withAlpha(50),
+                  color: context.theme.disabledColor.withAlpha(50),
                   onPressed: onChanged == null || (items?.length ?? 0) < 1
                       ? null
                       : () async {
@@ -65,9 +62,10 @@ class DefaultDropDown<T> extends StatelessWidget {
                                 onPressed: () => Navigator.of(context).pop(),
                                 child: Text(
                                   'Cancelar'.hardcoded,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    color: CupertinoColors.destructiveRed,
-                                  ),
+                                  style: context.theme.textTheme.titleMedium
+                                      ?.copyWith(
+                                        color: CupertinoColors.destructiveRed,
+                                      ),
                                 ),
                               ),
                             ),
@@ -83,7 +81,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                         child: Text(
                           label ?? 'Selecionar'.hardcoded,
                           maxLines: 1,
-                          style: theme.textTheme.bodyLarge,
+                          style: context.theme.textTheme.bodyLarge,
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -120,7 +118,7 @@ class DefaultDropDown<T> extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Sizes.p8),
         ),
-        color: theme.disabledColor.withAlpha(50),
+        color: context.theme.disabledColor.withAlpha(50),
         child: DropdownButtonFormField<T>(
           autovalidateMode: AutovalidateMode.onUserInteractionIfError,
           decoration: const InputDecoration(border: InputBorder.none),
@@ -135,7 +133,7 @@ class DefaultDropDown<T> extends StatelessWidget {
           hint: hint,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: theme.textTheme.titleMedium!.fontSize,
+            fontSize: context.theme.textTheme.titleMedium!.fontSize,
             color: Colors.black,
             height: 1,
             overflow: TextOverflow.ellipsis,

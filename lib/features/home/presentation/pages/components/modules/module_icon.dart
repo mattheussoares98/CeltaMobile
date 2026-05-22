@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ModuleIcon extends StatelessWidget {
   const ModuleIcon({super.key, required this.platformIcon});
@@ -10,8 +10,7 @@ class ModuleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final color = theme.primaryColor;
+    final color = context.theme.primaryColor;
     return Container(
       padding: const EdgeInsets.all(Sizes.p8),
       decoration: BoxDecoration(

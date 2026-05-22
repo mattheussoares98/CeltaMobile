@@ -1,15 +1,15 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
-import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
 
 class DefaultButton extends ConsumerWidget {
   final DownloadType downloadType;
@@ -18,12 +18,7 @@ class DefaultButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isXlsx = downloadType == DownloadType.xlsx;
-    final requestFolderToDownload =
-        (theme.platform == TargetPlatform.windows ||
-            theme.platform == TargetPlatform.macOS) &&
-        (!kIsWeb);
 
     final hasAttachment = ref.watch(
       downloadStateControllerProvider(report.Code, downloadType).select(
@@ -60,7 +55,7 @@ class DefaultButton extends ConsumerWidget {
                 downloadType,
               ).notifier,
             )
-            .download(theme.platform, report.ReportModelName);
+            .download(context.theme.platform, report.ReportModelName);
       }
 
       if (isXlsx) {
@@ -109,7 +104,7 @@ class DefaultButton extends ConsumerWidget {
                     : 2
               : 3,
           child: PrimaryTextButton(
-            color: downloadedLastExecution ? theme.disabledColor : null,
+            color: downloadedLastExecution ? context.theme.disabledColor : null,
             textAlign: TextAlign.start,
             text: hasAttachment
                 ? (isXlsx
@@ -144,7 +139,7 @@ class DefaultButton extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: Sizes.p8),
                 child: Text(
                   error.toString(),
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: context.theme.textTheme.bodySmall?.copyWith(
                     color: Colors.red,
                     fontStyle: FontStyle.italic,
                   ),
@@ -165,9 +160,9 @@ class DefaultButton extends ConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (isXlsx && !requestFolderToDownload)
+                if (isXlsx && !PlatformUtil.isDesktop)
                   ShareButton(fileBytes: fileBytes, report: report)
-                else if (isXlsx && requestFolderToDownload)
+                else if (isXlsx && PlatformUtil.isDesktop)
                   VisualizeFilePathButton(this)
                 else
                   VisualizePdfButton(

@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class UnselectedMessage extends StatelessWidget {
   final String title;
@@ -10,15 +10,13 @@ class UnselectedMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return SliverToBoxAdapter(
       child: Row(
         children: [
           Flexible(
             child: Text(
               title,
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: context.theme.textTheme.titleMedium?.copyWith(
                 color: Colors.red,
                 fontStyle: FontStyle.italic,
               ),

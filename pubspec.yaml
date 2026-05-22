@@ -66,6 +66,7 @@ dependencies:
   package_info_plus: ^9.0.0
   mobile_scanner: ^7.2.0
 
+  flutter_web_plugins: any
 icons_launcher:
   image_path: "lib/core/assets/images/app_logo.png"
   platforms:

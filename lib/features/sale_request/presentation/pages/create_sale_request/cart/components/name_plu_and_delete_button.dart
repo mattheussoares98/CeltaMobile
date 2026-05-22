@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class NamePluAndDeleteButton extends ConsumerWidget {
   final SaleRequestCartProductEntity cartProduct;
@@ -19,7 +18,6 @@ class NamePluAndDeleteButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -31,14 +29,14 @@ class NamePluAndDeleteButton extends ConsumerWidget {
                 title: cartProduct.product!.Name,
                 subTitle:
                     " (${cartProduct.product!.PackingQuantity!.formattedPacking()})",
-                titleStyle: theme.textTheme.titleMedium,
-                subTitleStyle: theme.textTheme.bodyMedium,
+                titleStyle: context.theme.textTheme.titleMedium,
+                subTitleStyle: context.theme.textTheme.bodyMedium,
               ),
               TitleAndSubTitle(
                 title: 'PLU'.hardcoded,
                 subTitle: cartProduct.product!.PLU,
-                titleStyle: theme.textTheme.titleMedium,
-                subTitleStyle: theme.textTheme.bodyMedium,
+                titleStyle: context.theme.textTheme.titleMedium,
+                subTitleStyle: context.theme.textTheme.bodyMedium,
               ),
             ],
           ),

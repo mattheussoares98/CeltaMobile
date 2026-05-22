@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultCupertinoCheckBox<T extends SelectableItem>
     extends StatelessWidget {
@@ -18,8 +18,6 @@ class DefaultCupertinoCheckBox<T extends SelectableItem>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return CupertinoListSection(
       dividerMargin: 0,
       margin: EdgeInsets.zero,
@@ -32,10 +30,10 @@ class DefaultCupertinoCheckBox<T extends SelectableItem>
         final isSelected = selectedSaleType == item;
 
         return CupertinoListTile(
-          title: Text(item.name, style: theme.textTheme.bodyMedium),
+          title: Text(item.name, style: context.theme.textTheme.bodyMedium),
           onTap: () => onTap(item),
           backgroundColor: isSelected
-              ? theme.primaryColorLight.withAlpha(100)
+              ? context.theme.primaryColorLight.withAlpha(100)
               : null,
           trailing: isSelected
               ? const Icon(

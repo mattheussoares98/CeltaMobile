@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:celta_inventario/constants/app_sizes.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 /// Text button to be used as an [AppBar] action
 class ActionTextButton extends StatelessWidget {
@@ -14,9 +15,9 @@ class ActionTextButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: Theme.of(
-            context,
-          ).textTheme.titleLarge!.copyWith(color: Colors.white),
+          style: context.theme.textTheme.titleLarge!.copyWith(
+            color: Colors.white,
+          ),
         ),
       ),
     );

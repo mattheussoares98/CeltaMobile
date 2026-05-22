@@ -23,7 +23,6 @@ class SaveIconButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final loadedComplete = ref.watch(
       completeBuyQuotationsStateControllerProvider(
         enterpriseCode,

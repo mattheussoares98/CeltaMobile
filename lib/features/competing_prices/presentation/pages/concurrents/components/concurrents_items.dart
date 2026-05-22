@@ -1,18 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
-import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ConcurrentsItems extends ConsumerWidget {
   final ResearchEntity selectedResearch;
@@ -115,7 +115,6 @@ class ConcurrentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final mediaSize = MediaQuery.sizeOf(context);
 
     return Card(
@@ -139,7 +138,7 @@ class ConcurrentItem extends StatelessWidget {
                 subTitle: concurrentBindedInResearch == true
                     ? 'Associado à pesquisa'.hardcoded
                     : 'Não associado à pesquisa'.hardcoded,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: concurrentBindedInResearch == true
                       ? Colors.green
                       : Colors.red,

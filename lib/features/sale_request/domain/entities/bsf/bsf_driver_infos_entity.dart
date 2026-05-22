@@ -16,9 +16,9 @@ class BSFDriverInfosEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        isDriver,
-        driverDocument,
-        driverDocumentExpiration,
-        driverCategory,
-      ];
+    isDriver,
+    driverDocument,
+    driverDocumentExpiration,
+    driverCategory,
+  ];
 }

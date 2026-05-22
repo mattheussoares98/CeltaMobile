@@ -1,11 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class UserField extends ConsumerWidget {
   final TextEditingController userController;
@@ -20,7 +20,6 @@ class UserField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isLoading = ref.watch(
       loginControllerProvider.select((s) => s.isLoading),
     );
@@ -38,7 +37,7 @@ class UserField extends ConsumerWidget {
       prefixIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.person,
         materialIcon: Icons.person,
-        color: isLoading ? theme.disabledColor : null,
+        color: isLoading ? context.theme.disabledColor : null,
       ),
     );
   }

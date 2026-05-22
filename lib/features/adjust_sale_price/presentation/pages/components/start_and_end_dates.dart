@@ -1,13 +1,13 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class StartAndEndDates extends ConsumerWidget {
   final String plu;
@@ -105,7 +105,6 @@ class _GetDateItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final theme = Theme.of(context);
 
     void updateDate() async {
       final selectedDate = await GetNewDate.get(
@@ -137,7 +136,7 @@ class _GetDateItem extends StatelessWidget {
                   icon: PlatformIcon(
                     cupertinoIcon: CupertinoIcons.calendar_badge_plus,
                     materialIcon: Icons.calendar_month,
-                    color: enabled ? null : theme.disabledColor,
+                    color: enabled ? null : context.theme.disabledColor,
                   ),
                 ),
               ],
@@ -152,8 +151,8 @@ class _GetDateItem extends StatelessWidget {
                         : DateFormat(
                             'dd/MM/yyyy HH:mm',
                           ).format(currentSelectedDate ?? now),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: enabled ? null : theme.disabledColor,
+                    style: context.theme.textTheme.bodyMedium?.copyWith(
+                      color: enabled ? null : context.theme.disabledColor,
                     ),
                     textAlign: TextAlign.center,
                   ),

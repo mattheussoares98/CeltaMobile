@@ -13,7 +13,6 @@ class VisualizeFilePathButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return PrimaryTextButton(
       isSmall: true,
       text: 'Visualizar caminho'.hardcoded,

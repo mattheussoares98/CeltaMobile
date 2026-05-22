@@ -20,7 +20,6 @@ class VisualizePdfButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return PrimaryTextButton(
       text: 'Visualizar'.hardcoded,
       isSmall: true,

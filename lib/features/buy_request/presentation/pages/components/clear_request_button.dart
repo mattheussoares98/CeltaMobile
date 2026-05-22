@@ -1,11 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ClearRequestButton extends ConsumerWidget {
   final TextEditingController observationsController;
@@ -22,7 +22,7 @@ class ClearRequestButton extends ConsumerWidget {
       pendingBuyRequestStateControllerProvider(enterpriseCode),
     );
     final pendingValue = pendingAsync.value;
-    final theme = Theme.of(context);
+
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     bool hasSelectedValues =
@@ -59,9 +59,9 @@ class ClearRequestButton extends ConsumerWidget {
         icon: PlatformIcon(
           cupertinoIcon: CupertinoIcons.delete,
           materialIcon: Icons.delete,
-          color: hasSelectedValues ? Colors.red : theme.disabledColor,
+          color: hasSelectedValues ? Colors.red : context.theme.disabledColor,
         ),
-        color: hasSelectedValues ? Colors.red : theme.disabledColor,
+        color: hasSelectedValues ? Colors.red : context.theme.disabledColor,
       ),
     );
   }

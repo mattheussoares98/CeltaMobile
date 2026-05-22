@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ActionCard extends StatelessWidget {
   final String title;
@@ -20,7 +20,6 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Material(
@@ -31,7 +30,7 @@ class ActionCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(Sizes.p16),
           decoration: BoxDecoration(
-            border: Border.all(color: theme.dividerColor.withAlpha(40)),
+            border: Border.all(color: context.theme.dividerColor.withAlpha(40)),
             borderRadius: BorderRadius.circular(Sizes.p16),
           ),
           child: Row(
@@ -53,20 +52,20 @@ class ActionCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: context.theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       subtitle,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.hintColor,
+                      style: context.theme.textTheme.bodySmall?.copyWith(
+                        color: context.theme.hintColor,
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: theme.dividerColor),
+              Icon(Icons.chevron_right, color: context.theme.dividerColor),
             ],
           ),
         ),

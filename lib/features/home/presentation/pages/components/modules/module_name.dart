@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ModuleName extends StatelessWidget {
   const ModuleName({super.key, required this.module});
@@ -10,14 +10,12 @@ class ModuleName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Text(
         module.description,
         textAlign: TextAlign.center,
-        style: theme.textTheme.titleSmall?.copyWith(
+        style: context.theme.textTheme.titleSmall?.copyWith(
           fontWeight: FontWeight.w600,
         ),
         overflow: TextOverflow.ellipsis,

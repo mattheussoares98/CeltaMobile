@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/sale_request_details/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsItems extends ConsumerWidget {
   const ProductsItems({super.key});
@@ -41,15 +40,17 @@ class ProductsItems extends ConsumerWidget {
                       children: [
                         Text(
                           product?.name ?? '',
-                          style: Theme.of(context).textTheme.titleSmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: context.theme.textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           'PLU: ${product?.productPackingPriceLookUpString} | (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(color: Theme.of(context).hintColor),
+                          style: context.theme.textTheme.labelSmall?.copyWith(
+                            color: context.theme.hintColor,
+                          ),
                         ),
                       ],
                     ),

@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class ProductsItems extends ConsumerWidget {
   final SearchProductKey searchProductKey;
@@ -76,7 +76,6 @@ class _ProductItem extends ConsumerWidget {
         receiptCode,
       ).select((s) => s == index),
     );
-    final theme = Theme.of(context);
 
     return RepaintBoundary(
       child: ProductItemWidget(
@@ -124,12 +123,12 @@ class _ProductItem extends ConsumerWidget {
             ),
             TitleAndSubTitle(
               title: 'Quantidade contada'.hardcoded,
-              titleStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.secondary,
+              titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
+                color: context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
-              subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.secondary,
+              subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
               ),
               subTitle: product.Quantidade_ProcRecebDocProEmb,

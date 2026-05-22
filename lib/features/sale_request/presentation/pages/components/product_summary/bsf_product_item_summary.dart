@@ -2,14 +2,13 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 
 class BSFProductItemSummary extends ConsumerWidget {
   final ProductEntity product;
@@ -37,7 +36,6 @@ class BSFProductItemSummary extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
     final summaryContent = SingleChildScrollView(
@@ -65,14 +63,14 @@ class BSFProductItemSummary extends ConsumerWidget {
                         3,
                         true,
                       ),
-                      style: theme.textTheme.titleMedium?.copyWith(
+                      style: context.theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       'Qtd'.hardcoded,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.primaryColor,
+                      style: context.theme.textTheme.labelSmall?.copyWith(
+                        color: context.theme.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

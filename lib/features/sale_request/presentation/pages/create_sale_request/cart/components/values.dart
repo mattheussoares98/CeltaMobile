@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class Values extends StatelessWidget {
   final SaleRequestCartProductEntity product;
@@ -71,17 +70,15 @@ class _ColumnValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Flexible(
       child: Column(
         children: [
           Text(
             title.hardcoded,
             textAlign: TextAlign.center,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: context.theme.textTheme.titleSmall?.copyWith(
               color: isDiscount == true
-                  ? theme.colorScheme.secondary
+                  ? context.theme.colorScheme.secondary
                   : Colors.grey[600],
             ),
           ),
@@ -91,9 +88,9 @@ class _ColumnValues extends StatelessWidget {
               valueIsPrice ? 2 : 3,
               !valueIsPrice,
             ),
-            subTitleStyle: theme.textTheme.bodyMedium?.copyWith(
+            subTitleStyle: context.theme.textTheme.bodyMedium?.copyWith(
               color: isDiscount == true
-                  ? theme.colorScheme.secondary
+                  ? context.theme.colorScheme.secondary
                   : Colors.grey,
             ),
             subTitleIsPrice: valueIsPrice,

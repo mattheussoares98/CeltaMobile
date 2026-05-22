@@ -11,9 +11,5 @@ class LastChangedProductEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-    codigoInternoProEmb,
-    quantity,
-    isSubtract,
-  ];
+  List<Object?> get props => [codigoInternoProEmb, quantity, isSubtract];
 }

@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;
@@ -26,8 +25,6 @@ class TotalPriceAndInsertButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return AnimatedBuilder(
       animation: Listenable.merge([
         priceController,
@@ -44,20 +41,22 @@ class TotalPriceAndInsertButton extends StatelessWidget {
         );
         return Column(
           children: [
-            Text('Total'.hardcoded, style: theme.textTheme.titleSmall),
+            Text('Total'.hardcoded, style: context.theme.textTheme.titleSmall),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: 'R\$ '.hardcoded,
-                    style: theme.textTheme.titleSmall?.copyWith(fontSize: 10),
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      fontSize: 10,
+                    ),
                   ),
                   TextSpan(
                     text: newItem.getTotalLiquid
                         .toString()
                         .toBrazilianNumber()
                         .hardcoded,
-                    style: theme.textTheme.titleSmall,
+                    style: context.theme.textTheme.titleSmall,
                   ),
                 ],
               ),

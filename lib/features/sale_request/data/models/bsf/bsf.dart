@@ -8,4 +8,3 @@ export './bsf_sale_request_model.dart';
 export './bsf_user_authorization_model.dart';
 export './bsf_value_type_model.dart';
 export 'product/product.dart';
-

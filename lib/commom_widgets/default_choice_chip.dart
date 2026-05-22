@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 /// PERFORMANCE: This widget chooses between a Segmented Control and a Wrap
 /// layout based on available width to prevent text overflow and unreadable labels.
@@ -21,8 +21,6 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return RepaintBoundary(
       child: Wrap(
         key: const ValueKey('wrap'),
@@ -42,12 +40,12 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
                 onChanged(item.value);
               }
             },
-            selectedColor: item.color ?? theme.primaryColor,
+            selectedColor: item.color ?? context.theme.primaryColor,
             checkmarkColor: Colors.white,
             labelStyle: TextStyle(
               color: isSelected
                   ? Colors.white
-                  : theme.textTheme.bodyMedium?.color,
+                  : context.theme.textTheme.bodyMedium?.color,
               fontSize: 12,
             ),
           );

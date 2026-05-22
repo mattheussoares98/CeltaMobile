@@ -1,14 +1,14 @@
 import 'dart:math';
 
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultPaginationButtons<T> extends ConsumerWidget {
   final void Function(int page) onChangePage;
@@ -34,8 +34,6 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-
     final int startItem = (results.actualPage - 1) * results.recordsByPage + 1;
     final int endItem = min(
       results.actualPage * results.recordsByPage,
@@ -51,9 +49,11 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
               vertical: Sizes.p4,
             ),
             decoration: BoxDecoration(
-              color: theme.cardColor,
+              color: context.theme.cardColor,
               borderRadius: BorderRadius.circular(Sizes.p32),
-              border: Border.all(color: theme.dividerColor.withAlpha(40)),
+              border: Border.all(
+                color: context.theme.dividerColor.withAlpha(40),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withAlpha(10),
@@ -91,21 +91,24 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
                             );
                             return Text(
                               '${results.actualPage} / ${results.totalPages}',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                height: 1.1,
-                                color: isLoading ? theme.disabledColor : null,
-                              ),
+                              style: context.theme.textTheme.bodyMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    height: 1.1,
+                                    color: isLoading
+                                        ? context.theme.disabledColor
+                                        : null,
+                                  ),
                             );
                           },
                         ),
                         Text(
                           '$startItem-$endItem de ${results.totalRecords}'
                               .hardcoded,
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: context.theme.textTheme.labelSmall?.copyWith(
                             fontSize: 9,
                             height: 1.0,
-                            color: theme.hintColor,
+                            color: context.theme.hintColor,
                             // fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -142,7 +145,7 @@ class _DefaultVerticalDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return VerticalDivider(
       width: 1,
-      color: Theme.of(context).dividerColor.withAlpha(30),
+      color: context.theme.dividerColor.withAlpha(30),
     );
   }
 }
@@ -160,7 +163,6 @@ class _PageActionIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isLoading = ref.watch(provider.select((s) => s.isLoading));
 
     return IconButton(
@@ -170,7 +172,9 @@ class _PageActionIcon extends ConsumerWidget {
       icon: PlatformIcon(
         cupertinoIcon: platformIcon.cupertinoIcon,
         materialIcon: platformIcon.materialIcon,
-        color: isLoading ? theme.disabledColor : theme.primaryColor,
+        color: isLoading
+            ? context.theme.disabledColor
+            : context.theme.primaryColor,
         size: 18,
       ),
     );

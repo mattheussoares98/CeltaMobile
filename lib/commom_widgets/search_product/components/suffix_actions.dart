@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/settings/presentation/pages/pages.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/settings/presentation/pages/pages.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
-import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class SuffixActions extends ConsumerStatefulWidget {
   final bool isLoading;
@@ -33,10 +32,9 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
     with DefaultSearchProductsMixin {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isMobile =
         PlatformUtil.isCupertino ||
-        theme.platform == TargetPlatform.android;
+        context.theme.platform == TargetPlatform.android;
     final width = MediaQuery.sizeOf(context).width;
 
     return Row(
@@ -66,7 +64,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
                   ),
             materialIcon: Icons.camera_alt,
             cupertinoIcon: CupertinoIcons.camera_fill,
-            iconColor: widget.isLoading ? theme.disabledColor : null,
+            iconColor: widget.isLoading ? context.theme.disabledColor : null,
             showWhenIsSmallPage: true,
           ),
         DefaultIcon(
@@ -83,7 +81,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
                 },
           materialIcon: Icons.settings,
           cupertinoIcon: CupertinoIcons.settings,
-          iconColor: widget.isLoading ? theme.disabledColor : null,
+          iconColor: widget.isLoading ? context.theme.disabledColor : null,
         ),
       ],
     );

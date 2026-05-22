@@ -16,5 +16,10 @@ class BSFDeliveryTaxWrapperEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [deliveryTax, mailFreightType, isFob, isDiscounted];
+  List<Object?> get props => [
+    deliveryTax,
+    mailFreightType,
+    isFob,
+    isDiscounted,
+  ];
 }

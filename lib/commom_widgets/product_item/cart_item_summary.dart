@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class CartItemSummary extends StatelessWidget {
   final double cartQuantity;
@@ -47,13 +46,11 @@ class CartItemSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    TextStyle? titleStyle = theme.textTheme.bodyMedium?.copyWith(
-      color: theme.colorScheme.secondary,
+    TextStyle? titleStyle = context.theme.textTheme.bodyMedium?.copyWith(
+      color: context.theme.colorScheme.secondary,
     );
-    TextStyle? subtitleStyle = theme.textTheme.titleMedium?.copyWith(
-      color: theme.colorScheme.secondary,
+    TextStyle? subtitleStyle = context.theme.textTheme.titleMedium?.copyWith(
+      color: context.theme.colorScheme.secondary,
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

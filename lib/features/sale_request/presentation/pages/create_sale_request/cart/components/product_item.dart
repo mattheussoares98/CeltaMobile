@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/cart/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerWidget {
   final SaleRequestCartProductEntity cartProduct;
@@ -43,7 +42,7 @@ class ProductItem extends ConsumerWidget {
           ).select((s) => s.productPackingCode),
         ) ==
         cartProduct.ProductPackingCode;
-    final theme = Theme.of(context);
+
     final isIOS = PlatformUtil.isCupertino;
 
     return Card(
@@ -74,9 +73,10 @@ class ProductItem extends ConsumerWidget {
                       title: null,
                       subTitle:
                           "${cartProduct.DiscountDescription} (${((cartProduct.DiscountValue ?? 0) / cartProduct.Quantity).toString().toBrazilianNumber().addBrazilianCoin()} por UN)",
-                      subTitleStyle: theme.textTheme.titleSmall?.copyWith(
-                        color: theme.colorScheme.secondary,
-                      ),
+                      subTitleStyle: context.theme.textTheme.titleSmall
+                          ?.copyWith(
+                            color: context.theme.colorScheme.secondary,
+                          ),
                     ),
                   Values(
                     product: cartProduct,

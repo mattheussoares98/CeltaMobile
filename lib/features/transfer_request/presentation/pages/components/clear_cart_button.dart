@@ -1,12 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ClearCartButton extends ConsumerWidget {
   final DraftKey draftKey;
@@ -14,7 +14,6 @@ class ClearCartButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final cartIsEmpty = ref.watch(
       cartProductsStateControllerProvider(
         draftKey,
@@ -27,7 +26,7 @@ class ClearCartButton extends ConsumerWidget {
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
-        color: cartIsEmpty ? theme.disabledColor : Colors.red,
+        color: cartIsEmpty ? context.theme.disabledColor : Colors.red,
       ),
       color: Colors.red,
       onPressed: cartIsEmpty

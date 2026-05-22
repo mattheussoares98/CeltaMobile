@@ -1,12 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/filters/filters.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SaleRequestFilters extends ConsumerStatefulWidget {
   final TextEditingController startController;
@@ -66,8 +65,6 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     ref.listen(saleRequestsStateControllerProvider(widget.enterpriseCode), (
       p,
       n,
@@ -89,17 +86,19 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
             collapsedShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(Sizes.p12),
             ),
-            backgroundColor: theme.primaryColorLight.withAlpha(30),
-            collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
+            backgroundColor: context.theme.primaryColorLight.withAlpha(30),
+            collapsedBackgroundColor: context.theme.primaryColorDark.withAlpha(
+              30,
+            ),
             childrenPadding: const EdgeInsets.all(Sizes.p8),
-            iconColor: theme.primaryColorDark,
-            collapsedIconColor: theme.primaryColor,
+            iconColor: context.theme.primaryColorDark,
+            collapsedIconColor: context.theme.primaryColor,
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
             controller: expansibleController,
             initiallyExpanded: true,
             title: Text(
               'Filtros de busca'.hardcoded,
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: context.theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),

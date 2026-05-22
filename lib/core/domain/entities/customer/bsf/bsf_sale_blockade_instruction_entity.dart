@@ -14,12 +14,7 @@ class BsfSaleBlockadeInstructionEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        code,
-        personalizedCode,
-        legacyCode,
-        description,
-      ];
+  List<Object?> get props => [code, personalizedCode, legacyCode, description];
 
   BsfSaleBlockadeInstructionEntity copyWith({
     int? code,

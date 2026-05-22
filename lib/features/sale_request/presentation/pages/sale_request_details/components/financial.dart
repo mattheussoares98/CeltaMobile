@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class Financial extends ConsumerWidget {
   const Financial({super.key});
@@ -22,8 +21,6 @@ class Financial extends ConsumerWidget {
 
     final payments = financials?.firstOrNull?.paymentFinalizations;
     final bool isFinancialEmpty = payments?.isEmpty ?? true;
-
-    final theme = Theme.of(context);
 
     return Card(
       child: Padding(
@@ -44,7 +41,7 @@ class Financial extends ConsumerWidget {
                     isFinancialEmpty
                         ? 'Sem financeiro'.hardcoded
                         : 'Financeiro'.hardcoded,
-                    style: theme.textTheme.bodyLarge?.copyWith(
+                    style: context.theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: isFinancialEmpty
                           ? FontWeight.bold
                           : FontWeight.w300,
@@ -81,29 +78,31 @@ class Financial extends ConsumerWidget {
                         RichText(
                           text: TextSpan(
                             text: name,
-                            style: theme.textTheme.titleSmall,
+                            style: context.theme.textTheme.titleSmall,
                             children: [
                               if (payment.value != null) ...[
                                 TextSpan(
                                   text: ' (R\$',
-                                  style: theme.textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.primaryColor,
-                                    fontSize: 11,
-                                  ),
+                                  style: context.theme.textTheme.bodyMedium
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: context.theme.primaryColor,
+                                        fontSize: 11,
+                                      ),
                                 ),
                                 TextSpan(
                                   text:
                                       ' ${payment.value.toString().toBrazilianNumber()})',
-                                  style: theme.textTheme.titleSmall?.copyWith(
-                                    color: theme.primaryColor,
-                                  ),
+                                  style: context.theme.textTheme.titleSmall
+                                      ?.copyWith(
+                                        color: context.theme.primaryColor,
+                                      ),
                                 ),
                               ],
                               if (portions > 1)
                                 TextSpan(
                                   text: ' em ${portions}x',
-                                  style: theme.textTheme.titleSmall,
+                                  style: context.theme.textTheme.titleSmall,
                                 ),
                             ],
                           ),

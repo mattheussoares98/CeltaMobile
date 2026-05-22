@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/customer/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchedCustomersItems extends ConsumerWidget {
   const SearchedCustomersItems({super.key});
@@ -14,7 +14,6 @@ class SearchedCustomersItems extends ConsumerWidget {
     final consumerCustomerCode = ref.watch(
       consumerCustomerStateControllerProvider.select((s) => s.value?.code),
     );
-    final theme = Theme.of(context);
 
     return AsyncValueWidget(
       value: ref.watch(searchedCustomersStateControllerProvider),
@@ -45,8 +44,8 @@ class SearchedCustomersItems extends ConsumerWidget {
                   child: Center(
                     child: Text(
                       searchState.errorMessage!,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: theme.colorScheme.error,
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        color: context.theme.colorScheme.error,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

@@ -15,8 +15,7 @@ class DefaultSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textStyle = theme.textTheme.titleSmall;
+    final textStyle = context.theme.textTheme.titleSmall;
 
     if (PlatformUtil.isCupertino) {
       return CupertinoListTile(

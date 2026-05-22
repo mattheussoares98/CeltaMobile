@@ -22,7 +22,6 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final selected =
         ref.watch(selectedLotIndexStateControllerProvider) == index;
 

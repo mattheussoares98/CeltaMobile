@@ -1,10 +1,10 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/products.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class AppBarTitle extends ConsumerWidget {
   final ProductsPage widget;
@@ -12,7 +12,6 @@ class AppBarTitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Column(
@@ -35,11 +34,11 @@ class AppBarTitle extends ConsumerWidget {
             children: [
               Text(
                 "${widget.researchName!} (${widget.researchCode})",
-                style: theme.textTheme.titleSmall,
+                style: context.theme.textTheme.titleSmall,
               ),
               Text(
                 "${widget.concurrentName!} (${widget.concurrentCode})",
-                style: theme.textTheme.titleSmall,
+                style: context.theme.textTheme.titleSmall,
               ),
             ],
           ),
@@ -59,9 +58,9 @@ class AppBarTitle extends ConsumerWidget {
               restrictProducts == true
                   ? 'Produtos restringidos'
                   : 'Produtos não restringidos',
-              style: theme.textTheme.bodySmall?.copyWith(
+              style: context.theme.textTheme.bodySmall?.copyWith(
                 color: restrictProducts == true
-                    ? theme.primaryColor
+                    ? context.theme.primaryColor
                     : Colors.red,
               ),
             );

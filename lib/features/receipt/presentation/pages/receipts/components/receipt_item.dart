@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ReceiptItem extends ConsumerStatefulWidget {
   final ReceiptEntity receipt;
@@ -45,7 +45,6 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isSelected = ref.watch(
       selectedIndexUpdateObservationsStateControllerProvider.select(
         (s) => s.value == widget.index,
@@ -74,7 +73,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 TitleAndSubTitle(
                   title: null,
                   subTitle: widget.receipt.status.description,
-                  subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                  subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                     color: widget.receipt.status.color,
                   ),
                 ),
@@ -87,9 +86,8 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                   TitleAndSubTitle(
                     title: 'Grupo'.hardcoded,
                     subTitle: widget.receipt.Grupo,
-                    subTitleStyle: theme.textTheme.titleMedium?.copyWith(
-                      color: Colors.amber,
-                    ),
+                    subTitleStyle: context.theme.textTheme.titleMedium
+                        ?.copyWith(color: Colors.amber),
                   ),
                 if (!isSelected) ...[
                   Column(
@@ -151,7 +149,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 if (shouldInsertObservations)
                   Text(
                     'Observação pendente'.hardcoded,
-                    style: theme.textTheme.titleMedium?.copyWith(
+                    style: context.theme.textTheme.titleMedium?.copyWith(
                       fontStyle: FontStyle.italic,
                       color: Colors.red,
                     ),

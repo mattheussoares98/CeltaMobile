@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class NameAndJustification extends StatelessWidget {
   final ProductLotInfoEntity item;
@@ -10,7 +10,6 @@ class NameAndJustification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,11 +19,11 @@ class NameAndJustification extends StatelessWidget {
         ),
         TitleAndSubTitle(
           title: item.selectedJustification.Descricao_JustMov,
-          titleStyle: theme.textTheme.titleMedium?.copyWith(
-            color: theme.colorScheme.secondary,
+          titleStyle: context.theme.textTheme.titleMedium?.copyWith(
+            color: context.theme.colorScheme.secondary,
           ),
           subTitle: ' (Justificativa)'.hardcoded,
-          subTitleStyle: theme.textTheme.bodyMedium?.copyWith(),
+          subTitleStyle: context.theme.textTheme.bodyMedium?.copyWith(),
         ),
       ],
     );

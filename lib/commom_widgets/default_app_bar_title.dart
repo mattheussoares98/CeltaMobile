@@ -1,9 +1,9 @@
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultAppBarTitle extends StatelessWidget {
   final String? title;
@@ -11,8 +11,7 @@ class DefaultAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final centerTitle = theme.platform != TargetPlatform.android;
+    final centerTitle = context.theme.platform != TargetPlatform.android;
 
     return Column(
       crossAxisAlignment: centerTitle
@@ -59,8 +58,7 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-    final centerTitle = theme.platform != TargetPlatform.android;
+    final centerTitle = context.theme.platform != TargetPlatform.android;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -70,7 +68,7 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               '$personalizedCode - $enterpriseName',
-              style: theme.textTheme.bodySmall,
+              style: context.theme.textTheme.bodySmall,
               textAlign: centerTitle ? TextAlign.center : null,
             ),
           ),

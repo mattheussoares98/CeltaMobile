@@ -16,7 +16,6 @@ class ShareButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return PrimaryTextButton(
       text: 'Compartilhar'.hardcoded,
       isSmall: true,

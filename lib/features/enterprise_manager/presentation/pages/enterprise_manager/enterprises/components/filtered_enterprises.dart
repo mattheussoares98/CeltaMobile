@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class FilteredEnterprises extends StatefulWidget {
   final List<EnterprisePermissionEntity> enterprises;
@@ -38,8 +37,6 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final filteredEnterprises = (widget.enterprises.where((e) {
       return e.name.toLowerCase().removeWhiteSpaces().contains(
         widget.filterController.text.toLowerCase().removeWhiteSpaces(),
@@ -61,14 +58,15 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
               collapsedShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(Sizes.p12),
               ),
-              backgroundColor: theme.primaryColorLight.withAlpha(30),
-              collapsedBackgroundColor: theme.primaryColorDark.withAlpha(30),
+              backgroundColor: context.theme.primaryColorLight.withAlpha(30),
+              collapsedBackgroundColor: context.theme.primaryColorDark
+                  .withAlpha(30),
               // tilePadding: const EdgeInsets.all(Sizes.p4),
               childrenPadding: EdgeInsets.only(
                 bottom: index + 1 == filteredEnterprises.length ? Sizes.p8 : 0,
               ),
-              iconColor: theme.primaryColorDark,
-              collapsedIconColor: theme.primaryColor,
+              iconColor: context.theme.primaryColorDark,
+              collapsedIconColor: context.theme.primaryColor,
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -78,13 +76,13 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
                         child: RichText(
                           text: TextSpan(
                             text: enterprise.name.toUpperCase(),
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              color: theme.primaryColorDark,
+                            style: context.theme.textTheme.titleLarge?.copyWith(
+                              color: context.theme.primaryColorDark,
                             ),
                             children: [
                               TextSpan(
                                 text: ' (${enterprise.subEnterprises.length})',
-                                style: theme.textTheme.bodySmall,
+                                style: context.theme.textTheme.bodySmall,
                               ),
                             ],
                           ),
@@ -101,7 +99,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
                     .map((e) {
                       return Text(
                         "${e.name}; ",
-                        style: theme.textTheme.bodySmall?.copyWith(
+                        style: context.theme.textTheme.bodySmall?.copyWith(
                           color: Colors.green,
                         ),
                       );

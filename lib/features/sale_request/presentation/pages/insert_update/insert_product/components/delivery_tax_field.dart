@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DeliveryTaxField extends ConsumerStatefulWidget {
   const DeliveryTaxField({super.key});
@@ -51,7 +50,6 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
 
     final uiState = ref.watch(uiProvider);
     final item = uiState.applyTo(product);
-    final theme = Theme.of(context);
 
     final deliveryTaxType = uiState.deliveryTaxType;
 
@@ -60,14 +58,14 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
       children: [
         RichText(
           text: TextSpan(
-            style: theme.textTheme.titleSmall,
+            style: context.theme.textTheme.titleSmall,
             children: [
               TextSpan(text: 'Taxa de entrega'.hardcoded),
               TextSpan(
                 text:
                     ' (${item.totalDeliveryTax.toString().toBrazilianNumber().addBrazilianCoin()})',
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.secondary,
+                style: context.theme.textTheme.labelMedium?.copyWith(
+                  color: context.theme.colorScheme.secondary,
                   fontWeight: FontWeight.bold,
                 ),
               ),

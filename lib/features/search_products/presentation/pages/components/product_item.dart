@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/search_products/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerWidget {
   final ProductEntity product;
@@ -20,8 +20,6 @@ class ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return ProductItemWidget(
       product: product,
       routine: BsRoutine.priceConference,
@@ -47,7 +45,7 @@ class ProductItem extends ConsumerWidget {
                       ? Icons.print_disabled
                       : Icons.print,
                   color: isLoading
-                      ? theme.disabledColor
+                      ? context.theme.disabledColor
                       : product.PendantPrintLabel!
                       ? Colors.red
                       : null,
@@ -86,8 +84,8 @@ class ProductItem extends ConsumerWidget {
                   'Erro ao atualizar impressão: ${parseErrorMessage(error)}'
                       .hardcoded,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    color: theme.colorScheme.error,
+                  style: context.theme.textTheme.titleSmall?.copyWith(
+                    color: context.theme.colorScheme.error,
                     fontStyle: FontStyle.italic,
                   ),
                 ),

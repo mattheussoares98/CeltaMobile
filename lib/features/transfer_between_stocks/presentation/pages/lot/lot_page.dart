@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LotPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -58,8 +58,6 @@ class _LotPageState extends ConsumerState<LotPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final productsAreEmpty = ref.watch(
       lotStateControllerProvider(
         widget.enterpriseCode,
@@ -70,7 +68,9 @@ class _LotPageState extends ConsumerState<LotPage> {
       return Center(
         child: Text(
           'Lote vazio'.hardcoded,
-          style: theme.textTheme.titleLarge?.copyWith(color: Colors.red),
+          style: context.theme.textTheme.titleLarge?.copyWith(
+            color: Colors.red,
+          ),
         ),
       );
     }

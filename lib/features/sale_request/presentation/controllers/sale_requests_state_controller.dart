@@ -42,9 +42,7 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(
-        validatedUserSessionProvider.future,
-      );
+      final validatedUser = await ref.read(validatedUserSessionProvider.future);
 
       ref
           .read(appUsageStateControllerProvider.notifier)

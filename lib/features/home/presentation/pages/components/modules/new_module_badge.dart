@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class NewModuleBadge extends StatelessWidget {
   const NewModuleBadge({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Positioned(
       top: 0,
       left: 0,
@@ -25,7 +24,7 @@ class NewModuleBadge extends StatelessWidget {
           ),
           child: Text(
             'Novo'.hardcoded,
-            style: theme.textTheme.titleSmall?.copyWith(
+            style: context.theme.textTheme.titleSmall?.copyWith(
               color: Colors.white,
               fontStyle: FontStyle.italic,
             ),

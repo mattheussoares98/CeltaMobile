@@ -1,14 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class SubEnterprises extends ConsumerWidget {
   final EnterprisePermissionEntity enterprise;
@@ -16,8 +16,6 @@ class SubEnterprises extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     void onTap(SubEnterprisePermissionEntity subEnterprise) {
       final isAdminLogin = ref.read(
         authManagerStateProvider.select(
@@ -67,12 +65,12 @@ class SubEnterprises extends ConsumerWidget {
                           RichText(
                             textAlign: TextAlign.start,
                             text: TextSpan(
-                              style: theme.textTheme.bodyMedium,
+                              style: context.theme.textTheme.bodyMedium,
                               children: [
                                 TextSpan(
                                   text:
                                       '${subEnterprise.personalizedCode} - ${subEnterprise.name}',
-                                  style: theme.textTheme.titleMedium,
+                                  style: context.theme.textTheme.titleMedium,
                                 ),
                                 TextSpan(
                                   text: ' (${subEnterprise.cnpjNumber})',
@@ -89,11 +87,12 @@ class SubEnterprises extends ConsumerWidget {
                                 ))
                                   TextSpan(
                                     text: "${module.name}; ",
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: module.isEnabled ?? false
-                                          ? Colors.green
-                                          : Colors.red,
-                                    ),
+                                    style: context.theme.textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: module.isEnabled ?? false
+                                              ? Colors.green
+                                              : Colors.red,
+                                        ),
                                   ),
                               ],
                             ),
@@ -106,7 +105,7 @@ class SubEnterprises extends ConsumerWidget {
                       icon: PlatformIcon(
                         cupertinoIcon: CupertinoIcons.pencil,
                         materialIcon: Icons.edit,
-                        color: theme.primaryColorDark,
+                        color: context.theme.primaryColorDark,
                       ),
                     ),
                   ],
@@ -124,7 +123,7 @@ class _MyDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      color: Theme.of(context).disabledColor,
+      color: context.theme.disabledColor,
       height: Sizes.p8,
       thickness: 1,
     );

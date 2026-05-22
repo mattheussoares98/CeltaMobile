@@ -27,17 +27,17 @@ class BsfSaleBlockadeEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        code,
-        personalizedCode,
-        legacyCode,
-        description,
-        allowSale,
-        allowSaleRequest,
-        allowSaleWithPaymentFinalizationTypeCheckOrPortion,
-        stringAllowSale,
-        stringAllowSaleRequest,
-        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
-      ];
+    code,
+    personalizedCode,
+    legacyCode,
+    description,
+    allowSale,
+    allowSaleRequest,
+    allowSaleWithPaymentFinalizationTypeCheckOrPortion,
+    stringAllowSale,
+    stringAllowSaleRequest,
+    stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
+  ];
 
   BsfSaleBlockadeEntity copyWith({
     int? code,
@@ -60,13 +60,13 @@ class BsfSaleBlockadeEntity extends Equatable {
       allowSaleRequest: allowSaleRequest ?? this.allowSaleRequest,
       allowSaleWithPaymentFinalizationTypeCheckOrPortion:
           allowSaleWithPaymentFinalizationTypeCheckOrPortion ??
-              this.allowSaleWithPaymentFinalizationTypeCheckOrPortion,
+          this.allowSaleWithPaymentFinalizationTypeCheckOrPortion,
       stringAllowSale: stringAllowSale ?? this.stringAllowSale,
       stringAllowSaleRequest:
           stringAllowSaleRequest ?? this.stringAllowSaleRequest,
       stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
           stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion ??
-              this.stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
+          this.stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
     );
   }
 }

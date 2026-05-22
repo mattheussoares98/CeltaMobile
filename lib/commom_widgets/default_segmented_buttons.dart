@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultSegmentedButtons<T extends SelectableItem<T>>
     extends StatelessWidget {
@@ -19,8 +19,6 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     final selectedItem = items.cast<T>().firstWhere(
       (item) => item.value == selectedValue,
 
@@ -37,7 +35,7 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
             }
           },
 
-          thumbColor: selectedItem.color ?? theme.primaryColor,
+          thumbColor: selectedItem.color ?? context.theme.primaryColor,
 
           children: {
             for (var item in items)

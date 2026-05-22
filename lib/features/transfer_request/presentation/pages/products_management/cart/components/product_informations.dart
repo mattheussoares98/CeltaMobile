@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 
 class ProductInformations extends StatelessWidget {
   final TransferRequestProductItemEntity item;
@@ -11,15 +10,14 @@ class ProductInformations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleAndSubTitle(
           title: item.product.Name,
           subTitle: " (${item.product.PackingQuantity!.formattedPacking()})",
-          titleStyle: theme.textTheme.titleMedium,
-          subTitleStyle: theme.textTheme.bodyMedium,
+          titleStyle: context.theme.textTheme.titleMedium,
+          subTitleStyle: context.theme.textTheme.bodyMedium,
         ),
         TitleAndSubTitle(title: 'PLU'.hardcoded, subTitle: item.product.PLU),
         Row(
@@ -65,13 +63,12 @@ class _ColumnTitleAndValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Column(
       children: [
         Text(
           title,
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: theme.disabledColor,
+          style: context.theme.textTheme.titleSmall?.copyWith(
+            color: context.theme.disabledColor,
           ),
         ),
         RichText(
@@ -80,11 +77,13 @@ class _ColumnTitleAndValue extends StatelessWidget {
               if (isPrice)
                 TextSpan(
                   text: "R\$ ".hardcoded,
-                  style: theme.textTheme.bodySmall?.copyWith(fontSize: 10),
+                  style: context.theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 10,
+                  ),
                 ),
               TextSpan(
                 text: value.toString().toBrazilianNumber(2, !isPrice),
-                style: theme.textTheme.bodySmall,
+                style: context.theme.textTheme.bodySmall,
               ),
             ],
           ),

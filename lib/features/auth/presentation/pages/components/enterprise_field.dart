@@ -1,11 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class EnterpriseField extends ConsumerWidget {
   final TextEditingController enterpriseController;
@@ -18,7 +18,6 @@ class EnterpriseField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final isLoading = ref.watch(
       loginControllerProvider.select((s) => s.isLoading),
     );
@@ -31,7 +30,7 @@ class EnterpriseField extends ConsumerWidget {
       prefixIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.building_2_fill,
         materialIcon: Icons.business,
-        color: isLoading ? theme.disabledColor : null,
+        color: isLoading ? context.theme.disabledColor : null,
       ),
       textInputAction: TextInputAction.next,
       validator: FormValidators.compose([NonEmptyValidator()]),

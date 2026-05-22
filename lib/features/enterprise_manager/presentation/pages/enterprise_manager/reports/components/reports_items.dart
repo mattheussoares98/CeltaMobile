@@ -1,13 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReportsItems extends ConsumerWidget {
   final TextEditingController filterController;
@@ -15,8 +14,6 @@ class ReportsItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(appUsageStateControllerProvider),
@@ -101,7 +98,7 @@ class ReportsItems extends ConsumerWidget {
                           children: [
                             Text(
                               '${enterpriseName.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
-                              style: theme.textTheme.titleMedium,
+                              style: context.theme.textTheme.titleMedium,
                             ),
 
                             _RequestsByTypeOrUser(
@@ -146,7 +143,6 @@ class _RequestsByTypeOrUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final groupedValues =
         groupBy(
             reports,
@@ -165,8 +161,8 @@ class _RequestsByTypeOrUser extends StatelessWidget {
           groupingByType
               ? 'Requisições por tipo'.hardcoded
               : 'Requisições por usuário'.hardcoded,
-          style: theme.textTheme.titleSmall?.copyWith(
-            color: theme.primaryColor,
+          style: context.theme.textTheme.titleSmall?.copyWith(
+            color: context.theme.primaryColor,
           ),
         ),
         gapH4,

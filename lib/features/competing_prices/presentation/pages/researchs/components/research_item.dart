@@ -1,15 +1,15 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/pages/pages.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
-import 'package:celta_inventario/features/competing_prices/presentation/pages/pages.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ResearchItem extends ConsumerWidget {
   final ResearchEntity research;
@@ -23,7 +23,6 @@ class ResearchItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaSize = MediaQuery.sizeOf(context);
-    final theme = Theme.of(context);
 
     return Card(
       child: InkWell(
@@ -51,9 +50,9 @@ class ResearchItem extends ConsumerWidget {
                 subTitle: research.RestrictProducts
                     ? 'Produtos restringidos'.hardcoded
                     : 'Produtos NÃO restringidos'.hardcoded,
-                subTitleStyle: theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: research.RestrictProducts
-                      ? theme.primaryColor
+                      ? context.theme.primaryColor
                       : Colors.red,
                 ),
               ),

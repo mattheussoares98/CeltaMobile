@@ -1,15 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/products_management.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsManagementPage extends ConsumerWidget {
   final int enterpriseOriginCode;
@@ -41,8 +40,6 @@ class ProductsManagementPage extends ConsumerWidget {
       CartPage(draftKey: draftKey),
     ];
 
-    final theme = Theme.of(context);
-
     ref.observeLoading([insertTransferRequestControllerProvider(draftKey)]);
 
     final screenWidth = MediaQuery.sizeOf(context).width;
@@ -56,7 +53,10 @@ class ProductsManagementPage extends ConsumerWidget {
             if (screenWidth > 250) ...[
               Row(
                 children: [
-                  Text('De '.hardcoded, style: theme.textTheme.bodySmall),
+                  Text(
+                    'De '.hardcoded,
+                    style: context.theme.textTheme.bodySmall,
+                  ),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseOriginCode,
@@ -66,7 +66,10 @@ class ProductsManagementPage extends ConsumerWidget {
               ),
               Row(
                 children: [
-                  Text('Para '.hardcoded, style: theme.textTheme.bodySmall),
+                  Text(
+                    'Para '.hardcoded,
+                    style: context.theme.textTheme.bodySmall,
+                  ),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseDestinyCode,

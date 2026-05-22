@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
   final SearchProductKey searchProductKey;
@@ -85,8 +84,6 @@ class _ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     Future<void> addInLot(ProductEntity product) async {
       if (formKey.currentState?.validate() != true) {
         return;
@@ -159,7 +156,9 @@ class _ProductItem extends ConsumerWidget {
           : Text(
               '${quantityInLot.toString().toBrazilianNumber()} qtds no lote',
               textAlign: TextAlign.start,
-              style: theme.textTheme.titleSmall?.copyWith(color: Colors.blue),
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                color: Colors.blue,
+              ),
             ),
       notClickableBottom: isSelected
           ? AddInLot(

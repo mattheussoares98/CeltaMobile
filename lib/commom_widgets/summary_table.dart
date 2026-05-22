@@ -1,8 +1,7 @@
+import 'package:celta_inventario/commom_widgets/animations/animations.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/commom_widgets/animations/animations.dart';
 
 class SummaryTableItem {
   final String title;
@@ -35,12 +34,11 @@ class SummaryTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final labelStyle = theme.textTheme.labelSmall?.copyWith(
-      color: theme.hintColor,
+    final labelStyle = context.theme.textTheme.labelSmall?.copyWith(
+      color: context.theme.hintColor,
       fontWeight: FontWeight.bold,
     );
-    final valueStyle = theme.textTheme.bodyMedium?.copyWith(
+    final valueStyle = context.theme.textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.bold,
     );
 
@@ -53,16 +51,16 @@ class SummaryTable extends StatelessWidget {
         if (item.value is num) {
           if (item.isPrice) {
             priceText = item.value.toString().toBrazilianNumber(
-                  item.decimalHouses,
-                );
+              item.decimalHouses,
+            );
           } else if (item.isPercentage) {
             formattedValue =
                 '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
           } else {
             formattedValue = item.value.toString().toBrazilianNumber(
-                  item.decimalHouses,
-                  true,
-                );
+              item.decimalHouses,
+              true,
+            );
           }
         }
 

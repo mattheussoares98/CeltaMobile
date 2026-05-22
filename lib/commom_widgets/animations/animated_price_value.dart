@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class AnimatedPriceValue extends StatefulWidget {
@@ -59,7 +60,7 @@ class _AnimatedPriceValueState extends State<AnimatedPriceValue>
   @override
   Widget build(BuildContext context) {
     final defaultColor =
-        widget.style?.color ?? Theme.of(context).textTheme.bodyMedium?.color;
+        widget.style?.color ?? context.theme.textTheme.bodyMedium?.color;
 
     return RepaintBoundary(
       child: AnimatedBuilder(

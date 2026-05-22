@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 void showSnackBarMessage(
@@ -15,9 +16,10 @@ void showSnackBarMessage(
       content: Text(
         message,
         textAlign: TextAlign.center,
-        style: Theme.of(
-          context,
-        ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+        style: context.theme
+            .textTheme
+            .bodyMedium
+            ?.copyWith(color: Colors.white),
       ),
       dismissDirection: DismissDirection.down,
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

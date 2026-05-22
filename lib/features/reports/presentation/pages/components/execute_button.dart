@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
-import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
 
 class ExecuteButton extends ConsumerWidget {
   final ReportScheduleEntity report;
@@ -14,8 +13,6 @@ class ExecuteButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-
     ref.listen(executeScheduleControllerProvider(report.Code), (p, n) {
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
@@ -42,7 +39,7 @@ class ExecuteButton extends ConsumerWidget {
                   DateFormat(
                     'dd/MM/yyyy HH:mm',
                   ).format(report.LastExecutionDate!),
-                  style: theme.textTheme.titleSmall,
+                  style: context.theme.textTheme.titleSmall,
                 ),
               ],
             ),

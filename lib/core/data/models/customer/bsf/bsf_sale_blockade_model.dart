@@ -32,19 +32,19 @@ class BsfSaleBlockadeModel extends BsfSaleBlockadeEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        'Code': code,
-        'PersonalizedCode': personalizedCode,
-        'LegacyCode': legacyCode,
-        'Description': description,
-        'AllowSale': allowSale,
-        'AllowSaleRequest': allowSaleRequest,
-        'AllowSaleWithPaymentFinalizationTypeCheckOrPortion':
-            allowSaleWithPaymentFinalizationTypeCheckOrPortion,
-        'StringAllowSale': stringAllowSale,
-        'StringAllowSaleRequest': stringAllowSaleRequest,
-        'StringAllowSaleWithPaymentFinalizationTypeCheckOrPortion':
-            stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
-      };
+    'Code': code,
+    'PersonalizedCode': personalizedCode,
+    'LegacyCode': legacyCode,
+    'Description': description,
+    'AllowSale': allowSale,
+    'AllowSaleRequest': allowSaleRequest,
+    'AllowSaleWithPaymentFinalizationTypeCheckOrPortion':
+        allowSaleWithPaymentFinalizationTypeCheckOrPortion,
+    'StringAllowSale': stringAllowSale,
+    'StringAllowSaleRequest': stringAllowSaleRequest,
+    'StringAllowSaleWithPaymentFinalizationTypeCheckOrPortion':
+        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
+  };
 
   factory BsfSaleBlockadeModel.fromEntity(BsfSaleBlockadeEntity entity) =>
       BsfSaleBlockadeModel(
@@ -63,17 +63,17 @@ class BsfSaleBlockadeModel extends BsfSaleBlockadeEntity {
       );
 
   BsfSaleBlockadeEntity toEntity() => BsfSaleBlockadeEntity(
-        code: code,
-        personalizedCode: personalizedCode,
-        legacyCode: legacyCode,
-        description: description,
-        allowSale: allowSale,
-        allowSaleRequest: allowSaleRequest,
-        allowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            allowSaleWithPaymentFinalizationTypeCheckOrPortion,
-        stringAllowSale: stringAllowSale,
-        stringAllowSaleRequest: stringAllowSaleRequest,
-        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
-      );
+    code: code,
+    personalizedCode: personalizedCode,
+    legacyCode: legacyCode,
+    description: description,
+    allowSale: allowSale,
+    allowSaleRequest: allowSaleRequest,
+    allowSaleWithPaymentFinalizationTypeCheckOrPortion:
+        allowSaleWithPaymentFinalizationTypeCheckOrPortion,
+    stringAllowSale: stringAllowSale,
+    stringAllowSaleRequest: stringAllowSaleRequest,
+    stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
+        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
+  );
 }

@@ -1,14 +1,13 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/change_modules_permission/components/components.dart';
+import 'package:celta_inventario/features/enterprise_manager/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
-import 'package:celta_inventario/features/enterprise_manager/providers.dart';
-import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/enterprise_manager/presentation/pages/change_modules_permission/components/components.dart';
 
 class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
   final int enterpriseId;
@@ -109,7 +108,6 @@ class _ChangeModulesPermissionPageState
     });
 
     final isGlobalChange = widget.subEnterpriseId == null;
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -157,7 +155,7 @@ class _ChangeModulesPermissionPageState
                   SliverToBoxAdapter(
                     child: Text(
                       scopeName,
-                      style: theme.textTheme.titleMedium,
+                      style: context.theme.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),

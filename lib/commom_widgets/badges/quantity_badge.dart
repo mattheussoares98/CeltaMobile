@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class QuantityBadge extends StatefulWidget {
   final int? quantity;
@@ -94,8 +93,6 @@ class _QuantityBadgeState extends State<QuantityBadge>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     bool isSmall = (widget.quantity?.toString() ?? '0').length <= 1;
 
     //! if it is on AppBar actions, should put this padding below
@@ -134,8 +131,8 @@ class _QuantityBadgeState extends State<QuantityBadge>
               cupertinoIcon: widget.platformIcon.cupertinoIcon,
               materialIcon: widget.platformIcon.materialIcon,
               color: widget.isSelected
-                  ? theme.primaryColor
-                  : theme.disabledColor,
+                  ? context.theme.primaryColor
+                  : context.theme.disabledColor,
             ),
             if (widget.totalPrice != null)
               AnimatedBuilder(
@@ -146,7 +143,7 @@ class _QuantityBadgeState extends State<QuantityBadge>
                       children: [
                         TextSpan(
                           text: 'R\$ ',
-                          style: theme.textTheme.bodySmall?.copyWith(
+                          style: context.theme.textTheme.bodySmall?.copyWith(
                             fontSize: 9,
                           ),
                         ),
@@ -154,7 +151,7 @@ class _QuantityBadgeState extends State<QuantityBadge>
                           text: _priceRollingAnimation.value
                               .toString()
                               .toBrazilianNumber(),
-                          style: theme.textTheme.bodyMedium,
+                          style: context.theme.textTheme.bodyMedium,
                         ),
                       ],
                     ),
