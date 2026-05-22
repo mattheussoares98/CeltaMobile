@@ -8,3 +8,4 @@ export './i_soap_save_sale_request_repository.dart';
 export './i_local_sale_request_repository.dart';
 export './i_print_sale_request_repository.dart';
 export './print_sale_request_repository.dart';
+export './i_ec_seller_repository.dart';

@@ -147,3 +147,8 @@ SaleRequestArgs saleRequestArgs(Ref ref) {
 IEcSellerDatasource ecSellerDatasource(Ref ref) {
   return EcSellerDatasource(ref.watch(httpClientProvider));
 }
+
+@riverpod
+IEcSellerRepository ecSellerRepository(Ref ref) {
+  return EcSellerRepositoryImpl(ref.watch(ecSellerDatasourceProvider));
+}
