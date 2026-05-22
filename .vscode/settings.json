@@ -1,7 +1,7 @@
 {
   "java.configuration.updateBuildConfiguration": "interactive",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit",
+    "source.organizeImports": "always",
     "source.fixAll": "always"
   },
   "dart.previewFlutterUiGuides": true,
