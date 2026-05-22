@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:celta_inventario/exceptions/app_exception.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'save_sale_request_controller.g.dart';
 
@@ -99,6 +98,31 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
             enterpriseCode: enterpriseCode,
             params: params,
           );
+
+      if (saleRequestId != 0) {
+        final updatedBsfEntity = await ref
+            .read(ecSaleRequestsRepositoryProvider)
+            .getComplete(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestCode: saleRequestId,
+              params: params,
+            );
+
+        ref
+            .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
+            .updateSingleRequestInList(updatedBsfEntity.toSaleRequestEntity());
+
+        ref.invalidate(
+          saleRequestDetailsStateControllerProvider(
+            SaleRequestArgs(
+              enterpriseCode: enterpriseCode,
+              customerCode: customerCode,
+              saleRequestId: saleRequestId,
+            ),
+          ),
+        );
+      }
     });
   }
 }

@@ -30,7 +30,6 @@ class SpySaleRequest extends PendingSaleRequestStateController {
   // We don't need to override updateProductsFromProcessedCart for this controller
 }
 
-// A Spy for the LastSavedSaleRequest controller
 class SpyLastSavedSaleRequest extends LastSavedSaleRequestStateController {
   LastSavedSaleRequestEntity? savedEntity;
   @override
@@ -38,6 +37,22 @@ class SpyLastSavedSaleRequest extends LastSavedSaleRequestStateController {
   @override
   Future<void> save(LastSavedSaleRequestEntity value) async {
     savedEntity = value;
+  }
+}
+
+class SpySaleRequestsStateController extends SaleRequestsStateController {
+  bool updateSingleRequestInListCalled = false;
+  SaleRequestEntity? updatedRequest;
+
+  @override
+  FutureOr<EcPaginationResults<SaleRequestEntity>?> build(
+    int enterpriseCode,
+  ) async => null;
+
+  @override
+  void updateSingleRequestInList(SaleRequestEntity request) {
+    updateSingleRequestInListCalled = true;
+    updatedRequest = request;
   }
 }
 
@@ -73,7 +88,6 @@ void main() {
   late int fakeRequestTypeCode;
   late String instructions;
   late String observations;
-  late int saleRequestId;
   late BSFSaleRequestEntity fakeBSFSaleRequestEntity;
 
   late ProviderContainer container;
@@ -105,7 +119,6 @@ void main() {
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();
     fakeAppUsage = FakeAppUsageStateController();
-    saleRequestId = faker.randomGenerator.integer(100);
     fakeBSFSaleRequestEntity = EntityFactory.makeBSFSaleRequestEntity();
 
     // --- Create the single container ONCE with ALL providers ---
@@ -142,11 +155,9 @@ void main() {
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        // saleRequestArgsProvider.overrideWith((ref) => SaleRequestArgs(
-        //       customerCode: fakeBSFSaleRequestEntity.customer?.code ?? 0,
-        //       enterpriseCode: fakeEnterprise.Code!,
-        //       saleRequestId: saleRequestId,
-        //     )),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ],
     );
   });
@@ -198,6 +209,9 @@ void main() {
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ]);
 
       // Stub all async calls
@@ -304,6 +318,9 @@ void main() {
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ]);
 
       final states = <AsyncValue<void>>[];
@@ -380,6 +397,9 @@ void main() {
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ]);
 
       final states = <AsyncValue<void>>[];
@@ -433,12 +453,14 @@ void main() {
           mockEcSaleRequestsRepository,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-
         insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
             saleRequestEntity: fakeBSFSaleRequestEntity,
           ),
         ),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ]);
 
       when(
@@ -462,7 +484,7 @@ void main() {
           )
           .saveBsfSaleRequest(
             customerCode: fakePendingRequest.customer!.Code!,
-            saleRequestId: saleRequestId,
+            saleRequestId: 0,
           );
 
       // ASSERT
@@ -514,6 +536,9 @@ void main() {
           mockEcSaleRequestsRepository,
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => SpySaleRequestsStateController()),
       ]);
 
       when(
@@ -537,7 +562,7 @@ void main() {
           )
           .saveBsfSaleRequest(
             customerCode: fakePendingRequest.customer!.Code!,
-            saleRequestId: saleRequestId,
+            saleRequestId: 0,
           );
 
       // ASSERT
@@ -545,5 +570,113 @@ void main() {
       expect(states.last.error, isA<AppException>());
       expect((states.last.error as AppException).message, 'Error updating');
     });
+
+    test(
+      'should call getComplete and updateSingleRequestInList if saleRequestId != 0',
+      () async {
+        // ARRANGE
+        final spySaleRequests = SpySaleRequestsStateController();
+
+        // Update ALL overrides
+        container.updateOverrides([
+          insertUpdateStateControllerProvider.overrideWith(
+            () => FakeInsertUpdateStateController(
+              saleRequestEntity: fakeBSFSaleRequestEntity,
+            ),
+          ),
+          soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+            mockSoapSaveSaleRequestRepository,
+          ),
+          validatedUserSessionProvider.overrideWith(
+            () => FakeValidatedUserSession(fakeSession),
+          ),
+          selectedEnterpriseStateControllerProvider.overrideWith(
+            () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+          ),
+          pendingSaleRequestStateControllerProvider(
+            fakeEnterprise.Code!,
+          ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
+          lastSavedSaleRequestStateControllerProvider(
+            fakeEnterprise.Code!,
+          ).overrideWith(() => SpyLastSavedSaleRequest()),
+          localSaleRequestRepositoryProvider.overrideWithValue(
+            mockLocalPendingRepo,
+          ),
+          ecSaleRequestsRepositoryProvider.overrideWithValue(
+            mockEcSaleRequestsRepository,
+          ),
+          appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+          saleRequestsStateControllerProvider(
+            fakeEnterprise.Code!,
+          ).overrideWith(() => spySaleRequests),
+        ]);
+
+        const validSaleRequestId = 99; // Not 0
+
+        when(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final fakeCompleteEntity = EntityFactory.makeBSFSaleRequestEntity();
+        when(
+          () => mockEcSaleRequestsRepository.getComplete(
+            enterpriseCode: any(named: 'enterpriseCode'),
+            customerCode: any(named: 'customerCode'),
+            saleRequestCode: any(named: 'saleRequestCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async => fakeCompleteEntity);
+
+        // We read the details future once to test invalidation
+        final args = SaleRequestArgs(
+          enterpriseCode: fakeEnterprise.Code!,
+          customerCode: fakePendingRequest.customer!.Code!,
+          saleRequestId: validSaleRequestId,
+        );
+        await container.read(
+          saleRequestDetailsStateControllerProvider(args).future,
+        );
+
+        // Verify the spy was initialized
+        expect(spySaleRequests.updateSingleRequestInListCalled, false);
+
+        // Clear interactions from the first read
+        clearInteractions(mockEcSaleRequestsRepository);
+
+        // ACT
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: validSaleRequestId,
+            );
+
+        // ASSERT
+        verify(
+          () => mockEcSaleRequestsRepository.getComplete(
+            enterpriseCode: fakeEnterprise.Code!,
+            customerCode: fakePendingRequest.customer!.Code!,
+            saleRequestCode: validSaleRequestId,
+            params: any(named: 'params'),
+          ),
+        ).called(1);
+
+        expect(spySaleRequests.updateSingleRequestInListCalled, true);
+        expect(spySaleRequests.updatedRequest, isNotNull);
+
+        // Check if the details provider was invalidated by seeing if reading it again gives a new future
+        // Wait, reading the future after invalidation triggers a rebuild
+        final newFuture = container.read(
+          saleRequestDetailsStateControllerProvider(args).future,
+        );
+        expect(newFuture, isNotNull);
+      },
+    );
   });
 }
