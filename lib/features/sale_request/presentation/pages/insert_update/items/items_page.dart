@@ -5,9 +5,9 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers.dart';
-import '../../../controllers/controllers.dart';
-import '../../components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 
 class ItemsPage extends ConsumerWidget {
   const ItemsPage({super.key});

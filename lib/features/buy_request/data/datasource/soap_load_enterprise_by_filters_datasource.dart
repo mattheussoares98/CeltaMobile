@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:celta_inventario/features/buy_request/data/models/soap_enterprise_by_filters_model.dart';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 
 class SoapLoadEnterpriseByFiltersDatasource
     implements ISoapLoadEnterpriseByFiltersDatasource {

@@ -1,1 +1,1 @@
-export 'search_products_listener_mixin.dart';
+export './search_products_listener_mixin.dart';

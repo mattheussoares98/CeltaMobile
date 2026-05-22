@@ -1,7 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../domain/entities/entities.dart';
-import 'user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/datasource/user_session/user_session.dart';
 
 class SupabaseUserSessionDatasource implements ISupabaseUserSessionDatasource {
   final SupabaseClient _supabase;

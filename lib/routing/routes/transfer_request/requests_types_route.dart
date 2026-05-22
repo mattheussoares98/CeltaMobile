@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/transfer_request/presentation/pages/pages.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase transferRequestRquestsTypesRoute(List<RouteBase> routes) => GoRoute(
   path: ':enterpriseCode/transfer-request',

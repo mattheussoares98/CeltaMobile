@@ -3,11 +3,11 @@ import 'dart:convert';
 
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../../../../utils/utils.dart';
-import '../../../domain/contracts/contracts.dart';
-import '../../../domain/errors/errors.dart';
-import 'enterprise.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
 
 class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
   final SoapRequest soapRequest;

@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/hive/hive.dart';
-import 'data/datasource/datasource.dart';
-import 'domain/repository/repository.dart';
-import 'data/repository/repository.dart';
+import 'package:celta_inventario/core/providers/hive/hive.dart';
+import 'package:celta_inventario/features/enterprises/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/enterprises/domain/repository/repository.dart';
+import 'package:celta_inventario/features/enterprises/data/repository/repository.dart';
 
 part 'providers.g.dart';
 

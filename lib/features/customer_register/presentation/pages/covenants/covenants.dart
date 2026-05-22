@@ -1,2 +1,2 @@
-export './components/components.dart';
-export 'covenants_page.dart';
+export 'components/components.dart';
+export './covenants_page.dart';

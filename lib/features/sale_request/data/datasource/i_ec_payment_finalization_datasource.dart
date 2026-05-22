@@ -1,5 +1,5 @@
-import '../../../../core/data/models/models.dart';
-import '../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 abstract class IEcPaymentFinalizationDatasource {
   Future<List<BSFPaymentFinalizationModel>> getPaymentFinalizations({

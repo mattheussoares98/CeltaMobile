@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
 
 class SubEnterprisePermissionModel extends Equatable {
   final int id;

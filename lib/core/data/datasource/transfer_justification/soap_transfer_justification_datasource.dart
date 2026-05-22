@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import '../../../domain/contracts/contracts.dart';
-import '../../../domain/entities/entities.dart';
-import '../../models/models.dart';
-import 'transfer_justification.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/transfer_justification/transfer_justification.dart';
 
 class SoapTransferJustificationDatasource
     implements ISoapTransferJustificationDatasource {

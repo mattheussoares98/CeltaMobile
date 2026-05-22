@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class RequestTypeModel extends Equatable {
   final int Code;

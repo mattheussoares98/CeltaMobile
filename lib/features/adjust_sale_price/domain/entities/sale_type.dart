@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 enum SaleType implements SelectableItem<SaleType> {
   retail(1, 'Varejo'),

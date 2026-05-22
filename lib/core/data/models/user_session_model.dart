@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../features/auth/data/models/models.dart';
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:celta_inventario/features/auth/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 class UserSessionModel extends Equatable {
   final UserModel user;

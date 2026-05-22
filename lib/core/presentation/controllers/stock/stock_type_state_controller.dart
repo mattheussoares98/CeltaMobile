@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../providers/stock/stock.dart';
-import '../user_session/user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/stock/stock.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'stock_type_state_controller.g.dart';
 

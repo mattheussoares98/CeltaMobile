@@ -4,16 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../commom_widgets/commom_widgets.dart';
-import '../core/domain/entities/entities.dart';
-import '../core/presentation/controllers/bs_version/bs_version.dart';
-import '../core/presentation/controllers/enterprises/enterprises.dart';
-import '../core/presentation/controllers/resource/resource.dart';
-import '../core/presentation/controllers/user_session/user_session.dart';
-import '../exceptions/exceptions.dart';
-import '../features/enterprises/presentation/controllers/controllers.dart';
-import '../localization/string_hardcoded.dart';
-import 'routing.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 part 'try_access_module_controller.g.dart';
 

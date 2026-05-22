@@ -1,8 +1,8 @@
 import 'package:celta_inventario/features/sale_request/domain/entities/processed_cart_entity.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/sale_request_cart_product_entity.dart';
 
-import '../datasource/datasource.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 
 class SoapProcessCartRepositoryImpl implements ISoapProcessCartRepository {

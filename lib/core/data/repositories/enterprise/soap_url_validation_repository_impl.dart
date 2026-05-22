@@ -1,4 +1,4 @@
-import '../../../data/datasource/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
 
 class SoapUrlValidationRepositoryImpl implements ISoapUrlValidationRepository {

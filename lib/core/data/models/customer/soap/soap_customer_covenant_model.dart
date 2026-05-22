@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../domain/entities/entities.dart';
-import '../customer.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
 
 class SoapCustomerCovenantModel extends Equatable {
   final SoapCovenantInfoModel? covenant;

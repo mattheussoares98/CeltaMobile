@@ -1,5 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
-import '../../../data/datasource/resource/resource.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/datasource/resource/resource.dart';
 import 'package:celta_inventario/core/domain/repositories/resource/resource.dart';
 
 class SoapResourceRepositoryImpl implements ISoapResourceRepository {

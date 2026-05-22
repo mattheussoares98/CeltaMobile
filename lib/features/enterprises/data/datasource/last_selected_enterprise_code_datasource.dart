@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'datasource.dart';
+import 'package:celta_inventario/features/enterprises/data/datasource/datasource.dart';
 
 class LastSelectedEnterpriseCodeDatasource
     implements ILastSelectedEnterpriseCodeDatasource {

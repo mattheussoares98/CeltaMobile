@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 
 class OriginAndDestinyWithQuantities extends StatelessWidget {
   final ProductLotInfoEntity item;

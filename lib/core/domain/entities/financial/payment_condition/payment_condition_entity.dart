@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import 'payment_condition_fill_type.dart';
-import 'payment_condition_symbol_type.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/payment_condition_fill_type.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/payment_condition_symbol_type.dart';
 
 class PaymentConditionEntity extends Equatable {
   final bool isShielded;

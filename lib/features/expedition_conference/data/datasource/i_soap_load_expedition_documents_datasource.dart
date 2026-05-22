@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/expedition_conference/data/models/models.dart';
 
 abstract class ISoapLoadExpeditionDocumentsDatasource {
   Future<List<ExpeditionDocumentModel>> load({

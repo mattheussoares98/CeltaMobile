@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../../../../utils/utils.dart';
-import '../../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 
 class QuantityByEnterprises extends ConsumerWidget {
   final List<BuyQuotationProductEnterpriseEntity>? productEnterprises;

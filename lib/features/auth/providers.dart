@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/data/datasource/login/login.dart';
-import '../../core/providers/enterprise/enterprise.dart';
-import '../../core/providers/soap/soap.dart';
-import '../../core/providers/user_session/user_session.dart';
-import 'domain/repositories/repositories.dart';
-import 'data/repositories/repositories.dart';
+import 'package:celta_inventario/core/data/datasource/login/login.dart';
+import 'package:celta_inventario/core/providers/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
+import 'package:celta_inventario/core/providers/user_session/user_session.dart';
+import 'package:celta_inventario/features/auth/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/auth/data/repositories/repositories.dart';
 
 part 'providers.g.dart';
 

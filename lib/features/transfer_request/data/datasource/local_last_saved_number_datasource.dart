@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'datasource.dart';
+import 'package:celta_inventario/features/transfer_request/data/datasource/datasource.dart';
 
 class LocalLastSavedNumberDatasource
     implements ILocalLastSavedNumberDatasource {

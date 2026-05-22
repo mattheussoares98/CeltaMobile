@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
-import '../models.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 
 class SoapLastSavedSaleRequestModel extends Equatable {
   final SoapSaleRequestModel saleRequestModel;

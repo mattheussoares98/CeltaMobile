@@ -1,4 +1,4 @@
-import '../entity/entity.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
 abstract class ISoapLoadProductsNotFoundRepository {
   Future<List<ProductNotFoundEntity>> load({

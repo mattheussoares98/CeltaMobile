@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
 
-import '../../../data/datasource/request_type/request_type.dart';
+import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 
 class EcGetRequestTypesRepositoryImpl implements IEcGetRequestTypesRepository {
   final IEcGetRequestTypesDatasource datasource;

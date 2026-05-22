@@ -1,6 +1,6 @@
-import '../datasource/datasource.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/data/models/models.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 

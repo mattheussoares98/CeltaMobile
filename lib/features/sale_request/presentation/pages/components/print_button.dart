@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/validators/validators.dart';
-import '../../../providers.dart';
-import '../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
   final int enterpriseCode;

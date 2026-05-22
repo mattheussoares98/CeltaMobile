@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import 'settings.dart';
+import 'package:celta_inventario/core/domain/entities/settings/settings.dart';
 
 class AppSettingsEntity extends Equatable {
   final SearchProductTypePreference searchPreference;

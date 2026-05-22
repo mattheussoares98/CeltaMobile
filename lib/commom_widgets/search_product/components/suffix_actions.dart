@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/domain/entities/entities.dart';
-import '../../../features/settings/presentation/pages/pages.dart';
-import '../../commom_widgets.dart';
-import '../mixin/mixin.dart';
-import 'components.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/settings/presentation/pages/pages.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
+import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
 
 class SuffixActions extends ConsumerStatefulWidget {
   final bool isLoading;

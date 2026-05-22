@@ -2,12 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../core/presentation/controllers/user_session/user_session.dart';
-import '../core/providers/services/services.dart';
-import '../features/enterprise_manager/presentation/controllers/controllers.dart';
-import '../utils/utils.dart';
-import 'not_found_page.dart';
-import 'routes/routes.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/services/services.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/routing/not_found_page.dart';
+import 'package:celta_inventario/routing/routes/routes.dart';
 
 part 'app_router.g.dart';
 

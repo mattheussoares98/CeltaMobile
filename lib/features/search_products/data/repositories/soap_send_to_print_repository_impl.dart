@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/search_products/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/search_products/domain/repositories/repositories.dart';
 
 class SoapSendToPrintRepositoryImpl implements ISoapSendToPrintRepository {

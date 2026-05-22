@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/infraestructure/infrastructure.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../routing/routing.dart';
-import '../../../../../utils/utils.dart';
-import '../../../../settings/presentation/controllers/controllers.dart';
-import '../../../domain/entity/entity.dart';
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int receiptCode;

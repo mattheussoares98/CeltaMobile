@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../routing/routing.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 class VisualizePdfButton extends ConsumerWidget {
   final Uint8List bytes;

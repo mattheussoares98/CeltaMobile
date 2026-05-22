@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/customer/soap/soap_customer_entity.dart';
 
-import '../../../../core/data/models/customer/customer.dart';
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
+import 'package:celta_inventario/features/customer_register/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/customer_register/domain/repositories/repositories.dart';
 
 class SoapInsertUpdateCustomerRepositoryImpl

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/providers.dart';
 
 part 'lot_state_controller.g.dart';
 

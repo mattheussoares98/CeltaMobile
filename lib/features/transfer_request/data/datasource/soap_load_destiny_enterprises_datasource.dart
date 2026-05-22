@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:celta_inventario/core/data/models/enterprise/soap_enterprise_model.dart';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/transfer_request/data/datasource/datasource.dart';
 
 class SoapLoadDestinyEnterprisesDatasource
     implements ISoapLoadDestinyEnterprisesDatasource {

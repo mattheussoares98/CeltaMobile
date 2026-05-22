@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
-import '../../../../utils/utils.dart';
-import '../../../data/datasource/share_download/share_download.dart';
-import '../../controllers/share_download/share_download.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
+import 'package:celta_inventario/core/presentation/controllers/share_download/share_download.dart';
 
 class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
   @override

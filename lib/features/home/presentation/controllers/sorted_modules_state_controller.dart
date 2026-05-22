@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../pages/models/models.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/home/presentation/pages/models/models.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
 
 part 'sorted_modules_state_controller.g.dart';
 

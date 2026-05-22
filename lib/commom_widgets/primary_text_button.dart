@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '/constants/app_sizes.dart';
-import 'commom_widgets.dart';
+import 'package:celta_inventario/constants/app_sizes.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 /// Primary button based on [ElevatedButton].
 /// Useful for CTAs in the app.

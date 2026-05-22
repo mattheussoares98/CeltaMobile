@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 
 abstract class ISoapGetPriceSchedulesRepository {
   Future<List<PriceScheduleEntity>> getPriceSchedules({

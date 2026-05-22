@@ -1,4 +1,4 @@
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 
 abstract class ILocalCartRepository {
   Future<void> addItem(

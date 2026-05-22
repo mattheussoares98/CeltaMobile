@@ -1,7 +1,7 @@
-import '../../../../core/data/datasource/enterprise/enterprise.dart';
-import '../../../../core/data/datasource/login/login.dart';
-import '../datasource/datasource.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/data/datasource/login/login.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/repositories/repositories.dart';
 

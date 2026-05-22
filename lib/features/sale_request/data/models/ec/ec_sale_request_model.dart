@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/data/models/models.dart';
-import '../../../../../utils/utils.dart';
-import '../../../domain/entities/entities.dart';
-import 'ec.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/ec/ec.dart';
 
 class EcSaleRequestModel extends Equatable {
   final int? Id;

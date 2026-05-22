@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../data/models/models.dart';
-import '../../providers.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
+import 'package:celta_inventario/features/enterprise_manager/providers.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 
 part 'update_permissions_controller.g.dart';
 

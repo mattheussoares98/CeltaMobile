@@ -1,4 +1,4 @@
-import '../model/model.dart';
+import 'package:celta_inventario/features/adjust_cost/data/model/model.dart';
 
 abstract class IEcAdjustCostDatasource {
   Future<void> adjust({

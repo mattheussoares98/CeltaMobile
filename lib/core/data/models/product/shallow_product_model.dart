@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../utils/utils.dart';
-import '../../../domain/entities/entities.dart';
-import '../models.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 class ShallowProductModel extends Equatable implements ProductModelType {
   final String Name;

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import '../../domain/entities/entities.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/data/datasource/datasource.dart';
 
 class SoapAdjustSalePriceDatasource implements ISoapAdjustSalePriceDatasource {
   final SoapRequest soapRequest;

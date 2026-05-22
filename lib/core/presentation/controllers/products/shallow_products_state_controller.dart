@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/providers/products/products.dart';
-import '../../../../features/enterprises/presentation/controllers/controllers.dart';
-import '../../../../utils/utils.dart';
-import '../../../domain/contracts/contracts.dart';
-import '../app_usage/app_usage.dart';
-import '../user_session/user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/products/products.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'shallow_products_state_controller.g.dart';
 

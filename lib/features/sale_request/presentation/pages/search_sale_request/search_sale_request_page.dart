@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../utils/utils.dart';
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/components.dart';
 
 class SearchSaleRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;

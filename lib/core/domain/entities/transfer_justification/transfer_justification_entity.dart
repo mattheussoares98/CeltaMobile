@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class TransferJustificationEntity extends Equatable {
   final int CodigoInterno_JustMov; /*  37, */

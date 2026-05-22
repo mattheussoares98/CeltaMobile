@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/adjust_sale_price/data/models/models.dart';
 
 abstract class ISoapGetPriceSchedulesDatasource {
   Future<List<PriceScheduleModel>> getPriceSchedules({

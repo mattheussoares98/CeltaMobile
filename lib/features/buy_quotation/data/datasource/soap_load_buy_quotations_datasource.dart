@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:celta_inventario/features/buy_quotation/data/models/buy_quotation_model.dart';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import '../../domain/entities/entities.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/data/datasource/datasource.dart';
 
 class SoapLoadBuyQuotationsDatasource
     implements ISoapLoadBuyQuotationsDatasource {

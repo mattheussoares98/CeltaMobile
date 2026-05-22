@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/presentation/controllers/products/products.dart';
-import '../../../controllers/controller.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class SelectProductsModal extends ConsumerStatefulWidget {
   final int enterpriseCode;

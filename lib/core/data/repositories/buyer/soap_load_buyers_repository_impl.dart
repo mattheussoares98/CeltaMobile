@@ -1,4 +1,4 @@
-import '../../../data/datasource/buyer/buyer.dart';
+import 'package:celta_inventario/core/data/datasource/buyer/buyer.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/buyer/buyer.dart';
 

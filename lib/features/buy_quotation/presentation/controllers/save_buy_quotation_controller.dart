@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../exceptions/exceptions.dart';
-import '../../providers.dart';
-import 'controller.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/buy_quotation/providers.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 part 'save_buy_quotation_controller.g.dart';
 

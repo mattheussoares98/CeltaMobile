@@ -1,7 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import 'url_launch.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/data/datasource/url_launch/url_launch.dart';
 
 class UrlLaunchDatasource implements IUrlLaunchDatasource {
   @override

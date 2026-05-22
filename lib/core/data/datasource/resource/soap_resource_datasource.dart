@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../domain/contracts/contracts.dart';
-import '../../../domain/entities/entities.dart';
-import 'resource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/datasource/resource/resource.dart';
 
 class SoapResourceDatasource implements ISoapResourceDatasource {
   final SoapRequest soapAdapter;

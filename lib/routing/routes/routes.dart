@@ -12,7 +12,7 @@ export './splash_route.dart';
 export './stock_replacement_route.dart';
 export './transfer_between_stocks_route.dart';
 export 'adjust_sale_price/adjust_sale_price.dart';
-export 'adjust_stocks_route.dart';
+export './adjust_stocks_route.dart';
 export 'buy_quotation/buy_quotation.dart';
 export 'competing_prices/competing_prices.dart';
 export 'expedition_conference/expedition_conference.dart';

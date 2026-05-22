@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 
 abstract class ISoapLoadInventoryRepository {
   Future<InventoryEntity> load({

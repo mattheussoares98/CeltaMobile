@@ -2,8 +2,8 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class Values extends StatelessWidget {
   final SaleRequestCartProductEntity product;

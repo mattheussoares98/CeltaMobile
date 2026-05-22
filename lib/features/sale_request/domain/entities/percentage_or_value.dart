@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-import '../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 enum PercentageOrValue implements SelectableItem<PercentageOrValue> {
   percentage('%', 'Porcentagem', 1),

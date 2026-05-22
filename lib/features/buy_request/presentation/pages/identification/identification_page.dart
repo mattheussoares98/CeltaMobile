@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../constants/constants.dart';
-import '../components/components.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/identification/components/components.dart';
 
 class IdentificationPage extends ConsumerWidget {
   final int enterpriseCode;

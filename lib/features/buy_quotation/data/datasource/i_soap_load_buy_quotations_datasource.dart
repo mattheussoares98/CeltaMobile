@@ -1,5 +1,5 @@
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/data/models/models.dart';
 
 abstract class ISoapLoadBuyQuotationsDatasource {
   Future<List<BuyQuotationModel>> load({

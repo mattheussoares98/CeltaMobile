@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/models/models.dart';
-import '../../../domain/entities/entities.dart';
-import '../../../providers/hive/hive.dart';
-import '../../../providers/notification/notification.dart';
-import '../../../providers/user_session/user_session.dart';
-import '../app_version/app_version.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/hive/hive.dart';
+import 'package:celta_inventario/core/providers/notification/notification.dart';
+import 'package:celta_inventario/core/providers/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_version/app_version.dart';
 
 part 'user_session_provider.g.dart';
 

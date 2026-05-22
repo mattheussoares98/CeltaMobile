@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../routing/routing.dart';
-import '../../controllers/controller.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/pages/quotations/components/components.dart';
 
 class QuotationsPage extends ConsumerWidget {
   final int enterpriseCode;

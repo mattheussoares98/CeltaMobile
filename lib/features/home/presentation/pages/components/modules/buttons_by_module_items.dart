@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../routing/routing.dart';
-import '../components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 
 class ButtonsByModuleItems {
   ButtonsByModuleItems._();

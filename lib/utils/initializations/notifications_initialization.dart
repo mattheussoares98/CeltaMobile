@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../../../firebase_options.dart';
+import 'package:celta_inventario/firebase_options.dart';
 
 /// PERFORMANCE: Using a dedicated service for notifications ensures
 /// that Firebase listeners are registered exactly once and do not

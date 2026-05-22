@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../utils/utils.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class SelectDateIconButton extends StatelessWidget {
   final TextEditingController controller;

@@ -1,8 +1,8 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/datasource/datasource.dart';
 
 class EnterpriseManagerDatasource implements IEnterpriseManagerDatasource {
   final SupabaseClient supabase;

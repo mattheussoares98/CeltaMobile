@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-import '../../localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 /// PERFORMANCE: This manager uses the Overlay API to create an accessory bar
 /// that floats above the keyboard. It is isolated from the main widget tree

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/presentation/controllers/app_usage/app_usage.dart';
-import '../../../../../routing/routing.dart';
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
-import 'enterprises/enterprises.dart';
-import 'reports/reports.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/components/components.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/enterprises.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/reports/reports.dart';
 
 class EnterpriseManagerPage extends ConsumerStatefulWidget {
   const EnterpriseManagerPage({super.key});

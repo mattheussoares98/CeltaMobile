@@ -1,5 +1,5 @@
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
+import 'package:celta_inventario/features/customer_register/data/models/models.dart';
 
 abstract class ISoapLoadCovenantsDatasource {
   Future<List<CovenantModel>> load({

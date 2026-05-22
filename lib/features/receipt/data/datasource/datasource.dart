@@ -2,7 +2,7 @@ export './i_soap_annul_quantity_datasource.dart';
 export './i_soap_insert_product_not_found_datasource.dart';
 export './i_soap_liberate_document_datasource.dart';
 export './i_soap_load_products_not_found_datasource.dart';
-export 'i_soap_load_receipts_datasource.dart';
+export './i_soap_load_receipts_datasource.dart';
 export './i_soap_update_observations_datasource.dart';
 export './i_soap_update_product_datasource.dart';
 export './soap_annul_quantity_datasource.dart';

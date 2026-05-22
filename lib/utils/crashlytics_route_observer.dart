@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../core/domain/entities/entities.dart';
-import '../core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 
 class CrashlyticsRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   final ICrashlyticsService _service;

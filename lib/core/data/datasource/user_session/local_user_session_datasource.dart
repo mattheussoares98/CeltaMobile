@@ -1,9 +1,9 @@
 import 'package:celta_inventario/core/data/models/user_session_model.dart';
 import 'package:hive/hive.dart';
 
-import '../../../../features/auth/data/models/models.dart';
-import '../../../infraestructure/infrastructure.dart';
-import 'user_session.dart';
+import 'package:celta_inventario/features/auth/data/models/models.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/data/datasource/user_session/user_session.dart';
 
 class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
   final Box box;

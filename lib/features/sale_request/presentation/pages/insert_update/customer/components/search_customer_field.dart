@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/validators/validators.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class SearchCustomerField extends ConsumerStatefulWidget {
   const SearchCustomerField({super.key});

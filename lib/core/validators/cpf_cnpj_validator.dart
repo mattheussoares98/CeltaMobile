@@ -1,8 +1,8 @@
 import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
-import '../../localization/string_hardcoded.dart';
-import 'validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 
 class CpfCnpjValidator implements StringValidator {
   @override

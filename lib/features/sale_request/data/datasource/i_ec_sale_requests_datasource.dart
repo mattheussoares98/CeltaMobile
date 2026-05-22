@@ -1,5 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 
 abstract class IEcSaleRequestsDatasource {
   Future<EcPaginationResults<EcSaleRequestModel>> get({

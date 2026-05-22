@@ -1,12 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/enterprise/enterprise.dart';
-import '../../core/providers/supabase/supabase.dart';
-import '../auth/providers.dart';
-import 'data/datasource/datasource.dart';
-import 'domain/entities/entities.dart';
-import 'domain/repositories/repositories.dart';
-import 'data/repositories/repositories.dart';
+import 'package:celta_inventario/core/providers/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/providers/supabase/supabase.dart';
+import 'package:celta_inventario/features/auth/providers.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/repositories/repositories.dart';
 
 part 'providers.g.dart';
 

@@ -7,10 +7,10 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../core/config/secrets.dart';
-import '../../core/infraestructure/infrastructure.dart' show DatabaseConstants;
-import '../../firebase_options.dart';
-import '../utils.dart';
+import 'package:celta_inventario/core/config/secrets.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart' show DatabaseConstants;
+import 'package:celta_inventario/firebase_options.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 Future<void> initApp() async {
   WidgetsFlutterBinding.ensureInitialized();

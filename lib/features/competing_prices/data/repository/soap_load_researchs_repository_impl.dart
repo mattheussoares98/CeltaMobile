@@ -1,6 +1,6 @@
 import 'package:celta_inventario/features/competing_prices/domain/entities/research_entity.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 
 class SoapLoadResearchsRepositoryImpl implements ISoapLoadResearchsRepository {

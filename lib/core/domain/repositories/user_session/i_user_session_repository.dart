@@ -1,5 +1,5 @@
-import '../../../data/models/models.dart';
-import '../../entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 abstract class IUserSessionRepository {
   Future<void> save(UserSessionModel session);

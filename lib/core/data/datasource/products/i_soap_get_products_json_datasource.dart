@@ -1,4 +1,4 @@
-import '../../models/models.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 abstract class ISoapGetProductsJsonDatasource {
   Future<List<ProductModelType>> get({

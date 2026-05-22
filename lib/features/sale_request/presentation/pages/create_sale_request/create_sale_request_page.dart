@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/presentation/controllers/request_type/request_type.dart';
-import '../../../../../routing/routing.dart';
-import '../../controllers/controllers.dart';
-import '../components/components.dart';
-import 'components/components.dart';
-import 'create_sale_request.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/create_sale_request.dart';
 
 class CreateSaleRequestPage extends ConsumerWidget {
   final int enterpriseCode;

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 
 class CovenantModel extends Equatable {
   final int? CodigoInterno_Convenio;

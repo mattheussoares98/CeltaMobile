@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
+import 'package:celta_inventario/constants/constants.dart';
 
 class ResponsiveListFlow extends StatelessWidget {
   final int itemCount;

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 abstract class GetProductsDefaultParams<T> extends Equatable {
   final String searchValue;

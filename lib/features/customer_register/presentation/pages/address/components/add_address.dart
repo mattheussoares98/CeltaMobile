@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/presentation/widgets/address/address.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 
 class AddAddress extends ConsumerWidget {
   const AddAddress({super.key});

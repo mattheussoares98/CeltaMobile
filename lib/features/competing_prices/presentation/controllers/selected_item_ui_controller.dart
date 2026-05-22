@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 
 part 'selected_item_ui_controller.g.dart';
 

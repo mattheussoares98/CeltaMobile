@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
-import '../core/domain/entities/entities.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 /// PERFORMANCE: This widget chooses between a Segmented Control and a Wrap
 /// layout based on available width to prevent text overflow and unreadable labels.

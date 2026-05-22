@@ -2,10 +2,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/default_choice_chip.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/default_choice_chip.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 
 class ProductSearchTypeWidget extends StatelessWidget {
   const ProductSearchTypeWidget({super.key});

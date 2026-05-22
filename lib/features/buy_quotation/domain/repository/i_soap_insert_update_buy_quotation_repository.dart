@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 
 abstract class ISoapInsertUpdateBuyQuotationRepository {
   Future<void> insertUpdate({

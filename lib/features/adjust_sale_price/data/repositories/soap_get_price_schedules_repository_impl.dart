@@ -1,7 +1,7 @@
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/price_schedule_entity.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/repositories/repositories.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/adjust_sale_price/data/datasource/datasource.dart';
 
 class SoapGetPriceSchedulesRepositoryImpl
     implements ISoapGetPriceSchedulesRepository {

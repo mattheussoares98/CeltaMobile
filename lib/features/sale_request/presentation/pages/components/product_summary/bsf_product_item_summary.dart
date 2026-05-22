@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 
 class BSFProductItemSummary extends ConsumerWidget {
   final ProductEntity product;

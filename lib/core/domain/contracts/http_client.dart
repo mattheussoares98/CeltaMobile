@@ -1,4 +1,4 @@
-import 'contracts.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 
 abstract class HttpClient {
   Future<dynamic> request({

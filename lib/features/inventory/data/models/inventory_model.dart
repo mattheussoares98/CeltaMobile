@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
+import 'package:celta_inventario/features/inventory/data/models/models.dart';
 
 class InventoryModel extends Equatable {
   final List<FrozenProcessModel> frozenProcesses;

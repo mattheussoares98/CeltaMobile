@@ -2,7 +2,7 @@ import 'package:celta_inventario/features/competing_prices/presentation/pages/in
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class InsertConcurrentButton extends StatelessWidget {
   const InsertConcurrentButton({super.key});

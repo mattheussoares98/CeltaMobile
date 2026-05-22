@@ -1,5 +1,5 @@
-import '../datasource/datasource.dart';
-import '../model/model.dart';
+import 'package:celta_inventario/features/adjust_cost/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/adjust_cost/data/model/model.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/repository/repository.dart';
 

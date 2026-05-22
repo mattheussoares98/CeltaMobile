@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../domain/entities/entities.dart';
-import 'components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
 
 class EnterpriseItems extends ConsumerStatefulWidget {
   final List<EnterprisePermissionEntity> enterprises;

@@ -1,9 +1,9 @@
-export './params/params.dart';
+export 'params/params.dart';
 export './last_buy_entrance_entity.dart';
 export './price_cost_entity.dart';
 export './product_entity.dart';
 export './search_product_competing_price_type.dart';
 export './search_product_key.dart';
 export './search_type.dart';
-export 'stock_by_enterprise_associated_entity.dart';
-export 'stock_entity.dart';
+export './stock_by_enterprise_associated_entity.dart';
+export './stock_entity.dart';

@@ -1,7 +1,7 @@
 import 'package:celta_inventario/features/buy_request/domain/entities/pending_buy_request_entity.dart';
 
-import '../datasource/datasource.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
 
 class LocalPendingBuyRequestRepositoryImpl

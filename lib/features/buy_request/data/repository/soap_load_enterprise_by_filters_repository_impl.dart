@@ -1,6 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/enterprise/enterprise_entity.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
 
 class SoapLoadEnterpriseByFiltersRepositoryImpl

@@ -1,6 +1,6 @@
-import '../../../../core/domain/contracts/contracts.dart';
-import '../model/model.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/adjust_cost/data/model/model.dart';
+import 'package:celta_inventario/features/adjust_cost/data/datasource/datasource.dart';
 
 class EcAdjustCostDatasource implements IEcAdjustCostDatasource {
   final HttpClient httpClient;

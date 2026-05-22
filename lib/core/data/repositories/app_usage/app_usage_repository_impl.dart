@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 
-import '../../../data/datasource/app_usage/app_usage.dart';
-import '../../../data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
 

@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/expedition_conference/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/repositories/repositories.dart';
 
 class SoapConfirmConferenceRepositoryImpl

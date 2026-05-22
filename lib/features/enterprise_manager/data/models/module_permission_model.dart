@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 
 class ModulePermissionModel extends Equatable {
   final int id;

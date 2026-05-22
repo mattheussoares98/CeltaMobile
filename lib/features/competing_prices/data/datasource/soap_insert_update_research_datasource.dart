@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
 
 class SoapInsertUpdateResearchDatasource
     implements ISoapInsertUpdateResearchDatasource {

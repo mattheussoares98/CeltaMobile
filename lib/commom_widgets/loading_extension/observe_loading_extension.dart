@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../constants/constants.dart';
-import 'animated_ellipsis.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/commom_widgets/loading_extension/animated_ellipsis.dart';
 
 /// PERFORMANCE: Using an extension on WidgetRef allows for a clean,
 /// functional approach in ConsumerWidgets without adding extra

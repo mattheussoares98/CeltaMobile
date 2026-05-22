@@ -3,12 +3,12 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/presentation/controllers/stock/stock.dart';
-import '../../controllers/controllers.dart';
-import '../lot/components/components.dart';
-import '../pages.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/pages.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/transfer_between_stocks/components/components.dart';
 
 class TransferBetweenStocksPage extends ConsumerWidget {
   final int enterpriseCode;

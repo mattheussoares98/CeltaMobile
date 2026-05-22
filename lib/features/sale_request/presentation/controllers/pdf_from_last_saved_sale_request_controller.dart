@@ -4,10 +4,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
-import '../../providers.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 part 'pdf_from_last_saved_sale_request_controller.g.dart';
 

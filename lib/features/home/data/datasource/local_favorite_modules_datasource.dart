@@ -1,8 +1,8 @@
 import 'package:celta_inventario/core/domain/entities/modules.dart';
 import 'package:hive/hive.dart';
 
-import '../../../../core/infraestructure/infrastructure.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/home/data/datasource/datasource.dart';
 
 class LocalFavoriteModulesDatasource implements IFavoriteModulesDatasource {
   final Box box;

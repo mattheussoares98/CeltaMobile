@@ -2,7 +2,7 @@ import 'package:celta_inventario/features/buy_quotation/domain/entities/buy_quot
 
 import 'package:celta_inventario/features/buy_quotation/domain/entities/search_buy_quotation_data_type.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_quotation/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/repository/repository.dart';
 
 class SoapLoadBuyQuotationsRepositoryImpl

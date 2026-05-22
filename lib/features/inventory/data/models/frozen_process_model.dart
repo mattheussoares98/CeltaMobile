@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 
 class FrozenProcessModel extends Equatable {
   final int CodigoInternoInventario;

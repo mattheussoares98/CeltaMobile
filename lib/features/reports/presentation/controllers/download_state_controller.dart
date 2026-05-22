@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/data/datasource/share_download/share_download.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
-import '../../../../core/presentation/controllers/share_download/share_download.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/share_download/share_download.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/reports/providers.dart';
 
 part 'download_state_controller.g.dart';
 

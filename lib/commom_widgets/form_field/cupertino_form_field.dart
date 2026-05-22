@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import '../../core/presentation/controllers/keyboard/keyboard/keyboard.dart';
-import '../../core/providers/services/services.dart';
-import 'form_field.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
+import 'package:celta_inventario/core/providers/services/services.dart';
+import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
 
 class CupertinoFormField extends ConsumerStatefulWidget {
   final DefaultTextFormField defaultTextFormField;

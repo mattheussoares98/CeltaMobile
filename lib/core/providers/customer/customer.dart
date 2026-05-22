@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/customer/customer.dart';
-import '../../data/repositories/customer/customer.dart';
-import '../../domain/repositories/customer/customer.dart';
-import '../http/http.dart';
-import '../soap/soap.dart';
+import 'package:celta_inventario/core/data/datasource/customer/customer.dart';
+import 'package:celta_inventario/core/data/repositories/customer/customer.dart';
+import 'package:celta_inventario/core/domain/repositories/customer/customer.dart';
+import 'package:celta_inventario/core/providers/http/http.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
 
 part 'customer.g.dart';
 

@@ -1,5 +1,5 @@
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/inventory/data/datasource/datasource.dart';
 
 class SoapInventoryEntryQuantityDatasource
     implements ISoapInventoryEntryQuantityDatasource {

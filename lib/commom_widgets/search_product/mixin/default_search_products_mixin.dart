@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/infraestructure/infrastructure.dart';
-import '../../../core/presentation/controllers/products/products.dart';
-import '../search_product.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/commom_widgets/search_product/search_product.dart';
 
 mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {

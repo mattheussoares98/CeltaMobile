@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/validators/validators.dart';
-import '../../../../../localization/string_hardcoded.dart';
-import '../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
 
 class PasswordField extends ConsumerStatefulWidget {
   final TextEditingController passwordController;

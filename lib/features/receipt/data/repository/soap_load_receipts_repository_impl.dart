@@ -1,6 +1,6 @@
 import 'package:celta_inventario/features/receipt/domain/entity/receipt_entity.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/receipt/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/receipt/domain/repository/repository.dart';
 
 class SoapLoadReceiptsRepositoryImpl implements ISoapLoadReceiptsRepository {

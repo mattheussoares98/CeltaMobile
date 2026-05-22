@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../routing/routing.dart';
-import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controller.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class QuotationsItems extends ConsumerWidget {
   final int enterpriseCode;

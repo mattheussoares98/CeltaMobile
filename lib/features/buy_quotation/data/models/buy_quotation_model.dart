@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/data/models/models.dart';
 
 class BuyQuotationModel extends Equatable {
   final int? Code;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../utils/utils.dart';
-import '../../../../../domain/entities/entities.dart';
-import 'components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
 
 class FilteredEnterprises extends StatefulWidget {
   final List<EnterprisePermissionEntity> enterprises;

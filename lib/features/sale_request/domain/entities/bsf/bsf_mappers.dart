@@ -1,6 +1,6 @@
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../utils/utils.dart';
-import '../entities.dart' hide ProductPackingCode;
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart' hide ProductPackingCode;
 
 extension ProductEntityToBSFProductItemEntity on ProductEntity {
   BSFProductItemEntity toBSFProductItemEntity() {

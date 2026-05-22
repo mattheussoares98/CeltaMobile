@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class LocalLastSavedSaleRequestDatasource
     implements ILocalLastSavedSaleRequestDatasource {

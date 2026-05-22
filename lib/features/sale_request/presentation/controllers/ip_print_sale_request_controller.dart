@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../providers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 
 part 'ip_print_sale_request_controller.g.dart';
 

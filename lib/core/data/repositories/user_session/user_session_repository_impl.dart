@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../data/models/user_session_model.dart';
-import '../../../data/datasource/user_session/user_session.dart';
+import 'package:celta_inventario/core/data/models/user_session_model.dart';
+import 'package:celta_inventario/core/data/datasource/user_session/user_session.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/user_session/user_session.dart';
 

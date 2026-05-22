@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/providers.dart';
 
 part 'price_schedules_state_controller.g.dart';
 

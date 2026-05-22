@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../core/validators/validators.dart';
-import '../../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class SearchFieldAndSwitch extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;

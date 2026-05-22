@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/stock/adjust_stock_item_entity.dart';
 
-import '../../../data/datasource/stock/stock.dart';
-import '../../../data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/stock/stock.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/repositories/stock/stock.dart';
 
 class SoapAdjustStockRepositoryImpl implements ISoapAdjustStockRepository {

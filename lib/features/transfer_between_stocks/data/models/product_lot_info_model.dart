@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 
 class ProductLotInfoModel extends Equatable {
   final ProductModel product;

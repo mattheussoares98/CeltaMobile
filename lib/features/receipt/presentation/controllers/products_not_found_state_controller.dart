@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entity/entity.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/providers.dart';
 
 part 'products_not_found_state_controller.g.dart';
 

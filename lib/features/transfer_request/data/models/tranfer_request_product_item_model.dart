@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/data/models/models.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 
 class TransferRequestProductItemModel extends Equatable {
   final ProductModel product;

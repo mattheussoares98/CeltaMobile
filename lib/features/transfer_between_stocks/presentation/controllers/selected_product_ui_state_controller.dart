@@ -1,8 +1,8 @@
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/stock/stock.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 
 part 'selected_product_ui_state_controller.g.dart';
 

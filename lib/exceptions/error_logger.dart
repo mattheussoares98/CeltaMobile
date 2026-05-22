@@ -1,4 +1,4 @@
-import '/exceptions/app_exception.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

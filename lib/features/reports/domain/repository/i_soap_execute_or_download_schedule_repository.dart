@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 
 abstract class ISoapExecuteOrDownloadScheduleRepository {
   Future<List<ScheduleExecutionsEntity>> executeOrDownloadSchedule({

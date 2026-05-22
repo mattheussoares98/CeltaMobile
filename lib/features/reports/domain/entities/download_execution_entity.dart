@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import 'entities.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 
 class DownloadExecutionEntity extends Equatable {
   final ScheduleExecutionsEntity executionResult;

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/data/models/models.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
 
 class SoapConcurrentsDatasource implements ISoapConcurrentsDatasource {
   final SoapRequest soapRequest;

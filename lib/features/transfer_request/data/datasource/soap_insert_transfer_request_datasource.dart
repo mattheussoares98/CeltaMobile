@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import '../../../../core/data/models/models.dart';
-import '../../../../core/domain/contracts/contracts.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/transfer_request/data/models/models.dart';
+import 'package:celta_inventario/features/transfer_request/data/datasource/datasource.dart';
 
 class SoapInsertTransferRequestDatasource
     implements ISoapInsertTransferRequestDatasource {

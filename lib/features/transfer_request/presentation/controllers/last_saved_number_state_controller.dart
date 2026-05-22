@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/transfer_request/providers.dart';
 
 part 'last_saved_number_state_controller.g.dart';
 

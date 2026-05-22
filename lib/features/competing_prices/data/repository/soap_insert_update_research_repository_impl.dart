@@ -1,7 +1,7 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/domain/repository/repository.dart';
 

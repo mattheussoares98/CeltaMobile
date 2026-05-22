@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../../core/data/models/models.dart';
-import '../../../../core/domain/contracts/contracts.dart';
-import 'products.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/datasource/products/products.dart';
 
 class SoapLoadProductByRequestTypeDatasource
     implements ISoapLoadProductByRequestTypeDatasource {

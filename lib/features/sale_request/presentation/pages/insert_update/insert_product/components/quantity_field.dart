@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/validators/validators.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../../utils/utils.dart';
-import '../../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class QuantityField extends ConsumerStatefulWidget {
   const QuantityField({super.key});

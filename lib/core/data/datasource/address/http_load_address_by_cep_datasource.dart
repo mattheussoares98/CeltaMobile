@@ -1,9 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../../../domain/contracts/contracts.dart';
-import '../../models/address/soap/soap_address_model.dart';
-import 'address.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/models/address/soap/soap_address_model.dart';
+import 'package:celta_inventario/core/data/datasource/address/address.dart';
 
 class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
   final HttpClient httpClient;

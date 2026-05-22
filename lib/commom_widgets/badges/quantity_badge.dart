@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/utils.dart';
-import '../commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class QuantityBadge extends StatefulWidget {
   final int? quantity;

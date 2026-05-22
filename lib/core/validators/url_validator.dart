@@ -1,5 +1,5 @@
-import '../../localization/string_hardcoded.dart';
-import 'validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 
 class UrlValidator implements StringValidator {
   final bool? shouldBeHttps;

@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../core/providers/customer/customer.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/customer/customer.dart';
 
 part 'consumer_customer_state_controller.g.dart';
 

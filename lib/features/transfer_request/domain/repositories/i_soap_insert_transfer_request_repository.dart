@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 
 abstract class ISoapInsertTransferRequestRepository {
   Future<String> save({

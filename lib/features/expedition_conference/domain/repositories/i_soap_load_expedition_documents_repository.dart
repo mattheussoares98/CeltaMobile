@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 
 abstract class ISoapLoadExpeditionDocumentsRepository {
   Future<List<ExpeditionDocumentEntity>> load({

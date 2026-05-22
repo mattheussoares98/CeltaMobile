@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../constants/constants.dart';
-import '../../core/presentation/theme/theme.dart';
-import 'form_field.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/theme/theme.dart';
+import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
 
 class DefaultTextFormField extends StatelessWidget {
   final bool? enabled;

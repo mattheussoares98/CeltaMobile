@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../routing/routing.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});

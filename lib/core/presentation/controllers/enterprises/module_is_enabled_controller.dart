@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../domain/entities/entities.dart';
-import '../user_session/user_session.dart';
-import 'enterprises.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 
 part 'module_is_enabled_controller.g.dart';
 

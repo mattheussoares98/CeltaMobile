@@ -1,9 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../../domain/entities/entities.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 
 part 'scan_product_controller.g.dart';
 

@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../features/search_products/presentation/pages/pages.dart';
-import '../routing.dart';
+import 'package:celta_inventario/features/search_products/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase searchProductsRoute() => GoRoute(
   path: ':enterpriseCode/search-products',

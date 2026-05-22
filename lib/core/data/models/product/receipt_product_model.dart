@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../models.dart';
-import '../../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class ReceiptProductModel extends Equatable implements ProductModelType {
   final String Nome_Produto;

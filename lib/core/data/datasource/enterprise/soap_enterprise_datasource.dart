@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:celta_inventario/core/data/models/enterprise/soap_enterprise_model.dart';
 import 'package:celta_inventario/utils/utils.dart';
 
-import '../../../domain/contracts/contracts.dart';
-import 'enterprise.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
 
 class SoapEnterpriseDatasource implements ISoapEnterpriseDatasource {
   final SoapRequest soapAdapter;

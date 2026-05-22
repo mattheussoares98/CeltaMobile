@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../controllers/controller.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class SaveIconButton extends ConsumerWidget {
   final int enterpriseCode;

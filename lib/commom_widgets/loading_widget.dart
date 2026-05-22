@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
+import 'package:celta_inventario/constants/constants.dart';
 
 class LoadingWidget extends StatelessWidget {
   final double? size;

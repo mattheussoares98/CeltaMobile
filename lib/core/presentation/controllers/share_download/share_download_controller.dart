@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data/datasource/share_download/share_download.dart';
-import '../../../providers/share_download/share_download.dart';
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
+import 'package:celta_inventario/core/providers/share_download/share_download.dart';
 
 part 'share_download_controller.g.dart';
 

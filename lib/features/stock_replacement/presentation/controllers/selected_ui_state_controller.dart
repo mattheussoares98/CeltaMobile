@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/stock_replacement/domain/entities/entities.dart';
 
 part 'selected_ui_state_controller.g.dart';
 

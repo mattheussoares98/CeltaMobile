@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers/providers.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/providers/providers.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 
 part 'insert_update_research_controller.g.dart';
 

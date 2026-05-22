@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 enum SearchProductTypePreference
     implements SelectableItem<SearchProductTypePreference> {

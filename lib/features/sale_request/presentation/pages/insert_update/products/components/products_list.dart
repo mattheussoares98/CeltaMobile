@@ -9,7 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 
 class ProductsList extends ConsumerWidget {
   final SearchProductKey searchProductKey;

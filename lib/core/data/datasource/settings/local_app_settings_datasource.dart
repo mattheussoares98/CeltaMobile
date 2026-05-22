@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../infraestructure/infrastructure.dart';
-import '../../models/models.dart';
-import 'settings.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/settings/settings.dart';
 
 class LocalAppSettingsDatasource implements IAppSettingsDatasource {
   final Box box;

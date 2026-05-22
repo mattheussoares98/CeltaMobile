@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'financial.dart';
+import 'package:celta_inventario/core/domain/entities/financial/financial.dart';
 
 class BSFFinancialEntity extends Equatable {
   final List<BSFPaymentFinalizationWrapperEntity>? paymentFinalizations;

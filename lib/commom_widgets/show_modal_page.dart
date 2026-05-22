@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../constants/constants.dart';
+import 'package:celta_inventario/constants/constants.dart';
 
 Future<void> showModalPage(Widget body, BuildContext context) async {
   await showModalBottomSheet(

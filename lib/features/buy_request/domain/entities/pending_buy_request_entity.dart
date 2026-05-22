@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import 'entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 
 class PendingBuyRequestEntity extends Equatable {
   final BuyerEntity? selectedBuyer;

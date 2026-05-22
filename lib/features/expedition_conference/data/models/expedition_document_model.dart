@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 
 class ExpeditionDocumentModel extends Equatable {
   final int? EnterpriseCode;

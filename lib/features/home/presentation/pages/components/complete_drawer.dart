@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../core/presentation/controllers/app_version/app_version.dart';
-import 'components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_version/app_version.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 
 class CompleteDrawer extends ConsumerWidget {
   const CompleteDrawer({super.key});

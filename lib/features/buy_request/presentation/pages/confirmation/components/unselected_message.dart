@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 
 class UnselectedMessage extends StatelessWidget {
   final String title;

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../routing/routes.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/routing/routes.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
 
 class OriginEnterprisesPage extends ConsumerWidget {
   final int requestTypeCode;

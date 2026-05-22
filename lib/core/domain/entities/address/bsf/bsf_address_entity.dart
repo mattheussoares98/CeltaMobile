@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'bsf.dart';
+import 'package:celta_inventario/core/domain/entities/address/bsf/bsf.dart';
 
 class BSFAddressEntity extends Equatable {
   final int? code;

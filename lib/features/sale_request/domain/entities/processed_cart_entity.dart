@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class ProcessedCartEntity extends Equatable {
   final String? crossId;

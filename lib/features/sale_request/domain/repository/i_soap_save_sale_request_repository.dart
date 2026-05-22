@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 abstract class ISoapSaveSaleRequestRepository {
   Future<String?> save({

@@ -1,9 +1,9 @@
 import 'package:hive/hive.dart';
 
-import '../../../../core/infraestructure/infrastructure.dart';
-import '../../domain/entities/entities.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_request/data/models/models.dart';
+import 'package:celta_inventario/features/transfer_request/data/datasource/datasource.dart';
 
 class LocalCartDatasource implements ILocalCartDatasource {
   final Box box;

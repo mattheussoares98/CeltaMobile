@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/buy_quotation/presentation/pages/pages.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase buyQuotationsRoute(List<RouteBase> routes) => GoRoute(
   path: ':enterpriseCode/buy-quotations',

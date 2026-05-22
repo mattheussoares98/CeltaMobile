@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
-import '../../../../constants/constants.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../routing/routing.dart';
-import '../../../../utils/utils.dart';
-import '../controllers/login_controller.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/login_controller.dart';
+import 'package:celta_inventario/features/auth/presentation/pages/components/components.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({super.key});

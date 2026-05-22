@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/enterprises/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/enterprises/domain/repository/repository.dart';
 
 class LastSelectedEnterpriseCodeRepositoryImpl

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../core/domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_request/providers.dart';
 
 part 'destiny_enterprises_state_controller.g.dart';
 

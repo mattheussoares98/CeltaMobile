@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/competing_prices/presentation/pages/products/products_page.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/pages/products/products_page.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase competingPricesProductsRoute() => GoRoute(
   path: ':concurrentCode/products',

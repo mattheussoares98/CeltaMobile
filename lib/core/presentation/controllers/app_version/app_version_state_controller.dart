@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../providers/app_version/app_version.dart';
+import 'package:celta_inventario/core/providers/app_version/app_version.dart';
 
 part 'app_version_state_controller.g.dart';
 

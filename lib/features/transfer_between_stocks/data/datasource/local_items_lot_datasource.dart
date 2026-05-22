@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
-import '../../../../core/infraestructure/infrastructure.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/data/models/models.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/data/datasource/datasource.dart';
 
 class LocalItemsLotDatasource implements ILocalItemsLotDatasource {
   final Box box;

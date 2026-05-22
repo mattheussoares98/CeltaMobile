@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
-import '../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});

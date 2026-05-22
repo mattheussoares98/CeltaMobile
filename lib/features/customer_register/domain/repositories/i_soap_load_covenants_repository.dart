@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 
 abstract class ISoapLoadCovenantsRepository {
   Future<List<CovenantEntity>> load({

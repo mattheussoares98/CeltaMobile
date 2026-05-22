@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
 
 class ShallowProductsOverlay {
   static final ShallowProductsOverlay _instance =

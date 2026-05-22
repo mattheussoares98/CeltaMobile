@@ -1,1 +1,1 @@
-export 'i_favorite_modules_repository.dart';
+export './i_favorite_modules_repository.dart';

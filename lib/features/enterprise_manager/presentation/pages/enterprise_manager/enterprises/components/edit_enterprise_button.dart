@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../routing/routing.dart';
-import '../../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 
 class EditEnterpriseButton extends StatelessWidget {
   final EnterprisePermissionEntity enterprise;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants/constants.dart';
+import 'package:celta_inventario/constants/constants.dart';
 
 class ActionCard extends StatelessWidget {
   final String title;

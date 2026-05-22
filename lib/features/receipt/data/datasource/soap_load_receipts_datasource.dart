@@ -1,6 +1,6 @@
-import '../../../../core/domain/contracts/contracts.dart';
-import '../model/model.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
+import 'package:celta_inventario/features/receipt/data/datasource/datasource.dart';
 
 class SoapLoadReceiptsDatasource implements ISoapLoadReceiptsDatasource {
   final SoapRequest soapRequest;

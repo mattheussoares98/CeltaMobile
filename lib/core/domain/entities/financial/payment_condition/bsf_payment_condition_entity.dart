@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import 'payment_condition_entity.dart';
-import 'payment_condition_fill_type.dart';
-import 'payment_condition_use_type.dart';
-import 'utilization_parameters_entity.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/payment_condition_entity.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/payment_condition_fill_type.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/payment_condition_use_type.dart';
+import 'package:celta_inventario/core/domain/entities/financial/payment_condition/utilization_parameters_entity.dart';
 
 class BSFPaymentConditionEntity extends Equatable {
   final bool isShielded;

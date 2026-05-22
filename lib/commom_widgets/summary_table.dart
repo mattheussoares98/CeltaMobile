@@ -2,7 +2,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'animations/animations.dart';
+import 'package:celta_inventario/commom_widgets/animations/animations.dart';
 
 class SummaryTableItem {
   final String title;

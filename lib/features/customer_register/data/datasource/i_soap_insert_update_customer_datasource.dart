@@ -1,4 +1,4 @@
-import '../../../../core/data/models/customer/customer.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
 
 abstract class ISoapInsertUpdateCustomerDatasource {
   Future<void> insertOrUpdateCustomer({

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 
 class EditEnterpriseSwitch extends ConsumerWidget {
   final void Function(int moduleId, bool? newValue) onChange;

@@ -1,5 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 
 abstract class ISoapConcurrentsRepository {
   Future<List<ConcurrentEntity>> load({

@@ -3,12 +3,12 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../domain/entities/entities.dart';
-import '../../../providers.dart';
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/providers.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/change_modules_permission/components/components.dart';
 
 class ChangeModulesPermissionPage extends ConsumerStatefulWidget {
   final int enterpriseId;

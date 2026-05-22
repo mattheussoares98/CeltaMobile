@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
 class ReceiptModel extends Equatable {
   final int CodigoInterno_ProcRecebDoc;

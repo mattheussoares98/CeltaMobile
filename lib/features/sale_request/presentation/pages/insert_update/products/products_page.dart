@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../providers.dart';
-import '../../create_sale_request/insert_products/components/search_products.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/insert_products/components/search_products.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/products/components/components.dart';
 
 class ProductsPage extends ConsumerWidget {
   const ProductsPage({super.key});

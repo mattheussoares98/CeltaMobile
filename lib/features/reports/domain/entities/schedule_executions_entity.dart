@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'entities.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 
 class ScheduleExecutionsEntity extends Equatable {
   final int ReportScheduleCode;

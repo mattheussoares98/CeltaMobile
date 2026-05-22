@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../models/models.dart';
+import 'package:celta_inventario/features/reports/data/models/models.dart';
 
 abstract class ISoapExecuteOrDownloadScheduleDatasource {
   Future<List<ScheduleExecutionsModel>> executeOrDownloadSchedule({

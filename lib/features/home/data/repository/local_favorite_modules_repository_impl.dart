@@ -1,5 +1,5 @@
-import '../../../../core/domain/entities/entities.dart';
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/home/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/home/domain/repository/repository.dart';
 
 class LocalFavoriteModulesRepositoryImpl implements IFavoriteModulesRepository {

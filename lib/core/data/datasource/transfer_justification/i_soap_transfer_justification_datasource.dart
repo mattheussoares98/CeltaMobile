@@ -1,5 +1,5 @@
-import '../../../domain/entities/transfer_justification/transfer_justification.dart';
-import '../../models/models.dart';
+import 'package:celta_inventario/core/domain/entities/transfer_justification/transfer_justification.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 abstract class ISoapTransferJustificationDatasource {
   Future<List<TransferJustificationModel>> load({

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import '../../core/presentation/controllers/products/products.dart';
-import '../../utils/utils.dart';
-import '../commom_widgets.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
 
 class DefaultSearchProducts extends ConsumerWidget {
   final void Function(int? exactProductCode) searchProducts;

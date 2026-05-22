@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../../entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BsfCovenantEntity extends Equatable implements SelectableItem<BsfCovenantEntity> {
   final int? code;

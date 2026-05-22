@@ -1,4 +1,4 @@
-import '../../domain/entity/entity.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 
 class AdjustCostParametersModel extends AdjustCostParametersEntity {
   const AdjustCostParametersModel({

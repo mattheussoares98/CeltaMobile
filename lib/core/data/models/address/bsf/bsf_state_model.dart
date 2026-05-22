@@ -1,4 +1,4 @@
-import '../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFStateModel extends BSFStateEntity {
   const BSFStateModel({required super.acronym, required super.description});

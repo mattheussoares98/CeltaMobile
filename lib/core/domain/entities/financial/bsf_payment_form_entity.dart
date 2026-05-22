@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'financial.dart';
+import 'package:celta_inventario/core/domain/entities/financial/financial.dart';
 
 class BSFPaymentFormEntity extends Equatable {
   final PaymentFormType? type;

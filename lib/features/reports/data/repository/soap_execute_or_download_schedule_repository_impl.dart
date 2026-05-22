@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/reports/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/domain/repository/repository.dart';
 

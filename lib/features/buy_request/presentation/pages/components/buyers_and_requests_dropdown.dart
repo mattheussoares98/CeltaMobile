@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../constants/constants.dart';
-import 'components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
 
 class BuyersAndRequestsDropdown extends StatelessWidget {
   final bool enabled;

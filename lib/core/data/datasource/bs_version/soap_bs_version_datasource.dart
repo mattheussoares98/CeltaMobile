@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../../../domain/contracts/contracts.dart';
-import 'bs_version.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/datasource/bs_version/bs_version.dart';
 
 class SoapBsVersionDatasource implements ISoapBsVersionDatasource {
   final SoapRequest soapRequest;

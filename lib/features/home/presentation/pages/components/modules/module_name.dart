@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class ModuleName extends StatelessWidget {
   const ModuleName({super.key, required this.module});

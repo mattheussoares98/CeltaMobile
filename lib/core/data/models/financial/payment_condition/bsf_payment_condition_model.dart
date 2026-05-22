@@ -1,5 +1,5 @@
-import '../../../../../../../core/domain/entities/entities.dart';
-import 'payment_condition.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/financial/payment_condition/payment_condition.dart';
 
 class BSFPaymentConditionModel extends BSFPaymentConditionEntity {
   const BSFPaymentConditionModel({

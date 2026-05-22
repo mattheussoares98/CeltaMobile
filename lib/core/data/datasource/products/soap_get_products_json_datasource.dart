@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../domain/contracts/contracts.dart';
-import '../../models/models.dart';
-import 'products.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/products/products.dart';
 
 class SoapGetProductsJsonDatasource implements ISoapGetProductsJsonDatasource {
   final SoapRequest soapRequest;

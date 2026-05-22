@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/data/models/app_usage/app_usage_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'app_usage.dart';
+import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 
 class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
   final SupabaseClient _supabase;

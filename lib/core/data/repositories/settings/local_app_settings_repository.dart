@@ -1,5 +1,5 @@
-import '../../../data/datasource/settings/settings.dart';
-import '../../../data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/settings/settings.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/settings/settings.dart';
 

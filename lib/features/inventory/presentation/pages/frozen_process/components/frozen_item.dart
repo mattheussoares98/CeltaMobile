@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../routing/routing.dart';
-import '../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 
 class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;

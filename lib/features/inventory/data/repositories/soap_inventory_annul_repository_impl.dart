@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/inventory/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/inventory/domain/repositories/repositories.dart';
 
 class SoapInventoryAnnulRepositoryImpl

@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/transfer_justification/transfer_justification.dart';
-import '../../domain/repositories/transfer_justification/transfer_justification.dart';
-import '../../data/repositories/transfer_justification/transfer_justification.dart';
-import '../soap/soap.dart';
+import 'package:celta_inventario/core/data/datasource/transfer_justification/transfer_justification.dart';
+import 'package:celta_inventario/core/domain/repositories/transfer_justification/transfer_justification.dart';
+import 'package:celta_inventario/core/data/repositories/transfer_justification/transfer_justification.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
 
 part 'transfer_justification.g.dart';
 

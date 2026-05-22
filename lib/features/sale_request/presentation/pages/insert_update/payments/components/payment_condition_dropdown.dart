@@ -5,7 +5,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class PaymentConditionDropdown extends ConsumerWidget {
   const PaymentConditionDropdown({super.key});

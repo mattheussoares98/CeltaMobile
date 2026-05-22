@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../features/splash/presentation/pages/splash_page.dart';
-import '../routing.dart';
+import 'package:celta_inventario/features/splash/presentation/pages/splash_page.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase splashRoute() => GoRoute(
   path: '/splash',

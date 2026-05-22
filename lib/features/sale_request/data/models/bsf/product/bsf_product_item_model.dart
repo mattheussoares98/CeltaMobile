@@ -1,5 +1,5 @@
-import '../../../../domain/entities/entities.dart';
-import '../bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
 
 class BSFProductItemModel extends BSFProductItemEntity {
   const BSFProductItemModel({

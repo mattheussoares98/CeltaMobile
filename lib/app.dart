@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '/localization/string_hardcoded.dart';
-import '/routing/app_router.dart';
-import 'core/presentation/theme/theme.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/app_router.dart';
+import 'package:celta_inventario/core/presentation/theme/theme.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});

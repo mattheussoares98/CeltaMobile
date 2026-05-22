@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/providers.dart';
 
 part 'enterprise_manager_controller.g.dart';
 

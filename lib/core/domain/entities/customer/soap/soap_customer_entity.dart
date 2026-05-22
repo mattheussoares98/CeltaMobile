@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class SoapCustomerEntity extends Equatable {
   final int? Code;

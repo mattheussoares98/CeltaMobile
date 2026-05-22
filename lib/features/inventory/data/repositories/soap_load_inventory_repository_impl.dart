@@ -1,6 +1,6 @@
 import 'package:celta_inventario/features/inventory/domain/entities/inventory_entity.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/inventory/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/inventory/domain/repositories/repositories.dart';
 
 class SoapLoadInventoryRepositoryImpl implements ISoapLoadInventoryRepository {

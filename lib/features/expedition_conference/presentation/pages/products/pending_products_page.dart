@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../constants/constants.dart';
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/infraestructure/infrastructure.dart';
-import '../../../../../core/presentation/controllers/products/products.dart';
-import '../../../../../utils/utils.dart';
-import '../../../../settings/presentation/controllers/controllers.dart';
-import '../../../domain/entities/entities.dart';
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
 
 class PendingProductsPage extends ConsumerWidget {
   final int enterpriseCode;

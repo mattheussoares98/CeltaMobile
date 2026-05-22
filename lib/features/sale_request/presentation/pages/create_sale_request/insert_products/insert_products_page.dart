@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/insert_products/components/components.dart';
 
 class InsertProductsPage extends ConsumerWidget {
   final int enterpriseCode;

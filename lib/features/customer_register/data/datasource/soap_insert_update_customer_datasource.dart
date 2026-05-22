@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../../core/data/models/customer/customer.dart';
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/customer_register/data/datasource/datasource.dart';
 
 class SoapInsertUpdateCustomerDatasource
     implements ISoapInsertUpdateCustomerDatasource {

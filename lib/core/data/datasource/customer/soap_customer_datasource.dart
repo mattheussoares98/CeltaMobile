@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:celta_inventario/core/domain/entities/customer/soap/search_customer_type.dart';
 
-import '../../../domain/contracts/contracts.dart';
-import '../../models/customer/customer.dart';
-import 'customer.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
+import 'package:celta_inventario/core/data/datasource/customer/customer.dart';
 
 class SoapCustomerDatasource implements ISoapCustomerDatasource {
   final SoapRequest soapRequest;

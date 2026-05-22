@@ -1,8 +1,8 @@
 import 'package:hive/hive.dart';
 
-import '../../../../core/infraestructure/infrastructure.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
+import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 
 class LocalPendingBuyRequestDatasource
     implements ILocalPendingBuyRequestDatasource {

@@ -2,7 +2,7 @@ import 'package:celta_inventario/core/domain/entities/customer/soap/soap_custome
 
 import 'package:celta_inventario/core/domain/entities/customer/soap/search_customer_type.dart';
 
-import '../../../data/datasource/customer/customer.dart';
+import 'package:celta_inventario/core/data/datasource/customer/customer.dart';
 import 'package:celta_inventario/core/domain/repositories/customer/customer.dart';
 
 class SoapCustomerRepositoryImpl implements ISoapCustomerRepository {

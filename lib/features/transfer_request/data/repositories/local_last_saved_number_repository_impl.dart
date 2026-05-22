@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/transfer_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/transfer_request/domain/repositories/repositories.dart';
 
 class LocalLastSavedNumberRepositoryImpl

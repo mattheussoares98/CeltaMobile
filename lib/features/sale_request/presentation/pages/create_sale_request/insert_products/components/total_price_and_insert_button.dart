@@ -2,10 +2,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../core/domain/entities/entities.dart';
-import '../../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class TotalPriceAndInsertButton extends StatelessWidget {
   final VoidCallback insertProduct;

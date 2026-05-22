@@ -2,7 +2,7 @@ import 'package:celta_inventario/core/domain/entities/supplier/search_supplier_t
 
 import 'package:celta_inventario/core/domain/entities/supplier/supplier_entity.dart';
 
-import '../../../data/datasource/supplier/supplier.dart';
+import 'package:celta_inventario/core/data/datasource/supplier/supplier.dart';
 import 'package:celta_inventario/core/domain/repositories/supplier/supplier.dart';
 
 class SoapLoadSupplierRepositoryImpl implements ISoapLoadSupplierRepository {

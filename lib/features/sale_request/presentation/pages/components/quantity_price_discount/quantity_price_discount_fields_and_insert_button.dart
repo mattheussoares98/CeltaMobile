@@ -2,11 +2,11 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../domain/entities/entities.dart';
-import '../../../controllers/controllers.dart';
-import 'quantity_price_discount.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
 
 class QuantityPriceDiscountFieldsAndInsertButton
     extends ConsumerStatefulWidget {

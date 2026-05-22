@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class SoapSaveSaleRequestDatasource implements ISoapSaveSaleRequestDatasource {
   final SoapRequest soapRequest;

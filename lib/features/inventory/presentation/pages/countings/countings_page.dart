@@ -2,8 +2,8 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../controllers/controllers.dart';
-import 'components/components.dart';
+import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/inventory/presentation/pages/countings/components/components.dart';
 
 class CountingsPage extends ConsumerWidget {
   final int codigoInternoInventario;

@@ -1,8 +1,8 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../domain/entities/entities.dart';
-import 'services.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/infraestructure/services/services.dart';
 
 class CrashlyticsService implements ICrashlyticsService {
   final FirebaseCrashlytics _crashlytics;

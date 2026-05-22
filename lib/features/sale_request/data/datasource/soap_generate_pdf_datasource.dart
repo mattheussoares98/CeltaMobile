@@ -5,9 +5,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../../../constants/constants.dart';
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class SoapGeneratePdfDatasource implements ISoapGeneratePdfDatasource {
   @override

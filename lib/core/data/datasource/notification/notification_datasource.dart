@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
-import 'notification.dart';
+import 'package:celta_inventario/core/data/datasource/notification/notification.dart';
 
 class NotificationDatasource implements INotificationDatasource {
   @override

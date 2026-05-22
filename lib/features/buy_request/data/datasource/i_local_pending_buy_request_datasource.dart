@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 
 abstract class ILocalPendingBuyRequestDatasource {
   Future<PendingBuyRequestModel?> load(int enterpriseCode);

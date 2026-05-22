@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'product.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/bsf/product/product.dart';
 
 class BSFFiscalCodeEntity extends Equatable {
   final BSFFiscalCodeValueEntity? code;

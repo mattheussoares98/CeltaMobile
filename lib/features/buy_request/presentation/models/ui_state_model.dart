@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class UiStateModel extends Equatable {
   final int currentPageIndex;

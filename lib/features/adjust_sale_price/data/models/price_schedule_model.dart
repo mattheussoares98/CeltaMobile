@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 
 class PriceScheduleModel extends Equatable {
   final int Code;

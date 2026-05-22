@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../features/buy_request/presentation/pages/pages.dart';
-import '../routing.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase buyRequestRoute() => GoRoute(
   path: ':enterpriseCode/buy-request',

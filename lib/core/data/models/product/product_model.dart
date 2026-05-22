@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
-import 'product.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/product/product.dart';
 
 class ProductModel extends Equatable implements ProductModelType {
   final int? EnterpriseCode;

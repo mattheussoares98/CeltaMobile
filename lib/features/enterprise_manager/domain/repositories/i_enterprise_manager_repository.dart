@@ -1,5 +1,5 @@
-import '../../data/models/models.dart';
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 
 abstract class IEnterpriseManagerRepository {
   Future<List<EnterprisePermissionEntity>> getAllEnterprisePermissions();

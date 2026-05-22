@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/models/models.dart';
 
 abstract class IEnterpriseManagerDatasource {
   Future<List<EnterprisePermissionModel>> getEnterprisePermissions();

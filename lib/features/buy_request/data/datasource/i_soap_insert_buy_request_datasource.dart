@@ -1,4 +1,4 @@
-import '../../data/models/models.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 
 abstract class ISoapInsertBuyRequestDatasource {
   Future<String?> insertBuyRequest({

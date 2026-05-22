@@ -1,8 +1,8 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../features/expedition_conference/presentation/pages/pages.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/expedition_conference/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase expeditionConferenceProductsRoute() => GoRoute(
   path: '/:stepCode/:expeditionControlCode/:documentNumber/products-conference',

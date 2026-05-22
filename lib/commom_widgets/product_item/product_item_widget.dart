@@ -3,11 +3,11 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../constants/constants.dart';
-import '../../core/domain/entities/entities.dart';
-import '../../features/adjust_sale_price/presentation/controllers/controllers.dart';
-import '../commom_widgets.dart';
-import 'properties/properties.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/product_item/properties/properties.dart';
 
 class ProductItemWidget extends ConsumerWidget {
   final ProductEntity product;

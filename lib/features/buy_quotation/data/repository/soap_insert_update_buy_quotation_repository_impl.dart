@@ -1,7 +1,7 @@
 import 'package:celta_inventario/features/buy_quotation/domain/entities/buy_quotation_entity.dart';
 
-import '../datasource/datasource.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/features/buy_quotation/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_quotation/data/models/models.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/repository/repository.dart';
 
 class SoapInsertUpdateBuyQuotationRepositoryImpl

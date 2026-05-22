@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:open_file_plus/open_file_plus.dart';
 
-import '../../../../../constants/constants.dart';
-import '../../../domain/entities/entities.dart';
-import 'buttons/buttons.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
 
 class DownloadButtons extends ConsumerWidget {
   final ReportScheduleEntity report;

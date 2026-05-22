@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../routing/routing.dart';
-import '../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class ShowPdfButton extends ConsumerStatefulWidget {
   final int enterpriseCode;

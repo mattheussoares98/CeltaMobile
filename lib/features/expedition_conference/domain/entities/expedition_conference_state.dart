@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'expedition_product_entity.dart';
+import 'package:celta_inventario/features/expedition_conference/domain/entities/expedition_product_entity.dart';
 
 typedef ProductPackingCodeID = int;
 typedef QuantityID = double;

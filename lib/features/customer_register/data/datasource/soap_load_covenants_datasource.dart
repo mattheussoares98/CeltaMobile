@@ -4,8 +4,8 @@ import 'package:celta_inventario/features/customer_register/data/models/covenant
 
 import 'package:celta_inventario/features/customer_register/domain/entities/search_covenant_type.dart';
 
-import '../../../../core/domain/contracts/contracts.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/customer_register/data/datasource/datasource.dart';
 
 class SoapLoadCovenantsDatasource implements ISoapLoadCovenantsDatasource {
   final SoapRequest soapRequest;

@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/features/enterprise_manager/data/datasource/datasource.dart';
 
 class AuthManagerDatasource implements IAuthManagerDatasource {
   final SupabaseClient supabase;

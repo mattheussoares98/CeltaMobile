@@ -1,10 +1,10 @@
-export 'practiced_suggestion_and_minimum_prices.dart';
+export './practiced_suggestion_and_minimum_prices.dart';
 export './price_field_and_confirm_button.dart';
 export './price_schedules.dart';
 export './prices_types_widget.dart';
 export './products_items.dart';
 export './replication_types_widget.dart';
-export 'sales_types_widget.dart';
+export './sales_types_widget.dart';
 export './search_product.dart';
 export './start_and_end_dates.dart';
 export './title_widget.dart';

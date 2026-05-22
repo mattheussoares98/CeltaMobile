@@ -1,4 +1,4 @@
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/customer_register/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/domain/repositories/repositories.dart';
 

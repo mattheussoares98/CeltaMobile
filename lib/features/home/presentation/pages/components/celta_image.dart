@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../routing/routing.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 class CeltaImage extends StatelessWidget {
   const CeltaImage({super.key});

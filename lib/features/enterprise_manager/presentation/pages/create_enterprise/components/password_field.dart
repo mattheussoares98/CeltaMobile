@@ -1,9 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/validators/validators.dart';
-import 'components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
 
 class PasswordField extends StatelessWidget {
   final bool isLoading;

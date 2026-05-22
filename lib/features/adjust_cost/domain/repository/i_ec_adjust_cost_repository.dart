@@ -1,4 +1,4 @@
-import '../entity/entity.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 
 abstract class IEcAdjustCostRepository {
   Future<void> adjust({

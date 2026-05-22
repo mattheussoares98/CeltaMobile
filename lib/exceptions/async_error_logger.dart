@@ -1,5 +1,5 @@
-import '/exceptions/app_exception.dart';
-import '/exceptions/error_logger.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
+import 'package:celta_inventario/exceptions/error_logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Error logger class to keep track of all AsyncError states that are set

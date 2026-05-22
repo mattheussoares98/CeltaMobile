@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../constants/constants.dart';
-import '../../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../../routing/routing.dart';
-import '../../../../../domain/entities/entities.dart';
-import '../../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 
 class SubEnterprises extends ConsumerWidget {
   final EnterprisePermissionEntity enterprise;

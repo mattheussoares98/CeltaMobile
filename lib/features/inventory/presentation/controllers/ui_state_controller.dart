@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../models/models.dart';
+import 'package:celta_inventario/features/inventory/presentation/models/models.dart';
 
 part 'ui_state_controller.g.dart';
 

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf.dart';
 
 class BSFFreightEntity extends Equatable {
   final double? value;

@@ -3,9 +3,9 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../domain/entities/entities.dart';
-import '../../controllers/controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 
 extension _ProductPriceExt on ProductEntity {
   double? getSuggestion(SaleType? saleType) {

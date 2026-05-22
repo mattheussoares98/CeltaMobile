@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/contracts/contracts.dart';
-import '../../infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 
 part 'http.g.dart';
 

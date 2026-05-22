@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../domain/entities/entities.dart';
-import '../../../providers/resource/resource.dart';
-import '../user_session/user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/resource/resource.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'can_access_resource_state_controller.g.dart';
 

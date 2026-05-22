@@ -1,9 +1,9 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/validators/validators.dart';
-import 'components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
 
 class NameField extends StatelessWidget {
   final TextEditingController nameController;

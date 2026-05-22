@@ -1,6 +1,6 @@
-import '../../../domain/entities/entities.dart';
-import '../../../domain/repositories/customer/customer.dart';
-import '../../datasource/customer/customer.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/repositories/customer/customer.dart';
+import 'package:celta_inventario/core/data/datasource/customer/customer.dart';
 
 class EcCustomersRepositoryImpl implements IEcCustomersRepository {
   final IEcCustomersDatasource datasource;

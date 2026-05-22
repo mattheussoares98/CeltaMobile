@@ -1,6 +1,6 @@
 import 'package:celta_inventario/features/reports/domain/entities/report_schedule_entity.dart';
 
-import '../datasource/datasource.dart';
+import 'package:celta_inventario/features/reports/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/reports/domain/repository/repository.dart';
 
 class SoapLoadReportsRepositoryImpl implements ISoapLoadReportsRepository {

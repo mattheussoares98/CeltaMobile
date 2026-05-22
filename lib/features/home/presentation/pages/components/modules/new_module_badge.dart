@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 class NewModuleBadge extends StatelessWidget {
   const NewModuleBadge({super.key});

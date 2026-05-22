@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/presentation/controllers/enterprises/enterprises.dart';
-import '../features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 
 class DefaultAppBarTitle extends StatelessWidget {
   final String? title;

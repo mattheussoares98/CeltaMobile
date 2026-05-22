@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../providers/bs_version/bs_version.dart';
-import '../user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/bs_version/bs_version.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'bs_version_state_controller.g.dart';
 

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
-import '../domain/contracts/contracts.dart';
-import '../domain/errors/errors.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 
 class HttpAdapter implements HttpClient {
   final Client client;

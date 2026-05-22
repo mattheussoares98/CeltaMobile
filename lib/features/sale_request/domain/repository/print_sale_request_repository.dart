@@ -1,7 +1,7 @@
-import '../../data/datasource/datasource.dart';
-import '../../data/models/models.dart';
-import '../entities/entities.dart';
-import 'repository.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 
 class PrintSaleRequestRepositoryImpl implements IPrintSaleRequestRepository {
   final IPrintSoapLastSavedSaleRequestDatasource soapPrintDatasource;

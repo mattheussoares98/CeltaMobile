@@ -5,8 +5,8 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
 import 'package:intl/intl.dart';
 
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
   CapabilityProfile? _cachedProfile;

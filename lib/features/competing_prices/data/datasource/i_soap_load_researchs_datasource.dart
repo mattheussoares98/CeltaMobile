@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/competing_prices/data/models/models.dart';
 
 abstract class ISoapLoadResearchsDatasource {
   Future<List<ResearchModel>> load({

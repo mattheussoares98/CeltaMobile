@@ -1,5 +1,5 @@
-import '../../../../domain/entities/entities.dart';
-import 'bsf_tributary_situation_model.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/bsf/product/bsf_tributary_situation_model.dart';
 
 class BSFIcmsModel extends BSFIcmsEntity {
   const BSFIcmsModel({

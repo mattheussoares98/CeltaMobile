@@ -1,4 +1,4 @@
-import 'validators.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 
 class FormValidators {
   /// A static method that takes a list of validators and returns a

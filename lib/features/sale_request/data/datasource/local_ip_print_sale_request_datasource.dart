@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class LocalIpPrintSaleRequestDatasource
     implements ILocalIpPrintSaleRequestDatasource {

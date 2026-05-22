@@ -1,4 +1,4 @@
-import '../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFFiscalCodeValueModel extends BSFFiscalCodeValueEntity {
   const BSFFiscalCodeValueModel({

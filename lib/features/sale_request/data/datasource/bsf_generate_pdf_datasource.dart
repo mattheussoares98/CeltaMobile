@@ -5,8 +5,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../models/models.dart';
-import 'datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 
 class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
   @override

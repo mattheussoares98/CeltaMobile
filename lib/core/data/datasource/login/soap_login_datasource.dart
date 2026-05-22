@@ -4,9 +4,9 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:xml2json/xml2json.dart';
 
-import '../../../domain/contracts/contracts.dart';
-import '../../../../features/auth/data/models/user_model.dart';
-import 'i_soap_login_datasource.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/features/auth/data/models/user_model.dart';
+import 'package:celta_inventario/core/data/datasource/login/i_soap_login_datasource.dart';
 
 class SoapLoginDatasource implements ISoapLoginDatasource {
   final SoapRequest soapAdapter;

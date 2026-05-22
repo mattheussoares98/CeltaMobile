@@ -2,9 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../constants/constants.dart';
-import '../../../controllers/controllers.dart';
-import '../products.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/competing_prices/presentation/pages/products/products.dart';
 
 class AppBarTitle extends ConsumerWidget {
   final ProductsPage widget;

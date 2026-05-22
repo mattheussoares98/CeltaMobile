@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 
 abstract class ISoapLoadResearchsRepository {
   Future<List<ResearchEntity>> load({

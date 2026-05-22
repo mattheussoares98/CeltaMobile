@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/transfer_request/data/models/models.dart';
 
 abstract class ISoapInsertTransferRequestDatasource {
   Future<String> save({

@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/data/models/app_usage/app_usage_model.dart';
 import 'package:hive/hive.dart';
 
-import 'app_usage.dart';
+import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 
 class LocalAppUsageDatasource implements ILocalAppUsageDatasource {
   final Box hiveBox;

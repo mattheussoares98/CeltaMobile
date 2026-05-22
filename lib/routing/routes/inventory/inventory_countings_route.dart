@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/inventory/presentation/pages/pages.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/inventory/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase inventoryCountingsRoute() => GoRoute(
   path: ':codigoInternoInventario/countings',

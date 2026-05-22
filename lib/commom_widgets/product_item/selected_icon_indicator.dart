@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../localization/string_hardcoded.dart';
-import '../commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class SelectedIconIndicator extends StatelessWidget {
   final bool selected;

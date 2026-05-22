@@ -1,4 +1,4 @@
-import '../../../data/datasource/request_type/request_type.dart';
+import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 import 'package:celta_inventario/core/domain/entities/request_type/request_type.dart';
 import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
 

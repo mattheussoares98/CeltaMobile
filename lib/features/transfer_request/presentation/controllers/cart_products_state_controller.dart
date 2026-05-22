@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/transfer_request/providers.dart';
 
 part 'cart_products_state_controller.g.dart';
 

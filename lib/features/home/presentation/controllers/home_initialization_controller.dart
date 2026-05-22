@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/bs_version/bs_version.dart';
-import '../../../../core/presentation/controllers/enterprises/enterprises.dart';
-import '../../../../core/presentation/controllers/resource/resource.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
+import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'home_initialization_controller.g.dart';
 

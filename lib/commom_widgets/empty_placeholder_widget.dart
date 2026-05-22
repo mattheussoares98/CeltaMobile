@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../constants/app_sizes.dart';
-import '../core/presentation/controllers/user_session/user_session.dart';
-import '../localization/string_hardcoded.dart';
-import '../routing/routing.dart';
-import 'commom_widgets.dart';
+import 'package:celta_inventario/constants/app_sizes.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class EmptyPlaceholderWidget extends ConsumerWidget {
   const EmptyPlaceholderWidget({super.key, required this.message});

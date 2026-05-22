@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/stock/stock.dart';
-import '../../domain/repositories/stock/stock.dart';
-import '../../data/repositories/stock/stock.dart';
-import '../soap/soap.dart';
+import 'package:celta_inventario/core/data/datasource/stock/stock.dart';
+import 'package:celta_inventario/core/domain/repositories/stock/stock.dart';
+import 'package:celta_inventario/core/data/repositories/stock/stock.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
 
 part 'stock.g.dart';
 

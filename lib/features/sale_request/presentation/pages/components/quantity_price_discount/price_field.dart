@@ -2,9 +2,9 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../../core/validators/validators.dart';
-import 'quantity_price_discount.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
 
 class PriceField extends StatelessWidget {
   final VoidCallback insertProduct;

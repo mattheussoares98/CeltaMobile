@@ -1,8 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../exceptions/exceptions.dart';
-import '../core/domain/errors/errors.dart';
-import '../localization/string_hardcoded.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 String parseErrorMessage(Object? error) {
   late final String message;

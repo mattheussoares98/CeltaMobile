@@ -1,6 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/stock/stock_type_entity.dart';
 
-import '../../../data/datasource/stock/stock.dart';
+import 'package:celta_inventario/core/data/datasource/stock/stock.dart';
 import 'package:celta_inventario/core/domain/repositories/stock/stock.dart';
 
 class SoapStockTypeRepositoryImpl implements ISoapStockTypeRepository {

@@ -1,4 +1,4 @@
-import '../entities/entities.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 
 abstract class ILocalItemsLotRepository {
   Future<void> addItem(ProductLotInfoEntity item);

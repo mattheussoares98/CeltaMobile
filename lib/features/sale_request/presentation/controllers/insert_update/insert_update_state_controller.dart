@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../localization/string_hardcoded.dart';
-import '../../../domain/entities/bsf/bsf.dart';
-import '../../../providers.dart';
-import 'insert_update.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 
 part 'insert_update_state_controller.g.dart';
 

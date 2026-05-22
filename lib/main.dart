@@ -1,13 +1,13 @@
-import './app.dart';
-import './exceptions/error_logger.dart';
-import './localization/string_hardcoded.dart';
+import 'package:celta_inventario/app.dart';
+import 'package:celta_inventario/exceptions/error_logger.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore:depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 
-import 'utils/utils.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 void main() async {
   await initApp();

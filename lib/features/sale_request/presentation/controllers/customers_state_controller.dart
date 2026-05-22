@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../../core/providers/customer/customer.dart';
-import '../../../../core/validators/validators.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/customer/customer.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 part 'customers_state_controller.g.dart';
 

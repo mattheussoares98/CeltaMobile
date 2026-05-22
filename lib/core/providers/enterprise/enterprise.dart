@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/enterprise/enterprise.dart';
-import '../../domain/repositories/enterprise/enterprise.dart';
-import '../../data/repositories/enterprise/enterprise.dart';
-import '../soap/soap.dart';
-import '../supabase/supabase.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/data/repositories/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
+import 'package:celta_inventario/core/providers/supabase/supabase.dart';
 
 part 'enterprise.g.dart';
 

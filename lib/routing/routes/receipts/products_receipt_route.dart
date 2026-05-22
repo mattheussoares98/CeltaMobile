@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 
-import '../../../features/receipt/domain/entity/entity.dart';
-import '../../../features/receipt/presentation/pages/products/products_page.dart';
-import '../../routing.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/presentation/pages/products/products_page.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase productsReceiptRoute(List<RouteBase> routes) => GoRoute(
   path: ':receiptCode/products',

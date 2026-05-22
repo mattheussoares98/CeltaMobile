@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/datasource/enterprise/enterprise.dart';
-import '../../../data/models/models.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
 

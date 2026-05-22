@@ -1,4 +1,4 @@
-import '../model/model.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
 
 abstract class ISoapLoadProductsNotFoundDatasource {
   Future<List<ProductNotFoundModel>> load({

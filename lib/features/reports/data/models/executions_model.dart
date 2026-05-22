@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../domain/entities/entities.dart';
-import 'models.dart';
+import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
+import 'package:celta_inventario/features/reports/data/models/models.dart';
 
 class ExecutionsModel extends Equatable {
   final DateTime? ExecutionDate;

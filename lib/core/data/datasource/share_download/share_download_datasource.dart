@@ -3,8 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import 'share_download.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
 
 class ShareDownloadDatasource implements IShareDownloadDatasource {
   @override

@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'controllers.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 
 part 'quantity_in_lot_state_controller.g.dart';
 

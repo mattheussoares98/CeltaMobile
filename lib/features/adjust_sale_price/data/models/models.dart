@@ -1,1 +1,1 @@
-export 'price_schedule_model.dart';
+export './price_schedule_model.dart';

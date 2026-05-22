@@ -4,10 +4,10 @@ import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../../enterprises/presentation/controllers/controllers.dart';
-import '../../providers.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 part 'print_sale_request_controller.g.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../providers/url_launch/url_launch.dart';
+import 'package:celta_inventario/core/providers/url_launch/url_launch.dart';
 
 part 'url_launch_controller.g.dart';
 

@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 
-import '../../../../utils/utils.dart';
-import '../entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class ProductEntity extends Equatable {
   final int? EnterpriseCode;

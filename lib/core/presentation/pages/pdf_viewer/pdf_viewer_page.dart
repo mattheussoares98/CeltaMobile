@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import 'pdf_viewer.dart';
+import 'package:celta_inventario/core/presentation/pages/pdf_viewer/pdf_viewer.dart';
 
 class PdfViewerPage extends StatefulWidget {
   final String fileName;

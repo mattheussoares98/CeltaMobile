@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../constants/constants.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../../../../routing/routing.dart';
-import 'action_selector.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/action_selector/action_selector.dart';
 
 /// PERFORMANCE: A standalone, optimized Modal Bottom Sheet for
 /// selecting the Sale Request workflow. Using a Stateless widget

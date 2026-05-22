@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/http/http.dart';
-import 'data/datasource/datasource.dart';
-import 'domain/repository/repository.dart';
-import 'data/repository/repository.dart';
+import 'package:celta_inventario/core/providers/http/http.dart';
+import 'package:celta_inventario/features/adjust_cost/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/adjust_cost/domain/repository/repository.dart';
+import 'package:celta_inventario/features/adjust_cost/data/repository/repository.dart';
 
 part 'providers.g.dart';
 

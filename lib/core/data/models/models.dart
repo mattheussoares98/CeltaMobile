@@ -1,5 +1,5 @@
 export './app_settings_model.dart';
-export './product/product.dart';
+export 'product/product.dart';
 export 'address/address.dart';
 export 'app_usage/app_usage.dart';
 export 'buyer/buyer.dart';
@@ -10,4 +10,4 @@ export 'request_type/request_type.dart';
 export 'stock/stock.dart';
 export 'supplier/supplier.dart';
 export 'transfer_justification/transfer_justification.dart';
-export 'user_session_model.dart';
+export './user_session_model.dart';

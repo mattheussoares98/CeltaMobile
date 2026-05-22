@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/entities.dart';
-import '../models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 class SupabaseEnterpriseModel extends Equatable {
   final int? id;

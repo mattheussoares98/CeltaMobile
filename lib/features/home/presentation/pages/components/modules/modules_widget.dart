@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../routing/routing.dart';
-import '../../../../../../utils/utils.dart';
-import '../../../controllers/controllers.dart';
-import '../components.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 
 class ModulesWidget extends StatelessWidget {
   const ModulesWidget({super.key});

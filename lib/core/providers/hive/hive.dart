@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 
 part 'hive.g.dart';
 

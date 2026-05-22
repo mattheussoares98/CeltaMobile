@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:celta_inventario/core/data/models/request_type/request_type_model.dart';
 
-import '../../../domain/contracts/contracts.dart';
-import 'request_type.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 
 class SoapLoadRequestTypeDatasource implements ISoapLoadRequestTypeDatasource {
   final SoapRequest soapRequest;

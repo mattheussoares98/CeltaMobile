@@ -1,12 +1,12 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../core/providers/hive/hive.dart';
-import '../../core/providers/http/http.dart';
-import '../../core/providers/soap/soap.dart';
-import 'data/datasource/datasource.dart';
-import 'data/repository/repository.dart';
-import 'domain/entities/entities.dart';
-import 'domain/repository/repository.dart';
+import 'package:celta_inventario/core/providers/hive/hive.dart';
+import 'package:celta_inventario/core/providers/http/http.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
+import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 
 part 'providers.g.dart';
 

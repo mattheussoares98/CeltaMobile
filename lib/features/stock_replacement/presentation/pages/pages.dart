@@ -1,1 +1,1 @@
-export 'stock_replacement_page.dart';
+export './stock_replacement_page.dart';

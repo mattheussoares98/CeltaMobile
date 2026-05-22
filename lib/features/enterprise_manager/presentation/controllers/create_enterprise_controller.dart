@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../providers.dart';
+import 'package:celta_inventario/features/enterprise_manager/providers.dart';
 
 part 'create_enterprise_controller.g.dart';
 

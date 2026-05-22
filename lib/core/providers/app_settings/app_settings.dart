@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/settings/settings.dart';
-import '../../domain/repositories/settings/settings.dart';
-import '../../data/repositories/settings/settings.dart';
-import '../hive/hive.dart';
+import 'package:celta_inventario/core/data/datasource/settings/settings.dart';
+import 'package:celta_inventario/core/domain/repositories/settings/settings.dart';
+import 'package:celta_inventario/core/data/repositories/settings/settings.dart';
+import 'package:celta_inventario/core/providers/hive/hive.dart';
 
 part 'app_settings.g.dart';
 

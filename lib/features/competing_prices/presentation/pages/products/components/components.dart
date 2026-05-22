@@ -1,9 +1,9 @@
 export './app_bar_title.dart';
-export 'applied_prices.dart';
-export 'default_delete_icon.dart';
-export 'default_row_fields.dart';
-export 'prices_fields_and_submit.dart';
-export 'product_item.dart';
-export 'products_items.dart';
-export 'search_products_field.dart';
-export 'filters.dart';
+export './applied_prices.dart';
+export './default_delete_icon.dart';
+export './default_row_fields.dart';
+export './prices_fields_and_submit.dart';
+export './product_item.dart';
+export './products_items.dart';
+export './search_products_field.dart';
+export './filters.dart';

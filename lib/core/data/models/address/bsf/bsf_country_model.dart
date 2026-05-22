@@ -1,4 +1,4 @@
-import '../../../../domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFCountryModel extends BSFCountryEntity {
   const BSFCountryModel({

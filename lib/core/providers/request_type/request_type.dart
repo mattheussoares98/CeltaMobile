@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/request_type/request_type.dart';
-import '../../domain/repositories/request_type/request_type.dart';
-import '../../data/repositories/request_type/request_type.dart';
-import '../http/http.dart';
-import '../soap/soap.dart';
+import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
+import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
+import 'package:celta_inventario/core/data/repositories/request_type/request_type.dart';
+import 'package:celta_inventario/core/providers/http/http.dart';
+import 'package:celta_inventario/core/providers/soap/soap.dart';
 
 part 'request_type.g.dart';
 

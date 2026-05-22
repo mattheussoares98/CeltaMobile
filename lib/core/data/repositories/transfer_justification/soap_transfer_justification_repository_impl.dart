@@ -2,7 +2,7 @@ import 'package:celta_inventario/core/domain/entities/transfer_justification/tra
 
 import 'package:celta_inventario/core/domain/entities/transfer_justification/transfer_justification_type.dart';
 
-import '../../../data/datasource/transfer_justification/transfer_justification.dart';
+import 'package:celta_inventario/core/data/datasource/transfer_justification/transfer_justification.dart';
 import 'package:celta_inventario/core/domain/repositories/transfer_justification/transfer_justification.dart';
 
 class SoapTransferJustificationRepositoryImpl

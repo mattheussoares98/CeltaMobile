@@ -1,4 +1,4 @@
-import '../models/models.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/data/models/models.dart';
 
 abstract class ILocalItemsLotDatasource {
   Future<void> addItem(ProductLotInfoModel item);

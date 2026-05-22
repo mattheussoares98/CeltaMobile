@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data/datasource/app_usage/app_usage.dart';
-import '../../domain/repositories/app_usage/app_usage.dart';
-import '../../data/repositories/app_usage/app_usage.dart';
-import '../hive/hive.dart';
-import '../supabase/supabase.dart';
+import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/data/repositories/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/providers/hive/hive.dart';
+import 'package:celta_inventario/core/providers/supabase/supabase.dart';
 
 part 'app_usage.g.dart';
 

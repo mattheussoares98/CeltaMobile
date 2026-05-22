@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
-import '../core/domain/entities/entities.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class DefaultSegmentedButtons<T extends SelectableItem<T>>
     extends StatelessWidget {

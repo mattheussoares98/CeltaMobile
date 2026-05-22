@@ -1,4 +1,4 @@
-import '../../../../core/data/models/models.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
 
 abstract class ISoapLoadDestinyEnterprisesDatasource {
   Future<List<SoapEnterpriseModel>> load({

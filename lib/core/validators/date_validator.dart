@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
-import '../../localization/string_hardcoded.dart';
-import 'validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 
 class DateValidator implements StringValidator {
   final DateTime minimumDate;

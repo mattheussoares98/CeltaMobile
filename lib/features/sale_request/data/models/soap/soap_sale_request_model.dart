@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../core/data/models/customer/customer.dart';
-import '../../../domain/entities/entities.dart';
-import '../models.dart';
+import 'package:celta_inventario/core/data/models/customer/customer.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 
 class SoapSaleRequestModel extends Equatable {
   final Map<ProductPackingCode, SoapSaleRequestProductModel> cart;

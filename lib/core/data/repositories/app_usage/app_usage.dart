@@ -1,1 +1,1 @@
-export 'app_usage_repository_impl.dart';
+export './app_usage_repository_impl.dart';

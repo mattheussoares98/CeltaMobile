@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../features/buy_request/presentation/controllers/controllers.dart';
-import '../../../domain/entities/entities.dart';
-import '../user_session/user_session.dart';
-import '../../../providers/supplier/supplier.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/supplier/supplier.dart';
 
 part 'supplier_state_controller.g.dart';
 

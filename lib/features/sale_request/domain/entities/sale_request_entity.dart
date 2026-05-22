@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import 'entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 typedef ProductPackingCode = int;
 

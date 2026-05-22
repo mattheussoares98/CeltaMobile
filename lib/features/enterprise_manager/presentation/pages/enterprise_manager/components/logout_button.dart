@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../controllers/controllers.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 
 class LogoutButton extends ConsumerWidget {
   const LogoutButton({super.key});

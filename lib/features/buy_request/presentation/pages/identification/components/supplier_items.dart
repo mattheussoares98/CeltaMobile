@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../../commom_widgets/commom_widgets.dart';
-import '../../../../../../core/domain/entities/entities.dart';
-import '../../../../../../core/presentation/controllers/supplier/supplier.dart';
-import '../../../../../../localization/string_hardcoded.dart';
-import '../../../controllers/controllers.dart';
-import 'components.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/supplier/supplier.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/identification/components/components.dart';
 
 class SupplierItems extends ConsumerWidget {
   final bool isSliver;

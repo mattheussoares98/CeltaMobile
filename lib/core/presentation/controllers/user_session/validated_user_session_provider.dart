@@ -1,10 +1,10 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../exceptions/exceptions.dart';
-import '../../../data/models/models.dart';
-import '../../../providers/enterprise/enterprise.dart';
-import '../../../providers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/providers/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/providers/user_session/user_session.dart';
 
 part 'validated_user_session_provider.g.dart';
 

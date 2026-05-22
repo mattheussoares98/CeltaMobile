@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 
-import '../../features/home/presentation/pages/pages.dart';
-import '../routing.dart';
+import 'package:celta_inventario/features/home/presentation/pages/pages.dart';
+import 'package:celta_inventario/routing/routing.dart';
 
 RouteBase homeRoute(List<RouteBase> routes) => GoRoute(
   path: '/home',

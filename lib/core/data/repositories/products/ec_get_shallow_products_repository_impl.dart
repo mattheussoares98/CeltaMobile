@@ -1,6 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/product/product_entity.dart';
 
-import '../../../data/datasource/products/products.dart';
+import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
 

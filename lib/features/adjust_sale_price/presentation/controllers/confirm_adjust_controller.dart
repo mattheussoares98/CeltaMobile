@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../core/domain/entities/entities.dart';
-import '../../../../core/presentation/controllers/app_usage/app_usage.dart';
-import '../../../../core/presentation/controllers/user_session/user_session.dart';
-import '../../domain/entities/entities.dart';
-import '../../providers.dart';
-import 'controllers.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/features/adjust_sale_price/providers.dart';
+import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 
 part 'confirm_adjust_controller.g.dart';
 

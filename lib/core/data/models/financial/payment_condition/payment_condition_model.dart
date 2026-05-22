@@ -1,4 +1,4 @@
-import '../../../../../../../core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class PaymentConditionModel extends PaymentConditionEntity {
   const PaymentConditionModel({

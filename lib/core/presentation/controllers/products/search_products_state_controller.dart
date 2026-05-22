@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../../core/domain/entities/entities.dart';
-import '../../../../../core/providers/products/products.dart';
-import '../../../../../features/enterprises/presentation/controllers/controllers.dart';
-import '../../../../features/settings/presentation/controllers/controllers.dart';
-import '../app_usage/app_usage.dart';
-import '../user_session/user_session.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/products/products.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'search_products_state_controller.g.dart';
 

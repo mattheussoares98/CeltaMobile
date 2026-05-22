@@ -1,13 +1,13 @@
 import 'package:celta_inventario/features/auth/domain/repositories/repositories.dart';
 
-import '../../../../core/data/datasource/enterprise/enterprise.dart';
-import '../../../../core/data/datasource/login/login.dart';
-import '../../../../core/data/datasource/user_session/user_session.dart';
-import '../../../../core/data/models/models.dart';
-import '../../../../core/domain/repositories/enterprise/enterprise.dart';
-import '../../../../exceptions/exceptions.dart';
-import '../../../../localization/string_hardcoded.dart';
-import '../models/models.dart';
+import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
+import 'package:celta_inventario/core/data/datasource/login/login.dart';
+import 'package:celta_inventario/core/data/datasource/user_session/user_session.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/features/auth/data/models/models.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
   final ISoapLoginDatasource soapLoginDatasource;

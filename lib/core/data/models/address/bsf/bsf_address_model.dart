@@ -1,5 +1,5 @@
-import '../../../../domain/entities/entities.dart';
-import 'bsf.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/data/models/address/bsf/bsf.dart';
 
 class BSFAddressModel extends BSFAddressEntity {
   const BSFAddressModel({

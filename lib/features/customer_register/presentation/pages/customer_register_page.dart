@@ -3,10 +3,10 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../commom_widgets/commom_widgets.dart';
-import '../controllers/controllers.dart';
-import 'components/components.dart';
-import 'pages.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/customer_register/presentation/pages/pages.dart';
 
 class CustomerRegisterPage extends ConsumerStatefulWidget {
   const CustomerRegisterPage({super.key});
