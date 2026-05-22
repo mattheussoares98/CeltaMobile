@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/summary/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,6 +41,8 @@ class SummaryPage extends ConsumerWidget {
                 'Total Líquido: ${summaryData.totalLiquid?.toString().toBrazilianNumber().addBrazilianCoin() ?? 'R\$ 0,00'.hardcoded}'
                     .hardcoded,
               ),
+              gapH16,
+              const SellerDropdown(),
               const Spacer(),
               PrimaryButton(
                 onPressed: () async {

@@ -3,8 +3,8 @@ import 'dart:isolate';
 
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 
 class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   final HttpClient httpClient;
@@ -58,7 +58,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
+      url: 'http://localhost:58915/SaleRequests/GetCompleteForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -83,7 +83,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }) async {
     await httpClient.request(
       url:
-          '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
+          'http://localhost:58915/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),
