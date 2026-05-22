@@ -49,6 +49,25 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           ),
         ),
         BottomNavigationBarItem(
+          label: 'Vendedor'.hardcoded,
+          icon: Consumer(
+            builder: (_, ref, _) {
+              return ValidatedBadge(
+                isSelected: pageIndex == 2,
+                isValid: ref.watch(
+                  insertUpdateStateControllerProvider.select(
+                    (state) => state.value?.seller != null,
+                  ),
+                ),
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.assignment_ind,
+                  cupertinoIcon: CupertinoIcons.person_alt_circle,
+                ),
+              );
+            },
+          ),
+        ),
+        BottomNavigationBarItem(
           icon: Consumer(
             builder: (context, ref, child) {
               final quantity = ref.watch(
@@ -63,7 +82,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
                   materialIcon: Icons.shopping_cart,
                   cupertinoIcon: CupertinoIcons.cart,
                 ),
-                isSelected: pageIndex == 2,
+                isSelected: pageIndex == 3,
               );
             },
           ),
@@ -90,7 +109,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
                   materialIcon: Icons.payment,
                   cupertinoIcon: CupertinoIcons.creditcard,
                 ),
-                isSelected: pageIndex == 3,
+                isSelected: pageIndex == 4,
                 showSuccessBadge: false,
               );
             },

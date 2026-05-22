@@ -16,6 +16,7 @@ class InsertUpdateBody extends ConsumerWidget {
       children: const [
         ProductsPage(),
         CustomersPage(),
+        SellersPage(),
         ItemsPage(),
         PaymentsPage(),
         SummaryPage(),
