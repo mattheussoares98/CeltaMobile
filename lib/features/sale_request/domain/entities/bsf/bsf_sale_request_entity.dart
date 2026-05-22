@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestEntity extends Equatable {
   final int? code;
@@ -244,4 +243,57 @@ class BSFSaleRequestEntity extends Equatable {
 
   int get totalPaymentsCount =>
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
+
+  SaleRequestEntity toSaleRequestEntity() {
+    return SaleRequestEntity(
+      cart: const {},
+      customer: customer != null
+          ? SoapCustomerEntity(
+              Code: customer!.code,
+              Name: customer!.name ?? '',
+              PersonalizedCode: customer!.personalizedCode,
+              ReducedName: customer!.nameReduced,
+              CpfCnpjNumber: customer?.cnpjCpfNumber,
+              RegistrationNumber: customer!.inscriptionRgNumber,
+              Password: null,
+              HasPassword: null,
+              DateOfBirth: null,
+              SexType: null,
+              PersonType: null,
+              Emails: null,
+              Telephones: null,
+              Addresses: null,
+              CustomerCovenants: null,
+              saleBlockadeInstruction: null,
+              saleBlockade: null,
+            )
+          : null,
+      Payments: financials?.firstOrNull?.paymentFinalizations?.map((e) {
+        return FinalizationEntity(
+          Id: e.paymentFinalization!.code.toString(),
+          Name: e.paymentFinalization?.Description ?? '',
+          TotalValue: e.value!,
+          PortionQuantity: e.quantityOfPortions ?? 0,
+        );
+      }).toList(),
+      observations: observations,
+      instructions: instructions,
+      Id: code,
+      SaleRequestNumber: personalizedCode,
+      RequestType: requestType?.code != null
+          ? SaleRequestRequestTypeEntity(
+              Id: requestType!.code!,
+              PersonalizedCode: requestType!.personalizedCode ?? '',
+              Name: requestType!.name ?? '',
+            )
+          : null,
+      EnterpriseId: enterprise?.code,
+      DateHourOfCreation: dateOfEmission,
+      TotalLiquid: totalLiquid,
+      DiscountValue: totalDiscount,
+      Seller: seller?.code != null
+          ? EcSellerEntity(Id: seller!.code!, Name: seller!.name ?? '')
+          : null,
+    );
+  }
 }
