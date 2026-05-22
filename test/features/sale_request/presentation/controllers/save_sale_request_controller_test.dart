@@ -90,7 +90,50 @@ void main() {
   late String observations;
   late BSFSaleRequestEntity fakeBSFSaleRequestEntity;
 
-  late ProviderContainer container;
+  ProviderContainer makeProviderContainer({
+    PendingSaleRequestStateController? spyPendingSaleRequest,
+    LastSavedSaleRequestStateController? spyLastSavedSaleRequest,
+    ValidatedUserSession? fakeValidatedUserSession,
+    SaleRequestsStateController? spySaleRequestsStateController,
+  }) {
+    final container = ProviderContainer(
+      retry: (retryCount, error) => null,
+      overrides: [
+        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
+          mockSoapSaveSaleRequestRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => fakeValidatedUserSession ?? FakeValidatedUserSession(fakeSession),
+        ),
+        selectedEnterpriseStateControllerProvider.overrideWith(
+          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
+        ),
+        pendingSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyPendingSaleRequest ?? SpySaleRequest(fakePendingRequest)),
+        lastSavedSaleRequestStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spyLastSavedSaleRequest ?? SpyLastSavedSaleRequest()),
+        localSaleRequestRepositoryProvider.overrideWithValue(
+          mockLocalPendingRepo,
+        ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        insertUpdateStateControllerProvider.overrideWith(
+          () => FakeInsertUpdateStateController(
+            saleRequestEntity: fakeBSFSaleRequestEntity,
+          ),
+        ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
+        saleRequestsStateControllerProvider(
+          fakeEnterprise.Code!,
+        ).overrideWith(() => spySaleRequestsStateController ?? SpySaleRequestsStateController()),
+      ],
+    );
+    addTearDown(container.dispose);
+    return container;
+  }
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeSaleRequestEntity());
@@ -118,52 +161,8 @@ void main() {
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();
-    fakeAppUsage = FakeAppUsageStateController();
     fakeBSFSaleRequestEntity = EntityFactory.makeBSFSaleRequestEntity();
 
-    // --- Create the single container ONCE with ALL providers ---
-    container = ProviderContainer(
-      retry: (retryCount, error) => null,
-      overrides: [
-        // Dependencies for the controller
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
-
-        // New dependencies to override
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpyLastSavedSaleRequest()),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ],
-    );
-  });
-
-  tearDownAll(() {
-    container.dispose();
   });
 
   tearDown(() {
@@ -173,6 +172,10 @@ void main() {
     reset(mockEcSaleRequestsRepository);
   });
 
+  setUp(() {
+    fakeAppUsage = FakeAppUsageStateController();
+  });
+
   group('SaveSaleRequestController', () {
     test('should call all repositories and notifiers on success', () async {
       // ARRANGE
@@ -180,39 +183,10 @@ void main() {
       final spyPending = SpySaleRequest(fakePendingRequest);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
-      // Update ALL overrides, keeping the list length the same
-      container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spyPending),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spyLastSaved),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ]);
+      final container = makeProviderContainer(
+        spyPendingSaleRequest: spyPending,
+        spyLastSavedSaleRequest: spyLastSaved,
+      );
 
       // Stub all async calls
       when(
@@ -289,39 +263,10 @@ void main() {
       final spyNoCustomer = SpySaleRequest(fakeRequestNoCustomer);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
-      // Update ALL overrides
-      container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spyNoCustomer),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spyLastSaved),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ]);
+      final container = makeProviderContainer(
+        spyPendingSaleRequest: spyNoCustomer,
+        spyLastSavedSaleRequest: spyLastSaved,
+      );
 
       final states = <AsyncValue<void>>[];
       container.listen(
@@ -368,39 +313,11 @@ void main() {
       final spy = SpySaleRequest(fakePendingRequest);
       final spyLastSaved = SpyLastSavedSaleRequest();
 
-      // Update ALL overrides
-      container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(null),
-        ), // Invalid session
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spy),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spyLastSaved),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ]);
+      final container = makeProviderContainer(
+        spyPendingSaleRequest: spy,
+        spyLastSavedSaleRequest: spyLastSaved,
+        fakeValidatedUserSession: FakeValidatedUserSession(null),
+      );
 
       final states = <AsyncValue<void>>[];
       container.listen(
@@ -429,39 +346,7 @@ void main() {
     test('should call ecSaleRequestsRepository.update on success', () async {
       // ARRANGE
 
-      // Update ALL overrides
-      container.updateOverrides([
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpyLastSavedSaleRequest()),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ]);
+      final container = makeProviderContainer();
 
       when(
         () => mockEcSaleRequestsRepository.update(
@@ -507,39 +392,7 @@ void main() {
     test('should emit [loading, error] if update fails', () async {
       // ARRANGE
 
-      // Update ALL overrides
-      container.updateOverrides([
-        insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
-          ),
-        ),
-        soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-          mockSoapSaveSaleRequestRepository,
-        ),
-        validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(fakeSession),
-        ),
-        selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-        ),
-        pendingSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
-        lastSavedSaleRequestStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpyLastSavedSaleRequest()),
-        localSaleRequestRepositoryProvider.overrideWithValue(
-          mockLocalPendingRepo,
-        ),
-        ecSaleRequestsRepositoryProvider.overrideWithValue(
-          mockEcSaleRequestsRepository,
-        ),
-        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => SpySaleRequestsStateController()),
-      ]);
+      final container = makeProviderContainer();
 
       when(
         () => mockEcSaleRequestsRepository.update(
@@ -577,39 +430,9 @@ void main() {
         // ARRANGE
         final spySaleRequests = SpySaleRequestsStateController();
 
-        // Update ALL overrides
-        container.updateOverrides([
-          insertUpdateStateControllerProvider.overrideWith(
-            () => FakeInsertUpdateStateController(
-              saleRequestEntity: fakeBSFSaleRequestEntity,
-            ),
-          ),
-          soapSaveSaleRequestRepositoryProvider.overrideWithValue(
-            mockSoapSaveSaleRequestRepository,
-          ),
-          validatedUserSessionProvider.overrideWith(
-            () => FakeValidatedUserSession(fakeSession),
-          ),
-          selectedEnterpriseStateControllerProvider.overrideWith(
-            () => FakeSelectedEnterpriseStateController(fakeEnterprise),
-          ),
-          pendingSaleRequestStateControllerProvider(
-            fakeEnterprise.Code!,
-          ).overrideWith(() => SpySaleRequest(fakePendingRequest)),
-          lastSavedSaleRequestStateControllerProvider(
-            fakeEnterprise.Code!,
-          ).overrideWith(() => SpyLastSavedSaleRequest()),
-          localSaleRequestRepositoryProvider.overrideWithValue(
-            mockLocalPendingRepo,
-          ),
-          ecSaleRequestsRepositoryProvider.overrideWithValue(
-            mockEcSaleRequestsRepository,
-          ),
-          appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-          saleRequestsStateControllerProvider(
-            fakeEnterprise.Code!,
-          ).overrideWith(() => spySaleRequests),
-        ]);
+        final container = makeProviderContainer(
+          spySaleRequestsStateController: spySaleRequests,
+        );
 
         const validSaleRequestId = 99; // Not 0
 
