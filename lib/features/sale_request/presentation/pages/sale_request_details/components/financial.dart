@@ -20,7 +20,7 @@ class Financial extends ConsumerWidget {
       ).select((s) => s.value?.financials),
     );
 
-    final payments = financials?.first.paymentFinalizations;
+    final payments = financials?.firstOrNull?.paymentFinalizations;
     final bool isFinancialEmpty = payments?.isEmpty ?? true;
 
     final theme = Theme.of(context);
