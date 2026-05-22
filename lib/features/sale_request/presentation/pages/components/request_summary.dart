@@ -3,12 +3,12 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class RequestSummary extends ConsumerWidget {
   final VoidCallback? onTap;
@@ -96,7 +96,7 @@ class RequestSummary extends ConsumerWidget {
                         subTitle: saleRequest.customer!.Name,
                       ),
 
-                    if (saleRequest.observations != null)
+                    if (saleRequest.observations?.isNotEmpty ?? false)
                       TitleAndSubTitle(
                         title: 'Observações'.hardcoded,
                         subTitle: saleRequest.observations,
