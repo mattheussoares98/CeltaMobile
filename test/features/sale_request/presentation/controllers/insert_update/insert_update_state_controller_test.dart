@@ -840,6 +840,36 @@ void main() {
       );
     });
 
+    group('changeSeller', () {
+      test('Should change the seller and set annulSeller correctly', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Change to a new seller
+        final seller1 = EntityFactory.makeSellerEntity();
+        controller.changeSeller(seller1);
+        final state1 = container.read(insertUpdateStateControllerProvider);
+        expect(state1.value!.seller?.code, seller1.Id);
+        
+        // Change to a different seller
+        final seller2 = EntityFactory.makeSellerEntity();
+        controller.changeSeller(seller2);
+        final state2 = container.read(insertUpdateStateControllerProvider);
+        expect(state2.value!.seller?.code, seller2.Id);
+
+        // Change to the same seller should annul it
+        final seller3 = SellerEntity(Id: seller2.Id, Name: seller2.Name);
+        controller.changeSeller(seller3);
+        final state3 = container.read(insertUpdateStateControllerProvider);
+        expect(state3.value!.seller, isNull);
+      });
+    });
+
     group('updateCustomerData', () {
       test(
         'Should update selected customer details without annulling selection',
@@ -864,7 +894,7 @@ void main() {
 
           final state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.code, 1);
-          expect(state.value!.customer, updatedCustomer.copyWith(code: 1));
+          expect(state.value!.customer, updatedCustomer.copyWith(code: 1, annulCovenantCode: true, annulSelectedCovenant: true));
         },
       );
 

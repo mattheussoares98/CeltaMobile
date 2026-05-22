@@ -1,11 +1,10 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 
 part 'insert_update_state_controller.g.dart';
 
@@ -141,6 +140,19 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       customer: customer?.copyWith(annulCovenantCode: true),
     );
     state = AsyncData(newState);
+  }
+
+  void changeSeller(SellerEntity? seller) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+
+    final current = state.value!;
+
+    state = AsyncData(
+      current.copyWith(
+        annulSeller: seller == null || seller.Id == current.seller?.code,
+        seller: seller?.toBsfEmployee(),
+      ),
+    );
   }
 
   void updateCustomerData(BSFCustomerEntity customer) {
