@@ -16,6 +16,8 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
     return BottomNavigationBar(
       currentIndex: pageIndex,
       type: BottomNavigationBarType.fixed,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
       onTap: (index) => ref
           .read(pageIndexStateControllerProvider.notifier)
           .updateIndex(index),
