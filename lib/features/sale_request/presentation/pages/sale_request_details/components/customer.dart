@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class Customer extends ConsumerWidget {
   final int enterpriseCode;
@@ -29,15 +28,15 @@ class Customer extends ConsumerWidget {
         ref.read(saleRequestArgsProvider),
       ).select((s) => s.value?.customer),
     );
-    if (requestCustomer == null || detailsCustomer == null) {
+    if (requestCustomer == null && detailsCustomer == null) {
       return const SizedBox.shrink();
     }
 
-    final customerName = requestCustomer.Name ?? detailsCustomer.name;
+    final customerName = requestCustomer?.Name ?? detailsCustomer?.name;
     bool isInternalCustomer = customerName?.toLowerCase() == 'consumidor';
     final personalizedCode =
-        requestCustomer.PersonalizedCode ?? detailsCustomer.personalizedCode;
-    final cpfCnpj = requestCustomer.CpfCnpjNumber;
+        requestCustomer?.PersonalizedCode ?? detailsCustomer?.personalizedCode;
+    final cpfCnpj = requestCustomer?.CpfCnpjNumber;
 
     return Card(
       child: Padding(
@@ -60,27 +59,28 @@ class Customer extends ConsumerWidget {
                         '$customerName '
                         '${(isInternalCustomer || (personalizedCode?.isEmpty ?? true)) ? '' : "($personalizedCode)"}',
                   ),
-                  if (requestCustomer.PersonType != null && !isInternalCustomer)
+                  if (requestCustomer?.PersonType != null &&
+                      !isInternalCustomer)
                     TitleAndSubTitle(
                       title: 'Tipo'.hardcoded,
-                      subTitle: requestCustomer.PersonType?.completeName,
+                      subTitle: requestCustomer?.PersonType?.completeName,
                     ),
                   if (cpfCnpj != null && !isInternalCustomer)
                     TitleAndSubTitle(
                       title: 'CPF/CNPJ'.hardcoded,
                       subTitle: cpfCnpj,
                     ),
-                  if (requestCustomer.Emails != null)
+                  if (requestCustomer?.Emails?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'E-mails'.hardcoded,
-                      subTitle: requestCustomer.Emails?.join(', '),
+                      subTitle: requestCustomer?.Emails?.join(', '),
                     ),
-                  if (requestCustomer.Telephones != null)
+                  if (requestCustomer?.Telephones?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Telefones'.hardcoded,
-                      subTitle: requestCustomer.Telephones?.map(
-                        (e) => '(${e.AreaCode}) ${e.PhoneNumber}',
-                      ).join(', '),
+                      subTitle: requestCustomer?.Telephones
+                          ?.map((e) => '(${e.AreaCode}) ${e.PhoneNumber}')
+                          .join(', '),
                     ),
                 ],
               ),
