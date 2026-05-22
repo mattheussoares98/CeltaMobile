@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class EcSellerModel extends Equatable {
   final int Id;
@@ -16,8 +15,8 @@ class EcSellerModel extends Equatable {
 
   Map<String, dynamic> toJson() => {'id': Id, 'name': Name};
 
-  factory EcSellerModel.fromEntity(SellerEntity entity) =>
+  factory EcSellerModel.fromEntity(EcSellerEntity entity) =>
       EcSellerModel(Id: entity.Id, Name: entity.Name);
 
-  SellerEntity toEntity() => SellerEntity(Id: Id, Name: Name);
+  EcSellerEntity toEntity() => EcSellerEntity(Id: Id, Name: Name);
 }

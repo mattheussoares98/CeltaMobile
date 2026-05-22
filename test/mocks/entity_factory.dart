@@ -706,7 +706,7 @@ class EntityFactory {
     TotalLiquid: faker.randomGenerator.decimal() * 100,
   );
 
-  static SellerEntity makeSellerEntity() => SellerEntity(
+  static EcSellerEntity makeSellerEntity() => EcSellerEntity(
     Id: faker.randomGenerator.integer(10),
     Name: faker.lorem.word(),
   );

@@ -9,7 +9,7 @@ part 'sellers_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class SellersStateController extends _$SellersStateController {
   @override
-  FutureOr<List<SellerEntity>> build() async {
+  FutureOr<List<EcSellerEntity>> build() async {
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
     final params = EcRequestParams(

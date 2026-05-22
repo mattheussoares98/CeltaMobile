@@ -17,7 +17,7 @@ class MockEcSellerRepository extends Mock implements IEcSellerRepository {}
 void main() {
   late MockEcSellerRepository mockRepository;
   late UserSessionModel fakeSession;
-  late List<SellerEntity> fakeSellers;
+  late List<EcSellerEntity> fakeSellers;
 
   setUp(() {
     mockRepository = MockEcSellerRepository();

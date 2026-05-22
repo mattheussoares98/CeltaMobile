@@ -1,12 +1,11 @@
+import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf_employee_entity.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf_employee_entity.dart';
-
-class SellerEntity extends Equatable {
+class EcSellerEntity extends Equatable {
   final int Id;
   final String Name;
 
-  const SellerEntity({required this.Id, required this.Name});
+  const EcSellerEntity({required this.Id, required this.Name});
 
   @override
   List<Object?> get props => [Id, Name];

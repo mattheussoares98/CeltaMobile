@@ -863,7 +863,7 @@ void main() {
         expect(state2.value!.seller?.code, seller2.Id);
 
         // Change to the same seller should annul it
-        final seller3 = SellerEntity(Id: seller2.Id, Name: seller2.Name);
+        final seller3 = EcSellerEntity(Id: seller2.Id, Name: seller2.Name);
         controller.changeSeller(seller3);
         final state3 = container.read(insertUpdateStateControllerProvider);
         expect(state3.value!.seller, isNull);

@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 typedef ProductPackingCode = int;
 
@@ -20,7 +19,7 @@ class SaleRequestEntity extends Equatable {
   final DateTime? DateHourOfCreation; //come from ec API
   final double? TotalLiquid; //come from ec API
   final double? DiscountValue; //come from ec API
-  final SellerEntity? Seller; //come from ec API
+  final EcSellerEntity? Seller; //come from ec API
   final DeliveryEntity? Delivery; //come from ec API
   final List<FinalizationEntity>? Payments; //come from ec API
   final AddressEntity? Address; //come from ec API
@@ -100,7 +99,7 @@ class SaleRequestEntity extends Equatable {
     DateTime? DateHourOfCreation,
     double? TotalLiquid,
     double? DiscountValue,
-    SellerEntity? Seller,
+    EcSellerEntity? Seller,
     DeliveryEntity? Delivery,
     List<FinalizationEntity>? Payments,
     AddressEntity? Address,

@@ -142,7 +142,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(newState);
   }
 
-  void changeSeller(SellerEntity? seller) {
+  void changeSeller(EcSellerEntity? seller) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
 
     final current = state.value!;
