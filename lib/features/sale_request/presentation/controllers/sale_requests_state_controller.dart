@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sale_requests_state_controller.g.dart';
 
@@ -69,5 +68,28 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
             mountRequestType: true,
           );
     });
+  }
+
+  void updateSingleRequestInList(SaleRequestEntity updatedRequest) {
+    if (state is! AsyncData) return;
+
+    final currentData = state.value;
+    if (currentData == null) return;
+
+    final updatedCollection = currentData.collection.toList();
+
+    updatedCollection.removeWhere((item) => item.Id == updatedRequest.Id);
+    updatedCollection.insert(0, updatedRequest);
+
+    state = AsyncData(
+      EcPaginationResults<SaleRequestEntity>(
+        collection: updatedCollection,
+        totalRecords: currentData.totalRecords,
+        totalPages: currentData.totalPages,
+        recordsOnThisPage: currentData.recordsOnThisPage,
+        recordsByPage: currentData.recordsByPage,
+        actualPage: currentData.actualPage,
+      ),
+    );
   }
 }

@@ -206,76 +206,198 @@ void main() {
       expect(state.error, exception);
     });
 
-    test('load should invalidate saleRequestDetailsStateControllerProvider', () async {
-      // ARRANGE
-      final args = SaleRequestArgs(
-        customerCode: 1,
-        enterpriseCode: enterpriseCode,
-        saleRequestId: 0,
-      );
+    test(
+      'load should invalidate saleRequestDetailsStateControllerProvider',
+      () async {
+        // ARRANGE
+        final args = SaleRequestArgs(
+          customerCode: 1,
+          enterpriseCode: enterpriseCode,
+          saleRequestId: 0,
+        );
 
-      when(
-        () => mockRepository.get(
-          params: any(named: 'params'),
-          enterpriseIds: any(named: 'enterpriseIds'),
-          endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
-          startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
-          personalizedCodes: any(named: 'personalizedCodes'),
-          mountCustomer: any(named: 'mountCustomer'),
-          mountProducts: any(named: 'mountProducts'),
-          mountRequestType: any(named: 'mountRequestType'),
-          mountSeller: any(named: 'mountSeller'),
-        ),
-      ).thenAnswer((_) async => fakeRequests);
+        when(
+          () => mockRepository.get(
+            params: any(named: 'params'),
+            enterpriseIds: any(named: 'enterpriseIds'),
+            endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
+            startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+            personalizedCodes: any(named: 'personalizedCodes'),
+            mountCustomer: any(named: 'mountCustomer'),
+            mountProducts: any(named: 'mountProducts'),
+            mountRequestType: any(named: 'mountRequestType'),
+            mountSeller: any(named: 'mountSeller'),
+          ),
+        ).thenAnswer((_) async => fakeRequests);
 
-      final fakeComplete = EntityFactory.makeBSFSaleRequestEntity();
-      when(
-        () => mockRepository.getComplete(
-          params: any(named: 'params'),
-          customerCode: any(named: 'customerCode'),
-          enterpriseCode: any(named: 'enterpriseCode'),
-          saleRequestCode: any(named: 'saleRequestCode'),
-        ),
-      ).thenAnswer((_) async => fakeComplete);
+        final fakeComplete = EntityFactory.makeBSFSaleRequestEntity();
+        when(
+          () => mockRepository.getComplete(
+            params: any(named: 'params'),
+            customerCode: any(named: 'customerCode'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            saleRequestCode: any(named: 'saleRequestCode'),
+          ),
+        ).thenAnswer((_) async => fakeComplete);
 
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
 
-      // Initial future
-      await container.read(saleRequestDetailsStateControllerProvider(args).future);
-      
-      verify(
-        () => mockRepository.getComplete(
-          params: any(named: 'params'),
-          customerCode: args.customerCode,
-          enterpriseCode: args.enterpriseCode,
-          saleRequestCode: args.saleRequestId,
-        ),
-      ).called(1);
+        // Initial future
+        await container.read(
+          saleRequestDetailsStateControllerProvider(args).future,
+        );
 
-      // Clear interactions to check the next one independently
-      clearInteractions(mockRepository);
+        verify(
+          () => mockRepository.getComplete(
+            params: any(named: 'params'),
+            customerCode: args.customerCode,
+            enterpriseCode: args.enterpriseCode,
+            saleRequestCode: args.saleRequestId,
+          ),
+        ).called(1);
 
-      // ACT
-      await container
-          .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
-          .load(
-            startDateHourOfCreation: startDateHourOfCreation,
+        // Clear interactions to check the next one independently
+        clearInteractions(mockRepository);
+
+        // ACT
+        await container
+            .read(saleRequestsStateControllerProvider(enterpriseCode).notifier)
+            .load(startDateHourOfCreation: startDateHourOfCreation);
+
+        // ASSERT
+        // The future should be different now because the provider was invalidated
+        await container.read(
+          saleRequestDetailsStateControllerProvider(args).future,
+        );
+
+        verify(
+          () => mockRepository.getComplete(
+            params: any(named: 'params'),
+            customerCode: args.customerCode,
+            enterpriseCode: args.enterpriseCode,
+            saleRequestCode: args.saleRequestId,
+          ),
+        ).called(1);
+      },
+    );
+
+    group('updateSingleRequestInList', () {
+      test(
+        'should replace existing request and move it to top (index 0)',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.get(
+              params: any(named: 'params'),
+              enterpriseIds: any(named: 'enterpriseIds'),
+              endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
+              startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+              personalizedCodes: any(named: 'personalizedCodes'),
+              mountCustomer: any(named: 'mountCustomer'),
+              mountProducts: any(named: 'mountProducts'),
+              mountRequestType: any(named: 'mountRequestType'),
+              mountSeller: any(named: 'mountSeller'),
+            ),
+          ).thenAnswer((_) async => fakeRequests);
+
+          final container = makeProviderContainer(session: fakeSession);
+          addTearDown(container.dispose);
+
+          // Load initial data
+          await container
+              .read(
+                saleRequestsStateControllerProvider(enterpriseCode).notifier,
+              )
+              .load(startDateHourOfCreation: startDateHourOfCreation);
+
+          final currentState = container.read(
+            saleRequestsStateControllerProvider(enterpriseCode),
           );
 
-      // ASSERT
-      // The future should be different now because the provider was invalidated
-      await container.read(saleRequestDetailsStateControllerProvider(args).future);
-      
-      verify(
-        () => mockRepository.getComplete(
-          params: any(named: 'params'),
-          customerCode: args.customerCode,
-          enterpriseCode: args.enterpriseCode,
-          saleRequestCode: args.saleRequestId,
-        ),
-      ).called(1);
+          final existingItem =
+              currentState.value!.collection[1]; // Pick second item
+          final updatedItem = EntityFactory.makeSaleRequestEntity().copyWith(
+            Id: existingItem.Id,
+          );
+
+          // ACT
+          container
+              .read(
+                saleRequestsStateControllerProvider(enterpriseCode).notifier,
+              )
+              .updateSingleRequestInList(updatedItem);
+
+          // ASSERT
+          final newState = container.read(
+            saleRequestsStateControllerProvider(enterpriseCode),
+          );
+
+          expect(newState.value!.collection.first, updatedItem);
+          expect(
+            newState.value!.collection.length,
+            fakeRequests.collection.length,
+          );
+          expect(
+            newState.value!.collection
+                .where((e) => e.Id == existingItem.Id)
+                .length,
+            1,
+          );
+        },
+      );
+
+      test(
+        'should insert new request at index 0 if it does not exist',
+        () async {
+          // ARRANGE
+          when(
+            () => mockRepository.get(
+              params: any(named: 'params'),
+              enterpriseIds: any(named: 'enterpriseIds'),
+              endDateHourOfCreation: any(named: 'endDateHourOfCreation'),
+              startDateHourOfCreation: any(named: 'startDateHourOfCreation'),
+              personalizedCodes: any(named: 'personalizedCodes'),
+              mountCustomer: any(named: 'mountCustomer'),
+              mountProducts: any(named: 'mountProducts'),
+              mountRequestType: any(named: 'mountRequestType'),
+              mountSeller: any(named: 'mountSeller'),
+            ),
+          ).thenAnswer((_) async => fakeRequests);
+
+          final container = makeProviderContainer(session: fakeSession);
+          addTearDown(container.dispose);
+
+          // Load initial data
+          await container
+              .read(
+                saleRequestsStateControllerProvider(enterpriseCode).notifier,
+              )
+              .load(startDateHourOfCreation: startDateHourOfCreation);
+
+          final newItem = EntityFactory.makeSaleRequestEntity().copyWith(
+            Id: 99999,
+          ); // completely new item
+
+          // ACT
+          container
+              .read(
+                saleRequestsStateControllerProvider(enterpriseCode).notifier,
+              )
+              .updateSingleRequestInList(newItem);
+
+          // ASSERT
+          final newState = container.read(
+            saleRequestsStateControllerProvider(enterpriseCode),
+          );
+
+          expect(newState.value!.collection.first, newItem);
+          expect(
+            newState.value!.collection.length,
+            fakeRequests.collection.length + 1,
+          );
+        },
+      );
     });
   });
 }
-
