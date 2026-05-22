@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 
 part 'pdf_from_sale_request_details_state_controller.g.dart';
 
@@ -12,7 +12,7 @@ part 'pdf_from_sale_request_details_state_controller.g.dart';
 class PdfFromSaleRequestDetailsStateController
     extends _$PdfFromSaleRequestDetailsStateController {
   @override
-  FutureOr<Uint8List?> build() async {
+  FutureOr<Uint8List?> build(SaleRequestArgs args) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
@@ -28,9 +28,7 @@ class PdfFromSaleRequestDetailsStateController
     });
 
     final saleRequest = await ref.watch(
-      saleRequestDetailsStateControllerProvider(
-        ref.read(saleRequestArgsProvider),
-      ).future,
+      saleRequestDetailsStateControllerProvider(args).future,
     );
 
     return await ref

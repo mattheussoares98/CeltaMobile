@@ -12,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks/mocks.dart';
+import '../../../../../mocks/mocks.dart';
 
 // --- Fakes and Mocks for Dependencies ---
 
@@ -89,7 +89,7 @@ void main() {
 
       // ACT
       final result = await container.read(
-        pdfFromSaleRequestDetailsStateControllerProvider.future,
+        pdfFromSaleRequestDetailsStateControllerProvider(fakeArgs).future,
       );
 
       // ASSERT
@@ -110,7 +110,9 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(pdfFromSaleRequestDetailsStateControllerProvider.future),
+        container.read(
+          pdfFromSaleRequestDetailsStateControllerProvider(fakeArgs).future,
+        ),
         throwsA(isA<Exception>()),
       );
     });

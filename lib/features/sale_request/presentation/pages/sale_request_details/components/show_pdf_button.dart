@@ -21,9 +21,10 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ref.watch(saleRequestArgsProvider);
     final (loadedCorrectly, personalizedCode) = ref.watch(
       saleRequestDetailsStateControllerProvider(
-        ref.read(saleRequestArgsProvider),
+        args,
       ).select((s) => (s.hasValue && !s.isLoading, s.value?.personalizedCode)),
     );
 
@@ -35,7 +36,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                 isLoading = true;
               });
               final bytes = await ref.read(
-                pdfFromSaleRequestDetailsStateControllerProvider.future,
+                pdfFromSaleRequestDetailsStateControllerProvider(args).future,
               );
 
               if (bytes == null) {
