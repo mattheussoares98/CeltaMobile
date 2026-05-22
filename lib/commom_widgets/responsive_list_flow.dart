@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class ResponsiveListFlow extends StatelessWidget {
   final int itemCount;
@@ -23,11 +23,7 @@ class ResponsiveListFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final isAndroid = theme.platform == TargetPlatform.android;
-
-    if (isIOS || isAndroid) {
+    if (PlatformUtil.isMobile) {
       return isSliver
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(

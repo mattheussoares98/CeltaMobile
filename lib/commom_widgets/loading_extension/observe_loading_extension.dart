@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/commom_widgets/loading_extension/animated_ellipsis.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 /// PERFORMANCE: Using an extension on WidgetRef allows for a clean,
 /// functional approach in ConsumerWidgets without adding extra
@@ -64,7 +65,7 @@ class _LoadingOverlayController extends Notifier<void> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     _entry = OverlayEntry(
       builder: (context) {

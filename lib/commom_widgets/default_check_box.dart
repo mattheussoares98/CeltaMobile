@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultCheckBox extends StatelessWidget {
   final String name;
@@ -19,7 +20,7 @@ class DefaultCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     return RepaintBoundary(
       child: AnimatedContainer(

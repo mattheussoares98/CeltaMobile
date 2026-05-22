@@ -1,8 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class DefaultSimpleDropDown<T> extends StatelessWidget {
   final void Function(T?)? onChanged;
@@ -82,11 +82,10 @@ class DefaultSimpleDropDown<T> extends StatelessWidget {
 class _IconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return PlatformIcon(
       cupertinoIcon: CupertinoIcons.chevron_down,
       materialIcon: Icons.arrow_drop_down,
-      size: theme.platform == TargetPlatform.iOS ? Sizes.p12 : null,
+      size: PlatformUtil.isCupertino ? Sizes.p12 : null,
     );
   }
 }

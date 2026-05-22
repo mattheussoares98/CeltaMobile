@@ -1,10 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 const kDialogDefaultKey = Key('dialog-default-key');
 
@@ -17,7 +17,6 @@ Future<bool?> showAlertDialog({
   String defaultActionText = 'OK',
   VoidCallback? onOkPressed,
 }) async {
-  final theme = Theme.of(context);
   return await showDialog(
     context: context,
     // * Only make the dialog dismissible if there is a cancel button
@@ -45,10 +44,7 @@ Future<bool?> showAlertDialog({
           : null,
       // * Use [TextButton] or [CupertinoDialogAction] depending on the platform
       // https://codewithandrea.com/tips/default-target-platform/
-      actions:
-          kIsWeb ||
-              !(theme.platform == TargetPlatform.iOS ||
-                  theme.platform == TargetPlatform.macOS)
+      actions: kIsWeb || !(PlatformUtil.isCupertino)
           ? <Widget>[
               if (cancelActionText != null)
                 TextButton(

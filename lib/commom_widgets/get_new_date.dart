@@ -1,10 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class GetNewDate {
   GetNewDate._();
@@ -17,7 +17,6 @@ class GetNewDate {
     required BuildContext context,
   }) async {
     DateTime? selectedDate;
-    final theme = Theme.of(context);
 
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -34,7 +33,7 @@ class GetNewDate {
         ? correctMinimumDate
         : currentSelectedDate;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (PlatformUtil.isCupertino) {
       selectedDate = await _showCupertinoDatePicker(
         firstDate: firstDate,
         context: context,
@@ -55,7 +54,7 @@ class GetNewDate {
 
     TimeOfDay? selectedTime;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (PlatformUtil.isCupertino) {
       final time = await _showCupertinoDatePicker(
         firstDate: firstDate,
         context: context,

@@ -1,12 +1,11 @@
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/cart/components/components.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
-import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/cart/components/components.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   final TransferRequestProductItemEntity item;
@@ -103,14 +102,12 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
           InkWell(
-            onTap: isIOS ? null : changeSelectedIndex,
+            onTap: PlatformUtil.isCupertino ? null : changeSelectedIndex,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(
                 Sizes.p8,

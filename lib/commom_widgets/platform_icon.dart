@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PlatformIcon extends StatelessWidget {
@@ -16,7 +17,10 @@ class PlatformIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-    return Icon(isIOS ? cupertinoIcon : materialIcon, color: color, size: size);
+    return Icon(
+      PlatformUtil.isCupertino ? cupertinoIcon : materialIcon,
+      color: color,
+      size: size,
+    );
   }
 }

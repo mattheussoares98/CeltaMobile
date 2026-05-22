@@ -7,6 +7,7 @@ import 'package:celta_inventario/features/settings/presentation/pages/pages.dart
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
 import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class SuffixActions extends ConsumerStatefulWidget {
   final bool isLoading;
@@ -34,7 +35,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isMobile =
-        theme.platform == TargetPlatform.iOS ||
+        PlatformUtil.isCupertino ||
         theme.platform == TargetPlatform.android;
     final width = MediaQuery.sizeOf(context).width;
 

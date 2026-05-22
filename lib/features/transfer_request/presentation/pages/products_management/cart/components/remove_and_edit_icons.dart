@@ -1,11 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RemoveAndEditIcons extends ConsumerWidget {
   final DraftKey draftKey;
@@ -20,8 +20,6 @@ class RemoveAndEditIcons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
     return Column(
       children: [
         IconButton(
@@ -47,7 +45,7 @@ class RemoveAndEditIcons extends ConsumerWidget {
           ),
         ),
         PrimaryTextButton(
-          text: isIOS ? 'Editar'.hardcoded : '',
+          text: PlatformUtil.isCupertino ? 'Editar'.hardcoded : '',
           onPressed: changeSelectedIndex,
           icon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.pencil,

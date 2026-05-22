@@ -52,7 +52,7 @@ GoRouter goRouter(Ref ref) {
     redirect: (context, state) {
       final bool isMobileWeb =
           kIsWeb &&
-          (defaultTargetPlatform == TargetPlatform.iOS ||
+          (PlatformUtil.isCupertino ||
               defaultTargetPlatform == TargetPlatform.android);
 
       final bool isAlreadyOnDownloadPage = state.matchedLocation.contains(

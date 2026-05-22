@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/services/services.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class CrashlyticsService implements ICrashlyticsService {
   final FirebaseCrashlytics _crashlytics;
@@ -16,7 +17,7 @@ class CrashlyticsService implements ICrashlyticsService {
   ) async {
     // Centralized platform check to avoid repeating logic in UI
     if (kIsWeb ||
-        (defaultTargetPlatform != TargetPlatform.iOS &&
+        (!PlatformUtil.isCupertino &&
             defaultTargetPlatform != TargetPlatform.android)) {
       return;
     }

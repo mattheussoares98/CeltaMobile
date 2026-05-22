@@ -1,12 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/extensions/string_modifier.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductInformations extends ConsumerWidget {
   final VoidCallback onChangeSelectedIndex;
@@ -24,7 +23,7 @@ class ProductInformations extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     return InkWell(
       onTap: isIOS ? null : onChangeSelectedIndex,

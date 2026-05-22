@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class LoadingWidget extends StatelessWidget {
   final double? size;
@@ -17,7 +18,7 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isIos = theme.platform == TargetPlatform.iOS;
+    final isIos = PlatformUtil.isCupertino;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

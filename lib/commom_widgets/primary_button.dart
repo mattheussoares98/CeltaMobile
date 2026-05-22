@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class PrimaryButton extends ConsumerWidget {
   const PrimaryButton({
@@ -24,7 +25,7 @@ class PrimaryButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     final textWidget = Text(
       text,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ReloadIconButton<T> extends ConsumerWidget {
   final ProviderBase<AsyncValue<T>> provider;
@@ -12,7 +13,7 @@ class ReloadIconButton<T> extends ConsumerWidget {
     final theme = Theme.of(context);
     final isMobile =
         theme.platform == TargetPlatform.android ||
-        theme.platform == TargetPlatform.iOS;
+        PlatformUtil.isCupertino;
     final showIcon = !isMobile;
 
     if (!showIcon) {

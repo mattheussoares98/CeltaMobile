@@ -44,7 +44,7 @@ class ProductItem extends ConsumerWidget {
         ) ==
         cartProduct.ProductPackingCode;
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p4),

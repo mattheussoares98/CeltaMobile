@@ -7,6 +7,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class ExitDrawerItem extends ConsumerWidget {
   const ExitDrawerItem({super.key});
@@ -16,7 +17,7 @@ class ExitDrawerItem extends ConsumerWidget {
     final theme = Theme.of(context);
     DeviceType deviceType;
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (PlatformUtil.isCupertino) {
       deviceType = DeviceType.ios;
     } else if (theme.platform == TargetPlatform.android) {
       deviceType = DeviceType.android;

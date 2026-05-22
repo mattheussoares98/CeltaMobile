@@ -1,13 +1,13 @@
-import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SalesTypeWidget extends ConsumerWidget {
   final String plu;
@@ -33,7 +33,6 @@ class SalesTypeWidget extends ConsumerWidget {
 
     final screenWidth = MediaQuery.sizeOf(context).width;
     final bool showInVertical = screenWidth < 300;
-    final theme = Theme.of(context);
 
     final selectedSaleType = ref.watch(
       uIStateControllerProvider(plu).select((s) => s.value?.selectedSaleType),
@@ -49,7 +48,7 @@ class SalesTypeWidget extends ConsumerWidget {
       children: [
         TitleWidget(title: "Tipo de venda".hardcoded),
         gapH8,
-        if (theme.platform == TargetPlatform.iOS)
+        if (PlatformUtil.isCupertino)
           DefaultSegmentedButtons<SaleType>(
             items: items,
             selectedValue: selectedSaleType?.value,

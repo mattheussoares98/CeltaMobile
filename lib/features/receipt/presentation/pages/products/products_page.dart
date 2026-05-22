@@ -132,7 +132,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
       floatingActionButton: AnimatedBuilder(
         animation: theme.platform == TargetPlatform.android ||
-                theme.platform == TargetPlatform.iOS
+                PlatformUtil.isCupertino
             ? quantityFocusNode
             : Listenable.merge([]),
         builder: (_, _) {

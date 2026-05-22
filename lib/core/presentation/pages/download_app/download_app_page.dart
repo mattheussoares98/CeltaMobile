@@ -1,9 +1,9 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/url_launch/url_launch.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DownloadAppPage extends ConsumerWidget {
   const DownloadAppPage({super.key});
@@ -11,9 +11,8 @@ class DownloadAppPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String? url;
-    final theme = Theme.of(context);
-    final isAndroid = theme.platform == TargetPlatform.android;
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isAndroid = PlatformUtil.isAndroid;
+    final isIOS = PlatformUtil.isCupertino;
     if (isAndroid) {
       url =
           'https://play.google.com/store/apps/details?id=br.com.celtaware.inventario&pcampaignid=web_share';

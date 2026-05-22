@@ -1,11 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/settings/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsPage extends StatelessWidget {
   final Modules? module;
@@ -13,10 +13,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-    final isAndroid = theme.platform == TargetPlatform.android;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -47,7 +43,7 @@ class SettingsPage extends StatelessWidget {
                     Modules.expeditionConference,
                     Modules.receipt,
                   ].any((x) => x == module) &&
-                  (isIOS || isAndroid)) ...[
+                  (PlatformUtil.isMobile)) ...[
                 ContinuousScanCheckbox(module: module!),
               ],
             ],

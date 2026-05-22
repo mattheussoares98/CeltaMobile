@@ -8,6 +8,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class SelectProductsModal extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -125,7 +126,7 @@ class _ProductItem extends ConsumerWidget {
     );
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     void toggleSelection() {
       final currentMap = Map<String, ProductEntity>.from(

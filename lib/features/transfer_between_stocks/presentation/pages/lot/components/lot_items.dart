@@ -1,12 +1,11 @@
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LotItems extends ConsumerStatefulWidget {
   final TextEditingController quantityController;
@@ -131,9 +130,6 @@ class _LotItem extends ConsumerWidget {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
-    final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
-
     return RepaintBoundary(
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -141,7 +137,9 @@ class _LotItem extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             InkWell(
-              onTap: isIOS ? null : () => changeSelectedIndex(index, item),
+              onTap: PlatformUtil.isCupertino
+                  ? null
+                  : () => changeSelectedIndex(index, item),
               child: Stack(
                 children: [
                   Padding(

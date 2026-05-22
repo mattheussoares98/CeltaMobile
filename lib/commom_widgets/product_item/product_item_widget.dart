@@ -170,7 +170,7 @@ class ProductItemWidget extends ConsumerWidget {
     );
 
     final theme = Theme.of(context);
-    final isIOS = theme.platform == TargetPlatform.iOS;
+    final isIOS = PlatformUtil.isCupertino;
 
     return Card(
       clipBehavior: Clip.antiAlias,

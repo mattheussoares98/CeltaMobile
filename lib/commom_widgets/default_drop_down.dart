@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultDropDown<T> extends StatelessWidget {
   final void Function(T)? onChanged;
@@ -28,7 +29,7 @@ class DefaultDropDown<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    if (theme.platform == TargetPlatform.iOS) {
+    if (PlatformUtil.isCupertino) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       return FormField(
         validator: validator,

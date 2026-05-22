@@ -6,6 +6,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 
 class PasswordField extends ConsumerStatefulWidget {
   final TextEditingController passwordController;
@@ -49,7 +50,7 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
       maxLength: 30,
       labelText: 'Senha'.hardcoded,
       prefixIcon: Icon(
-        theme.platform == TargetPlatform.iOS
+        PlatformUtil.isCupertino
             ? CupertinoIcons.lock_fill
             : Icons.lock_outline,
         color: isLoading ? theme.disabledColor : null,

@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
+import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/theme/theme.dart';
-import 'package:celta_inventario/commom_widgets/form_field/form_field.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class DefaultTextFormField extends StatelessWidget {
   final bool? enabled;
@@ -54,9 +54,7 @@ class DefaultTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    if (theme.platform == TargetPlatform.iOS) {
+    if (PlatformUtil.isCupertino) {
       return CupertinoFormField(defaultTextFormField: this, key: key);
     }
     return Padding(
