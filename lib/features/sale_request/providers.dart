@@ -1,5 +1,3 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/providers/hive/hive.dart';
 import 'package:celta_inventario/core/providers/http/http.dart';
 import 'package:celta_inventario/core/providers/soap/soap.dart';
@@ -7,6 +5,7 @@ import 'package:celta_inventario/features/sale_request/data/datasource/datasourc
 import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
 
@@ -142,4 +141,9 @@ IEcPaymentFinalizationRepository ecPaymentFinalizationRepository(Ref ref) {
 @riverpod
 SaleRequestArgs saleRequestArgs(Ref ref) {
   throw UnimplementedError();
+}
+
+@riverpod
+IEcSellerDatasource ecSellerDatasource(Ref ref) {
+  return EcSellerDatasource(ref.watch(httpClientProvider));
 }
