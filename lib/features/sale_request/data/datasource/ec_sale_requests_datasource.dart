@@ -58,7 +58,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: 'http://localhost:58915/SaleRequests/GetCompleteForMobileApp',
+      url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -83,7 +83,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }) async {
     await httpClient.request(
       url:
-          'http://localhost:58915/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
+          '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),
