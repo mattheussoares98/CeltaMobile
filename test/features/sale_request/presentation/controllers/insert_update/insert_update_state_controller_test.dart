@@ -875,19 +875,19 @@ void main() {
         await container.read(insertUpdateStateControllerProvider.future);
 
         // Change to a new seller
-        final seller1 = EntityFactory.makeSellerEntity();
+        const seller1 = EcSellerEntity(Id: 1, Name: 'Seller 1');
         controller.changeSeller(seller1);
         final state1 = container.read(insertUpdateStateControllerProvider);
         expect(state1.value!.seller?.code, seller1.Id);
 
         // Change to a different seller
-        final seller2 = EntityFactory.makeSellerEntity();
+        const seller2 = EcSellerEntity(Id: 2, Name: 'Seller 2');
         controller.changeSeller(seller2);
         final state2 = container.read(insertUpdateStateControllerProvider);
         expect(state2.value!.seller?.code, seller2.Id);
 
         // Change to the same seller should annul it
-        final seller3 = EcSellerEntity(Id: seller2.Id, Name: seller2.Name);
+        const seller3 = EcSellerEntity(Id: 2, Name: 'Seller 2');
         controller.changeSeller(seller3);
         final state3 = container.read(insertUpdateStateControllerProvider);
         expect(state3.value!.seller, isNull);
@@ -1159,12 +1159,18 @@ void main() {
         final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
         controller.updateRequestType(requestType);
 
+        // Update the customer so processCart has a valid customerCode
+        final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
+        controller.updateCustomer(customer);
+
         final processedRequest = fakeSaleRequest.copyWith(code: 999);
         when(
           () => mockEcSaleRequestsRepository.processCart(
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
+            customerCode: any(named: 'customerCode'),
+            saleRequestCode: any(named: 'saleRequestCode'),
             params: any(named: 'params'),
           ),
         ).thenAnswer((_) async => processedRequest);
@@ -1180,6 +1186,8 @@ void main() {
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
+            customerCode: any(named: 'customerCode'),
+            saleRequestCode: any(named: 'saleRequestCode'),
             params: any(named: 'params'),
           ),
         ).called(1);
@@ -1200,6 +1208,10 @@ void main() {
         final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
         controller.updateRequestType(requestType);
 
+        // Update the customer so processCart has a valid customerCode
+        final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
+        controller.updateCustomer(customer);
+
         final draftValue = container.read(insertUpdateStateControllerProvider).value!;
 
         when(
@@ -1207,6 +1219,8 @@ void main() {
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
             requestTypeCode: any(named: 'requestTypeCode'),
+            customerCode: any(named: 'customerCode'),
+            saleRequestCode: any(named: 'saleRequestCode'),
             params: any(named: 'params'),
           ),
         ).thenThrow(Exception('API error'));
@@ -1229,6 +1243,20 @@ void main() {
         final error = await controller.processCart();
 
         expect(error, equals('Modelo de pedido é obrigatório.'));
+      });
+
+      test('processCart should return mandatory customer error when customer code is null or zero', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(insertUpdateStateControllerProvider.notifier);
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Set requestType, but do not set customer so customer code remains null or zero
+        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
+        controller.updateRequestType(requestType);
+
+        final error = await controller.processCart();
+
+        expect(error, equals('Cliente é obrigatório.'));
       });
     });
   });

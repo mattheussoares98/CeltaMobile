@@ -48,6 +48,8 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
       saleRequest: any(named: 'saleRequest'),
       enterpriseCode: any(named: 'enterpriseCode'),
       requestTypeCode: any(named: 'requestTypeCode'),
+      customerCode: any(named: 'customerCode'),
+      saleRequestCode: any(named: 'saleRequestCode'),
       params: any(named: 'params'),
     ),
   ).thenAnswer((_) async => response);
@@ -303,6 +305,8 @@ void main() {
         saleRequest: bSFSaleRequestModel.toEntity(),
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
+        customerCode: customerCode,
+        saleRequestCode: saleRequestCode,
         params: params,
       );
 
@@ -315,6 +319,8 @@ void main() {
           ),
           enterpriseCode: enterpriseCode,
           requestTypeCode: requestTypeCode,
+          customerCode: customerCode,
+          saleRequestCode: saleRequestCode,
           params: params,
         ),
       ).called(1);

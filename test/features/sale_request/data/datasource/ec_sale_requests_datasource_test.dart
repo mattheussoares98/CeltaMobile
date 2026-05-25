@@ -214,12 +214,14 @@ void main() {
 
   group('ProcessCart', () {
     test('should behave correctly on success', () async {
-      httpClient.mockRequest(json.encode([bSFSaleRequestModel.toJson()]));
+      httpClient.mockRequest(json.encode(bSFSaleRequestModel.toJson()));
 
       final response = await sut.processCart(
         saleRequest: bSFSaleRequestModel,
         enterpriseCode: enterpriseCode,
         requestTypeCode: requestTypeCode,
+        customerCode: customerCode,
+        saleRequestCode: saleRequestCode,
         params: params,
       );
 
@@ -228,7 +230,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode',
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode&customerCode=$customerCode&saleRequestCode=$saleRequestCode',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),
@@ -239,11 +241,13 @@ void main() {
     test("should throw Exception on error", () async {
       httpClient.mockRequestError();
 
-      expectLater(
+      await expectLater(
         sut.processCart(
           saleRequest: bSFSaleRequestModel,
           enterpriseCode: enterpriseCode,
           requestTypeCode: requestTypeCode,
+          customerCode: customerCode,
+          saleRequestCode: saleRequestCode,
           params: params,
         ),
         throwsA(isA<Exception>()),
@@ -252,7 +256,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode',
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode&customerCode=$customerCode&saleRequestCode=$saleRequestCode',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),

@@ -343,6 +343,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         return 'Modelo de pedido é obrigatório.'.hardcoded;
       }
 
+      final customerCode = current.customer?.code ?? 0;
+      if (customerCode == 0) {
+        return 'Cliente é obrigatório.'.hardcoded;
+      }
+
+      final saleRequestCode = current.code ?? 0;
+
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final args = ref.read(saleRequestArgsProvider);
 
@@ -352,6 +359,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
             saleRequest: current,
             enterpriseCode: args.enterpriseCode,
             requestTypeCode: requestTypeCode,
+            customerCode: customerCode,
+            saleRequestCode: saleRequestCode,
             params: EcRequestParams(
               workingUrl: validatedUser!.enterprise!.workingUrl!,
               user: validatedUser.user.name!,

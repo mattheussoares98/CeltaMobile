@@ -72,12 +72,16 @@ class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,
     required int requestTypeCode,
+    required int customerCode,
+    required int saleRequestCode,
     required EcRequestParams params,
   }) async {
     final response = await datasource.processCart(
       saleRequest: BSFSaleRequestModel.fromEntity(saleRequest),
       enterpriseCode: enterpriseCode,
       requestTypeCode: requestTypeCode,
+      customerCode: customerCode,
+      saleRequestCode: saleRequestCode,
       params: params,
     );
 

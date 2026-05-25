@@ -32,6 +32,8 @@ abstract class IEcSaleRequestsRepository {
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,
     required int requestTypeCode,
+    required int customerCode,
+    required int saleRequestCode,
     required EcRequestParams params,
   });
 }
