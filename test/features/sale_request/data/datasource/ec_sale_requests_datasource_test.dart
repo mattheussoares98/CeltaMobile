@@ -209,4 +209,51 @@ void main() {
       ).called(1);
     });
   });
+
+  group('ProcessCart', () {
+    test('should behave correctly on success', () async {
+      httpClient.mockRequest(json.encode([bSFSaleRequestModel.toJson()]));
+
+      final response = await sut.processCart(
+        saleRequest: bSFSaleRequestModel,
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      expect(response, bSFSaleRequestModel);
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: bSFSaleRequestModel.toJson(),
+        ),
+      ).called(1);
+    });
+
+    test("should throw Exception on error", () async {
+      httpClient.mockRequestError();
+
+      expectLater(
+        sut.processCart(
+          saleRequest: bSFSaleRequestModel,
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+        throwsA(isA<Exception>()),
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: bSFSaleRequestModel.toJson(),
+        ),
+      ).called(1);
+    });
+  });
 }
