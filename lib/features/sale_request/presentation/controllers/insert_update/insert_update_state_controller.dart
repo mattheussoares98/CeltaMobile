@@ -1,4 +1,5 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -13,18 +14,29 @@ part 'insert_update_state_controller.g.dart';
   dependencies: [saleRequestArgs, SaleRequestDetailsStateController],
 ) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
+  BSFSaleRequestEntity? _lastProcessedSaleRequest;
+
   @override
   FutureOr<BSFSaleRequestEntity> build() async {
     final args = ref.watch(saleRequestArgsProvider);
 
+    final BSFSaleRequestEntity initialValue;
     if (args.saleRequestId == 0) {
       //!inserting
-      return BSFSaleRequestEntity.empty();
+      initialValue = BSFSaleRequestEntity.empty();
+    } else {
+      initialValue = await ref.read(
+        saleRequestDetailsStateControllerProvider(args).future,
+      );
     }
 
-    return await ref.read(
-      saleRequestDetailsStateControllerProvider(args).future,
-    );
+    _lastProcessedSaleRequest = initialValue;
+    return initialValue;
+  }
+
+  bool get needsProcessing {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return false;
+    return state.value != _lastProcessedSaleRequest;
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
@@ -314,6 +326,36 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
 
     ref.invalidateSelf();
+  }
+
+  Future<String?> processCart() async {
+    if (state is! AsyncData<BSFSaleRequestEntity>) {
+      return 'Estado inválido.'.hardcoded;
+    }
+
+    try {
+      final current = state.value!;
+      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final args = ref.read(saleRequestArgsProvider);
+
+      final processedValue = await ref
+          .read(ecSaleRequestsRepositoryProvider)
+          .processCart(
+            saleRequest: current,
+            enterpriseCode: args.enterpriseCode,
+            params: EcRequestParams(
+              workingUrl: validatedUser!.enterprise!.workingUrl!,
+              user: validatedUser.user.name!,
+              accessKey: validatedUser.user.AccessKey!,
+            ),
+          );
+
+      _lastProcessedSaleRequest = processedValue;
+      state = AsyncData(processedValue);
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
   }
 }
 

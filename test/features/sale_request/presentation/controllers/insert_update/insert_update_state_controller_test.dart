@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../../mocks/mocks.dart';
 import '../fakers.dart';
@@ -25,12 +29,22 @@ class FakePaymentFinalizationsController
   }
 }
 
+class MockEcSaleRequestsRepository extends Mock
+    implements IEcSaleRequestsRepository {}
+
 void main() {
   late FakePaymentFinalizationsController fakePaymentsController;
   late FakeSearchedCustomersStateController fakeSearchedCustomersController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
   late SaleRequestArgs fakeArgs;
+  late MockEcSaleRequestsRepository mockEcSaleRequestsRepository;
+  late UserSessionModel fakeSession;
+
+  setUpAll(() {
+    registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
+  });
 
   ProviderContainer makeProviderContainer({required int saleRequestId}) {
     final args = fakeArgs.copyWith(saleRequestId: saleRequestId);
@@ -47,6 +61,12 @@ void main() {
         searchedCustomersStateControllerProvider.overrideWith(
           () => fakeSearchedCustomersController,
         ),
+        ecSaleRequestsRepositoryProvider.overrideWithValue(
+          mockEcSaleRequestsRepository,
+        ),
+        validatedUserSessionProvider.overrideWith(
+          () => FakeValidatedUserSession(fakeSession),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -54,6 +74,10 @@ void main() {
   }
 
   setUp(() {
+    mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
+    fakeSession = UserSessionModel.fromEntity(
+      EntityFactory.makeUserSessionEntity(),
+    );
     fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
     fakePayments = [
       EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
@@ -855,7 +879,7 @@ void main() {
         controller.changeSeller(seller1);
         final state1 = container.read(insertUpdateStateControllerProvider);
         expect(state1.value!.seller?.code, seller1.Id);
-        
+
         // Change to a different seller
         final seller2 = EntityFactory.makeSellerEntity();
         controller.changeSeller(seller2);
@@ -894,7 +918,14 @@ void main() {
 
           final state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.code, 1);
-          expect(state.value!.customer, updatedCustomer.copyWith(code: 1, annulCovenantCode: true, annulSelectedCovenant: true));
+          expect(
+            state.value!.customer,
+            updatedCustomer.copyWith(
+              code: 1,
+              annulCovenantCode: true,
+              annulSelectedCovenant: true,
+            ),
+          );
         },
       );
 
@@ -1082,6 +1113,99 @@ void main() {
 
         final state = container.read(insertUpdateStateControllerProvider);
         expect(state, isA<AsyncLoading>());
+      });
+    });
+
+    group('ProcessCart & NeedsProcessing', () {
+      test('needsProcessing should start as false for existing request, become true on edit, and revert to false when undone', () async {
+        final container = makeProviderContainer(saleRequestId: 1);
+        final controller = container.read(insertUpdateStateControllerProvider.notifier);
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Initially matches the database loaded value, so no processing is needed
+        expect(controller.needsProcessing, isFalse);
+
+        // Edit cart
+        final product = EntityFactory.makeProductEntity(
+          plu: 'plu123',
+          enterpriseCode: fakeArgs.enterpriseCode,
+        );
+        controller.addItem(product);
+
+        // Now it needs processing
+        expect(controller.needsProcessing, isTrue);
+
+        // Revert change
+        final addedItem = container.read(insertUpdateStateControllerProvider).value!.products!.last;
+        controller.removeItem(addedItem);
+
+        // Back to false
+        expect(controller.needsProcessing, isFalse);
+      });
+
+      test('processCart should behave correctly on success', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(insertUpdateStateControllerProvider.notifier);
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        final product = EntityFactory.makeProductEntity(
+          plu: 'plu123',
+          enterpriseCode: fakeArgs.enterpriseCode,
+        );
+        controller.addItem(product);
+        expect(controller.needsProcessing, isTrue);
+
+        final processedRequest = fakeSaleRequest.copyWith(code: 999);
+        when(
+          () => mockEcSaleRequestsRepository.processCart(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async => processedRequest);
+
+        final error = await controller.processCart();
+
+        expect(error, isNull);
+        expect(container.read(insertUpdateStateControllerProvider).value, processedRequest);
+        expect(controller.needsProcessing, isFalse);
+        
+        verify(
+          () => mockEcSaleRequestsRepository.processCart(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).called(1);
+      });
+
+      test('processCart should return error string and preserve draft state on failure', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(insertUpdateStateControllerProvider.notifier);
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        final product = EntityFactory.makeProductEntity(
+          plu: 'plu123',
+          enterpriseCode: fakeArgs.enterpriseCode,
+        );
+        controller.addItem(product);
+        final draftValue = container.read(insertUpdateStateControllerProvider).value!;
+
+        when(
+          () => mockEcSaleRequestsRepository.processCart(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenThrow(Exception('API error'));
+
+        final error = await controller.processCart();
+
+        expect(error, contains('API error'));
+        // State remains intact as draft value and is not an error state!
+        expect(container.read(insertUpdateStateControllerProvider).value, draftValue);
+        expect(container.read(insertUpdateStateControllerProvider), isA<AsyncData>());
+        expect(controller.needsProcessing, isTrue);
       });
     });
   });
