@@ -43,6 +43,14 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
     ),
   ).thenAnswer((_) async => response);
 
+  void mockProcessCart(BSFSaleRequestModel response) => when(
+    () => this.processCart(
+      saleRequest: any(named: 'saleRequest'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      params: any(named: 'params'),
+    ),
+  ).thenAnswer((_) async => response);
+
 }
 
 void main() {
@@ -285,4 +293,27 @@ void main() {
     });
   });
 
+  group('ProcessCart', () {
+    test('should behave correctly on success', () async {
+      mockDatasource.mockProcessCart(bSFSaleRequestModel);
+
+      final response = await sut.processCart(
+        saleRequest: bSFSaleRequestModel.toEntity(),
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      expect(response, bSFSaleRequestModel.toEntity());
+
+      verify(
+        () => mockDatasource.processCart(
+          saleRequest: BSFSaleRequestModel.fromEntity(
+            bSFSaleRequestModel.toEntity(),
+          ),
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+      ).called(1);
+    });
+  });
 }
