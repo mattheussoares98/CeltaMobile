@@ -6,4 +6,4 @@ You are the orchestrator. Analyze the user's request and decide which specific d
 
 Global Rule:
 - Do not run `build_runner` commands yourself. The user is already running `dart run build_runner watch -d` in the background.
-- Never run any `git commit` or `git commit --amend` commands. Staging changes with `git add` is allowed, but final commits must be performed exclusively by the user.
+- Never automatically run modifying or staging Git commands (such as `git commit`, `git amend`, `git add`, `git reset`, `git checkout`, etc.). The only allowed Git commands are those used for checking recent changes or working tree status (such as `git status` or `git diff`). All staging (`git add`) and committing must be performed exclusively by the user.
