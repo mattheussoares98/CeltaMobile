@@ -1,16 +1,16 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
 
 class InsertUpdatePage extends ConsumerWidget {
   final int enterpriseCode;
@@ -105,6 +105,9 @@ class _InsertUpdateContent extends ConsumerWidget {
         ),
         body: const InsertUpdateBody(),
         bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
+        floatingActionButton: CreateCustomerFloatingButton(
+          enterpriseCode: enterpriseCode,
+        ),
       ),
       builder: (context, ref, child) {
         final hasChanges = ref.watch(saleRequestHasChangesProvider);

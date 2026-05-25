@@ -1,18 +1,15 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/components/components.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/create_sale_request.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateSaleRequestPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -67,29 +64,8 @@ class CreateSaleRequestPage extends ConsumerWidget {
           CartBadge(enterpriseCode: enterpriseCode),
         ],
       ),
-      floatingActionButton: Consumer(
-        builder: (_, ref, _) {
-          final currentIndex = ref.watch(pageIndexStateControllerProvider);
-          if (currentIndex != 1) {
-            return const SizedBox.shrink();
-          }
-          return FloatingActionButton(
-            child: const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.person_add,
-              materialIcon: Icons.person_add_alt_1_outlined,
-            ),
-            onPressed: () {
-              ref
-                  .read(tryAccessModuleControllerProvider.notifier)
-                  .tryAccess(
-                    context: context,
-                    module: Modules.customerRegister,
-                    route: Routes.customerRegister,
-                    enterpriseCode: enterpriseCode,
-                  );
-            },
-          );
-        },
+      floatingActionButton: CreateCustomerFloatingButton(
+        enterpriseCode: enterpriseCode,
       ),
       body: Consumer(
         builder: (context, ref, child) {
