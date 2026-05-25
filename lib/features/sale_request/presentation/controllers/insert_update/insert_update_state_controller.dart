@@ -34,9 +34,12 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     return initialValue;
   }
 
+  BSFSaleRequestEntity? get lastProcessedSaleRequest =>
+      _lastProcessedSaleRequest;
+
   bool get needsProcessing {
     if (state is! AsyncData<BSFSaleRequestEntity>) return false;
-    return state.value != _lastProcessedSaleRequest;
+    return state.value! != _lastProcessedSaleRequest;
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
@@ -335,6 +338,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     try {
       final current = state.value!;
+      final requestTypeCode = current.requestType?.code;
+      if (requestTypeCode == null || requestTypeCode == 0) {
+        return 'Modelo de pedido é obrigatório.'.hardcoded;
+      }
+
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final args = ref.read(saleRequestArgsProvider);
 
@@ -343,6 +351,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
           .processCart(
             saleRequest: current,
             enterpriseCode: args.enterpriseCode,
+            requestTypeCode: requestTypeCode,
             params: EcRequestParams(
               workingUrl: validatedUser!.enterprise!.workingUrl!,
               user: validatedUser.user.name!,

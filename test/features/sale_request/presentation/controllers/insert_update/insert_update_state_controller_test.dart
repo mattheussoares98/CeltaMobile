@@ -1155,11 +1155,16 @@ void main() {
         controller.addItem(product);
         expect(controller.needsProcessing, isTrue);
 
+        // Update the request type so processCart has a valid requestTypeCode
+        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
+        controller.updateRequestType(requestType);
+
         final processedRequest = fakeSaleRequest.copyWith(code: 999);
         when(
           () => mockEcSaleRequestsRepository.processCart(
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
+            requestTypeCode: any(named: 'requestTypeCode'),
             params: any(named: 'params'),
           ),
         ).thenAnswer((_) async => processedRequest);
@@ -1174,6 +1179,7 @@ void main() {
           () => mockEcSaleRequestsRepository.processCart(
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
+            requestTypeCode: any(named: 'requestTypeCode'),
             params: any(named: 'params'),
           ),
         ).called(1);
@@ -1189,12 +1195,18 @@ void main() {
           enterpriseCode: fakeArgs.enterpriseCode,
         );
         controller.addItem(product);
+
+        // Update the request type so processCart has a valid requestTypeCode
+        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
+        controller.updateRequestType(requestType);
+
         final draftValue = container.read(insertUpdateStateControllerProvider).value!;
 
         when(
           () => mockEcSaleRequestsRepository.processCart(
             saleRequest: any(named: 'saleRequest'),
             enterpriseCode: any(named: 'enterpriseCode'),
+            requestTypeCode: any(named: 'requestTypeCode'),
             params: any(named: 'params'),
           ),
         ).thenThrow(Exception('API error'));
@@ -1206,6 +1218,17 @@ void main() {
         expect(container.read(insertUpdateStateControllerProvider).value, draftValue);
         expect(container.read(insertUpdateStateControllerProvider), isA<AsyncData>());
         expect(controller.needsProcessing, isTrue);
+      });
+
+      test('processCart should return mandatory model error when requestType code is null or zero', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(insertUpdateStateControllerProvider.notifier);
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Do not set requestType, so requestTypeCode remains null or zero
+        final error = await controller.processCart();
+
+        expect(error, equals('Modelo de pedido é obrigatório.'));
       });
     });
   });

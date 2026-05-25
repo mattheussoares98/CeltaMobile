@@ -94,11 +94,12 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   Future<BSFSaleRequestModel> processCart({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,
+    required int requestTypeCode,
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode',
+          '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),

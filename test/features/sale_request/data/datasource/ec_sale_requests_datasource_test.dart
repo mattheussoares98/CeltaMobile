@@ -29,6 +29,7 @@ void main() {
   late int saleRequestCode;
   late int enterpriseCode;
   late int customerCode;
+  late int requestTypeCode;
 
   void initSut() {
     sut = EcSaleRequestsDatasource(httpClient);
@@ -74,6 +75,7 @@ void main() {
     saleRequestCode = faker.randomGenerator.integer(100);
     enterpriseCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
+    requestTypeCode = faker.randomGenerator.integer(100);
   }
 
   setUp(() {
@@ -217,6 +219,7 @@ void main() {
       final response = await sut.processCart(
         saleRequest: bSFSaleRequestModel,
         enterpriseCode: enterpriseCode,
+        requestTypeCode: requestTypeCode,
         params: params,
       );
 
@@ -225,7 +228,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode',
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),
@@ -240,6 +243,7 @@ void main() {
         sut.processCart(
           saleRequest: bSFSaleRequestModel,
           enterpriseCode: enterpriseCode,
+          requestTypeCode: requestTypeCode,
           params: params,
         ),
         throwsA(isA<Exception>()),
@@ -248,7 +252,7 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode',
+              '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),

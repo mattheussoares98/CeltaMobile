@@ -31,6 +31,7 @@ abstract class IEcSaleRequestsDatasource {
   Future<BSFSaleRequestModel> processCart({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,
+    required int requestTypeCode,
     required EcRequestParams params,
   });
 }

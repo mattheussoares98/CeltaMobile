@@ -47,10 +47,10 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
     () => this.processCart(
       saleRequest: any(named: 'saleRequest'),
       enterpriseCode: any(named: 'enterpriseCode'),
+      requestTypeCode: any(named: 'requestTypeCode'),
       params: any(named: 'params'),
     ),
   ).thenAnswer((_) async => response);
-
 }
 
 void main() {
@@ -70,6 +70,7 @@ void main() {
   late int enterpriseCode;
   late int customerCode;
   late BSFSaleRequestModel bSFSaleRequestModel;
+  late int requestTypeCode;
 
   late EcPaginationResults<SaleRequestEntity> saleRequests;
 
@@ -110,6 +111,7 @@ void main() {
     saleRequestCode = faker.randomGenerator.integer(100);
     enterpriseCode = faker.randomGenerator.integer(100);
     customerCode = faker.randomGenerator.integer(100);
+    requestTypeCode = faker.randomGenerator.integer(100);
     bSFSaleRequestModel = BSFSaleRequestModel.fromEntity(
       EntityFactory.makeBSFSaleRequestEntity(),
     );
@@ -300,6 +302,7 @@ void main() {
       final response = await sut.processCart(
         saleRequest: bSFSaleRequestModel.toEntity(),
         enterpriseCode: enterpriseCode,
+        requestTypeCode: requestTypeCode,
         params: params,
       );
 
@@ -311,6 +314,7 @@ void main() {
             bSFSaleRequestModel.toEntity(),
           ),
           enterpriseCode: enterpriseCode,
+          requestTypeCode: requestTypeCode,
           params: params,
         ),
       ).called(1);
