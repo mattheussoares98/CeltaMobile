@@ -68,7 +68,18 @@ class _InsertUpdateContent extends ConsumerWidget {
         context.pop();
       });
     });
-    ref.observeLoading([saveSaleRequestControllerProvider(enterpriseCode)]);
+    ref.listen(insertUpdateProcessCartControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showSnackbarOnSuccess(
+        context,
+        previous: p,
+        message: 'Carrinho processado com sucesso!'.hardcoded,
+      );
+    });
+    ref.observeLoading([
+      saveSaleRequestControllerProvider(enterpriseCode),
+      insertUpdateProcessCartControllerProvider,
+    ]);
 
     return Consumer(
       child: Scaffold(

@@ -6,3 +6,5 @@ export './update_sale_request_controller.dart';
 export 'customer/customer.dart';
 export 'payment/payment.dart';
 export 'sellers_state_controller.dart';
+export './insert_update_process_cart_controller.dart';
+

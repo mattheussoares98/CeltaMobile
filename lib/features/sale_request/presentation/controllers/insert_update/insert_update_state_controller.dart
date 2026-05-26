@@ -1,5 +1,4 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -331,49 +330,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     ref.invalidateSelf();
   }
 
-  Future<String?> processCart() async {
-    if (state is! AsyncData<BSFSaleRequestEntity>) {
-      return 'Estado inválido.'.hardcoded;
-    }
-
-    try {
-      final current = state.value!;
-      final requestTypeCode = current.requestType?.code;
-      if (requestTypeCode == null || requestTypeCode == 0) {
-        return 'Modelo de pedido é obrigatório.'.hardcoded;
-      }
-
-      final customerCode = current.customer?.code ?? 0;
-      if (customerCode == 0) {
-        return 'Cliente é obrigatório.'.hardcoded;
-      }
-
-      final saleRequestCode = current.code ?? 0;
-
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
-      final args = ref.read(saleRequestArgsProvider);
-
-      final processedValue = await ref
-          .read(ecSaleRequestsRepositoryProvider)
-          .processCart(
-            saleRequest: current,
-            enterpriseCode: args.enterpriseCode,
-            requestTypeCode: requestTypeCode,
-            customerCode: customerCode,
-            saleRequestCode: saleRequestCode,
-            params: EcRequestParams(
-              workingUrl: validatedUser!.enterprise!.workingUrl!,
-              user: validatedUser.user.name!,
-              accessKey: validatedUser.user.AccessKey!,
-            ),
-          );
-
-      _lastProcessedSaleRequest = processedValue;
-      state = AsyncData(processedValue);
-      return null;
-    } catch (e) {
-      return e.toString();
-    }
+  void updateProcessedCart(BSFSaleRequestEntity processedValue) {
+    _lastProcessedSaleRequest = processedValue;
+    state = AsyncData(processedValue);
   }
 }
 

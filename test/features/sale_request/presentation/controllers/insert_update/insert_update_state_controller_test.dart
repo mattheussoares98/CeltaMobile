@@ -795,7 +795,7 @@ void main() {
 
         await container.read(insertUpdateStateControllerProvider.future);
 
-        final customer1 = EntityFactory.makeBSFCustomerEntity();
+        final customer1 = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
         controller.updateCustomer(customer1);
         final state = container.read(insertUpdateStateControllerProvider);
         expect(
@@ -803,7 +803,7 @@ void main() {
           customer1.copyWith(annulCovenantCode: true),
         );
 
-        final customer2 = EntityFactory.makeBSFCustomerEntity();
+        final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(code: 2);
         controller.updateCustomer(customer2);
         final state2 = container.read(insertUpdateStateControllerProvider);
         expect(
@@ -812,7 +812,7 @@ void main() {
         );
 
         final customer3 = EntityFactory.makeBSFCustomerEntity().copyWith(
-          code: customer2.code,
+          code: 2,
         );
         //annul when is the same customer code from the previous
         controller.updateCustomer(customer3);
@@ -1141,122 +1141,6 @@ void main() {
 
         // Back to false
         expect(controller.needsProcessing, isFalse);
-      });
-
-      test('processCart should behave correctly on success', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
-        final controller = container.read(insertUpdateStateControllerProvider.notifier);
-        await container.read(insertUpdateStateControllerProvider.future);
-
-        final product = EntityFactory.makeProductEntity(
-          plu: 'plu123',
-          enterpriseCode: fakeArgs.enterpriseCode,
-        );
-        controller.addItem(product);
-        expect(controller.needsProcessing, isTrue);
-
-        // Update the request type so processCart has a valid requestTypeCode
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
-        controller.updateRequestType(requestType);
-
-        // Update the customer so processCart has a valid customerCode
-        final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
-        controller.updateCustomer(customer);
-
-        final processedRequest = fakeSaleRequest.copyWith(code: 999);
-        when(
-          () => mockEcSaleRequestsRepository.processCart(
-            saleRequest: any(named: 'saleRequest'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
-            customerCode: any(named: 'customerCode'),
-            saleRequestCode: any(named: 'saleRequestCode'),
-            params: any(named: 'params'),
-          ),
-        ).thenAnswer((_) async => processedRequest);
-
-        final error = await controller.processCart();
-
-        expect(error, isNull);
-        expect(container.read(insertUpdateStateControllerProvider).value, processedRequest);
-        expect(controller.needsProcessing, isFalse);
-        
-        verify(
-          () => mockEcSaleRequestsRepository.processCart(
-            saleRequest: any(named: 'saleRequest'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
-            customerCode: any(named: 'customerCode'),
-            saleRequestCode: any(named: 'saleRequestCode'),
-            params: any(named: 'params'),
-          ),
-        ).called(1);
-      });
-
-      test('processCart should return error string and preserve draft state on failure', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
-        final controller = container.read(insertUpdateStateControllerProvider.notifier);
-        await container.read(insertUpdateStateControllerProvider.future);
-
-        final product = EntityFactory.makeProductEntity(
-          plu: 'plu123',
-          enterpriseCode: fakeArgs.enterpriseCode,
-        );
-        controller.addItem(product);
-
-        // Update the request type so processCart has a valid requestTypeCode
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
-        controller.updateRequestType(requestType);
-
-        // Update the customer so processCart has a valid customerCode
-        final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
-        controller.updateCustomer(customer);
-
-        final draftValue = container.read(insertUpdateStateControllerProvider).value!;
-
-        when(
-          () => mockEcSaleRequestsRepository.processCart(
-            saleRequest: any(named: 'saleRequest'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            requestTypeCode: any(named: 'requestTypeCode'),
-            customerCode: any(named: 'customerCode'),
-            saleRequestCode: any(named: 'saleRequestCode'),
-            params: any(named: 'params'),
-          ),
-        ).thenThrow(Exception('API error'));
-
-        final error = await controller.processCart();
-
-        expect(error, contains('API error'));
-        // State remains intact as draft value and is not an error state!
-        expect(container.read(insertUpdateStateControllerProvider).value, draftValue);
-        expect(container.read(insertUpdateStateControllerProvider), isA<AsyncData>());
-        expect(controller.needsProcessing, isTrue);
-      });
-
-      test('processCart should return mandatory model error when requestType code is null or zero', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
-        final controller = container.read(insertUpdateStateControllerProvider.notifier);
-        await container.read(insertUpdateStateControllerProvider.future);
-
-        // Do not set requestType, so requestTypeCode remains null or zero
-        final error = await controller.processCart();
-
-        expect(error, equals('Modelo de pedido é obrigatório.'));
-      });
-
-      test('processCart should return mandatory customer error when customer code is null or zero', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
-        final controller = container.read(insertUpdateStateControllerProvider.notifier);
-        await container.read(insertUpdateStateControllerProvider.future);
-
-        // Set requestType, but do not set customer so customer code remains null or zero
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1);
-        controller.updateRequestType(requestType);
-
-        final error = await controller.processCart();
-
-        expect(error, equals('Cliente é obrigatório.'));
       });
     });
   });
