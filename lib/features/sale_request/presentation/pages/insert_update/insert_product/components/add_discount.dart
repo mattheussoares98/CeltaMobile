@@ -36,7 +36,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
 
     final newDiscount = BSFDiscountEntity(
       order: (ref.read(uiProvider).discounts.length) + 1,
-      discountOrigin: null,
+      discountOrigin: DiscountOrigin.manual,
       user: null,
       justification: null,
       discount: BSFValueTypeEntity(
