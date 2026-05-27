@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/discount_presentation_extensions.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/summary_tooltip.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -39,7 +40,7 @@ class CartSummaryTable extends StatelessWidget {
             isPrice: true,
             color: Colors.red,
             trailing: SummaryTooltip(
-              message: _buildDiscountTooltipMessage(item),
+              message: item.discounts.formattedDescription,
               color: Colors.red,
             ),
           ),
@@ -58,40 +59,5 @@ class CartSummaryTable extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String? _buildDiscountTooltipMessage(BSFProductItemEntity item) {
-    final activeDiscounts = item.discounts?.where(
-      (d) => (d.discount?.value ?? 0) > 0,
-    );
-    if (activeDiscounts?.isEmpty ?? true) {
-      return null;
-    }
-
-    final buffer = StringBuffer();
-    for (final d in activeDiscounts!) {
-      if (buffer.isNotEmpty) {
-        buffer.write('\n');
-      }
-
-      final value = d.discount!.value!.toString().toBrazilianNumber(2);
-      final isPercentage = d.discount!.type == PercentageOrValue.percentage;
-      final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
-
-      final origin = d.discountOrigin?.description ?? '';
-      final justification = d.justification ?? '';
-
-      final details = [
-        if (origin.isNotEmpty) origin,
-        if (justification.isNotEmpty) justification,
-      ];
-
-      buffer.write(valueLabel);
-      if (details.isNotEmpty) {
-        buffer.write(' (${details.join(' - ')})');
-      }
-    }
-
-    return buffer.toString();
   }
 }
