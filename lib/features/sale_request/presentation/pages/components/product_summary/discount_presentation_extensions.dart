@@ -3,7 +3,7 @@ import 'package:celta_inventario/utils/utils.dart';
 
 extension BSFDiscountEntityPresentation on BSFDiscountEntity {
   String get formattedDescription {
-    final value = discount!.value!.toString().toBrazilianNumber(2);
+    final value = discount!.value!.toString().toBrazilianNumber(2, true);
     final isPercentage = discount!.type == PercentageOrValue.percentage;
     final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
 

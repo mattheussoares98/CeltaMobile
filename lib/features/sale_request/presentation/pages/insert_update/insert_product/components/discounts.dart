@@ -1,11 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class Discounts extends ConsumerWidget {
   const Discounts({super.key});
@@ -28,18 +26,11 @@ class Discounts extends ConsumerWidget {
       isSliver: true,
       itemCount: discounts.length,
       itemBuilder: (context, index) {
-        final discount = discounts[index].discount;
-
-        final discountValue = discount?.value?.toString().toBrazilianNumber(
-          2,
-          discount.type == PercentageOrValue.percentage,
-        );
+        final discount = discounts[index];
 
         return Row(
           children: [
-            Expanded(
-              child: Text('$discountValue ${discount?.type?.symbol ?? ""} '),
-            ),
+            Expanded(child: Text(discount.formattedDescription)),
             ExcludeFocus(
               child: IconButton(
                 onPressed: () => removeDiscount(index),
