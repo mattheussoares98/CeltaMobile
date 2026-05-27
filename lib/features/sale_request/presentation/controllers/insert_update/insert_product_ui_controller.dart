@@ -58,7 +58,7 @@ class InsertProductUIController extends _$InsertProductUIController {
   }
 
   bool addDiscount({required double value, required PercentageOrValue type}) {
-    if (value == 0) {
+    if (value <= 0) {
       return false;
     }
 
@@ -76,7 +76,10 @@ class InsertProductUIController extends _$InsertProductUIController {
     } else {
       if (state.discounts.length >= 10) return false;
 
-      final discounts = state.discounts.toList();
+      final discounts = state.discounts
+          .toList()
+          .where((e) => e.discountOrigin == DiscountOrigin.manual)
+          .toList();
       discounts.add(discount);
       state = state.copyWith(discounts: discounts);
       return true;
