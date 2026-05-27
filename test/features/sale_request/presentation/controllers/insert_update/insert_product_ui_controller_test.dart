@@ -650,15 +650,35 @@ void main() {
 
     group('updateDiscountType', () {
       test(
-        'should update discountType and first discount type if exists',
+        'should update discountType, keep only manual discounts, and update the type of the first manual discount if it exists',
         () async {
           // ARRANGE
+          final manualDiscount = EntityFactory.makeBSFDiscountEntity(
+            discount: const BSFValueTypeEntity(
+              type: PercentageOrValue.reais,
+              value: 5,
+            ),
+          ).copyWith(discountOrigin: DiscountOrigin.manual);
+
+          final nonManualDiscount = EntityFactory.makeBSFDiscountEntity(
+            discount: const BSFValueTypeEntity(
+              type: PercentageOrValue.reais,
+              value: 10,
+            ),
+          ).copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final productWithMixedDiscounts = testProduct.copyWith(
+            discounts: [nonManualDiscount, manualDiscount],
+          );
+
           final container = makeProviderContainer();
-          container.read(insertProductUIControllerProvider(testProduct));
+          container.read(
+            insertProductUIControllerProvider(productWithMixedDiscounts),
+          );
 
           final states = <InsertProductUIState>[];
           container.listen(
-            insertProductUIControllerProvider(testProduct),
+            insertProductUIControllerProvider(productWithMixedDiscounts),
             (_, next) => states.add(next),
           );
 
@@ -666,15 +686,23 @@ void main() {
 
           // ACT
           container
-              .read(insertProductUIControllerProvider(testProduct).notifier)
+              .read(
+                insertProductUIControllerProvider(
+                  productWithMixedDiscounts,
+                ).notifier,
+              )
               .updateDiscountType(newType);
 
           // ASSERT
           expect(states.length, 1);
           expect(states.first.discountType, newType);
-          if (testProduct.discounts!.isNotEmpty) {
-            expect(states.first.discounts.first.discount?.type, newType);
-          }
+          expect(states.first.discounts.length, 1);
+          expect(
+            states.first.discounts.first.discountOrigin,
+            DiscountOrigin.manual,
+          );
+          expect(states.first.discounts.first.discount?.value, 5);
+          expect(states.first.discounts.first.discount?.type, newType);
         },
       );
     });

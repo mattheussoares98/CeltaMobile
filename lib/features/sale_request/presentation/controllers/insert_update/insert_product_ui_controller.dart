@@ -93,7 +93,13 @@ class InsertProductUIController extends _$InsertProductUIController {
   }
 
   void updateDiscountType(PercentageOrValue type) {
-    final firstDiscount = state.discounts.firstOrNull;
+    final manualDiscounts = state.discounts
+        .where((e) => e.discountOrigin == DiscountOrigin.manual)
+        .toList();
+    //!If there is a non manual added discount and change the type,
+    //!Automatically change the discount too. Because of this, it
+    //!also automatically demove all discounts that are not manual
+    final firstDiscount = manualDiscounts.firstOrNull;
     state = state.copyWith(
       discountType: type,
       discounts: [
