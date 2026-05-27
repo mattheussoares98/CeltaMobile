@@ -1,6 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/summary_tooltip.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,6 @@ class CartSummaryTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final practicedPrice = item.practicedPriceType;
-    final size = MediaQuery.sizeOf(context);
 
     return SummaryTable(
       items: [
@@ -21,28 +20,10 @@ class CartSummaryTable extends StatelessWidget {
           value: item.value,
           decimalHouses: 2,
           isPrice: true,
-          trailing: size.width <= 200
-              ? null
-              : Tooltip(
-                  message:
-                      'Preço ${practicedPrice.name.toLowerCase()}'.hardcoded,
-                  triggerMode: TooltipTriggerMode.tap,
-                  child: Container(
-                    padding: const EdgeInsets.all(Sizes.p4),
-                    decoration: BoxDecoration(
-                      color: context.theme.colorScheme.primary.withAlpha(30),
-                      borderRadius: BorderRadius.circular(Sizes.p4),
-                    ),
-                    child: Text(
-                      practicedPrice.name.substring(0, 1),
-                      style: context.theme.textTheme.labelSmall?.copyWith(
-                        color: context.theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
-                ),
+          trailing: SummaryTooltip(
+            message: 'Preço ${practicedPrice.name.toLowerCase()}'.hardcoded,
+            text: practicedPrice.name.substring(0, 1),
+          ),
         ),
         if (item.totalDeliveryTax > 0)
           SummaryTableItem(
@@ -57,6 +38,10 @@ class CartSummaryTable extends StatelessWidget {
             value: item.totalDiscountValue,
             isPrice: true,
             color: Colors.red,
+            trailing: SummaryTooltip(
+              message: _buildDiscountTooltipMessage(item),
+              color: Colors.red,
+            ),
           ),
         if (item.totalIncrement > 0)
           SummaryTableItem(
@@ -73,5 +58,27 @@ class CartSummaryTable extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String? _buildDiscountTooltipMessage(BSFProductItemEntity item) {
+    final activeDiscounts = item.discounts?.where(
+      (d) => (d.discount?.value ?? 0) > 0,
+    );
+    if (activeDiscounts?.isEmpty ?? true) {
+      return null;
+    }
+
+    return activeDiscounts!
+        .map((d) {
+          final value = d.discount!.value!.toString().toBrazilianNumber(2);
+          final isPercentage = d.discount!.type == PercentageOrValue.percentage;
+          final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
+          final justification =
+              d.justification != null && d.justification!.isNotEmpty
+              ? ' (${d.justification})'
+              : '';
+          return '$valueLabel$justification';
+        })
+        .join('\n');
   }
 }
