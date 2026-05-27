@@ -16,6 +16,10 @@ class InsertProductUIController extends _$InsertProductUIController {
     return InsertProductUIState.fromProduct(product);
   }
 
+  bool get hasNonManualDiscounts {
+    return state.discounts.any((e) => e.discountOrigin != DiscountOrigin.manual);
+  }
+
   void updateQuantity(double quantity) {
     final pc = product.priceCost;
     double newPrice = state.price;

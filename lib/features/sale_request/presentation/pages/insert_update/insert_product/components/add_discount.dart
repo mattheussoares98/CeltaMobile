@@ -26,8 +26,31 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     super.dispose();
   }
 
-  void _addDiscount() {
+  Future<bool> _confirmRemoveAutomaticDiscounts() async {
+    final product = ref.read(currentProductItemProvider);
+    final uiProvider = insertProductUIControllerProvider(product);
+    final hasNonManual = ref.read(uiProvider.notifier).hasNonManualDiscounts;
+
+    if (!hasNonManual) return true;
+
+    final proceed = await showAlertDialog(
+      context: context,
+      title: 'Atenção'.hardcoded,
+      content:
+          'Esta ação irá remover todos os descontos automáticos. Deseja continuar?'
+              .hardcoded,
+      cancelActionText: 'Não'.hardcoded,
+      defaultActionText: 'Sim'.hardcoded,
+    );
+
+    return proceed == true;
+  }
+
+  void _addDiscount() async {
     if (formKey.currentState!.validate() != true) return;
+
+    final proceed = await _confirmRemoveAutomaticDiscounts();
+    if (!proceed) return;
 
     final product = ref.read(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
@@ -50,7 +73,10 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     _valueController.clear();
   }
 
-  void _onTypeChanged(PercentageOrValue type) {
+  void _onTypeChanged(PercentageOrValue type) async {
+    final proceed = await _confirmRemoveAutomaticDiscounts();
+    if (!proceed) return;
+
     final product = ref.read(currentProductItemProvider);
     ref
         .read(insertProductUIControllerProvider(product).notifier)

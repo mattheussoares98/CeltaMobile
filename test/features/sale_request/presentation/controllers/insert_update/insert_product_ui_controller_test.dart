@@ -45,6 +45,63 @@ void main() {
       expect(result.discounts, testProduct.discounts ?? []);
     });
 
+    group('hasNonManualDiscounts', () {
+      test('should return true if there are any non-manual discounts', () {
+        // ARRANGE
+        final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+          discountOrigin: DiscountOrigin.manual,
+        );
+        final nonManualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+          discountOrigin: DiscountOrigin.saleOffer,
+        );
+        final product = testProduct.copyWith(
+          discounts: [manualDiscount, nonManualDiscount],
+        );
+        final container = makeProviderContainer();
+
+        // ACT
+        final notifier = container.read(
+          insertProductUIControllerProvider(product).notifier,
+        );
+
+        // ASSERT
+        expect(notifier.hasNonManualDiscounts, isTrue);
+      });
+
+      test('should return false if there are only manual discounts', () {
+        // ARRANGE
+        final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+          discountOrigin: DiscountOrigin.manual,
+        );
+        final product = testProduct.copyWith(
+          discounts: [manualDiscount],
+        );
+        final container = makeProviderContainer();
+
+        // ACT
+        final notifier = container.read(
+          insertProductUIControllerProvider(product).notifier,
+        );
+
+        // ASSERT
+        expect(notifier.hasNonManualDiscounts, isFalse);
+      });
+
+      test('should return false if discounts list is empty', () {
+        // ARRANGE
+        final product = testProduct.copyWith(discounts: []);
+        final container = makeProviderContainer();
+
+        // ACT
+        final notifier = container.read(
+          insertProductUIControllerProvider(product).notifier,
+        );
+
+        // ASSERT
+        expect(notifier.hasNonManualDiscounts, isFalse);
+      });
+    });
+
     group('updateQuantity', () {
       const retailPrice = 10.0;
       const wholePrice = 8.0;
