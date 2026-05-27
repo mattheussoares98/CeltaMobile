@@ -34,17 +34,9 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
 
     final type = ref.read(uiProvider.select((s) => s.discountType));
 
-    final newDiscount = BSFDiscountEntity(
-      order: (ref.read(uiProvider).discounts.length) + 1,
-      discountOrigin: DiscountOrigin.manual,
-      user: null,
-      justification: null,
-      discount: BSFValueTypeEntity(
-        type: type,
-        value: _valueController.text.toDouble() ?? 0,
-      ),
-    );
-    final success = ref.read(uiProvider.notifier).addDiscount(newDiscount);
+    final success = ref
+        .read(uiProvider.notifier)
+        .addDiscount(value: _valueController.text.toDouble() ?? 0, type: type);
 
     if (!success) {
       if (!mounted) return;

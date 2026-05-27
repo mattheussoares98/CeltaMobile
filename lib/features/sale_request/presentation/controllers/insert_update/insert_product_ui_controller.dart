@@ -1,7 +1,6 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_product_ui_controller.g.dart';
 
@@ -58,7 +57,19 @@ class InsertProductUIController extends _$InsertProductUIController {
     state = state.copyWith(incrementType: type);
   }
 
-  bool addDiscount(BSFDiscountEntity discount) {
+  bool addDiscount({required double value, required PercentageOrValue type}) {
+    if (value == 0) {
+      return false;
+    }
+
+    final discount = BSFDiscountEntity(
+      order: state.discounts.isEmpty ? 0 : state.discounts.last.order! + 1,
+      discountOrigin: DiscountOrigin.manual,
+      user: null,
+      justification: null,
+      discount: BSFValueTypeEntity(value: value, type: type),
+    );
+
     if (discount.discount?.type == PercentageOrValue.reais) {
       state = state.copyWith(discounts: [discount]);
       return true;

@@ -385,31 +385,55 @@ void main() {
             (_, next) => states.add(next),
           );
 
-          final firstDiscount = EntityFactory.makeBSFDiscountEntity(
-            discount: BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: faker.randomGenerator.decimal(),
-            ),
-          );
-          final secondDiscount = EntityFactory.makeBSFDiscountEntity(
-            discount: BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: faker.randomGenerator.decimal(),
-            ),
-          );
+          final initialLength = testProduct.discounts?.length ?? 0;
+          final firstValue = faker.randomGenerator.decimal();
+          final secondValue = faker.randomGenerator.decimal();
 
           // ACT
           container
               .read(insertProductUIControllerProvider(testProduct).notifier)
-              .addDiscount(firstDiscount);
+              .addDiscount(value: firstValue, type: PercentageOrValue.percentage);
           container
               .read(insertProductUIControllerProvider(testProduct).notifier)
-              .addDiscount(secondDiscount);
+              .addDiscount(value: secondValue, type: PercentageOrValue.percentage);
 
           // ASSERT
           expect(states.length, 2);
-          expect(states.last.discounts, contains(firstDiscount));
-          expect(states.last.discounts, contains(secondDiscount));
+          expect(states.last.discounts.length, initialLength + 2);
+          expect(states.last.discounts[initialLength].discount?.value, firstValue);
+          expect(states.last.discounts[initialLength].discount?.type, PercentageOrValue.percentage);
+          expect(states.last.discounts[initialLength + 1].discount?.value, secondValue);
+          expect(states.last.discounts[initialLength + 1].discount?.type, PercentageOrValue.percentage);
+        },
+      );
+
+      test(
+        'should assign correct order incrementally when adding discounts',
+        () async {
+          // ARRANGE
+          final productWithoutDiscounts = testProduct.copyWith(discounts: []);
+          final container = makeProviderContainer();
+          container.read(insertProductUIControllerProvider(productWithoutDiscounts));
+
+          final states = <InsertProductUIState>[];
+          container.listen(
+            insertProductUIControllerProvider(productWithoutDiscounts),
+            (_, next) => states.add(next),
+          );
+
+          // ACT
+          container
+              .read(insertProductUIControllerProvider(productWithoutDiscounts).notifier)
+              .addDiscount(value: 5, type: PercentageOrValue.percentage);
+          container
+              .read(insertProductUIControllerProvider(productWithoutDiscounts).notifier)
+              .addDiscount(value: 10, type: PercentageOrValue.percentage);
+
+          // ASSERT
+          expect(states.length, 2);
+          expect(states.last.discounts.length, 2);
+          expect(states.last.discounts[0].order, 0);
+          expect(states.last.discounts[1].order, 1);
         },
       );
 
@@ -424,22 +448,16 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        final newDiscount = EntityFactory.makeBSFDiscountEntity(
-          discount: const BSFValueTypeEntity(
-            type: PercentageOrValue.reais,
-            value: 10,
-          ),
-        );
-
         // ACT
         container
             .read(insertProductUIControllerProvider(testProduct).notifier)
-            .addDiscount(newDiscount);
+            .addDiscount(value: 10, type: PercentageOrValue.reais);
 
         // ASSERT
         expect(states.length, 1);
-        expect(states.first.discounts, [newDiscount]);
         expect(states.first.discounts.length, 1);
+        expect(states.first.discounts.first.discount?.value, 10);
+        expect(states.first.discounts.first.discount?.type, PercentageOrValue.reais);
       });
 
       test('should return false and not add more than 10 discounts', () async {
@@ -453,24 +471,16 @@ void main() {
         // ACT - Add 10 discounts
         for (var i = 0; i < 10; i++) {
           final success = notifier.addDiscount(
-            EntityFactory.makeBSFDiscountEntity(
-              discount: const BSFValueTypeEntity(
-                type: PercentageOrValue.percentage,
-                value: 1,
-              ),
-            ),
+            value: 1,
+            type: PercentageOrValue.percentage,
           );
           expect(success, isTrue);
         }
 
         // Try to add the 11th
         final result = notifier.addDiscount(
-          EntityFactory.makeBSFDiscountEntity(
-            discount: const BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: 1,
-            ),
-          ),
+          value: 1,
+          type: PercentageOrValue.percentage,
         );
 
         // ASSERT
