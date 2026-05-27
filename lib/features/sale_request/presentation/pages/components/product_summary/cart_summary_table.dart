@@ -68,14 +68,30 @@ class CartSummaryTable extends StatelessWidget {
       return null;
     }
 
-    return activeDiscounts!
-        .map((d) {
-          final value = d.discount!.value!.toString().toBrazilianNumber(2);
-          final isPercentage = d.discount!.type == PercentageOrValue.percentage;
-          final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
-          final origin = d.discountOrigin?.description ?? '';
-          return '$valueLabel ($origin)';
-        })
-        .join('\n');
+    final buffer = StringBuffer();
+    for (final d in activeDiscounts!) {
+      if (buffer.isNotEmpty) {
+        buffer.write('\n');
+      }
+
+      final value = d.discount!.value!.toString().toBrazilianNumber(2);
+      final isPercentage = d.discount!.type == PercentageOrValue.percentage;
+      final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
+
+      final origin = d.discountOrigin?.description ?? '';
+      final justification = d.justification ?? '';
+
+      final details = [
+        if (origin.isNotEmpty) origin,
+        if (justification.isNotEmpty) justification,
+      ];
+
+      buffer.write(valueLabel);
+      if (details.isNotEmpty) {
+        buffer.write(' (${details.join(' - ')})');
+      }
+    }
+
+    return buffer.toString();
   }
 }
