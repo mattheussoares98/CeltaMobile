@@ -11,7 +11,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_update_process_cart_controller.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [InsertUpdateStateController])
 class InsertUpdateProcessCartController
     extends _$InsertUpdateProcessCartController {
   @override
