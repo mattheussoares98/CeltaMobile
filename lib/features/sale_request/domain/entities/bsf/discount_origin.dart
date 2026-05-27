@@ -1,6 +1,6 @@
 enum DiscountOrigin {
   manual(1, 'Manual'),
-  saleOffer(2, 'Oferta'),
+  saleOffer(2, 'Promoção'),
   saleNegotiation(3, 'Negociação de vendas'),
   desoneration(4, 'Desoneração'),
   salePaymentFinalization(5, 'Forma de pagamento'),
