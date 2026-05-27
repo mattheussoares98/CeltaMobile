@@ -4,7 +4,7 @@ import 'package:celta_inventario/features/sale_request/domain/entities/bsf/bsf.d
 
 class BSFDiscountEntity extends Equatable {
   final int? order;
-  final int? discountOrigin;
+  final DiscountOrigin? discountOrigin;
   final String? user;
   final String? justification;
   final BSFValueTypeEntity? discount;
@@ -28,7 +28,7 @@ class BSFDiscountEntity extends Equatable {
 
   BSFDiscountEntity copyWith({
     int? order,
-    int? discountOrigin,
+    DiscountOrigin? discountOrigin,
     String? user,
     String? justification,
     BSFValueTypeEntity? discount,

@@ -73,11 +73,8 @@ class CartSummaryTable extends StatelessWidget {
           final value = d.discount!.value!.toString().toBrazilianNumber(2);
           final isPercentage = d.discount!.type == PercentageOrValue.percentage;
           final valueLabel = isPercentage ? '$value%' : 'R\$ $value';
-          final justification =
-              d.justification != null && d.justification!.isNotEmpty
-              ? ' (${d.justification})'
-              : '';
-          return '$valueLabel$justification';
+          final origin = d.discountOrigin?.description ?? '';
+          return '$valueLabel ($origin)';
         })
         .join('\n');
   }

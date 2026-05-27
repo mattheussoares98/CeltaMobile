@@ -13,7 +13,7 @@ class BSFDiscountModel extends BSFDiscountEntity {
   factory BSFDiscountModel.fromJson(Map<String, dynamic> json) =>
       BSFDiscountModel(
         order: json['Order'],
-        discountOrigin: json['DiscountOrigin'],
+        discountOrigin: DiscountOrigin.fromValue(json['DiscountOrigin']),
         user: json['User'],
         justification: json['Justification'],
         discount: json['Discount'] != null
@@ -23,7 +23,7 @@ class BSFDiscountModel extends BSFDiscountEntity {
 
   Map<String, dynamic> toJson() => {
     'Order': order,
-    'DiscountOrigin': discountOrigin,
+    'DiscountOrigin': discountOrigin?.value,
     'User': user,
     'Justification': justification,
     'Discount': (discount as BSFValueTypeModel?)?.toJson(),

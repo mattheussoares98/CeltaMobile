@@ -1638,7 +1638,8 @@ class EntityFactory {
 
   static BSFDiscountEntity _makeBSFProductDiscountEntity() => BSFDiscountEntity(
     order: faker.randomGenerator.integer(100),
-    discountOrigin: faker.randomGenerator.integer(100),
+    discountOrigin: DiscountOrigin.values[
+        faker.randomGenerator.integer(DiscountOrigin.values.length)],
     user: faker.lorem.word(),
     justification: faker.lorem.word(),
     discount: _makeBSFValueTypeEntity(),
@@ -1741,7 +1742,8 @@ class EntityFactory {
     BSFValueTypeEntity? discount,
   }) => BSFDiscountEntity(
     order: faker.randomGenerator.integer(100),
-    discountOrigin: faker.randomGenerator.integer(100),
+    discountOrigin: DiscountOrigin.values[
+        faker.randomGenerator.integer(DiscountOrigin.values.length)],
     user: faker.lorem.word(),
     justification: faker.lorem.word(),
     discount: discount ?? _makeBSFValueTypeEntity(),

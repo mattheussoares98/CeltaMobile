@@ -7,4 +7,5 @@ export './bsf_freight_entity.dart';
 export './bsf_mappers.dart';
 export './bsf_sale_request_entity.dart';
 export './bsf_value_type_entity.dart';
+export './discount_origin.dart';
 export 'product/product.dart';
