@@ -69,20 +69,14 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
         BottomNavigationBarItem(
           icon: Consumer(
             builder: (context, ref, child) {
-              final totalsMatch = ref.watch(
-                insertUpdateStateControllerProvider.select((s) {
-                  final value = s.value;
-                  if (value == null) return true;
-
-                  // Use a small epsilon for double comparison to avoid precision issues
-                  return value.totalPayments == 0 ||
-                      (value.totalProductsLiquid - value.totalPayments).abs() <
-                          0.001;
-                }),
+              final isPaymentValid = ref.watch(
+                insertUpdateStateControllerProvider.select(
+                  (s) => s.value?.isPaymentValid ?? true,
+                ),
               );
 
               return ValidatedBadge(
-                isValid: totalsMatch,
+                isValid: isPaymentValid,
                 platformIcon: const PlatformIcon(
                   materialIcon: Icons.payment,
                   cupertinoIcon: CupertinoIcons.creditcard,
