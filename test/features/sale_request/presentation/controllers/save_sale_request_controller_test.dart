@@ -95,6 +95,7 @@ void main() {
     LastSavedSaleRequestStateController? spyLastSavedSaleRequest,
     ValidatedUserSession? fakeValidatedUserSession,
     SaleRequestsStateController? spySaleRequestsStateController,
+    BSFSaleRequestEntity? insertUpdateSaleRequestEntity,
   }) {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
@@ -103,17 +104,22 @@ void main() {
           mockSoapSaveSaleRequestRepository,
         ),
         validatedUserSessionProvider.overrideWith(
-          () => fakeValidatedUserSession ?? FakeValidatedUserSession(fakeSession),
+          () =>
+              fakeValidatedUserSession ?? FakeValidatedUserSession(fakeSession),
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
           () => FakeSelectedEnterpriseStateController(fakeEnterprise),
         ),
         pendingSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
-        ).overrideWith(() => spyPendingSaleRequest ?? SpySaleRequest(fakePendingRequest)),
+        ).overrideWith(
+          () => spyPendingSaleRequest ?? SpySaleRequest(fakePendingRequest),
+        ),
         lastSavedSaleRequestStateControllerProvider(
           fakeEnterprise.Code!,
-        ).overrideWith(() => spyLastSavedSaleRequest ?? SpyLastSavedSaleRequest()),
+        ).overrideWith(
+          () => spyLastSavedSaleRequest ?? SpyLastSavedSaleRequest(),
+        ),
         localSaleRequestRepositoryProvider.overrideWithValue(
           mockLocalPendingRepo,
         ),
@@ -122,13 +128,16 @@ void main() {
         ),
         insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
-            saleRequestEntity: fakeBSFSaleRequestEntity,
+            saleRequestEntity:
+                insertUpdateSaleRequestEntity ?? fakeBSFSaleRequestEntity,
           ),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
-        saleRequestsStateControllerProvider(
-          fakeEnterprise.Code!,
-        ).overrideWith(() => spySaleRequestsStateController ?? SpySaleRequestsStateController()),
+        saleRequestsStateControllerProvider(fakeEnterprise.Code!).overrideWith(
+          () =>
+              spySaleRequestsStateController ??
+              SpySaleRequestsStateController(),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -161,8 +170,13 @@ void main() {
     fakeRequestTypeCode = faker.randomGenerator.integer(100);
     instructions = faker.lorem.sentence();
     observations = faker.lorem.sentence();
-    fakeBSFSaleRequestEntity = EntityFactory.makeBSFSaleRequestEntity();
-
+    fakeBSFSaleRequestEntity = EntityFactory.makeBSFSaleRequestEntity()
+        .copyWith(
+          requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+            generatePendencyFinancialTitle: false,
+          ),
+          financials: [],
+        );
   });
 
   tearDown(() {
@@ -444,7 +458,13 @@ void main() {
           ),
         ).thenAnswer((_) async {});
 
-        final fakeCompleteEntity = EntityFactory.makeBSFSaleRequestEntity();
+        final fakeCompleteEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
+              requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+                generatePendencyFinancialTitle: false,
+              ),
+              financials: [],
+            );
         when(
           () => mockEcSaleRequestsRepository.getComplete(
             enterpriseCode: any(named: 'enterpriseCode'),
@@ -499,6 +519,56 @@ void main() {
           saleRequestDetailsStateControllerProvider(args).future,
         );
         expect(newFuture, isNotNull);
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if isPaymentValid is false',
+      () async {
+        // ARRANGE
+        final invalidBsfEntity = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(
+              requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+                generatePendencyFinancialTitle: true,
+              ),
+              financials: [], // Empty financials = invalid
+            );
+
+        final container = makeProviderContainer(
+          insertUpdateSaleRequestEntity: invalidBsfEntity,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        // ASSERT
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect(
+          (states.last.error as AppException).message,
+          'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.',
+        );
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
   });

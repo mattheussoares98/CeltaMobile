@@ -85,6 +85,13 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         insertUpdateStateControllerProvider.future,
       );
 
+      if (!saleRequest.isPaymentValid) {
+        throw AppException(
+          'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.'
+              .hardcoded,
+        );
+      }
+
       final params = EcRequestParams(
         workingUrl: userSession!.enterprise!.workingUrl!,
         user: userSession.user.name!,
