@@ -32,7 +32,8 @@ class SellerDropdown extends ConsumerWidget {
           children: [
             Expanded(
               child: DefaultDropDown<EcSellerEntity>(
-                label: selectedSeller?.Name,
+                showLabelAtTopLeft: true,
+                label: 'Vendedor'.hardcoded,
                 selectedItem: selectedSeller,
                 hint: Text('Vendedor'.hardcoded),
                 items: sellers.map((seller) {

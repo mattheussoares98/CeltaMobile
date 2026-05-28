@@ -77,6 +77,7 @@ class PaymentConditionDropdown extends ConsumerWidget {
                             .notifier,
                       )
                       .select,
+                  showLabelAtTopLeft: true,
                   hint: Text('Condição de pagamento'.hardcoded),
                   selectedItem: selectedItem,
                   validator: (_) {
