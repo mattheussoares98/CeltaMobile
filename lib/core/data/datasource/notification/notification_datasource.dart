@@ -1,13 +1,13 @@
+import 'package:celta_inventario/core/data/datasource/notification/notification.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-
-import 'package:celta_inventario/core/data/datasource/notification/notification.dart';
 
 class NotificationDatasource implements INotificationDatasource {
   @override
   Future<String?> getToken() async {
     try {
-      if (kIsWeb) {
+      if (PlatformUtil.isDesktop || PlatformUtil.isWeb) {
         // Web requires a VAPID key from the Firebase Console
         return null;
       }
