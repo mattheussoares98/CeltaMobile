@@ -98,3 +98,36 @@ Text(
 - Follow the exact folder and file organization pattern used in `BuyRequestPage`.
 - **Controller & Focus Node Initialization:** Never use the `late` keyword for `TextEditingController`, `FocusNode`, or similar UI controllers unless the initial value explicitly depends on a `widget.` property. Always initialize them directly inline (e.g., `final _controller = TextEditingController();`). Ensure they are still properly disposed of in the `dispose()` method.
 - **Overflow Prevention (CRITICAL):** When placing `Text` or dynamic content inside a `Row`, you MUST ALWAYS wrap the content in an `Expanded` or `Flexible` widget to prevent RenderFlex overflow errors. Never assume text will fit perfectly on small screens.
+
+## 7. Platform-Adaptive Widgets & Avoiding Code Duplication (DRY Principle)
+
+When building widgets that adapt to different target platforms (e.g., separating Cupertino/iOS and Material/Android layouts using `PlatformUtil.isCupertino`):
+- **Never duplicate common layout or sub-widgets across platform branches.**
+- **Rule:** If a sub-widget (like a title, icon row, or complex child container) is used on both platform paths, you MUST declare it once as a local variable (or lightweight helper) inside the build method/function body before the platform check.
+- **Rule:** Reference those predefined variables inside each platform branch instead of copying and pasting the full widget structures inside each path. This keeps both Cupertino and Material branches extremely focused and maintainable.
+
+**Example Pattern:**
+```dart
+Widget build(BuildContext context) {
+  // Declare shared sub-widgets once
+  final titleWidget = Row(
+    children: [
+      Expanded(child: Text(title)),
+      const Icon(Icons.info),
+    ],
+  );
+
+  // Deliver platform-specific wrappers with the same child instances
+  if (PlatformUtil.isCupertino) {
+    return CupertinoWidget(
+      title: titleWidget,
+      child: ...
+    );
+  } else {
+    return MaterialWidget(
+      title: titleWidget,
+      child: ...
+    );
+  }
+}
+```
