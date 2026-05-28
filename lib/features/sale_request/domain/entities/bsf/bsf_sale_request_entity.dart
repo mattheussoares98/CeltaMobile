@@ -244,6 +244,18 @@ class BSFSaleRequestEntity extends Equatable {
   int get totalPaymentsCount =>
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
 
+  bool get isPaymentValid {
+    final hasGenerateTitle =
+        requestType?.generatePendencyFinancialTitle ?? false;
+    final isTotalMatching = (totalProductsLiquid - totalPayments).abs() < 0.01;
+
+    if (hasGenerateTitle) {
+      return totalPayments > 0 && isTotalMatching;
+    } else {
+      return totalPayments == 0 || isTotalMatching;
+    }
+  }
+
   SaleRequestEntity toSaleRequestEntity() {
     return SaleRequestEntity(
       cart: const {},
