@@ -46,7 +46,6 @@ class CovenantDropdown extends ConsumerWidget {
       selectedItem: selectedCovenant,
       showLabelAtTopLeft: true,
       label: 'Convênio do cliente'.hardcoded,
-      hint: Text('Selecione o convênio do cliente'.hardcoded),
       items: [
         DropdownMenuItem(
           value: selectedCovenant,

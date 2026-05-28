@@ -17,10 +17,10 @@ class DefaultDropDown<T> extends StatelessWidget {
 
   const DefaultDropDown({
     required this.onChanged,
-    required this.hint,
     required this.items,
     required this.selectedItem,
     required this.label,
+    this.hint,
     this.dropdownHeight = 40,
     this.validator,
     this.showLabelAtTopLeft = false,
@@ -170,7 +170,7 @@ class DefaultDropDown<T> extends StatelessWidget {
               isExpanded: true,
               alignment: Alignment.center,
               iconSize: 17,
-              hint: hint,
+              hint: hint ?? (label != null ? Text(label!) : null),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: context.theme.textTheme.titleMedium!.fontSize,

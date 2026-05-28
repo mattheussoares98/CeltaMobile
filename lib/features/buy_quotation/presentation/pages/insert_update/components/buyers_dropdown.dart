@@ -41,7 +41,6 @@ class BuyersDropdown extends ConsumerWidget {
                   )
                   .updateValues(Buyer: buyer);
             },
-            hint: Text(selectedBuyer?.Name ?? 'Comprador'.hardcoded),
             selectedItem: selectedBuyer,
             label: 'Comprador'.hardcoded,
             showLabelAtTopLeft: true,

@@ -35,7 +35,6 @@ class SellerDropdown extends ConsumerWidget {
                 showLabelAtTopLeft: true,
                 label: 'Vendedor'.hardcoded,
                 selectedItem: selectedSeller,
-                hint: Text('Vendedor'.hardcoded),
                 items: sellers.map((seller) {
                   return DropdownMenuItem(
                     value: seller,
