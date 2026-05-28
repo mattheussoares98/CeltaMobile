@@ -92,16 +92,24 @@ class _NewPaymentSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totalLiquidAndPaidDifference = ref.watch(
+    final isValidPayment = ref.watch(
       insertUpdateStateControllerProvider.select(
-        (s) =>
-            (s.value?.totalProductsLiquid ?? 0) - (s.value?.totalPayments ?? 0),
+        (s) => s.value?.isPaymentValid ?? false,
       ),
     );
 
-    if (totalLiquidAndPaidDifference == 0) {
+    if (isValidPayment) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
-    } else if (totalLiquidAndPaidDifference < 0) {
+    }
+
+    final totalLiquidAndPaidDifference = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (s) =>
+            (s.value?.totalProductsLiquid ?? 0) -
+            (s.value?.totalPayments ?? 0).abs(),
+      ),
+    );
+    if (totalLiquidAndPaidDifference < 0) {
       return SliverToBoxAdapter(
         child: Text(
           'O total das formas de pagamento está maior que o total dos produtos!'
@@ -142,18 +150,6 @@ class _NewPaymentSection extends ConsumerWidget {
         const SliverToBoxAdapter(child: PaymentMethodDropdown()),
         gapSliverH8,
         const SliverToBoxAdapter(child: CovenantDropdown()),
-        // SliverToBoxAdapter(
-        //   child: PrimaryButton(
-        //     onPressed: () => ref.invalidate(
-        //       paymentFinalizationsStateControllerProvider(
-        //         enterpriseCode: widget.enterpriseCode,
-        //         customerCode: widget.customerCode,
-        //         saleRequestCode: widget.saleRequestId,
-        //       ),
-        //     ),
-        //     text: 'Recarregar formas de pagamento',
-        //   ),
-        // ),
         gapSliverH8,
         CreditCardFields(
           creditCardController: creditCardController,
@@ -161,13 +157,6 @@ class _NewPaymentSection extends ConsumerWidget {
           validityController: validityController,
         ),
         const PaymentConditionDropdown(),
-        // SliverToBoxAdapter(
-        //   child: PrimaryButton(
-        //     onPressed: () =>
-        //         ref.invalidate(paymentConditionsStateControllerProvider),
-        //     text: 'Recarregar condições de pagamento',
-        //   ),
-        // ),
         SliverToBoxAdapter(
           child: ValueFieldAndConfirmButton(
             formKey: formKey,
