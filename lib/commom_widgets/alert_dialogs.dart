@@ -17,64 +17,74 @@ Future<bool?> showAlertDialog({
   String defaultActionText = 'OK',
   VoidCallback? onOkPressed,
 }) async {
-  return await showDialog(
-    context: context,
-    // * Only make the dialog dismissible if there is a cancel button
-    barrierDismissible: cancelActionText != null,
-    // * AlertDialog.adaptive was added in Flutter 3.13
-    builder: (context) => AlertDialog.adaptive(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(child: Text(title)),
-          if (kDebugMode)
-            IconButton(
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: content ?? ''));
-              },
-              icon: const PlatformIcon(
-                cupertinoIcon: CupertinoIcons.doc_on_clipboard,
-                materialIcon: Icons.copy,
-              ),
+  final titleWidget = Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Expanded(child: Center(child: Text(title))),
+      if (kDebugMode)
+        IconButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: content ?? ''));
+          },
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.doc_on_clipboard,
+            materialIcon: Icons.copy,
+          ),
+        ),
+    ],
+  );
+
+  final contentWidget = content != null
+      ? SingleChildScrollView(child: Text(content))
+      : null;
+
+  if (PlatformUtil.isCupertino) {
+    return await showCupertinoDialog<bool>(
+      context: context,
+      barrierDismissible: cancelActionText != null,
+      builder: (context) => CupertinoAlertDialog(
+        title: titleWidget,
+        content: contentWidget,
+        actions: <Widget>[
+          if (cancelActionText != null)
+            CupertinoDialogAction(
+              child: Text(cancelActionText),
+              onPressed: () => Navigator.of(context).pop(false),
             ),
+          CupertinoDialogAction(
+            child: Text(defaultActionText),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              onOkPressed?.call();
+            },
+          ),
         ],
       ),
-      content: content != null
-          ? SingleChildScrollView(child: Text(content))
-          : null,
-      // * Use [TextButton] or [CupertinoDialogAction] depending on the platform
-      // https://codewithandrea.com/tips/default-target-platform/
-      actions: kIsWeb || !(PlatformUtil.isCupertino)
-          ? <Widget>[
-              if (cancelActionText != null)
-                TextButton(
-                  child: Text(cancelActionText),
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-              TextButton(
-                child: Text(defaultActionText),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                  onOkPressed?.call();
-                },
-              ),
-            ]
-          : <Widget>[
-              if (cancelActionText != null)
-                CupertinoDialogAction(
-                  child: Text(cancelActionText),
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-              CupertinoDialogAction(
-                child: Text(defaultActionText),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                  onOkPressed?.call();
-                },
-              ),
-            ],
-    ),
-  );
+    );
+  } else {
+    return await showDialog<bool>(
+      context: context,
+      barrierDismissible: cancelActionText != null,
+      builder: (context) => AlertDialog(
+        title: titleWidget,
+        content: contentWidget,
+        actions: <Widget>[
+          if (cancelActionText != null)
+            TextButton(
+              child: Text(cancelActionText),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+          TextButton(
+            child: Text(defaultActionText),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              onOkPressed?.call();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 /// Generic function to show a platform-aware Material or Cupertino error dialog
