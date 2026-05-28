@@ -59,7 +59,7 @@ class SellerDropdown extends ConsumerWidget {
                 onPressed: () {
                   ref
                       .read(insertUpdateStateControllerProvider.notifier)
-                      .changeSeller(null);
+                      .removeSeller();
                 },
                 tooltip: 'Remover Vendedor'.hardcoded,
               ),

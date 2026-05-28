@@ -795,7 +795,9 @@ void main() {
 
         await container.read(insertUpdateStateControllerProvider.future);
 
-        final customer1 = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
+        final customer1 = EntityFactory.makeBSFCustomerEntity().copyWith(
+          code: 1,
+        );
         controller.updateCustomer(customer1);
         final state = container.read(insertUpdateStateControllerProvider);
         expect(
@@ -803,7 +805,9 @@ void main() {
           customer1.copyWith(annulCovenantCode: true),
         );
 
-        final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(code: 2);
+        final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(
+          code: 2,
+        );
         controller.updateCustomer(customer2);
         final state2 = container.read(insertUpdateStateControllerProvider);
         expect(
@@ -865,7 +869,7 @@ void main() {
     });
 
     group('changeSeller', () {
-      test('Should change the seller and set annulSeller correctly', () async {
+      test('Should change the seller when state is AsyncData', () async {
         final container = makeProviderContainer(saleRequestId: 0);
 
         final controller = container.read(
@@ -886,11 +890,65 @@ void main() {
         final state2 = container.read(insertUpdateStateControllerProvider);
         expect(state2.value!.seller?.code, seller2.Id);
 
-        // Change to the same seller should annul it
+        // Change to the same seller should not annul it anymore
         const seller3 = EcSellerEntity(Id: 2, Name: 'Seller 2');
         controller.changeSeller(seller3);
         final state3 = container.read(insertUpdateStateControllerProvider);
-        expect(state3.value!.seller, isNull);
+        expect(state3.value!.seller?.code, seller3.Id);
+      });
+
+      test('Should do nothing if state is not AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        const seller = EcSellerEntity(Id: 1, Name: 'Seller 1');
+        controller.changeSeller(seller);
+
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state, isA<AsyncLoading>());
+      });
+    });
+
+    group('removeSeller', () {
+      test('Should remove the seller when state is AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Set a seller first
+        const seller = EcSellerEntity(Id: 1, Name: 'Seller 1');
+        controller.changeSeller(seller);
+        final stateWithSeller = container.read(
+          insertUpdateStateControllerProvider,
+        );
+        expect(stateWithSeller.value!.seller?.code, seller.Id);
+
+        // Now remove it
+        controller.removeSeller();
+        final stateWithoutSeller = container.read(
+          insertUpdateStateControllerProvider,
+        );
+        expect(stateWithoutSeller.value!.seller, isNull);
+      });
+
+      test('Should do nothing if state is not AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        controller.removeSeller();
+
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state, isA<AsyncLoading>());
       });
     });
 
@@ -1117,31 +1175,40 @@ void main() {
     });
 
     group('ProcessCart & NeedsProcessing', () {
-      test('needsProcessing should start as false for existing request, become true on edit, and revert to false when undone', () async {
-        final container = makeProviderContainer(saleRequestId: 1);
-        final controller = container.read(insertUpdateStateControllerProvider.notifier);
-        await container.read(insertUpdateStateControllerProvider.future);
+      test(
+        'needsProcessing should start as false for existing request, become true on edit, and revert to false when undone',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
 
-        // Initially matches the database loaded value, so no processing is needed
-        expect(controller.needsProcessing, isFalse);
+          // Initially matches the database loaded value, so no processing is needed
+          expect(controller.needsProcessing, isFalse);
 
-        // Edit cart
-        final product = EntityFactory.makeProductEntity(
-          plu: 'plu123',
-          enterpriseCode: fakeArgs.enterpriseCode,
-        );
-        controller.addItem(product);
+          // Edit cart
+          final product = EntityFactory.makeProductEntity(
+            plu: 'plu123',
+            enterpriseCode: fakeArgs.enterpriseCode,
+          );
+          controller.addItem(product);
 
-        // Now it needs processing
-        expect(controller.needsProcessing, isTrue);
+          // Now it needs processing
+          expect(controller.needsProcessing, isTrue);
 
-        // Revert change
-        final addedItem = container.read(insertUpdateStateControllerProvider).value!.products!.last;
-        controller.removeItem(addedItem);
+          // Revert change
+          final addedItem = container
+              .read(insertUpdateStateControllerProvider)
+              .value!
+              .products!
+              .last;
+          controller.removeItem(addedItem);
 
-        // Back to false
-        expect(controller.needsProcessing, isFalse);
-      });
+          // Back to false
+          expect(controller.needsProcessing, isFalse);
+        },
+      );
     });
   });
 }
