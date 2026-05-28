@@ -61,7 +61,7 @@ class _BuyersDropdown extends StatelessWidget {
               ).select((s) => s.value?.selectedBuyer),
             );
 
-            return DefaultSimpleDropDown<BuyerEntity?>(
+            return DefaultDropDown<BuyerEntity?>(
               onChanged: enabled
                   ? (buyer) {
                       ref
@@ -88,8 +88,9 @@ class _BuyersDropdown extends StatelessWidget {
                 }
                 return null;
               },
-              value: selectedBuyer,
-              hint: 'Selecione'.hardcoded,
+              selectedItem: selectedBuyer,
+              label: 'Selecione'.hardcoded,
+              isSimple: true,
             );
           },
         ),

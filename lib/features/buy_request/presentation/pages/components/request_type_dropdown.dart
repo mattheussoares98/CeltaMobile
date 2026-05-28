@@ -87,18 +87,11 @@ class _RequestDropdown extends ConsumerWidget {
                   );
             }
 
-            return DefaultSimpleDropDown<BSFRequestTypeEntity?>(
-              onTap: (request) {
-                if (hasSelectedEnterprises) {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Atenção!'.hardcoded,
-                    content:
-                        'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
-                            .hardcoded,
-                  );
-                }
-              },
+            return DefaultDropDown<BSFRequestTypeEntity?>(
+              adviceMessage: hasSelectedEnterprises
+                  ? 'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
+                      .hardcoded
+                  : null,
               onChanged: enabled ? update : null,
               items: requests
                   ?.map(
@@ -115,8 +108,9 @@ class _RequestDropdown extends ConsumerWidget {
                 }
                 return null;
               },
-              value: selectedSaleRequest,
-              hint: 'Selecione'.hardcoded,
+              selectedItem: selectedSaleRequest,
+              label: 'Selecione'.hardcoded,
+              isSimple: true,
             );
           },
         ),

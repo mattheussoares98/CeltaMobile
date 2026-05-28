@@ -30,8 +30,7 @@ class OriginStocksDropdown extends ConsumerWidget {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
-        return DefaultSimpleDropDown<StockTypeEntity?>(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+        return DefaultDropDown<StockTypeEntity?>(
           onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
               ? null
               : (value) {
@@ -56,8 +55,9 @@ class OriginStocksDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );
           }).toList(),
-          value: selectedOritinStock,
-          hint: 'Estoque de origem'.hardcoded,
+          selectedItem: selectedOritinStock,
+          label: 'Estoque de origem'.hardcoded,
+          isSimple: true,
         );
       },
     );

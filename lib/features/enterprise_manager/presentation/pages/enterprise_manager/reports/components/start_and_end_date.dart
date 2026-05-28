@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class StartAndEndDate extends ConsumerWidget {
   const StartAndEndDate({super.key});
@@ -71,55 +70,61 @@ class _SelectPeriod extends ConsumerWidget {
             Row(
               children: [
                 Flexible(
-                  child: DefaultSimpleDropDown<int>(
-                    padding: EdgeInsets.zero,
-                    iconSize: 0,
-                    onChanged: (month) => ref
-                        .read(reportPeriodStateControllerProvider.notifier)
-                        .update(
-                          startMonth: isStart ? month : null,
-                          endMonth: isStart ? null : month,
+                  child: Consumer(
+                    builder: (_, ref, _) {
+                      return DefaultDropDown<int>(
+                        onChanged: (month) => ref
+                            .read(reportPeriodStateControllerProvider.notifier)
+                            .update(
+                              startMonth: isStart ? month : null,
+                              endMonth: isStart ? null : month,
+                            ),
+                        items: List.generate(
+                          12,
+                          (index) => DropdownMenuItem(
+                            value: index + 1,
+                            child: Center(child: Text('${index + 1}')),
+                          ),
                         ),
-                    items: List.generate(
-                      12,
-                      (index) => DropdownMenuItem(
-                        value: index + 1,
-                        child: Center(child: Text('${index + 1}')),
-                      ),
-                    ),
-                    value: ref.watch(
-                      reportPeriodStateControllerProvider.select(
-                        (s) => isStart ? s.$1.month : s.$2.month,
-                      ),
-                    ),
-                    hint: '',
+                        selectedItem: ref.watch(
+                          reportPeriodStateControllerProvider.select(
+                            (s) => isStart ? s.$1.month : s.$2.month,
+                          ),
+                        ),
+                        label: '',
+                        isSimple: true,
+                      );
+                    }
                   ),
                 ),
                 gapW8,
                 Flexible(
                   flex: 2,
-                  child: DefaultSimpleDropDown<int>(
-                    padding: EdgeInsets.zero,
-                    iconSize: 0,
-                    onChanged: (year) => ref
-                        .read(reportPeriodStateControllerProvider.notifier)
-                        .update(
-                          startYear: isStart ? year : null,
-                          endYear: isStart ? null : year,
+                  child: Consumer(
+                    builder: (_, ref, _) {
+                      return DefaultDropDown<int>(
+                        onChanged: (year) => ref
+                            .read(reportPeriodStateControllerProvider.notifier)
+                            .update(
+                              startYear: isStart ? year : null,
+                              endYear: isStart ? null : year,
+                            ),
+                        items: List.generate(
+                          2,
+                          (index) => DropdownMenuItem(
+                            value: now.year - index,
+                            child: Center(child: Text('${now.year - index}')),
+                          ),
                         ),
-                    items: List.generate(
-                      2,
-                      (index) => DropdownMenuItem(
-                        value: now.year - index,
-                        child: Center(child: Text('${now.year - index}')),
-                      ),
-                    ),
-                    value: ref.watch(
-                      reportPeriodStateControllerProvider.select(
-                        (s) => isStart ? s.$1.year : s.$2.year,
-                      ),
-                    ),
-                    hint: '',
+                        selectedItem: ref.watch(
+                          reportPeriodStateControllerProvider.select(
+                            (s) => isStart ? s.$1.year : s.$2.year,
+                          ),
+                        ),
+                        label: '',
+                        isSimple: true,
+                      );
+                    }
                   ),
                 ),
               ],

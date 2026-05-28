@@ -26,9 +26,7 @@ class StocksDropdown extends ConsumerWidget {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
-        return DefaultSimpleDropDown<StockTypeEntity?>(
-          isLoading: stocksAsync.isLoading,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+        return DefaultDropDown<StockTypeEntity?>(
           onChanged: (value) {
             ref
                 .read(
@@ -48,8 +46,9 @@ class StocksDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );
           }).toList(),
-          value: selectedUIState.selectedStockType,
-          hint: 'Estoque a ser substituído'.hardcoded,
+          selectedItem: selectedUIState.selectedStockType,
+          label: 'Estoque a ser substituído'.hardcoded,
+          isSimple: true,
         );
       },
     );

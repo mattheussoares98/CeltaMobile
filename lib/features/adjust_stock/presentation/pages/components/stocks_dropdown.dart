@@ -34,9 +34,7 @@ class StocksDropdown extends ConsumerWidget {
           ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
         },
         data: (stocks) {
-          return DefaultSimpleDropDown<StockTypeEntity?>(
-            isLoading: stocksAsync.isLoading,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+          return DefaultDropDown<StockTypeEntity?>(
             onChanged: selectedJustificationInternalCode != null
                 ? null
                 : (value) {
@@ -60,8 +58,9 @@ class StocksDropdown extends ConsumerWidget {
                 child: Center(child: Text(e.Nome_TipoEstoque)),
               );
             }).toList(),
-            value: selectedStockType,
-            hint: 'Estoque de destino'.hardcoded,
+            selectedItem: selectedStockType,
+            label: 'Estoque de destino'.hardcoded,
+            isSimple: true,
           );
         },
       ),

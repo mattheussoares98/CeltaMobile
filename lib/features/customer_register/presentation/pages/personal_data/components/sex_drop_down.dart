@@ -19,11 +19,11 @@ class SexDropDown extends ConsumerWidget {
         .read(customerStateControllerProvider.notifier)
         .updatePersonalData(SexType: value);
 
-    return DefaultSimpleDropDown<CustomerSexType?>(
-      value: selectedSex,
-      hint: 'Sexo'.hardcoded,
+    return DefaultDropDown<CustomerSexType?>(
+      selectedItem: selectedSex,
+      label: 'Sexo'.hardcoded,
+      isSimple: true,
       onChanged: onChangeSex,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (sex) {
         if (sex == null) {
           return 'Campo obrigatório'.hardcoded;

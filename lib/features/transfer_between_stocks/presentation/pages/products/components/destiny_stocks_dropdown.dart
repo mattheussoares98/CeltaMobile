@@ -25,8 +25,7 @@ class DestinyStocksDropdown extends ConsumerWidget {
         ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
       },
       data: (stocks) {
-        return DefaultSimpleDropDown<StockTypeEntity?>(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+        return DefaultDropDown<StockTypeEntity?>(
           onChanged: (value) {
             ref
                 .read(
@@ -57,8 +56,9 @@ class DestinyStocksDropdown extends ConsumerWidget {
               child: Center(child: Text(e.Nome_TipoEstoque)),
             );
           }).toList(),
-          value: selectedDestinyStock,
-          hint: 'Estoque de destino'.hardcoded,
+          selectedItem: selectedDestinyStock,
+          label: 'Estoque de destino'.hardcoded,
+          isSimple: true,
         );
       },
     );

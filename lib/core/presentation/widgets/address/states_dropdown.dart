@@ -18,8 +18,7 @@ class StatesDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultSimpleDropDown<BrazilStates?>(
-      isLoading: isLoading,
+    return DefaultDropDown<BrazilStates?>(
       onChanged: null,
       items: BrazilStates.values
           .map(
@@ -30,8 +29,9 @@ class StatesDropDown extends StatelessWidget {
             ),
           )
           .toList(),
-      value: state,
-      hint: 'Estado'.hardcoded,
+      selectedItem: state,
+      label: 'Estado'.hardcoded,
+      isSimple: true,
     );
   }
 }

@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JustificationsDropdown extends ConsumerWidget {
   final int enterpriseCode;
@@ -29,36 +28,40 @@ class JustificationsDropdown extends ConsumerWidget {
         );
       },
       data: (justifications) {
-        return DefaultSimpleDropDown<TransferJustificationEntity?>(
-          onChanged: (value) {
-            ref
-                .read(
-                  selectedProductUIStateControllerProvider(
-                    enterpriseCode,
-                  ).notifier,
-                )
-                .updateValues(justification: value);
-          },
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            if (value == null) {
-              return 'Justificativa obrigatória'.hardcoded;
-            }
-            return null;
-          },
-          items: justifications.map((e) {
-            return DropdownMenuItem(
-              key: ValueKey(e.CodigoInterno_JustMov),
-              value: e,
-              child: Center(child: Text(e.Descricao_JustMov)),
+        return Consumer(
+          builder: (_, ref, _) {
+            return DefaultDropDown<TransferJustificationEntity?>(
+              onChanged: (value) {
+                ref
+                    .read(
+                      selectedProductUIStateControllerProvider(
+                        enterpriseCode,
+                      ).notifier,
+                    )
+                    .updateValues(justification: value);
+              },
+              validator: (value) {
+                if (value == null) {
+                  return 'Justificativa obrigatória'.hardcoded;
+                }
+                return null;
+              },
+              items: justifications.map((e) {
+                return DropdownMenuItem(
+                  key: ValueKey(e.CodigoInterno_JustMov),
+                  value: e,
+                  child: Center(child: Text(e.Descricao_JustMov)),
+                );
+              }).toList(),
+              selectedItem: ref.watch(
+                selectedProductUIStateControllerProvider(
+                  enterpriseCode,
+                ).select((s) => s.selectedJustification),
+              ),
+              label: 'Justificativas'.hardcoded,
+              isSimple: true,
             );
-          }).toList(),
-          value: ref.watch(
-            selectedProductUIStateControllerProvider(
-              enterpriseCode,
-            ).select((s) => s.selectedJustification),
-          ),
-          hint: 'Justificativas'.hardcoded,
+          },
         );
       },
     );

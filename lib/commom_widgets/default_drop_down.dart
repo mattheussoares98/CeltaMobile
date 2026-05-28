@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -14,6 +15,8 @@ class DefaultDropDown<T> extends StatelessWidget {
   final double? dropdownHeight;
   final String? Function(T?)? validator;
   final bool showLabelAtTopLeft;
+  final bool isSimple;
+  final String? adviceMessage;
 
   const DefaultDropDown({
     required this.onChanged,
@@ -24,11 +27,15 @@ class DefaultDropDown<T> extends StatelessWidget {
     this.dropdownHeight = 40,
     this.validator,
     this.showLabelAtTopLeft = false,
+    this.isSimple = false,
+    this.adviceMessage,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.theme;
+
     final topLeftLabel =
         selectedItem != null &&
             showLabelAtTopLeft == true &&
@@ -37,11 +44,12 @@ class DefaultDropDown<T> extends StatelessWidget {
             left: Sizes.p4,
             child: Text(
               label!,
-              style: context.theme.textTheme.bodyMedium?.copyWith(fontSize: 10),
+              style: theme.textTheme.bodyMedium?.copyWith(fontSize: 10),
             ),
           )
         : null;
-    if (PlatformUtil.isCupertino) {
+
+    if (PlatformUtil.isCupertino && !isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       final selectedMenuItem = items?.firstWhereOrNull(
         (item) => item.value == selectedItem,
@@ -58,12 +66,19 @@ class DefaultDropDown<T> extends StatelessWidget {
                   children: [
                     ?topLeftLabel,
                     CupertinoButton(
-                      disabledColor: context.theme.disabledColor.withAlpha(100),
+                      disabledColor: theme.disabledColor.withAlpha(100),
                       padding: const EdgeInsets.only(left: 15),
-                      color: context.theme.disabledColor.withAlpha(50),
+                      color: theme.disabledColor.withAlpha(50),
                       onPressed: onChanged == null || (items?.length ?? 0) < 1
                           ? null
                           : () async {
+                              if (adviceMessage != null) {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Atenção!'.hardcoded,
+                                  content: adviceMessage!,
+                                );
+                              }
                               final selected = await showCupertinoModalPopup<T>(
                                 context: context,
                                 builder: (_) => CupertinoActionSheet(
@@ -84,7 +99,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                                         Navigator.of(context).pop(),
                                     child: Text(
                                       'Cancelar'.hardcoded,
-                                      style: context.theme.textTheme.titleMedium
+                                      style: theme.textTheme.titleMedium
                                           ?.copyWith(
                                             color:
                                                 CupertinoColors.destructiveRed,
@@ -104,7 +119,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                             child: selectedMenuItem != null
                                 ? DefaultTextStyle(
                                     style:
-                                        context.theme.textTheme.bodyLarge ??
+                                        theme.textTheme.bodyLarge ??
                                         const TextStyle(),
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
@@ -114,7 +129,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                                 : Text(
                                     label ?? 'Selecionar'.hardcoded,
                                     maxLines: 1,
-                                    style: context.theme.textTheme.bodyLarge,
+                                    style: theme.textTheme.bodyLarge,
                                     textAlign: TextAlign.center,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -149,45 +164,63 @@ class DefaultDropDown<T> extends StatelessWidget {
       );
     }
 
+    final bool isDropdownEnabled =
+        onChanged != null && (items?.length ?? 0) > 0;
+
     return SizedBox(
       height: dropdownHeight,
       child: Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(Sizes.p8),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
         ),
-        color: context.theme.disabledColor.withAlpha(50),
-        child: Stack(
-          children: [
-            ?topLeftLabel,
-            DropdownButtonFormField<T>(
-              autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-              decoration: const InputDecoration(border: InputBorder.none),
-              isDense: true,
-              padding: const EdgeInsets.only(left: Sizes.p8),
-              dropdownColor: Colors.white,
-              validator: validator,
-              initialValue: selectedItem,
-              isExpanded: true,
-              alignment: Alignment.center,
-              iconSize: 17,
-              hint: hint ?? (label != null ? Text(label!) : null),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: context.theme.textTheme.titleMedium!.fontSize,
-                color: Colors.black,
-                height: 1,
-                overflow: TextOverflow.ellipsis,
+        color: theme.disabledColor.withAlpha(30),
+        child: InkWell(
+          onTap: isDropdownEnabled ? () {} : null,
+          customBorder: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+          ),
+          child: Stack(
+            children: [
+              ?topLeftLabel,
+              DropdownButtonFormField<T>(
+                autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+                decoration: const InputDecoration(border: InputBorder.none),
+                isDense: true,
+                padding: const EdgeInsets.only(left: Sizes.p8),
+                dropdownColor: Colors.white,
+                validator: validator,
+                initialValue: selectedItem,
+                isExpanded: true,
+                alignment: Alignment.center,
+                iconSize: 17,
+                onTap: adviceMessage == null
+                    ? null
+                    : () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Atenção!'.hardcoded,
+                          content: adviceMessage!,
+                        );
+                      },
+                hint: hint ?? (label != null ? Text(label!) : null),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: theme.textTheme.titleMedium?.fontSize,
+                  color: Colors.black,
+                  height: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                items: items,
+                onChanged: onChanged == null || (items?.length ?? 0) < 1
+                    ? null
+                    : (value) {
+                        if (value != null && onChanged != null) {
+                          onChanged!(value);
+                        }
+                      },
               ),
-              items: items,
-              onChanged: onChanged == null || (items?.length ?? 0) < 1
-                  ? null
-                  : (value) {
-                      if (value != null && onChanged != null) {
-                        onChanged!(value);
-                      }
-                    },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

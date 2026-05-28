@@ -37,8 +37,7 @@ class JustificationsDropdown extends ConsumerWidget {
           );
         },
         data: (justifications) {
-          return DefaultSimpleDropDown<TransferJustificationEntity?>(
-            isLoading: justificationsAsync.isLoading,
+          return DefaultDropDown<TransferJustificationEntity?>(
             onChanged: (value) async {
               ref
                   .read(
@@ -46,7 +45,6 @@ class JustificationsDropdown extends ConsumerWidget {
                   )
                   .updateValues(selectedJustification: value);
             },
-            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
               if (value == null) {
                 return 'Justificativa obrigatória'.hardcoded;
@@ -59,8 +57,9 @@ class JustificationsDropdown extends ConsumerWidget {
                 child: Center(child: Text(e.Descricao_JustMov)),
               );
             }).toList(),
-            value: selectedJustification,
-            hint: 'Justificativas'.hardcoded,
+            selectedItem: selectedJustification,
+            label: 'Justificativas'.hardcoded,
+            isSimple: true,
           );
         },
       ),

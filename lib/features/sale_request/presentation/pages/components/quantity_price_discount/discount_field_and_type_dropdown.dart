@@ -99,7 +99,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                       ).select((state) => state.discountType),
                     );
 
-                    return DefaultSimpleDropDown<PercentageOrValue?>(
+                    return DefaultDropDown<PercentageOrValue?>(
                       onChanged: widget.priceController.text.isNotEmpty
                           ? null
                           : (value) {
@@ -111,9 +111,9 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                                   )
                                   .updateDiscountType(value);
                             },
-                      value: discountType,
-                      hint: 'Tipo',
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      selectedItem: discountType,
+                      label: 'Tipo',
+                      isSimple: true,
                       validator: (value) {
                         if (discountType == null &&
                             widget.discountController.text.isNotEmpty) {
