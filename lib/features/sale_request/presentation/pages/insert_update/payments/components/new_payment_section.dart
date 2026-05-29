@@ -36,17 +36,16 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
       ),
     );
 
-    if (isValidPayment) {
+    final totalLiquidAndPaidDifference = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (s) => s.value?.totalLiquidAndPaidDifference ?? 0,
+      ),
+    );
+
+    if (totalLiquidAndPaidDifference == 0 && isValidPayment) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
 
-    final totalLiquidAndPaidDifference = ref.watch(
-      insertUpdateStateControllerProvider.select(
-        (s) =>
-            (s.value?.totalProductsLiquid ?? 0) -
-            (s.value?.totalPayments ?? 0).abs(),
-      ),
-    );
     if (totalLiquidAndPaidDifference < 0) {
       return SliverToBoxAdapter(
         child: Text(
