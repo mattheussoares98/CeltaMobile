@@ -43,13 +43,8 @@ class SummaryPage extends ConsumerWidget {
                 padding: const EdgeInsets.all(Sizes.p16),
                 child: CustomScrollView(
                   slivers: [
-                    SliverToBoxAdapter(
-                      child: Text(
-                        'Cliente: ${summaryData.customer?.name ?? 'Não selecionado'.hardcoded}'
-                            .hardcoded,
-                        style: context.theme.textTheme.titleLarge,
-                      ),
-                    ),
+                    const SliverToBoxAdapter(child: RequestTypeDropDown()),
+                    const SliverToBoxAdapter(child: SelectedCustomer()),
                     gapSliverH16,
                     SliverToBoxAdapter(
                       child: Text(

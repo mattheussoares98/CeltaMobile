@@ -10,7 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomerItem extends ConsumerWidget {
   final BSFCustomerEntity customer;
-  const CustomerItem({super.key, required this.customer});
+  final bool toggleable;
+  const CustomerItem({
+    super.key,
+    required this.customer,
+    this.toggleable = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +30,7 @@ class CustomerItem extends ConsumerWidget {
 
     return DefaultRadio<bool>(
       name: customer.name ?? '',
-      toggleable: true,
+      toggleable: toggleable,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -69,11 +74,13 @@ class CustomerItem extends ConsumerWidget {
       ),
       value: true,
       groupValue: enabled,
-      onChanged: (_) {
-        ref
-            .read(insertUpdateStateControllerProvider.notifier)
-            .updateCustomer(customer);
-      },
+      onChanged: toggleable
+          ? (_) {
+              ref
+                  .read(insertUpdateStateControllerProvider.notifier)
+                  .updateCustomer(customer);
+            }
+          : null,
     );
   }
 }
