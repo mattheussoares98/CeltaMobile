@@ -244,6 +244,10 @@ class BSFSaleRequestEntity extends Equatable {
   int get totalPaymentsCount =>
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
 
+  double get totalLiquidAndPaidDifference {
+    return (totalProductsLiquid) - (totalPayments).abs();
+  }
+
   bool get isPaymentValid {
     final hasGenerateTitle =
         requestType?.generatePendencyFinancialTitle ?? false;
