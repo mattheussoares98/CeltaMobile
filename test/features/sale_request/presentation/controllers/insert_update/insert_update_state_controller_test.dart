@@ -1210,5 +1210,42 @@ void main() {
         },
       );
     });
+
+    group('updateRequestType', () {
+      test('Should update request type when state is AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        final requestType = EntityFactory.makeBSFRequestTypeEntity();
+
+        controller.updateRequestType(requestType);
+
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state.value!.requestType, requestType);
+      });
+
+      test('Should do nothing if state is not AsyncData', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
+          code: 99,
+          name: 'Test Request Type',
+        );
+
+        controller.updateRequestType(requestType);
+
+        final state = container.read(insertUpdateStateControllerProvider);
+        expect(state, isA<AsyncLoading>());
+      });
+    });
   });
 }
