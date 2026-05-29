@@ -1210,11 +1210,9 @@ class EntityFactory {
         personalizedCode: faker.randomGenerator.integer(100).toString(),
         legacyCode: faker.lorem.word(),
         description: faker.lorem.sentence(),
-        allowSale: faker.randomGenerator.boolean(),
-        allowSaleRequest: faker.randomGenerator.boolean(),
-        allowSaleWithPaymentFinalizationTypeCheckOrPortion: faker
-            .randomGenerator
-            .boolean(),
+        allowSale: true,
+        allowSaleRequest: true,
+        allowSaleWithPaymentFinalizationTypeCheckOrPortion: true,
         stringAllowSale: faker.lorem.word(),
         stringAllowSaleRequest: faker.lorem.word(),
         stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: faker.lorem
