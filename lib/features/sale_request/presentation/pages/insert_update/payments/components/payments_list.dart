@@ -54,6 +54,7 @@ class PaymentsList extends ConsumerWidget {
             final payment = payments[index];
 
             return Column(
+              key: ValueKey(index),
               children: [
                 if (index == 0) ...[
                   if (missingPayment) const Divider(),
