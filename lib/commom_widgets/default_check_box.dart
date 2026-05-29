@@ -59,15 +59,21 @@ class DefaultCheckBox extends StatelessWidget {
                     onChanged: onChanged,
                   ),
                 )
-              : CheckboxListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: Sizes.p12,
+              : Material(
+                  color: Colors.transparent,
+                  child: CheckboxListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.p12,
+                    ),
+                    title: Text(
+                      name,
+                      style: context.theme.textTheme.bodyMedium,
+                    ),
+                    subtitle: subtitle,
+                    value: enabled,
+                    onChanged: onChanged,
+                    dense: true,
                   ),
-                  title: Text(name, style: context.theme.textTheme.bodyMedium),
-                  subtitle: subtitle,
-                  value: enabled,
-                  onChanged: onChanged,
-                  dense: true,
                 ),
         ),
       ),
