@@ -39,6 +39,8 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
                 pdfFromSaleRequestDetailsStateControllerProvider(args).future,
               );
 
+              if (!context.mounted) return;
+
               if (bytes == null) {
                 showAlertDialog(
                   context: context,

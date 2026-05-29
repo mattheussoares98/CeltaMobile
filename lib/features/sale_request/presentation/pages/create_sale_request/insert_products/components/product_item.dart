@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   final ProductEntity product;
@@ -55,6 +54,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
 
     if (product.getPrice == 0 &&
         selectedRequest.allowAlterCostOrSalePrice != true) {
+      if (!mounted) return;
       showSnackBarMessage(
         context,
         'Esse produto está com o preço zerado e o modelo não permite alterar o preço'

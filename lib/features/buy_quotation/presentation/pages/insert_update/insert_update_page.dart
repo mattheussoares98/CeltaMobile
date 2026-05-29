@@ -1,15 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/models/models.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/pages/insert_update/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class InsertUpdatePage extends ConsumerStatefulWidget {
   final int code;
@@ -116,7 +115,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
                   .hardcoded,
         );
 
-        if (confirmed == true) {
+        if (confirmed == true && context.mounted) {
           context.pop();
         }
       },

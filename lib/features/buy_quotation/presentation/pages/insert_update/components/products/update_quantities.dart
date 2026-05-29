@@ -50,6 +50,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
           widget.product.Product?.ProductPackingCode,
     );
     if (index == -1) {
+      if (!mounted) return;
       showAlertDialog(
         context: context,
         title: 'Erro'.hardcoded,

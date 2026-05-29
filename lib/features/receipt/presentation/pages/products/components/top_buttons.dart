@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TopButtons extends ConsumerWidget {
   final int enterpriseCode;
@@ -26,6 +25,7 @@ class TopButtons extends ConsumerWidget {
         final bsDate = await ref.read(bsVersionStateControllerProvider.future);
 
         if (bsDate?.isBefore(DateTime(2026, 02, 01)) ?? false) {
+          if (!context.mounted) return;
           showAlertDialog(
             context: context,
             title: 'Atualização necesssária!'.hardcoded,

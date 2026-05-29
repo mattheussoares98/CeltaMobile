@@ -60,7 +60,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       ),
     );
 
-    if (isContinuousScan == true) {
+    if (isContinuousScan == true && mounted) {
       final value = await BarcodeScannerService.scanBarcode(context);
 
       if (value == null) {

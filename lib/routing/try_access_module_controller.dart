@@ -1,9 +1,3 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
@@ -14,6 +8,11 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'try_access_module_controller.g.dart';
 
@@ -51,6 +50,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
         );
 
         if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
+          if (!context.mounted) return;
           showAlertDialog(
             context: context,
             title: 'Atualize o BS'.hardcoded,
@@ -62,6 +62,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
         }
       }
 
+      if (!context.mounted) return;
       final router = GoRouter.of(context);
       final String? currentRouteName =
           router.routerDelegate.currentConfiguration.last.route.name;
@@ -97,6 +98,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           !enabledModulesBySelectedEnterprise.enabledModules.contains(
             module,
           ))) {
+        if (!context.mounted) return;
         _showDisabledModuleMessage(context, module);
         return;
       }
@@ -108,12 +110,13 @@ class TryAccessModuleController extends _$TryAccessModuleController {
             BsResource.adjustSalePrice,
           ).future,
         );
-        if (!canAccess) {
+        if (!canAccess && context.mounted) {
           _showUserWithoutPermissionMessage(context);
           return;
         }
       }
 
+      if (!context.mounted) return;
       if (replace == true) {
         context.goNamed(
           route.name,

@@ -3,10 +3,10 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class SelectProductModalPage extends ConsumerWidget {
   final List<ProductEntity> products;
@@ -77,7 +77,7 @@ class _ProductItem extends ConsumerWidget {
                   stepCode: stepCode,
                 );
 
-            if (succeeds) {
+            if (succeeds && context.mounted) {
               context.pop();
             }
           },

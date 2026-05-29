@@ -1,11 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class SaveIconButton extends ConsumerWidget {
   final int enterpriseCode;
@@ -46,7 +45,9 @@ class SaveIconButton extends ConsumerWidget {
                 );
 
                 if (pressedOk == true) {
-                  FocusScope.of(context).unfocus();
+                  if (context.mounted) {
+                    FocusScope.of(context).unfocus();
+                  }
                   updated = await ref
                       .read(
                         saveBuyQuotationControllerProvider(
@@ -58,7 +59,7 @@ class SaveIconButton extends ConsumerWidget {
                 }
 
                 await Future.delayed(Duration.zero);
-                if (updated) {
+                if (updated && context.mounted) {
                   context.pop();
                 }
               }

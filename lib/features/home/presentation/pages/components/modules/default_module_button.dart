@@ -5,9 +5,9 @@ import 'package:celta_inventario/core/presentation/controllers/resource/resource
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultModuleButton extends ConsumerWidget {
   final Routes route;
@@ -35,6 +35,7 @@ class DefaultModuleButton extends ConsumerWidget {
         selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
       );
 
+      if (!context.mounted) return;
       ref
           .read(tryAccessModuleControllerProvider.notifier)
           .tryAccess(

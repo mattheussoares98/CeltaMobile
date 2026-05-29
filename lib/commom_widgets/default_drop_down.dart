@@ -79,6 +79,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                                   content: adviceMessage!,
                                 );
                               }
+                              if (!context.mounted) return;
                               final selected = await showCupertinoModalPopup<T>(
                                 context: context,
                                 builder: (_) => CupertinoActionSheet(

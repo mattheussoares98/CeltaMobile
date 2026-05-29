@@ -55,6 +55,7 @@ class GetNewDate {
     TimeOfDay? selectedTime;
 
     if (PlatformUtil.isCupertino) {
+      if (!context.mounted) return null;
       final time = await _showCupertinoDatePicker(
         firstDate: firstDate,
         context: context,
@@ -66,6 +67,7 @@ class GetNewDate {
           ? null
           : TimeOfDay(hour: time.hour, minute: time.minute);
     } else {
+      if (!context.mounted) return null;
       selectedTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.fromDateTime(
@@ -75,6 +77,7 @@ class GetNewDate {
     }
 
     if (selectedTime == null) {
+      if (!context.mounted) return null;
       showSnackBarMessage(
         context,
         'Horário não atualizado'.hardcoded,
@@ -93,6 +96,7 @@ class GetNewDate {
     );
 
     if (finalDateTime.isBefore(firstDate)) {
+      if (!context.mounted) return null;
       showSnackBarMessage(
         context,
         'O horário não pode ser menor que a data mínima'.hardcoded,

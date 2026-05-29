@@ -5,10 +5,10 @@ import 'package:celta_inventario/core/presentation/controllers/enterprises/enter
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class Enterprises extends ConsumerWidget {
   final int enterpriseCode;
@@ -37,6 +37,7 @@ class Enterprises extends ConsumerWidget {
       );
 
       if (!moduleIsEnabled) {
+        if (!context.mounted) return;
         showAlertDialog(
           context: context,
           title: 'Módulo desabilitado'.hardcoded,
@@ -65,6 +66,7 @@ class Enterprises extends ConsumerWidget {
             .read(provider.notifier)
             .updateValues(Enterprises: updatedList);
         if (!updated) {
+          if (!context.mounted) return;
           showAlertDialog(
             context: context,
             title: 'Erro'.hardcoded,

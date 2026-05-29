@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/enterprises/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EnterprisesPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -23,7 +22,7 @@ class EnterprisesPage extends ConsumerWidget {
         ).future,
       );
 
-      if (!moduleIsEnabled) {
+      if (!moduleIsEnabled && context.mounted) {
         showAlertDialog(
           context: context,
           title: 'Módulo desabilitado'.hardcoded,
@@ -57,6 +56,7 @@ class EnterprisesPage extends ConsumerWidget {
         );
 
         if (hasProductFromThisEnterpriseInserted) {
+          if (!context.mounted) return;
           await showAlertDialog(
             context: context,
             title: 'Remover empresa?'.hardcoded,

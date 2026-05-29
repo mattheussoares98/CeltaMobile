@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PendingProductsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -39,6 +38,7 @@ class PendingProductsPage extends ConsumerWidget {
 
       String? barcode;
       if (searchByCamera) {
+        if (!context.mounted) return;
         final barcode = await BarcodeScannerService.scanBarcode(context);
         if (barcode == null) {
           return;

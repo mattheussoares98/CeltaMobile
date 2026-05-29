@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/mixins/mixins.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/products.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsConferencePage extends ConsumerStatefulWidget {
   final int expeditionControlCode;
@@ -64,6 +63,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         );
         context.pop();
         Future.delayed(const Duration(milliseconds: 100), () {
+          if (!context.mounted) return;
           showAlertDialog(
             context: context,
             title: 'Conferência concluída!'.hardcoded,
@@ -100,7 +100,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
             defaultActionText: 'Sim'.hardcoded,
           );
 
-          if (pressed == true) {
+          if (pressed == true && context.mounted) {
             context.pop();
           }
         }

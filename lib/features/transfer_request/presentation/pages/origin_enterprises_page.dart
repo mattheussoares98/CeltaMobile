@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
-import 'package:celta_inventario/routing/routes.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class OriginEnterprisesPage extends ConsumerWidget {
   final int requestTypeCode;
@@ -39,6 +38,8 @@ class OriginEnterprisesPage extends ConsumerWidget {
                       enterprise.CnpjNumber!,
                     ).future,
                   );
+
+                  if (!context.mounted) return;
 
                   if (!moduleIsEnabled) {
                     showAlertDialog(

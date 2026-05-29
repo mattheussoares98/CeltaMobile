@@ -65,7 +65,7 @@ class DefaultButton extends ConsumerWidget {
             downloadType,
           ).select((s) => s.value?.xlsxFilePath),
         );
-        if (filePath != null) {
+        if (filePath != null && context.mounted) {
           showAlertDialog(
             context: context,
             title: 'Planilha baixada'.hardcoded,

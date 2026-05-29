@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
   final int enterpriseCode;
@@ -30,6 +29,8 @@ class BottomNavBar extends ConsumerWidget {
         bool supplierIsSelected = pendingValue.selectedSupplier != null;
 
         if (index == 1 || index == 2) {
+          if (!context.mounted) return;
+
           if (!buyerIsSelected) {
             showSnackBarMessage(
               context,
@@ -58,6 +59,7 @@ class BottomNavBar extends ConsumerWidget {
             pendingValue.selectedEnterprises != null &&
             pendingValue.selectedEnterprises!.isNotEmpty;
         if (index == 2 && !enterprisesAreValid) {
+          if (!context.mounted) return;
           showSnackBarMessage(
             context,
             'Selecione pelo menos uma empresa'.hardcoded,
