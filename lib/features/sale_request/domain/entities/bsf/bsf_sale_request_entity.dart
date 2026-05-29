@@ -155,7 +155,9 @@ class BSFSaleRequestEntity extends Equatable {
       enterprise: enterprise ?? this.enterprise,
       customer: annulCustomer == true ? null : customer ?? this.customer,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-      deliveryTax: annulDeliveryTax == true ? null : deliveryTax ?? this.deliveryTax,
+      deliveryTax: annulDeliveryTax == true
+          ? null
+          : deliveryTax ?? this.deliveryTax,
       increment: annulIncrement == true ? null : increment ?? this.increment,
       financialIncrement: financialIncrement ?? this.financialIncrement,
       financialDiscount: financialDiscount ?? this.financialDiscount,
@@ -171,26 +173,26 @@ class BSFSaleRequestEntity extends Equatable {
   }
 
   double get totalProductsLiquid {
-    if (products == null) return 0;
-
-    return products!.fold(0.0, (p, n) {
-      return p + n.totalLiquid;
-    });
+    return products?.fold(0.0, (p, n) {
+          return (p ?? 0) + n.totalLiquid;
+        }) ??
+        0.0;
   }
 
   double get totalProductsBrut {
-    if (products == null) return 0;
-
-    return products!.fold(0.0, (p, n) {
-      return p + ((n.quantity ?? 0) * (n.value ?? 0));
-    });
+    return products?.fold(0.0, (p, n) {
+          return (p ?? 0) + ((n.quantity ?? 0) * (n.value ?? 0));
+        }) ??
+        0;
   }
 
   double get totalFreight {
     //! total products (liquid) freight + sale request freight
-    final totalProductsDeliveryTax = products!.fold(0.0, (p, n) {
-      return p + n.totalDeliveryTax;
-    });
+    final totalProductsDeliveryTax =
+        products?.fold(0.0, (p, n) {
+          return p + n.totalDeliveryTax;
+        }) ??
+        0.0;
 
     final totalSaleRequest = deliveryTax?.deliveryTax?.calculateItemValue(
       totalProductsLiquid,
@@ -201,9 +203,11 @@ class BSFSaleRequestEntity extends Equatable {
 
   double get totalIncrement {
     //! total products (brut) increment + total products (liquid) increment
-    final totalBrutIncrement = products!.fold(0.0, (p, n) {
-      return p + n.totalIncrement;
-    });
+    final totalBrutIncrement =
+        products?.fold(0.0, (p, n) {
+          return p + n.totalIncrement;
+        }) ??
+        0;
 
     final totalLiquidIncrement = increment?.calculateItemValue(
       totalProductsLiquid,
@@ -214,9 +218,11 @@ class BSFSaleRequestEntity extends Equatable {
 
   double get totalDiscount {
     //! total products liquid (apply the sale request discount) + total products discount
-    final totalProductsDiscount = products!.fold(0.0, (p, n) {
-      return p + n.totalDiscountValue;
-    });
+    final totalProductsDiscount =
+        products?.fold(0.0, (p, n) {
+          return p + n.totalDiscountValue;
+        }) ??
+        0;
 
     double totalSaleRequestDiscount = 0;
     double baseValue = totalProductsLiquid;
