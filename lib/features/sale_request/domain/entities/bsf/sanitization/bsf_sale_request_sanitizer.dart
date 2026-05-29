@@ -2,6 +2,7 @@
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:collection/collection.dart';
 
 class BSFSaleRequestSanitizer {
   /// Sanitizes state changes when the request type changes.
@@ -94,6 +95,100 @@ class BSFSaleRequestSanitizer {
         products: updatedState.products
             ?.map((p) => p.copyWith(annulDeliveryTax: true))
             .toList(),
+      );
+    }
+
+    return (updatedState, actions);
+  }
+
+  /// Sanitizes state changes when the customer changes.
+  static (BSFSaleRequestEntity, List<BSFSaleRequestSanitizationAction>)
+  sanitizeCustomerChange(
+    BSFSaleRequestEntity current,
+    BSFCustomerEntity? newCustomer,
+  ) {
+    var updatedState = current.copyWith(
+      customer: newCustomer,
+      annulCustomer: newCustomer == null,
+    );
+
+    final salePayments = current.financials?.firstOrNull?.paymentFinalizations;
+
+    // 1. Allowed finalization codes for the new customer
+    final allowedFinalizationCodes =
+        newCustomer?.paymentFinalizations?.map((e) => e.code).toSet() ?? {};
+
+    final selectedCovenant = newCustomer?.covenants?.firstWhereOrNull(
+      (e) => e.code == newCustomer.covenantCode,
+    );
+    final customerCovenantCode =
+        selectedCovenant?.personalizedCode ??
+        newCustomer?.covenantCode?.toString();
+
+    final hasCustomerRestrictions = allowedFinalizationCodes.isNotEmpty;
+    final paymentsThatMustBeCleaned =
+        salePayments?.where((e) {
+          final payment = e.paymentFinalization;
+          if (payment == null) return true;
+
+          // Rule 1: Validate payment method finalization restrictions from customer
+          if (hasCustomerRestrictions &&
+              !allowedFinalizationCodes.contains(payment.code)) {
+            return true;
+          }
+
+          return false;
+        }).toList() ??
+        <BSFPaymentFinalizationWrapperEntity>[];
+
+    final List<BSFSaleRequestSanitizationAction> actions = [];
+
+    // Rule 3: Validate customer blockade status (hard block)
+    if (newCustomer?.saleBlockade?.allowSaleRequest == false &&
+        newCustomer?.saleBlockade?.code != 0) {
+      final desc = newCustomer?.saleBlockadeInstruction?.description;
+      actions.add(
+        BSFSaleRequestSanitizationAction(
+          type: BSFSaleRequestSanitizationType.customerBlocked,
+          details: [if (desc?.isNotEmpty ?? false) desc!],
+        ),
+      );
+    }
+
+    // Sanitize Payments (clear incompatible ones and update covenant codes for remaining ones)
+    final financials = List<BSFFinancialEntity>.from(
+      updatedState.financials ?? [],
+    );
+    if (financials.isNotEmpty) {
+      final remainingPayments = salePayments
+          ?.where((e) => !paymentsThatMustBeCleaned.contains(e))
+          .map((e) {
+            final payment = e.paymentFinalization;
+            if (payment?.action?.type ==
+                PaymentFinalizationActionType.covenant) {
+              return e.copyWith(identificationCode: customerCovenantCode ?? "");
+            }
+            return e;
+          })
+          .toList();
+
+      financials[0] = financials[0].copyWith(
+        paymentFinalizations: remainingPayments,
+      );
+      updatedState = updatedState.copyWith(financials: financials);
+    }
+
+    if (paymentsThatMustBeCleaned.isNotEmpty) {
+      final names = paymentsThatMustBeCleaned
+          .map((e) => e.paymentFinalization?.Description ?? '')
+          .where((name) => name.isNotEmpty)
+          .toList();
+
+      actions.add(
+        BSFSaleRequestSanitizationAction(
+          type: BSFSaleRequestSanitizationType.paymentsCleared,
+          details: names,
+        ),
       );
     }
 
