@@ -63,7 +63,7 @@ class PaymentsList extends ConsumerWidget {
                   ),
                   gapH8,
                 ],
-                ListTile(
+                DefaultListTile(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(Sizes.p12),
                     side: BorderSide(
