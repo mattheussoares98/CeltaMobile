@@ -17,6 +17,10 @@ class BSFSaleRequestSanitizationAction extends Equatable {
         details.isNotEmpty) {
       return 'As seguintes formas de pagamento serão removidas: ${details.join(", ")}';
     }
+    if (type == BSFSaleRequestSanitizationType.customerBlocked &&
+        details.isNotEmpty) {
+      return 'O cliente possui bloqueio para vendas: ${details.join(", ")}';
+    }
     return type.message;
   }
 
