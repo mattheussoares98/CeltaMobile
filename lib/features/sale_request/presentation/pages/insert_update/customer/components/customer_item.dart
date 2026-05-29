@@ -23,8 +23,9 @@ class CustomerItem extends ConsumerWidget {
     final hasCovenants =
         customer.covenants != null && customer.covenants!.isNotEmpty;
 
-    return DefaultCheckBox(
+    return DefaultRadio<bool>(
       name: customer.name ?? '',
+      toggleable: true,
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -66,7 +67,8 @@ class CustomerItem extends ConsumerWidget {
           ],
         ],
       ),
-      enabled: enabled,
+      value: true,
+      groupValue: enabled,
       onChanged: (_) {
         ref
             .read(insertUpdateStateControllerProvider.notifier)
