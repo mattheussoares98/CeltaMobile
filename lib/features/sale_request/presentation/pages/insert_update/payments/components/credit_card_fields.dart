@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreditCardFields extends ConsumerWidget {
   final TextEditingController creditCardController;
@@ -29,7 +28,7 @@ class CreditCardFields extends ConsumerWidget {
     );
 
     if (!selectedCreditCardType) {
-      return const SliverToBoxAdapter(child: SizedBox.shrink());
+      return const SizedBox.shrink();
     }
 
     final now = DateTime.now();
@@ -71,9 +70,9 @@ class CreditCardFields extends ConsumerWidget {
         ]),
       ),
     ];
-    return ResponsiveListFlow(
+    return ListView.builder(
+      shrinkWrap: true,
       itemCount: children.length,
-      isSliver: true,
       itemBuilder: (context, index) {
         return children[index];
       },

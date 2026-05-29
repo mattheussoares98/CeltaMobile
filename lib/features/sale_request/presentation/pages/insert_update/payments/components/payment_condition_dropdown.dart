@@ -19,11 +19,10 @@ class PaymentConditionDropdown extends ConsumerWidget {
     );
 
     if (!selectedBilletType) {
-      return const SliverToBoxAdapter(child: SizedBox.shrink());
+      return const SizedBox.shrink();
     }
 
     return AsyncValueWidget(
-      isSliver: true,
       value: ref.watch(filteredPaymentConditionsStateControllerProvider),
       tryAgain: () =>
           ref.invalidate(filteredPaymentConditionsStateControllerProvider),
@@ -62,34 +61,31 @@ class PaymentConditionDropdown extends ConsumerWidget {
             )
             .toList();
 
-        return SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: Consumer(
-              builder: (_, ref, _) {
-                final selectedItem = ref.watch(
-                  selectedPaymentConditionStateControllerProvider,
-                );
-                return DefaultDropDown<BSFPaymentConditionEntity>(
-                  onChanged: ref
-                      .read(
-                        selectedPaymentConditionStateControllerProvider
-                            .notifier,
-                      )
-                      .select,
-                  showLabelAtTopLeft: true,
-                  selectedItem: selectedItem,
-                  validator: (_) {
-                    if (selectedItem == null) {
-                      return 'Selecione uma forma de pagamento'.hardcoded;
-                    }
-                    return null;
-                  },
-                  label: 'Condição de pagamento'.hardcoded,
-                  items: items,
-                );
-              },
-            ),
+        return Padding(
+          padding: const EdgeInsets.only(bottom: Sizes.p8),
+          child: Consumer(
+            builder: (_, ref, _) {
+              final selectedItem = ref.watch(
+                selectedPaymentConditionStateControllerProvider,
+              );
+              return DefaultDropDown<BSFPaymentConditionEntity>(
+                onChanged: ref
+                    .read(
+                      selectedPaymentConditionStateControllerProvider.notifier,
+                    )
+                    .select,
+                showLabelAtTopLeft: true,
+                selectedItem: selectedItem,
+                validator: (_) {
+                  if (selectedItem == null) {
+                    return 'Selecione uma forma de pagamento'.hardcoded;
+                  }
+                  return null;
+                },
+                label: 'Condição de pagamento'.hardcoded,
+                items: items,
+              );
+            },
           ),
         );
       },
@@ -102,28 +98,25 @@ class _NotFoundPaymentConditions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverToBoxAdapter(
-      child: Column(
-        children: [
-          Text(
-            'Nenhuma condição de pagamento disponível. Somente condições de pagamento com composição fixas aparecerão'
-                .hardcoded,
-            textAlign: TextAlign.center,
-          ),
-          gapH8,
-          Text(
-            'Para cadastrar uma condição com composição fixa, acesse o CeltaBS e vá em "Cadastros > Financeiro > Condições de pagamento'
-                .hardcoded,
-          ),
-          gapH8,
-          PrimaryButton(
-            text: 'Carregar novamente'.hardcoded,
-            onPressed: () => ref.invalidate(
-              filteredPaymentConditionsStateControllerProvider,
-            ),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          'Nenhuma condição de pagamento disponível. Somente condições de pagamento com composição fixas aparecerão'
+              .hardcoded,
+          textAlign: TextAlign.center,
+        ),
+        gapH8,
+        Text(
+          'Para cadastrar uma condição com composição fixa, acesse o CeltaBS e vá em "Cadastros > Financeiro > Condições de pagamento'
+              .hardcoded,
+        ),
+        gapH8,
+        PrimaryButton(
+          text: 'Carregar novamente'.hardcoded,
+          onPressed: () =>
+              ref.invalidate(filteredPaymentConditionsStateControllerProvider),
+        ),
+      ],
     );
   }
 }
