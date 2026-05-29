@@ -137,6 +137,13 @@ class BSFSaleRequestSanitizer {
             return true;
           }
 
+          // Rule 2: If it is a covenant payment and the new customer has no selected covenant, it must be cleaned!
+          final isCovenant =
+              payment.action?.type == PaymentFinalizationActionType.covenant;
+          if (isCovenant && newCustomer?.selectedCovenant == null) {
+            return true;
+          }
+
           return false;
         }).toList() ??
         <BSFPaymentFinalizationWrapperEntity>[];

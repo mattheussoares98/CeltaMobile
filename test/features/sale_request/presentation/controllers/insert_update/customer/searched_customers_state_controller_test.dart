@@ -143,7 +143,13 @@ void main() {
         expect(state.value?.customers, [updatedFakeCustomer, otherCustomer]);
         expect(
           container.read(insertUpdateStateControllerProvider).value?.customer,
-          updatedFakeCustomer.copyWith(code: 1),
+          // updateCustomerData annuls the covenant because fakeCustomer.covenantCode
+          // (random) is unlikely to match any covenant in updatedFakeCustomer.covenants.
+          // The customer code (999999) stays the same — only the covenant is cleared.
+          updatedFakeCustomer.copyWith(
+            annulCovenantCode: true,
+            annulSelectedCovenant: true,
+          ),
         );
       },
     );

@@ -49,7 +49,7 @@ class RequestTypeDropDown extends ConsumerWidget {
               onChanged: (requestType) {
                 ref
                     .read(insertUpdateStateControllerProvider.notifier)
-                    .updateRequestType(requestType, force: true);
+                    .updateRequestType(requestType, onlyValidating: false);
               },
             );
           },
@@ -65,7 +65,7 @@ class RequestTypeDropDown extends ConsumerWidget {
   ) async {
     final notifier = ref.read(insertUpdateStateControllerProvider.notifier);
 
-    final actions = notifier.updateRequestType(requestType, force: false);
+    final actions = notifier.updateRequestType(requestType, onlyValidating: true);
 
     if (actions.isNotEmpty) {
       final confirmed = await showAlertDialog(

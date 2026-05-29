@@ -139,22 +139,89 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(state.value!.copyWith(products: items));
   }
 
-  void updateCustomer(BSFCustomerEntity? customer) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+  List<BSFSaleRequestSanitizationAction> updateCustomer(
+    BSFCustomerEntity? customer, {
+    BsfCovenantEntity? covenant,
+    bool isChangingCovenant = false,
+    bool onlyValidating = false,
+  }) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
     ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
     ref
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
     //TODO should not change the customer if is blocked
 
-    final newState = state.value!.copyWith(
-      annulCustomer:
-          //TODO fix the tests. When pass a null value, should annul the customer too
-          customer == null || customer.code == state.value?.customer?.code,
-      customer: customer?.copyWith(annulCovenantCode: true),
+    // noChange means "do nothing at all" (same customer click when validating only).
+    // targetCustomer == null means "deselect the customer" (toggle or explicitly clearing).
+    bool noChange = false;
+    BSFCustomerEntity? targetCustomer;
+
+    if (customer == null) {
+      targetCustomer = null;
+    } else if (isChangingCovenant) {
+      if (customer.code == state.value?.customer?.code) {
+        final newCovenantCode =
+            state.value?.customer?.covenantCode == covenant?.code
+                ? null
+                : covenant?.code;
+        targetCustomer = customer.copyWith(
+          covenantCode: newCovenantCode,
+          annulCovenantCode: newCovenantCode == null,
+          selectedCovenant: newCovenantCode == null ? null : covenant,
+          annulSelectedCovenant: newCovenantCode == null,
+        );
+      } else {
+        targetCustomer = customer.copyWith(
+          covenantCode: covenant?.code,
+          annulCovenantCode: covenant == null,
+          selectedCovenant: covenant,
+          annulSelectedCovenant: covenant == null,
+        );
+      }
+    } else {
+      if (customer.code == state.value?.customer?.code) {
+        if (onlyValidating) {
+          // Same customer re-clicked during validation: nothing to warn about.
+          noChange = true;
+        } else {
+          // Toggle: deselect the customer.
+          targetCustomer = null;
+        }
+      } else {
+        targetCustomer = customer.copyWith(
+          annulCovenantCode: true,
+          annulSelectedCovenant: true,
+        );
+      }
+    }
+
+    if (noChange) {
+      return const [];
+    }
+
+    final (
+      sanitizedState,
+      actions,
+    ) = BSFSaleRequestSanitizer.sanitizeCustomerChange(
+      state.value!,
+      targetCustomer,
     );
-    state = AsyncData(newState);
+
+    final isBlocked = actions.any(
+      (a) => a.type == BSFSaleRequestSanitizationType.customerBlocked,
+    );
+
+    if (actions.isNotEmpty && (onlyValidating || isBlocked)) {
+      return actions;
+    } else if (onlyValidating) {
+      return [];
+    }
+
+    state = AsyncData(sanitizedState);
+    return const [];
   }
+
 
   void changeSeller(EcSellerEntity seller) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
@@ -192,38 +259,22 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(current.copyWith(customer: updatedCustomer));
   }
 
-  void updateCovenant(
+  List<BSFSaleRequestSanitizationAction> updateCovenant(
     BSFCustomerEntity? customer,
-    BsfCovenantEntity? covenant,
-  ) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    if (customer?.code != state.value?.customer?.code) {
-      updateCustomer(customer);
-    }
-
-    final current = state.value;
-    if (current == null) {
-      return;
-    }
-
-    final newCovenantCode = current.customer?.covenantCode == covenant?.code
-        ? null
-        : covenant?.code;
-
-    final newCustomer = current.customer!.copyWith(
-      covenantCode: newCovenantCode,
-      annulCovenantCode:
-          newCovenantCode == null ||
-          state.value?.customer?.covenantCode == newCovenantCode,
-      selectedCovenant: covenant,
-      annulSelectedCovenant: newCovenantCode == null,
+    BsfCovenantEntity? covenant, {
+    bool onlyValidating = false,
+  }) {
+    return updateCustomer(
+      customer,
+      covenant: covenant,
+      isChangingCovenant: true,
+      onlyValidating: onlyValidating,
     );
-    state = AsyncData(current.copyWith(customer: newCustomer));
   }
 
   List<BSFSaleRequestSanitizationAction> updateRequestType(
     BSFRequestTypeEntity requestType, {
-    bool force = false,
+    bool onlyValidating = false,
   }) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
     final current = state.value!;
@@ -231,8 +282,10 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final (sanitizedState, actions) =
         BSFSaleRequestSanitizer.sanitizeRequestTypeChange(current, requestType);
 
-    if (actions.isNotEmpty && !force) {
+    if (actions.isNotEmpty && onlyValidating) {
       return actions;
+    } else if (onlyValidating) {
+      return [];
     }
 
     state = AsyncData(sanitizedState);

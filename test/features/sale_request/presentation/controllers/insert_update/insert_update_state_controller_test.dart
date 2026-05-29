@@ -798,31 +798,67 @@ void main() {
         final customer1 = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: 1,
         );
-        controller.updateCustomer(customer1);
+        controller.updateCustomer(customer1, onlyValidating: false);
         final state = container.read(insertUpdateStateControllerProvider);
         expect(
           state.value!.customer,
-          customer1.copyWith(annulCovenantCode: true),
+          customer1.copyWith(
+            annulCovenantCode: true,
+            annulSelectedCovenant: true,
+          ),
         );
 
         final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: 2,
         );
-        controller.updateCustomer(customer2);
+        controller.updateCustomer(customer2, onlyValidating: false);
         final state2 = container.read(insertUpdateStateControllerProvider);
         expect(
           state2.value!.customer,
-          customer2.copyWith(annulCovenantCode: true),
+          customer2.copyWith(
+            annulCovenantCode: true,
+            annulSelectedCovenant: true,
+          ),
         );
 
         final customer3 = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: 2,
         );
         //annul when is the same customer code from the previous
-        controller.updateCustomer(customer3);
+        controller.updateCustomer(customer3, onlyValidating: false);
         final state3 = container.read(insertUpdateStateControllerProvider);
         expect(state3.value!.customer, null);
       });
+      test(
+        'updateCustomer with onlyValidating: true should return empty actions and not modify state, and subsequent call with onlyValidating: false should modify state',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            code: 1,
+          );
+
+          // First call with onlyValidating: true should NOT update customer
+          final actions = controller.updateCustomer(customer, onlyValidating: true);
+          expect(actions, isEmpty);
+
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer, isNull);
+
+          // Second call with onlyValidating: false should update customer successfully
+          final actionsForce = controller.updateCustomer(customer, onlyValidating: false);
+          expect(actionsForce, isEmpty);
+
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.code, customer.code);
+        },
+      );
       test(
         'Should reset payment type, condition and covenant when a customer is selected',
         () async {
@@ -853,7 +889,7 @@ void main() {
           );
 
           //update customer
-          controller.updateCustomer(EntityFactory.makeBSFCustomerEntity());
+          controller.updateCustomer(EntityFactory.makeBSFCustomerEntity(), onlyValidating: false);
 
           //confirm is updated to null value
           expect(
@@ -864,6 +900,414 @@ void main() {
             container.read(selectedPaymentTypeStateControllerProvider),
             isNull,
           );
+        },
+      );
+
+      test(
+        'Should clear incompatible payments based on customer restrictions when customer is updated',
+        () async {
+          final paymentAllowedByCustomer = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 2);
+          // Use money action type to avoid flakiness from random faker sequences.
+          // If it were covenant type and the new customer has no selectedCovenant, Rule 2
+          // would also try to clean it (but Rule 1 would handle it either way).
+          final moneyAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
+            type: PaymentFinalizationActionType.money,
+          );
+          final paymentInRequest = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+            code: 1,
+            action: moneyAction,
+          );
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                      .copyWith(paymentFinalization: paymentInRequest),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Update customer to one with restrictions (only allows code 2)
+          final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: [paymentAllowedByCustomer],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 0,
+              personalizedCode: null,
+              legacyCode: null,
+              description: null,
+              allowSale: true,
+              allowSaleRequest: true,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: true,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+          );
+
+          controller.updateCustomer(newCustomer, onlyValidating: false);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          // Payment should be cleared because code 1 is incompatible with new customer's restriction (allows only code 2)
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isEmpty,
+          );
+        },
+      );
+
+      test(
+        'Should fail and return action warning when onlyValidating is true and customer has payment restrictions',
+        () async {
+          final paymentAllowedByCustomer = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 2);
+          final paymentInRequest = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 1);
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                      .copyWith(paymentFinalization: paymentInRequest),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Update customer to one with restrictions (only allows code 2)
+          final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: [paymentAllowedByCustomer],
+          );
+
+          final actions = controller.updateCustomer(newCustomer, onlyValidating: true);
+
+          expect(actions, isNotEmpty);
+          expect(actions.first.type, BSFSaleRequestSanitizationType.paymentsCleared);
+
+          // State should NOT be updated because onlyValidating is true
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.code, isNot(newCustomer.code));
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isNotEmpty,
+          );
+        },
+      );
+
+      test(
+        'Should clear covenant payment when customer is updated to one with different covenants and no selected covenant',
+        () async {
+          final covenant = EntityFactory.makeBsfCovenantEntity().copyWith(code: 10);
+          final otherCovenant = EntityFactory.makeBsfCovenantEntity().copyWith(code: 20);
+
+          final paymentAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
+            type: PaymentFinalizationActionType.covenant,
+          );
+          final paymentFinalization = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+            action: paymentAction,
+          );
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+              covenants: [covenant],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                    paymentFinalization: paymentFinalization,
+                    identificationCode: '10',
+                  ),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Update customer to one that has only otherCovenant (code 20)
+          final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: const [],
+            covenants: [otherCovenant],
+          );
+
+          controller.updateCustomer(newCustomer, onlyValidating: false);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          // Covenant payment should be removed because new customer has no selected covenant.
+          // When onlyValidating: false and no blockade, the controller applies changes and returns []
+          // The verification is in the state, not in the return value.
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isEmpty,
+          );
+        },
+      );
+
+      test(
+        'Should preserve covenant payment if the covenant is inside the new customer covenants and selected simultaneously',
+        () async {
+          // Use a deterministic personalizedCode so the sanitizer produces a predictable identificationCode.
+          // The sanitizer uses personalizedCode first, then falls back to code.toString().
+          final covenant = EntityFactory.makeBsfCovenantEntity().copyWith(
+            code: 10,
+            personalizedCode: '10',
+          );
+
+          final paymentAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
+            type: PaymentFinalizationActionType.covenant,
+          );
+          final paymentFinalization = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+            action: paymentAction,
+          );
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+              covenants: [covenant],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                    paymentFinalization: paymentFinalization,
+                    identificationCode: '10',
+                  ),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Update customer and select covenant at the same time
+          final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: const [],
+            covenants: [covenant],
+          );
+
+          controller.updateCustomer(
+            newCustomer,
+            covenant: covenant,
+            isChangingCovenant: true,
+            onlyValidating: false,
+          );
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          // Covenant payment should be preserved because covenant 10 was selected simultaneously
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isNotEmpty,
+          );
+          // The identificationCode is updated using personalizedCode (which we set to '10')
+          expect(
+            state.value!.financials!.first.paymentFinalizations!.first.identificationCode,
+            '10',
+          );
+        },
+      );
+
+      test(
+        'Should return customerBlocked action and not change customer when customer is blocked and onlyValidating is true',
+        () async {
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: const [],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Create blocked customer
+          final blockedCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: const [],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 1,
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked description',
+              allowSale: false,
+              allowSaleRequest: false,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: false,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+            saleBlockadeInstruction: const BsfSaleBlockadeInstructionEntity(
+              code: 1,
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked instruction description',
+            ),
+          );
+
+          final actions = controller.updateCustomer(blockedCustomer, onlyValidating: true);
+
+          expect(actions, isNotEmpty);
+          expect(actions.first.type, BSFSaleRequestSanitizationType.customerBlocked);
+          expect(actions.first.message, contains('Blocked instruction description'));
+
+          // State should NOT be updated because it is a hard block
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer?.code, isNot(blockedCustomer.code));
+        },
+      );
+
+      test(
+        'Should return customerBlocked action and not change customer even when onlyValidating is false',
+        () async {
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: const [],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Create blocked customer
+          final blockedCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: const [],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 1,
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked description',
+              allowSale: false,
+              allowSaleRequest: false,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: false,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+            saleBlockadeInstruction: const BsfSaleBlockadeInstructionEntity(
+              code: 1,
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked instruction description',
+            ),
+          );
+
+          final actions = controller.updateCustomer(blockedCustomer, onlyValidating: false);
+
+          expect(actions, isNotEmpty);
+          expect(actions.first.type, BSFSaleRequestSanitizationType.customerBlocked);
+
+          // State should NOT be updated because it is a hard block
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer?.code, isNot(blockedCustomer.code));
+        },
+      );
+
+      test(
+        'Should ignore customerBlocked action and update customer successfully when customer allowSaleRequest is false but blockade code is 0 (due to ERP bug)',
+        () async {
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: const [],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Create blocked customer but with code 0
+          final blockedCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            paymentFinalizations: const [],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 0, // Code 0 implies no blockade due to ERP bug
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked description',
+              allowSale: false,
+              allowSaleRequest: false,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: false,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+            saleBlockadeInstruction: const BsfSaleBlockadeInstructionEntity(
+              code: 0,
+              personalizedCode: null,
+              legacyCode: null,
+              description: 'Blocked instruction description',
+            ),
+          );
+
+          final actions = controller.updateCustomer(blockedCustomer, onlyValidating: true);
+          expect(actions, isEmpty);
+
+          controller.updateCustomer(blockedCustomer, onlyValidating: false);
+
+          // State should be updated successfully because the blockade is ignored
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer?.code, blockedCustomer.code);
         },
       );
     });
@@ -967,7 +1411,7 @@ void main() {
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1);
 
-          controller.updateCustomer(originalCustomer);
+          controller.updateCustomer(originalCustomer, onlyValidating: false);
 
           final updatedCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1);
@@ -1004,8 +1448,8 @@ void main() {
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1, covenants: [covenant]);
 
-          controller.updateCustomer(originalCustomer);
-          controller.updateCovenant(originalCustomer, covenant);
+          controller.updateCustomer(originalCustomer, onlyValidating: false);
+          controller.updateCovenant(originalCustomer, covenant, onlyValidating: false);
 
           final stateBefore = container.read(
             insertUpdateStateControllerProvider,
@@ -1047,8 +1491,8 @@ void main() {
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1, covenants: [covenant]);
 
-          controller.updateCustomer(originalCustomer);
-          controller.updateCovenant(originalCustomer, covenant);
+          controller.updateCustomer(originalCustomer, onlyValidating: false);
+          controller.updateCovenant(originalCustomer, covenant, onlyValidating: false);
 
           // Updated customer has different/no covenants now
           final otherCovenant = EntityFactory.makeBsfCovenantEntity().copyWith(
@@ -1084,11 +1528,11 @@ void main() {
           await container.read(insertUpdateStateControllerProvider.future);
 
           final customer = EntityFactory.makeBSFCustomerEntity();
-          controller.updateCustomer(customer);
+          controller.updateCustomer(customer, onlyValidating: false);
 
           final covenant = EntityFactory.makeBsfCovenantEntity();
 
-          controller.updateCovenant(customer, covenant);
+          controller.updateCovenant(customer, covenant, onlyValidating: false);
 
           final state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.covenantCode, covenant.code);
@@ -1112,16 +1556,16 @@ void main() {
             covenantCode: covenant.code,
             selectedCovenant: covenant,
           );
-          controller.updateCustomer(customer);
+          controller.updateCustomer(customer, onlyValidating: false);
 
           // First call sets the covenant code because updateCustomer annulled it
-          controller.updateCovenant(customer, covenant);
+          controller.updateCovenant(customer, covenant, onlyValidating: false);
           var state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.covenantCode, covenant.code);
           expect(state.value!.customer!.selectedCovenant, covenant);
 
           // Second call toggles/annuls the covenant code
-          controller.updateCovenant(customer, covenant);
+          controller.updateCovenant(customer, covenant, onlyValidating: false);
           state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.covenantCode, isNull);
           expect(state.value!.customer!.selectedCovenant, isNull);
@@ -1141,19 +1585,159 @@ void main() {
 
           final initialCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1);
-          controller.updateCustomer(initialCustomer);
+          controller.updateCustomer(initialCustomer, onlyValidating: false);
 
           final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
             code: 2,
           );
           final covenant = EntityFactory.makeBsfCovenantEntity();
 
-          controller.updateCovenant(newCustomer, covenant);
+          controller.updateCovenant(newCustomer, covenant, onlyValidating: false);
 
           final state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.customer!.code, newCustomer.code);
           expect(state.value!.customer!.covenantCode, covenant.code);
           expect(state.value!.customer!.selectedCovenant, covenant);
+        },
+      );
+
+      test(
+        'updateCovenant with onlyValidating: true should not modify the state, and subsequent call with onlyValidating: false should modify the state once',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final customer = EntityFactory.makeBSFCustomerEntity();
+          controller.updateCustomer(customer, onlyValidating: false);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+
+          // First call with onlyValidating: true should NOT set the covenant
+          final actions = controller.updateCovenant(customer, covenant, onlyValidating: true);
+          expect(actions, isEmpty);
+
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, isNull);
+
+          // Second call with onlyValidating: false should set the covenant successfully
+          final actionsForce = controller.updateCovenant(customer, covenant, onlyValidating: false);
+          expect(actionsForce, isEmpty);
+
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, covenant.code);
+        },
+      );
+
+      test(
+        'updateCovenant should not toggle covenant to null on the second call when the first call was onlyValidating: true',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final customer = EntityFactory.makeBSFCustomerEntity();
+          controller.updateCustomer(customer, onlyValidating: false);
+
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+
+          // First call with onlyValidating: true
+          controller.updateCovenant(customer, covenant, onlyValidating: true);
+
+          // Covenant code should still be null in the state
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, isNull);
+
+          // Second call with onlyValidating: false
+          controller.updateCovenant(customer, covenant, onlyValidating: false);
+
+          // Covenant code should be set to covenant.code (not null)
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.covenantCode, covenant.code);
+        },
+      );
+
+      test(
+        'updateCovenant with different customer and onlyValidating: true should return actions and not modify the state',
+        () async {
+          final incompatiblePayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(code: 1);
+
+          // Put incompatible payment in request to trigger paymentsCleared action
+          fakeSaleRequest = fakeSaleRequest.copyWith(
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                    paymentFinalization: incompatiblePayment,
+                  ),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final initialCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            code: 1,
+            paymentFinalizations: [incompatiblePayment],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 0,
+              personalizedCode: null,
+              legacyCode: null,
+              description: null,
+              allowSale: true,
+              allowSaleRequest: true,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: true,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+          );
+          controller.updateCustomer(initialCustomer, onlyValidating: false);
+
+          // Create new customer with payment restrictions to trigger actions
+          final allowedPayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(code: 2);
+          final restrictedCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            code: 2,
+            paymentFinalizations: [allowedPayment],
+            saleBlockade: const BsfSaleBlockadeEntity(
+              code: 0,
+              personalizedCode: null,
+              legacyCode: null,
+              description: null,
+              allowSale: true,
+              allowSaleRequest: true,
+              allowSaleWithPaymentFinalizationTypeCheckOrPortion: true,
+              stringAllowSale: null,
+              stringAllowSaleRequest: null,
+              stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion: null,
+            ),
+          );
+
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+
+          // First call with onlyValidating: true should return warning actions and not update customer
+          final actions = controller.updateCovenant(restrictedCustomer, covenant, onlyValidating: true);
+          expect(actions, isNotEmpty);
+          expect(actions.first.type, BSFSaleRequestSanitizationType.paymentsCleared);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.customer!.code, initialCustomer.code);
         },
       );
 
@@ -1167,7 +1751,7 @@ void main() {
         final customer = EntityFactory.makeBSFCustomerEntity();
         final covenant = EntityFactory.makeBsfCovenantEntity();
 
-        controller.updateCovenant(customer, covenant);
+        controller.updateCovenant(customer, covenant, onlyValidating: false);
 
         final state = container.read(insertUpdateStateControllerProvider);
         expect(state, isA<AsyncLoading>());
@@ -1251,6 +1835,57 @@ void main() {
 
           expect(actions, isEmpty);
           final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, newRequestType);
+        },
+      );
+
+      test(
+        'updateRequestType with onlyValidating: true should return empty actions and not modify state, and subsequent call with onlyValidating: false should modify state',
+        () async {
+          final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
+            allowUseDiscount: true,
+            allowUseIncrement: true,
+            allowUseDeliveryTax: true,
+            paymentFinalizations: [],
+          );
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            requestType: requestType,
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: const [],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
+
+          // First call with onlyValidating: true should NOT update request type
+          final actions = controller.updateRequestType(newRequestType, onlyValidating: true);
+          expect(actions, isEmpty);
+
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, isNot(newRequestType));
+
+          // Second call with onlyValidating: false should update request type successfully
+          final actionsForce = controller.updateRequestType(newRequestType, onlyValidating: false);
+          expect(actionsForce, isEmpty);
+
+          state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.requestType, newRequestType);
         },
       );
@@ -1348,12 +1983,12 @@ void main() {
               );
 
           // Phase 1: Try updating request type without forcing. It should trigger warning.
-          final actions = controller.updateRequestType(newRequestType, force: false);
+          final actions = controller.updateRequestType(newRequestType, onlyValidating: true);
 
           expect(actions, isNotEmpty);
           expect(actions.first.type, BSFSaleRequestSanitizationType.paymentsCleared);
 
-          // Request type and financials should NOT be modified because force is false
+          // Request type and financials should NOT be modified because onlyValidating is true
           var state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.requestType, isNot(newRequestType));
           expect(
@@ -1361,8 +1996,8 @@ void main() {
             isNotEmpty,
           );
 
-          // Phase 2: Update request type with force: true. It should apply changes and clean the payment.
-          final actionsForced = controller.updateRequestType(newRequestType, force: true);
+          // Phase 2: Update request type with onlyValidating: false. It should apply changes and clean the payment.
+          final actionsForced = controller.updateRequestType(newRequestType, onlyValidating: false);
 
           expect(actionsForced, isEmpty);
           state = container.read(insertUpdateStateControllerProvider);
@@ -1377,7 +2012,7 @@ void main() {
       for (final isProductLevel in [true, false]) {
         group('(isProductLevel: $isProductLevel)', () {
           test(
-            'Should fail and return all action errors when force is false and sanitizations are triggered',
+            'Should fail and return all action errors when onlyValidating is true and sanitizations are triggered',
             () async {
               final paymentInRequest =
                   EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
@@ -1390,6 +2025,9 @@ void main() {
 
               fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity()
                   .copyWith(
+                    customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                      paymentFinalizations: const [],
+                    ),
                     products: [
                       EntityFactory.makeBSFProductItemEntity().copyWith(
                         annulDeliveryTax: !isProductLevel,
@@ -1443,7 +2081,7 @@ void main() {
 
               final actions = controller.updateRequestType(
                 newRequestType,
-                force: false,
+                onlyValidating: true,
               );
 
               expect(
@@ -1457,7 +2095,7 @@ void main() {
               );
 
               final state = container.read(insertUpdateStateControllerProvider);
-              // Request type should not have been updated since force was false and there were errors
+              // Request type should not have been updated since onlyValidating was true and there were errors
               expect(state.value!.requestType, isNot(newRequestType));
 
               // Payments, discounts, increment and deliveryTax should NOT be modified
@@ -1478,7 +2116,7 @@ void main() {
           );
 
           test(
-            'Should update state and apply sanitizations directly when force is true',
+            'Should update state and apply sanitizations directly when onlyValidating is false',
             () async {
               final paymentInRequest =
                   EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
@@ -1491,6 +2129,9 @@ void main() {
 
               fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity()
                   .copyWith(
+                    customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                      paymentFinalizations: const [],
+                    ),
                     products: [
                       EntityFactory.makeBSFProductItemEntity().copyWith(
                         annulDeliveryTax: !isProductLevel,
@@ -1544,13 +2185,13 @@ void main() {
 
               final actions = controller.updateRequestType(
                 newRequestType,
-                force: true,
+                onlyValidating: false,
               );
 
               expect(actions, isEmpty);
 
               final state = container.read(insertUpdateStateControllerProvider);
-              // Request type should have been updated since force was true
+              // Request type should have been updated since onlyValidating was false
               expect(state.value!.requestType, newRequestType);
 
               // Incompatible payments, discounts, increment and deliveryTax should be correctly cleared/annulled
