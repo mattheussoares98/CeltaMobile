@@ -138,6 +138,7 @@ class BSFSaleRequestEntity extends Equatable {
     bool? annulDeliveryTax,
     bool? annulCustomer,
     bool? annulSeller,
+    bool? annulDiscounts,
     BSFEmployeeEntity? seller,
   }) {
     return BSFSaleRequestEntity(
@@ -164,7 +165,7 @@ class BSFSaleRequestEntity extends Equatable {
       isOnExpedition: isOnExpedition ?? this.isOnExpedition,
       freight: freight ?? this.freight,
       products: products ?? this.products,
-      discounts: discounts ?? this.discounts,
+      discounts: annulDiscounts == true ? null : discounts ?? this.discounts,
       seller: annulSeller == true ? null : seller ?? this.seller,
     );
   }

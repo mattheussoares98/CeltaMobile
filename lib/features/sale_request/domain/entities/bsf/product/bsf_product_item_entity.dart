@@ -1,7 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFProductItemEntity extends Equatable {
   final BSFProductDetailsEntity? product;
@@ -85,6 +84,9 @@ class BSFProductItemEntity extends Equatable {
     BSFIcmsEntity? icms,
     BSFIpiEntity? ipi,
     BSFPriceCostEntity? priceCost,
+    bool? annulIncrement,
+    bool? annulDeliveryTax,
+    bool? annulDiscounts,
   }) {
     return BSFProductItemEntity(
       product: product ?? this.product,
@@ -92,10 +94,12 @@ class BSFProductItemEntity extends Equatable {
       compositionChilds: compositionChilds ?? this.compositionChilds,
       eanCode: eanCode ?? this.eanCode,
       freight: freight ?? this.freight,
-      discounts: discounts ?? this.discounts,
+      discounts: annulDiscounts == true ? null : discounts ?? this.discounts,
       expectedDeliveryDate: expectedDeliveryDate ?? this.expectedDeliveryDate,
-      deliveryTax: deliveryTax ?? this.deliveryTax,
-      increment: increment ?? this.increment,
+      deliveryTax: annulDeliveryTax == true
+          ? null
+          : deliveryTax ?? this.deliveryTax,
+      increment: annulIncrement == true ? null : increment ?? this.increment,
       creditOnOrigin: creditOnOrigin ?? this.creditOnOrigin,
       compensation: compensation ?? this.compensation,
       productPackingCode: productPackingCode ?? this.productPackingCode,

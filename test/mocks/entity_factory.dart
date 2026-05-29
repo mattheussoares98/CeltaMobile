@@ -938,15 +938,15 @@ class EntityFactory {
         makeBuyQuotationEnterpriseEntity(enterpriseCode: enterpriseCodes[2]),
       ],
       Products: [
-        _makeBuyQuotationProductsEntity(
+        makeBuyQuotationProductsEntity(
           productPackingCode: faker.randomGenerator.integer(100),
           enterpriseCodes: enterpriseCodes,
         ),
-        _makeBuyQuotationProductsEntity(
+        makeBuyQuotationProductsEntity(
           productPackingCode: faker.randomGenerator.integer(200, min: 101),
           enterpriseCodes: enterpriseCodes,
         ),
-        _makeBuyQuotationProductsEntity(
+        makeBuyQuotationProductsEntity(
           productPackingCode: faker.randomGenerator.integer(300, min: 201),
           enterpriseCodes: enterpriseCodes,
         ),
@@ -968,27 +968,27 @@ class EntityFactory {
     ),
   );
 
-  static BuyQuotationProductsEntity _makeBuyQuotationProductsEntity({
+  static BuyQuotationProductsEntity makeBuyQuotationProductsEntity({
     int? productPackingCode,
     List<int>? enterpriseCodes,
   }) => BuyQuotationProductsEntity(
     Code: faker.randomGenerator.integer(100),
     Product: makeProductEntity(productPackingCode: productPackingCode),
     ProductEnterprises: [
-      _makeBuyQuotationProductEnterpriseEntity(
+      makeBuyQuotationProductEnterpriseEntity(
         enterpriseCode: enterpriseCodes?[0],
       ),
-      _makeBuyQuotationProductEnterpriseEntity(
+      makeBuyQuotationProductEnterpriseEntity(
         enterpriseCode: enterpriseCodes?[1],
       ),
-      _makeBuyQuotationProductEnterpriseEntity(
+      makeBuyQuotationProductEnterpriseEntity(
         enterpriseCode: enterpriseCodes?[2],
       ),
     ],
   );
 
   static BuyQuotationProductEnterpriseEntity
-  _makeBuyQuotationProductEnterpriseEntity({int? enterpriseCode}) =>
+  makeBuyQuotationProductEnterpriseEntity({int? enterpriseCode}) =>
       BuyQuotationProductEnterpriseEntity(
         Code: faker.randomGenerator.integer(100),
         EnterpriseCode: enterpriseCode ?? faker.randomGenerator.integer(100),
@@ -1058,9 +1058,9 @@ class EntityFactory {
         instructions: faker.lorem.sentence(),
         observations: faker.lorem.sentence(),
         financials: [
-          _makeBSFFinancialEntity(),
-          _makeBSFFinancialEntity(),
-          _makeBSFFinancialEntity(),
+          makeBSFFinancialEntity(),
+          makeBSFFinancialEntity(),
+          makeBSFFinancialEntity(),
         ],
         requestType: makeBSFRequestTypeEntity(),
         enterprise: BSFEnterpriseEntity(
@@ -1104,14 +1104,14 @@ class EntityFactory {
           addressType: faker.randomGenerator.integer(100),
         ),
         deliveryTax: BSFDeliveryTaxWrapperEntity(
-          deliveryTax: _makeBSFValueTypeEntity(),
+          deliveryTax: makeBSFValueTypeEntity(),
           mailFreightType: const {},
           isFob: faker.randomGenerator.boolean(),
           isDiscounted: faker.randomGenerator.boolean(),
         ),
-        increment: _makeBSFValueTypeEntity(),
-        financialIncrement: _makeBSFValueTypeEntity(),
-        financialDiscount: _makeBSFValueTypeEntity(),
+        increment: makeBSFValueTypeEntity(),
+        financialIncrement: makeBSFValueTypeEntity(),
+        financialDiscount: makeBSFValueTypeEntity(),
         totalLiquid: faker.randomGenerator.decimal(),
         expeditionControlCode: faker.randomGenerator.integer(100),
         isOnExpedition: faker.randomGenerator.boolean(),
@@ -1119,8 +1119,8 @@ class EntityFactory {
           value: faker.randomGenerator.decimal(),
           freightValueProrated: faker.randomGenerator.decimal(),
           security: faker.randomGenerator.decimal(),
-          discount: _makeBSFValueTypeEntity(),
-          increment: _makeBSFValueTypeEntity(),
+          discount: makeBSFValueTypeEntity(),
+          increment: makeBSFValueTypeEntity(),
           type: faker.randomGenerator.integer(100),
           icmsAliquot: faker.randomGenerator.decimal(),
           irrf: faker.randomGenerator.decimal(),
@@ -1134,11 +1134,14 @@ class EntityFactory {
           dateOfEntrance: faker.date.dateTime(),
         ),
         products: [
-          _makeBSFProductItemEntity(),
-          _makeBSFProductItemEntity(),
-          _makeBSFProductItemEntity(),
+          makeBSFProductItemEntity(),
+          makeBSFProductItemEntity(),
+          makeBSFProductItemEntity(),
         ],
-        discounts: const [],
+        discounts: [
+          makeBSFProductDiscountEntity(),
+          makeBSFProductDiscountEntity(),
+        ],
         seller: makeBSFEmployeeEntity(),
       );
 
@@ -1250,19 +1253,19 @@ class EntityFactory {
     saleBlockadeInstruction: makeBsfSaleBlockadeInstructionEntity(),
   );
 
-  static BSFFinancialEntity _makeBSFFinancialEntity() => BSFFinancialEntity(
+  static BSFFinancialEntity makeBSFFinancialEntity() => BSFFinancialEntity(
     paymentFinalizations: [
-      _makeBSFPaymentFinalizationWrapperEntity(),
-      _makeBSFPaymentFinalizationWrapperEntity(),
-      _makeBSFPaymentFinalizationWrapperEntity(),
+      makeBSFPaymentFinalizationWrapperEntity(),
+      makeBSFPaymentFinalizationWrapperEntity(),
+      makeBSFPaymentFinalizationWrapperEntity(),
     ],
     paybackValue: faker.randomGenerator.decimal(),
   );
 
   static BSFPaymentFinalizationWrapperEntity
-  _makeBSFPaymentFinalizationWrapperEntity() =>
+  makeBSFPaymentFinalizationWrapperEntity() =>
       BSFPaymentFinalizationWrapperEntity(
-        paymentFinalization: _makeBSFPaymentFinalizationEntity(),
+        paymentFinalization: makeBSFPaymentFinalizationEntity(),
         value: faker.randomGenerator.decimal(),
         financialIncrement: faker.randomGenerator.decimal(),
         financialDiscount: faker.randomGenerator.decimal(),
@@ -1275,12 +1278,12 @@ class EntityFactory {
         creditCardNumber: faker.randomGenerator.numberOfLength(16),
         creditCardValidate: faker.date.dateTime(),
         portions: const [],
-        userAuthorization: _makeBSFUserAuthorizationEntity(),
+        userAuthorization: makeBSFUserAuthorizationEntity(),
       );
 
-  static BSFPaymentFinalizationEntity _makeBSFPaymentFinalizationEntity() =>
+  static BSFPaymentFinalizationEntity makeBSFPaymentFinalizationEntity() =>
       BSFPaymentFinalizationEntity(
-        paymentForm: _makeBSFPaymentFormEntity(),
+        paymentForm: makeBSFPaymentFormEntity(),
         Description: faker.lorem.word(),
         code: faker.randomGenerator.integer(100),
         isDeactivate: faker.randomGenerator.boolean(),
@@ -1315,7 +1318,7 @@ class EntityFactory {
         allowsEletronicCheckPredated: faker.randomGenerator.boolean(),
       );
 
-  static BSFPaymentFormEntity _makeBSFPaymentFormEntity() =>
+  static BSFPaymentFormEntity makeBSFPaymentFormEntity() =>
       BSFPaymentFormEntity(
         type: PaymentFormType.values.elementAt(
           faker.randomGenerator.integer(PaymentFormType.values.length),
@@ -1324,17 +1327,17 @@ class EntityFactory {
         name: faker.lorem.word(),
       );
 
-  static BSFUserAuthorizationEntity _makeBSFUserAuthorizationEntity() =>
+  static BSFUserAuthorizationEntity makeBSFUserAuthorizationEntity() =>
       BSFUserAuthorizationEntity(identification: faker.lorem.word());
 
-  static BSFValueTypeEntity _makeBSFValueTypeEntity() => BSFValueTypeEntity(
+  static BSFValueTypeEntity makeBSFValueTypeEntity() => BSFValueTypeEntity(
     type: PercentageOrValue.values.elementAt(
       faker.randomGenerator.integer(PercentageOrValue.values.length),
     ),
     value: faker.randomGenerator.decimal(),
   );
 
-  static BSFIcmsEntity _makeBSFIcmsEntity() => BSFIcmsEntity(
+  static BSFIcmsEntity makeBSFIcmsEntity() => BSFIcmsEntity(
     taxOnState: faker.randomGenerator.decimal(),
     haveCovenantBetweenStates: faker.randomGenerator.boolean(),
     utilizeIVASTAdjusted: faker.randomGenerator.boolean(),
@@ -1368,13 +1371,13 @@ class EntityFactory {
     originalAliquot: faker.randomGenerator.decimal(),
     fiscalAdjustCode: faker.randomGenerator.integer(100).toString(),
     fiscalBenefitCode: faker.randomGenerator.integer(100).toString(),
-    tributarySituation: _makeBSFTributarySituationEntity(),
+    tributarySituation: makeBSFTributarySituationEntity(),
     fiscalObservation: faker.lorem.word(),
     fiscalAdjustObservation: faker.lorem.word(),
     stateInternalIcms: faker.randomGenerator.decimal(),
   );
 
-  static BSFIpiEntity _makeBSFIpiEntity() => BSFIpiEntity(
+  static BSFIpiEntity makeBSFIpiEntity() => BSFIpiEntity(
     aliquot: faker.randomGenerator.decimal(),
     type: faker.randomGenerator.integer(100),
     tributarySituation: faker.lorem.word(),
@@ -1382,7 +1385,7 @@ class EntityFactory {
     isValid: faker.randomGenerator.boolean(),
   );
 
-  static BSFTributarySituationEntity _makeBSFTributarySituationEntity() =>
+  static BSFTributarySituationEntity makeBSFTributarySituationEntity() =>
       BSFTributarySituationEntity(
         code: faker.randomGenerator.integer(100).toString(),
         description: faker.lorem.word(),
@@ -1396,12 +1399,12 @@ class EntityFactory {
         tributation: faker.randomGenerator.integer(100),
       );
 
-  static BSFProductItemEntity _makeBSFProductItemEntity() =>
+  static BSFProductItemEntity makeBSFProductItemEntity() =>
       BSFProductItemEntity(
         productPackingCode: faker.randomGenerator.integer(100),
         code: faker.randomGenerator.integer(100),
-        icms: _makeBSFIcmsEntity(),
-        ipi: _makeBSFIpiEntity(),
+        icms: makeBSFIcmsEntity(),
+        ipi: makeBSFIpiEntity(),
         product: BSFProductDetailsEntity(
           name: faker.food.dish(),
           code: faker.randomGenerator.integer(100),
@@ -1445,30 +1448,30 @@ class EntityFactory {
           productPackingQuantity: faker.randomGenerator.decimal(),
           productPackingPriceLookUpString: faker.lorem.word(),
         ),
-        fiscalCode: _makeBSFFiscalCodeEntity(),
+        fiscalCode: makeBSFFiscalCodeEntity(),
         compositionChilds: const [],
         eanCode: faker.randomGenerator.numberOfLength(13),
         freight: BSFProductFreightEntity(
-          discount: _makeBSFValueTypeEntity(),
-          increment: _makeBSFValueTypeEntity(),
+          discount: makeBSFValueTypeEntity(),
+          increment: makeBSFValueTypeEntity(),
           value: faker.randomGenerator.decimal(),
         ),
         discounts: [
-          _makeBSFProductDiscountEntity(),
-          _makeBSFProductDiscountEntity(),
-          _makeBSFProductDiscountEntity(),
+          makeBSFProductDiscountEntity(),
+          makeBSFProductDiscountEntity(),
+          makeBSFProductDiscountEntity(),
         ],
         expectedDeliveryDate: faker.date.dateTime(),
-        deliveryTax: _makeBSFValueTypeEntity(),
-        increment: _makeBSFValueTypeEntity(),
-        creditOnOrigin: _makeBSFValueTypeEntity(),
-        compensation: _makeBSFValueTypeEntity(),
+        deliveryTax: makeBSFValueTypeEntity(),
+        increment: makeBSFValueTypeEntity(),
+        creditOnOrigin: makeBSFValueTypeEntity(),
+        compensation: makeBSFValueTypeEntity(),
         quantity: faker.randomGenerator.decimal(),
         value: faker.randomGenerator.decimal(),
-        priceCost: _makeBSFPriceCostEntity(),
+        priceCost: makeBSFPriceCostEntity(),
       );
 
-  static BSFPriceCostEntity _makeBSFPriceCostEntity() => BSFPriceCostEntity(
+  static BSFPriceCostEntity makeBSFPriceCostEntity() => BSFPriceCostEntity(
     saleRetailPricePractice: faker.randomGenerator.decimal(),
     lastSaleRetailPrice: faker.randomGenerator.decimal(),
     wholeSalePricePractice: faker.randomGenerator.decimal(),
@@ -1522,9 +1525,9 @@ class EntityFactory {
     salePracticedInECommerce: faker.randomGenerator.decimal(),
   );
 
-  static BSFFiscalCodeEntity _makeBSFFiscalCodeEntity() => BSFFiscalCodeEntity(
-    code: _makeBSFFiscalCodeValueEntity(code: '5405', isValid: true),
-    codeCompensation: _makeBSFFiscalCodeValueEntity(code: '', isValid: false),
+  static BSFFiscalCodeEntity makeBSFFiscalCodeEntity() => BSFFiscalCodeEntity(
+    code: makeBSFFiscalCodeValueEntity(code: '5405', isValid: true),
+    codeCompensation: makeBSFFiscalCodeValueEntity(code: '', isValid: false),
     description: faker.lorem.sentence(),
     fiscalObservation: faker.randomGenerator.boolean()
         ? faker.lorem.sentence()
@@ -1588,7 +1591,7 @@ class EntityFactory {
     isInterstateSaleSubstitutionForConsumption: faker.randomGenerator.boolean(),
   );
 
-  static BSFFiscalCodeValueEntity _makeBSFFiscalCodeValueEntity({
+  static BSFFiscalCodeValueEntity makeBSFFiscalCodeValueEntity({
     required String code,
     required bool isValid,
   }) => BSFFiscalCodeValueEntity(
@@ -1597,13 +1600,13 @@ class EntityFactory {
     isValid: isValid,
   );
 
-  static BSFDiscountEntity _makeBSFProductDiscountEntity() => BSFDiscountEntity(
+  static BSFDiscountEntity makeBSFProductDiscountEntity() => BSFDiscountEntity(
     order: faker.randomGenerator.integer(100),
-    discountOrigin: DiscountOrigin.values[
-        faker.randomGenerator.integer(DiscountOrigin.values.length)],
+    discountOrigin: DiscountOrigin
+        .values[faker.randomGenerator.integer(DiscountOrigin.values.length)],
     user: faker.lorem.word(),
     justification: faker.lorem.word(),
-    discount: _makeBSFValueTypeEntity(),
+    discount: makeBSFValueTypeEntity(),
   );
 
   static AdjustCostParametersEntity makeAdjustCostParametersEntity() =>
@@ -1630,25 +1633,6 @@ class EntityFactory {
             )],
         ActualizeDataAfterUpdate: faker.randomGenerator.boolean(),
         UpdateEnterpriseGroup: faker.randomGenerator.boolean(),
-      );
-  static BSFPaymentFinalizationEntity makeBSFPaymentFinalizationEntity() =>
-      BSFPaymentFinalizationEntity(
-        paymentForm: _makeBSFPaymentFormEntity(),
-        Description: faker.lorem.word(),
-        code: faker.randomGenerator.integer(100),
-        isDeactivate: faker.randomGenerator.boolean(),
-        isDeactivateString: faker.lorem.word(),
-        actionCheckType: ActionCheckType.values.elementAt(
-          faker.randomGenerator.integer(ActionCheckType.values.length),
-        ),
-        cardTerminalType: CardTerminalType.values.elementAt(
-          faker.randomGenerator.integer(CardTerminalType.values.length),
-        ),
-        planCode: faker.lorem.word(),
-        financialTax: faker.randomGenerator.decimal(),
-        identificationCode: faker.lorem.word(),
-        identificationTefFlagCode: faker.lorem.word(),
-        action: makeBSFPaymentActionEntity(),
       );
 
   static BSFRequestTypeEntity makeBSFRequestTypeEntity() =>
@@ -1703,11 +1687,11 @@ class EntityFactory {
     BSFValueTypeEntity? discount,
   }) => BSFDiscountEntity(
     order: faker.randomGenerator.integer(100),
-    discountOrigin: DiscountOrigin.values[
-        faker.randomGenerator.integer(DiscountOrigin.values.length)],
+    discountOrigin: DiscountOrigin
+        .values[faker.randomGenerator.integer(DiscountOrigin.values.length)],
     user: faker.lorem.word(),
     justification: faker.lorem.word(),
-    discount: discount ?? _makeBSFValueTypeEntity(),
+    discount: discount ?? makeBSFValueTypeEntity(),
   );
 
   static UtilizationParametersEntity makeUtilizationParametersEntity() =>

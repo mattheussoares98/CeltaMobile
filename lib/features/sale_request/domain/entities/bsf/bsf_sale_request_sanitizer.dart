@@ -2,8 +2,9 @@
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
-enum BSFSaleRequestSanitizationAction {
+enum BSFSaleRequestSanitizationType {
   paymentsCleared(message: 'As formas de pagamento atuais serão removidas'),
   discountsReset(message: 'Os descontos serão removidos'),
   incrementsReset(message: 'Os acréscimos serão removidos'),
@@ -11,7 +12,44 @@ enum BSFSaleRequestSanitizationAction {
 
   final String message;
 
-  const BSFSaleRequestSanitizationAction({required this.message});
+  const BSFSaleRequestSanitizationType({required this.message});
+}
+
+class BSFSaleRequestSanitizationAction extends Equatable {
+  final BSFSaleRequestSanitizationType type;
+  final List<String> details;
+
+  const BSFSaleRequestSanitizationAction({
+    required this.type,
+    this.details = const [],
+  });
+
+  String get message {
+    if (type == BSFSaleRequestSanitizationType.paymentsCleared &&
+        details.isNotEmpty) {
+      return 'As seguintes formas de pagamento serão removidas: ${details.join(", ")}';
+    }
+    return type.message;
+  }
+
+  static const discountsReset = BSFSaleRequestSanitizationAction(
+    type: BSFSaleRequestSanitizationType.discountsReset,
+  );
+
+  static const incrementsReset = BSFSaleRequestSanitizationAction(
+    type: BSFSaleRequestSanitizationType.incrementsReset,
+  );
+
+  static const deliveryTaxReset = BSFSaleRequestSanitizationAction(
+    type: BSFSaleRequestSanitizationType.deliveryTaxReset,
+  );
+
+  static const paymentsCleared = BSFSaleRequestSanitizationAction(
+    type: BSFSaleRequestSanitizationType.paymentsCleared,
+  );
+
+  @override
+  List<Object?> get props => [type, details];
 }
 
 class BSFSaleRequestSanitizer {
@@ -28,22 +66,36 @@ class BSFSaleRequestSanitizer {
     final requestTypePayments = newRequestType.paymentFinalizations;
 
     // Correctly check if wrapper's internal paymentFinalization is not allowed in requestTypePayments
-    final paymentsThatMustBeCleaned = salePayments?.where(
-      (e) =>
-          e.paymentFinalization != null &&
-          !(requestTypePayments?.contains(e.paymentFinalization) ?? false),
-    ).toList();
+    final paymentsThatMustBeCleaned = salePayments
+        ?.where(
+          (e) =>
+              e.paymentFinalization != null &&
+              !(requestTypePayments?.contains(e.paymentFinalization) ?? false),
+        )
+        .toList();
 
     final List<BSFSaleRequestSanitizationAction> actions = [];
 
     // 1. Sanitize Payments (clear only incompatible ones)
     if (paymentsThatMustBeCleaned?.isNotEmpty ?? false) {
-      actions.add(BSFSaleRequestSanitizationAction.paymentsCleared);
-      final financials = List<BSFFinancialEntity>.from(updatedState.financials ?? []);
+      final names = paymentsThatMustBeCleaned!
+          .map((e) => e.paymentFinalization?.Description ?? '')
+          .where((name) => name.isNotEmpty)
+          .toList();
+
+      actions.add(
+        BSFSaleRequestSanitizationAction(
+          type: BSFSaleRequestSanitizationType.paymentsCleared,
+          details: names,
+        ),
+      );
+      final financials = List<BSFFinancialEntity>.from(
+        updatedState.financials ?? [],
+      );
       if (financials.isNotEmpty) {
         financials[0] = financials[0].copyWith(
           paymentFinalizations: salePayments
-              ?.where((e) => !paymentsThatMustBeCleaned!.contains(e))
+              ?.where((e) => !paymentsThatMustBeCleaned.contains(e))
               .toList(),
         );
       }
@@ -53,19 +105,36 @@ class BSFSaleRequestSanitizer {
     // 2. Sanitize Discounts
     if (newRequestType.allowUseDiscount != true && current.totalDiscount > 0) {
       actions.add(BSFSaleRequestSanitizationAction.discountsReset);
-      updatedState = updatedState.copyWith(discounts: const []);
+      updatedState = updatedState.copyWith(
+        discounts: const [],
+        products: updatedState.products
+            ?.map((p) => p.copyWith(discounts: const []))
+            .toList(),
+      );
     }
 
     // 3. Sanitize Increments
-    if (newRequestType.allowUseIncrement != true && current.totalIncrement > 0) {
+    if (newRequestType.allowUseIncrement != true &&
+        current.totalIncrement > 0) {
       actions.add(BSFSaleRequestSanitizationAction.incrementsReset);
-      updatedState = updatedState.copyWith(annulIncrement: true);
+      updatedState = updatedState.copyWith(
+        annulIncrement: true,
+        products: updatedState.products
+            ?.map((p) => p.copyWith(annulIncrement: true))
+            .toList(),
+      );
     }
 
     // 4. Sanitize Delivery Tax (Freight)
-    if (newRequestType.allowUseDeliveryTax != true && current.totalFreight > 0) {
+    if (newRequestType.allowUseDeliveryTax != true &&
+        current.totalFreight > 0) {
       actions.add(BSFSaleRequestSanitizationAction.deliveryTaxReset);
-      updatedState = updatedState.copyWith(annulDeliveryTax: true);
+      updatedState = updatedState.copyWith(
+        annulDeliveryTax: true,
+        products: updatedState.products
+            ?.map((p) => p.copyWith(annulDeliveryTax: true))
+            .toList(),
+      );
     }
 
     return (updatedState, actions);

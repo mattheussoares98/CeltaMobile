@@ -1211,41 +1211,263 @@ void main() {
       );
     });
 
-    group('updateRequestType', () {
-      test('Should update request type when state is AsyncData', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+    group("Update request type", () {
+      test(
+        'Should update request type and return no errors when no sanitization is needed',
+        () async {
+          final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
+            allowUseDiscount: true,
+            allowUseIncrement: true,
+            allowUseDeliveryTax: true,
+            paymentFinalizations: [],
+          );
 
-        final controller = container.read(
-          insertUpdateStateControllerProvider.notifier,
-        );
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            requestType: requestType,
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: const [],
+          );
 
-        await container.read(insertUpdateStateControllerProvider.future);
+          final container = makeProviderContainer(saleRequestId: 1);
 
-        final requestType = EntityFactory.makeBSFRequestTypeEntity();
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
 
-        controller.updateRequestType(requestType);
+          await container.read(insertUpdateStateControllerProvider.future);
 
-        final state = container.read(insertUpdateStateControllerProvider);
-        expect(state.value!.requestType, requestType);
-      });
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
 
-      test('Should do nothing if state is not AsyncData', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+          final actions = controller.updateRequestType(newRequestType);
 
-        final controller = container.read(
-          insertUpdateStateControllerProvider.notifier,
-        );
+          expect(actions, isEmpty);
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, newRequestType);
+        },
+      );
 
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          code: 99,
-          name: 'Test Request Type',
-        );
+      for (final isProductLevel in [true, false]) {
+        group('(isProductLevel: $isProductLevel)', () {
+          test(
+            'Should fail and return all action errors when force is false and sanitizations are triggered',
+            () async {
+              final paymentInRequest =
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: 1,
+                  );
+              final paymentNotInRequest =
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: 2,
+                  );
 
-        controller.updateRequestType(requestType);
+              fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity()
+                  .copyWith(
+                    products: [
+                      EntityFactory.makeBSFProductItemEntity().copyWith(
+                        annulDeliveryTax: !isProductLevel,
+                        annulIncrement: !isProductLevel,
+                        annulDiscounts: !isProductLevel,
+                      ),
+                    ],
+                    annulDeliveryTax: isProductLevel,
+                    annulIncrement: isProductLevel,
+                    annulDiscounts: isProductLevel,
+                    financials: [
+                      BSFFinancialEntity(
+                        paymentFinalizations: [
+                          BSFPaymentFinalizationWrapperEntity(
+                            paymentFinalization: paymentNotInRequest,
+                            value: 100.0,
+                            financialIncrement: 0,
+                            financialDiscount: 0,
+                            quantityOfPortions: 1,
+                            tefSequencialUniqueNumber: null,
+                            tefAutorizationCreditCode: null,
+                            devolutionCreditCode: null,
+                            identificationCode: null,
+                            paymentCondition: null,
+                            creditCardNumber: null,
+                            creditCardValidate: null,
+                            portions: null,
+                            userAuthorization: null,
+                          ),
+                        ],
+                        paybackValue: 0,
+                      ),
+                    ],
+                  );
 
-        final state = container.read(insertUpdateStateControllerProvider);
-        expect(state, isA<AsyncLoading>());
-      });
+              final container = makeProviderContainer(saleRequestId: 1);
+
+              final controller = container.read(
+                insertUpdateStateControllerProvider.notifier,
+              );
+
+              await container.read(insertUpdateStateControllerProvider.future);
+
+              final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+                  .copyWith(
+                    allowUseDiscount: false,
+                    allowUseIncrement: false,
+                    allowUseDeliveryTax: false,
+                    paymentFinalizations: [paymentInRequest],
+                  );
+
+              final actions = controller.updateRequestType(
+                newRequestType,
+                force: false,
+              );
+
+              expect(
+                actions,
+                containsAll([
+                  BSFSaleRequestSanitizationAction.paymentsCleared,
+                  BSFSaleRequestSanitizationAction.discountsReset,
+                  BSFSaleRequestSanitizationAction.incrementsReset,
+                  BSFSaleRequestSanitizationAction.deliveryTaxReset,
+                ]),
+              );
+
+              final state = container.read(insertUpdateStateControllerProvider);
+              // Request type should not have been updated since force was false and there were errors
+              expect(state.value!.requestType, isNot(newRequestType));
+
+              // Payments, discounts, increment and deliveryTax should NOT be modified
+              expect(
+                state.value!.financials!.first.paymentFinalizations,
+                isNotEmpty,
+              );
+              if (isProductLevel) {
+                expect(state.value!.products!.first.discounts, isNotEmpty);
+                expect(state.value!.products!.first.increment, isNotNull);
+                expect(state.value!.products!.first.deliveryTax, isNotNull);
+              } else {
+                expect(state.value!.discounts, isNotEmpty);
+                expect(state.value!.increment, isNotNull);
+                expect(state.value!.deliveryTax, isNotNull);
+              }
+            },
+          );
+
+          test(
+            'Should update state and apply sanitizations directly when force is true',
+            () async {
+              final paymentInRequest =
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: 1,
+                  );
+              final paymentNotInRequest =
+                  EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                    code: 2,
+                  );
+
+              fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity()
+                  .copyWith(
+                    products: [
+                      EntityFactory.makeBSFProductItemEntity().copyWith(
+                        annulDeliveryTax: !isProductLevel,
+                        annulIncrement: !isProductLevel,
+                        annulDiscounts: !isProductLevel,
+                      ),
+                    ],
+                    annulDeliveryTax: isProductLevel,
+                    annulIncrement: isProductLevel,
+                    annulDiscounts: isProductLevel,
+                    financials: [
+                      BSFFinancialEntity(
+                        paymentFinalizations: [
+                          BSFPaymentFinalizationWrapperEntity(
+                            paymentFinalization: paymentNotInRequest,
+                            value: 100.0,
+                            financialIncrement: 0,
+                            financialDiscount: 0,
+                            quantityOfPortions: 1,
+                            tefSequencialUniqueNumber: null,
+                            tefAutorizationCreditCode: null,
+                            devolutionCreditCode: null,
+                            identificationCode: null,
+                            paymentCondition: null,
+                            creditCardNumber: null,
+                            creditCardValidate: null,
+                            portions: null,
+                            userAuthorization: null,
+                          ),
+                        ],
+                        paybackValue: 0,
+                      ),
+                    ],
+                  );
+
+              final container = makeProviderContainer(saleRequestId: 1);
+
+              final controller = container.read(
+                insertUpdateStateControllerProvider.notifier,
+              );
+
+              await container.read(insertUpdateStateControllerProvider.future);
+
+              final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+                  .copyWith(
+                    allowUseDiscount: false,
+                    allowUseIncrement: false,
+                    allowUseDeliveryTax: false,
+                    paymentFinalizations: [paymentInRequest],
+                  );
+
+              final actions = controller.updateRequestType(
+                newRequestType,
+                force: true,
+              );
+
+              expect(actions, isEmpty);
+
+              final state = container.read(insertUpdateStateControllerProvider);
+              // Request type should have been updated since force was true
+              expect(state.value!.requestType, newRequestType);
+
+              // Incompatible payments, discounts, increment and deliveryTax should be correctly cleared/annulled
+              expect(
+                state.value!.financials!.first.paymentFinalizations,
+                isEmpty,
+              );
+              if (isProductLevel) {
+                expect(state.value!.products!.first.discounts, isEmpty);
+                expect(state.value!.products!.first.increment, isNull);
+                expect(state.value!.products!.first.deliveryTax, isNull);
+              } else {
+                expect(state.value!.discounts, isEmpty);
+                expect(state.value!.increment, isNull);
+                expect(state.value!.deliveryTax, isNull);
+              }
+            },
+          );
+
+          test('Should do nothing if state is not AsyncData', () async {
+            final container = makeProviderContainer(saleRequestId: 0);
+
+            final controller = container.read(
+              insertUpdateStateControllerProvider.notifier,
+            );
+
+            final requestType = EntityFactory.makeBSFRequestTypeEntity()
+                .copyWith(code: 99, name: 'Test Request Type');
+
+            controller.updateRequestType(requestType);
+
+            final state = container.read(insertUpdateStateControllerProvider);
+            expect(state, isA<AsyncLoading>());
+          });
+        });
+      }
     });
   });
 }
