@@ -1328,12 +1328,12 @@ void main() {
               );
 
               expect(
-                actions,
+                actions.map((a) => a.type),
                 containsAll([
-                  BSFSaleRequestSanitizationAction.paymentsCleared,
-                  BSFSaleRequestSanitizationAction.discountsReset,
-                  BSFSaleRequestSanitizationAction.incrementsReset,
-                  BSFSaleRequestSanitizationAction.deliveryTaxReset,
+                  BSFSaleRequestSanitizationType.paymentsCleared,
+                  BSFSaleRequestSanitizationType.discountsReset,
+                  BSFSaleRequestSanitizationType.incrementsReset,
+                  BSFSaleRequestSanitizationType.deliveryTaxReset,
                 ]),
               );
 

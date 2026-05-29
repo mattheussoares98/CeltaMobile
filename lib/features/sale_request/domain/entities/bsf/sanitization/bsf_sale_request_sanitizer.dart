@@ -1,56 +1,7 @@
-// lib/features/sale_request/domain/entities/bsf/bsf_sale_request_sanitizer.dart
+// lib/features/sale_request/domain/entities/bsf/sanitization/bsf_sale_request_sanitizer.dart
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
-
-enum BSFSaleRequestSanitizationType {
-  paymentsCleared(message: 'As formas de pagamento atuais serão removidas'),
-  discountsReset(message: 'Os descontos serão removidos'),
-  incrementsReset(message: 'Os acréscimos serão removidos'),
-  deliveryTaxReset(message: 'As taxas de entrega serão removidas');
-
-  final String message;
-
-  const BSFSaleRequestSanitizationType({required this.message});
-}
-
-class BSFSaleRequestSanitizationAction extends Equatable {
-  final BSFSaleRequestSanitizationType type;
-  final List<String> details;
-
-  const BSFSaleRequestSanitizationAction({
-    required this.type,
-    this.details = const [],
-  });
-
-  String get message {
-    if (type == BSFSaleRequestSanitizationType.paymentsCleared &&
-        details.isNotEmpty) {
-      return 'As seguintes formas de pagamento serão removidas: ${details.join(", ")}';
-    }
-    return type.message;
-  }
-
-  static const discountsReset = BSFSaleRequestSanitizationAction(
-    type: BSFSaleRequestSanitizationType.discountsReset,
-  );
-
-  static const incrementsReset = BSFSaleRequestSanitizationAction(
-    type: BSFSaleRequestSanitizationType.incrementsReset,
-  );
-
-  static const deliveryTaxReset = BSFSaleRequestSanitizationAction(
-    type: BSFSaleRequestSanitizationType.deliveryTaxReset,
-  );
-
-  static const paymentsCleared = BSFSaleRequestSanitizationAction(
-    type: BSFSaleRequestSanitizationType.paymentsCleared,
-  );
-
-  @override
-  List<Object?> get props => [type, details];
-}
 
 class BSFSaleRequestSanitizer {
   /// Sanitizes state changes when the request type changes.
