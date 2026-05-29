@@ -1262,6 +1262,9 @@ void main() {
               .copyWith(code: 1);
 
           fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+            ),
             products: const [],
             discounts: const [],
             increment: null,
@@ -1299,6 +1302,74 @@ void main() {
           expect(
             state.value!.financials!.first.paymentFinalizations,
             isNotEmpty,
+          );
+        },
+      );
+
+      test(
+        'Should clear incompatible payments based on customer restrictions when new request type has no payment restrictions',
+        () async {
+          final paymentAllowedByCustomer = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 2);
+          final paymentInRequest = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 1);
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: [paymentAllowedByCustomer],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                      .copyWith(paymentFinalization: paymentInRequest),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
+
+          // Phase 1: Try updating request type without forcing. It should trigger warning.
+          final actions = controller.updateRequestType(newRequestType, force: false);
+
+          expect(actions, isNotEmpty);
+          expect(actions.first.type, BSFSaleRequestSanitizationType.paymentsCleared);
+
+          // Request type and financials should NOT be modified because force is false
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, isNot(newRequestType));
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isNotEmpty,
+          );
+
+          // Phase 2: Update request type with force: true. It should apply changes and clean the payment.
+          final actionsForced = controller.updateRequestType(newRequestType, force: true);
+
+          expect(actionsForced, isEmpty);
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, newRequestType);
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isEmpty,
           );
         },
       );
