@@ -14,16 +14,25 @@ class BSFSaleRequestSanitizer {
     var updatedState = current.copyWith(requestType: newRequestType);
 
     final salePayments = current.financials?.firstOrNull?.paymentFinalizations;
-    final requestTypePayments = newRequestType.paymentFinalizations;
 
-    // Correctly check if wrapper's internal paymentFinalization is not allowed in requestTypePayments
-    final paymentsThatMustBeCleaned = salePayments
-        ?.where(
-          (e) =>
-              e.paymentFinalization != null &&
-              !(requestTypePayments?.contains(e.paymentFinalization) ?? false),
-        )
-        .toList();
+    // 1. Unified allowed finalization and action codes
+    final allowedFinalizationCodes = {
+      ...?newRequestType.paymentFinalizations?.map((e) => e.code),
+      ...?current.customer?.paymentFinalizations?.map((e) => e.code),
+    };
+
+    final hasPaymentRestrictions =
+        newRequestType.paymentFinalizations?.isNotEmpty == true ||
+        current.customer?.paymentFinalizations?.isNotEmpty == true;
+
+    final paymentsThatMustBeCleaned = hasPaymentRestrictions
+        ? salePayments?.where((e) {
+            final payment = e.paymentFinalization;
+            if (payment == null) return true;
+
+            return !allowedFinalizationCodes.contains(payment.code);
+          }).toList()
+        : <BSFPaymentFinalizationWrapperEntity>[];
 
     final List<BSFSaleRequestSanitizationAction> actions = [];
 

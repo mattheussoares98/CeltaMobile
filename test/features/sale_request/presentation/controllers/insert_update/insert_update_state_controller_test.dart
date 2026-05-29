@@ -1255,6 +1255,54 @@ void main() {
         },
       );
 
+      test(
+        'Should preserve existing payments when new request type has no payment restrictions (empty finalizations)',
+        () async {
+          final payment = EntityFactory.makeBSFPaymentFinalizationEntity()
+              .copyWith(code: 1);
+
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [
+              BSFFinancialEntity(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                      .copyWith(paymentFinalization: payment),
+                ],
+                paybackValue: 0,
+              ),
+            ],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
+
+          final actions = controller.updateRequestType(newRequestType);
+
+          expect(actions, isEmpty);
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.requestType, newRequestType);
+          expect(
+            state.value!.financials!.first.paymentFinalizations,
+            isNotEmpty,
+          );
+        },
+      );
+
       for (final isProductLevel in [true, false]) {
         group('(isProductLevel: $isProductLevel)', () {
           test(
