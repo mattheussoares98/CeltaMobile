@@ -21,33 +21,68 @@ class RequestTypeDropDown extends ConsumerWidget {
       enterpriseCode,
     );
 
-    final selectedRequest = ref.watch(
-      insertUpdateStateControllerProvider.select((s) => s.value?.requestType),
-    );
+    return Consumer(
+      builder: (_, ref, _) {
+        final selectedRequest = ref.watch(
+          insertUpdateStateControllerProvider.select(
+            (s) => s.value?.requestType,
+          ),
+        );
+        return AsyncValueWidget(
+          value: ref.watch(provider),
+          tryAgain: () => ref.invalidate(provider),
+          data: (requestTypes) {
+            if (requestTypes?.isEmpty ?? true) return const SizedBox.shrink();
 
-    return AsyncValueWidget(
-      value: ref.watch(provider),
-      tryAgain: () => ref.invalidate(provider),
-      data: (requestTypes) {
-        if (requestTypes?.isEmpty ?? true) return const SizedBox.shrink();
-
-        return DefaultDropDown<BSFRequestTypeEntity>(
-          showLabelAtTopLeft: true,
-          label: 'Modelo de pedido'.hardcoded,
-          selectedItem: selectedRequest,
-          items: requestTypes!.map((requestType) {
-            return DropdownMenuItem(
-              value: requestType,
-              child: Center(child: Text(requestType.name!)),
+            return DefaultDropDown<BSFRequestTypeEntity>(
+              showLabelAtTopLeft: true,
+              label: 'Modelo de pedido'.hardcoded,
+              selectedItem: selectedRequest,
+              items: requestTypes!.map((requestType) {
+                return DropdownMenuItem(
+                  value: requestType,
+                  child: Center(child: Text(requestType.name!)),
+                );
+              }).toList(),
+              onBeforeChange: (requestType) =>
+                  _handleBeforeChange(context, ref, requestType),
+              onChanged: (requestType) {
+                ref
+                    .read(insertUpdateStateControllerProvider.notifier)
+                    .updateRequestType(requestType, force: true);
+              },
             );
-          }).toList(),
-          onChanged: (requestType) {
-            ref
-                .read(insertUpdateStateControllerProvider.notifier)
-                .updateRequestType(requestType);
           },
         );
       },
     );
+  }
+
+  Future<bool> _handleBeforeChange(
+    BuildContext context,
+    WidgetRef ref,
+    BSFRequestTypeEntity requestType,
+  ) async {
+    final notifier = ref.read(insertUpdateStateControllerProvider.notifier);
+
+    final actions = notifier.updateRequestType(requestType, force: false);
+
+    if (actions.isNotEmpty) {
+      final confirmed = await showAlertDialog(
+        context: context,
+        title: 'Alteração do modelo de pedido'.hardcoded,
+        content:
+            'Esta alteração terá os seguintes impactos no pedido:\n\n'
+                    '${actions.map((a) => '• ${a.message}').join('\n')}\n\n'
+                    'Deseja prosseguir?'
+                .hardcoded,
+        cancelActionText: 'Cancelar'.hardcoded,
+        defaultActionText: 'Confirmar'.hardcoded,
+      );
+
+      return confirmed == true;
+    }
+
+    return true;
   }
 }

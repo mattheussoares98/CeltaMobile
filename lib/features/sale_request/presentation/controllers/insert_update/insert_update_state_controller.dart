@@ -228,10 +228,8 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
     final current = state.value!;
 
-    final (sanitizedState, actions) = BSFSaleRequestSanitizer.sanitizeRequestTypeChange(
-      current,
-      requestType,
-    );
+    final (sanitizedState, actions) =
+        BSFSaleRequestSanitizer.sanitizeRequestTypeChange(current, requestType);
 
     if (actions.isNotEmpty && !force) {
       return actions;
