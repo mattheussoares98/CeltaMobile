@@ -6,8 +6,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultDropDown<T> extends StatelessWidget {
+class DefaultDropDown<T> extends StatefulWidget {
   final void Function(T)? onChanged;
+  final Future<bool> Function(T)? onBeforeChange;
   final List<DropdownMenuItem<T>>? items;
   final Widget? hint;
   final T? selectedItem;
@@ -23,6 +24,7 @@ class DefaultDropDown<T> extends StatelessWidget {
     required this.items,
     required this.selectedItem,
     required this.label,
+    this.onBeforeChange,
     this.hint,
     this.dropdownHeight = 40,
     this.validator,
@@ -33,35 +35,42 @@ class DefaultDropDown<T> extends StatelessWidget {
   });
 
   @override
+  State<DefaultDropDown<T>> createState() => _DefaultDropDownState<T>();
+}
+
+class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
+  final _fieldKey = GlobalKey<FormFieldState<T>>();
+
+  @override
   Widget build(BuildContext context) {
     final theme = context.theme;
 
     final topLeftLabel =
-        selectedItem != null &&
-            showLabelAtTopLeft == true &&
-            label?.isNotEmpty == true
+        widget.selectedItem != null &&
+            widget.showLabelAtTopLeft == true &&
+            widget.label?.isNotEmpty == true
         ? Positioned(
             left: Sizes.p4,
             child: Text(
-              label!,
+              widget.label!,
               style: theme.textTheme.bodyMedium?.copyWith(fontSize: 10),
             ),
           )
         : null;
 
-    if (PlatformUtil.isCupertino && !isSimple) {
+    if (PlatformUtil.isCupertino && !widget.isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
-      final selectedMenuItem = items?.firstWhereOrNull(
-        (item) => item.value == selectedItem,
+      final selectedMenuItem = widget.items?.firstWhereOrNull(
+        (item) => item.value == widget.selectedItem,
       );
       return FormField(
-        validator: validator,
-        initialValue: selectedItem,
+        validator: widget.validator,
+        initialValue: widget.selectedItem,
         builder: (state) {
           return Column(
             children: [
               SizedBox(
-                height: dropdownHeight,
+                height: widget.dropdownHeight,
                 child: Stack(
                   children: [
                     ?topLeftLabel,
@@ -69,14 +78,16 @@ class DefaultDropDown<T> extends StatelessWidget {
                       disabledColor: theme.disabledColor.withAlpha(100),
                       padding: const EdgeInsets.only(left: 15),
                       color: theme.disabledColor.withAlpha(50),
-                      onPressed: onChanged == null || (items?.length ?? 0) < 1
+                      onPressed:
+                          widget.onChanged == null ||
+                              (widget.items?.length ?? 0) < 1
                           ? null
                           : () async {
-                              if (adviceMessage != null) {
+                              if (widget.adviceMessage != null) {
                                 showAlertDialog(
                                   context: context,
                                   title: 'Atenção!'.hardcoded,
-                                  content: adviceMessage!,
+                                  content: widget.adviceMessage!,
                                 );
                               }
                               if (!context.mounted) return;
@@ -84,7 +95,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                                 context: context,
                                 builder: (_) => CupertinoActionSheet(
                                   title: Text('Selecionar'.hardcoded),
-                                  actions: items!.map((item) {
+                                  actions: widget.items!.map((item) {
                                     return CupertinoActionSheetAction(
                                       onPressed: () {
                                         if (item.enabled) {
@@ -110,8 +121,15 @@ class DefaultDropDown<T> extends StatelessWidget {
                                 ),
                               );
 
-                              if (selected != null && onChanged != null) {
-                                onChanged!(selected);
+                              if (selected != null &&
+                                  widget.onChanged != null) {
+                                if (selected == widget.selectedItem) return;
+                                if (widget.onBeforeChange != null) {
+                                  final confirmed =
+                                      await widget.onBeforeChange!(selected);
+                                  if (!confirmed) return;
+                                }
+                                widget.onChanged!(selected);
                               }
                             },
                       child: Row(
@@ -128,7 +146,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                                     child: selectedMenuItem.child,
                                   )
                                 : Text(
-                                    label ?? 'Selecionar'.hardcoded,
+                                    widget.label ?? 'Selecionar'.hardcoded,
                                     maxLines: 1,
                                     style: theme.textTheme.bodyLarge,
                                     textAlign: TextAlign.center,
@@ -166,10 +184,10 @@ class DefaultDropDown<T> extends StatelessWidget {
     }
 
     final bool isDropdownEnabled =
-        onChanged != null && (items?.length ?? 0) > 0;
+        widget.onChanged != null && (widget.items?.length ?? 0) > 0;
 
     return SizedBox(
-      height: dropdownHeight,
+      height: widget.dropdownHeight,
       child: Material(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
@@ -184,26 +202,29 @@ class DefaultDropDown<T> extends StatelessWidget {
             children: [
               ?topLeftLabel,
               DropdownButtonFormField<T>(
+                key: _fieldKey,
                 autovalidateMode: AutovalidateMode.onUserInteractionIfError,
                 decoration: const InputDecoration(border: InputBorder.none),
                 isDense: true,
                 padding: const EdgeInsets.only(left: Sizes.p8),
                 dropdownColor: Colors.white,
-                validator: validator,
-                initialValue: selectedItem,
+                validator: widget.validator,
+                initialValue: widget.selectedItem,
                 isExpanded: true,
                 alignment: Alignment.center,
                 iconSize: 17,
-                onTap: adviceMessage == null
+                onTap: widget.adviceMessage == null
                     ? null
                     : () {
                         showAlertDialog(
                           context: context,
                           title: 'Atenção!'.hardcoded,
-                          content: adviceMessage!,
+                          content: widget.adviceMessage!,
                         );
                       },
-                hint: hint ?? (label != null ? Text(label!) : null),
+                hint:
+                    widget.hint ??
+                    (widget.label != null ? Text(widget.label!) : null),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: theme.textTheme.titleMedium?.fontSize,
@@ -211,12 +232,27 @@ class DefaultDropDown<T> extends StatelessWidget {
                   height: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                items: items,
-                onChanged: onChanged == null || (items?.length ?? 0) < 1
+                items: widget.items,
+                onChanged:
+                    widget.onChanged == null || (widget.items?.length ?? 0) < 1
                     ? null
-                    : (value) {
-                        if (value != null && onChanged != null) {
-                          onChanged!(value);
+                    : (value) async {
+                        if (value != null) {
+                          if (value == widget.selectedItem) return;
+                          if (widget.onBeforeChange != null) {
+                            final confirmed = await widget.onBeforeChange!(
+                              value,
+                            );
+                            if (confirmed) {
+                              widget.onChanged!(value);
+                            } else {
+                              _fieldKey.currentState?.didChange(
+                                widget.selectedItem,
+                              );
+                            }
+                          } else {
+                            widget.onChanged!(value);
+                          }
                         }
                       },
               ),
