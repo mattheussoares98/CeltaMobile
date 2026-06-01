@@ -66,10 +66,11 @@ class CustomerItem extends ConsumerWidget {
                     final notifier = ref.read(
                       insertUpdateStateControllerProvider.notifier,
                     );
-                    final actions = notifier.updateCovenant(
+                    final actions = notifier.updateCustomerOrCovenant(
                       customer,
-                      covenant,
+                      covenant: covenant,
                       onlyValidating: true,
+                      isChangingCovenant: true,
                     );
                     if (actions.isNotEmpty) {
                       final isBlocked = actions.any(
@@ -109,7 +110,12 @@ class CustomerItem extends ConsumerWidget {
 
                       if (confirmed != true) return;
                     }
-                    notifier.updateCovenant(customer, covenant, onlyValidating: false);
+                    notifier.updateCustomerOrCovenant(
+                      customer,
+                      covenant: covenant,
+                      onlyValidating: false,
+                      isChangingCovenant: true,
+                    );
                   },
                 );
               },
@@ -125,7 +131,10 @@ class CustomerItem extends ConsumerWidget {
                 insertUpdateStateControllerProvider.notifier,
               );
 
-              final actions = notifier.updateCustomer(customer, onlyValidating: true);
+              final actions = notifier.updateCustomerOrCovenant(
+                customer,
+                onlyValidating: true,
+              );
 
               if (actions.isNotEmpty) {
                 final isBlocked = actions.any(
@@ -164,7 +173,10 @@ class CustomerItem extends ConsumerWidget {
                 if (confirmed != true) return;
               }
 
-              notifier.updateCustomer(customer, onlyValidating: false);
+              notifier.updateCustomerOrCovenant(
+                customer,
+                onlyValidating: false,
+              );
             }
           : null,
     );

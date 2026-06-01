@@ -90,7 +90,10 @@ void main() {
 
       // Update the customer so processCart has a valid customerCode
       final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
-      insertUpdateStateNotifier.updateCustomer(customer, onlyValidating: false);
+      insertUpdateStateNotifier.updateCustomerOrCovenant(
+        customer,
+        onlyValidating: false,
+      );
 
       final processedRequest = fakeSaleRequest.copyWith(code: 999);
       when(
@@ -161,7 +164,10 @@ void main() {
         final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: 1,
         );
-        insertUpdateStateNotifier.updateCustomer(customer, onlyValidating: false);
+        insertUpdateStateNotifier.updateCustomerOrCovenant(
+          customer,
+          onlyValidating: false,
+        );
 
         final draftValue = container
             .read(insertUpdateStateControllerProvider)
