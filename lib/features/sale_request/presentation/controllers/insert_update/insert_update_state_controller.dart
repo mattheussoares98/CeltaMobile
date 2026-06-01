@@ -217,7 +217,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final current = state.value!;
     if (current.customer?.code != customer.code) return;
 
-    final currentCovenantCode = current.customer?.covenantCode;
+    final currentCovenantCode = current.customer?.selectedCovenant?.code;
     final updatedCovenant = customer.covenants?.firstWhereOrNull(
       (e) => e.code == currentCovenantCode,
     );

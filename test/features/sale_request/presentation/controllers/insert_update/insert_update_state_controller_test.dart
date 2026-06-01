@@ -1773,17 +1773,22 @@ void main() {
             code: 123,
           );
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
-              .copyWith(code: 1, covenants: [covenant]);
+              .copyWith(
+                code: 1,
+                covenants: [covenant],
+                selectedCovenant: covenant,
+              );
 
           controller.updateCustomerOrCovenant(
             originalCustomer,
+            covenant: covenant,
+            isChangingCovenant: true,
             onlyValidating: false,
           );
 
           final stateBefore = container.read(
             insertUpdateStateControllerProvider,
           );
-          expect(stateBefore.value!.customer!.covenantCode, 123);
           expect(stateBefore.value!.customer!.selectedCovenant, covenant);
 
           // Updated customer with new name but same covenant is still valid
@@ -1798,7 +1803,6 @@ void main() {
             insertUpdateStateControllerProvider,
           );
           expect(stateAfter.value!.customer!.name, 'Updated Customer Name');
-          expect(stateAfter.value!.customer!.covenantCode, 123);
           expect(stateAfter.value!.customer!.selectedCovenant, covenant);
         },
       );
