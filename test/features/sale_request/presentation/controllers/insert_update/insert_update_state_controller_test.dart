@@ -170,6 +170,15 @@ void main() {
           product.ProductPackingCode,
         );
         expect(state.value!.products!.first.quantity, 1);
+        expect(
+          state.value!.products!.first.value,
+          product
+              .toBSFProductItemEntity()
+              .copyWith(quantity: 1)
+              .getPriceAccordingToUnitValueTypeAndQuantities(
+                state.value!.requestType!.unitValueType!,
+              ),
+        );
       });
 
       test(
@@ -195,6 +204,15 @@ void main() {
 
           expect(state.value!.products!.length, 1);
           expect(state.value!.products!.first.quantity, 2);
+          expect(
+            state.value!.products!.first.value,
+            product
+                .toBSFProductItemEntity()
+                .copyWith(quantity: 2)
+                .getPriceAccordingToUnitValueTypeAndQuantities(
+                  state.value!.requestType!.unitValueType!,
+                ),
+          );
         },
       );
 
@@ -2007,9 +2025,10 @@ void main() {
             priceCost: priceCost,
           );
 
-          final initialRequestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: RequestUnitValueType.salePracticedRetail,
-          );
+          final initialRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                unitValueType: RequestUnitValueType.salePracticedRetail,
+              );
 
           fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
             requestType: initialRequestType,
@@ -2028,13 +2047,14 @@ void main() {
 
           await container.read(insertUpdateStateControllerProvider.future);
 
-          final newRequestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: RequestUnitValueType.salePracticedWholeSale,
-            allowUseDiscount: true,
-            allowUseIncrement: true,
-            allowUseDeliveryTax: true,
-            paymentFinalizations: [],
-          );
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                unitValueType: RequestUnitValueType.salePracticedWholeSale,
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
 
           // 1. Call with onlyValidating: true
           final actions = controller.updateRequestType(
@@ -2042,7 +2062,10 @@ void main() {
             onlyValidating: true,
           );
 
-          expect(actions, contains(BSFSaleRequestSanitizationAction.resetPrices));
+          expect(
+            actions,
+            contains(BSFSaleRequestSanitizationAction.resetPrices),
+          );
 
           // State should NOT be updated
           var state = container.read(insertUpdateStateControllerProvider);

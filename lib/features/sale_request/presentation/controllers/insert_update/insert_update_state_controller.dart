@@ -57,13 +57,25 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (product.getPrice <= 0) return;
 
     final (items, index) = _getItemsAndIndexByPlu(product.PLU);
+    final unitValueType =
+        state.value!.requestType?.unitValueType ??
+        RequestUnitValueType.salePracticedRetail;
 
     if (index != -1) {
+      final newQuantity = (items[index].quantity ?? 0) + 1;
+      final calculatedValue = items[index]
+          .copyWith(quantity: newQuantity)
+          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
       items[index] = items[index].copyWith(
-        quantity: (items[index].quantity ?? 0) + 1,
+        quantity: newQuantity,
+        value: calculatedValue,
       );
     } else {
-      items.add(product.toBSFProductItemEntity().copyWith(quantity: 1));
+      final mappedItem = product.toBSFProductItemEntity().copyWith(quantity: 1);
+      final calculatedValue = mappedItem
+          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
+      final newProduct = mappedItem.copyWith(value: calculatedValue);
+      items.add(newProduct);
     }
 
     state = AsyncData(state.value!.copyWith(products: items));
