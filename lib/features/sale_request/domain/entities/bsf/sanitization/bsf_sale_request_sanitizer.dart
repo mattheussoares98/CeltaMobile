@@ -98,6 +98,23 @@ class BSFSaleRequestSanitizer {
       );
     }
 
+    //5. Sanitize changed prices
+    if (newRequestType.unitValueType != null &&
+        newRequestType.unitValueType != current.requestType?.unitValueType) {
+      actions.add(BSFSaleRequestSanitizationAction.resetPrices);
+      updatedState = updatedState.copyWith(
+        products: updatedState.products
+            ?.map(
+              (p) => p.copyWith(
+                value: p.getPriceAccordingToUnitValueTypeAndQuantities(
+                  newRequestType.unitValueType!,
+                ),
+              ),
+            )
+            .toList(),
+      );
+    }
+
     return (updatedState, actions);
   }
 
