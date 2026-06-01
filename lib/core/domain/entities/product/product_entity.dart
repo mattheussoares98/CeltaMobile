@@ -1,8 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:equatable/equatable.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:equatable/equatable.dart';
 
 class ProductEntity extends Equatable {
   final int? EnterpriseCode;
@@ -286,7 +285,7 @@ class ProductEntity extends Equatable {
       return Value ?? 0;
     }
 
-    return RetailPracticedPrice ?? 0;
+    return PriceCost?.RetailPracticedPrice ?? RetailPracticedPrice ?? 0;
   }
 
   String get formattedPacking =>
@@ -296,20 +295,65 @@ class ProductEntity extends Equatable {
     required double quantity,
     required double? manualPrice,
   }) {
-    if (getPrice == 0 && (manualPrice ?? 0) == 0) {
-      return PracticedPriceType.notDefined;
-    } else if (manualPrice == getPrice) {
-      return PracticedPriceType.retail;
-    } else if (manualPrice == WholePracticedPrice &&
-        (WholePracticedPrice ?? 0) > 0) {
-      return PracticedPriceType.whole;
-    } else if (manualPrice != null && manualPrice > 0) {
+    // 1. If the manual price is not null, it must always return the type manual
+    if (manualPrice != null) {
       return PracticedPriceType.manual;
-    } else if ((MinimumWholeQuantity ?? 0) > 0 &&
-        (WholePracticedPrice ?? 0) > 0 &&
-        quantity >= (MinimumWholeQuantity ?? 0)) {
-      return PracticedPriceType.whole;
     }
+
+    // 2. Determine target active price considering quantity thresholds (wholesale vs. retail)
+    final double retailPrice = getPrice;
+    final double wholePrice =
+        PriceCost?.WholePracticedPrice ?? WholePracticedPrice ?? 0;
+    final double minWhole =
+        PriceCost?.MinimumWholeQuantity ?? MinimumWholeQuantity ?? 0;
+
+    final double targetPrice;
+    if (minWhole > 0 && wholePrice > 0 && quantity >= minWhole) {
+      targetPrice = wholePrice;
+    } else {
+      targetPrice = retailPrice;
+    }
+
+    // 3. Direct comparison with O(1) performance lookup
+    if (minWhole > 0 &&
+        wholePrice > 0 &&
+        quantity >= minWhole &&
+        targetPrice == wholePrice) {
+      return PracticedPriceType.whole;
+    } else if (targetPrice ==
+        (PriceCost?.RetailPracticedPrice ?? RetailPracticedPrice ?? 0)) {
+      return PracticedPriceType.retail;
+    } else if (targetPrice == wholePrice && wholePrice > 0) {
+      return PracticedPriceType.whole;
+    } else if (targetPrice ==
+        (PriceCost?.OperationalCost ?? OperationalCost ?? 0)) {
+      return PracticedPriceType.operationalCost;
+    } else if (targetPrice ==
+        (PriceCost?.ReplacementCost ?? ReplacementCost ?? 0)) {
+      return PracticedPriceType.replacementCost;
+    } else if (targetPrice ==
+        (PriceCost?.ReplacementCostMidle ?? ReplacementCostMidle ?? 0)) {
+      return PracticedPriceType.replacementCostMidle;
+    } else if (targetPrice == (PriceCost?.LiquidCost ?? LiquidCost ?? 0)) {
+      return PracticedPriceType.liquidCost;
+    } else if (targetPrice ==
+        (PriceCost?.LiquidCostMidle ?? LiquidCostMidle ?? 0)) {
+      return PracticedPriceType.liquidCostMidle;
+    } else if (targetPrice == (PriceCost?.RealCost ?? RealCost ?? 0)) {
+      return PracticedPriceType.realCost;
+    } else if (targetPrice ==
+        (PriceCost?.RealLiquidCost ?? RealLiquidCost ?? 0)) {
+      return PracticedPriceType.realLiquidCost;
+    } else if (targetPrice == (PriceCost?.FiscalCost ?? FiscalCost ?? 0)) {
+      return PracticedPriceType.fiscalCost;
+    } else if (targetPrice ==
+        (PriceCost?.FiscalLiquidCost ?? FiscalLiquidCost ?? 0)) {
+      return PracticedPriceType.fiscalLiquidCost;
+    } else if (targetPrice ==
+        (PriceCost?.ECommercePracticedPrice ?? ECommercePracticedPrice ?? 0)) {
+      return PracticedPriceType.ecommerce;
+    }
+
     return PracticedPriceType.retail;
   }
 
@@ -319,15 +363,44 @@ class ProductEntity extends Equatable {
       manualPrice: manualPrice,
     );
 
+    // Performance optimization: Exhaustive switch enables O(1) branch lookup and zero runtime allocations.
     switch (type) {
-      case PracticedPriceType.notDefined:
+      case PracticedPriceType.manual:
         return manualPrice ?? 0;
       case PracticedPriceType.retail:
         return getPrice;
       case PracticedPriceType.whole:
-        return (WholePracticedPrice ?? 0);
-      case PracticedPriceType.manual:
-        return manualPrice ?? 0;
+        return PriceCost?.WholePracticedPrice ?? WholePracticedPrice ?? 0;
+      case PracticedPriceType.operationalCost:
+        return PriceCost?.OperationalCost ?? OperationalCost ?? 0;
+      case PracticedPriceType.replacementCost:
+        return PriceCost?.ReplacementCost ?? ReplacementCost ?? 0;
+      case PracticedPriceType.replacementCostMidle:
+        return PriceCost?.ReplacementCostMidle ?? ReplacementCostMidle ?? 0;
+      case PracticedPriceType.liquidCost:
+        return PriceCost?.LiquidCost ?? LiquidCost ?? 0;
+      case PracticedPriceType.liquidCostMidle:
+        return PriceCost?.LiquidCostMidle ?? LiquidCostMidle ?? 0;
+      case PracticedPriceType.definedBySystem:
+        final wholePrice =
+            PriceCost?.WholePracticedPrice ?? WholePracticedPrice ?? 0;
+        final minWhole =
+            PriceCost?.MinimumWholeQuantity ?? MinimumWholeQuantity ?? 0;
+        return (minWhole > 0 && wholePrice > 0 && quantity >= minWhole)
+            ? wholePrice
+            : getPrice;
+      case PracticedPriceType.realCost:
+        return PriceCost?.RealCost ?? RealCost ?? 0;
+      case PracticedPriceType.realLiquidCost:
+        return PriceCost?.RealLiquidCost ?? RealLiquidCost ?? 0;
+      case PracticedPriceType.fiscalCost:
+        return PriceCost?.FiscalCost ?? FiscalCost ?? 0;
+      case PracticedPriceType.fiscalLiquidCost:
+        return PriceCost?.FiscalLiquidCost ?? FiscalLiquidCost ?? 0;
+      case PracticedPriceType.ecommerce:
+        return PriceCost?.ECommercePracticedPrice ??
+            ECommercePracticedPrice ??
+            0;
     }
   }
 

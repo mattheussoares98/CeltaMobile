@@ -104,9 +104,9 @@ class BsPricesAndMinimumWholeQuantity extends StatelessWidget {
               TitleAndSubTitle(
                 title: 'Preço praticado ='.hardcoded,
                 removeColon: true,
-                subTitle: practicedPriceType.name,
+                subTitle: practicedPriceType.description,
                 subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-                  color: practicedPriceType == PracticedPriceType.notDefined
+                  color: practicedPriceType == PracticedPriceType.manual
                       ? Colors.red
                       : context.theme.primaryColor,
                   fontStyle: FontStyle.italic,

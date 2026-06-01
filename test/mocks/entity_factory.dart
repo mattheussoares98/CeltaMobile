@@ -124,6 +124,9 @@ class EntityFactory {
     int? productPackingCode,
     double? MinimumWholeQuantity,
     double? RetailPracticedPrice,
+    double? Value,
+    PriceCostEntity? PriceCost,
+    bool clearPriceCost = false,
     String? plu,
     double? Quantidade_ProcRecebDocProEmb,
     DateTime? DataValidade_ProcRecebDocProEmb,
@@ -146,11 +149,11 @@ class EntityFactory {
     ProductPackingCode:
         productPackingCode ?? faker.randomGenerator.integer(999999),
     PLU: plu ?? faker.randomGenerator.integer(100).toString(),
-    Name: faker.food.dish(),
+    Name: faker.company.name(),
     PackingQuantity: faker.randomGenerator.integer(100).toString(),
     BalanceLabelType: faker.lorem.word(),
     StorageAreaAddress: faker.address.streetAddress(),
-    Value: faker.randomGenerator.decimal(),
+    Value: Value ?? faker.randomGenerator.decimal(),
     BalanceLabelQuantity: faker.randomGenerator.decimal(),
     RetailPracticedPrice:
         RetailPracticedPrice ?? faker.randomGenerator.decimal(),
@@ -182,7 +185,7 @@ class EntityFactory {
     MarkUpdateClassInAdjustSalePriceIndividual:
         markUpdateClassInAdjustSalePriceIndividual ??
         faker.randomGenerator.boolean(),
-    PriceCost: makePriceCost(),
+    PriceCost: clearPriceCost ? null : (PriceCost ?? makePriceCost()),
     StockByEnterpriseAssociateds: [
       makeStockByEnterpriseAssociatedEntity(),
       makeStockByEnterpriseAssociatedEntity(),
@@ -1668,8 +1671,8 @@ class EntityFactory {
         useWholePrice: faker.randomGenerator.integer(2),
         useECommercePrice: faker.randomGenerator.boolean(),
         unitValueType:
-            RequestUnitValueType.values[faker.randomGenerator.integer(
-              RequestUnitValueType.values.length,
+            PracticedPriceType.values[faker.randomGenerator.integer(
+              PracticedPriceType.values.length,
             )],
       );
 

@@ -1,7 +1,6 @@
-import 'package:collection/collection.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:collection/collection.dart';
 
 class BSFRequestTypeModel extends BSFRequestTypeEntity {
   const BSFRequestTypeModel({
@@ -78,7 +77,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
 
   factory BSFRequestTypeModel.fromJson(Map<String, dynamic> json) =>
       BSFRequestTypeModel(
-        unitValueType: RequestUnitValueType.fromValue(json['UnitValueType']),
+        unitValueType: PracticedPriceType.fromValue(json['UnitValueType']),
         code: json['Code'],
         name: json['Name'],
         description: json['Description'],

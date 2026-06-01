@@ -25,22 +25,21 @@ void main() {
           priceCost: priceCost,
         );
 
-        final initialRequestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          unitValueType: RequestUnitValueType.salePracticedRetail,
-        );
+        final initialRequestType = EntityFactory.makeBSFRequestTypeEntity()
+            .copyWith(unitValueType: PracticedPriceType.retail);
 
-        final currentRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-          requestType: initialRequestType,
-          products: [productItem],
-        );
+        final currentRequest = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(requestType: initialRequestType, products: [productItem]);
 
         // Define the new request type with a different unit value type (e.g. salePracticedWholeSale)
-        final newRequestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          unitValueType: RequestUnitValueType.salePracticedWholeSale,
-        );
+        final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+            .copyWith(unitValueType: PracticedPriceType.whole);
 
         // Act:
-        final (updatedRequest, actions) = BSFSaleRequestSanitizer.sanitizeRequestTypeChange(
+        final (
+          updatedRequest,
+          actions,
+        ) = BSFSaleRequestSanitizer.sanitizeRequestTypeChange(
           currentRequest,
           newRequestType,
         );
@@ -73,23 +72,26 @@ void main() {
           priceCost: priceCost,
         );
 
-        final initialRequestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          unitValueType: RequestUnitValueType.salePracticedRetail,
-        );
+        final initialRequestType = EntityFactory.makeBSFRequestTypeEntity()
+            .copyWith(unitValueType: PracticedPriceType.retail);
 
-        final currentRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-          requestType: initialRequestType,
-          products: [productItem],
-        );
+        final currentRequest = EntityFactory.makeBSFSaleRequestEntity()
+            .copyWith(requestType: initialRequestType, products: [productItem]);
 
         // Act:
-        final (updatedRequest, actions) = BSFSaleRequestSanitizer.sanitizeRequestTypeChange(
+        final (
+          updatedRequest,
+          actions,
+        ) = BSFSaleRequestSanitizer.sanitizeRequestTypeChange(
           currentRequest,
           initialRequestType, // No change in unit value type
         );
 
         // Assert:
-        expect(actions, isNot(contains(BSFSaleRequestSanitizationAction.resetPrices)));
+        expect(
+          actions,
+          isNot(contains(BSFSaleRequestSanitizationAction.resetPrices)),
+        );
         expect(updatedRequest.products?.first.value, 10.0);
       },
     );

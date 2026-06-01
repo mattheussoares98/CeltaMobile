@@ -1937,7 +1937,7 @@ void main() {
         'Should update request type and return no errors when no sanitization is needed',
         () async {
           final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: RequestUnitValueType.salePracticedRetail,
+            unitValueType: PracticedPriceType.retail,
             allowUseDiscount: true,
             allowUseIncrement: true,
             allowUseDeliveryTax: true,
@@ -1963,7 +1963,7 @@ void main() {
 
           final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
               .copyWith(
-                unitValueType: RequestUnitValueType.salePracticedRetail,
+                unitValueType: PracticedPriceType.retail,
                 allowUseDiscount: true,
                 allowUseIncrement: true,
                 allowUseDeliveryTax: true,
@@ -1982,7 +1982,7 @@ void main() {
         'updateRequestType with onlyValidating: true should return empty actions and not modify state, and subsequent call with onlyValidating: false should modify state',
         () async {
           final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: RequestUnitValueType.salePracticedRetail,
+            unitValueType: PracticedPriceType.retail,
             allowUseDiscount: true,
             allowUseIncrement: true,
             allowUseDeliveryTax: true,
@@ -2008,7 +2008,7 @@ void main() {
 
           final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
               .copyWith(
-                unitValueType: RequestUnitValueType.salePracticedRetail,
+                unitValueType: PracticedPriceType.retail,
                 allowUseDiscount: true,
                 allowUseIncrement: true,
                 allowUseDeliveryTax: true,
@@ -2053,9 +2053,7 @@ void main() {
           );
 
           final initialRequestType = EntityFactory.makeBSFRequestTypeEntity()
-              .copyWith(
-                unitValueType: RequestUnitValueType.salePracticedRetail,
-              );
+              .copyWith(unitValueType: PracticedPriceType.retail);
 
           fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
             requestType: initialRequestType,
@@ -2076,7 +2074,7 @@ void main() {
 
           final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
               .copyWith(
-                unitValueType: RequestUnitValueType.salePracticedWholeSale,
+                unitValueType: PracticedPriceType.whole,
                 allowUseDiscount: true,
                 allowUseIncrement: true,
                 allowUseDeliveryTax: true,

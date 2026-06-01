@@ -1,13 +1,11 @@
-import 'package:celta_inventario/constants/app_sizes.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PriceField extends ConsumerStatefulWidget {
   final bool allowPriceChange;
@@ -80,16 +78,9 @@ class _PriceFieldState extends ConsumerState<PriceField>
       }
     });
 
-    final uiState = ref.watch(uiProvider);
-    final currentProduct = uiState.applyTo(product);
-    final practicedPriceType = currentProduct.practicedPriceType;
-
-    final priceTypeName = switch (practicedPriceType) {
-      PracticedPriceType.retail => 'VAREJO',
-      PracticedPriceType.whole => 'ATACADO',
-      PracticedPriceType.manual => 'MANUAL',
-      _ => 'N/D',
-    };
+    final currentProduct = ref.watch(
+      uiProvider.select((s) => s.applyTo(product)),
+    );
 
     return RepaintBoundary(
       child: AnimatedBuilder(
@@ -103,20 +94,39 @@ class _PriceFieldState extends ConsumerState<PriceField>
             child: child,
           );
         },
-        child: DefaultTextFormField(
-          controller: _valueController,
-          focusNode: _focusNode,
-          labelText: 'Preço R\$ ($priceTypeName)'.hardcoded,
-          enabled: widget.allowPriceChange,
-          onChanged: (value) {
-            ref.read(uiProvider.notifier).updatePrice(value.toDouble() ?? 0);
+        child: Consumer(
+          builder: (_, ref, _) {
+            final requestType = ref.watch(
+              insertUpdateStateControllerProvider.select(
+                (s) => s.value?.requestType,
+              ),
+            );
+
+            final practicedPriceType = currentProduct.getPracticedPriceType(
+              requestType,
+            );
+
+            return DefaultTextFormField(
+              controller: _valueController,
+              focusNode: _focusNode,
+              labelText:
+                  'Preço R\$ (${practicedPriceType.abbreviation})'.hardcoded,
+              enabled: widget.allowPriceChange,
+              onChanged: (value) {
+                ref
+                    .read(uiProvider.notifier)
+                    .updatePrice(value.toDouble() ?? 0);
+              },
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
+              textInputAction: TextInputAction.next,
+              validator: FormValidators.compose([
+                NonEmptyValidator(),
+                NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
+              ]),
+            );
           },
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          textInputAction: TextInputAction.next,
-          validator: FormValidators.compose([
-            NonEmptyValidator(),
-            NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
-          ]),
         ),
       ),
     );

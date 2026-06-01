@@ -58,8 +58,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     final (items, index) = _getItemsAndIndexByPlu(product.PLU);
     final unitValueType =
-        state.value!.requestType?.unitValueType ??
-        RequestUnitValueType.salePracticedRetail;
+        state.value!.requestType?.unitValueType ?? PracticedPriceType.retail;
 
     if (index != -1) {
       final newQuantity = (items[index].quantity ?? 0) + 1;
@@ -111,8 +110,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     final unitValueType =
-        state.value!.requestType?.unitValueType ??
-        RequestUnitValueType.salePracticedRetail;
+        state.value!.requestType?.unitValueType ?? PracticedPriceType.retail;
 
     if (index == -1) {
       final args = ref.read(saleRequestArgsProvider);

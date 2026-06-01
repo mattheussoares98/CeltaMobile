@@ -94,7 +94,7 @@ class BSFSaleRequestEntity extends Equatable {
     observations: null,
     financials: null,
     requestType: BSFRequestTypeEntity.empty().copyWith(
-      unitValueType: RequestUnitValueType.salePracticedRetail,
+      unitValueType: PracticedPriceType.retail,
     ),
     enterprise: null,
     customer: null,

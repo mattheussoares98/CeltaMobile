@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFRequestTypeEntity extends Equatable {
   final int? code;
@@ -34,7 +33,7 @@ class BSFRequestTypeEntity extends Equatable {
   final dynamic requestPrintEditionHeaderImage;
   final int? useWholePrice;
   final bool? useECommercePrice;
-  final RequestUnitValueType? unitValueType;
+  final PracticedPriceType? unitValueType;
 
   const BSFRequestTypeEntity({
     required this.code,
@@ -139,7 +138,7 @@ class BSFRequestTypeEntity extends Equatable {
     dynamic requestPrintEditionHeaderImage,
     int? useWholePrice,
     bool? useECommercePrice,
-    RequestUnitValueType? unitValueType,
+    PracticedPriceType? unitValueType,
   }) {
     return BSFRequestTypeEntity(
       code: code ?? this.code,

@@ -1,18 +1,24 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/discount_presentation_extensions.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/summary_tooltip.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CartSummaryTable extends StatelessWidget {
+class CartSummaryTable extends ConsumerWidget {
   final BSFProductItemEntity item;
   const CartSummaryTable({super.key, required this.item});
 
   @override
-  Widget build(BuildContext context) {
-    final practicedPrice = item.practicedPriceType;
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Performance optimization: select only the requestType to prevent unnecessary rebuilds.
+    final requestType = ref.watch(
+      insertUpdateStateControllerProvider.select((s) => s.value?.requestType),
+    );
+    final practicedPrice = item.getPracticedPriceType(requestType);
 
     return SummaryTable(
       items: [
@@ -22,8 +28,8 @@ class CartSummaryTable extends StatelessWidget {
           decimalHouses: 2,
           isPrice: true,
           trailing: SummaryTooltip(
-            message: 'Preço ${practicedPrice.name.toLowerCase()}'.hardcoded,
-            text: practicedPrice.name.substring(0, 1),
+            message: practicedPrice.description,
+            text: practicedPrice.abbreviation,
           ),
         ),
         if (item.totalDeliveryTax > 0)
