@@ -207,4 +207,78 @@ class BSFProductItemEntity extends Equatable {
 
     return PracticedPriceType.manual;
   }
+
+  double getPriceAccordingToUnitValueTypeAndQuantities(
+    RequestUnitValueType unitValueType,
+  ) {
+    if (priceCost == null) {
+      return 0;
+    }
+    final pc = priceCost!;
+
+    // 1. Determine the base price based on the Request's Unit Value Type
+    double basePrice = 0;
+    final retailPrice =
+        pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
+    final wholePrice =
+        pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+
+    switch (unitValueType) {
+      case RequestUnitValueType.salePracticedRetail:
+        basePrice = retailPrice;
+        break;
+      case RequestUnitValueType.salePracticedWholeSale:
+        basePrice = wholePrice;
+        break;
+      case RequestUnitValueType.operationalCost:
+        basePrice = pc.operationCost ?? 0;
+        break;
+      case RequestUnitValueType.replacementCost:
+        basePrice = pc.replacementCost ?? 0;
+        break;
+      case RequestUnitValueType.replacementCostMidle:
+        basePrice = pc.mediumReplacementCost ?? 0;
+        break;
+      case RequestUnitValueType.liquidCost:
+        basePrice = pc.liquidCost ?? 0;
+        break;
+      case RequestUnitValueType.liquidCostMidle:
+        basePrice = pc.mediumLiquidCost ?? 0;
+        break;
+      case RequestUnitValueType.definedBySystem:
+        basePrice = (quantity ?? 0) >= (pc.mininumQuantityForWholeSale ?? 0)
+            ? wholePrice
+            : retailPrice;
+        break;
+      case RequestUnitValueType.realCost:
+        basePrice = pc.replacementCostReal ?? 0;
+        break;
+      case RequestUnitValueType.realLiquidCost:
+        basePrice = pc.liquidCostReal ?? 0;
+        break;
+      case RequestUnitValueType.fiscalCost:
+        basePrice = pc.replacementCostFiscal ?? 0;
+        break;
+      case RequestUnitValueType.fiscalLiquidCost:
+        basePrice = pc.liquidCostFiscal ?? 0;
+        break;
+      case RequestUnitValueType.salePracticedECommerce:
+        basePrice =
+            pc.salePracticedInECommerce ?? pc.eCommercePricePractice ?? 0;
+        break;
+    }
+
+    // 2. If the request type is Retail, upgrade to Wholesale price if the quantity reaches or exceeds the wholesale threshold.
+    if (unitValueType == RequestUnitValueType.salePracticedRetail) {
+      final minWhole = pc.mininumQuantityForWholeSale ?? 0;
+      final wholePrice =
+          pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+
+      if (minWhole > 0 && (quantity ?? 0) >= minWhole && wholePrice > 0) {
+        return wholePrice;
+      }
+    }
+
+    return basePrice;
+  }
 }
