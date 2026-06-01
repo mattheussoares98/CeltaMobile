@@ -26,7 +26,7 @@ class CovenantDropdown extends ConsumerWidget {
     final selectedCovenant = ref.watch(
       insertUpdateStateControllerProvider.select(
         (s) => s.value?.customer?.covenants?.firstWhereOrNull(
-          (e) => e.code == s.value?.customer?.covenantCode,
+          (e) => e.code == s.value?.customer?.selectedCovenant?.code,
         ),
       ),
     );

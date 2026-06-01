@@ -273,7 +273,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final isCovenant =
         payment.action?.type == PaymentFinalizationActionType.covenant;
     final selectedCovenant = state.value?.customer?.covenants?.firstWhereOrNull(
-      (e) => e.code == state.value?.customer?.covenantCode,
+      (e) => e.code == state.value?.customer?.selectedCovenant?.code,
     );
 
     if (isCovenant && selectedCovenant == null) {
