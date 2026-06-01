@@ -1,7 +1,7 @@
 // lib/features/sale_request/domain/entities/bsf/sanitization/bsf_sale_request_sanitization_action.dart
 
-import 'package:equatable/equatable.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestSanitizationAction extends Equatable {
   final BSFSaleRequestSanitizationType type;
@@ -38,6 +38,10 @@ class BSFSaleRequestSanitizationAction extends Equatable {
 
   static const paymentsCleared = BSFSaleRequestSanitizationAction(
     type: BSFSaleRequestSanitizationType.paymentsCleared,
+  );
+
+  static const resetPrices = BSFSaleRequestSanitizationAction(
+    type: BSFSaleRequestSanitizationType.resetPrices,
   );
 
   @override
