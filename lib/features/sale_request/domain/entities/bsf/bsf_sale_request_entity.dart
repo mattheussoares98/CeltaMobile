@@ -83,7 +83,7 @@ class BSFSaleRequestEntity extends Equatable {
     seller,
   ];
 
-  factory BSFSaleRequestEntity.empty() => const BSFSaleRequestEntity(
+  factory BSFSaleRequestEntity.empty() => BSFSaleRequestEntity(
     code: null,
     dateOfEmission: null,
     dateOfDelivery: null,
@@ -93,7 +93,9 @@ class BSFSaleRequestEntity extends Equatable {
     instructions: null,
     observations: null,
     financials: null,
-    requestType: null,
+    requestType: BSFRequestTypeEntity.empty().copyWith(
+      unitValueType: RequestUnitValueType.salePracticedRetail,
+    ),
     enterprise: null,
     customer: null,
     deliveryAddress: null,
