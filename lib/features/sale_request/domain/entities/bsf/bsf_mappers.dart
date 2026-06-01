@@ -5,6 +5,17 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 
 extension ProductEntityToBSFProductItemEntity on ProductEntity {
   BSFProductItemEntity toBSFProductItemEntity() {
+    final originalPriceCost = PriceCost?.toBSFPriceCostEntity();
+    final updatedPriceCost = originalPriceCost?.copyWith(
+      saleRetailPricePractice: RetailPracticedPrice ?? originalPriceCost.saleRetailPricePractice,
+      salePracticedInSaleRetail: RetailPracticedPrice ?? originalPriceCost.salePracticedInSaleRetail,
+      wholeSalePricePractice: WholePracticedPrice ?? originalPriceCost.wholeSalePricePractice,
+      salePracticedInWholeSale: WholePracticedPrice ?? originalPriceCost.salePracticedInWholeSale,
+      eCommercePricePractice: ECommercePracticedPrice ?? originalPriceCost.eCommercePricePractice,
+      salePracticedInECommerce: ECommercePracticedPrice ?? originalPriceCost.salePracticedInECommerce,
+      mininumQuantityForWholeSale: MinimumWholeQuantity ?? originalPriceCost.mininumQuantityForWholeSale,
+    );
+
     return BSFProductItemEntity(
       product: BSFProductDetailsEntity(
         name: Name,
@@ -54,7 +65,7 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
       compensation: null,
       quantity: null,
       value: getPrice,
-      priceCost: PriceCost?.toBSFPriceCostEntity(),
+      priceCost: updatedPriceCost ?? originalPriceCost,
     );
   }
 }
