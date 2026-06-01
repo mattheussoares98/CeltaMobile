@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,9 +51,7 @@ class CustomerItem extends ConsumerWidget {
                 final selectedCovenant = ref.watch(
                   insertUpdateStateControllerProvider.select(
                     (s) => s.value?.customer?.code == customer.code
-                        ? s.value?.customer?.covenants?.firstWhereOrNull(
-                            (e) => e.code == s.value?.customer?.covenantCode,
-                          )
+                        ? s.value?.customer?.selectedCovenant
                         : null,
                   ),
                 );

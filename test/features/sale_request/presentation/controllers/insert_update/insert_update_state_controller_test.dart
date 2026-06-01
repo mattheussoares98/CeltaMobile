@@ -804,10 +804,7 @@ void main() {
           final state = container.read(insertUpdateStateControllerProvider);
           expect(
             state.value!.customer,
-            customer1.copyWith(
-              annulCovenantCode: true,
-              annulSelectedCovenant: true,
-            ),
+            customer1.copyWith(annulSelectedCovenant: true),
           );
 
           final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(
@@ -817,10 +814,7 @@ void main() {
           final state2 = container.read(insertUpdateStateControllerProvider);
           expect(
             state2.value!.customer,
-            customer2.copyWith(
-              annulCovenantCode: true,
-              annulSelectedCovenant: true,
-            ),
+            customer2.copyWith(annulSelectedCovenant: true),
           );
 
           final customer3 = EntityFactory.makeBSFCustomerEntity().copyWith(

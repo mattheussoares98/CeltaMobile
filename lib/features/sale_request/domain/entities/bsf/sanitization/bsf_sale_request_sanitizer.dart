@@ -118,13 +118,6 @@ class BSFSaleRequestSanitizer {
     final allowedFinalizationCodes =
         newCustomer?.paymentFinalizations?.map((e) => e.code).toSet() ?? {};
 
-    final selectedCovenant = newCustomer?.covenants?.firstWhereOrNull(
-      (e) => e.code == newCustomer.covenantCode,
-    );
-    final customerCovenantCode =
-        selectedCovenant?.personalizedCode ??
-        newCustomer?.covenantCode?.toString();
-
     final hasCustomerRestrictions = allowedFinalizationCodes.isNotEmpty;
     final paymentsThatMustBeCleaned =
         salePayments?.where((e) {
@@ -169,14 +162,6 @@ class BSFSaleRequestSanitizer {
     if (financials.isNotEmpty) {
       final remainingPayments = salePayments
           ?.where((e) => !paymentsThatMustBeCleaned.contains(e))
-          .map((e) {
-            final payment = e.paymentFinalization;
-            if (payment?.action?.type ==
-                PaymentFinalizationActionType.covenant) {
-              return e.copyWith(identificationCode: customerCovenantCode ?? "");
-            }
-            return e;
-          })
           .toList();
 
       financials[0] = financials[0].copyWith(

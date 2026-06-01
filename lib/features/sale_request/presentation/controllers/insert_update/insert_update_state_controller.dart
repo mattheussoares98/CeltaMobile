@@ -140,7 +140,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   }
 
   List<BSFSaleRequestSanitizationAction> updateCustomerOrCovenant(
-    BSFCustomerEntity? customer, {
+    BSFCustomerEntity customer, {
     BsfCovenantEntity? covenant,
     bool isChangingCovenant = false,
     bool onlyValidating = false,
@@ -151,33 +151,29 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         .read(selectedPaymentConditionStateControllerProvider.notifier)
         .select(null);
 
+    final currentCustomer = state.value?.customer;
     BSFCustomerEntity? targetCustomer;
     BsfCovenantEntity? targetCovenant;
 
-    final currentCustomer = state.value?.customer;
-
     if (isChangingCovenant) {
-      if (customer?.selectedCovenant?.code == covenant?.code &&
-          customer?.code == currentCustomer?.code) {
+      if (customer.code != currentCustomer?.code) {
+        targetCovenant = covenant;
+      } else if (currentCustomer?.selectedCovenant?.code == covenant?.code) {
         targetCovenant = null;
       } else {
         targetCovenant = covenant;
       }
     }
 
-    if (customer == null) {
+    if (customer.code == currentCustomer?.code && !isChangingCovenant) {
+      // Same customer re-clicked during validation: nothing to warn about.
+      // Toggle: deselect the customer.
       targetCustomer = null;
     } else {
-      if (customer.code == currentCustomer?.code && !isChangingCovenant) {
-        // Same customer re-clicked during validation: nothing to warn about.
-        // Toggle: deselect the customer.
-        targetCustomer = null;
-      } else {
-        targetCustomer = customer.copyWith(
-          selectedCovenant: targetCovenant,
-          annulSelectedCovenant: isChangingCovenant && targetCovenant == null,
-        );
-      }
+      targetCustomer = customer.copyWith(
+        selectedCovenant: targetCovenant,
+        annulSelectedCovenant: targetCovenant == null,
+      );
     }
 
     final (
