@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 
 enum RequestUnitValueType {
+  manual(0, 'Manual'),
   salePracticedRetail(1, 'Venda praticada varejo'),
   salePracticedWholeSale(2, 'Venda praticada atacado'),
   operationalCost(3, 'Custo operacional'),
