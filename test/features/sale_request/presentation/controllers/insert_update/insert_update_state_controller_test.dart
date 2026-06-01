@@ -2117,6 +2117,63 @@ void main() {
         },
       );
 
+      test(
+        'Should remove selected payment condition and type when changing request type',
+        () async {
+          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+              paymentFinalizations: const [],
+            ),
+            products: const [],
+            discounts: const [],
+            increment: null,
+            deliveryTax: null,
+            financials: [],
+          );
+
+          final container = makeProviderContainer(saleRequestId: 1);
+          container
+              .read(selectedPaymentConditionStateControllerProvider.notifier)
+              .select(EntityFactory.makeBSFPaymentConditionEntity());
+          container
+              .read(selectedPaymentTypeStateControllerProvider.notifier)
+              .select(EntityFactory.makeBSFPaymentFinalizationEntity());
+
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            isNotNull,
+          );
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider),
+            isNotNull,
+          );
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
+              .copyWith(
+                allowUseDiscount: true,
+                allowUseIncrement: true,
+                allowUseDeliveryTax: true,
+                paymentFinalizations: [],
+              );
+
+          controller.updateRequestType(newRequestType);
+
+          expect(
+            container.read(selectedPaymentConditionStateControllerProvider),
+            isNull,
+          );
+          expect(
+            container.read(selectedPaymentTypeStateControllerProvider),
+            isNull,
+          );
+        },
+      );
+
       for (final isProductLevel in [true, false]) {
         group('(isProductLevel: $isProductLevel)', () {
           test(

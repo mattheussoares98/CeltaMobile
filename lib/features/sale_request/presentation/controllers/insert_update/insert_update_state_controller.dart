@@ -242,11 +242,14 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final (sanitizedState, actions) =
         BSFSaleRequestSanitizer.sanitizeRequestTypeChange(current, requestType);
 
-    if (actions.isNotEmpty && onlyValidating) {
+    if (onlyValidating) {
       return actions;
-    } else if (onlyValidating) {
-      return [];
     }
+
+    ref
+        .read(selectedPaymentConditionStateControllerProvider.notifier)
+        .select(null);
+    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
 
     state = AsyncData(sanitizedState);
     return const [];
