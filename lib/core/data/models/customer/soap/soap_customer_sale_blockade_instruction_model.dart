@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class SoapCustomerSaleBlockadeInstructionModel extends Equatable {
   final int Code;
@@ -24,14 +23,13 @@ class SoapCustomerSaleBlockadeInstructionModel extends Equatable {
     'Description': Description,
   };
 
-  factory SoapCustomerSaleBlockadeInstructionModel.fromJson(
-    Map<String, dynamic> json,
-  ) => SoapCustomerSaleBlockadeInstructionModel(
-    Code: json['Code'] as int,
-    PersonalizedCode: json['PersonalizedCode'] as String,
-    LegacyCode: json['LegacyCode'] as String,
-    Description: json['Description'] as String,
-  );
+  factory SoapCustomerSaleBlockadeInstructionModel.fromJson(Map json) =>
+      SoapCustomerSaleBlockadeInstructionModel(
+        Code: json['Code'] as int,
+        PersonalizedCode: json['PersonalizedCode'] as String,
+        LegacyCode: json['LegacyCode'] as String,
+        Description: json['Description'] as String,
+      );
 
   CustomerSaleBlockadeInstructionEntity toEntity() =>
       CustomerSaleBlockadeInstructionEntity(
