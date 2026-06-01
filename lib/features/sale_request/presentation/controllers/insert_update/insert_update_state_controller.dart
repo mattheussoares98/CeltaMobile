@@ -110,29 +110,24 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       item.product?.productPackingPriceLookUpString,
     );
 
+    final unitValueType =
+        state.value!.requestType?.unitValueType ??
+        RequestUnitValueType.salePracticedRetail;
+
     if (index == -1) {
       final args = ref.read(saleRequestArgsProvider);
+      //! already calculating the correct price in this addItem method
       addItem(item.toProductEntity(args.enterpriseCode));
       return;
     } else {
-      final pc = item.priceCost;
-      double price = item.value ?? 0;
+      final calculatedPrice = item
+          .copyWith(quantity: newQuantity)
+          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
 
-      if (pc != null) {
-        final minWhole = pc.mininumQuantityForWholeSale ?? 0;
-        final wholePrice =
-            pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
-        final retailPrice =
-            pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
-
-        if (minWhole > 0 && newQuantity >= minWhole && wholePrice > 0) {
-          price = wholePrice;
-        } else if (retailPrice > 0) {
-          price = retailPrice;
-        }
-      }
-
-      items[index] = items[index].copyWith(quantity: newQuantity, value: price);
+      items[index] = items[index].copyWith(
+        quantity: newQuantity,
+        value: calculatedPrice,
+      );
       state = AsyncData(state.value!.copyWith(products: items));
     }
   }

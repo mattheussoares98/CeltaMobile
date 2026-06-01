@@ -262,16 +262,43 @@ void main() {
         final state = getCurrentState(container);
         expect(state.value!.products!.length, 1);
         expect(state.value!.products!.first.quantity, 1);
+        expect(
+          state.value!.products!.first.value,
+          product
+              .toBSFProductItemEntity()
+              .copyWith(quantity: 1)
+              .getPriceAccordingToUnitValueTypeAndQuantities(
+                state.value!.requestType!.unitValueType!,
+              ),
+        );
 
         controller.increaseOrDecreaseUnit(state.value!.products!.first, true);
         final state2 = getCurrentState(container);
         expect(state2.value!.products!.length, 1);
         expect(state2.value!.products!.first.quantity, 2);
+        expect(
+          state2.value!.products!.first.value,
+          product
+              .toBSFProductItemEntity()
+              .copyWith(quantity: 2)
+              .getPriceAccordingToUnitValueTypeAndQuantities(
+                state.value!.requestType!.unitValueType!,
+              ),
+        );
 
         controller.increaseOrDecreaseUnit(state2.value!.products!.first, false);
         final state3 = getCurrentState(container);
         expect(state3.value!.products!.length, 1);
         expect(state3.value!.products!.first.quantity, 1);
+        expect(
+          state3.value!.products!.first.value,
+          product
+              .toBSFProductItemEntity()
+              .copyWith(quantity: 1)
+              .getPriceAccordingToUnitValueTypeAndQuantities(
+                state.value!.requestType!.unitValueType!,
+              ),
+        );
 
         controller.increaseOrDecreaseUnit(state3.value!.products!.first, false);
         final state4 = getCurrentState(container);
