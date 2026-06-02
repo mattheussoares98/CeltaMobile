@@ -106,6 +106,36 @@ void main() {
         expect(returnedPrice, wholePrice);
       },
     );
+    test(
+      'Should return retail price when there is whole price but minimum quantity is null or zero',
+      () {
+        // Arrange:
+        final retailPrice = faker.randomGenerator.decimal() * 10 + 10.0;
+        final wholePrice = faker.randomGenerator.decimal() * 10 + 5.0;
+
+        final priceCost = EntityFactory.makeBSFPriceCostEntity().copyWith(
+          salePracticedInSaleRetail: retailPrice,
+          salePracticedInWholeSale: wholePrice,
+          mininumQuantityForWholeSale: 0,
+          anullMininumQuantityForWholeSale: faker.randomGenerator.boolean(),
+        );
+
+        // Quantity >= wholesale threshold (5.0)
+        final productItem = EntityFactory.makeBSFProductItemEntity().copyWith(
+          quantity: 5.0,
+          priceCost: priceCost,
+        );
+
+        // Act:
+        final returnedPrice = productItem
+            .getPriceAccordingToUnitValueTypeAndQuantities(
+              PracticedPriceType.definedBySystem,
+            );
+
+        // Assert:
+        expect(returnedPrice, retailPrice);
+      },
+    );
 
     test('Should return 0.0 when priceCost is null', () {
       // Arrange:

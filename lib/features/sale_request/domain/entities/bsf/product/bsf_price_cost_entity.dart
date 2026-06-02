@@ -215,6 +215,7 @@ class BSFPriceCostEntity extends Equatable {
     double? salePracticedInECommerce,
     bool anullSalePracticedInSaleRetail = false,
     bool anullSalePracticedInWholeSale = false,
+    bool? anullMininumQuantityForWholeSale,
   }) {
     return BSFPriceCostEntity(
       saleRetailPricePractice:
@@ -251,8 +252,9 @@ class BSFPriceCostEntity extends Equatable {
           baseCalcIcmsSubstUnit ?? this.baseCalcIcmsSubstUnit,
       valueOfIcmsSubstUnit: valueOfIcmsSubstUnit ?? this.valueOfIcmsSubstUnit,
       valueOfIcmsOwnerUnit: valueOfIcmsOwnerUnit ?? this.valueOfIcmsOwnerUnit,
-      mininumQuantityForWholeSale:
-          mininumQuantityForWholeSale ?? this.mininumQuantityForWholeSale,
+      mininumQuantityForWholeSale: anullMininumQuantityForWholeSale == true
+          ? null
+          : mininumQuantityForWholeSale ?? this.mininumQuantityForWholeSale,
       mediumLiquidCost: mediumLiquidCost ?? this.mediumLiquidCost,
       subsidizedLiquidCost: subsidizedLiquidCost ?? this.subsidizedLiquidCost,
       activeSubsidizedLiquidCost:

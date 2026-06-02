@@ -221,6 +221,7 @@ class BSFProductItemEntity extends Equatable {
         pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
     final wholePrice =
         pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+    final minimumWholeQuantity = pc.mininumQuantityForWholeSale ?? 0;
 
     switch (unitValueType) {
       case PracticedPriceType.manual:
@@ -248,7 +249,8 @@ class BSFProductItemEntity extends Equatable {
         basePrice = pc.mediumLiquidCost ?? 0;
         break;
       case PracticedPriceType.definedBySystem:
-        basePrice = (quantity ?? 0) >= (pc.mininumQuantityForWholeSale ?? 0)
+        basePrice =
+            minimumWholeQuantity > 0 && (quantity ?? 0) >= minimumWholeQuantity
             ? wholePrice
             : retailPrice;
         break;
