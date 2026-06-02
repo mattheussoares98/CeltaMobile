@@ -1,19 +1,26 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart'
     hide ProductPackingCode;
+import 'package:celta_inventario/utils/utils.dart';
 
 extension ProductEntityToBSFProductItemEntity on ProductEntity {
   BSFProductItemEntity toBSFProductItemEntity() {
     final originalPriceCost = PriceCost?.toBSFPriceCostEntity();
     final updatedPriceCost = originalPriceCost?.copyWith(
-      saleRetailPricePractice: RetailPracticedPrice ?? originalPriceCost.saleRetailPricePractice,
-      salePracticedInSaleRetail: RetailPracticedPrice ?? originalPriceCost.salePracticedInSaleRetail,
-      wholeSalePricePractice: WholePracticedPrice ?? originalPriceCost.wholeSalePricePractice,
-      salePracticedInWholeSale: WholePracticedPrice ?? originalPriceCost.salePracticedInWholeSale,
-      eCommercePricePractice: ECommercePracticedPrice ?? originalPriceCost.eCommercePricePractice,
-      salePracticedInECommerce: ECommercePracticedPrice ?? originalPriceCost.salePracticedInECommerce,
-      mininumQuantityForWholeSale: MinimumWholeQuantity ?? originalPriceCost.mininumQuantityForWholeSale,
+      saleRetailPricePractice:
+          RetailPracticedPrice ?? originalPriceCost.saleRetailPricePractice,
+      salePracticedInSaleRetail:
+          RetailPracticedPrice ?? originalPriceCost.salePracticedInSaleRetail,
+      wholeSalePricePractice:
+          WholePracticedPrice ?? originalPriceCost.wholeSalePricePractice,
+      salePracticedInWholeSale:
+          WholePracticedPrice ?? originalPriceCost.salePracticedInWholeSale,
+      eCommercePricePractice:
+          ECommercePracticedPrice ?? originalPriceCost.eCommercePricePractice,
+      salePracticedInECommerce:
+          ECommercePracticedPrice ?? originalPriceCost.salePracticedInECommerce,
+      mininumQuantityForWholeSale:
+          MinimumWholeQuantity ?? originalPriceCost.mininumQuantityForWholeSale,
     );
 
     return BSFProductItemEntity(
@@ -150,7 +157,7 @@ extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
       Name: product?.name,
       PackingQuantity: product?.productPackingQuantity?.toString(),
       PackingAbbreviation: product?.productPackingTypeString,
-      Value: retailPracticedPrice,
+      Value: value ?? retailPracticedPrice,
       RetailPracticedPrice: retailPracticedPrice,
       RetailSalePrice: priceCost?.saleRetailPricePractice,
       RetailOfferPrice: priceCost?.saleRetailOfferPractice,
