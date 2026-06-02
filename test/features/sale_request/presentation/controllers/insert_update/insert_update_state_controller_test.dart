@@ -170,15 +170,6 @@ void main() {
           product.ProductPackingCode,
         );
         expect(state.value!.products!.first.quantity, 1);
-        expect(
-          state.value!.products!.first.value,
-          product
-              .toBSFProductItemEntity()
-              .copyWith(quantity: 1)
-              .getPriceAccordingToUnitValueTypeAndQuantities(
-                state.value!.requestType!.unitValueType!,
-              ),
-        );
       });
 
       test(
@@ -204,15 +195,6 @@ void main() {
 
           expect(state.value!.products!.length, 1);
           expect(state.value!.products!.first.quantity, 2);
-          expect(
-            state.value!.products!.first.value,
-            product
-                .toBSFProductItemEntity()
-                .copyWith(quantity: 2)
-                .getPriceAccordingToUnitValueTypeAndQuantities(
-                  state.value!.requestType!.unitValueType!,
-                ),
-          );
         },
       );
 
@@ -262,43 +244,16 @@ void main() {
         final state = getCurrentState(container);
         expect(state.value!.products!.length, 1);
         expect(state.value!.products!.first.quantity, 1);
-        expect(
-          state.value!.products!.first.value,
-          product
-              .toBSFProductItemEntity()
-              .copyWith(quantity: 1)
-              .getPriceAccordingToUnitValueTypeAndQuantities(
-                state.value!.requestType!.unitValueType!,
-              ),
-        );
 
         controller.increaseOrDecreaseUnit(state.value!.products!.first, true);
         final state2 = getCurrentState(container);
         expect(state2.value!.products!.length, 1);
         expect(state2.value!.products!.first.quantity, 2);
-        expect(
-          state2.value!.products!.first.value,
-          product
-              .toBSFProductItemEntity()
-              .copyWith(quantity: 2)
-              .getPriceAccordingToUnitValueTypeAndQuantities(
-                state.value!.requestType!.unitValueType!,
-              ),
-        );
 
         controller.increaseOrDecreaseUnit(state2.value!.products!.first, false);
         final state3 = getCurrentState(container);
         expect(state3.value!.products!.length, 1);
         expect(state3.value!.products!.first.quantity, 1);
-        expect(
-          state3.value!.products!.first.value,
-          product
-              .toBSFProductItemEntity()
-              .copyWith(quantity: 1)
-              .getPriceAccordingToUnitValueTypeAndQuantities(
-                state.value!.requestType!.unitValueType!,
-              ),
-        );
 
         controller.increaseOrDecreaseUnit(state3.value!.products!.first, false);
         final state4 = getCurrentState(container);
@@ -1937,7 +1892,6 @@ void main() {
         'Should update request type and return no errors when no sanitization is needed',
         () async {
           final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: PracticedPriceType.retail,
             allowUseDiscount: true,
             allowUseIncrement: true,
             allowUseDeliveryTax: true,
@@ -1963,7 +1917,6 @@ void main() {
 
           final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
               .copyWith(
-                unitValueType: PracticedPriceType.retail,
                 allowUseDiscount: true,
                 allowUseIncrement: true,
                 allowUseDeliveryTax: true,
@@ -1982,7 +1935,6 @@ void main() {
         'updateRequestType with onlyValidating: true should return empty actions and not modify state, and subsequent call with onlyValidating: false should modify state',
         () async {
           final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-            unitValueType: PracticedPriceType.retail,
             allowUseDiscount: true,
             allowUseIncrement: true,
             allowUseDeliveryTax: true,
@@ -2008,7 +1960,6 @@ void main() {
 
           final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
               .copyWith(
-                unitValueType: PracticedPriceType.retail,
                 allowUseDiscount: true,
                 allowUseIncrement: true,
                 allowUseDeliveryTax: true,
@@ -2034,81 +1985,6 @@ void main() {
 
           state = container.read(insertUpdateStateControllerProvider);
           expect(state.value!.requestType, newRequestType);
-        },
-      );
-
-      test(
-        'updateRequestType with unitValueType changes should trigger resetPrices action when onlyValidating is true, and recalculate prices when onlyValidating is false',
-        () async {
-          final priceCost = EntityFactory.makeBSFPriceCostEntity().copyWith(
-            salePracticedInSaleRetail: 10.0,
-            salePracticedInWholeSale: 8.0,
-            mininumQuantityForWholeSale: 5.0,
-          );
-
-          final productItem = EntityFactory.makeBSFProductItemEntity().copyWith(
-            value: 10.0,
-            quantity: 2.0,
-            priceCost: priceCost,
-          );
-
-          final initialRequestType = EntityFactory.makeBSFRequestTypeEntity()
-              .copyWith(unitValueType: PracticedPriceType.retail);
-
-          fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-            requestType: initialRequestType,
-            products: [productItem],
-            discounts: const [],
-            increment: null,
-            deliveryTax: null,
-            financials: const [],
-          );
-
-          final container = makeProviderContainer(saleRequestId: 1);
-
-          final controller = container.read(
-            insertUpdateStateControllerProvider.notifier,
-          );
-
-          await container.read(insertUpdateStateControllerProvider.future);
-
-          final newRequestType = EntityFactory.makeBSFRequestTypeEntity()
-              .copyWith(
-                unitValueType: PracticedPriceType.whole,
-                allowUseDiscount: true,
-                allowUseIncrement: true,
-                allowUseDeliveryTax: true,
-                paymentFinalizations: [],
-              );
-
-          // 1. Call with onlyValidating: true
-          final actions = controller.updateRequestType(
-            newRequestType,
-            onlyValidating: true,
-          );
-
-          expect(
-            actions,
-            contains(BSFSaleRequestSanitizationAction.resetPrices),
-          );
-
-          // State should NOT be updated
-          var state = container.read(insertUpdateStateControllerProvider);
-          expect(state.value!.requestType, isNot(newRequestType));
-          expect(state.value!.products!.first.value, 10.0);
-
-          // 2. Call with onlyValidating: false
-          final actionsForce = controller.updateRequestType(
-            newRequestType,
-            onlyValidating: false,
-          );
-
-          expect(actionsForce, isEmpty);
-
-          // State SHOULD be updated and product price recalculated to wholesale (8.0)
-          state = container.read(insertUpdateStateControllerProvider);
-          expect(state.value!.requestType, newRequestType);
-          expect(state.value!.products!.first.value, 8.0);
         },
       );
 

@@ -185,93 +185,26 @@ class BSFProductItemEntity extends Equatable {
       (quantity ?? 0) *
       ((value ?? 0) - unitDiscountValue + unitDeliveryTax + unitIncrement);
 
-  PracticedPriceType getPracticedPriceType(BSFRequestTypeEntity? requestType) {
-    // Performance optimization: Avoid lookup cycles by directly verifying against expected requestType price.
-    if (requestType == null ||
-        requestType.unitValueType == null ||
-        value == null ||
-        priceCost == null) {
+  PracticedPriceType get practicedPriceType {
+    if (value == null || priceCost == null) {
       return PracticedPriceType.manual;
     }
 
-    final activeUnitValueType = requestType.unitValueType!;
-    final expectedPrice = getPriceAccordingToUnitValueTypeAndQuantities(
-      activeUnitValueType,
-    );
+    final pc = priceCost!;
+    final retailPrice =
+        pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
 
-    // O(1) time complexity match
-    if (value == expectedPrice) {
-      return activeUnitValueType;
+    if (value == retailPrice) {
+      return PracticedPriceType.retail;
+    }
+
+    final wholePrice =
+        pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+
+    if (value == wholePrice && wholePrice > 0) {
+      return PracticedPriceType.whole;
     }
 
     return PracticedPriceType.manual;
-  }
-
-  double getPriceAccordingToUnitValueTypeAndQuantities(
-    PracticedPriceType unitValueType,
-  ) {
-    if (priceCost == null) {
-      return 0;
-    }
-    final pc = priceCost!;
-
-    // 1. Determine the base price based on the Request's Unit Value Type
-    double basePrice = 0;
-    final retailPrice =
-        pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
-    final wholePrice =
-        pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
-    final minimumWholeQuantity = pc.mininumQuantityForWholeSale ?? 0;
-
-    switch (unitValueType) {
-      case PracticedPriceType.manual:
-        basePrice = value ?? 0;
-        break;
-      case PracticedPriceType.retail:
-        basePrice = retailPrice;
-        break;
-      case PracticedPriceType.whole:
-        basePrice = wholePrice;
-        break;
-      case PracticedPriceType.operationalCost:
-        basePrice = pc.operationCost ?? 0;
-        break;
-      case PracticedPriceType.replacementCost:
-        basePrice = pc.replacementCost ?? 0;
-        break;
-      case PracticedPriceType.replacementCostMidle:
-        basePrice = pc.mediumReplacementCost ?? 0;
-        break;
-      case PracticedPriceType.liquidCost:
-        basePrice = pc.liquidCost ?? 0;
-        break;
-      case PracticedPriceType.liquidCostMidle:
-        basePrice = pc.mediumLiquidCost ?? 0;
-        break;
-      case PracticedPriceType.definedBySystem:
-        basePrice =
-            minimumWholeQuantity > 0 && (quantity ?? 0) >= minimumWholeQuantity
-            ? wholePrice
-            : retailPrice;
-        break;
-      case PracticedPriceType.realCost:
-        basePrice = pc.replacementCostReal ?? 0;
-        break;
-      case PracticedPriceType.realLiquidCost:
-        basePrice = pc.liquidCostReal ?? 0;
-        break;
-      case PracticedPriceType.fiscalCost:
-        basePrice = pc.replacementCostFiscal ?? 0;
-        break;
-      case PracticedPriceType.fiscalLiquidCost:
-        basePrice = pc.liquidCostFiscal ?? 0;
-        break;
-      case PracticedPriceType.ecommerce:
-        basePrice =
-            pc.salePracticedInECommerce ?? pc.eCommercePricePractice ?? 0;
-        break;
-    }
-
-    return basePrice;
   }
 }

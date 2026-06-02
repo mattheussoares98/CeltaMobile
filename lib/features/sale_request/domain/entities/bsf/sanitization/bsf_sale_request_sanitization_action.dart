@@ -40,10 +40,6 @@ class BSFSaleRequestSanitizationAction extends Equatable {
     type: BSFSaleRequestSanitizationType.paymentsCleared,
   );
 
-  static const resetPrices = BSFSaleRequestSanitizationAction(
-    type: BSFSaleRequestSanitizationType.resetPrices,
-  );
-
   @override
   List<Object?> get props => [type, details];
 }

@@ -57,24 +57,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (product.getPrice <= 0) return;
 
     final (items, index) = _getItemsAndIndexByPlu(product.PLU);
-    final unitValueType =
-        state.value!.requestType?.unitValueType ?? PracticedPriceType.retail;
 
     if (index != -1) {
-      final newQuantity = (items[index].quantity ?? 0) + 1;
-      final calculatedValue = items[index]
-          .copyWith(quantity: newQuantity)
-          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
       items[index] = items[index].copyWith(
-        quantity: newQuantity,
-        value: calculatedValue,
+        quantity: (items[index].quantity ?? 0) + 1,
       );
     } else {
-      final mappedItem = product.toBSFProductItemEntity().copyWith(quantity: 1);
-      final calculatedValue = mappedItem
-          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
-      final newProduct = mappedItem.copyWith(value: calculatedValue);
-      items.add(newProduct);
+      items.add(product.toBSFProductItemEntity().copyWith(quantity: 1));
     }
 
     state = AsyncData(state.value!.copyWith(products: items));
@@ -109,23 +98,29 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       item.product?.productPackingPriceLookUpString,
     );
 
-    final unitValueType =
-        state.value!.requestType?.unitValueType ?? PracticedPriceType.retail;
-
     if (index == -1) {
       final args = ref.read(saleRequestArgsProvider);
-      //! already calculating the correct price in this addItem method
       addItem(item.toProductEntity(args.enterpriseCode));
       return;
     } else {
-      final calculatedPrice = item
-          .copyWith(quantity: newQuantity)
-          .getPriceAccordingToUnitValueTypeAndQuantities(unitValueType);
+      final pc = item.priceCost;
+      double price = item.value ?? 0;
 
-      items[index] = items[index].copyWith(
-        quantity: newQuantity,
-        value: calculatedPrice,
-      );
+      if (pc != null) {
+        final minWhole = pc.mininumQuantityForWholeSale ?? 0;
+        final wholePrice =
+            pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
+        final retailPrice =
+            pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
+
+        if (minWhole > 0 && newQuantity >= minWhole && wholePrice > 0) {
+          price = wholePrice;
+        } else if (retailPrice > 0) {
+          price = retailPrice;
+        }
+      }
+
+      items[index] = items[index].copyWith(quantity: newQuantity, value: price);
       state = AsyncData(state.value!.copyWith(products: items));
     }
   }
@@ -247,14 +242,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final (sanitizedState, actions) =
         BSFSaleRequestSanitizer.sanitizeRequestTypeChange(current, requestType);
 
-    if (onlyValidating) {
+    if (actions.isNotEmpty && onlyValidating) {
       return actions;
+    } else if (onlyValidating) {
+      return [];
     }
-
-    ref
-        .read(selectedPaymentConditionStateControllerProvider.notifier)
-        .select(null);
-    ref.read(selectedPaymentTypeStateControllerProvider.notifier).select(null);
 
     state = AsyncData(sanitizedState);
     return const [];

@@ -78,10 +78,6 @@ class _PriceFieldState extends ConsumerState<PriceField>
       }
     });
 
-    final currentProduct = ref.watch(
-      uiProvider.select((s) => s.applyTo(product)),
-    );
-
     return RepaintBoundary(
       child: AnimatedBuilder(
         animation: _colorAnimation,
@@ -96,15 +92,10 @@ class _PriceFieldState extends ConsumerState<PriceField>
         },
         child: Consumer(
           builder: (_, ref, _) {
-            final requestType = ref.watch(
-              insertUpdateStateControllerProvider.select(
-                (s) => s.value?.requestType,
-              ),
+            final currentProduct = ref.watch(
+              uiProvider.select((s) => s.applyTo(product)),
             );
-
-            final practicedPriceType = currentProduct.getPracticedPriceType(
-              requestType,
-            );
+            final practicedPriceType = currentProduct.practicedPriceType;
 
             return DefaultTextFormField(
               controller: _valueController,
