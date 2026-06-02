@@ -51,7 +51,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
 
                   if (!context.mounted) return;
 
-                  if (moduleIsEnabled) {
+                  if (!moduleIsEnabled) {
                     showAlertDialog(
                       context: context,
                       title: 'Módulo desabilitado'.hardcoded,
