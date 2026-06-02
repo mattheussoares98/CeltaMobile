@@ -34,22 +34,28 @@ class RequestTypeDropDown extends ConsumerWidget {
           data: (requestTypes) {
             if (requestTypes?.isEmpty ?? true) return const SizedBox.shrink();
 
-            return DefaultDropDown<BSFRequestTypeEntity>(
+            return DefaultDropDown<int>(
               showLabelAtTopLeft: true,
               label: 'Modelo de pedido'.hardcoded,
-              selectedItem: selectedRequest,
+              selectedItem: selectedRequest?.code,
               items: requestTypes!.map((requestType) {
                 return DropdownMenuItem(
-                  value: requestType,
+                  value: requestType.code,
                   child: Center(child: Text(requestType.name!)),
                 );
               }).toList(),
-              onBeforeChange: (requestType) =>
-                  _handleBeforeChange(context, ref, requestType),
-              onChanged: (requestType) {
+              onBeforeChange: (code) => _handleBeforeChange(
+                context,
+                ref,
+                requestTypes.firstWhere((e) => e.code == code),
+              ),
+              onChanged: (code) {
                 ref
                     .read(insertUpdateStateControllerProvider.notifier)
-                    .updateRequestType(requestType, onlyValidating: false);
+                    .updateRequestType(
+                      requestTypes.firstWhere((e) => e.code == code),
+                      onlyValidating: false,
+                    );
               },
             );
           },
@@ -65,7 +71,10 @@ class RequestTypeDropDown extends ConsumerWidget {
   ) async {
     final notifier = ref.read(insertUpdateStateControllerProvider.notifier);
 
-    final actions = notifier.updateRequestType(requestType, onlyValidating: true);
+    final actions = notifier.updateRequestType(
+      requestType,
+      onlyValidating: true,
+    );
 
     if (actions.isNotEmpty) {
       final confirmed = await showAlertDialog(
