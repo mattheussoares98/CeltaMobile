@@ -61,13 +61,11 @@ extension StringModifier on String {
     }
   }
 
-  String removeBreakLines() {
-    String newValue = this;
-    newValue = newValue.replaceAll(RegExp(r'\\r\\'), '');
-    newValue = newValue.replaceAll(RegExp(r'\\n'), '');
-    newValue = newValue.replaceAll(RegExp(r'\\'), '');
-
-    return newValue;
+  String formatBreakLines() {
+    return replaceAll(
+      r'\r\n',
+      '\n',
+    ).replaceAll(r'\n', '\n').replaceAll('\r\n', '\n').replaceAll('\r', '\n');
   }
 
   String? formattedPacking() {

@@ -29,4 +29,25 @@ void main() {
       expect("1.234.567,89".toBrazilianNumber(2, false), "1.234.567,89");
     });
   });
+
+  group('StringModifier - formatBreakLines', () {
+    test('should replace literal backslash-r-backslash-n and backslash-n with actual newlines', () {
+      expect(r"Hello\r\nWorld".formatBreakLines(), "Hello\nWorld");
+      expect(r"Hello\nWorld".formatBreakLines(), "Hello\nWorld");
+    });
+
+    test('should replace actual carriage return and newline characters with a standard newline', () {
+      expect("Hello\r\nWorld".formatBreakLines(), "Hello\nWorld");
+      expect("Hello\rWorld".formatBreakLines(), "Hello\nWorld");
+    });
+
+    test('should handle a mix of literal and actual line break sequences', () {
+      const input = "First line\\r\\nSecond line\nThird line\\nFourth line";
+      expect(input.formatBreakLines(), "First line\nSecond line\nThird line\nFourth line");
+    });
+
+    test('should leave string without line breaks unchanged', () {
+      expect("Hello World".formatBreakLines(), "Hello World");
+    });
+  });
 }
