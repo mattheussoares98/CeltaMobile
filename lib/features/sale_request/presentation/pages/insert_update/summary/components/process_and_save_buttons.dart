@@ -14,8 +14,36 @@ class ProcessAndSaveButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
-    final needProcessingCart = ref.watch(saleRequestNeedsProcessingProvider);
+    void onSave(bool needProcessingCart) async {
+      final args = ref.read(saleRequestArgsProvider);
+      final proceed = await showAlertDialog(
+        context: context,
+        title: needProcessingCart
+            ? 'ATENÇÃO!'.hardcoded
+            : 'Salvar pedido?'.hardcoded,
+        content: needProcessingCart
+            ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
+                  .hardcoded
+            : null,
+        cancelActionText: 'Não'.hardcoded,
+        defaultActionText: 'Sim'.hardcoded,
+      );
+      if (proceed != true) {
+        return;
+      }
+      ref
+          .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
+          .saveBsfSaleRequest(
+            customerCode: args.customerCode,
+            saleRequestId: args.saleRequestId,
+          );
+    }
+
+    void processCart() {
+      ref
+          .read(insertUpdateProcessCartControllerProvider.notifier)
+          .processCart();
+    }
 
     return AsyncValueWidget(
       value: ref.watch(
@@ -31,48 +59,38 @@ class ProcessAndSaveButtons extends ConsumerWidget {
         ),
       ),
       data: (canChangePrice) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: Sizes.p8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              if (needProcessingCart) ...[
-                Flexible(
-                  //TODO check if I can cancel the request if he change the state from insertUpdateStateController while it is processing the cart
-                  child: PrimaryButton(
-                    text: 'Processar carrinho'.hardcoded,
-                    onPressed: () {
-                      ref
-                          .read(
-                            insertUpdateProcessCartControllerProvider.notifier,
-                          )
-                          .processCart();
-                    },
+        return Consumer(
+          builder: (_, ref, _) {
+            final needProcessingCart = ref.watch(
+              saleRequestNeedsProcessingProvider,
+            );
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: Sizes.p8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (needProcessingCart) ...[
+                    Flexible(
+                      child: PrimaryButton(
+                        text: 'Processar carrinho'.hardcoded,
+                        onPressed: processCart,
+                      ),
+                    ),
+                    gapH8,
+                  ],
+                  Flexible(
+                    child: PrimaryButton(
+                      onPressed: needProcessingCart && !canChangePrice
+                          ? null
+                          : () => onSave(needProcessingCart),
+                      text: 'SALVAR'.hardcoded,
+                    ),
                   ),
-                ),
-                gapH8,
-              ],
-              Flexible(
-                child: PrimaryButton(
-                  onPressed: needProcessingCart && !canChangePrice
-                      ? null
-                      : () async {
-                          ref
-                              .read(
-                                saveSaleRequestControllerProvider(
-                                  args.enterpriseCode,
-                                ).notifier,
-                              )
-                              .saveBsfSaleRequest(
-                                customerCode: args.customerCode,
-                                saleRequestId: args.saleRequestId,
-                              );
-                        },
-                  text: 'SALVAR'.hardcoded,
-                ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
