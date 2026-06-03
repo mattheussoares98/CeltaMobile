@@ -5,6 +5,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,11 +23,20 @@ class ItemsPage extends ConsumerWidget {
           insertUpdateStateControllerProvider.select((v) => v.value?.products),
         );
         if (products?.isEmpty ?? true) {
+          final child = Center(
+            child: Text(
+              'Adicione produtos no pedido!'.hardcoded,
+              style: context.theme.textTheme.titleMedium?.copyWith(
+                color: Colors.red,
+              ),
+            ),
+          );
+
           if (isSliver) {
-            return const SliverToBoxAdapter(child: SizedBox.shrink());
+            return SliverToBoxAdapter(child: child);
           }
 
-          return Center(child: Text('Nenhum item adicionado'.hardcoded));
+          return child;
         }
         return ResponsiveListFlow(
           padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
