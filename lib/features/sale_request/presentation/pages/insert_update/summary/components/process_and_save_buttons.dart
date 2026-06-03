@@ -91,16 +91,33 @@ class ProcessAndSaveButtons extends ConsumerWidget {
                       ),
                     ),
                   Flexible(
-                    child: PrimaryButton(
-                      onPressed: needProcessingCart && !canChangePrice
-                          ? null
-                          : () => onSave(needProcessingCart),
-                      text: 'Salvar pedido'.hardcoded,
-                      iconAlignment: IconAlignment.end,
-                      icon: const PlatformIcon(
-                        cupertinoIcon: CupertinoIcons.check_mark,
-                        materialIcon: Icons.save,
-                      ),
+                    child: Consumer(
+                      builder: (_, ref, _) {
+                        final requestTypeAllowChangePriceOrCost = ref.watch(
+                          insertUpdateStateControllerProvider.select(
+                            (s) =>
+                                s
+                                    .value
+                                    ?.requestType
+                                    ?.allowAlterCostOrSalePrice ==
+                                true,
+                          ),
+                        );
+                        return PrimaryButton(
+                          onPressed:
+                              needProcessingCart &&
+                                  (!canChangePrice ||
+                                      !requestTypeAllowChangePriceOrCost)
+                              ? null
+                              : () => onSave(needProcessingCart),
+                          text: 'Salvar pedido'.hardcoded,
+                          iconAlignment: IconAlignment.end,
+                          icon: const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.check_mark,
+                            materialIcon: Icons.save,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
