@@ -702,6 +702,72 @@ void main() {
         expect(error, isNotEmpty);
         expect(error, isNotNull);
       });
+
+      test('Should not return error when value exceeds available by less than 0.01', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Add a product with price 10.00
+        controller.addItem(
+          EntityFactory.makeProductEntity(
+            enterpriseCode: fakeArgs.enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
+        );
+
+        // Add a payment of 9.99
+        controller.addPayment(
+          payment: fakePayments.first,
+          value: 9.99,
+        );
+
+        // Remaining balance is exactly 0.01 (but float representation can be e.g. 0.009999999999999787)
+        // Trying to pay 0.01 (difference between 0.01 and remaining is less than 0.01, it is 0)
+        final (success, error) = controller.addPayment(
+          payment: fakePayments.first,
+          value: 0.01,
+        );
+
+        expect(success, isTrue);
+        expect(error, isNull);
+      });
+
+      test('Should return error when value exceeds available by exactly 0.01 or more', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Add a product with price 10.00
+        controller.addItem(
+          EntityFactory.makeProductEntity(
+            enterpriseCode: fakeArgs.enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
+        );
+
+        // Add a payment of 9.99
+        controller.addPayment(
+          payment: fakePayments.first,
+          value: 9.99,
+        );
+
+        // Try to pay 0.02 (exceeding remaining 0.01 by exactly 0.01)
+        final (success, error) = controller.addPayment(
+          payment: fakePayments.first,
+          value: 0.02,
+        );
+
+        expect(success, isFalse);
+        expect(error, isNotNull);
+        expect(error, 'Valor excede o disponível');
+      });
     });
 
     group('Remove Payment', () {

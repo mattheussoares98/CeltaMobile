@@ -244,8 +244,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final totalProducts = state.value!.totalProductsLiquid;
     final totalPayments = state.value!.totalPayments;
 
-    if (value > totalProducts - totalPayments) {
-      //TODO FIX FLOAT ERROR
+    // Convert to cents (integers) to prevent double-precision floating-point inaccuracies in money comparison
+    final newPaymentCents = (value * 100).round();
+    final totalProductsCents = (totalProducts * 100).round();
+    final totalPaymentsCents = (totalPayments * 100).round();
+    final toalMissingCents = totalProductsCents - totalPaymentsCents;
+
+    if (newPaymentCents > toalMissingCents) {
       return (false, 'Valor excede o disponível'.hardcoded);
     }
 
