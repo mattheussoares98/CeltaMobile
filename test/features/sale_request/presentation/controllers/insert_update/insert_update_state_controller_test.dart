@@ -207,11 +207,17 @@ void main() {
 
         await container.read(insertUpdateStateControllerProvider.future);
 
-        final productWithZeroPrice = EntityFactory.makeProductEntity(
-          plu: faker.guid.guid().toString(),
-          enterpriseCode: fakeArgs.enterpriseCode,
-          RetailPracticedPrice: 0,
-        ).copyWith(Value: 0);
+        final productWithZeroPrice =
+            EntityFactory.makeProductEntity(
+              plu: faker.guid.guid().toString(),
+              enterpriseCode: fakeArgs.enterpriseCode,
+              RetailPracticedPrice: 0,
+            ).copyWith(
+              Value: 0,
+              PriceCost: EntityFactory.makePriceCost().copyWith(
+                RetailPracticedPrice: 0,
+              ),
+            );
 
         controller.addItem(productWithZeroPrice);
 
