@@ -38,7 +38,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   bool get needsProcessing {
     if (state is! AsyncData<BSFSaleRequestEntity>) return false;
-    return state.value! != _lastProcessedSaleRequest;
+    return state.value!.needsProcessingComparedTo(_lastProcessedSaleRequest);
   }
 
   (List<BSFProductItemEntity>, int) _getItemsAndIndexByPlu(String? plu) {
@@ -365,4 +365,10 @@ bool saleRequestHasChanges(Ref ref) {
   if (original == null || current == null) return false;
 
   return current != original;
+}
+
+@Riverpod(dependencies: [InsertUpdateStateController])
+bool saleRequestNeedsProcessing(Ref ref) {
+  ref.watch(insertUpdateStateControllerProvider);
+  return ref.read(insertUpdateStateControllerProvider.notifier).needsProcessing;
 }

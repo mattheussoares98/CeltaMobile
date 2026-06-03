@@ -15,13 +15,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final args = ref.watch(saleRequestArgsProvider);
-    final currentSaleRequest = ref.watch(
-      insertUpdateStateControllerProvider.select((s) => s.value),
-    );
-    final lastProcessed = ref
-        .read(insertUpdateStateControllerProvider.notifier)
-        .lastProcessedSaleRequest;
-    final needProcessingCart = currentSaleRequest != lastProcessed;
+    final needProcessingCart = ref.watch(saleRequestNeedsProcessingProvider);
 
     return AsyncValueWidget(
       value: ref.watch(
