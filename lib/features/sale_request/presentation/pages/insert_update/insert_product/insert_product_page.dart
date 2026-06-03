@@ -2,14 +2,13 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/insert_product/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/insert_product/components/components.dart';
 
 class InsertProductPage extends ConsumerWidget {
   final String? heroTag;
@@ -79,9 +78,11 @@ class InsertProductPage extends ConsumerWidget {
                             'product-${originalProduct.ProductPackingCode}',
                         child: Material(
                           type: MaterialType.transparency,
-                          child: ProductItemWidget(
-                            product: originalProduct,
-                            routine: BsRoutine.saleRequest,
+                          child: SingleChildScrollView(
+                            child: ProductItemWidget(
+                              product: originalProduct,
+                              routine: BsRoutine.saleRequest,
+                            ),
                           ),
                         ),
                       ),

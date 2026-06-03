@@ -23,19 +23,12 @@ class ResponsiveListFlow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectivePadding = padding ?? EdgeInsets.zero;
     if (PlatformUtil.isMobile) {
       return isSliver
-          ? Padding(
-              padding: effectivePadding,
-              child: SliverList.builder(
-                itemBuilder: itemBuilder,
-                itemCount: itemCount,
-              ),
-            )
+          ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(
               physics: physics,
-              padding: effectivePadding,
+              padding: padding,
               itemBuilder: itemBuilder,
               itemCount: itemCount,
             );
@@ -48,26 +41,22 @@ class ResponsiveListFlow extends StatelessWidget {
     final rowCount = (itemCount / itemsPerRow).ceil();
 
     if (isSliver) {
-      return SliverPadding(
-        padding: effectivePadding,
-        sliver: SliverList.builder(
-          itemCount: rowCount,
-          itemBuilder: (context, rowIndex) {
-            return _RowsItems(
-              itemCount: itemCount,
-              itemBuilder: itemBuilder,
-              itemsPerRow: itemsPerRow,
-              rowIndex: rowIndex,
-            );
-          },
-        ),
+      return SliverList.builder(
+        itemCount: rowCount,
+        itemBuilder: (context, rowIndex) {
+          return _RowsItems(
+            itemCount: itemCount,
+            itemBuilder: itemBuilder,
+            itemsPerRow: itemsPerRow,
+            rowIndex: rowIndex,
+          );
+        },
       );
     }
 
     return ListView.builder(
       physics: physics,
-      itemCount: itemCount,
-      padding: effectivePadding,
+      itemCount: rowCount,
       itemBuilder: (context, rowIndex) {
         return _RowsItems(
           itemCount: itemCount,
