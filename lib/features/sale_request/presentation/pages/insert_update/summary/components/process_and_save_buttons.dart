@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:celta_inventario/features/sale_request/presentation/controllers/save_sale_request_controller.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -65,26 +66,41 @@ class ProcessAndSaveButtons extends ConsumerWidget {
               saleRequestNeedsProcessingProvider,
             );
 
-            return Padding(
-              padding: const EdgeInsets.only(bottom: Sizes.p8),
+            return SizedBox(
+              width: MediaQuery.sizeOf(context).width - Sizes.p16,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (needProcessingCart) ...[
+                  if (needProcessingCart)
                     Flexible(
-                      child: PrimaryButton(
-                        text: 'Processar carrinho'.hardcoded,
-                        onPressed: processCart,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: PrimaryButton(
+                              text: 'Processar carrinho'.hardcoded,
+                              onPressed: processCart,
+                              iconAlignment: IconAlignment.end,
+                              icon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.refresh,
+                                materialIcon: Icons.replay_outlined,
+                              ),
+                            ),
+                          ),
+                          gapW8,
+                        ],
                       ),
                     ),
-                    gapH8,
-                  ],
                   Flexible(
                     child: PrimaryButton(
                       onPressed: needProcessingCart && !canChangePrice
                           ? null
                           : () => onSave(needProcessingCart),
-                      text: 'SALVAR'.hardcoded,
+                      text: 'Salvar pedido'.hardcoded,
+                      iconAlignment: IconAlignment.end,
+                      icon: const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.check_mark,
+                        materialIcon: Icons.save,
+                      ),
                     ),
                   ),
                 ],
