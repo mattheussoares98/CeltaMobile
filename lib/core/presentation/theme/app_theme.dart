@@ -1,3 +1,4 @@
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +87,10 @@ class AppTheme {
         ),
       ),
       cardTheme: CardThemeData(
-        margin: const EdgeInsets.all(0), //TODO test all pages that is using it
+        margin: const EdgeInsets.symmetric(
+          vertical: Sizes.p8,
+          horizontal: Sizes.p4,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(color: primaryColorDark, width: 1.0),
