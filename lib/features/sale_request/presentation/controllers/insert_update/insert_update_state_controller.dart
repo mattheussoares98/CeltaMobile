@@ -262,7 +262,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     if (isCovenant && selectedCovenant == null) {
-      //TODO create tests
       return (false, 'Selecione um convênio'.hardcoded);
     }
 

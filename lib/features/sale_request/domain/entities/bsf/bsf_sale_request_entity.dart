@@ -257,13 +257,21 @@ class BSFSaleRequestEntity extends Equatable {
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
 
   double get totalLiquidAndPaidDifference {
-    return (totalProductsLiquid) - (totalPayments).abs();
+    // Convert to cents (integers) to prevent double-precision floating-point inaccuracies
+    final totalProductsCents = (totalProductsLiquid * 100).round();
+    final totalPaymentsCents = (totalPayments.abs() * 100).round();
+    final differenceCents = totalProductsCents - totalPaymentsCents;
+    return differenceCents / 100.0;
   }
 
   bool get isPaymentValid {
     final hasGenerateTitle =
         requestType?.generatePendencyFinancialTitle ?? false;
-    final isTotalMatching = (totalProductsLiquid - totalPayments).abs() < 0.01;
+    
+    // Compare in cents to avoid double-precision inaccuracies
+    final totalProductsCents = (totalProductsLiquid * 100).round();
+    final totalPaymentsCents = (totalPayments * 100).round();
+    final isTotalMatching = (totalProductsCents - totalPaymentsCents).abs() == 0;
 
     if (hasGenerateTitle) {
       return totalPayments > 0 && isTotalMatching;

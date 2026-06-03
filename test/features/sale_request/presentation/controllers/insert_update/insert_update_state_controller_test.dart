@@ -768,6 +768,97 @@ void main() {
         expect(error, isNotNull);
         expect(error, 'Valor excede o disponível');
       });
+
+      test(
+        'Should return error when payment is covenant and selectedCovenant is null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Add a product first so there is available balance
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: fakeArgs.enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+
+          // Create a payment finalization of type covenant
+          final covenantAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
+            type: PaymentFinalizationActionType.covenant,
+          );
+          final covenantPayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+            action: covenantAction,
+          );
+
+          // Ensure the customer is null or has no selectedCovenant (so selectedCovenant is null)
+          final state = container.read(insertUpdateStateControllerProvider).value!;
+          expect(state.customer?.selectedCovenant, isNull);
+
+          final (success, error) = controller.addPayment(
+            payment: covenantPayment,
+            value: 100.0,
+          );
+
+          expect(success, isFalse);
+          expect(error, 'Selecione um convênio');
+        },
+      );
+
+      test(
+        'Should add payment successfully when payment is covenant and selectedCovenant is not null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Add a product first so there is available balance
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: fakeArgs.enterpriseCode,
+          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+
+          // Create a covenant info and select it on the customer
+          final covenant = EntityFactory.makeBsfCovenantEntity();
+          final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            covenants: [covenant],
+            selectedCovenant: covenant,
+          );
+
+          // Update the controller state to have this customer with covenant selected
+          controller.updateCustomerOrCovenant(
+            customer,
+            covenant: covenant,
+            isChangingCovenant: true,
+            onlyValidating: false,
+          );
+
+          // Create a payment finalization of type covenant
+          final covenantAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
+            type: PaymentFinalizationActionType.covenant,
+          );
+          final covenantPayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+            action: covenantAction,
+          );
+
+          final (success, error) = controller.addPayment(
+            payment: covenantPayment,
+            value: 100.0,
+          );
+
+          expect(success, isTrue);
+          expect(error, isNull);
+        },
+      );
     });
 
     group('Remove Payment', () {
@@ -1283,6 +1374,7 @@ void main() {
             // Create blocked customer
             final blockedCustomer = EntityFactory.makeBSFCustomerEntity()
                 .copyWith(
+                  code: 999,
                   paymentFinalizations: const [],
                   saleBlockade: const BsfSaleBlockadeEntity(
                     code: 1,
@@ -1347,6 +1439,7 @@ void main() {
             // Create blocked customer
             final blockedCustomer = EntityFactory.makeBSFCustomerEntity()
                 .copyWith(
+                  code: 999,
                   paymentFinalizations: const [],
                   saleBlockade: const BsfSaleBlockadeEntity(
                     code: 1,

@@ -1,4 +1,5 @@
 // test/features/sale_request/domain/entities/bsf/bsf_sale_request_entity_test.dart
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../../../../mocks/entity_factory.dart';
@@ -67,6 +68,123 @@ void main() {
       final updatedProducts = originalProducts.sublist(1);
       final other = original.copyWith(products: updatedProducts);
       expect(original.needsProcessingComparedTo(other), isTrue);
+    });
+  });
+
+  group('BSFSaleRequestEntity totalLiquidAndPaidDifference and isPaymentValid', () {
+    test('should calculate difference correctly with exact matching values', () {
+      final request = BSFSaleRequestEntity.empty().copyWith(
+        products: [
+          EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1.0,
+            value: 100.0,
+            annulDiscounts: true,
+            annulIncrement: true,
+            annulDeliveryTax: true,
+          ),
+        ],
+        financials: [
+          BSFFinancialEntity(
+            paymentFinalizations: [
+              EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                value: 100.0,
+              ),
+            ],
+            paybackValue: 0,
+          ),
+        ],
+      );
+
+      expect(request.totalLiquidAndPaidDifference, 0.0);
+      expect(request.isPaymentValid, isTrue);
+    });
+
+    test('should calculate difference correctly when values are slightly off due to float inaccuracies', () {
+      // 10.00 - 9.99 = 0.01
+      // If we add a payment of 9.99 and a payment of 0.01, totalPayments should match products total 10.00
+      final request = BSFSaleRequestEntity.empty().copyWith(
+        products: [
+          EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1.0,
+            value: 10.00,
+            annulDiscounts: true,
+            annulIncrement: true,
+            annulDeliveryTax: true,
+          ),
+        ],
+        financials: [
+          BSFFinancialEntity(
+            paymentFinalizations: [
+              EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                value: 9.99,
+              ),
+              EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                value: 0.01,
+              ),
+            ],
+            paybackValue: 0,
+          ),
+        ],
+      );
+
+      // Due to double-precision arithmetic, 9.99 + 0.01 might be slightly off.
+      // Cents conversion ensures it is treated as exactly 10.00.
+      expect(request.totalLiquidAndPaidDifference, 0.0);
+      expect(request.isPaymentValid, isTrue);
+    });
+
+    test('should calculate positive difference when payment is missing', () {
+      final request = BSFSaleRequestEntity.empty().copyWith(
+        products: [
+          EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1.0,
+            value: 100.0,
+            annulDiscounts: true,
+            annulIncrement: true,
+            annulDeliveryTax: true,
+          ),
+        ],
+        financials: [
+          BSFFinancialEntity(
+            paymentFinalizations: [
+              EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                value: 99.99,
+              ),
+            ],
+            paybackValue: 0,
+          ),
+        ],
+      );
+
+      expect(request.totalLiquidAndPaidDifference, 0.01);
+      expect(request.isPaymentValid, isFalse);
+    });
+
+    test('should calculate negative difference when payment exceeds total products', () {
+      final request = BSFSaleRequestEntity.empty().copyWith(
+        products: [
+          EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1.0,
+            value: 100.0,
+            annulDiscounts: true,
+            annulIncrement: true,
+            annulDeliveryTax: true,
+          ),
+        ],
+        financials: [
+          BSFFinancialEntity(
+            paymentFinalizations: [
+              EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
+                value: 100.01,
+              ),
+            ],
+            paybackValue: 0,
+          ),
+        ],
+      );
+
+      expect(request.totalLiquidAndPaidDifference, -0.01);
+      expect(request.isPaymentValid, isFalse);
     });
   });
 }
