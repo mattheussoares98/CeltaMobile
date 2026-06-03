@@ -1711,9 +1711,11 @@ void main() {
 
             await container.read(insertUpdateStateControllerProvider.future);
 
+            final baseCustomerCode = fakeSaleRequest.customer?.code ?? 100;
+
             final initialCustomer = EntityFactory.makeBSFCustomerEntity()
                 .copyWith(
-                  code: 1,
+                  code: baseCustomerCode + 1,
                   paymentFinalizations: [incompatiblePayment],
                   saleBlockade: const BsfSaleBlockadeEntity(
                     code: 0,
@@ -1737,11 +1739,11 @@ void main() {
             // Create new customer with payment restrictions to trigger actions
             final allowedPayment =
                 EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
-                  code: 2,
+                  code: baseCustomerCode + 2,
                 );
             final restrictedCustomer = EntityFactory.makeBSFCustomerEntity()
                 .copyWith(
-                  code: 2,
+                  code: baseCustomerCode + 2,
                   paymentFinalizations: [allowedPayment],
                   saleBlockade: const BsfSaleBlockadeEntity(
                     code: 0,
@@ -2048,6 +2050,80 @@ void main() {
 
           // Back to false
           expect(controller.needsProcessing, isFalse);
+        },
+      );
+    });
+
+    group('Update Instructions and Observations', () {
+      test(
+        'updateInstructions should update instructions when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final instructions = faker.lorem.sentence();
+          controller.updateInstructions(instructions);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.instructions, instructions);
+        },
+      );
+
+      test(
+        'updateInstructions should do nothing if state is not AsyncData',
+        () {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          final stateBefore = container.read(insertUpdateStateControllerProvider);
+          expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+          controller.updateInstructions(faker.lorem.sentence());
+
+          final stateAfter = container.read(insertUpdateStateControllerProvider);
+          expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+        },
+      );
+
+      test(
+        'updateObservations should update observations when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final observations = faker.lorem.sentence();
+          controller.updateObservations(observations);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.observations, observations);
+        },
+      );
+
+      test(
+        'updateObservations should do nothing if state is not AsyncData',
+        () {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          final stateBefore = container.read(insertUpdateStateControllerProvider);
+          expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+          controller.updateObservations(faker.lorem.sentence());
+
+          final stateAfter = container.read(insertUpdateStateControllerProvider);
+          expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
         },
       );
     });

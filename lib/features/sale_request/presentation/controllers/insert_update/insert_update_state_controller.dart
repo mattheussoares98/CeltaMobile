@@ -347,6 +347,18 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     _lastProcessedSaleRequest = processedValue;
     state = AsyncData(processedValue);
   }
+
+  void updateInstructions(String? value) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+
+    state = AsyncData(state.value!.copyWith(instructions: value));
+  }
+
+  void updateObservations(String? value) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+
+    state = AsyncData(state.value!.copyWith(observations: value));
+  }
 }
 
 @Riverpod(
