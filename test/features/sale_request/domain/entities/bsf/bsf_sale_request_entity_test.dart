@@ -69,6 +69,88 @@ void main() {
       final other = original.copyWith(products: updatedProducts);
       expect(original.needsProcessingComparedTo(other), isTrue);
     });
+
+    test('should return true when one of the products quantity is different', () {
+      final originalProducts = original.products!;
+      final updatedProduct = originalProducts.first.copyWith(
+        quantity: (originalProducts.first.quantity ?? 0.0) + 1.0,
+      );
+      final updatedProducts = [
+        updatedProduct,
+        ...originalProducts.sublist(1),
+      ];
+      final other = original.copyWith(products: updatedProducts);
+      expect(original.needsProcessingComparedTo(other), isTrue);
+    });
+
+    test('should return true when one of the products value is different', () {
+      final originalProducts = original.products!;
+      final updatedProduct = originalProducts.first.copyWith(
+        value: (originalProducts.first.value ?? 0.0) + 1.0,
+      );
+      final updatedProducts = [
+        updatedProduct,
+        ...originalProducts.sublist(1),
+      ];
+      final other = original.copyWith(products: updatedProducts);
+      expect(original.needsProcessingComparedTo(other), isTrue);
+    });
+
+    test('should return true when one of the products deliveryTax is different', () {
+      final originalProducts = original.products!;
+      final updatedProduct = originalProducts.first.copyWith(
+        deliveryTax: const BSFValueTypeEntity(
+          value: 1.0,
+          type: PercentageOrValue.percentage,
+        ),
+      );
+      final updatedProducts = [
+        updatedProduct,
+        ...originalProducts.sublist(1),
+      ];
+      final other = original.copyWith(products: updatedProducts);
+      expect(original.needsProcessingComparedTo(other), isTrue);
+    });
+
+    test('should return true when one of the products increment is different', () {
+      final originalProducts = original.products!;
+      final updatedProduct = originalProducts.first.copyWith(
+        increment: const BSFValueTypeEntity(
+          value: 1.0,
+          type: PercentageOrValue.percentage,
+        ),
+      );
+      final updatedProducts = [
+        updatedProduct,
+        ...originalProducts.sublist(1),
+      ];
+      final other = original.copyWith(products: updatedProducts);
+      expect(original.needsProcessingComparedTo(other), isTrue);
+    });
+
+    test('should return true when one of the products discounts is different', () {
+      final originalProducts = original.products!;
+      final updatedProduct = originalProducts.first.copyWith(
+        discounts: [
+          const BSFDiscountEntity(
+            order: 1,
+            discountOrigin: DiscountOrigin.manual,
+            user: 'test_user',
+            justification: 'test_justification',
+            discount: BSFValueTypeEntity(
+              value: 1.0,
+              type: PercentageOrValue.percentage,
+            ),
+          ),
+        ],
+      );
+      final updatedProducts = [
+        updatedProduct,
+        ...originalProducts.sublist(1),
+      ];
+      final other = original.copyWith(products: updatedProducts);
+      expect(original.needsProcessingComparedTo(other), isTrue);
+    });
   });
 
   group('BSFSaleRequestEntity totalLiquidAndPaidDifference and isPaymentValid', () {

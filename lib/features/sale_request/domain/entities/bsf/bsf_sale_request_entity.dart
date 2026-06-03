@@ -267,11 +267,12 @@ class BSFSaleRequestEntity extends Equatable {
   bool get isPaymentValid {
     final hasGenerateTitle =
         requestType?.generatePendencyFinancialTitle ?? false;
-    
+
     // Compare in cents to avoid double-precision inaccuracies
     final totalProductsCents = (totalProductsLiquid * 100).round();
     final totalPaymentsCents = (totalPayments * 100).round();
-    final isTotalMatching = (totalProductsCents - totalPaymentsCents).abs() == 0;
+    final isTotalMatching =
+        (totalProductsCents - totalPaymentsCents).abs() == 0;
 
     if (hasGenerateTitle) {
       return totalPayments > 0 && isTotalMatching;
@@ -284,11 +285,29 @@ class BSFSaleRequestEntity extends Equatable {
     if (other == null) return true;
 
     final changedCustomer = customer?.code != other.customer?.code;
-    final changedCovenant = customer?.selectedCovenant?.code !=
+    final changedCovenant =
+        customer?.selectedCovenant?.code !=
         other.customer?.selectedCovenant?.code;
     final changedSeller = seller?.code != other.seller?.code;
-    final changedProducts =
-        !const ListEquality().equals(products, other.products);
+
+    bool changedProducts = products?.length != other.products?.length;
+
+    if (!changedProducts) {
+      final otherProductsMap = {
+        for (final p in other.products ?? <BSFProductItemEntity>[]) p.code: p,
+      };
+
+      changedProducts = (products ?? []).any((product) {
+        final correspondent = otherProductsMap[product.code];
+        return correspondent == null ||
+            product.quantity != correspondent.quantity ||
+            product.totalLiquid != correspondent.totalLiquid ||
+            product.increment != correspondent.increment ||
+            product.discounts != correspondent.discounts ||
+            product.deliveryTax != correspondent.deliveryTax ||
+            product.value != correspondent.value;
+      });
+    }
 
     return changedCustomer ||
         changedCovenant ||
