@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -90,9 +89,10 @@ class _ValueFieldAndConfirmButtonState
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             onFieldSubmitted: (_) => onTap(),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: FormValidators.compose([
               NonEmptyValidator(),
-              NumberValidator(allowDecimal: true),
+              NumberValidator(allowDecimal: true, maxDecimalHouses: 2),
             ]),
           ),
         ),
