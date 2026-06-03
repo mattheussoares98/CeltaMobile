@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestEntity extends Equatable {
@@ -269,6 +270,22 @@ class BSFSaleRequestEntity extends Equatable {
     } else {
       return totalPayments == 0 || isTotalMatching;
     }
+  }
+
+  bool needsProcessingComparedTo(BSFSaleRequestEntity? other) {
+    if (other == null) return true;
+
+    final changedCustomer = customer?.code != other.customer?.code;
+    final changedCovenant = customer?.selectedCovenant?.code !=
+        other.customer?.selectedCovenant?.code;
+    final changedSeller = seller?.code != other.seller?.code;
+    final changedProducts =
+        !const ListEquality().equals(products, other.products);
+
+    return changedCustomer ||
+        changedCovenant ||
+        changedSeller ||
+        changedProducts;
   }
 
   SaleRequestEntity toSaleRequestEntity() {
