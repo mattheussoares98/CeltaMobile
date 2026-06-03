@@ -101,6 +101,11 @@ class RequestSummary extends ConsumerWidget {
                         title: 'Observações'.hardcoded,
                         subTitle: saleRequest.observations,
                       ),
+                    if (saleRequest.instructions?.isNotEmpty ?? false)
+                      TitleAndSubTitle(
+                        title: 'Instruções'.hardcoded,
+                        subTitle: saleRequest.instructions,
+                      ),
                     if (showDetails)
                       Consumer(
                         builder: (context, ref, child) {
