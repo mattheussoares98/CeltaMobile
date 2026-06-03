@@ -139,9 +139,10 @@ class BSFRequestTypeEntity extends Equatable {
     int? useWholePrice,
     bool? useECommercePrice,
     PracticedPriceType? unitValueType,
+    bool? annulCode,
   }) {
     return BSFRequestTypeEntity(
-      code: code ?? this.code,
+      code: annulCode == true ? null : code ?? this.code,
       name: name ?? this.name,
       description: description ?? this.description,
       observationsOnPrint: observationsOnPrint ?? this.observationsOnPrint,

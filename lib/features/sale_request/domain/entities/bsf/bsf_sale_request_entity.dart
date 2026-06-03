@@ -142,6 +142,8 @@ class BSFSaleRequestEntity extends Equatable {
     bool? annulCustomer,
     bool? annulSeller,
     bool? annulDiscounts,
+    bool? annulProducts,
+    bool? annulRequestType,
     BSFEmployeeEntity? seller,
   }) {
     return BSFSaleRequestEntity(
@@ -154,7 +156,9 @@ class BSFSaleRequestEntity extends Equatable {
       instructions: instructions ?? this.instructions,
       observations: observations ?? this.observations,
       financials: financials ?? this.financials,
-      requestType: requestType ?? this.requestType,
+      requestType: annulRequestType == true
+          ? null
+          : requestType ?? this.requestType,
       enterprise: enterprise ?? this.enterprise,
       customer: annulCustomer == true ? null : customer ?? this.customer,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
@@ -169,7 +173,7 @@ class BSFSaleRequestEntity extends Equatable {
           expeditionControlCode ?? this.expeditionControlCode,
       isOnExpedition: isOnExpedition ?? this.isOnExpedition,
       freight: freight ?? this.freight,
-      products: products ?? this.products,
+      products: annulProducts == true ? null : products ?? this.products,
       discounts: annulDiscounts == true ? null : discounts ?? this.discounts,
       seller: annulSeller == true ? null : seller ?? this.seller,
     );
@@ -283,6 +287,12 @@ class BSFSaleRequestEntity extends Equatable {
 
   bool needsProcessingComparedTo(BSFSaleRequestEntity? other) {
     if (other == null) return true;
+
+    if (customer?.code == null ||
+        (products?.isEmpty ?? true) ||
+        requestType?.code == null) {
+      return false;
+    }
 
     final changedCustomer = customer?.code != other.customer?.code;
     final changedCovenant =

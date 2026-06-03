@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFCustomerEntity extends Equatable {
   final String? personalizedCode;
@@ -74,13 +73,14 @@ class BSFCustomerEntity extends Equatable {
     bool? annulCovenantCode,
     BsfCovenantEntity? selectedCovenant,
     bool? annulSelectedCovenant,
+    bool? annulCode,
   }) {
     return BSFCustomerEntity(
       personalizedCode: personalizedCode ?? this.personalizedCode,
       covenantCode: annulCovenantCode == true
           ? null
           : covenantCode ?? this.covenantCode,
-      code: code ?? this.code,
+      code: annulCode == true ? null : code ?? this.code,
       name: name ?? this.name,
       nameReduced: nameReduced ?? this.nameReduced,
       cnpjCpfNumber: cnpjCpfNumber ?? this.cnpjCpfNumber,
