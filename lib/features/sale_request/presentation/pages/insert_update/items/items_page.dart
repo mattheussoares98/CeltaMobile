@@ -14,20 +14,14 @@ class ItemsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.watch(saleRequestArgsProvider);
+    final args = ref.read(saleRequestArgsProvider);
 
-    final productsAsync = ref.watch(
-      insertUpdateStateControllerProvider.select(
-        (v) => v.whenData((data) => data.products),
-      ),
-    );
-
-    return AsyncValueWidget(
-      value: productsAsync,
-      isSliver: isSliver,
-      data: (products) {
-        final items = products ?? [];
-        if (items.isEmpty) {
+    return Consumer(
+      builder: (_, ref, _) {
+        final products = ref.watch(
+          insertUpdateStateControllerProvider.select((v) => v.value?.products),
+        );
+        if (products?.isEmpty ?? true) {
           if (isSliver) {
             return const SliverToBoxAdapter(child: SizedBox.shrink());
           }
@@ -37,9 +31,9 @@ class ItemsPage extends ConsumerWidget {
         return ResponsiveListFlow(
           padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
           isSliver: isSliver,
-          itemCount: items.length,
+          itemCount: products!.length,
           itemBuilder: (context, index) {
-            final item = items[index];
+            final item = products[index];
             return BSFProductItemSummary(
               key: ValueKey('${item.productPackingCode ?? item.code}$isSliver'),
               product: item.toProductEntity(args.enterpriseCode),
@@ -52,7 +46,6 @@ class ItemsPage extends ConsumerWidget {
           },
         );
       },
-      tryAgain: () => ref.invalidate(insertUpdateStateControllerProvider),
     );
   }
 }
