@@ -1091,6 +1091,7 @@ void main() {
 
             fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                code: 100,
                 paymentFinalizations: const [],
               ),
               products: const [],
@@ -1116,6 +1117,7 @@ void main() {
 
             // Update customer to one with restrictions (only allows code 2)
             final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+              code: 200,
               paymentFinalizations: [paymentAllowedByCustomer],
               saleBlockade: const BsfSaleBlockadeEntity(
                 code: 0,
@@ -1159,6 +1161,7 @@ void main() {
 
             fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
               customer: EntityFactory.makeBSFCustomerEntity().copyWith(
+                code: 100,
                 paymentFinalizations: const [],
               ),
               products: const [],
@@ -1184,6 +1187,7 @@ void main() {
 
             // Update customer to one with restrictions (only allows code 2)
             final newCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
+              code: 200,
               paymentFinalizations: [paymentAllowedByCustomer],
             );
 
