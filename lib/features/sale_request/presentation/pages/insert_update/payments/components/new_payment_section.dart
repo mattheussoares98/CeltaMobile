@@ -62,6 +62,7 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
 
     return SliverToBoxAdapter(
       child: Card(
+        margin: const EdgeInsets.only(bottom: Sizes.p8),
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p8),
           child: Column(
