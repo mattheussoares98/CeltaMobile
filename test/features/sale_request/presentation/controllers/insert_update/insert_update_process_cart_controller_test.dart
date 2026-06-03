@@ -1,6 +1,7 @@
 // test/features/sale_request/presentation/controllers/insert_update/process_cart_controller_test.dart
 
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
@@ -63,7 +64,7 @@ void main() {
 
   group('InsertUpdateProcessCartController', () {
     test('processCart should behave correctly on success', () async {
-      final container = makeProviderContainer(saleRequestId: 0);
+      final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
 
       final insertUpdateStateNotifier = container.read(
         insertUpdateStateControllerProvider.notifier,
@@ -81,12 +82,6 @@ void main() {
       );
       insertUpdateStateNotifier.addItem(product);
       expect(insertUpdateStateNotifier.needsProcessing, isTrue);
-
-      // Update the request type so processCart has a valid requestTypeCode
-      final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-        code: 1,
-      );
-      insertUpdateStateNotifier.updateRequestType(requestType);
 
       // Update the customer so processCart has a valid customerCode
       final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
@@ -136,7 +131,7 @@ void main() {
     test(
       'processCart should capture error and set state to AsyncError on failure',
       () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
 
         final insertUpdateStateNotifier = container.read(
           insertUpdateStateControllerProvider.notifier,
@@ -153,12 +148,6 @@ void main() {
           enterpriseCode: fakeArgs.enterpriseCode,
         );
         insertUpdateStateNotifier.addItem(product);
-
-        // Update the request type so processCart has a valid requestTypeCode
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          code: 1,
-        );
-        insertUpdateStateNotifier.updateRequestType(requestType);
 
         // Update the customer so processCart has a valid customerCode
         final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
@@ -207,7 +196,10 @@ void main() {
     test(
       'processCart should throw mandatory model error when requestType code is null or zero',
       () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+        fakeSaleRequest = fakeSaleRequest.copyWith(
+          requestType: BSFRequestTypeEntity.empty(),
+        );
+        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
 
         final processCartNotifier = container.read(
           insertUpdateProcessCartControllerProvider.notifier,
@@ -226,30 +218,24 @@ void main() {
         final errorState =
             container.read(insertUpdateProcessCartControllerProvider)
                 as AsyncError;
-        expect(errorState.error.toString(), isNotEmpty);
+        expect(errorState.error.toString(), contains('Modelo de pedido é obrigatório'));
       },
     );
 
     test(
       'processCart should throw mandatory customer error when customer code is null or zero',
       () async {
-        final container = makeProviderContainer(saleRequestId: 0);
-
-        final insertUpdateStateNotifier = container.read(
-          insertUpdateStateControllerProvider.notifier,
+        fakeSaleRequest = fakeSaleRequest.copyWith(
+          requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1),
+          customer: EntityFactory.makeBSFCustomerEntity().copyWith(code: 0),
         );
+        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
         final processCartNotifier = container.read(
           insertUpdateProcessCartControllerProvider.notifier,
         );
 
         // Load initial state
         await container.read(insertUpdateStateControllerProvider.future);
-
-        // Set requestType, but do not set customer so customer code remains null or zero
-        final requestType = EntityFactory.makeBSFRequestTypeEntity().copyWith(
-          code: 1,
-        );
-        insertUpdateStateNotifier.updateRequestType(requestType);
 
         await processCartNotifier.processCart();
 
@@ -260,7 +246,7 @@ void main() {
         final errorState =
             container.read(insertUpdateProcessCartControllerProvider)
                 as AsyncError;
-        expect(errorState.error.toString(), isNotEmpty);
+        expect(errorState.error.toString(), contains('Cliente é obrigatório'));
       },
     );
   });

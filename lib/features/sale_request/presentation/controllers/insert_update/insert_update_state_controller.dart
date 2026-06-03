@@ -232,26 +232,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(current.copyWith(customer: updatedCustomer));
   }
 
-  List<BSFSaleRequestSanitizationAction> updateRequestType(
-    BSFRequestTypeEntity requestType, {
-    bool onlyValidating = false,
-  }) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
-    final current = state.value!;
-
-    final (sanitizedState, actions) =
-        BSFSaleRequestSanitizer.sanitizeRequestTypeChange(current, requestType);
-
-    if (actions.isNotEmpty && onlyValidating) {
-      return actions;
-    } else if (onlyValidating) {
-      return [];
-    }
-
-    state = AsyncData(sanitizedState);
-    return const [];
-  }
-
   (bool, String?) addPayment({
     required BSFPaymentFinalizationEntity payment,
     required double value,
