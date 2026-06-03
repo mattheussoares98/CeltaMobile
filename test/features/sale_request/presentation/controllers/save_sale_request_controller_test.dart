@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
@@ -58,11 +59,29 @@ class SpySaleRequestsStateController extends SaleRequestsStateController {
 
 class FakeInsertUpdateStateController extends InsertUpdateStateController {
   final BSFSaleRequestEntity saleRequestEntity;
-  FakeInsertUpdateStateController({required this.saleRequestEntity});
+  final bool mockNeedsProcessing;
+  FakeInsertUpdateStateController({
+    required this.saleRequestEntity,
+    this.mockNeedsProcessing = false,
+  });
 
   @override
   FutureOr<BSFSaleRequestEntity> build() async {
     return saleRequestEntity;
+  }
+
+  @override
+  bool get needsProcessing => mockNeedsProcessing;
+}
+
+class FakeCanAccessResourceStateController
+    extends CanAccessResourceStateController {
+  final bool hasAccess;
+  FakeCanAccessResourceStateController(this.hasAccess);
+
+  @override
+  Future<bool> build(BsRoutine routine, BsResource resource) async {
+    return hasAccess;
   }
 }
 
@@ -96,6 +115,8 @@ void main() {
     ValidatedUserSession? fakeValidatedUserSession,
     SaleRequestsStateController? spySaleRequestsStateController,
     BSFSaleRequestEntity? insertUpdateSaleRequestEntity,
+    bool mockNeedsProcessing = false,
+    bool canChangePrice = true,
   }) {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
@@ -130,7 +151,14 @@ void main() {
           () => FakeInsertUpdateStateController(
             saleRequestEntity:
                 insertUpdateSaleRequestEntity ?? fakeBSFSaleRequestEntity,
+            mockNeedsProcessing: mockNeedsProcessing,
           ),
+        ),
+        canAccessResourceStateControllerProvider(
+          BsRoutine.saleRequest,
+          BsResource.saleRequestChangeTPrice,
+        ).overrideWith(
+          () => FakeCanAccessResourceStateController(canChangePrice),
         ),
         appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
         saleRequestsStateControllerProvider(fakeEnterprise.Code!).overrideWith(
@@ -569,6 +597,167 @@ void main() {
             params: any(named: 'params'),
           ),
         );
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if customer is null',
+      () async {
+        final invalidBsfEntity = fakeBSFSaleRequestEntity.copyWith(
+          annulCustomer: true,
+        );
+
+        final container = makeProviderContainer(
+          insertUpdateSaleRequestEntity: invalidBsfEntity,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect((states.last.error as AppException).message, isNotEmpty);
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if products list is empty',
+      () async {
+        final invalidBsfEntity = fakeBSFSaleRequestEntity.copyWith(
+          products: const [],
+        );
+
+        final container = makeProviderContainer(
+          insertUpdateSaleRequestEntity: invalidBsfEntity,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect((states.last.error as AppException).message, isNotEmpty);
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if requestType is null',
+      () async {
+        final invalidBsfEntity = fakeBSFSaleRequestEntity.copyWith(
+          annulRequestType: true,
+        );
+
+        final container = makeProviderContainer(
+          insertUpdateSaleRequestEntity: invalidBsfEntity,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect((states.last.error as AppException).message, isNotEmpty);
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if needProcessingCart is true and canChangePrice is false',
+      () async {
+        final container = makeProviderContainer(
+          mockNeedsProcessing: true,
+          canChangePrice: false,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect((states.last.error as AppException).message, isNotEmpty);
+      },
+    );
+
+    test(
+      'should emit [loading, error] with AppException if needProcessingCart is true and requestType does not allow changing price',
+      () async {
+        final requestTypeNoChangePrice = fakeBSFSaleRequestEntity.requestType
+            ?.copyWith(allowAlterCostOrSalePrice: false);
+        final invalidBsfEntity = fakeBSFSaleRequestEntity.copyWith(
+          requestType: requestTypeNoChangePrice,
+        );
+
+        final container = makeProviderContainer(
+          insertUpdateSaleRequestEntity: invalidBsfEntity,
+          mockNeedsProcessing: true,
+          canChangePrice: true,
+        );
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+            );
+
+        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
+        expect(states.last.error, isA<AppException>());
+        expect((states.last.error as AppException).message, isNotEmpty);
       },
     );
   });

@@ -17,20 +17,19 @@ class ProcessAndSaveButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void onSave(bool needProcessingCart) async {
       final args = ref.read(saleRequestArgsProvider);
-      final proceed = await showAlertDialog(
-        context: context,
-        title: needProcessingCart
-            ? 'ATENÇÃO!'.hardcoded
-            : 'Salvar pedido?'.hardcoded,
-        content: needProcessingCart
-            ? 'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
-                  .hardcoded
-            : null,
-        cancelActionText: 'Não'.hardcoded,
-        defaultActionText: 'Sim'.hardcoded,
-      );
-      if (proceed != true) {
-        return;
+      if (needProcessingCart) {
+        final proceed = await showAlertDialog(
+          context: context,
+          title: 'ATENÇÃO!'.hardcoded,
+          content:
+              'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
+                  .hardcoded,
+          cancelActionText: 'Não'.hardcoded,
+          defaultActionText: 'Sim'.hardcoded,
+        );
+        if (proceed != true) {
+          return;
+        }
       }
       ref
           .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
@@ -76,7 +75,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
                       children: [
                         Flexible(
                           child: PrimaryButton(
-                            text: 'Processar carrinho'.hardcoded,
+                            text: 'Processar pedido'.hardcoded,
                             onPressed: needProcessingCart ? processCart : null,
                             iconAlignment: IconAlignment.end,
                             icon: const PlatformIcon(
@@ -90,33 +89,14 @@ class ProcessAndSaveButtons extends ConsumerWidget {
                     ),
                   ),
                   Flexible(
-                    child: Consumer(
-                      builder: (_, ref, _) {
-                        final requestTypeAllowChangePriceOrCost = ref.watch(
-                          insertUpdateStateControllerProvider.select(
-                            (s) =>
-                                s
-                                    .value
-                                    ?.requestType
-                                    ?.allowAlterCostOrSalePrice ==
-                                true,
-                          ),
-                        );
-                        return PrimaryButton(
-                          onPressed:
-                              needProcessingCart &&
-                                  (!canChangePrice ||
-                                      !requestTypeAllowChangePriceOrCost)
-                              ? null
-                              : () => onSave(needProcessingCart),
-                          text: 'Salvar pedido'.hardcoded,
-                          iconAlignment: IconAlignment.end,
-                          icon: const PlatformIcon(
-                            cupertinoIcon: CupertinoIcons.check_mark,
-                            materialIcon: Icons.save,
-                          ),
-                        );
-                      },
+                    child: PrimaryButton(
+                      onPressed: () => onSave(needProcessingCart),
+                      text: 'Salvar pedido'.hardcoded,
+                      iconAlignment: IconAlignment.end,
+                      icon: const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.check_mark,
+                        materialIcon: Icons.save,
+                      ),
                     ),
                   ),
                 ],
