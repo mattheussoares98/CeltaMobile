@@ -47,7 +47,7 @@ class ItemsPage extends ConsumerWidget {
               enterpriseCode: args.enterpriseCode,
               customerCode: args.customerCode,
               saleRequestId: args.saleRequestId,
-              heroPrefix: 'items',
+              heroPrefix: 'items$isSliver',
             );
           },
         );
