@@ -15,6 +15,7 @@ class SummaryPage extends ConsumerWidget {
           Expanded(
             child: CustomScrollView(
               slivers: [
+                SliverToBoxAdapter(child: SaleRequestPersonalizedCode()),
                 SliverToBoxAdapter(
                   child: DebounceField(type: DebounceFieldType.observations),
                 ),
