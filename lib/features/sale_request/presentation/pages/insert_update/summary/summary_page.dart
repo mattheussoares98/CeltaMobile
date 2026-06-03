@@ -1,5 +1,5 @@
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/summary/components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,6 +29,8 @@ class SummaryPage extends ConsumerWidget {
                 SliverToBoxAdapter(child: SellerDropdown()),
                 gapSliverH8,
                 SliverToBoxAdapter(child: SelectedCustomer()),
+                gapSliverH8,
+                ItemsPage(isSliver: true),
               ],
             ),
           ),
