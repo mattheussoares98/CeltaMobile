@@ -1,8 +1,6 @@
-// lib/core/data/repositories/request_type/ec_get_request_types_repository_impl.dart
+import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/request_type/request_type.dart';
-
-import 'package:celta_inventario/core/data/datasource/request_type/request_type.dart';
 
 class EcGetRequestTypesRepositoryImpl implements IEcGetRequestTypesRepository {
   final IEcGetRequestTypesDatasource datasource;
@@ -18,9 +16,6 @@ class EcGetRequestTypesRepositoryImpl implements IEcGetRequestTypesRepository {
       parameters: parameters,
       params: params,
     );
-    return result
-        .where((e) => e.allowSelectRequestTypeToAppRequests == true)
-        .map((e) => e.toEntity())
-        .toList();
+    return result.map((e) => e.toEntity()).toList();
   }
 }
