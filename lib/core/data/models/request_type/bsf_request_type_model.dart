@@ -123,7 +123,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         useWholePrice: json['UseWholePrice'],
         useECommercePrice: json['UseECommercePrice'],
         allowSelectRequestTypeToAppRequests:
-            json['allowSelectRequestTypeToAppRequests'],
+            json['AllowSelectRequestTypeToAppRequests'],
         allowSaleConvene: json['AllowSaleConvene'] == 1,
       );
 
@@ -161,7 +161,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'RequestPrintEditionHeaderImage': requestPrintEditionHeaderImage,
     'UseWholePrice': useWholePrice,
     'UseECommercePrice': useECommercePrice,
-    'allowSelectRequestTypeToAppRequests': allowSelectRequestTypeToAppRequests,
+    'AllowSelectRequestTypeToAppRequests': allowSelectRequestTypeToAppRequests,
     'AllowSaleConvene': allowSaleConvene == true ? 1 : 0,
     'UnitValueType': unitValueType?.value,
   };
