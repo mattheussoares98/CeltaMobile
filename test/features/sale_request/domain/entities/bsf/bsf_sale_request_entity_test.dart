@@ -24,6 +24,13 @@ void main() {
 
         final copy = original.copyWith();
         expect(original.needsProcessingComparedTo(copy), isFalse);
+
+        final copyWithNewLists = original.copyWith(
+          products: original.products?.map((p) => p.copyWith(
+            discounts: p.discounts != null ? List<BSFDiscountEntity>.from(p.discounts!) : null,
+          )).toList(),
+        );
+        expect(original.needsProcessingComparedTo(copyWithNewLists), isFalse);
       },
     );
 

@@ -304,18 +304,31 @@ class BSFSaleRequestEntity extends Equatable {
 
     if (!changedProducts) {
       final otherProductsMap = {
-        for (final p in other.products ?? <BSFProductItemEntity>[]) p.code: p,
+        for (final p in other.products ?? <BSFProductItemEntity>[])
+          p.productPackingCode: p,
       };
 
+      bool areDoublesDifferent(double? a, double? b) {
+        if (a == b) return false;
+        if (a == null || b == null) return true;
+        return (a - b).abs() >= 0.01;
+      }
+
       changedProducts = (products ?? []).any((product) {
-        final correspondent = otherProductsMap[product.code];
+        final correspondent = otherProductsMap[product.productPackingCode];
         return correspondent == null ||
-            product.quantity != correspondent.quantity ||
-            product.totalLiquid != correspondent.totalLiquid ||
+            areDoublesDifferent(product.quantity, correspondent.quantity) ||
+            areDoublesDifferent(
+              product.totalLiquid,
+              correspondent.totalLiquid,
+            ) ||
             product.increment != correspondent.increment ||
-            product.discounts != correspondent.discounts ||
+            !const ListEquality().equals(
+              product.discounts,
+              correspondent.discounts,
+            ) ||
             product.deliveryTax != correspondent.deliveryTax ||
-            product.value != correspondent.value;
+            areDoublesDifferent(product.value, correspondent.value);
       });
     }
 
