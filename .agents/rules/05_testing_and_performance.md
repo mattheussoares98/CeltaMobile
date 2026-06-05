@@ -20,7 +20,7 @@ As a QA Lead and Principal Software Engineer, this document establishes the defi
 
 ## 3. Test Data Generation
 
-- **Entity Factory Pattern:** When returning an entity or generating a JSON object for tests, strictly follow the `EntityFactory` pattern. If an entity factory does not exist for the required class, create a new `make` method (e.g., `newEntity`) and utilize it.
+- **Entity Factory Pattern:** When returning an entity or generating a JSON object for tests, strictly follow the `EntityFactory` pattern. If an entity factory does not exist for the required class, create a new `make` method (e.g., `newEntity`) and utilize it. **Do not use direct class constructors inside test files, as adding new properties to the class in the future will break these instantiations. If a property needs to be nullified or customized for a test, add an annulment flag (e.g., `annulPropertyName` / `anullPropertyName`) to the entity's `copyWith` method and invoke it on the instance created by the factory.**
 - **Model Conversion:** If a data model or JSON map is required for an API test, first generate the Entity via the factory, and then use the respective model's conversion methods (e.g., `fromEntity` or `toJson`) to produce the final test data.
 - **Faker Usage:** Use the `faker` package to generate randomized variables **ONLY** when writing test code. 
 - **Exception for Regional Formats:** If testing specific Brazilian formatted data (such as CPF, CNPJ, or specific phone numbers), do not use raw `faker` randomization. Instead, use explicit, valid mocked string formats to avoid validation errors in domain logic.
