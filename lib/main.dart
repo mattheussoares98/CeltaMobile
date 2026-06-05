@@ -1,13 +1,13 @@
 import 'package:celta_inventario/app.dart';
+import 'package:celta_inventario/exceptions/async_error_logger.dart';
 import 'package:celta_inventario/exceptions/error_logger.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore:depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
-
-import 'package:celta_inventario/utils/utils.dart';
 
 void main() async {
   await initApp();
@@ -20,13 +20,13 @@ void main() async {
   final container = ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [],
-    // observers: [AsyncErrorLogger()],
+    observers: [AsyncErrorLogger()],
   );
   // * Initialize CartSyncService to start the listener
-  // final errorLogger = container.read(errorLoggerProvider);
+  final errorLogger = container.read(errorLoggerProvider);
   // * Register error handlers. For more info, see:
   // * https://docs.flutter.dev/testing/errors
-  // registerErrorHandlers(errorLogger);
+  registerErrorHandlers(errorLogger);
   // * Entry point of the app
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
@@ -34,6 +34,11 @@ void main() async {
 void registerErrorHandlers(ErrorLogger errorLogger) {
   // * Show some error UI if any uncaught exception happens
   FlutterError.onError = (FlutterErrorDetails details) {
+    if (details.context != null) {
+      debugPrint(
+        '🔴 Flutter Error Context (Widget/Position): ${details.context}',
+      );
+    }
     FlutterError.presentError(details);
     errorLogger.logError(details.exception, details.stack);
   };
