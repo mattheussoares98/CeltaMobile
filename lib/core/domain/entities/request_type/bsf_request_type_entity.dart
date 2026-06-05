@@ -33,6 +33,8 @@ class BSFRequestTypeEntity extends Equatable {
   final dynamic requestPrintEditionHeaderImage;
   final int? useWholePrice;
   final bool? useECommercePrice;
+  final bool? allowSelectRequestTypeToAppRequests;
+  final bool? allowSaleConvene;
   final PracticedPriceType? unitValueType;
 
   const BSFRequestTypeEntity({
@@ -67,6 +69,8 @@ class BSFRequestTypeEntity extends Equatable {
     required this.requestPrintEditionHeaderImage,
     required this.useWholePrice,
     required this.useECommercePrice,
+    required this.allowSelectRequestTypeToAppRequests,
+    required this.allowSaleConvene,
     required this.unitValueType,
   });
 
@@ -103,6 +107,8 @@ class BSFRequestTypeEntity extends Equatable {
     requestPrintEditionHeaderImage,
     useWholePrice,
     useECommercePrice,
+    allowSelectRequestTypeToAppRequests,
+    allowSaleConvene,
     unitValueType,
   ];
 
@@ -138,6 +144,8 @@ class BSFRequestTypeEntity extends Equatable {
     dynamic requestPrintEditionHeaderImage,
     int? useWholePrice,
     bool? useECommercePrice,
+    bool? allowSelectRequestTypeToAppRequests,
+    bool? allowSaleConvene,
     PracticedPriceType? unitValueType,
     bool? annulCode,
   }) {
@@ -187,6 +195,10 @@ class BSFRequestTypeEntity extends Equatable {
           requestPrintEditionHeaderImage ?? this.requestPrintEditionHeaderImage,
       useWholePrice: useWholePrice ?? this.useWholePrice,
       useECommercePrice: useECommercePrice ?? this.useECommercePrice,
+      allowSelectRequestTypeToAppRequests:
+          allowSelectRequestTypeToAppRequests ??
+          this.allowSelectRequestTypeToAppRequests,
+      allowSaleConvene: allowSaleConvene ?? this.allowSaleConvene,
       unitValueType: unitValueType ?? this.unitValueType,
     );
   }
@@ -224,6 +236,8 @@ class BSFRequestTypeEntity extends Equatable {
       requestPrintEditionHeaderImage: null,
       useWholePrice: null,
       useECommercePrice: null,
+      allowSelectRequestTypeToAppRequests: null,
+      allowSaleConvene: null,
       unitValueType: null,
     );
   }

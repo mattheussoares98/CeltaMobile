@@ -1,3 +1,4 @@
+// lib/core/data/models/request_type/bsf_request_type_model.dart
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:collection/collection.dart';
@@ -24,7 +25,6 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     super.allowUseDiscount,
     super.allowDistribution,
     super.allowSaleOffer,
-    // super.allowCovenant,//TODO should add this property and treat it
     super.considerAsStockPendency,
     super.showStockByClass,
     super.showStockByExtensibleGroup,
@@ -36,6 +36,8 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     super.requestPrintEditionHeaderImage,
     super.useWholePrice,
     super.useECommercePrice,
+    super.allowSelectRequestTypeToAppRequests,
+    super.allowSaleConvene,
     super.unitValueType,
   });
 
@@ -72,6 +74,8 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     requestPrintEditionHeaderImage,
     useWholePrice,
     useECommercePrice,
+    allowSelectRequestTypeToAppRequests,
+    allowSaleConvene,
     unitValueType,
   ];
 
@@ -118,6 +122,9 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         requestPrintEditionHeaderImage: json['RequestPrintEditionHeaderImage'],
         useWholePrice: json['UseWholePrice'],
         useECommercePrice: json['UseECommercePrice'],
+        allowSelectRequestTypeToAppRequests:
+            json['allowSelectRequestTypeToAppRequests'],
+        allowSaleConvene: json['AllowSaleConvene'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -154,6 +161,8 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'RequestPrintEditionHeaderImage': requestPrintEditionHeaderImage,
     'UseWholePrice': useWholePrice,
     'UseECommercePrice': useECommercePrice,
+    'allowSelectRequestTypeToAppRequests': allowSelectRequestTypeToAppRequests,
+    'AllowSaleConvene': allowSaleConvene,
     'UnitValueType': unitValueType?.value,
   };
 
@@ -192,6 +201,9 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         requestPrintEditionHeaderImage: entity.requestPrintEditionHeaderImage,
         useWholePrice: entity.useWholePrice,
         useECommercePrice: entity.useECommercePrice,
+        allowSelectRequestTypeToAppRequests:
+            entity.allowSelectRequestTypeToAppRequests,
+        allowSaleConvene: entity.allowSaleConvene,
         unitValueType: entity.unitValueType,
       );
 
@@ -229,6 +241,8 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     requestPrintEditionHeaderImage: requestPrintEditionHeaderImage,
     useWholePrice: useWholePrice,
     useECommercePrice: useECommercePrice,
+    allowSelectRequestTypeToAppRequests: allowSelectRequestTypeToAppRequests,
+    allowSaleConvene: allowSaleConvene,
     unitValueType: unitValueType,
   );
 }

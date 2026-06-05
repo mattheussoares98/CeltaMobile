@@ -1,3 +1,4 @@
+// test/mocks/entity_factory.dart
 import 'dart:typed_data';
 
 import 'package:celta_inventario/core/data/models/models.dart';
@@ -1670,6 +1671,8 @@ class EntityFactory {
         requestPrintEditionHeaderImage: null,
         useWholePrice: faker.randomGenerator.integer(2),
         useECommercePrice: faker.randomGenerator.boolean(),
+        allowSelectRequestTypeToAppRequests: faker.randomGenerator.boolean(),
+        allowSaleConvene: faker.randomGenerator.boolean(),
         unitValueType:
             PracticedPriceType.values[faker.randomGenerator.integer(
               PracticedPriceType.values.length,
