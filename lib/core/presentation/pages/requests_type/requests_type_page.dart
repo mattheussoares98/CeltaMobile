@@ -39,7 +39,11 @@ class RequestsTypePage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text('Nenhum modelo de pedido foi encontrado'),
+                        Text(
+                          'Nenhum modelo de pedido foi encontrado\n\nLembre-se que somente modelos que estão com o parâmetro "Permitir a utilização em pedidos feitos por aplicativos" aparecerão aqui'
+                              .hardcoded,
+                          textAlign: TextAlign.center,
+                        ),
                         gapH16,
                         PrimaryButton(
                           text: 'Carregar novamente'.hardcoded,
