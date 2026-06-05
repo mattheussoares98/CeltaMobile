@@ -18,7 +18,12 @@ class ConsumerCustomer extends ConsumerWidget {
           return const SliverToBoxAdapter(child: SizedBox());
         }
         return SliverToBoxAdapter(
-          child: CustomerItem(key: ValueKey(customer.code), customer: customer),
+          child: ResponsiveCenter(
+            child: CustomerItem(
+              key: ValueKey(customer.code),
+              customer: customer,
+            ),
+          ),
         );
       },
     );
