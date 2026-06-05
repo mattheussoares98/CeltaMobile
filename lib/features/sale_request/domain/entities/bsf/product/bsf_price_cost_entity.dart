@@ -216,10 +216,12 @@ class BSFPriceCostEntity extends Equatable {
     bool anullSalePracticedInSaleRetail = false,
     bool anullSalePracticedInWholeSale = false,
     bool? anullMininumQuantityForWholeSale,
+    bool anullSaleRetailPricePractice = false,
   }) {
     return BSFPriceCostEntity(
-      saleRetailPricePractice:
-          saleRetailPricePractice ?? this.saleRetailPricePractice,
+      saleRetailPricePractice: anullSaleRetailPricePractice
+          ? null
+          : (saleRetailPricePractice ?? this.saleRetailPricePractice),
       lastSaleRetailPrice: lastSaleRetailPrice ?? this.lastSaleRetailPrice,
       wholeSalePricePractice:
           wholeSalePricePractice ?? this.wholeSalePricePractice,

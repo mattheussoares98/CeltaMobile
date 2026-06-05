@@ -82,8 +82,20 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
-  void increaseOrDecreaseUnit(BSFProductItemEntity item, bool isAdding) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+  String? increaseOrDecreaseUnit(BSFProductItemEntity item, bool isAdding) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return null;
+
+    final pc = item.priceCost;
+    double price = item.value ?? 0;
+    final minWhole = pc?.mininumQuantityForWholeSale ?? 0;
+    final wholePrice =
+        pc?.salePracticedInWholeSale ?? pc?.wholeSalePricePractice ?? 0;
+    final retailPrice =
+        pc?.salePracticedInSaleRetail ?? pc?.saleRetailPricePractice ?? 0;
+
+    if ((item.value ?? 0) <= 0 && retailPrice == 0) {
+      return 'Esse produto não possui preço'.hardcoded;
+    }
 
     final newQuantity = isAdding
         ? (item.quantity ?? 0) + 1
@@ -91,7 +103,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     if (newQuantity <= 0) {
       removeItem(item);
-      return;
+      return null;
     }
 
     final (items, index) = _getItemsAndIndexByPlu(
@@ -101,18 +113,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     if (index == -1) {
       final args = ref.read(saleRequestArgsProvider);
       addItem(item.toProductEntity(args.enterpriseCode));
-      return;
+      return null;
     } else {
-      final pc = item.priceCost;
-      double price = item.value ?? 0;
-
       if (pc != null) {
-        final minWhole = pc.mininumQuantityForWholeSale ?? 0;
-        final wholePrice =
-            pc.salePracticedInWholeSale ?? pc.wholeSalePricePractice ?? 0;
-        final retailPrice =
-            pc.salePracticedInSaleRetail ?? pc.saleRetailPricePractice ?? 0;
-
         if (minWhole > 0 && newQuantity >= minWhole && wholePrice > 0) {
           price = wholePrice;
         } else if (retailPrice > 0) {
@@ -123,6 +126,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       items[index] = items[index].copyWith(quantity: newQuantity, value: price);
       state = AsyncData(state.value!.copyWith(products: items));
     }
+    return null;
   }
 
   void updateItem(BSFProductItemEntity oldItem, BSFProductItemEntity newItem) {

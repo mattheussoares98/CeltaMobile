@@ -87,6 +87,8 @@ class BSFProductItemEntity extends Equatable {
     bool? annulIncrement,
     bool? annulDeliveryTax,
     bool? annulDiscounts,
+    bool? annulValue,
+    bool? annulPriceCost,
   }) {
     return BSFProductItemEntity(
       product: product ?? this.product,
@@ -104,11 +106,11 @@ class BSFProductItemEntity extends Equatable {
       compensation: compensation ?? this.compensation,
       productPackingCode: productPackingCode ?? this.productPackingCode,
       quantity: quantity ?? this.quantity,
-      value: value ?? this.value,
+      value: annulValue == true ? null : value ?? this.value,
       code: code ?? this.code,
       icms: icms ?? this.icms,
       ipi: ipi ?? this.ipi,
-      priceCost: priceCost ?? this.priceCost,
+      priceCost: annulPriceCost == true ? null : priceCost ?? this.priceCost,
     );
   }
 

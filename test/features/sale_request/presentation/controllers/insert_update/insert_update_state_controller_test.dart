@@ -251,17 +251,20 @@ void main() {
         expect(state.value!.products!.length, 1);
         expect(state.value!.products!.first.quantity, 1);
 
-        controller.increaseOrDecreaseUnit(state.value!.products!.first, true);
+        final result1 = controller.increaseOrDecreaseUnit(state.value!.products!.first, true);
+        expect(result1, isNull);
         final state2 = getCurrentState(container);
         expect(state2.value!.products!.length, 1);
         expect(state2.value!.products!.first.quantity, 2);
 
-        controller.increaseOrDecreaseUnit(state2.value!.products!.first, false);
+        final result2 = controller.increaseOrDecreaseUnit(state2.value!.products!.first, false);
+        expect(result2, isNull);
         final state3 = getCurrentState(container);
         expect(state3.value!.products!.length, 1);
         expect(state3.value!.products!.first.quantity, 1);
 
-        controller.increaseOrDecreaseUnit(state3.value!.products!.first, false);
+        final result3 = controller.increaseOrDecreaseUnit(state3.value!.products!.first, false);
+        expect(result3, isNull);
         final state4 = getCurrentState(container);
         expect(state4.value!.products!, isEmpty);
       });
@@ -307,7 +310,8 @@ void main() {
           expect(state.value!.products!.first.quantity, 1);
           expect(state.value!.products!.first.value, retailPrice);
 
-          controller.increaseOrDecreaseUnit(item, true);
+          final result = controller.increaseOrDecreaseUnit(item, true);
+          expect(result, isNull);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, wholePrice);
@@ -354,7 +358,8 @@ void main() {
           expect(state.value!.products!.first.quantity, 1);
           expect(state.value!.products!.first.value, retailPrice);
 
-          controller.increaseOrDecreaseUnit(item, true);
+          final result = controller.increaseOrDecreaseUnit(item, true);
+          expect(result, isNull);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, retailPrice);
@@ -401,10 +406,40 @@ void main() {
           expect(state.value!.products!.first.quantity, 1);
           expect(state.value!.products!.first.value, retailPrice);
 
-          controller.increaseOrDecreaseUnit(item, true);
+          final result = controller.increaseOrDecreaseUnit(item, true);
+          expect(result, isNull);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, retailPrice);
+        },
+      );
+
+      test(
+        'Should return error message when item value and retail price are null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            annulValue: true,
+            priceCost: EntityFactory.makeBSFPriceCostEntity().copyWith(
+              anullSaleRetailPricePractice: true,
+              anullSalePracticedInSaleRetail: true,
+            ),
+          );
+
+          final currentState = container.read(insertUpdateStateControllerProvider).value!;
+          controller.updateProcessedCart(currentState.copyWith(products: [item]));
+
+          final result = controller.increaseOrDecreaseUnit(item, true);
+
+          expect(result, isA<String>());
+          expect(result, isNotNull);
         },
       );
     });
