@@ -32,10 +32,6 @@ class BSFProductItemSummary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if ((item.value ?? 0) <= 0 && useCard) {
-      return const SizedBox.shrink();
-    }
-
     final size = MediaQuery.of(context).size;
 
     final summaryContent = SingleChildScrollView(
