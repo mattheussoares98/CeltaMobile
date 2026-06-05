@@ -89,9 +89,9 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     double price = item.value ?? 0;
     final minWhole = pc?.mininumQuantityForWholeSale ?? 0;
     final wholePrice =
-        pc?.salePracticedInWholeSale ?? pc?.wholeSalePricePractice ?? 0;
+        pc?.wholeSalePricePractice ?? pc?.salePracticedInWholeSale ?? 0;
     final retailPrice =
-        pc?.salePracticedInSaleRetail ?? pc?.saleRetailPricePractice ?? 0;
+        pc?.saleRetailPricePractice ?? pc?.salePracticedInSaleRetail ?? 0;
 
     if ((item.value ?? 0) <= 0 && retailPrice == 0) {
       return 'Esse produto não possui preço'.hardcoded;

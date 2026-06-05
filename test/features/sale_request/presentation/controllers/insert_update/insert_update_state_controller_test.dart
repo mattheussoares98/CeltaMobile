@@ -415,6 +415,115 @@ void main() {
       );
 
       test(
+        'increaseOrDecreaseUnit should prioritize wholeSalePricePractice over salePracticedInWholeSale',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final retailPrice = faker.randomGenerator.decimal();
+          final wholePricePractice = faker.randomGenerator.decimal();
+          final salePracticedInWholeSale = wholePricePractice + 1.0;
+
+          final product =
+              EntityFactory.makeProductEntity(
+                plu: faker.guid.guid().toString(),
+                enterpriseCode: fakeArgs.enterpriseCode,
+              ).copyWith(
+                RetailPracticedPrice: retailPrice,
+                WholePracticedPrice: wholePricePractice,
+                MinimumWholeQuantity: 2,
+                Value: 0,
+                PriceCost: EntityFactory.makePriceCost().copyWith(
+                  RetailPracticedPrice: retailPrice,
+                  WholePracticedPrice: wholePricePractice,
+                  MinimumWholeQuantity: 2,
+                ),
+              );
+
+          controller.addItem(product);
+          
+          final currentState = container.read(insertUpdateStateControllerProvider).value!;
+          final addedItem = currentState.products!.first;
+          final itemWithDifferentWholePrices = addedItem.copyWith(
+            priceCost: addedItem.priceCost?.copyWith(
+              salePracticedInWholeSale: salePracticedInWholeSale,
+            ),
+          );
+          
+          controller.updateProcessedCart(currentState.copyWith(products: [itemWithDifferentWholePrices]));
+
+          final state = getCurrentState(container);
+          expect(state.value!.products!.first.quantity, 1);
+          expect(state.value!.products!.first.value, retailPrice);
+
+          final result = controller.increaseOrDecreaseUnit(itemWithDifferentWholePrices, true);
+          expect(result, isNull);
+          final state2 = getCurrentState(container);
+          expect(state2.value!.products!.first.quantity, 2);
+          expect(state2.value!.products!.first.value, wholePricePractice);
+        },
+      );
+
+      test(
+        'increaseOrDecreaseUnit should prioritize saleRetailPricePractice over salePracticedInSaleRetail',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final retailPricePractice = faker.randomGenerator.decimal();
+          final salePracticedInSaleRetail = retailPricePractice + 1.0;
+
+          final product =
+              EntityFactory.makeProductEntity(
+                plu: faker.guid.guid().toString(),
+                enterpriseCode: fakeArgs.enterpriseCode,
+              ).copyWith(
+                RetailPracticedPrice: retailPricePractice,
+                Value: 0,
+                MinimumWholeQuantity: 0,
+                PriceCost: EntityFactory.makePriceCost().copyWith(
+                  RetailPracticedPrice: retailPricePractice,
+                  MinimumWholeQuantity: 0,
+                  WholePracticedPrice: 0,
+                  WholeSalePrice: 0,
+                ),
+              );
+
+          controller.addItem(product);
+          
+          final currentState = container.read(insertUpdateStateControllerProvider).value!;
+          final addedItem = currentState.products!.first;
+          final itemWithDifferentRetailPrices = addedItem.copyWith(
+            priceCost: addedItem.priceCost?.copyWith(
+              salePracticedInSaleRetail: salePracticedInSaleRetail,
+            ),
+          );
+          
+          controller.updateProcessedCart(currentState.copyWith(products: [itemWithDifferentRetailPrices]));
+
+          final state = getCurrentState(container);
+          expect(state.value!.products!.first.quantity, 1);
+          expect(state.value!.products!.first.value, retailPricePractice);
+
+          final result = controller.increaseOrDecreaseUnit(itemWithDifferentRetailPrices, true);
+          expect(result, isNull);
+          final state2 = getCurrentState(container);
+          expect(state2.value!.products!.first.quantity, 2);
+          expect(state2.value!.products!.first.value, retailPricePractice);
+        },
+      );
+
+      test(
         'Should return error message when item value and retail price are null',
         () async {
           final container = makeProviderContainer(saleRequestId: 0);

@@ -106,13 +106,17 @@ void main() {
       const retailPrice = 10.0;
       const wholePrice = 8.0;
       const minWhole = 5.0;
+      const practicedRetailPrice = 12.0;
+      const practicedWholePrice = 9.0;
 
       final productWithWholesale = testProduct.copyWith(
         value: retailPrice,
         quantity: 1,
         priceCost: testProduct.priceCost?.copyWith(
-          salePracticedInSaleRetail: retailPrice,
-          salePracticedInWholeSale: wholePrice,
+          saleRetailPricePractice: retailPrice,
+          wholeSalePricePractice: wholePrice,
+          salePracticedInSaleRetail: practicedRetailPrice,
+          salePracticedInWholeSale: practicedWholePrice,
           mininumQuantityForWholeSale: minWhole,
         ),
       );
@@ -203,14 +207,15 @@ void main() {
       );
 
       test(
-        'should apply wholeSalePricePractice if salePracticedInWholeSale is null',
+        'should apply wholeSalePricePractice prioritizing it over salePracticedInWholeSale',
         () async {
           // ARRANGE
           final productWithPracticeWholesale = testProduct.copyWith(
             quantity: 1,
             priceCost: testProduct.priceCost?.copyWith(
-              salePracticedInSaleRetail: retailPrice,
-              anullSalePracticedInWholeSale: true,
+              saleRetailPricePractice: retailPrice,
+              salePracticedInSaleRetail: retailPrice + 2,
+              salePracticedInWholeSale: wholePrice + 1,
               wholeSalePricePractice: wholePrice,
               mininumQuantityForWholeSale: minWhole,
             ),
@@ -242,15 +247,15 @@ void main() {
       );
 
       test(
-        'should apply saleRetailPricePractice if salePracticedInSaleRetail is null',
+        'should apply saleRetailPricePractice prioritizing it over salePracticedInSaleRetail',
         () async {
           // ARRANGE
           final productWithPracticeRetail = testProduct.copyWith(
             quantity: 1,
             priceCost: testProduct.priceCost?.copyWith(
-              anullSalePracticedInSaleRetail: true,
+              salePracticedInSaleRetail: retailPrice + 2,
               saleRetailPricePractice: retailPrice,
-              salePracticedInWholeSale: wholePrice,
+              wholeSalePricePractice: wholePrice,
               mininumQuantityForWholeSale: minWhole,
             ),
           );
