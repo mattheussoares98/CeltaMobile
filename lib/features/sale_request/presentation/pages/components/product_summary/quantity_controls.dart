@@ -32,9 +32,16 @@ class QuantityControlButton extends ConsumerWidget {
 
     return IconButton(
       onPressed: () {
-        ref
+        final errorMessage = ref
             .read(insertUpdateStateControllerProvider.notifier)
             .increaseOrDecreaseUnit(item, isAdding);
+        if (errorMessage?.isNotEmpty == true) {
+          showSnackBarMessage(
+            context,
+            errorMessage!,
+            backgroundColor: Colors.red,
+          );
+        }
       },
       icon: PlatformIcon(
         cupertinoIcon: isAdding
