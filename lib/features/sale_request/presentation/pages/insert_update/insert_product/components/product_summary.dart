@@ -77,9 +77,7 @@ class ProductSummary extends ConsumerWidget {
               subTitle: item.totalIncrement,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
-              subTitleStyle: valueStyle?.copyWith(
-                color: context.theme.colorScheme.primary,
-              ),
+              subTitleStyle: valueStyle?.copyWith(color: Colors.orange),
             ),
           ],
           const Divider(height: Sizes.p24),
