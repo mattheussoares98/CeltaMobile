@@ -1,14 +1,13 @@
-import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard_visibility_state_controller.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard_visibility_state_controller.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/cart/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartPage extends ConsumerStatefulWidget {
   final BSFRequestTypeEntity selectedRequest;
@@ -152,20 +151,7 @@ class _CartPageState extends ConsumerState<CartPage>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(processCartControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-    });
 
-    ref.listen(saveSaleRequestControllerProvider(widget.enterpriseCode), (
-      p,
-      n,
-    ) {
-      n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, () {
-        instructionsController.clear();
-        observationsController.clear();
-      });
-    });
 
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {

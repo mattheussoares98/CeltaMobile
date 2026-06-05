@@ -57,19 +57,21 @@ class _InsertUpdateContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(insertUpdateProcessCartControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+    ref.listen(processCartControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+
     ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
       n.showAlertDialogOnError(context);
+      n.doOnSuccess(p, context.pop);
       n.showSnackbarOnSuccess(
         context,
         previous: p,
         message: 'Pedido salvo com sucesso!'.hardcoded,
       );
-      n.doOnSuccess(p, () {
-        context.pop();
-      });
-    });
-    ref.listen(insertUpdateProcessCartControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
     });
     ref.observeLoading([
       saveSaleRequestControllerProvider(enterpriseCode),
