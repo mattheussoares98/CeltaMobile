@@ -30,12 +30,15 @@ class ProductsItems extends ConsumerWidget {
             final cartProduct = products![index];
             final product = cartProduct.product;
 
-            return RepaintBoundary(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-                    child: Column(
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.p4,
+                  vertical: Sizes.p8,
+                ),
+                child: Column(
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
@@ -54,11 +57,10 @@ class ProductsItems extends ConsumerWidget {
                         ),
                       ],
                     ),
-                  ),
 
-                  ProductTableItem(cartProduct: cartProduct),
-                  const Divider(height: Sizes.p8),
-                ],
+                    ProductTableItem(cartProduct: cartProduct),
+                  ],
+                ),
               ),
             );
           },
