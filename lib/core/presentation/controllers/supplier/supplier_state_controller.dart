@@ -14,11 +14,12 @@ class SupplierStateController extends _$SupplierStateController {
     SearchSupplierType searchType,
     int enterpriseCode,
   ) async {
-    final selectedSupplier = await ref.read(
+    final pendingRequest = await ref.watch(
       pendingBuyRequestStateControllerProvider(
         enterpriseCode,
-      ).selectAsync((s) => s.selectedSupplier),
+      ).future,
     );
+    final selectedSupplier = pendingRequest.selectedSupplier;
     return [?selectedSupplier];
   }
 

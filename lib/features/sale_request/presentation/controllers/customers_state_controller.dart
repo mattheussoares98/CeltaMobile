@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'customers_state_controller.g.dart';
 
@@ -29,11 +28,11 @@ class CustomersStateController extends _$CustomersStateController {
       timer?.cancel();
     });
 
-    final pendingSelectedCustomer = await ref.read(
-      pendingSaleRequestStateControllerProvider(
-        enterpriseCode,
-      ).selectAsync((s) => s.customer),
+    final pendingSaleRequest = await ref.read(
+      pendingSaleRequestStateControllerProvider(enterpriseCode).future,
     );
+
+    final pendingSelectedCustomer = pendingSaleRequest.customer;
 
     return [?pendingSelectedCustomer];
   }
@@ -68,12 +67,11 @@ class CustomersStateController extends _$CustomersStateController {
             enterpriseCode: enterpriseCode,
           );
 
-      final pendingSelectedCustomer = await ref.read(
-        pendingSaleRequestStateControllerProvider(
-          enterpriseCode,
-        ).selectAsync((s) => s.customer),
+      final pendingSaleRequest = await ref.read(
+        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
       );
 
+      final pendingSelectedCustomer = pendingSaleRequest.customer;
       if (pendingSelectedCustomer == null) {
         return customers;
       }

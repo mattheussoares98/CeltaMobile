@@ -12,9 +12,8 @@ class AddAddress extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<bool> addAddress(AddressEntity newAddress) async {
-      final addresses = await ref.read(
-        customerStateControllerProvider.selectAsync((s) => s?.Addresses),
-      );
+      final customer = await ref.read(customerStateControllerProvider.future);
+      final addresses = customer?.Addresses;
 
       if (addresses?.any(
             (e) => e.Zip == newAddress.Zip && e.Number == newAddress.Number,

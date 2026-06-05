@@ -69,11 +69,12 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
         Modules.adjustCost,
       );
 
-      final oldProduct = await ref.read(
+      final products = await ref.read(
         searchProductsStateControllerProvider(
           searchProductKey,
-        ).selectAsync((s) => s.elementAtOrNull(productIndex)),
+        ).future,
       );
+      final oldProduct = products.elementAtOrNull(productIndex);
       if (oldProduct == null) return;
 
       ref

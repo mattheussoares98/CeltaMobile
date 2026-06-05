@@ -1,13 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
+import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'searched_customers_state_controller.g.dart';
 
@@ -16,9 +15,10 @@ class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
   @override
   FutureOr<SearchedCustomersState> build() async {
-    final customer = await ref.read(
-      insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
+    final insertUpdateState = await ref.read(
+      insertUpdateStateControllerProvider.future,
     );
+    final customer = insertUpdateState.customer;
 
     return SearchedCustomersState(customers: [?customer], errorMessage: null);
   }
@@ -28,9 +28,11 @@ class SearchedCustomersStateController
     String? errorMessage;
 
     state = await AsyncValue.guard(() async {
-      final selectedCustomer = await ref.read(
-        insertUpdateStateControllerProvider.selectAsync((s) => s.customer),
+      final insertUpdateState = await ref.read(
+        insertUpdateStateControllerProvider.future,
       );
+
+      final selectedCustomer = insertUpdateState.customer;
 
       try {
         final args = ref.read(saleRequestArgsProvider);

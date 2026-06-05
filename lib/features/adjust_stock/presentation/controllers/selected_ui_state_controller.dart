@@ -24,14 +24,13 @@ class SelectedUIStateController extends _$SelectedUIStateController {
   }) async {
     StockTypeEntity? newStock;
     if (selectedJustification?.CodigoInterno_TipoEstoque != null) {
-      newStock = await ref.read(
-        stockTypeStateControllerProvider(enterpriseCode).selectAsync(
-          (s) => s.firstWhereOrNull(
-            (e) =>
-                e.CodigoInterno_TipoEstoque ==
-                selectedJustification?.CodigoInterno_TipoEstoque,
-          ),
-        ),
+      final stocks = await ref.read(
+        stockTypeStateControllerProvider(enterpriseCode).future,
+      );
+      newStock = stocks.firstWhereOrNull(
+        (e) =>
+            e.CodigoInterno_TipoEstoque ==
+            selectedJustification?.CodigoInterno_TipoEstoque,
       );
     }
 

@@ -21,11 +21,8 @@ class SelectedEnterpriseStateController
     final repository = ref.read(lastSelectedEnterpriseCodeRepositoryProvider);
     repository.update(enterprise.Code!);
 
-    final enterpriseName = await ref.read(
-      userSessionProvider.selectAsync(
-        (s) => s?.enterprise?.name ?? 'error to load',
-      ),
-    );
+    final userSession = await ref.read(userSessionProvider.future);
+    final enterpriseName = userSession?.enterprise?.name ?? 'error to load';
 
     ref.read(crashlyticsServiceProvider).setCustomKeys([
       CrashlyticsCustomKeyEntity(key: 'enterprise', value: enterpriseName),

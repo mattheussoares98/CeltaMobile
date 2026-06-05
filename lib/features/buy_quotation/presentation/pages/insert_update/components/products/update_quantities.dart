@@ -36,12 +36,13 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
       return;
     }
     FocusManager.instance.primaryFocus?.unfocus();
-    final buyQuotationProducts = await ref.read(
+    final buyQuotation = await ref.read(
       completeBuyQuotationsStateControllerProvider(
         widget.enterpriseCode,
         widget.buyQuotationCode.toString(),
-      ).selectAsync((s) => s.Products),
+      ).future,
     );
+    final buyQuotationProducts = buyQuotation.Products;
 
     final currentProducts = [...?buyQuotationProducts];
     int index = currentProducts.indexWhere(

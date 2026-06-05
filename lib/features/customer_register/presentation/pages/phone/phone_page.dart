@@ -32,9 +32,8 @@ class _PhonePageState extends ConsumerState<PhonePage> {
   }
 
   void addPhone() async {
-    final telephones = await ref.read(
-      customerStateControllerProvider.selectAsync((s) => s?.Telephones),
-    );
+    final customer = await ref.read(customerStateControllerProvider.future);
+    final telephones = customer?.Telephones;
     if (phoneFormKey.currentState?.validate() != true) {
       return;
     }

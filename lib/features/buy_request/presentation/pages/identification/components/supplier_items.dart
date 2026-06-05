@@ -24,13 +24,12 @@ class SupplierItems extends ConsumerWidget {
           enterpriseCode,
         ).select((s) => s.value?.selectedSupplier),
       );
-      final hasSelectedEnterprisesOrProducts = await ref.read(
-        pendingBuyRequestStateControllerProvider(enterpriseCode).selectAsync(
-          (s) =>
-              (s.selectedEnterprises?.isNotEmpty ?? false) ||
-              (s.products?.isNotEmpty ?? false),
-        ),
+      final pendingRequest = await ref.read(
+        pendingBuyRequestStateControllerProvider(enterpriseCode).future,
       );
+      final hasSelectedEnterprisesOrProducts =
+          (pendingRequest.selectedEnterprises?.isNotEmpty ?? false) ||
+          (pendingRequest.products?.isNotEmpty ?? false);
 
       if (hasSelectedEnterprisesOrProducts) {
         if (!context.mounted) return;

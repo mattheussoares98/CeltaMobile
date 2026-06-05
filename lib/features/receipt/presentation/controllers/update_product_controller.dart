@@ -30,11 +30,12 @@ class UpdateProductController extends _$UpdateProductController {
         validatedUserSessionProvider.future,
       );
 
-      final product = await ref.read(
+      final products = await ref.read(
         searchProductsStateControllerProvider(
           searchProductKey,
-        ).selectAsync((s) => s.elementAt(productIndex)),
+        ).future,
       );
+      final product = products.elementAt(productIndex);
 
       final quantityToSendInRequest = isSubtract == true
           ? 0 - quantity

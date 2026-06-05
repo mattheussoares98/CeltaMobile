@@ -29,9 +29,8 @@ class _EmailFieldState extends ConsumerState<EmailField> {
       return;
     }
 
-    final currentEmails = await ref.read(
-      customerStateControllerProvider.selectAsync((s) => s?.Emails),
-    );
+    final customer = await ref.read(customerStateControllerProvider.future);
+    final currentEmails = customer?.Emails;
 
     if (currentEmails?.any((e) => e == emailController.text) ?? false) {
       if (!mounted) return;

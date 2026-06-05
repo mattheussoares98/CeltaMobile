@@ -135,10 +135,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     ref.listen(
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
       (p, n) async {
-        final products = await ref.watch(
+        final products = await ref.read(
           searchProductsStateControllerProvider(
             searchProductKey,
-          ).selectAsync((s) => s),
+          ).future,
         );
 
         if (!context.mounted) return;

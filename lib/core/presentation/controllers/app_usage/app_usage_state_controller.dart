@@ -31,12 +31,9 @@ class AppUsageStateController extends _$AppUsageStateController {
 
   Future<void> addUsage(UsageType usageType) async {
     try {
-      final userName = await ref.read(
-        userSessionProvider.selectAsync((s) => s?.user.name),
-      );
-      final enterpriseId = await ref.read(
-        userSessionProvider.selectAsync((s) => s?.enterprise?.id),
-      );
+      final userSession = await ref.read(userSessionProvider.future);
+      final userName = userSession?.user.name;
+      final enterpriseId = userSession?.enterprise?.id;
       final repository = ref.read(appUsageRepositoryProvider);
 
       if (userName == null || enterpriseId == null) return;

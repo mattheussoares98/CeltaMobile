@@ -1,8 +1,7 @@
-import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'filtered_payment_finalizations_state_controller.g.dart';
 
@@ -14,13 +13,14 @@ class FilteredPaymentFinalizationsStateController
     final args = ref.watch(saleRequestArgsProvider);
 
     // Watch the current sale request to get the customer and request type
-    final (requestType, customerPaymentCodes) = await ref.watch(
-      insertUpdateStateControllerProvider.selectAsync(
-        (s) => (
-          s.requestType,
-          s.customer?.paymentFinalizations?.map((e) => e.code).toSet(),
-        ),
-      ),
+    final insertUpdateState = await ref.watch(
+      insertUpdateStateControllerProvider.future,
+    );
+    final (requestType, customerPaymentCodes) = (
+      insertUpdateState.requestType,
+      insertUpdateState.customer?.paymentFinalizations
+          ?.map((e) => e.code)
+          .toSet(),
     );
 
     // Fetch all available finalizations for the enterprise (Cached)

@@ -9,11 +9,8 @@ part 'bs_version_state_controller.g.dart';
 class BsVersionStateController extends _$BsVersionStateController {
   @override
   FutureOr<DateTime?> build() async {
-    final workingUrl = await ref.watch(
-      validatedUserSessionProvider.selectAsync(
-        (s) => s?.enterprise?.workingUrl,
-      ),
-    );
+    final userSession = await ref.watch(validatedUserSessionProvider.future);
+    final workingUrl = userSession?.enterprise?.workingUrl;
     return await ref.read(soapBsVersionDatasourceProvider).get(workingUrl!);
   }
 }
