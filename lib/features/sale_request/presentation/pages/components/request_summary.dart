@@ -75,7 +75,8 @@ class RequestSummary extends ConsumerWidget {
                       TitleAndSubTitle(
                         title: 'Modelo de pedido'.hardcoded,
                         copyableSubtitle: true,
-                        subTitle: saleRequest.RequestType?.Name,
+                        subTitle:
+                            '${saleRequest.RequestType?.PersonalizedCode.isEmpty ?? true ? '' : '(${saleRequest.RequestType?.PersonalizedCode})'} ${saleRequest.RequestType?.Name}',
                       ),
                     if (saleRequest.Seller != null)
                       TitleAndSubTitle(
