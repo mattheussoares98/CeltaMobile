@@ -124,7 +124,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
         useECommercePrice: json['UseECommercePrice'],
         allowSelectRequestTypeToAppRequests:
             json['allowSelectRequestTypeToAppRequests'],
-        allowSaleConvene: json['AllowSaleConvene'],
+        allowSaleConvene: json['AllowSaleConvene'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -162,7 +162,7 @@ class BSFRequestTypeModel extends BSFRequestTypeEntity {
     'UseWholePrice': useWholePrice,
     'UseECommercePrice': useECommercePrice,
     'allowSelectRequestTypeToAppRequests': allowSelectRequestTypeToAppRequests,
-    'AllowSaleConvene': allowSaleConvene,
+    'AllowSaleConvene': allowSaleConvene == true ? 1 : 0,
     'UnitValueType': unitValueType?.value,
   };
 
