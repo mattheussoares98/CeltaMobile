@@ -83,7 +83,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   }
 
   (String? errorMessage, List<BSFSaleRequestSanitizationAction> actions)
-      increaseOrDecreaseUnit(
+  increaseOrDecreaseUnit(
     BSFProductItemEntity item,
     bool isAdding, {
     bool onlyValidating = false,
@@ -134,8 +134,10 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         }
       }
 
-      final (sanitizedItem, actions) =
-          BSFSaleRequestSanitizer.sanitizeProductQuantityChange(
+      final (
+        sanitizedItem,
+        actions,
+      ) = BSFSaleRequestSanitizer.sanitizeProductQuantityChange(
         items[index],
         newQuantity,
         price,
@@ -149,18 +151,51 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
-  void updateItem(BSFProductItemEntity oldItem, BSFProductItemEntity newItem) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    final (items, index) = _getItemsAndIndexByPlu(
-      oldItem.product?.productPackingPriceLookUpString,
-    );
+  List<BSFSaleRequestSanitizationAction> updateItem(
+    BSFProductItemEntity oldItem,
+    BSFProductItemEntity newItem, {
+    bool onlyValidating = false,
+  }) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
 
-    if (index != -1) {
-      items[index] = newItem;
-    } else {
-      items.add(newItem);
+    final hasAutomaticDiscount =
+        newItem.discounts?.any(
+          (e) => e.discountOrigin != DiscountOrigin.manual,
+        ) ??
+        false;
+    final manualDiscounts =
+        newItem.discounts
+            ?.where((e) => e.discountOrigin == DiscountOrigin.manual)
+            .toList() ??
+        [];
+
+    final actions = <BSFSaleRequestSanitizationAction>[];
+    var sanitizedItem = newItem;
+
+    final isQuantityChanged = oldItem.quantity != newItem.quantity;
+    final isValueChanged = oldItem.value != newItem.value;
+    if (hasAutomaticDiscount &&
+        ((isQuantityChanged || isValueChanged) || manualDiscounts.isNotEmpty)) {
+      actions.add(
+        BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+      );
+      sanitizedItem = newItem.copyWith(discounts: manualDiscounts);
     }
-    state = AsyncData(state.value!.copyWith(products: items));
+
+    if (!onlyValidating) {
+      final (items, index) = _getItemsAndIndexByPlu(
+        oldItem.product?.productPackingPriceLookUpString,
+      );
+
+      if (index != -1) {
+        items[index] = sanitizedItem;
+      } else {
+        items.add(sanitizedItem);
+      }
+      state = AsyncData(state.value!.copyWith(products: items));
+    }
+
+    return actions;
   }
 
   List<BSFSaleRequestSanitizationAction> updateCustomerOrCovenant(

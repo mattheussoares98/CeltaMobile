@@ -859,6 +859,213 @@ void main() {
         final state = container.read(insertUpdateStateControllerProvider);
         expect(state.value!.products!.first.quantity, newQuantity);
       });
+
+      test(
+        'should not remove manual discounts when there is no automatic discount',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.manual,
+          );
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [manualDiscount],
+          );
+
+          controller.updateProcessedCart(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .copyWith(products: [item]),
+          );
+
+          final updatedItem = item.copyWith(quantity: 2);
+          final actions = controller.updateItem(item, updatedItem);
+
+          expect(actions, isEmpty);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.products!.first.discounts, [manualDiscount]);
+          expect(state.value!.products!.first.quantity, 2);
+        },
+      );
+
+      test(
+        'should NOT remove automatic discounts and return empty actions when quantity and value are unchanged',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [automaticDiscount],
+          );
+
+          controller.updateProcessedCart(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .copyWith(products: [item]),
+          );
+
+          final updatedItem = item.copyWith(
+            increment: EntityFactory.makeBSFValueTypeEntity(),
+            deliveryTax: EntityFactory.makeBSFValueTypeEntity(),
+          );
+          final actions = controller.updateItem(item, updatedItem);
+
+          expect(actions, isEmpty);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.products!.first.discounts, [automaticDiscount]);
+          expect(state.value!.products!.first.value, 100);
+          expect(state.value!.products!.first.quantity, 1);
+        },
+      );
+
+      test(
+        'should remove automatic discounts and return discountsReset action when quantity or value changed',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+          final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.manual,
+          );
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [automaticDiscount, manualDiscount],
+          );
+
+          controller.updateProcessedCart(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .copyWith(products: [item]),
+          );
+
+          final changeQuantity = faker.randomGenerator.boolean();
+          final newQuantity = changeQuantity ? 2.0 : item.quantity;
+          final newValue = changeQuantity
+              ? item.value
+              : faker.randomGenerator.decimal();
+
+          final updatedItem = item.copyWith(
+            quantity: newQuantity,
+            value: newValue,
+          );
+          final actions = controller.updateItem(item, updatedItem);
+
+          expect(actions, [
+            BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+          ]);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.products!.first.discounts, [manualDiscount]);
+          expect(state.value!.products!.first.quantity, newQuantity);
+          expect(state.value!.products!.first.value, newValue);
+        },
+      );
+      test(
+        'should remove automatic discounts and return discountsReset action when value is changed',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [automaticDiscount],
+          );
+
+          controller.updateProcessedCart(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .copyWith(products: [item]),
+          );
+
+          final updatedItem = item.copyWith(value: 110);
+          final actions = controller.updateItem(item, updatedItem);
+
+          expect(actions, [
+            BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+          ]);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.products!.first.discounts, isEmpty);
+          expect(state.value!.products!.first.value, 110);
+        },
+      );
+
+      test(
+        'should calculate actions but not modify state when onlyValidating is true',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [automaticDiscount],
+          );
+
+          controller.updateProcessedCart(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .copyWith(products: [item]),
+          );
+
+          final updatedItem = item.copyWith(quantity: 2);
+          final actions = controller.updateItem(
+            item,
+            updatedItem,
+            onlyValidating: true,
+          );
+
+          expect(actions, [
+            BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+          ]);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.products!.first.quantity, 1);
+          expect(state.value!.products!.first.discounts, [automaticDiscount]);
+        },
+      );
     });
     group('Add Payment', () {
       test(
@@ -2416,6 +2623,9 @@ void main() {
             insertUpdateStateControllerProvider.notifier,
           );
           await container.read(insertUpdateStateControllerProvider.future);
+          controller.updateProcessedCart(
+            container.read(insertUpdateStateControllerProvider).value!,
+          );
 
           // Initially matches the database loaded value, so no processing is needed
           expect(controller.needsProcessing, isFalse);
