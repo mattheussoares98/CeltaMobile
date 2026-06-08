@@ -1,7 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/app_sizes.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/save_sale_request_controller.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -75,64 +73,48 @@ class ProcessAndSaveButtons extends ConsumerWidget {
           .processCart();
     }
 
-    return AsyncValueWidget(
-      value: ref.watch(
-        canAccessResourceStateControllerProvider(
-          BsRoutine.saleRequest,
-          BsResource.saleRequestChangeTPrice,
-        ),
-      ),
-      tryAgain: () => ref.invalidate(
-        canAccessResourceStateControllerProvider(
-          BsRoutine.saleRequest,
-          BsResource.saleRequestChangeTPrice,
-        ),
-      ),
-      data: (canChangePrice) {
-        return Consumer(
-          builder: (_, ref, _) {
-            final needProcessingCart = ref.watch(
-              saleRequestNeedsProcessingProvider,
-            );
+    return Consumer(
+      builder: (_, ref, _) {
+        final needProcessingCart = ref.watch(
+          saleRequestNeedsProcessingProvider,
+        );
 
-            return SizedBox(
-              width: MediaQuery.sizeOf(context).width - Sizes.p16,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: PrimaryButton(
-                            text: 'Processar pedido'.hardcoded,
-                            onPressed: needProcessingCart ? processCart : null,
-                            iconAlignment: IconAlignment.end,
-                            icon: const PlatformIcon(
-                              cupertinoIcon: CupertinoIcons.refresh,
-                              materialIcon: Icons.replay_outlined,
-                            ),
-                          ),
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width - Sizes.p16,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: PrimaryButton(
+                        text: 'Processar pedido'.hardcoded,
+                        onPressed: needProcessingCart ? processCart : null,
+                        iconAlignment: IconAlignment.end,
+                        icon: const PlatformIcon(
+                          cupertinoIcon: CupertinoIcons.refresh,
+                          materialIcon: Icons.replay_outlined,
                         ),
-                        gapW8,
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    child: PrimaryButton(
-                      onPressed: onSave,
-                      text: 'Salvar pedido'.hardcoded,
-                      iconAlignment: IconAlignment.end,
-                      icon: const PlatformIcon(
-                        cupertinoIcon: CupertinoIcons.check_mark,
-                        materialIcon: Icons.save,
                       ),
                     ),
-                  ),
-                ],
+                    gapW8,
+                  ],
+                ),
               ),
-            );
-          },
+              Flexible(
+                child: PrimaryButton(
+                  onPressed: onSave,
+                  text: 'Salvar pedido'.hardcoded,
+                  iconAlignment: IconAlignment.end,
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.check_mark,
+                    materialIcon: Icons.save,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
