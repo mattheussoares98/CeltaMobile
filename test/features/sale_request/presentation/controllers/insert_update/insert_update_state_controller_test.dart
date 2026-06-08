@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
@@ -32,7 +33,21 @@ class FakePaymentFinalizationsController
 class MockEcSaleRequestsRepository extends Mock
     implements IEcSaleRequestsRepository {}
 
+// Tracks whether the canAccessResourceStateControllerProvider was called with
+// the exact (BsRoutine.saleRequest, BsResource.saleRequestChangeTPrice) args.
+class FakeCanAccessResourceStateController
+    extends CanAccessResourceStateController {
+  bool wasCalled = false;
+
+  @override
+  Future<bool> build(BsRoutine routine, BsResource resource) async {
+    wasCalled = true;
+    return true;
+  }
+}
+
 void main() {
+  late FakeCanAccessResourceStateController fakeCanAccessResourceController;
   late FakePaymentFinalizationsController fakePaymentsController;
   late FakeSearchedCustomersStateController fakeSearchedCustomersController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
@@ -58,6 +73,10 @@ void main() {
         saleRequestDetailsStateControllerProvider(
           args,
         ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
+        canAccessResourceStateControllerProvider(
+          BsRoutine.saleRequest,
+          BsResource.saleRequestChangeTPrice,
+        ).overrideWith(() => fakeCanAccessResourceController),
         searchedCustomersStateControllerProvider.overrideWith(
           () => fakeSearchedCustomersController,
         ),
@@ -74,6 +93,7 @@ void main() {
   }
 
   setUp(() {
+    fakeCanAccessResourceController = FakeCanAccessResourceStateController();
     mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
@@ -141,6 +161,17 @@ void main() {
 
           expect(result, fakeSaleRequest);
           expect(fakePaymentsController.wasCalled, isFalse);
+        },
+      );
+
+      test(
+        'should call canAccessResourceStateControllerProvider with BsRoutine.saleRequest and BsResource.saleRequestChangeTPrice',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          expect(fakeCanAccessResourceController.wasCalled, isTrue);
         },
       );
     });

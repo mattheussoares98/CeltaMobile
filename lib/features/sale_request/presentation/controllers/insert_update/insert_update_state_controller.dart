@@ -1,4 +1,5 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -17,6 +18,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   @override
   FutureOr<BSFSaleRequestEntity> build() async {
+    ref.read(
+      canAccessResourceStateControllerProvider(
+        BsRoutine.saleRequest,
+        BsResource.saleRequestChangeTPrice,
+      ),
+    );
+
     final args = ref.watch(saleRequestArgsProvider);
 
     final BSFSaleRequestEntity initialValue;
