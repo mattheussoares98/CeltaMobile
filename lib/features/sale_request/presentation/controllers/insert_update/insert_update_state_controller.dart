@@ -349,7 +349,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         tefSequencialUniqueNumber: null,
         tefAutorizationCreditCode: null,
         devolutionCreditCode: null,
-        //TODO confirm if this is the correct way to save the covenant payment method
         identificationCode: isCovenant
             ? (selectedCovenant?.personalizedCode ??
                   selectedCovenant?.code?.toString())
