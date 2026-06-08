@@ -32,17 +32,41 @@ class InsertProductPage extends ConsumerWidget {
         overrides: [currentProductItemProvider.overrideWithValue(product)],
         child: Consumer(
           builder: (_, ref, _) {
-            void saveItem() {
+            void saveItem() async {
               final uiState = ref.read(
                 insertProductUIControllerProvider(product),
               );
               final updatedItem = uiState.applyTo(product);
 
-              ref
-                  .read(insertUpdateStateControllerProvider.notifier)
-                  .updateItem(product, updatedItem);
+              final notifier = ref.read(
+                insertUpdateStateControllerProvider.notifier,
+              );
 
-              context.pop();
+              final actions = notifier.updateItem(
+                product,
+                updatedItem,
+                onlyValidating: true,
+              );
+
+              if (actions.isNotEmpty) {
+                final confirmed = await showAlertDialog(
+                  context: context,
+                  title: 'Atenção!'.hardcoded,
+                  content: actions.map((e) => e.message).join('\n'),
+                  cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Continuar'.hardcoded,
+                );
+
+                if (confirmed != true) {
+                  return;
+                }
+              }
+
+              notifier.updateItem(product, updatedItem, onlyValidating: false);
+
+              if (context.mounted) {
+                context.pop();
+              }
             }
 
             final (
