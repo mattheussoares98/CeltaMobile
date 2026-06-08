@@ -22,7 +22,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
           context: context,
           title: 'ATENÇÃO!'.hardcoded,
           content:
-              'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc! Dependendo das regras do BS, o pedido pode ser salvo com preços diferentes do que estão no aplicativo\n\n Deseja salvar mesmo assim?'
+              'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?'
                   .hardcoded,
           cancelActionText: 'Não'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
