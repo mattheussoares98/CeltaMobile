@@ -82,8 +82,15 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
-  String? increaseOrDecreaseUnit(BSFProductItemEntity item, bool isAdding) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return null;
+  (String? errorMessage, List<BSFSaleRequestSanitizationAction> actions)
+      increaseOrDecreaseUnit(
+    BSFProductItemEntity item,
+    bool isAdding, {
+    bool onlyValidating = false,
+  }) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) {
+      return (null, const []);
+    }
 
     final pc = item.priceCost;
     double price = item.value ?? 0;
@@ -94,7 +101,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         pc?.saleRetailPricePractice ?? pc?.salePracticedInSaleRetail ?? 0;
 
     if ((item.value ?? 0) <= 0 && retailPrice == 0) {
-      return 'Esse produto não possui preço'.hardcoded;
+      return ('Esse produto não possui preço'.hardcoded, const []);
     }
 
     final newQuantity = isAdding
@@ -102,8 +109,10 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         : (item.quantity ?? 0) - 1;
 
     if (newQuantity <= 0) {
-      removeItem(item);
-      return null;
+      if (!onlyValidating) {
+        removeItem(item);
+      }
+      return (null, const []);
     }
 
     final (items, index) = _getItemsAndIndexByPlu(
@@ -111,9 +120,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     if (index == -1) {
-      final args = ref.read(saleRequestArgsProvider);
-      addItem(item.toProductEntity(args.enterpriseCode));
-      return null;
+      if (!onlyValidating) {
+        final args = ref.read(saleRequestArgsProvider);
+        addItem(item.toProductEntity(args.enterpriseCode));
+      }
+      return (null, const []);
     } else {
       if (pc != null) {
         if (minWhole > 0 && newQuantity >= minWhole && wholePrice > 0) {
@@ -123,10 +134,19 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         }
       }
 
-      items[index] = items[index].copyWith(quantity: newQuantity, value: price);
-      state = AsyncData(state.value!.copyWith(products: items));
+      final (sanitizedItem, actions) =
+          BSFSaleRequestSanitizer.sanitizeProductQuantityChange(
+        items[index],
+        newQuantity,
+        price,
+      );
+
+      if (!onlyValidating) {
+        items[index] = sanitizedItem;
+        state = AsyncData(state.value!.copyWith(products: items));
+      }
+      return (null, actions);
     }
-    return null;
   }
 
   void updateItem(BSFProductItemEntity oldItem, BSFProductItemEntity newItem) {

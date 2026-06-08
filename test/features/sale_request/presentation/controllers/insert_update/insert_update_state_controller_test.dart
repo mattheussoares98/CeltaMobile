@@ -251,20 +251,32 @@ void main() {
         expect(state.value!.products!.length, 1);
         expect(state.value!.products!.first.quantity, 1);
 
-        final result1 = controller.increaseOrDecreaseUnit(state.value!.products!.first, true);
-        expect(result1, isNull);
+        final result1 = controller.increaseOrDecreaseUnit(
+          state.value!.products!.first,
+          true,
+        );
+        expect(result1.$1, isNull);
+        expect(result1.$2, isEmpty);
         final state2 = getCurrentState(container);
         expect(state2.value!.products!.length, 1);
         expect(state2.value!.products!.first.quantity, 2);
 
-        final result2 = controller.increaseOrDecreaseUnit(state2.value!.products!.first, false);
-        expect(result2, isNull);
+        final result2 = controller.increaseOrDecreaseUnit(
+          state2.value!.products!.first,
+          false,
+        );
+        expect(result2.$1, isNull);
+        expect(result2.$2, isEmpty);
         final state3 = getCurrentState(container);
         expect(state3.value!.products!.length, 1);
         expect(state3.value!.products!.first.quantity, 1);
 
-        final result3 = controller.increaseOrDecreaseUnit(state3.value!.products!.first, false);
-        expect(result3, isNull);
+        final result3 = controller.increaseOrDecreaseUnit(
+          state3.value!.products!.first,
+          false,
+        );
+        expect(result3.$1, isNull);
+        expect(result3.$2, isEmpty);
         final state4 = getCurrentState(container);
         expect(state4.value!.products!, isEmpty);
       });
@@ -311,7 +323,8 @@ void main() {
           expect(state.value!.products!.first.value, retailPrice);
 
           final result = controller.increaseOrDecreaseUnit(item, true);
-          expect(result, isNull);
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, wholePrice);
@@ -359,7 +372,8 @@ void main() {
           expect(state.value!.products!.first.value, retailPrice);
 
           final result = controller.increaseOrDecreaseUnit(item, true);
-          expect(result, isNull);
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, retailPrice);
@@ -407,7 +421,8 @@ void main() {
           expect(state.value!.products!.first.value, retailPrice);
 
           final result = controller.increaseOrDecreaseUnit(item, true);
-          expect(result, isNull);
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, retailPrice);
@@ -446,23 +461,31 @@ void main() {
               );
 
           controller.addItem(product);
-          
-          final currentState = container.read(insertUpdateStateControllerProvider).value!;
+
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
           final addedItem = currentState.products!.first;
           final itemWithDifferentWholePrices = addedItem.copyWith(
             priceCost: addedItem.priceCost?.copyWith(
               salePracticedInWholeSale: salePracticedInWholeSale,
             ),
           );
-          
-          controller.updateProcessedCart(currentState.copyWith(products: [itemWithDifferentWholePrices]));
+
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [itemWithDifferentWholePrices]),
+          );
 
           final state = getCurrentState(container);
           expect(state.value!.products!.first.quantity, 1);
           expect(state.value!.products!.first.value, retailPrice);
 
-          final result = controller.increaseOrDecreaseUnit(itemWithDifferentWholePrices, true);
-          expect(result, isNull);
+          final result = controller.increaseOrDecreaseUnit(
+            itemWithDifferentWholePrices,
+            true,
+          );
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, wholePricePractice);
@@ -500,23 +523,31 @@ void main() {
               );
 
           controller.addItem(product);
-          
-          final currentState = container.read(insertUpdateStateControllerProvider).value!;
+
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
           final addedItem = currentState.products!.first;
           final itemWithDifferentRetailPrices = addedItem.copyWith(
             priceCost: addedItem.priceCost?.copyWith(
               salePracticedInSaleRetail: salePracticedInSaleRetail,
             ),
           );
-          
-          controller.updateProcessedCart(currentState.copyWith(products: [itemWithDifferentRetailPrices]));
+
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [itemWithDifferentRetailPrices]),
+          );
 
           final state = getCurrentState(container);
           expect(state.value!.products!.first.quantity, 1);
           expect(state.value!.products!.first.value, retailPricePractice);
 
-          final result = controller.increaseOrDecreaseUnit(itemWithDifferentRetailPrices, true);
-          expect(result, isNull);
+          final result = controller.increaseOrDecreaseUnit(
+            itemWithDifferentRetailPrices,
+            true,
+          );
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
           final state2 = getCurrentState(container);
           expect(state2.value!.products!.first.quantity, 2);
           expect(state2.value!.products!.first.value, retailPricePractice);
@@ -542,13 +573,222 @@ void main() {
             ),
           );
 
-          final currentState = container.read(insertUpdateStateControllerProvider).value!;
-          controller.updateProcessedCart(currentState.copyWith(products: [item]));
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [item]),
+          );
 
           final result = controller.increaseOrDecreaseUnit(item, true);
 
-          expect(result, isA<String>());
-          expect(result, isNotNull);
+          expect(result.$1, isA<String>());
+          expect(result.$1, isNotNull);
+        },
+      );
+      test(
+        'Should remove all discounts if there is any automatic discount',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.manual,
+          );
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [manualDiscount, automaticDiscount],
+          );
+
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [item]),
+          );
+
+          final result = controller.increaseOrDecreaseUnit(item, true);
+
+          expect(result.$1, isNull);
+          expect(result.$2, [
+            BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+          ]);
+
+          final stateAfter = getCurrentState(container);
+          final updatedItem = stateAfter.value!.products!.first;
+
+          expect(updatedItem.quantity, 2);
+          expect(updatedItem.discounts, isEmpty);
+        },
+      );
+
+      test(
+        'Should calculate warnings but NOT modify state when onlyValidating is true',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.manual,
+          );
+
+          final automaticDiscount = EntityFactory.makeBSFDiscountEntity()
+              .copyWith(discountOrigin: DiscountOrigin.saleOffer);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+            discounts: [manualDiscount, automaticDiscount],
+          );
+
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [item]),
+          );
+
+          final result = controller.increaseOrDecreaseUnit(
+            item,
+            true,
+            onlyValidating: true,
+          );
+
+          expect(result.$1, isNull);
+          expect(result.$2.length, 1);
+          expect(
+            result.$2.first.type,
+            BSFSaleRequestSanitizationType.productAutomaticDiscountsRemoved,
+          );
+
+          // Verify state did NOT change
+          final stateAfter = getCurrentState(container);
+          final unchangedItem = stateAfter.value!.products!.first;
+
+          expect(unchangedItem.quantity, 1);
+          expect(unchangedItem.discounts, [manualDiscount, automaticDiscount]);
+        },
+      );
+      test('Should modify state when onlyValidating is false', () async {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        final discounts = [
+          EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.manual,
+          ),
+          EntityFactory.makeBSFDiscountEntity().copyWith(
+            discountOrigin: DiscountOrigin.saleOffer,
+          ),
+        ];
+
+        final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+          quantity: 1,
+          value: 100,
+          discounts: discounts,
+        );
+
+        final currentState = container
+            .read(insertUpdateStateControllerProvider)
+            .value!;
+        controller.updateProcessedCart(currentState.copyWith(products: [item]));
+
+        final result = controller.increaseOrDecreaseUnit(
+          item,
+          true,
+          onlyValidating: false,
+        );
+
+        expect(result.$1, isNull);
+        expect(result.$2.length, 1);
+        expect(
+          result.$2.first.type,
+          BSFSaleRequestSanitizationType.productAutomaticDiscountsRemoved,
+        );
+
+        final stateAfter = getCurrentState(container);
+        final updatedItem = stateAfter.value!.products!.first;
+
+        expect(updatedItem.quantity, 2);
+        expect(updatedItem.discounts, isEmpty);
+      });
+
+      test(
+        'Should NOT remove item when quantity drops to 0 and onlyValidating is true',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+          );
+
+          final currentState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          controller.updateProcessedCart(
+            currentState.copyWith(products: [item]),
+          );
+
+          final result = controller.increaseOrDecreaseUnit(
+            item,
+            false,
+            onlyValidating: true,
+          );
+
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
+
+          // Verify state did NOT change
+          final stateAfter = getCurrentState(container);
+          expect(stateAfter.value!.products!.length, 1);
+        },
+      );
+
+      test(
+        'Should NOT add item when not in cart and onlyValidating is true',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final item = EntityFactory.makeBSFProductItemEntity().copyWith(
+            quantity: 1,
+            value: 100,
+          );
+
+          final result = controller.increaseOrDecreaseUnit(
+            item,
+            true,
+            onlyValidating: true,
+          );
+
+          expect(result.$1, isNull);
+          expect(result.$2, isEmpty);
+
+          // Verify state did NOT change
+          final stateAfter = getCurrentState(container);
+          expect(stateAfter.value!.products, isNull);
         },
       );
     });
@@ -847,71 +1087,71 @@ void main() {
         expect(error, isNotNull);
       });
 
-      test('Should not return error when value exceeds available by less than 0.01', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+      test(
+        'Should not return error when value exceeds available by less than 0.01',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
 
-        final controller = container.read(
-          insertUpdateStateControllerProvider.notifier,
-        );
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
 
-        await container.read(insertUpdateStateControllerProvider.future);
+          await container.read(insertUpdateStateControllerProvider.future);
 
-        // Add a product with price 10.00
-        controller.addItem(
-          EntityFactory.makeProductEntity(
-            enterpriseCode: fakeArgs.enterpriseCode,
-          ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
-        );
+          // Add a product with price 10.00
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: fakeArgs.enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
+          );
 
-        // Add a payment of 9.99
-        controller.addPayment(
-          payment: fakePayments.first,
-          value: 9.99,
-        );
+          // Add a payment of 9.99
+          controller.addPayment(payment: fakePayments.first, value: 9.99);
 
-        // Remaining balance is exactly 0.01 (but float representation can be e.g. 0.009999999999999787)
-        // Trying to pay 0.01 (difference between 0.01 and remaining is less than 0.01, it is 0)
-        final (success, error) = controller.addPayment(
-          payment: fakePayments.first,
-          value: 0.01,
-        );
+          // Remaining balance is exactly 0.01 (but float representation can be e.g. 0.009999999999999787)
+          // Trying to pay 0.01 (difference between 0.01 and remaining is less than 0.01, it is 0)
+          final (success, error) = controller.addPayment(
+            payment: fakePayments.first,
+            value: 0.01,
+          );
 
-        expect(success, isTrue);
-        expect(error, isNull);
-      });
+          expect(success, isTrue);
+          expect(error, isNull);
+        },
+      );
 
-      test('Should return error when value exceeds available by exactly 0.01 or more', () async {
-        final container = makeProviderContainer(saleRequestId: 0);
+      test(
+        'Should return error when value exceeds available by exactly 0.01 or more',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
 
-        final controller = container.read(
-          insertUpdateStateControllerProvider.notifier,
-        );
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
 
-        await container.read(insertUpdateStateControllerProvider.future);
+          await container.read(insertUpdateStateControllerProvider.future);
 
-        // Add a product with price 10.00
-        controller.addItem(
-          EntityFactory.makeProductEntity(
-            enterpriseCode: fakeArgs.enterpriseCode,
-          ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
-        );
+          // Add a product with price 10.00
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: fakeArgs.enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 10.00, Value: 10.00),
+          );
 
-        // Add a payment of 9.99
-        controller.addPayment(
-          payment: fakePayments.first,
-          value: 9.99,
-        );
+          // Add a payment of 9.99
+          controller.addPayment(payment: fakePayments.first, value: 9.99);
 
-        // Try to pay 0.02 (exceeding remaining 0.01 by exactly 0.01)
-        final (success, error) = controller.addPayment(
-          payment: fakePayments.first,
-          value: 0.02,
-        );
+          // Try to pay 0.02 (exceeding remaining 0.01 by exactly 0.01)
+          final (success, error) = controller.addPayment(
+            payment: fakePayments.first,
+            value: 0.02,
+          );
 
-        expect(success, isFalse);
-        expect(error, isNotNull);
-        expect(error, 'Valor excede o disponível');
-      });
+          expect(success, isFalse);
+          expect(error, isNotNull);
+          expect(error, 'Valor excede o disponível');
+        },
+      );
 
       test(
         'Should return error when payment is covenant and selectedCovenant is null',
@@ -928,19 +1168,21 @@ void main() {
           controller.addItem(
             EntityFactory.makeProductEntity(
               enterpriseCode: fakeArgs.enterpriseCode,
-          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
           );
 
           // Create a payment finalization of type covenant
-          final covenantAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
-            type: PaymentFinalizationActionType.covenant,
-          );
-          final covenantPayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
-            action: covenantAction,
-          );
+          final covenantAction = EntityFactory.makeBSFPaymentActionEntity()
+              .copyWith(type: PaymentFinalizationActionType.covenant);
+          final covenantPayment =
+              EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                action: covenantAction,
+              );
 
           // Ensure the customer is null or has no selectedCovenant (so selectedCovenant is null)
-          final state = container.read(insertUpdateStateControllerProvider).value!;
+          final state = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
           expect(state.customer?.selectedCovenant, isNull);
 
           final (success, error) = controller.addPayment(
@@ -968,7 +1210,7 @@ void main() {
           controller.addItem(
             EntityFactory.makeProductEntity(
               enterpriseCode: fakeArgs.enterpriseCode,
-          ).copyWith(RetailPracticedPrice: 200, Value: 200),
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
           );
 
           // Create a covenant info and select it on the customer
@@ -987,12 +1229,12 @@ void main() {
           );
 
           // Create a payment finalization of type covenant
-          final covenantAction = EntityFactory.makeBSFPaymentActionEntity().copyWith(
-            type: PaymentFinalizationActionType.covenant,
-          );
-          final covenantPayment = EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
-            action: covenantAction,
-          );
+          final covenantAction = EntityFactory.makeBSFPaymentActionEntity()
+              .copyWith(type: PaymentFinalizationActionType.covenant);
+          final covenantPayment =
+              EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
+                action: covenantAction,
+              );
 
           final (success, error) = controller.addPayment(
             payment: covenantPayment,
@@ -2229,12 +2471,16 @@ void main() {
             insertUpdateStateControllerProvider.notifier,
           );
 
-          final stateBefore = container.read(insertUpdateStateControllerProvider);
+          final stateBefore = container.read(
+            insertUpdateStateControllerProvider,
+          );
           expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
 
           controller.updateInstructions(faker.lorem.sentence());
 
-          final stateAfter = container.read(insertUpdateStateControllerProvider);
+          final stateAfter = container.read(
+            insertUpdateStateControllerProvider,
+          );
           expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
         },
       );
@@ -2265,12 +2511,16 @@ void main() {
             insertUpdateStateControllerProvider.notifier,
           );
 
-          final stateBefore = container.read(insertUpdateStateControllerProvider);
+          final stateBefore = container.read(
+            insertUpdateStateControllerProvider,
+          );
           expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
 
           controller.updateObservations(faker.lorem.sentence());
 
-          final stateAfter = container.read(insertUpdateStateControllerProvider);
+          final stateAfter = container.read(
+            insertUpdateStateControllerProvider,
+          );
           expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
         },
       );

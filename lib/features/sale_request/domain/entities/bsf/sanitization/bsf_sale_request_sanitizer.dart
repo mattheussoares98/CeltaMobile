@@ -186,4 +186,33 @@ class BSFSaleRequestSanitizer {
 
     return (updatedState, actions);
   }
+
+  /// Sanitizes product changes when a quantity is modified.
+  /// If there are automatic (non-manual) discounts, they are removed,
+  /// and a sanitization action warning the user is returned.
+  static (BSFProductItemEntity, List<BSFSaleRequestSanitizationAction>)
+  sanitizeProductQuantityChange(
+    BSFProductItemEntity item,
+    double newQuantity,
+    double newPrice,
+  ) {
+    final hasAutomaticDiscount =
+        item.discounts?.any((e) => e.discountOrigin != DiscountOrigin.manual) ??
+        false;
+
+    final actions = <BSFSaleRequestSanitizationAction>[];
+    if (hasAutomaticDiscount) {
+      actions.add(
+        BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
+      );
+    }
+
+    final sanitizedItem = item.copyWith(
+      quantity: newQuantity,
+      value: newPrice,
+      discounts: hasAutomaticDiscount ? [] : item.discounts,
+    );
+
+    return (sanitizedItem, actions);
+  }
 }
