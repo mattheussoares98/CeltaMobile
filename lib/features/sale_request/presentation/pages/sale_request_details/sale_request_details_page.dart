@@ -1,16 +1,14 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/sale_request_details/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SaleRequestDetailsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -47,7 +45,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
         appBar: AppBar(
           title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
           actions: [
-            if (kDebugMode) const EditButton(),
+            const EditButton(),
             const ShowPdfButton(),
             PrintButton(
               enterpriseCode: enterpriseCode,
