@@ -5,7 +5,8 @@ enum BSFSaleRequestSanitizationType {
   discountsReset(message: 'Os descontos serão removidos'),
   incrementsReset(message: 'Os acréscimos serão removidos'),
   deliveryTaxReset(message: 'As taxas de entrega serão removidas'),
-  customerBlocked(message: 'O cliente selecionado possui bloqueio para vendas');
+  customerBlocked(message: 'O cliente selecionado possui bloqueio para vendas'),
+  productAutomaticDiscountsRemoved(message: 'Os descontos automáticos do produto serão removidos');
 
   final String message;
 
