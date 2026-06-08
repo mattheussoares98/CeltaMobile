@@ -11,23 +11,13 @@ class StartAndEndDate extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
-
     return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const _SelectPeriod(isStart: true, key: ValueKey('start')),
-              gapW16,
-              const _SelectPeriod(isStart: false, key: ValueKey('end')),
-              if (isDesktop) ...[gapW16, _UpdateButton()],
-            ],
-          ),
-          if (!isDesktop) ...[gapH8, _UpdateButton()],
-        ],
+      child: ResponsiveCenter(
+        maxContentWidth: Breakpoint.tablet,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [const _SelectPeriod(), gapH8, _UpdateButton()],
+        ),
       ),
     );
   }
@@ -45,8 +35,7 @@ class _UpdateButton extends ConsumerWidget {
         ref
             .read(appUsageStateControllerProvider.notifier)
             .loadRemoteUsageReport(
-              start: ref.read(reportPeriodStateControllerProvider).$1,
-              end: ref.read(reportPeriodStateControllerProvider).$2,
+              ref.read(reportPeriodStateControllerProvider),
             );
       },
     );
@@ -54,84 +43,70 @@ class _UpdateButton extends ConsumerWidget {
 }
 
 class _SelectPeriod extends ConsumerWidget {
-  final bool isStart;
-  const _SelectPeriod({super.key, required this.isStart});
+  const _SelectPeriod();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final now = DateTime.now();
 
-    return Flexible(
-      child: SizedBox(
-        width: 200,
-        child: Column(
+    return Column(
+      children: [
+        Text('Mês/ano'.hardcoded),
+        Row(
           children: [
-            Text('Mês/ano ${isStart ? 'início' : 'final'}'.hardcoded),
-            Row(
-              children: [
-                Flexible(
-                  child: Consumer(
-                    builder: (_, ref, _) {
-                      return DefaultDropDown<int>(
-                        onChanged: (month) => ref
-                            .read(reportPeriodStateControllerProvider.notifier)
-                            .update(
-                              startMonth: isStart ? month : null,
-                              endMonth: isStart ? null : month,
-                            ),
-                        items: List.generate(
-                          12,
-                          (index) => DropdownMenuItem(
-                            value: index + 1,
-                            child: Center(child: Text('${index + 1}')),
-                          ),
-                        ),
-                        selectedItem: ref.watch(
-                          reportPeriodStateControllerProvider.select(
-                            (s) => isStart ? s.$1.month : s.$2.month,
-                          ),
-                        ),
-                        label: '',
-                        isSimple: true,
-                      );
-                    }
-                  ),
-                ),
-                gapW8,
-                Flexible(
-                  flex: 2,
-                  child: Consumer(
-                    builder: (_, ref, _) {
-                      return DefaultDropDown<int>(
-                        onChanged: (year) => ref
-                            .read(reportPeriodStateControllerProvider.notifier)
-                            .update(
-                              startYear: isStart ? year : null,
-                              endYear: isStart ? null : year,
-                            ),
-                        items: List.generate(
-                          2,
-                          (index) => DropdownMenuItem(
-                            value: now.year - index,
-                            child: Center(child: Text('${now.year - index}')),
-                          ),
-                        ),
-                        selectedItem: ref.watch(
-                          reportPeriodStateControllerProvider.select(
-                            (s) => isStart ? s.$1.year : s.$2.year,
-                          ),
-                        ),
-                        label: '',
-                        isSimple: true,
-                      );
-                    }
-                  ),
-                ),
-              ],
+            Flexible(
+              child: Consumer(
+                builder: (_, ref, _) {
+                  return DefaultDropDown<int>(
+                    onChanged: (month) => ref
+                        .read(reportPeriodStateControllerProvider.notifier)
+                        .update(startMonth: month),
+                    items: List.generate(
+                      12,
+                      (index) => DropdownMenuItem(
+                        value: index + 1,
+                        child: Center(child: Text('${index + 1}')),
+                      ),
+                    ),
+                    selectedItem: ref.watch(
+                      reportPeriodStateControllerProvider.select(
+                        (s) => s.month,
+                      ),
+                    ),
+                    label: '',
+                    isSimple: true,
+                  );
+                },
+              ),
+            ),
+            gapW8,
+            Flexible(
+              flex: 2,
+              child: Consumer(
+                builder: (_, ref, _) {
+                  return DefaultDropDown<int>(
+                    onChanged: (year) => ref
+                        .read(reportPeriodStateControllerProvider.notifier)
+                        .update(startYear: year),
+                    items: List.generate(
+                      2,
+                      (index) => DropdownMenuItem(
+                        value: now.year - index,
+                        child: Center(child: Text('${now.year - index}')),
+                      ),
+                    ),
+                    selectedItem: ref.watch(
+                      reportPeriodStateControllerProvider.select((s) => s.year),
+                    ),
+                    label: '',
+                    isSimple: true,
+                  );
+                },
+              ),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 }

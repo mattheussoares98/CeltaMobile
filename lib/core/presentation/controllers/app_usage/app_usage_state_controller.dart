@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/app_usage/app_usage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/providers/app_usage/app_usage.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'app_usage_state_controller.g.dart';
 
@@ -14,17 +13,14 @@ class AppUsageStateController extends _$AppUsageStateController {
   @override
   FutureOr<List<AppUsageEntity>?> build() => null;
 
-  Future<void> loadRemoteUsageReport({
-    required DateTime start,
-    required DateTime end,
-  }) async {
+  Future<void> loadRemoteUsageReport(DateTime date) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(appUsageRepositoryProvider);
       return await repository.loadRemoteUsageReport(
         enterpriseId: null, //load from all enterprises if it is null
-        start: start,
-        end: end,
+        start: date, //considering only month and year
+        end: date, //considering only month and year
       );
     });
   }

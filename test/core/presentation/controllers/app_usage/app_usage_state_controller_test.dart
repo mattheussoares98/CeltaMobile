@@ -4,10 +4,10 @@ import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.da
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/app_usage/app_usage.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:faker/faker.dart';
 
 import '../../../../mocks/mocks.dart';
 
@@ -66,7 +66,6 @@ void main() {
     group('loadRemoteUsageReport', () {
       test('should emit [loading, data] and return list on success', () async {
         final start = fakerInstance.date.dateTime();
-        final end = fakerInstance.date.dateTime();
         final fakeList = List.generate(
           3,
           (_) => EntityFactory.makeAppUsageEntity(),
@@ -95,7 +94,7 @@ void main() {
           (previous, next) => states.add(next),
         );
 
-        await notifier.loadRemoteUsageReport(start: start, end: end);
+        await notifier.loadRemoteUsageReport(start);
 
         expect(states, [
           isA<AsyncLoading>(),
@@ -106,7 +105,7 @@ void main() {
           () => mockRepository.loadRemoteUsageReport(
             enterpriseId: null,
             start: start,
-            end: end,
+            end: start,
           ),
         ).called(1);
       });
@@ -129,10 +128,7 @@ void main() {
           appUsageStateControllerProvider.notifier,
         );
 
-        await notifier.loadRemoteUsageReport(
-          start: DateTime.now(),
-          end: DateTime.now(),
-        );
+        await notifier.loadRemoteUsageReport(DateTime.now());
 
         final state = container.read(appUsageStateControllerProvider);
 

@@ -1,16 +1,15 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/components/components.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/reports/reports.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class EnterpriseManagerPage extends ConsumerStatefulWidget {
   const EnterpriseManagerPage({super.key});
@@ -37,7 +36,6 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   static final now = DateTime.now();
   static final start = DateTime(now.year, now.month, 1);
-  static final end = DateTime(now.year, now.month + 1, 0);
 
   @override
   void initState() {
@@ -67,7 +65,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   void loadReports() {
     ref
         .read(appUsageStateControllerProvider.notifier)
-        .loadRemoteUsageReport(start: start, end: end);
+        .loadRemoteUsageReport(start);
   }
 
   @override

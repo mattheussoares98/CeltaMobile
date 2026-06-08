@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/reports/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReportsPage extends ConsumerStatefulWidget {
   final ScrollController scrollController;
@@ -34,10 +33,13 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
           const StartAndEndDate(),
           gapSliverH8,
           SliverToBoxAdapter(
-            child: DefaultTextFormField(
-              controller: filterController,
-              hintText: 'Filtrar empresa'.hardcoded,
-              labelText: 'Filtrar empresa'.hardcoded,
+            child: SizedBox(
+              width: Breakpoint.tablet,
+              child: DefaultTextFormField(
+                controller: filterController,
+                hintText: 'Filtrar empresa'.hardcoded,
+                labelText: 'Filtrar empresa'.hardcoded,
+              ),
             ),
           ),
           ReportsItems(filterController: filterController),

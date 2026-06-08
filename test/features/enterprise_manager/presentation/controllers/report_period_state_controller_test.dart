@@ -1,8 +1,7 @@
-import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   ProviderContainer makeContainer() {
@@ -24,46 +23,34 @@ void main() {
         final container = makeContainer();
 
         // Act
-        final (start, end) = container.read(
-          reportPeriodStateControllerProvider,
-        );
+        final start = container.read(reportPeriodStateControllerProvider);
 
         // Assert date range
         final now = DateTime.now();
         final expectedStart = DateTime(now.year, now.month);
-        final expectedEnd = DateTime(now.year, now.month);
 
         expect(start, expectedStart);
-        expect(end, expectedEnd);
       },
     );
 
     test('update invalidates appUsage provider when dates change', () async {
       final container = makeContainer();
 
-      final (start, end) = container.read(reportPeriodStateControllerProvider);
+      final start = container.read(reportPeriodStateControllerProvider);
 
       // Change start date -> should invalidate appUsage provider
       final newStart = start.subtract(const Duration(days: 1));
-      final newEnd = end.add(const Duration(days: 1));
 
       container
           .read(reportPeriodStateControllerProvider.notifier)
-          .update(
-            startMonth: newStart.month,
-            startYear: newStart.year,
-            endMonth: newEnd.month,
-            endYear: newEnd.year,
-          );
+          .update(startMonth: newStart.month, startYear: newStart.year);
 
       // Reading appUsage provider after invalidation forces rebuild
       container.read(appUsageStateControllerProvider);
 
       final updated = container.read(reportPeriodStateControllerProvider);
-      expect(updated.$1.month, newStart.month);
-      expect(updated.$1.year, newStart.year);
-      expect(updated.$2.month, newEnd.month);
-      expect(updated.$2.year, newEnd.year);
+      expect(updated.month, newStart.month);
+      expect(updated.year, newStart.year);
     });
   });
 }
