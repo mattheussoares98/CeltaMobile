@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,17 +32,35 @@ class QuantityControlButton extends ConsumerWidget {
     final isRemoving = !isAdding && currentQuantity <= 1;
 
     return IconButton(
-      onPressed: () {
-        final errorMessage = ref
-            .read(insertUpdateStateControllerProvider.notifier)
-            .increaseOrDecreaseUnit(item, isAdding);
+      onPressed: () async {
+        final notifier = ref.read(insertUpdateStateControllerProvider.notifier);
+
+        final (errorMessage, actions) = notifier.increaseOrDecreaseUnit(
+          item,
+          isAdding,
+          onlyValidating: true,
+        );
+
         if (errorMessage?.isNotEmpty == true) {
           showSnackBarMessage(
             context,
             errorMessage!,
             backgroundColor: Colors.red,
           );
+        } else if (actions.isNotEmpty) {
+          final confirmed = await showAlertDialog(
+            context: context,
+            title: 'Atenção!'.hardcoded,
+            cancelActionText: 'Cancelar'.hardcoded,
+            defaultActionText: 'Continuar'.hardcoded,
+            content: actions.map((a) => a.message).join('\n'),
+          );
+          if (confirmed != true) {
+            return;
+          }
         }
+
+        notifier.increaseOrDecreaseUnit(item, isAdding, onlyValidating: false);
       },
       icon: PlatformIcon(
         cupertinoIcon: isAdding
