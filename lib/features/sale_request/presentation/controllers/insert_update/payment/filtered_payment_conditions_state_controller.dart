@@ -15,19 +15,33 @@ class FilteredPaymentConditionsStateController
   FutureOr<List<BSFPaymentConditionEntity>> build() async {
     final args = ref.watch(saleRequestArgsProvider);
 
-    // Watch the current sale request to get the customer's restrictions
-    final insertUpdateState = await ref.watch(
+    // Capture futures synchronously before any async gaps to avoid
+    // using a disposed ref after the provider is invalidated.
+    final insertUpdateStateFuture = ref.watch(
       insertUpdateStateControllerProvider.future,
     );
+
+    if (!ref.mounted) return [];
+
+    final insertUpdateState = await insertUpdateStateFuture;
+
+    if (!ref.mounted) return [];
+
     final customerPaymentConditions =
         insertUpdateState.customer?.paymentConditions;
 
     // Fetch all available conditions for the enterprise
-    final allConditions = await ref.watch(
+    final allConditionsFuture = ref.watch(
       allPaymentConditionsControllerProvider(
         enterpriseCode: args.enterpriseCode,
       ).future,
     );
+
+    if (!ref.mounted) return [];
+
+    final allConditions = await allConditionsFuture;
+
+    if (!ref.mounted) return [];
 
     // Filter by restricted payment conditions if the customer has any defined
     List<BSFPaymentConditionEntity> filteredConditions = allConditions;

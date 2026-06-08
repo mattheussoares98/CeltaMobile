@@ -12,10 +12,24 @@ class FilteredPaymentFinalizationsStateController
   FutureOr<List<BSFPaymentFinalizationEntity>> build() async {
     final args = ref.watch(saleRequestArgsProvider);
 
-    // Watch the current sale request to get the customer and request type
-    final insertUpdateState = await ref.watch(
+    // Capture futures synchronously before any async gaps to avoid
+    // using a disposed ref after the provider is invalidated/disposed.
+    final insertUpdateStateFuture = ref.watch(
       insertUpdateStateControllerProvider.future,
     );
+
+    final allPaymentFinalizationsFuture = ref.watch(
+      allPaymentFinalizationsControllerProvider(
+        enterpriseCode: args.enterpriseCode,
+      ).future,
+    );
+
+    if (!ref.mounted) return [];
+
+    final insertUpdateState = await insertUpdateStateFuture;
+
+    if (!ref.mounted) return [];
+
     final (requestType, customerPaymentCodes) = (
       insertUpdateState.requestType,
       insertUpdateState.customer?.paymentFinalizations
@@ -23,12 +37,9 @@ class FilteredPaymentFinalizationsStateController
           .toSet(),
     );
 
-    // Fetch all available finalizations for the enterprise (Cached)
-    final paymentFinalizations = await ref.watch(
-      allPaymentFinalizationsControllerProvider(
-        enterpriseCode: args.enterpriseCode,
-      ).future,
-    );
+    final paymentFinalizations = await allPaymentFinalizationsFuture;
+
+    if (!ref.mounted) return [];
 
     // Start with all active finalizations
     List<BSFPaymentFinalizationEntity> activePayments = paymentFinalizations
