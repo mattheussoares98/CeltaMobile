@@ -429,15 +429,23 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 )
 bool saleRequestHasChanges(Ref ref) {
   final args = ref.watch(saleRequestArgsProvider);
-  if (args.saleRequestId == 0) return false;
+  final current = ref.watch(insertUpdateStateControllerProvider).value;
 
+  if (current == null) return false;
+
+  if (args.saleRequestId == 0) {
+    // For new requests: disable when there's no meaningful data yet
+    final hasCustomer = current.customer?.code != null;
+    final hasProducts = current.products?.isNotEmpty == true;
+    return hasCustomer || hasProducts;
+  }
+
+  // For existing requests: compare with the original
   final original = ref
       .watch(saleRequestDetailsStateControllerProvider(args))
       .value;
-  final current = ref.watch(insertUpdateStateControllerProvider).value;
 
-  // While either provider is still loading, there are no "changes" yet.
-  if (original == null || current == null) return false;
+  if (original == null) return false;
 
   return current != original;
 }

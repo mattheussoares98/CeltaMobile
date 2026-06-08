@@ -2735,5 +2735,83 @@ void main() {
         },
       );
     });
+
+    group('saleRequestHasChanges', () {
+      test(
+        'should return false for new request with empty entity (no customer or products)',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final hasChanges = container.read(saleRequestHasChangesProvider);
+          expect(hasChanges, isFalse);
+        },
+      );
+
+      test(
+        'should return true for new request after adding a product',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final product = EntityFactory.makeProductEntity(
+            plu: faker.guid.guid().toString(),
+            enterpriseCode: fakeArgs.enterpriseCode,
+          );
+          controller.addItem(product);
+
+          final hasChanges = container.read(saleRequestHasChangesProvider);
+          expect(hasChanges, isTrue);
+        },
+      );
+
+      test(
+        'should return true for new request after selecting a customer',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final customer = EntityFactory.makeBSFCustomerEntity();
+          controller.updateCustomerOrCovenant(customer);
+
+          final hasChanges = container.read(saleRequestHasChangesProvider);
+          expect(hasChanges, isTrue);
+        },
+      );
+
+      test(
+        'should return false for existing request when no changes are made',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 1);
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final hasChanges = container.read(saleRequestHasChangesProvider);
+          // original == current, so no changes
+          expect(hasChanges, isFalse);
+        },
+      );
+
+      test(
+        'should return true for existing request after modifying a field',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          controller.updateObservations(faker.lorem.sentence());
+
+          final hasChanges = container.read(saleRequestHasChangesProvider);
+          expect(hasChanges, isTrue);
+        },
+      );
+    });
   });
 }

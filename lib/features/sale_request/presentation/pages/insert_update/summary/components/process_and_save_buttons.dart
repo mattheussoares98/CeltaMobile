@@ -103,14 +103,20 @@ class ProcessAndSaveButtons extends ConsumerWidget {
                 ),
               ),
               Flexible(
-                child: PrimaryButton(
-                  onPressed: onSave,
-                  text: 'Salvar pedido'.hardcoded,
-                  iconAlignment: IconAlignment.end,
-                  icon: const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.check_mark,
-                    materialIcon: Icons.save,
-                  ),
+                child: Consumer(
+                  builder: (_, ref, _) {
+                    final hasChanges = ref.watch(saleRequestHasChangesProvider);
+
+                    return PrimaryButton(
+                      onPressed: hasChanges ? onSave : null,
+                      text: 'Salvar pedido'.hardcoded,
+                      iconAlignment: IconAlignment.end,
+                      icon: const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.check_mark,
+                        materialIcon: Icons.save,
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
