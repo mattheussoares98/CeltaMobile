@@ -9,34 +9,64 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProcessAndSaveButtons extends ConsumerWidget {
   const ProcessAndSaveButtons({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onSave(bool needProcessingCart) async {
+    void onSave() async {
       final args = ref.read(saleRequestArgsProvider);
-      if (needProcessingCart) {
-        final proceed = await showAlertDialog(
-          context: context,
-          title: 'ATENÇÃO!'.hardcoded,
-          content:
-              'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?'
-                  .hardcoded,
-          cancelActionText: 'Não'.hardcoded,
-          defaultActionText: 'Sim'.hardcoded,
-        );
-        if (proceed != true) {
-          return;
-        }
-      }
-      ref
+
+      final (errorMessage, canSaveAndNeedProcessCart) = await ref
           .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
           .saveBsfSaleRequest(
             customerCode: args.customerCode,
             saleRequestId: args.saleRequestId,
+            isOnlyValidating: true,
           );
+      if (errorMessage?.isNotEmpty == true && context.mounted) {
+        final proceed = await showAlertDialog(
+          context: context,
+          title: 'Atenção'.hardcoded,
+          content: errorMessage,
+          defaultActionText: canSaveAndNeedProcessCart
+              ? 'Salvar'.hardcoded
+              : 'OK'.hardcoded,
+          cancelActionText: canSaveAndNeedProcessCart
+              ? 'Cancelar'.hardcoded
+              : null,
+        );
+        if (proceed != true || !canSaveAndNeedProcessCart) {
+          return;
+        }
+      }
+
+      final (failedMessage, _) = await ref
+          .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
+          .saveBsfSaleRequest(
+            customerCode: args.customerCode,
+            saleRequestId: args.saleRequestId,
+            isOnlyValidating: false,
+          );
+
+      if (failedMessage?.isNotEmpty == true && context.mounted) {
+        showAlertDialog(
+          context: context,
+          title: 'Atenção'.hardcoded,
+          content: failedMessage,
+          defaultActionText: 'OK'.hardcoded,
+        );
+      } else {
+        if (context.mounted) {
+          context.pop();
+          showSnackBarMessage(
+            context,
+            'O pedido foi salvo com sucesso'.hardcoded,
+          );
+        }
+      }
     }
 
     void processCart() {
@@ -90,7 +120,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
                   ),
                   Flexible(
                     child: PrimaryButton(
-                      onPressed: () => onSave(needProcessingCart),
+                      onPressed: onSave,
                       text: 'Salvar pedido'.hardcoded,
                       iconAlignment: IconAlignment.end,
                       icon: const PlatformIcon(

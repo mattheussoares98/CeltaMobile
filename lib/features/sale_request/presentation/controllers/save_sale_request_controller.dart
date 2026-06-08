@@ -77,10 +77,13 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
     });
   }
 
-  Future<void> saveBsfSaleRequest({
+  Future<(String?, bool)> saveBsfSaleRequest({
     required int customerCode,
     required int saleRequestId, //0 == insert
+    required bool isOnlyValidating,
   }) async {
+    String? errorMessage;
+    bool canSaveAndNeedProcessCart = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.read(validatedUserSessionProvider.future);
@@ -89,28 +92,35 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       );
 
       if (saleRequest.customer == null || saleRequest.customer?.code == null) {
-        throw AppException(
-          'Por favor, selecione um cliente antes de salvar.'.hardcoded,
-        );
+        errorMessage =
+            'Por favor, selecione um cliente antes de salvar.'.hardcoded;
+        return;
       }
 
       if (saleRequest.products == null || saleRequest.products!.isEmpty) {
-        throw AppException(
-          'Adicione pelo menos um produto ao pedido.'.hardcoded,
-        );
+        errorMessage = 'Adicione pelo menos um produto ao pedido.'.hardcoded;
+        return;
       }
 
       if (saleRequest.requestType == null ||
           saleRequest.requestType?.code == null) {
-        throw AppException(
-          'O modelo de pedido não está selecionado. Esse erro jamais deveria acontecer, é um erro de programação. Entre em contato com o suporte técnico'
-              .hardcoded,
-        );
+        errorMessage =
+            'O modelo de pedido não está selecionado. Esse erro jamais deveria acontecer, é um erro de programação. Entre em contato com o suporte técnico'
+                .hardcoded;
+        return;
       }
 
-      final needProcessingCart = ref.read(saleRequestNeedsProcessingProvider);
-      if (needProcessingCart) {
-        final canChangePrice = await ref.read(
+      if (!saleRequest.isPaymentValid) {
+        errorMessage =
+            'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.'
+                .hardcoded;
+        return;
+      }
+
+      final needsProcessingCart = ref.read(saleRequestNeedsProcessingProvider);
+
+      if (needsProcessingCart) {
+        canSaveAndNeedProcessCart = await ref.read(
           canAccessResourceStateControllerProvider(
             BsRoutine.saleRequest,
             BsResource.saleRequestChangeTPrice,
@@ -119,19 +129,23 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         final requestTypeAllowChangePriceOrCost =
             saleRequest.requestType?.allowAlterCostOrSalePrice == true;
 
-        if (!canChangePrice || !requestTypeAllowChangePriceOrCost) {
-          throw AppException(
-            'O modelo de pedido não permite alterar os preços ou o usuário não possui permissão para alterar os preços no pedido. \n\nO pedido precisa ser processado antes de ser salvo.'
-                .hardcoded,
-          );
+        if (!canSaveAndNeedProcessCart || !requestTypeAllowChangePriceOrCost) {
+          errorMessage =
+              'O modelo de pedido não permite alterar os preços ou o usuário não possui permissão para alterar os preços no pedido. \n\nO pedido precisa ser processado antes de ser salvo.'
+                  .hardcoded;
+          return;
         }
       }
 
-      if (!saleRequest.isPaymentValid) {
-        throw AppException(
-          'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.'
-              .hardcoded,
-        );
+      if (needsProcessingCart && isOnlyValidating) {
+        errorMessage =
+            'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?'
+                .hardcoded;
+        return;
+      }
+
+      if (isOnlyValidating) {
+        return;
       }
 
       final params = EcRequestParams(
@@ -173,5 +187,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         );
       }
     });
+
+    return (errorMessage, canSaveAndNeedProcessCart);
   }
 }

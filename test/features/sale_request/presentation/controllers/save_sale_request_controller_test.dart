@@ -59,19 +59,12 @@ class SpySaleRequestsStateController extends SaleRequestsStateController {
 
 class FakeInsertUpdateStateController extends InsertUpdateStateController {
   final BSFSaleRequestEntity saleRequestEntity;
-  final bool mockNeedsProcessing;
-  FakeInsertUpdateStateController({
-    required this.saleRequestEntity,
-    this.mockNeedsProcessing = false,
-  });
+  FakeInsertUpdateStateController({required this.saleRequestEntity});
 
   @override
   FutureOr<BSFSaleRequestEntity> build() async {
     return saleRequestEntity;
   }
-
-  @override
-  bool get needsProcessing => mockNeedsProcessing;
 }
 
 class FakeCanAccessResourceStateController
@@ -151,7 +144,6 @@ void main() {
           () => FakeInsertUpdateStateController(
             saleRequestEntity:
                 insertUpdateSaleRequestEntity ?? fakeBSFSaleRequestEntity,
-            mockNeedsProcessing: mockNeedsProcessing,
           ),
         ),
         canAccessResourceStateControllerProvider(
@@ -165,6 +157,9 @@ void main() {
           () =>
               spySaleRequestsStateController ??
               SpySaleRequestsStateController(),
+        ),
+        saleRequestNeedsProcessingProvider.overrideWithValue(
+          mockNeedsProcessing,
         ),
       ],
     );
@@ -405,16 +400,19 @@ void main() {
       );
 
       // ACT
-      await container
+      final (errorMessage, needProcessCart) = await container
           .read(
             saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
           )
           .saveBsfSaleRequest(
             customerCode: fakePendingRequest.customer!.Code!,
             saleRequestId: 0,
+            isOnlyValidating: false,
           );
 
       // ASSERT
+      expect(errorMessage, isNull);
+      expect(needProcessCart, isFalse);
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
       final capturedParams =
           verify(
@@ -430,6 +428,97 @@ void main() {
       expect(capturedParams.user, fakeSession.user.name);
       expect(capturedParams.accessKey, fakeSession.user.AccessKey);
     });
+
+    test(
+      'should NOT call ecSaleRequestsRepository.update when need process cart',
+      () async {
+        // ARRANGE
+
+        final container = makeProviderContainer(mockNeedsProcessing: true);
+
+        when(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        final (errorMessage, needProcessCart) = await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+              isOnlyValidating: true,
+            );
+
+        // ASSERT
+        expect(errorMessage, isNotEmpty);
+        expect(needProcessCart, isTrue);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
+      },
+    );
+    test(
+      'should NOT call ecSaleRequestsRepository.update when isOnlyValidating',
+      () async {
+        // ARRANGE
+
+        final container = makeProviderContainer();
+
+        when(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        ).thenAnswer((_) async {});
+
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          saveSaleRequestControllerProvider(fakeEnterprise.Code!),
+          (_, next) => states.add(next),
+        );
+
+        // ACT
+        final (errorMessage, needProcessCart) = await container
+            .read(
+              saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
+            )
+            .saveBsfSaleRequest(
+              customerCode: fakePendingRequest.customer!.Code!,
+              saleRequestId: 0,
+              isOnlyValidating: true,
+            );
+
+        // ASSERT
+        expect(errorMessage, isNull);
+        expect(needProcessCart, isFalse);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
+      },
+    );
 
     test('should emit [loading, error] if update fails', () async {
       // ARRANGE
@@ -458,6 +547,7 @@ void main() {
           .saveBsfSaleRequest(
             customerCode: fakePendingRequest.customer!.Code!,
             saleRequestId: 0,
+            isOnlyValidating: false,
           );
 
       // ASSERT
@@ -519,13 +609,14 @@ void main() {
         clearInteractions(mockEcSaleRequestsRepository);
 
         // ACT
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: validSaleRequestId,
+              isOnlyValidating: false,
             );
 
         // ASSERT
@@ -538,6 +629,8 @@ void main() {
           ),
         ).called(1);
 
+        expect(errorMessage, isNull);
+        expect(needProcessCart, isFalse);
         expect(spySaleRequests.updateSingleRequestInListCalled, true);
         expect(spySaleRequests.updatedRequest, isNotNull);
 
@@ -573,22 +666,19 @@ void main() {
         );
 
         // ACT
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
         // ASSERT
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect(
-          (states.last.error as AppException).message,
-          'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.',
-        );
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
 
         verifyNever(
           () => mockEcSaleRequestsRepository.update(
@@ -617,18 +707,27 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect((states.last.error as AppException).message, isNotEmpty);
+        // ASSERT
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
 
@@ -649,18 +748,26 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect((states.last.error as AppException).message, isNotEmpty);
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
 
@@ -681,18 +788,27 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect((states.last.error as AppException).message, isNotEmpty);
+        // ASSERT
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
 
@@ -710,18 +826,26 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect((states.last.error as AppException).message, isNotEmpty);
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
 
@@ -746,18 +870,26 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final (errorMessage, needProcessCart) = await container
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
             .saveBsfSaleRequest(
               customerCode: fakePendingRequest.customer!.Code!,
               saleRequestId: 0,
+              isOnlyValidating: false,
             );
 
-        expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
-        expect(states.last.error, isA<AppException>());
-        expect((states.last.error as AppException).message, isNotEmpty);
+        expect(errorMessage, isNotEmpty);
+        expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
+
+        verifyNever(
+          () => mockEcSaleRequestsRepository.update(
+            saleRequest: any(named: 'saleRequest'),
+            enterpriseCode: any(named: 'enterpriseCode'),
+            params: any(named: 'params'),
+          ),
+        );
       },
     );
   });

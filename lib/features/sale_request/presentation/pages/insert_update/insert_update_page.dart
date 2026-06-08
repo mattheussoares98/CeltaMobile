@@ -64,15 +64,6 @@ class _InsertUpdateContent extends ConsumerWidget {
       n.showAlertDialogOnError(context);
     });
 
-    ref.listen(saveSaleRequestControllerProvider(enterpriseCode), (p, n) {
-      n.showAlertDialogOnError(context);
-      n.doOnSuccess(p, context.pop);
-      n.showSnackbarOnSuccess(
-        context,
-        previous: p,
-        message: 'Pedido salvo com sucesso!'.hardcoded,
-      );
-    });
     ref.observeLoading([
       saveSaleRequestControllerProvider(enterpriseCode),
       insertUpdateProcessCartControllerProvider,
