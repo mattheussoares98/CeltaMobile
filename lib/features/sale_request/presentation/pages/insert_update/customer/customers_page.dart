@@ -11,7 +11,7 @@ class CustomersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesktop =
-        PlatformUtil.isDesktop &&
+        (PlatformUtil.isDesktop || PlatformUtil.isWeb) &&
         MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     if (isDesktop) {
