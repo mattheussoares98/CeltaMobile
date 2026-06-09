@@ -540,7 +540,7 @@ void main() {
       );
 
       // ACT
-      await container
+      final (errorMessage, canSaveAndNeedProcessCart) = await container
           .read(
             saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
           )
@@ -551,6 +551,8 @@ void main() {
           );
 
       // ASSERT
+      expect(canSaveAndNeedProcessCart, isFalse);
+      expect(errorMessage, 'Error updating'.hardcoded);
       expect(states, [isA<AsyncLoading>(), isA<AsyncError>()]);
       expect(states.last.error, isA<AppException>());
       expect((states.last.error as AppException).message, 'Error updating');

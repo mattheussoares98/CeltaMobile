@@ -187,6 +187,9 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         );
       }
     });
+    if (state.hasError) {
+      errorMessage = state.error.toString();
+    }
 
     return (errorMessage, canSaveAndNeedProcessCart);
   }
