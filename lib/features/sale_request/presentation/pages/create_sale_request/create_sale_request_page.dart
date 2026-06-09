@@ -33,6 +33,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
         previous: p,
         message: 'O pedido foi salvo com sucesso'.hardcoded,
       );
+      n.showAlertDialogOnError(context);
     });
 
     ref.listen(printSaleRequestControllerProvider, (p, n) {
