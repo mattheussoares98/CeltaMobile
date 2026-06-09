@@ -44,6 +44,10 @@ class CreateSaleRequestPage extends ConsumerWidget {
       );
     });
 
+    ref.listen(processCartControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+
     ref.observeLoading([
       processCartControllerProvider,
       saveSaleRequestControllerProvider(enterpriseCode),
