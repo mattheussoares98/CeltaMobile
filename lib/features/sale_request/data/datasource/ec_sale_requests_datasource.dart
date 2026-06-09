@@ -1,10 +1,19 @@
 import 'dart:convert';
-import 'dart:isolate';
 
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:flutter/foundation.dart';
+
+BSFSaleRequestModel _parseGetComplete(String response) {
+  final decoded = json.decode(response) as List;
+  return BSFSaleRequestModel.fromJson(decoded.first);
+}
+
+BSFSaleRequestModel _parseProcessCart(String response) {
+  return BSFSaleRequestModel.fromJson(json.decode(response));
+}
 
 class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   final HttpClient httpClient;
@@ -69,10 +78,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
       },
     );
 
-    return await Isolate.run(() {
-      final decoded = json.decode(response as String) as List;
-      return BSFSaleRequestModel.fromJson(decoded.first);
-    });
+    return await compute(_parseGetComplete, response as String);
   }
 
   @override
@@ -107,8 +113,6 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
       body: saleRequest.toJson(),
     );
 
-    return await Isolate.run(() {
-      return BSFSaleRequestModel.fromJson(json.decode(response as String));
-    });
+    return await compute(_parseProcessCart, response as String);
   }
 }
