@@ -96,16 +96,11 @@ class RequestSummary extends ConsumerWidget {
                         title: 'Cliente'.hardcoded,
                         subTitle: saleRequest.customer!.Name,
                       ),
-
+                    //TODO return the instructions in this simple search to show it here and remove from below
                     if (saleRequest.observations?.isNotEmpty ?? false)
                       TitleAndSubTitle(
                         title: 'Observações'.hardcoded,
                         subTitle: saleRequest.observations,
-                      ),
-                    if (saleRequest.instructions?.isNotEmpty ?? false)
-                      TitleAndSubTitle(
-                        title: 'Instruções'.hardcoded,
-                        subTitle: saleRequest.instructions,
                       ),
                     if (showDetails)
                       Consumer(
