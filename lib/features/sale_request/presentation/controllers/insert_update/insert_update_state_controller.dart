@@ -383,21 +383,32 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     return (true, null);
   }
 
-  void removePayment(int index) {
+  void removePayment(int financialIndex, int paymentFinalizationIndex) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     final current = state.value!;
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
 
     if (financials.isEmpty) return;
 
-    final paymentFinalizations = List<BSFPaymentFinalizationWrapperEntity>.from(
-      financials.first.paymentFinalizations ?? [],
-    );
-    paymentFinalizations.removeAt(index);
+    if (financialIndex < 0 || financialIndex >= financials.length) return;
+    final financial = financials[financialIndex];
 
-    financials.first = financials.first.copyWith(
-      paymentFinalizations: paymentFinalizations,
+    final paymentFinalizations = List<BSFPaymentFinalizationWrapperEntity>.from(
+      financial.paymentFinalizations ?? [],
     );
+
+    if (paymentFinalizations.length == 1) {
+      financials.removeAt(financialIndex);
+    } else {
+      if (paymentFinalizationIndex < 0 ||
+          paymentFinalizationIndex >= paymentFinalizations.length) {
+        return;
+      }
+      paymentFinalizations.removeAt(paymentFinalizationIndex);
+      financials[financialIndex] = financial.copyWith(
+        paymentFinalizations: paymentFinalizations,
+      );
+    }
 
     state = AsyncData(current.copyWith(financials: financials));
   }

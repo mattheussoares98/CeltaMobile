@@ -29,17 +29,7 @@ class PaymentsList extends ConsumerWidget {
       value: financialsAsync,
       isSliver: true,
       data: (financials) {
-        final payments =
-            financials
-                ?.expand(
-                  (f) =>
-                      f.paymentFinalizations ??
-                      <BSFPaymentFinalizationWrapperEntity>[],
-                )
-                .toList() ??
-            <BSFPaymentFinalizationWrapperEntity>[];
-
-        if (payments.isEmpty) {
+        if (financials?.isEmpty ?? true) {
           return SliverToBoxAdapter(
             child: Center(child: Text('Nenhum pagamento adicionado'.hardcoded)),
           );
@@ -48,58 +38,85 @@ class PaymentsList extends ConsumerWidget {
         final color = context.theme.disabledColor.withAlpha(30);
 
         return SliverList.separated(
-          itemCount: payments.length,
-          separatorBuilder: (context, index) => gapH8,
-          itemBuilder: (context, index) {
-            final payment = payments[index];
+          itemCount: financials?.length,
+          separatorBuilder: (context, fIndex) => gapH8,
+          itemBuilder: (context, fIndex) {
+            final financial = financials![fIndex];
 
             return Column(
-              key: ValueKey(index),
               children: [
-                if (index == 0) ...[
-                  if (missingPayment) const Divider(),
-                  Text(
-                    'Pagamentos informados'.hardcoded,
-                    style: context.theme.textTheme.titleMedium,
+                for (
+                  var pIndex = 0;
+                  pIndex < (financial.paymentFinalizations?.length ?? 0);
+                  pIndex++
+                )
+                  Builder(
+                    builder: (context) {
+                      final payment = financial.paymentFinalizations![pIndex];
+                      return Column(
+                        key: ValueKey(pIndex),
+                        children: [
+                          if (fIndex == 0 && pIndex == 0) ...[
+                            if (missingPayment) const Divider(),
+                            Text(
+                              'Pagamentos informados'.hardcoded,
+                              style: context.theme.textTheme.titleMedium,
+                            ),
+                            gapH8,
+                          ],
+                          DefaultListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(Sizes.p12),
+                              side: BorderSide(
+                                color: context.theme.disabledColor.withAlpha(
+                                  30,
+                                ),
+                              ),
+                            ),
+                            tileColor: fIndex % 2 == 0 ? color : null,
+                            title: TitleAndSubTitle(
+                              title:
+                                  payment.paymentFinalization?.Description ??
+                                  '',
+                              subTitle:
+                                  (payment.quantityOfPortions ?? 0) > 1 ||
+                                      payment
+                                              .paymentFinalization
+                                              ?.action
+                                              ?.type ==
+                                          PaymentFinalizationActionType
+                                              .creditCard
+                                  ? "(${payment.quantityOfPortions ?? ''}x)"
+                                  : "",
+                              removeColon: true,
+                            ),
+                            subtitle: Text(
+                              payment.value
+                                      ?.toString()
+                                      .toBrazilianNumber()
+                                      .addBrazilianCoin() ??
+                                  '',
+                            ),
+                            trailing: IconButton(
+                              icon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.delete,
+                                materialIcon: Icons.delete,
+                                color: Colors.red,
+                              ),
+                              onPressed: () {
+                                ref
+                                    .read(
+                                      insertUpdateStateControllerProvider
+                                          .notifier,
+                                    )
+                                    .removePayment(fIndex, pIndex);
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
-                  gapH8,
-                ],
-                DefaultListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Sizes.p12),
-                    side: BorderSide(
-                      color: context.theme.disabledColor.withAlpha(30),
-                    ),
-                  ),
-                  tileColor: index % 2 == 0 ? color : null,
-                  title: TitleAndSubTitle(
-                    title: payment.paymentFinalization?.Description ?? '',
-                    subTitle:
-                        (payment.quantityOfPortions ?? 0) > 1 ||
-                            payment.paymentFinalization?.action?.type ==
-                                PaymentFinalizationActionType.creditCard
-                        ? "(${payment.quantityOfPortions ?? ''}x)"
-                        : "",
-                    removeColon: true,
-                  ),
-                  subtitle: Text(
-                    payment.value
-                            ?.toString()
-                            .toBrazilianNumber()
-                            .addBrazilianCoin() ??
-                        '',
-                  ),
-                  trailing: IconButton(
-                    icon: const PlatformIcon(
-                      cupertinoIcon: CupertinoIcons.delete,
-                      materialIcon: Icons.delete,
-                      color: Colors.red,
-                    ),
-                    onPressed: () => ref
-                        .read(insertUpdateStateControllerProvider.notifier)
-                        .removePayment(index),
-                  ),
-                ),
               ],
             );
           },

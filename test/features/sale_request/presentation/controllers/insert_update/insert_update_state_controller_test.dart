@@ -1509,18 +1509,76 @@ void main() {
 
         expect(state.value!.financials!.first.paymentFinalizations!.length, 2);
 
-        controller.removePayment(1);
+        controller.removePayment(0, 1);
 
         final state2 = container.read(insertUpdateStateControllerProvider);
 
         expect(state2.value!.financials!.first.paymentFinalizations!.length, 1);
 
-        controller.removePayment(0);
+        controller.removePayment(0, 0);
 
         final state3 = container.read(insertUpdateStateControllerProvider);
 
-        expect(state3.value!.financials!.first.paymentFinalizations, isEmpty);
+        expect(state3.value!.financials, isEmpty);
       });
+
+      test(
+        'removePayment with non-existent indexes should not modify state',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          controller.addItem(
+            EntityFactory.makeProductEntity(
+              enterpriseCode: fakeArgs.enterpriseCode,
+            ).copyWith(RetailPracticedPrice: 200, Value: 200),
+          );
+          final value = faker.randomGenerator.decimal() * 100;
+
+          controller.addPayment(payment: fakePayments[0], value: value);
+          controller.addPayment(payment: fakePayments[1], value: value);
+
+          final stateBefore = container.read(
+            insertUpdateStateControllerProvider,
+          );
+          expect(stateBefore.value!.financials!.length, 1);
+          expect(
+            stateBefore.value!.financials!.first.paymentFinalizations!.length,
+            2,
+          );
+
+          // Try removing with non-existent financial index
+          controller.removePayment(99, 0);
+          var state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.financials!.length, 1);
+
+          // Try removing with negative financial index
+          controller.removePayment(-1, 0);
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.financials!.length, 1);
+
+          // Try removing with non-existent payment index
+          controller.removePayment(0, 99);
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(
+            state.value!.financials!.first.paymentFinalizations!.length,
+            2,
+          );
+
+          // Try removing with negative payment index
+          controller.removePayment(0, -1);
+          state = container.read(insertUpdateStateControllerProvider);
+          expect(
+            state.value!.financials!.first.paymentFinalizations!.length,
+            2,
+          );
+        },
+      );
     });
     group('disposeFlow', () {
       test('should invalidate selection providers and itself', () async {
