@@ -1262,6 +1262,21 @@ class EntityFactory {
       makeBSFPaymentFinalizationWrapperEntity(),
     ],
     paybackValue: faker.randomGenerator.decimal(),
+    code: faker.randomGenerator.integer(100000),
+    representabilityType: faker.randomGenerator.integer(5),
+    financialCustomerCreditValue: faker.randomGenerator.decimal(),
+    financialIncrementValue: faker.randomGenerator.decimal(),
+    financialDiscountValue: faker.randomGenerator.decimal(),
+    baseDateFinancial: faker.date.dateTime(),
+    baseDateFinancialWasInformed: faker.randomGenerator.boolean(),
+    financialDiscountFromREIDInformed: faker.randomGenerator.boolean(),
+    administrativeTax: faker.randomGenerator.decimal(),
+    financialTaxes: faker.randomGenerator.decimal(),
+    totalValuePayedBrute: faker.randomGenerator.decimal(),
+    totalValuePayedLiquid: faker.randomGenerator.decimal(),
+    totalLiquid: faker.randomGenerator.decimal(),
+    containsFiscalPart: faker.randomGenerator.boolean(),
+    containsRepresentabilityFactorDifferent: faker.randomGenerator.boolean(),
   );
 
   static BSFPaymentFinalizationWrapperEntity
@@ -1281,6 +1296,11 @@ class EntityFactory {
         creditCardValidate: faker.date.dateTime(),
         portions: const [],
         userAuthorization: makeBSFUserAuthorizationEntity(),
+        code: faker.randomGenerator.integer(100000),
+        liquidValue: faker.randomGenerator.decimal(),
+        totalFinancialTax: faker.randomGenerator.decimal(),
+        creditCardSecurityCode: faker.randomGenerator.numberOfLength(3),
+        observations: faker.lorem.sentence(),
       );
 
   static BSFPaymentFinalizationEntity makeBSFPaymentFinalizationEntity() =>

@@ -17,6 +17,11 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
   final DateTime? creditCardValidate;
   final List<dynamic>? portions;
   final BSFUserAuthorizationEntity? userAuthorization;
+  final int? code;
+  final double? liquidValue;
+  final double? totalFinancialTax;
+  final String? creditCardSecurityCode;
+  final String? observations;
 
   const BSFPaymentFinalizationWrapperEntity({
     required this.paymentFinalization,
@@ -33,25 +38,35 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
     required this.creditCardValidate,
     required this.portions,
     required this.userAuthorization,
+    this.code,
+    this.liquidValue,
+    this.totalFinancialTax,
+    this.creditCardSecurityCode,
+    this.observations,
   });
 
   @override
   List<Object?> get props => [
-    paymentFinalization,
-    value,
-    financialIncrement,
-    financialDiscount,
-    quantityOfPortions,
-    tefSequencialUniqueNumber,
-    tefAutorizationCreditCode,
-    devolutionCreditCode,
-    identificationCode,
-    paymentCondition,
-    creditCardNumber,
-    creditCardValidate,
-    portions,
-    userAuthorization,
-  ];
+        paymentFinalization,
+        value,
+        financialIncrement,
+        financialDiscount,
+        quantityOfPortions,
+        tefSequencialUniqueNumber,
+        tefAutorizationCreditCode,
+        devolutionCreditCode,
+        identificationCode,
+        paymentCondition,
+        creditCardNumber,
+        creditCardValidate,
+        portions,
+        userAuthorization,
+        code,
+        liquidValue,
+        totalFinancialTax,
+        creditCardSecurityCode,
+        observations,
+      ];
 
   BSFPaymentFinalizationWrapperEntity copyWith({
     BSFPaymentFinalizationEntity? paymentFinalization,
@@ -68,6 +83,11 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
     DateTime? creditCardValidate,
     List<dynamic>? portions,
     BSFUserAuthorizationEntity? userAuthorization,
+    int? code,
+    double? liquidValue,
+    double? totalFinancialTax,
+    String? creditCardSecurityCode,
+    String? observations,
   }) {
     return BSFPaymentFinalizationWrapperEntity(
       paymentFinalization: paymentFinalization ?? this.paymentFinalization,
@@ -86,6 +106,12 @@ class BSFPaymentFinalizationWrapperEntity extends Equatable {
       creditCardValidate: creditCardValidate ?? this.creditCardValidate,
       portions: portions ?? this.portions,
       userAuthorization: userAuthorization ?? this.userAuthorization,
+      code: code ?? this.code,
+      liquidValue: liquidValue ?? this.liquidValue,
+      totalFinancialTax: totalFinancialTax ?? this.totalFinancialTax,
+      creditCardSecurityCode:
+          creditCardSecurityCode ?? this.creditCardSecurityCode,
+      observations: observations ?? this.observations,
     );
   }
 }
