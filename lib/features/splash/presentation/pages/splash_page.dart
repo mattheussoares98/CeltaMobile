@@ -1,9 +1,12 @@
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/routing/routing.dart';
+import 'components/components.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -14,35 +17,44 @@ class SplashPage extends ConsumerStatefulWidget {
 
 class _SplashPageState extends ConsumerState<SplashPage>
     with TickerProviderStateMixin {
-  late AnimationController _pulseController;
+  late AnimationController _animationController;
 
-  late Animation<double> _pulseAnimation;
+  UserSessionModel? _userSession;
+  bool _sessionLoaded = false;
 
   @override
   void initState() {
     super.initState();
 
-    _pulseController = AnimationController(
+    _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
-    )..forward();
-
-    _pulseAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+      duration: const Duration(milliseconds: 3500),
     );
 
+    _animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _navigateToNextScreen();
+      }
+    });
+
+    _animationController.forward();
     _initializeApp();
   }
 
   Future<void> _initializeApp() async {
-    final userSession = await ref.read(userSessionProvider.future);
+    _userSession = await ref.read(userSessionProvider.future);
+    _sessionLoaded = true;
 
-    await Future.delayed(const Duration(seconds: 2));
+    if (_animationController.isCompleted && mounted) {
+      _navigateToNextScreen();
+    }
+  }
 
-    if (!mounted) return;
+  void _navigateToNextScreen() {
+    if (!_sessionLoaded || !mounted) return;
 
-    if (userSession?.user.AccessKey == null ||
-        userSession?.user.CrossIdentity_Usuario == null) {
+    if (_userSession?.user.AccessKey == null ||
+        _userSession?.user.CrossIdentity_Usuario == null) {
       context.goNamed(Routes.auth.name);
     } else {
       context.goNamed(Routes.home.name);
@@ -51,31 +63,50 @@ class _SplashPageState extends ConsumerState<SplashPage>
 
   @override
   void dispose() {
-    _pulseController.dispose();
-
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    const textStyle = TextStyle(
+      fontSize: 150.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: AnimatedBuilder(
-          animation: Listenable.merge([_pulseController]),
-          builder: (context, child) {
-            final double currentScale = _pulseAnimation.value;
-
-            return Transform.scale(
-              scale: currentScale,
-              child: Hero(
-                tag: "logo",
-                child: Image.asset(
-                  "lib/core/assets/images/logoCeltaTransparente.png",
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LogoImage(
+                  animationController: _animationController,
+                  textStyle: textStyle,
                 ),
-              ),
-            );
-          },
+                gapW16,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CeltawareLetters(
+                      textStyle: textStyle,
+                      animationController: _animationController,
+                    ),
+                    TechnologyAndSolutions(
+                      animationController: _animationController,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
