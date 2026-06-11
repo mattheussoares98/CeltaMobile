@@ -62,8 +62,8 @@ class PaymentsList extends ConsumerWidget {
                               'Pagamentos informados'.hardcoded,
                               style: context.theme.textTheme.titleMedium,
                             ),
-                            gapH8,
                           ],
+                          gapH8,
                           DefaultListTile(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(Sizes.p12),
