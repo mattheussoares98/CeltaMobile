@@ -120,18 +120,26 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       final needsProcessingCart = ref.read(saleRequestNeedsProcessingProvider);
 
       if (needsProcessingCart) {
-        canSaveAndNeedProcessCart = await ref.read(
-          canAccessResourceStateControllerProvider(
-            BsRoutine.saleRequest,
-            BsResource.saleRequestChangeTPrice,
-          ).future,
-        );
         final requestTypeAllowChangePriceOrCost =
             saleRequest.requestType?.allowAlterCostOrSalePrice == true;
 
-        if (!canSaveAndNeedProcessCart || !requestTypeAllowChangePriceOrCost) {
+        canSaveAndNeedProcessCart =
+            await ref.read(
+              canAccessResourceStateControllerProvider(
+                BsRoutine.saleRequest,
+                BsResource.saleRequestChangeTPrice,
+              ).future,
+            ) &&
+            requestTypeAllowChangePriceOrCost;
+
+        if (!requestTypeAllowChangePriceOrCost) {
           errorMessage =
-              'O modelo de pedido não permite alterar os preços ou o usuário não possui permissão para alterar os preços no pedido. \n\nO pedido precisa ser processado antes de ser salvo.'
+              'O modelo de pedido não permite alterar os preços. Por isso, processe o carrinho.'
+                  .hardcoded;
+          return;
+        } else if (!canSaveAndNeedProcessCart) {
+          errorMessage =
+              'O usuário não possui permissão para alterar os preços no pedido. Por isso, processe o carrinho'
                   .hardcoded;
           return;
         }
