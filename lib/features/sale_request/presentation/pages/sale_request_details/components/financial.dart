@@ -22,8 +22,7 @@ class Financial extends ConsumerWidget {
     if (loading) {
       return const SizedBox.shrink();
     }
-    final payments = financials?.firstOrNull?.paymentFinalizations;
-    final bool isFinancialEmpty = payments?.isEmpty ?? true;
+    final bool isFinancialEmpty = financials?.isEmpty ?? true;
 
     return Card(
       child: Padding(
@@ -58,72 +57,100 @@ class Financial extends ConsumerWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: payments!.length,
-                itemBuilder: (context, index) {
-                  final payment = payments[index];
+                itemCount: financials!.length,
+                itemBuilder: (context, fIndex) {
+                  final financial = financials[fIndex];
 
-                  final discount = payment.financialDiscount ?? 0;
-                  final increment = payment.financialIncrement ?? 0;
-                  final portions = payment.quantityOfPortions ?? 0;
-                  final name = payment.paymentFinalization?.Description;
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: Sizes.p4),
-                    padding: const EdgeInsets.all(Sizes.p8),
-                    decoration: BoxDecoration(
-                      color: index % 2 == 0
-                          ? Colors.grey.shade300
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(Sizes.p8),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            text: name,
-                            style: context.theme.textTheme.titleSmall,
-                            children: [
-                              if (payment.value != null) ...[
-                                TextSpan(
-                                  text: ' (R\$',
-                                  style: context.theme.textTheme.bodyMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: context.theme.primaryColor,
-                                        fontSize: 11,
-                                      ),
-                                ),
-                                TextSpan(
-                                  text:
-                                      ' ${payment.value.toString().toBrazilianNumber()})',
-                                  style: context.theme.textTheme.titleSmall
-                                      ?.copyWith(
-                                        color: context.theme.primaryColor,
-                                      ),
-                                ),
-                              ],
-                              if (portions > 1)
-                                TextSpan(
-                                  text: ' em ${portions}x',
-                                  style: context.theme.textTheme.titleSmall,
-                                ),
-                            ],
-                          ),
+                  return Wrap(
+                    children: [
+                      for (
+                        var pIndex = 0;
+                        pIndex < (financial.paymentFinalizations?.length ?? 0);
+                        pIndex++
+                      )
+                        Builder(
+                          builder: (context) {
+                            final payment =
+                                financial.paymentFinalizations![pIndex];
+                            final discount = payment.financialDiscount ?? 0;
+                            final increment = payment.financialIncrement ?? 0;
+                            final portions = payment.quantityOfPortions ?? 0;
+                            final name =
+                                payment.paymentFinalization?.Description;
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: Sizes.p4),
+                              padding: const EdgeInsets.all(Sizes.p8),
+                              decoration: BoxDecoration(
+                                color: fIndex % 2 == 0
+                                    ? Colors.grey.shade300
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(Sizes.p8),
+                              ),
+                              child: Column(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: name,
+                                      style: context.theme.textTheme.titleSmall,
+                                      children: [
+                                        if (payment.value != null) ...[
+                                          TextSpan(
+                                            text: ' (R\$',
+                                            style: context
+                                                .theme
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: context
+                                                      .theme
+                                                      .primaryColor,
+                                                  fontSize: 11,
+                                                ),
+                                          ),
+                                          TextSpan(
+                                            text:
+                                                ' ${payment.value.toString().toBrazilianNumber()})',
+                                            style: context
+                                                .theme
+                                                .textTheme
+                                                .titleSmall
+                                                ?.copyWith(
+                                                  color: context
+                                                      .theme
+                                                      .primaryColor,
+                                                ),
+                                          ),
+                                        ],
+                                        if (portions > 1)
+                                          TextSpan(
+                                            text: ' em ${portions}x',
+                                            style: context
+                                                .theme
+                                                .textTheme
+                                                .titleSmall,
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (discount > 0)
+                                    TitleAndSubTitle(
+                                      title: 'Descontos'.hardcoded,
+                                      subTitle: discount,
+                                      subTitleIsPrice: true,
+                                    ),
+                                  if (increment > 0)
+                                    TitleAndSubTitle(
+                                      title: 'Acréscimos'.hardcoded,
+                                      subTitle: increment,
+                                      subTitleIsPrice: true,
+                                    ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        if (discount > 0)
-                          TitleAndSubTitle(
-                            title: 'Descontos'.hardcoded,
-                            subTitle: discount,
-                            subTitleIsPrice: true,
-                          ),
-                        if (increment > 0)
-                          TitleAndSubTitle(
-                            title: 'Acréscimos'.hardcoded,
-                            subTitle: increment,
-                            subTitleIsPrice: true,
-                          ),
-                      ],
-                    ),
+                    ],
                   );
                 },
               ),
