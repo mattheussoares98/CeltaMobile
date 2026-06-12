@@ -16,7 +16,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'try_access_module_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class TryAccessModuleController extends _$TryAccessModuleController {
   @override
   FutureOr<void> build() {}
