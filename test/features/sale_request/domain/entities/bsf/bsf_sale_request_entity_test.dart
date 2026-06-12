@@ -483,15 +483,39 @@ void main() {
     );
   });
 
-  group('BSFSaleRequestEntity currentSaleRequestLiquid correctly separates product-level and request-level adjustments', () {
-    test('should calculate currentSaleRequestLiquid correctly when products have discounts, increments, and delivery tax', () {
-      final request = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-        annulFinancialIncrement: true,
-        annulFinancialDiscount: true,
-        products: [
-          EntityFactory.makeBSFProductItemEntity().copyWith(
-            quantity: 2.0,
-            value: 100.0,
+  group(
+    'BSFSaleRequestEntity currentSaleRequestLiquid correctly separates product-level and request-level adjustments',
+    () {
+      test(
+        'should calculate currentSaleRequestLiquid correctly when products have discounts, increments, and delivery tax',
+        () {
+          final request = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            products: [
+              EntityFactory.makeBSFProductItemEntity().copyWith(
+                quantity: 2.0,
+                value: 100.0,
+                discounts: [
+                  const BSFDiscountEntity(
+                    order: 1,
+                    discountOrigin: DiscountOrigin.manual,
+                    user: null,
+                    justification: null,
+                    discount: BSFValueTypeEntity(
+                      type: PercentageOrValue.percentage,
+                      value: 10.0, // 10% unit discount
+                    ),
+                  ),
+                ],
+                increment: const BSFValueTypeEntity(
+                  type: PercentageOrValue.reais,
+                  value: 5.0, // 5 reais unit increment
+                ),
+                deliveryTax: const BSFValueTypeEntity(
+                  type: PercentageOrValue.reais,
+                  value: 2.0, // 2 reais unit delivery tax
+                ),
+              ),
+            ],
             discounts: [
               const BSFDiscountEntity(
                 order: 1,
@@ -500,69 +524,67 @@ void main() {
                 justification: null,
                 discount: BSFValueTypeEntity(
                   type: PercentageOrValue.percentage,
-                  value: 10.0, // 10% unit discount
+                  value: 5.0, // 5% request-level discount
                 ),
               ),
             ],
             increment: const BSFValueTypeEntity(
               type: PercentageOrValue.reais,
-              value: 5.0, // 5 reais unit increment
+              value: 10.0, // 10 reais request-level increment
             ),
-            deliveryTax: const BSFValueTypeEntity(
-              type: PercentageOrValue.reais,
-              value: 2.0, // 2 reais unit delivery tax
+            deliveryTax: const BSFDeliveryTaxWrapperEntity(
+              deliveryTax: BSFValueTypeEntity(
+                type: PercentageOrValue.percentage,
+                value: 2.0, // 2% request-level delivery tax (freight)
+              ),
+              mailFreightType: null,
+              isFob: null,
+              isDiscounted: null,
             ),
-          ),
-        ],
-        discounts: [
-          const BSFDiscountEntity(
-            order: 1,
-            discountOrigin: DiscountOrigin.manual,
-            user: null,
-            justification: null,
-            discount: BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: 5.0, // 5% request-level discount
-            ),
-          ),
-        ],
-        increment: const BSFValueTypeEntity(
-          type: PercentageOrValue.reais,
-          value: 10.0, // 10 reais request-level increment
-        ),
-        deliveryTax: const BSFDeliveryTaxWrapperEntity(
-          deliveryTax: BSFValueTypeEntity(
-            type: PercentageOrValue.percentage,
-            value: 2.0, // 2% request-level delivery tax (freight)
-          ),
-          mailFreightType: null,
-          isFob: null,
-          isDiscounted: null,
-        ),
+          );
+
+          // totalProductsLiquid should be 2.0 * (100.0 - 10.0 + 2.0 + 5.0) = 194.0
+          expect(request.totalProductsLiquid, 194.0);
+
+          // currentSaleRequestLiquid should be:
+          // totalProductsLiquid (194.0)
+          // - request-level discount (5% of 194.0 = 9.70)
+          // + request-level increment (10.00)
+          // + request-level delivery tax (2% of 194.0 = 3.88)
+          // = 194.0 - 9.70 + 10.0 + 3.88 = 198.18
+          expect(request.currentSaleRequestLiquid, 198.18);
+        },
       );
 
-      // totalProductsLiquid should be 2.0 * (100.0 - 10.0 + 2.0 + 5.0) = 194.0
-      expect(request.totalProductsLiquid, 194.0);
-
-      // currentSaleRequestLiquid should be:
-      // totalProductsLiquid (194.0)
-      // - request-level discount (5% of 194.0 = 9.70)
-      // + request-level increment (10.00)
-      // + request-level delivery tax (2% of 194.0 = 3.88)
-      // = 194.0 - 9.70 + 10.0 + 3.88 = 198.18
-      expect(request.currentSaleRequestLiquid, 198.18);
-    });
-
-    test('should calculate totalLiquidAndPaidDifference correctly when product and request level adjustments coexist', () {
-      final request = EntityFactory.makeBSFSaleRequestEntity().copyWith(
-        annulFinancialIncrement: true,
-        annulFinancialDiscount: true,
-        annulIncrement: true,
-        annulDeliveryTax: true,
-        products: [
-          EntityFactory.makeBSFProductItemEntity().copyWith(
-            quantity: 1.0,
-            value: 100.0,
+      test(
+        'should calculate totalLiquidAndPaidDifference correctly when product and request level adjustments coexist',
+        () {
+          final request = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            annulFinancialIncrement: true,
+            annulFinancialDiscount: true,
+            annulIncrement: true,
+            annulDeliveryTax: true,
+            products: [
+              EntityFactory.makeBSFProductItemEntity().copyWith(
+                quantity: 1.0,
+                value: 100.0,
+                discounts: [
+                  const BSFDiscountEntity(
+                    order: 1,
+                    discountOrigin: DiscountOrigin.manual,
+                    user: null,
+                    justification: null,
+                    discount: BSFValueTypeEntity(
+                      type: PercentageOrValue.reais,
+                      value:
+                          10.0, // 10 reais product discount -> product liquid = 90.00
+                    ),
+                  ),
+                ],
+                annulIncrement: true,
+                annulDeliveryTax: true,
+              ),
+            ],
             discounts: [
               const BSFDiscountEntity(
                 order: 1,
@@ -571,41 +593,28 @@ void main() {
                 justification: null,
                 discount: BSFValueTypeEntity(
                   type: PercentageOrValue.reais,
-                  value: 10.0, // 10 reais product discount -> product liquid = 90.00
+                  value:
+                      5.0, // 5 reais request-level discount -> total liquid = 85.00
                 ),
               ),
             ],
-            annulIncrement: true,
-            annulDeliveryTax: true,
-          ),
-        ],
-        discounts: [
-          const BSFDiscountEntity(
-            order: 1,
-            discountOrigin: DiscountOrigin.manual,
-            user: null,
-            justification: null,
-            discount: BSFValueTypeEntity(
-              type: PercentageOrValue.reais,
-              value: 5.0, // 5 reais request-level discount -> total liquid = 85.00
-            ),
-          ),
-        ],
-        financials: [
-          EntityFactory.makeBSFFinancialEntity().copyWith(
-            paymentFinalizations: [
-              EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
-                  .copyWith(value: 85.00),
+            financials: [
+              EntityFactory.makeBSFFinancialEntity().copyWith(
+                paymentFinalizations: [
+                  EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                      .copyWith(value: 85.00),
+                ],
+                paybackValue: 0,
+              ),
             ],
-            paybackValue: 0,
-          ),
-        ],
-      );
+          );
 
-      expect(request.totalProductsLiquid, 90.00);
-      expect(request.currentSaleRequestLiquid, 85.00);
-      expect(request.totalLiquidAndPaidDifference, 0.0);
-      expect(request.isPaymentValid, isTrue);
-    });
-  });
+          expect(request.totalProductsLiquid, 90.00);
+          expect(request.currentSaleRequestLiquid, 85.00);
+          expect(request.totalLiquidAndPaidDifference, 0.0);
+          expect(request.isPaymentValid, isTrue);
+        },
+      );
+    },
+  );
 }

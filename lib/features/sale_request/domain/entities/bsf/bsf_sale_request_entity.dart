@@ -200,9 +200,8 @@ class BSFSaleRequestEntity extends Equatable {
   }
 
   double get saleRequestDeliveryTax {
-    return deliveryTax?.deliveryTax?.calculateItemValue(
-      totalProductsLiquid,
-    ) ?? 0.0;
+    return deliveryTax?.deliveryTax?.calculateItemValue(totalProductsLiquid) ??
+        0.0;
   }
 
   double get totalFreight {
@@ -217,9 +216,7 @@ class BSFSaleRequestEntity extends Equatable {
   }
 
   double get saleRequestIncrement {
-    return increment?.calculateItemValue(
-      totalProductsLiquid,
-    ) ?? 0.0;
+    return increment?.calculateItemValue(totalProductsLiquid) ?? 0.0;
   }
 
   double get totalIncrement {
@@ -278,7 +275,19 @@ class BSFSaleRequestEntity extends Equatable {
     final currentSaleRequestLiquidCents = (currentSaleRequestLiquid * 100)
         .round();
 
-    final differenceCents = currentSaleRequestLiquidCents - totalPaymentsCents;
+    final financialIncrementValue =
+        financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+    final financialDiscountValue =
+        financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+
+    final financialIncrementCents = (financialIncrementValue * 100).round();
+    final financialDiscountCents = (financialDiscountValue * 100).round();
+
+    final differenceCents =
+        currentSaleRequestLiquidCents -
+        totalPaymentsCents +
+        financialIncrementCents -
+        financialDiscountCents;
 
     return differenceCents / 100.0;
   }
@@ -288,14 +297,6 @@ class BSFSaleRequestEntity extends Equatable {
     final baseProductsLiquid = totalProductsLiquid;
     final totalProductsCents = (baseProductsLiquid * 100).round();
 
-    final financialIncrementValue =
-        financialIncrement?.calculateItemValue(baseProductsLiquid) ?? 0.0;
-    final financialDiscountValue =
-        financialDiscount?.calculateItemValue(baseProductsLiquid) ?? 0.0;
-
-    final financialIncrementCents = (financialIncrementValue * 100).round();
-    final financialDiscountCents = (financialDiscountValue * 100).round();
-
     // Reuses extracted DRY request-level getters to avoid repeating the loop logic
     // and to prevent duplicating product-level adjustments already in baseProductsLiquid.
     final saleRequestDiscountCents = (saleRequestDiscount * 100).round();
@@ -303,9 +304,7 @@ class BSFSaleRequestEntity extends Equatable {
     final saleRequestDeliveryCents = (saleRequestDeliveryTax * 100).round();
 
     final totalSaleRequestLiquidCents =
-        (totalProductsCents +
-        financialIncrementCents -
-        financialDiscountCents -
+        (totalProductsCents -
         saleRequestDiscountCents +
         saleRequestDeliveryCents +
         saleRequestIncrementCents);
