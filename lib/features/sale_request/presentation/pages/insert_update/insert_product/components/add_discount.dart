@@ -127,10 +127,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      textInputAction:
-                          discountType == PercentageOrValue.percentage
-                          ? TextInputAction.continueAction
-                          : TextInputAction.next,
+                      textInputAction: TextInputAction.done,
                       controller: _valueController,
                       onFieldSubmitted: (_) => _addDiscount(),
                       suffixIcon: ExcludeFocus(
