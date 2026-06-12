@@ -8,14 +8,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Item extends ConsumerStatefulWidget {
+class ManageDiscountOrIncrement extends ConsumerStatefulWidget {
   final BSFValueTypeEntity? valueType;
   final bool allowUpdate;
   final String title;
   final void Function(BSFValueTypeEntity value) onUpdate;
   final VoidCallback onRemove;
   final String notAllowedMessage;
-  const Item({
+  const ManageDiscountOrIncrement({
     super.key,
     required this.valueType,
     required this.allowUpdate,
@@ -29,7 +29,7 @@ class Item extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ItemState();
 }
 
-class _ItemState extends ConsumerState<Item> {
+class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _valueController;
   late final FocusNode _focusNode;
