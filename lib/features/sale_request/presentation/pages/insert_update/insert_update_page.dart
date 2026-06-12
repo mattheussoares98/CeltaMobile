@@ -85,7 +85,7 @@ class _InsertUpdateContent extends ConsumerWidget {
                   insertUpdateStateControllerProvider.select(
                     (s) => (
                       s.value?.products?.length ?? 0,
-                      s.value?.totalProductsLiquid ?? 0,
+                      s.value?.totalLiquid ?? 0,
                     ),
                   ),
                 );
