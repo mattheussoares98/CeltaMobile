@@ -72,10 +72,19 @@ class _InsertUpdateContent extends ConsumerWidget {
     return Consumer(
       child: Scaffold(
         appBar: AppBar(
-          title: DefaultAppBarTitle(
-            title: saleRequestId == 0
-                ? 'Inserir pedido'.hardcoded
-                : 'Atualizar pedido'.hardcoded,
+          title: Consumer(
+            builder: (_, ref, _) {
+              final personalizedCode = ref.watch(
+                insertUpdateStateControllerProvider.select(
+                  (s) => s.value?.personalizedCode,
+                ),
+              );
+              return DefaultAppBarTitle(
+                title: personalizedCode != null
+                    ? 'Alterando ($personalizedCode)'.hardcoded
+                    : 'Inserindo pedido'.hardcoded,
+              );
+            },
           ),
           actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
           actions: [
