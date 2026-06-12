@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFValueTypeEntity extends Equatable {
   final PercentageOrValue? type;
@@ -17,9 +16,7 @@ class BSFValueTypeEntity extends Equatable {
       value: value ?? this.value,
     );
   }
-}
 
-extension BSFValueTypeEntityExtension on BSFValueTypeEntity {
   double calculateItemValue(double? price) {
     if (value == null || value == 0) return 0;
     if (price == null || price == 0) return 0;
