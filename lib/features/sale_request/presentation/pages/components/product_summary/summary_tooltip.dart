@@ -27,6 +27,7 @@ class SummaryTooltip extends StatelessWidget {
     return Tooltip(
       message: message,
       triggerMode: TooltipTriggerMode.tap,
+      waitDuration: const Duration(seconds: 3),
       child: Container(
         padding: const EdgeInsets.all(Sizes.p4),
         decoration: BoxDecoration(
@@ -34,7 +35,7 @@ class SummaryTooltip extends StatelessWidget {
           borderRadius: BorderRadius.circular(Sizes.p4),
         ),
         child: Text(
-          displayText,
+          '  $displayText  ',
           style: context.theme.textTheme.labelSmall?.copyWith(
             color: effectiveColor,
             fontWeight: FontWeight.bold,
