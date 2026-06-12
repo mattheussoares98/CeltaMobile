@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:celta_inventario/app.dart';
 import 'package:celta_inventario/exceptions/async_error_logger.dart';
 import 'package:celta_inventario/exceptions/error_logger.dart';
@@ -35,16 +37,24 @@ void registerErrorHandlers(ErrorLogger errorLogger) {
   // * Show some error UI if any uncaught exception happens
   FlutterError.onError = (FlutterErrorDetails details) {
     if (details.context != null) {
-      debugPrint(
+      developer.log(
         '🔴 Flutter Error Context (Widget/Position): ${details.context}',
       );
     }
     FlutterError.presentError(details);
-    errorLogger.logError(details.exception, details.stack);
+    developer.log(
+      'Starting the LOG exception from ErrorLogger - FlutterError.onError',
+      error: details.exception,
+      stackTrace: details.stack,
+    );
   };
   // * Handle errors from the underlying platform/OS
   PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-    errorLogger.logError(error, stack);
+    developer.log(
+      'Starting the LOG exception from ErrorLogger - PlatformDispatcher.instance.onError',
+      error: error,
+      stackTrace: stack,
+    );
     return true;
   };
   // * Show some error UI when any widget in the app fails to build
