@@ -42,11 +42,20 @@ class InsertProductPage extends ConsumerWidget {
                 insertUpdateStateControllerProvider.notifier,
               );
 
-              final actions = notifier.updateItem(
+              final (errorMessage, actions) = notifier.updateItem(
                 product,
                 updatedItem,
                 onlyValidating: true,
               );
+
+              if (errorMessage?.isNotEmpty == true) {
+                showSnackBarMessage(
+                  context,
+                  errorMessage!,
+                  backgroundColor: Colors.red,
+                );
+                return;
+              }
 
               if (actions.isNotEmpty) {
                 final confirmed = await showAlertDialog(

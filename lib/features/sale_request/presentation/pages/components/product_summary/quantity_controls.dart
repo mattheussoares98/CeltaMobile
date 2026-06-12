@@ -47,6 +47,7 @@ class QuantityControlButton extends ConsumerWidget {
             errorMessage!,
             backgroundColor: Colors.red,
           );
+          return;
         } else if (actions.isNotEmpty) {
           final confirmed = await showAlertDialog(
             context: context,

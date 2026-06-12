@@ -885,7 +885,8 @@ void main() {
         final newQuantity = faker.randomGenerator.decimal();
         final updatedItem = addedItem.copyWith(quantity: newQuantity);
 
-        controller.updateItem(addedItem, updatedItem);
+        final (errorMessage, actions) = controller.updateItem(addedItem, updatedItem);
+        expect(errorMessage, isNull);
 
         final state = container.read(insertUpdateStateControllerProvider);
         expect(state.value!.products!.first.quantity, newQuantity);
@@ -918,8 +919,9 @@ void main() {
           );
 
           final updatedItem = item.copyWith(quantity: 2);
-          final actions = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
 
+          expect(errorMessage, isNull);
           expect(actions, isEmpty);
 
           final state = container.read(insertUpdateStateControllerProvider);
@@ -957,8 +959,9 @@ void main() {
             increment: EntityFactory.makeBSFValueTypeEntity(),
             deliveryTax: EntityFactory.makeBSFValueTypeEntity(),
           );
-          final actions = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
 
+          expect(errorMessage, isNull);
           expect(actions, isEmpty);
 
           final state = container.read(insertUpdateStateControllerProvider);
@@ -1006,8 +1009,9 @@ void main() {
             quantity: newQuantity,
             value: newValue,
           );
-          final actions = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
 
+          expect(errorMessage, isNull);
           expect(actions, [
             BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
           ]);
@@ -1044,8 +1048,9 @@ void main() {
           );
 
           final updatedItem = item.copyWith(value: 110);
-          final actions = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
 
+          expect(errorMessage, isNull);
           expect(actions, [
             BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
           ]);
@@ -1082,12 +1087,13 @@ void main() {
           );
 
           final updatedItem = item.copyWith(quantity: 2);
-          final actions = controller.updateItem(
+          final (errorMessage, actions) = controller.updateItem(
             item,
             updatedItem,
             onlyValidating: true,
           );
 
+          expect(errorMessage, isNull);
           expect(actions, [
             BSFSaleRequestSanitizationAction.productAutomaticDiscountsRemoved,
           ]);

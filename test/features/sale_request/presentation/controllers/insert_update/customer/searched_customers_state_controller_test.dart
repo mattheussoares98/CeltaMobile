@@ -78,6 +78,8 @@ void main() {
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
+      await container.read(searchedCustomersStateControllerProvider.future);
+
       final searchResults = [
         EntityFactory.makeBSFCustomerEntity(),
         EntityFactory.makeBSFCustomerEntity(),

@@ -60,21 +60,41 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     return (items, index);
   }
 
-  void addItem(ProductEntity product) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return;
-    if (product.getPrice <= 0) return;
+  (String? errorMessage, List<BSFSaleRequestSanitizationAction> actions)
+  addItem(ProductEntity product) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) {
+      return (null, const []);
+    }
+    if (product.getPrice <= 0) {
+      return ('Esse produto não possui preço'.hardcoded, const []);
+    }
 
     final (items, index) = _getItemsAndIndexByPlu(product.PLU);
+    final BSFProductItemEntity targetItem;
 
     if (index != -1) {
-      items[index] = items[index].copyWith(
+      targetItem = items[index].copyWith(
         quantity: (items[index].quantity ?? 0) + 1,
       );
     } else {
-      items.add(product.toBSFProductItemEntity().copyWith(quantity: 1));
+      targetItem = product.toBSFProductItemEntity().copyWith(quantity: 1);
+    }
+
+    if (targetItem.totalLiquid < 0) {
+      return (
+        'O valor líquido do produto não pode ser negativo.'.hardcoded,
+        const [],
+      );
+    }
+
+    if (index != -1) {
+      items[index] = targetItem;
+    } else {
+      items.add(targetItem);
     }
 
     state = AsyncData(state.value!.copyWith(products: items));
+    return (null, const []);
   }
 
   void removeItem(BSFProductItemEntity item) {
@@ -128,9 +148,19 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     if (index == -1) {
+      final args = ref.read(saleRequestArgsProvider);
+      final productEntity = item.toProductEntity(args.enterpriseCode);
+      final tempItem = productEntity.toBSFProductItemEntity().copyWith(
+        quantity: 1,
+      );
+      if (tempItem.totalLiquid <= 0) {
+        return (
+          'O valor líquido do produto deve ser maior que zero'.hardcoded,
+          const [],
+        );
+      }
       if (!onlyValidating) {
-        final args = ref.read(saleRequestArgsProvider);
-        addItem(item.toProductEntity(args.enterpriseCode));
+        addItem(productEntity);
       }
       return (null, const []);
     } else {
@@ -151,6 +181,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         price,
       );
 
+      if (sanitizedItem.totalLiquid <= 0) {
+        return (
+          'O valor líquido do produto deve ser maior que zero.'.hardcoded,
+          const [],
+        );
+      }
+
       if (!onlyValidating) {
         items[index] = sanitizedItem;
         state = AsyncData(state.value!.copyWith(products: items));
@@ -159,12 +196,15 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
   }
 
-  List<BSFSaleRequestSanitizationAction> updateItem(
+  (String? errorMessage, List<BSFSaleRequestSanitizationAction> actions)
+  updateItem(
     BSFProductItemEntity oldItem,
     BSFProductItemEntity newItem, {
     bool onlyValidating = false,
   }) {
-    if (state is! AsyncData<BSFSaleRequestEntity>) return const [];
+    if (state is! AsyncData<BSFSaleRequestEntity>) {
+      return (null, const []);
+    }
 
     final hasAutomaticDiscount =
         newItem.discounts?.any(
@@ -190,6 +230,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       sanitizedItem = newItem.copyWith(discounts: manualDiscounts);
     }
 
+    if (sanitizedItem.totalLiquid <= 0) {
+      return (
+        'O valor líquido do produto deve ser maior que zero'.hardcoded,
+        const [],
+      );
+    }
+
     if (!onlyValidating) {
       final (items, index) = _getItemsAndIndexByPlu(
         oldItem.product?.productPackingPriceLookUpString,
@@ -203,7 +250,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       state = AsyncData(state.value!.copyWith(products: items));
     }
 
-    return actions;
+    return (null, actions);
   }
 
   List<BSFSaleRequestSanitizationAction> updateCustomerOrCovenant(
