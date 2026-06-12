@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/theme/theme.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/app_router.dart';
@@ -19,6 +20,7 @@ class MyApp extends ConsumerWidget {
       behavior: HitTestBehavior.translucent,
       onTap: FocusScope.of(context).unfocus,
       child: MaterialApp.router(
+        scaffoldMessengerKey: scaffoldMessengerKey,
         routerConfig: goRouter,
         debugShowCheckedModeBanner: false,
         restorationScopeId: 'app',
