@@ -1,12 +1,11 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/bsf/product/product.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFFiscalCodeEntity extends Equatable {
   final BSFFiscalCodeValueEntity? code;
   final BSFFiscalCodeValueEntity? codeCompensation;
   final String? description;
-  final String? fiscalObservation;
+  final dynamic fiscalObservation;
   final String? codeString;
   final String? codeCompensationString;
   final bool? isBonus;

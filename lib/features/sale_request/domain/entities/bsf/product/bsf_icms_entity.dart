@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/bsf/product/bsf_tributary_situation_entity.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFIcmsEntity extends Equatable {
   final dynamic taxOnState;
@@ -37,7 +36,7 @@ class BSFIcmsEntity extends Equatable {
   final String? fiscalAdjustCode;
   final String? fiscalBenefitCode;
   final BSFTributarySituationEntity? tributarySituation;
-  final String? fiscalObservation;
+  final dynamic fiscalObservation;
   final String? fiscalAdjustObservation;
   final dynamic stateInternalIcms;
 
