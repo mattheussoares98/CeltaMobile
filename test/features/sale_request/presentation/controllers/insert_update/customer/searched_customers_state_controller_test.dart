@@ -90,11 +90,11 @@ void main() {
       );
 
       final searchByPersonalizedCode = faker.randomGenerator.boolean();
+      if (searchByPersonalizedCode) {
+        controller.toggleSearchByPersonalizedCode();
+      }
       final searchValue = faker.lorem.word();
-      final succeeds = await controller.loadCustomer(
-        searchValue,
-        searchByPersonalizedCode,
-      );
+      final succeeds = await controller.loadCustomer(searchValue);
 
       expect(succeeds, isTrue);
 
@@ -102,6 +102,7 @@ void main() {
 
       expect(state.value?.customers, [fakeCustomer, ...searchResults]);
       expect(state.value?.errorMessage, isNull);
+      expect(state.value?.searchByPersonalizedCode, searchByPersonalizedCode);
       verify(
         () => mockRepository.searchForMobileApp(
           params: EcRequestParams(
@@ -136,7 +137,7 @@ void main() {
           searchedCustomersStateControllerProvider.notifier,
         );
 
-        await controller.loadCustomer('search query', false);
+        await controller.loadCustomer('search query');
 
         final state = container.read(searchedCustomersStateControllerProvider);
 
@@ -166,7 +167,7 @@ void main() {
           searchedCustomersStateControllerProvider.notifier,
         );
 
-        final succeeds = await controller.loadCustomer('search query', false);
+        final succeeds = await controller.loadCustomer('search query');
 
         expect(succeeds, false);
 
@@ -175,5 +176,29 @@ void main() {
         expect(state.value?.errorMessage, isNotEmpty);
       },
     );
+
+    test('toggleSearchByPersonalizedCode should toggle the boolean in state', () async {
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      final controller = container.read(
+        searchedCustomersStateControllerProvider.notifier,
+      );
+
+      await container.read(searchedCustomersStateControllerProvider.future);
+
+      var state = container.read(searchedCustomersStateControllerProvider);
+      expect(state.value?.searchByPersonalizedCode, isFalse);
+
+      controller.toggleSearchByPersonalizedCode();
+
+      state = container.read(searchedCustomersStateControllerProvider);
+      expect(state.value?.searchByPersonalizedCode, isTrue);
+
+      controller.toggleSearchByPersonalizedCode();
+
+      state = container.read(searchedCustomersStateControllerProvider);
+      expect(state.value?.searchByPersonalizedCode, isFalse);
+    });
   });
 }

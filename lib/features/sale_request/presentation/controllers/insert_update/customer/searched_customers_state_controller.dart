@@ -20,10 +20,28 @@ class SearchedCustomersStateController
     );
     final customer = insertUpdateState.customer;
 
-    return SearchedCustomersState(customers: [?customer], errorMessage: null);
+    return SearchedCustomersState(
+      customers: [?customer],
+      errorMessage: null,
+      searchByPersonalizedCode: false,
+    );
   }
 
-  Future<bool> loadCustomer(String value, bool searchByPersonalizedCode) async {
+  void toggleSearchByPersonalizedCode() {
+    final current = state.value;
+    if (current == null) return;
+
+    state = AsyncData(
+      current.copyWith(
+        searchByPersonalizedCode: !current.searchByPersonalizedCode,
+      ),
+    );
+  }
+
+  Future<bool> loadCustomer(String value) async {
+    final current = state.value;
+    final searchByPersonalizedCode = current?.searchByPersonalizedCode ?? false;
+
     state = const AsyncValue.loading();
     String? errorMessage;
 
@@ -76,6 +94,7 @@ class SearchedCustomersStateController
             ...customers.where((c) => c.code != updatedSelectedCustomer?.code),
           ],
           errorMessage: errorMessage,
+          searchByPersonalizedCode: searchByPersonalizedCode,
         );
       } catch (e) {
         errorMessage = e.toString();
@@ -83,6 +102,7 @@ class SearchedCustomersStateController
         return SearchedCustomersState(
           customers: [?selectedCustomer],
           errorMessage: errorMessage,
+          searchByPersonalizedCode: searchByPersonalizedCode,
         );
       }
     });

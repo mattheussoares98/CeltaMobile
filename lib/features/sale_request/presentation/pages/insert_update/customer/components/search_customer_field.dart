@@ -39,7 +39,7 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
 
           final succeeds = await ref
               .read(searchedCustomersStateControllerProvider.notifier)
-              .loadCustomer(value, false);
+              .loadCustomer(value);
           if (succeeds) {
             searchController.clear();
           }
