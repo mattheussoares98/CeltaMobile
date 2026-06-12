@@ -1,10 +1,9 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchCustomerField extends ConsumerStatefulWidget {
   const SearchCustomerField({super.key});
@@ -28,21 +27,33 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: DefaultTextFormField(
-        controller: searchController,
-        labelText: 'Pesquisar'.hardcoded,
-        validator: FormValidators.compose([MinLengthValidator(3)]),
-        onFieldSubmitted: (value) async {
-          if (formKey.currentState?.validate() != true) {
-            return;
-          }
+      child: Consumer(
+        builder: (_, ref, _) {
+          final searchByPersonalizedCode = ref.watch(
+            searchedCustomersStateControllerProvider.select(
+              (s) => s.value?.searchByPersonalizedCode == true,
+            ),
+          );
+          return DefaultTextFormField(
+            controller: searchController,
+            labelText: 'Pesquisar'.hardcoded,
+            hintText: searchByPersonalizedCode
+                ? 'Código personalizado'.hardcoded
+                : 'Nome|Cód|CPF/CNPJ',
+            validator: FormValidators.compose([MinLengthValidator(3)]),
+            onFieldSubmitted: (value) async {
+              if (formKey.currentState?.validate() != true) {
+                return;
+              }
 
-          final succeeds = await ref
-              .read(searchedCustomersStateControllerProvider.notifier)
-              .loadCustomer(value);
-          if (succeeds) {
-            searchController.clear();
-          }
+              final succeeds = await ref
+                  .read(searchedCustomersStateControllerProvider.notifier)
+                  .loadCustomer(value);
+              if (succeeds) {
+                searchController.clear();
+              }
+            },
+          );
         },
       ),
     );
