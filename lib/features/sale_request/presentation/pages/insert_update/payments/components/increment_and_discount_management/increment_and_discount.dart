@@ -45,7 +45,7 @@ class IncrementAndDiscount extends ConsumerWidget {
             final (allowUpdate, financialDiscount) = ref.watch(
               insertUpdateStateControllerProvider.select(
                 (s) => (
-                  s.value?.requestType?.allowFinancialIncrement ?? false,
+                  s.value?.requestType?.allowFinancialDiscount ?? false,
                   s.value?.financialDiscount,
                 ),
               ),
