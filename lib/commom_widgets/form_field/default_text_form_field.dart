@@ -27,6 +27,7 @@ class DefaultTextFormField extends StatelessWidget {
   final bool? autofocus;
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
+  final Iterable<String>? autofillHints;
   const DefaultTextFormField({
     super.key,
     this.maxLength = 50,
@@ -50,6 +51,7 @@ class DefaultTextFormField extends StatelessWidget {
     this.onEditingComplete,
     this.obscureText = false,
     this.autofocus = false,
+    this.autofillHints,
   });
 
   @override
@@ -79,6 +81,7 @@ class DefaultTextFormField extends StatelessWidget {
         onChanged: onChanged,
         onTap: onTap,
         autofocus: autofocus == true,
+        autofillHints: autofillHints,
         buildCounter:
             (
               context, {

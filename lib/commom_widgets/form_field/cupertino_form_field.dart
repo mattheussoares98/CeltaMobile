@@ -174,6 +174,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
                 focusNode: dtf.focusNode,
                 enableSuggestions: true,
                 maxLength: dtf.maxLength,
+                autofillHints: dtf.autofillHints,
                 onChanged: (value) {
                   dtf.onChanged?.call(value);
                   state.didChange(value);

@@ -41,6 +41,7 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
       enabled: !isLoading,
       focusNode: widget.passwordFocusNode,
       controller: widget.passwordController,
+      autofillHints: const [AutofillHints.password],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: isLoading ? null : (_) => widget.onSubmit.call(),
       textInputAction: TextInputAction.done,

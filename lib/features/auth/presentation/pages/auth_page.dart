@@ -82,38 +82,40 @@ class _AuthPageState extends ConsumerState<AuthPage> {
           child: ResponsiveScrollableWidget(
             child: Form(
               key: formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const CeltaImage(),
-                  EnterpriseField(
-                    enterpriseController: enterpriseController,
-                    userFocusNode: userFocusNode,
-                  ),
-                  gapH8,
-                  UserField(
-                    userController: userController,
-                    userFocusNode: userFocusNode,
-                    passwordFocusNode: passwordFocusNode,
-                  ),
-                  gapH8,
-                  PasswordField(
-                    passwordController: passwordController,
-                    passwordFocusNode: passwordFocusNode,
-                    onSubmit: onSubmit,
-                  ),
-                  gapH32,
-                  Consumer(
-                    builder: (context, ref, child) {
-                      return PrimaryButton(
-                        text: 'Entrar'.hardcoded,
-                        onPressed: onSubmit,
-                        isLoading: ref.watch(loginControllerProvider).isLoading,
-                      );
-                    },
-                  ),
-                ],
+              child: AutofillGroup(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const CeltaImage(),
+                    EnterpriseField(
+                      enterpriseController: enterpriseController,
+                      userFocusNode: userFocusNode,
+                    ),
+                    gapH8,
+                    UserField(
+                      userController: userController,
+                      userFocusNode: userFocusNode,
+                      passwordFocusNode: passwordFocusNode,
+                    ),
+                    gapH8,
+                    PasswordField(
+                      passwordController: passwordController,
+                      passwordFocusNode: passwordFocusNode,
+                      onSubmit: onSubmit,
+                    ),
+                    gapH32,
+                    Consumer(
+                      builder: (context, ref, child) {
+                        return PrimaryButton(
+                          text: 'Entrar'.hardcoded,
+                          onPressed: onSubmit,
+                          isLoading: ref.watch(loginControllerProvider).isLoading,
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

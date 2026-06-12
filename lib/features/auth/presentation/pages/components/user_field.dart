@@ -28,6 +28,7 @@ class UserField extends ConsumerWidget {
       enabled: !isLoading,
       controller: userController,
       focusNode: userFocusNode,
+      autofillHints: const [AutofillHints.username],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
