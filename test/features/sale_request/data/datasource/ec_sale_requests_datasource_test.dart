@@ -167,6 +167,34 @@ void main() {
         ),
       ).called(1);
     });
+
+    test('should throw when return empty list', () async {
+      httpClient.mockRequest(json.encode([]));
+
+      await expectLater(
+        sut.getComplete(
+          saleRequestCode: saleRequestCode,
+          enterpriseCode: enterpriseCode,
+          customerCode: customerCode,
+          params: params,
+        ),
+        throwsA(isA<Exception>()),
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'saleRequestCode': saleRequestCode,
+            'enterpriseCode': enterpriseCode,
+            'customerCode': customerCode,
+          },
+        ),
+      ).called(1);
+    });
   });
 
   group('Update', () {
