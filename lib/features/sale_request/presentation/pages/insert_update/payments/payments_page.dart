@@ -37,7 +37,13 @@ class PaymentsPage extends ConsumerWidget {
 
     return const ResponsiveCenter(
       padding: EdgeInsets.all(Sizes.p8),
-      child: CustomScrollView(slivers: [NewPaymentSection(), PaymentsList()]),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: IncrementAndDiscount()),
+          NewPaymentSection(),
+          PaymentsList(),
+        ],
+      ),
     );
   }
 }
