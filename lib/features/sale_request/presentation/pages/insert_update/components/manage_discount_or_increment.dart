@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,10 +112,35 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
               Row(
                 children: [
                   Expanded(
-                    child: TitleAndSubTitle(
-                      title: widget.title,
-                      subTitle: subtitle,
-                      removeColon: subtitle == null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TitleAndSubTitle(
+                          title: widget.title,
+                          subTitle: subtitle,
+                          removeColon: subtitle == null,
+                        ),
+                        if (value > 0 &&
+                            widget.valueType?.type ==
+                                PercentageOrValue.percentage)
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final currentSaleRequestTotalLiquid = ref.watch(
+                                insertUpdateStateControllerProvider.select(
+                                  (s) => s.value?.currentSaleRequestLiquid ?? 0,
+                                ),
+                              );
+
+                              return TitleAndSubTitle(
+                                title: 'Valor líquido'.hardcoded,
+                                subTitle: widget.valueType?.calculateItemValue(
+                                  currentSaleRequestTotalLiquid,
+                                ),
+                                subTitleIsPrice: true,
+                              );
+                            },
+                          ),
+                      ],
                     ),
                   ),
                   if (value > 0)
