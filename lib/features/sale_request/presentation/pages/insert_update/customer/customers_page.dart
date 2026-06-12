@@ -14,28 +14,23 @@ class CustomersPage extends ConsumerWidget {
         (PlatformUtil.isDesktop || PlatformUtil.isWeb) &&
         MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
+    Widget searchFieldAndConsumerCustomer = const Column(
+      children: [SearchCustomerField(), ConsumerCustomer()],
+    );
+
     if (isDesktop) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes.p8),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: ResponsiveCenter(child: SearchCustomerField()),
-            ),
-            ConsumerCustomer(),
-            SearchedCustomersItems(),
-          ],
-        ),
+      searchFieldAndConsumerCustomer = ResponsiveCenter(
+        child: searchFieldAndConsumerCustomer,
       );
     }
 
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: Sizes.p8),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: SearchCustomerField()),
-          ConsumerCustomer(),
-          SearchedCustomersItems(),
+          SliverToBoxAdapter(child: searchFieldAndConsumerCustomer),
+          const SearchedCustomersItems(),
+          gapSliverH32,
         ],
       ),
     );
