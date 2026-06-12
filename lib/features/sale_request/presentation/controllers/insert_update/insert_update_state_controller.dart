@@ -355,16 +355,12 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return (false, 'Erro não esperado'.hardcoded);
     }
 
-    final totalProducts = state.value!.totalProductsLiquid;
-    final totalPayments = state.value!.totalPayments;
-
     // Convert to cents (integers) to prevent double-precision floating-point inaccuracies in money comparison
     final newPaymentCents = (value * 100).round();
-    final totalProductsCents = (totalProducts * 100).round();
-    final totalPaymentsCents = (totalPayments * 100).round();
-    final toalMissingCents = totalProductsCents - totalPaymentsCents;
+    final missingPaymentCents =
+        ((state.value?.totalLiquidAndPaidDifference ?? 0) * 100).round();
 
-    if (newPaymentCents > toalMissingCents) {
+    if (newPaymentCents > missingPaymentCents) {
       return (false, 'Valor excede o disponível'.hardcoded);
     }
 
