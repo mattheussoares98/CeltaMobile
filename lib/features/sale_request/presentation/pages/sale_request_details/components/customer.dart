@@ -33,6 +33,7 @@ class Customer extends ConsumerWidget {
     }
 
     final customerName = requestCustomer?.Name ?? detailsCustomer?.name;
+    final customerCode = requestCustomer?.Code ?? detailsCustomer?.code;
     bool isInternalCustomer = customerName?.toLowerCase() == 'consumidor';
     final personalizedCode =
         requestCustomer?.PersonalizedCode ?? detailsCustomer?.personalizedCode;
@@ -54,7 +55,10 @@ class Customer extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TitleAndSubTitle(
-                    title: null,
+                    title: customerCode == null
+                        ? null
+                        : '(${customerCode.toString()})',
+                    removeColon: true,
                     subTitle:
                         '$customerName '
                         '${(isInternalCustomer || (personalizedCode?.isEmpty ?? true)) ? '' : "($personalizedCode)"}',
