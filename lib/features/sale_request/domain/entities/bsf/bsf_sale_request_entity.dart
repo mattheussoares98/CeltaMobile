@@ -199,6 +199,12 @@ class BSFSaleRequestEntity extends Equatable {
         0;
   }
 
+  double get saleRequestDeliveryTax {
+    return deliveryTax?.deliveryTax?.calculateItemValue(
+      totalProductsLiquid,
+    ) ?? 0.0;
+  }
+
   double get totalFreight {
     //! total products (liquid) freight + sale request freight
     final totalProductsDeliveryTax =
@@ -207,11 +213,13 @@ class BSFSaleRequestEntity extends Equatable {
         }) ??
         0.0;
 
-    final totalSaleRequest = deliveryTax?.deliveryTax?.calculateItemValue(
-      totalProductsLiquid,
-    );
+    return totalProductsDeliveryTax + saleRequestDeliveryTax;
+  }
 
-    return totalProductsDeliveryTax + (totalSaleRequest ?? 0.0);
+  double get saleRequestIncrement {
+    return increment?.calculateItemValue(
+      totalProductsLiquid,
+    ) ?? 0.0;
   }
 
   double get totalIncrement {
@@ -222,11 +230,19 @@ class BSFSaleRequestEntity extends Equatable {
         }) ??
         0;
 
-    final totalLiquidIncrement = increment?.calculateItemValue(
-      totalProductsLiquid,
-    );
+    return totalBrutIncrement + saleRequestIncrement;
+  }
 
-    return totalBrutIncrement + (totalLiquidIncrement ?? 0.0);
+  double get saleRequestDiscount {
+    double totalSaleRequestDiscount = 0;
+    double baseValue = totalProductsLiquid;
+    for (var discount in discounts ?? <BSFDiscountEntity>[]) {
+      final itemDiscount =
+          (discount.discount?.calculateItemValue(baseValue) ?? 0);
+      baseValue -= itemDiscount;
+      totalSaleRequestDiscount += itemDiscount;
+    }
+    return totalSaleRequestDiscount;
   }
 
   double get totalDiscount {
@@ -237,16 +253,7 @@ class BSFSaleRequestEntity extends Equatable {
         }) ??
         0;
 
-    double totalSaleRequestDiscount = 0;
-    double baseValue = totalProductsLiquid;
-    for (var discount in discounts ?? <BSFDiscountEntity>[]) {
-      final itemDiscount =
-          (discount.discount?.calculateItemValue(baseValue) ?? 0);
-      baseValue -= itemDiscount;
-      totalSaleRequestDiscount += itemDiscount;
-    }
-
-    return totalProductsDiscount + totalSaleRequestDiscount;
+    return totalProductsDiscount + saleRequestDiscount;
   }
 
   double get totalPayments {
@@ -267,25 +274,43 @@ class BSFSaleRequestEntity extends Equatable {
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
 
   double get totalLiquidAndPaidDifference {
-    // Convert to cents (integers) to prevent double-precision floating-point inaccuracies
-    final totalProductsCents = (totalProductsLiquid * 100).round();
+    final totalPaymentsCents = (totalPayments.abs() * 100).round();
+    final currentSaleRequestLiquidCents = (currentSaleRequestLiquid * 100)
+        .round();
+
+    final differenceCents = currentSaleRequestLiquidCents - totalPaymentsCents;
+
+    return differenceCents / 100.0;
+  }
+
+  double get currentSaleRequestLiquid {
+    // Cache totalProductsLiquid locally to avoid recalculating the fold loop multiple times
+    final baseProductsLiquid = totalProductsLiquid;
+    final totalProductsCents = (baseProductsLiquid * 100).round();
 
     final financialIncrementValue =
-        financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+        financialIncrement?.calculateItemValue(baseProductsLiquid) ?? 0.0;
     final financialDiscountValue =
-        financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+        financialDiscount?.calculateItemValue(baseProductsLiquid) ?? 0.0;
 
     final financialIncrementCents = (financialIncrementValue * 100).round();
     final financialDiscountCents = (financialDiscountValue * 100).round();
 
-    final totalPaymentsCents = (totalPayments.abs() * 100).round();
-    final differenceCents =
-        totalProductsCents +
+    // Reuses extracted DRY request-level getters to avoid repeating the loop logic
+    // and to prevent duplicating product-level adjustments already in baseProductsLiquid.
+    final saleRequestDiscountCents = (saleRequestDiscount * 100).round();
+    final saleRequestIncrementCents = (saleRequestIncrement * 100).round();
+    final saleRequestDeliveryCents = (saleRequestDeliveryTax * 100).round();
+
+    final totalSaleRequestLiquidCents =
+        (totalProductsCents +
         financialIncrementCents -
         financialDiscountCents -
-        totalPaymentsCents;
+        saleRequestDiscountCents +
+        saleRequestDeliveryCents +
+        saleRequestIncrementCents);
 
-    return differenceCents / 100.0;
+    return totalSaleRequestLiquidCents / 100.0;
   }
 
   bool get isPaymentValid {
