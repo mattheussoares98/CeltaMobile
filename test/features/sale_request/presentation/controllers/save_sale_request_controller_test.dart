@@ -434,7 +434,14 @@ void main() {
       () async {
         // ARRANGE
 
-        final container = makeProviderContainer(mockNeedsProcessing: true);
+        final container = makeProviderContainer(
+          mockNeedsProcessing: true,
+          insertUpdateSaleRequestEntity: fakeBSFSaleRequestEntity.copyWith(
+            requestType: fakeBSFSaleRequestEntity.requestType?.copyWith(
+              allowAlterCostOrSalePrice: true,
+            ),
+          ),
+        );
 
         when(
           () => mockEcSaleRequestsRepository.update(

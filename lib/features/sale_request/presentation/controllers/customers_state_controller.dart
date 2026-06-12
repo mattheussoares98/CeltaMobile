@@ -41,7 +41,7 @@ class CustomersStateController extends _$CustomersStateController {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      final validatedUserSession = await ref.watch(
+      final validatedUserSession = await ref.read(
         validatedUserSessionProvider.future,
       );
 

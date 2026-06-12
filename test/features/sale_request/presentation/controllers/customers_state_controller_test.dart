@@ -255,6 +255,11 @@ void main() {
       );
       addTearDown(container.dispose);
 
+      // Initialize provider to reach initial state before listening
+      await container.read(
+        customersStateControllerProvider(fakeEnterprise.Code!).future,
+      );
+
       final states = <AsyncValue<List<SoapCustomerEntity>>>[];
       container.listen(
         customersStateControllerProvider(fakeEnterprise.Code!),
@@ -267,7 +272,10 @@ void main() {
           .loadCustomer('Test', false);
 
       // ASSERT
-      expect(states, [isA<AsyncError>()]);
+      expect(states, [
+        isA<AsyncLoading>(),
+        isA<AsyncError>(),
+      ]);
       expect(states.last.error, isA<AppException>());
     });
     test(
@@ -302,7 +310,9 @@ void main() {
       'should return correct value when pending sale request customer is null',
       () async {
         // ARRANGE
+        mockRepoSuccess();
         final container = makeProviderContainer(
+          session: fakeSession,
           enterprise: fakeEnterprise,
           saleRequest: EntityFactory.makeSaleRequestEntity().annulValues(
             customer: true,
@@ -324,7 +334,7 @@ void main() {
             .loadCustomer('Test', false);
 
         // ASSERT
-        expect(states.last.value, isNull);
+        expect(states.last.value, fakeCustomers);
       },
     );
   });

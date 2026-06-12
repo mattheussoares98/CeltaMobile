@@ -317,6 +317,7 @@ class BSFSaleRequestEntity extends Equatable {
       changedProducts = (products ?? []).any((product) {
         final correspondent = otherProductsMap[product.productPackingCode];
         return correspondent == null ||
+            product.code != correspondent.code ||
             areDoublesDifferent(product.quantity, correspondent.quantity) ||
             areDoublesDifferent(
               product.totalLiquid,
