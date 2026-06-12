@@ -10,9 +10,13 @@ class BSFValueTypeEntity extends Equatable {
   @override
   List<Object?> get props => [type, value];
 
-  BSFValueTypeEntity copyWith({PercentageOrValue? type, double? value}) {
+  BSFValueTypeEntity copyWith({
+    PercentageOrValue? type,
+    double? value,
+    bool? annulType,
+  }) {
     return BSFValueTypeEntity(
-      type: type ?? this.type,
+      type: annulType == true ? null : type ?? this.type,
       value: value ?? this.value,
     );
   }

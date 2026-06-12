@@ -885,7 +885,10 @@ void main() {
         final newQuantity = faker.randomGenerator.decimal();
         final updatedItem = addedItem.copyWith(quantity: newQuantity);
 
-        final (errorMessage, actions) = controller.updateItem(addedItem, updatedItem);
+        final (errorMessage, actions) = controller.updateItem(
+          addedItem,
+          updatedItem,
+        );
         expect(errorMessage, isNull);
 
         final state = container.read(insertUpdateStateControllerProvider);
@@ -919,7 +922,10 @@ void main() {
           );
 
           final updatedItem = item.copyWith(quantity: 2);
-          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(
+            item,
+            updatedItem,
+          );
 
           expect(errorMessage, isNull);
           expect(actions, isEmpty);
@@ -959,7 +965,10 @@ void main() {
             increment: EntityFactory.makeBSFValueTypeEntity(),
             deliveryTax: EntityFactory.makeBSFValueTypeEntity(),
           );
-          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(
+            item,
+            updatedItem,
+          );
 
           expect(errorMessage, isNull);
           expect(actions, isEmpty);
@@ -1009,7 +1018,10 @@ void main() {
             quantity: newQuantity,
             value: newValue,
           );
-          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(
+            item,
+            updatedItem,
+          );
 
           expect(errorMessage, isNull);
           expect(actions, [
@@ -1048,7 +1060,10 @@ void main() {
           );
 
           final updatedItem = item.copyWith(value: 110);
-          final (errorMessage, actions) = controller.updateItem(item, updatedItem);
+          final (errorMessage, actions) = controller.updateItem(
+            item,
+            updatedItem,
+          );
 
           expect(errorMessage, isNull);
           expect(actions, [
@@ -1586,6 +1601,336 @@ void main() {
         },
       );
     });
+
+    group('Financial Increment', () {
+      test(
+        'updateFinancialIncrement should update financial increment if allowed, value > 0, and type is selected',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialIncrement: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity()
+              .copyWith(type: PercentageOrValue.reais, value: 10.0);
+
+          final error = controller.updateFinancialIncrement(incrementValue);
+          expect(error, isNull);
+
+          final stateAfter = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          expect(stateAfter.financialIncrement, incrementValue);
+        },
+      );
+
+      test(
+        'updateFinancialIncrement should return error if requestType does not allow financial increment',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialIncrement: false,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity()
+              .copyWith(type: PercentageOrValue.reais, value: 10.0);
+
+          final error = controller.updateFinancialIncrement(incrementValue);
+          expect(error, isNotEmpty);
+
+          final stateAfter = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          expect(stateAfter.financialIncrement, isNot(incrementValue));
+        },
+      );
+
+      test(
+        'updateFinancialIncrement should return error if value is 0 or less',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialIncrement: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity()
+              .copyWith(type: PercentageOrValue.reais, value: 0.0);
+
+          final error = controller.updateFinancialIncrement(incrementValue);
+          expect(error, isNotEmpty);
+        },
+      );
+
+      test(
+        'updateFinancialIncrement should return error if type is null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialIncrement: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity()
+              .copyWith(value: 10.0, annulType: true);
+
+          final error = controller.updateFinancialIncrement(incrementValue);
+          expect(error, 'Selecione o tipo de acréscimo');
+        },
+      );
+
+      test(
+        'removeFinancialIncrement should set financial increment to null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialIncrement: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(
+              requestType: updatedRequestType,
+              financialIncrement: EntityFactory.makeBSFValueTypeEntity()
+                  .copyWith(type: PercentageOrValue.reais, value: 10.0),
+            ),
+          );
+
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .financialIncrement,
+            isNotNull,
+          );
+
+          controller.removeFinancialIncrement();
+
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .financialIncrement,
+            isNull,
+          );
+        },
+      );
+    });
+
+    group('Financial discount', () {
+      test(
+        'updateFinancialDiscount should update financial discount if allowed, value > 0, and type is selected',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialDiscount: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final discountValue = EntityFactory.makeBSFValueTypeEntity().copyWith(
+            type: PercentageOrValue.reais,
+            value: 5.0,
+          );
+
+          final error = controller.updateFinancialDiscount(discountValue);
+          expect(error, isNull);
+
+          final stateAfter = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          expect(stateAfter.financialDiscount, discountValue);
+        },
+      );
+
+      test(
+        'updateFinancialDiscount should return error if requestType does not allow financial discount',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialDiscount: false,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final discountValue = EntityFactory.makeBSFValueTypeEntity().copyWith(
+            type: PercentageOrValue.reais,
+            value: 5.0,
+          );
+
+          final error = controller.updateFinancialDiscount(discountValue);
+          expect(error, isNotEmpty);
+        },
+      );
+
+      test(
+        'updateFinancialDiscount should return error if value is 0 or less',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialDiscount: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final discountValue = EntityFactory.makeBSFValueTypeEntity().copyWith(
+            type: PercentageOrValue.reais,
+            value: -1.0,
+          );
+
+          final error = controller.updateFinancialDiscount(discountValue);
+          expect(error, isNotEmpty);
+        },
+      );
+
+      test(
+        'updateFinancialDiscount should return error if type is null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialDiscount: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(requestType: updatedRequestType),
+          );
+
+          final discountValue = EntityFactory.makeBSFValueTypeEntity().copyWith(
+            value: 5.0,
+            annulType: true,
+          );
+
+          final error = controller.updateFinancialDiscount(discountValue);
+          expect(error, isNotEmpty);
+        },
+      );
+
+      test(
+        'removeFinancialDiscount should set financial discount to null',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final stateBefore = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          final updatedRequestType = stateBefore.requestType?.copyWith(
+            allowFinancialDiscount: true,
+          );
+          controller.updateProcessedCart(
+            stateBefore.copyWith(
+              requestType: updatedRequestType,
+              financialDiscount: EntityFactory.makeBSFValueTypeEntity()
+                  .copyWith(type: PercentageOrValue.reais, value: 5.0),
+            ),
+          );
+
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .financialDiscount,
+            isNotNull,
+          );
+
+          controller.removeFinancialDiscount();
+
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .financialDiscount,
+            isNull,
+          );
+        },
+      );
+    });
+
     group('disposeFlow', () {
       test('should invalidate selection providers and itself', () async {
         const saleRequestId = 0; // Test with a new request

@@ -144,6 +144,8 @@ class BSFSaleRequestEntity extends Equatable {
     bool? annulDiscounts,
     bool? annulProducts,
     bool? annulRequestType,
+    bool? annulFinancialIncrement,
+    bool? annulFinancialDiscount,
     BSFEmployeeEntity? seller,
   }) {
     return BSFSaleRequestEntity(
@@ -166,8 +168,12 @@ class BSFSaleRequestEntity extends Equatable {
           ? null
           : deliveryTax ?? this.deliveryTax,
       increment: annulIncrement == true ? null : increment ?? this.increment,
-      financialIncrement: financialIncrement ?? this.financialIncrement,
-      financialDiscount: financialDiscount ?? this.financialDiscount,
+      financialIncrement: annulFinancialIncrement == true
+          ? null
+          : financialIncrement ?? this.financialIncrement,
+      financialDiscount: annulFinancialDiscount == true
+          ? null
+          : financialDiscount ?? this.financialDiscount,
       totalLiquid: totalLiquid ?? this.totalLiquid,
       expeditionControlCode:
           expeditionControlCode ?? this.expeditionControlCode,

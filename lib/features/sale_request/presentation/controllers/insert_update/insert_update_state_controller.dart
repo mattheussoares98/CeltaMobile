@@ -460,6 +460,42 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(current.copyWith(financials: financials));
   }
 
+  String? updateFinancialIncrement(BSFValueTypeEntity value) {
+    if (state.value?.requestType?.allowFinancialIncrement != true) {
+      return 'O modelo de pedido não permite acréscimo financeiro'.hardcoded;
+    } else if ((value.value ?? 0) <= 0) {
+      return 'O valor deve ser maior que zero'.hardcoded;
+    } else if (value.type == null) {
+      return 'Selecione o tipo de acréscimo'.hardcoded;
+    }
+
+    state = AsyncData(state.value!.copyWith(financialIncrement: value));
+    return null;
+  }
+
+  String? updateFinancialDiscount(BSFValueTypeEntity value) {
+    if (state.value?.requestType?.allowFinancialDiscount != true) {
+      return 'O modelo de pedido não permite desconto financeiro'.hardcoded;
+    } else if ((value.value ?? 0) <= 0) {
+      return 'O valor deve ser maior que zero'.hardcoded;
+    } else if (value.type == null) {
+      return 'Selecione o tipo de desconto'.hardcoded;
+    }
+
+    state = AsyncData(state.value!.copyWith(financialDiscount: value));
+    return null;
+  }
+
+  void removeFinancialIncrement() {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(state.value!.copyWith(annulFinancialIncrement: true));
+  }
+
+  void removeFinancialDiscount() {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(state.value!.copyWith(annulFinancialDiscount: true));
+  }
+
   void disposeFlow() {
     ref.invalidate(selectedPaymentConditionStateControllerProvider);
     ref.invalidate(selectedPaymentTypeStateControllerProvider);
