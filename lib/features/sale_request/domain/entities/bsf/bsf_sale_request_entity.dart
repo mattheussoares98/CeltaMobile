@@ -263,8 +263,22 @@ class BSFSaleRequestEntity extends Equatable {
   double get totalLiquidAndPaidDifference {
     // Convert to cents (integers) to prevent double-precision floating-point inaccuracies
     final totalProductsCents = (totalProductsLiquid * 100).round();
+
+    final financialIncrementValue =
+        financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+    final financialDiscountValue =
+        financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+
+    final financialIncrementCents = (financialIncrementValue * 100).round();
+    final financialDiscountCents = (financialDiscountValue * 100).round();
+
     final totalPaymentsCents = (totalPayments.abs() * 100).round();
-    final differenceCents = totalProductsCents - totalPaymentsCents;
+    final differenceCents =
+        totalProductsCents +
+        financialIncrementCents -
+        financialDiscountCents -
+        totalPaymentsCents;
+
     return differenceCents / 100.0;
   }
 
@@ -272,11 +286,8 @@ class BSFSaleRequestEntity extends Equatable {
     final hasGenerateTitle =
         requestType?.generatePendencyFinancialTitle ?? false;
 
-    // Compare in cents to avoid double-precision inaccuracies
-    final totalProductsCents = (totalProductsLiquid * 100).round();
-    final totalPaymentsCents = (totalPayments * 100).round();
-    final isTotalMatching =
-        (totalProductsCents - totalPaymentsCents).abs() == 0;
+    // Compare using totalLiquidAndPaidDifference to account for financial increment and discount
+    final isTotalMatching = totalLiquidAndPaidDifference == 0.0;
 
     if (hasGenerateTitle) {
       return totalPayments > 0 && isTotalMatching;

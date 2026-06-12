@@ -1,5 +1,4 @@
 // test/features/sale_request/domain/entities/bsf/bsf_sale_request_entity_test.dart
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,9 +25,15 @@ void main() {
         expect(original.needsProcessingComparedTo(copy), isFalse);
 
         final copyWithNewLists = original.copyWith(
-          products: original.products?.map((p) => p.copyWith(
-            discounts: p.discounts != null ? List<BSFDiscountEntity>.from(p.discounts!) : null,
-          )).toList(),
+          products: original.products
+              ?.map(
+                (p) => p.copyWith(
+                  discounts: p.discounts != null
+                      ? List<BSFDiscountEntity>.from(p.discounts!)
+                      : null,
+                ),
+              )
+              .toList(),
         );
         expect(original.needsProcessingComparedTo(copyWithNewLists), isFalse);
       },
@@ -235,7 +240,7 @@ void main() {
             ),
           ],
           financials: [
-            BSFFinancialEntity(
+            EntityFactory.makeBSFFinancialEntity().copyWith(
               paymentFinalizations: [
                 EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
                     .copyWith(value: 100.0),
@@ -266,7 +271,7 @@ void main() {
             ),
           ],
           financials: [
-            BSFFinancialEntity(
+            EntityFactory.makeBSFFinancialEntity().copyWith(
               paymentFinalizations: [
                 EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
                     .copyWith(value: 9.99),
@@ -297,7 +302,7 @@ void main() {
           ),
         ],
         financials: [
-          BSFFinancialEntity(
+          EntityFactory.makeBSFFinancialEntity().copyWith(
             paymentFinalizations: [
               EntityFactory.makeBSFPaymentFinalizationWrapperEntity().copyWith(
                 value: 99.99,
@@ -326,7 +331,7 @@ void main() {
             ),
           ],
           financials: [
-            BSFFinancialEntity(
+            EntityFactory.makeBSFFinancialEntity().copyWith(
               paymentFinalizations: [
                 EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
                     .copyWith(value: 100.01),
@@ -338,6 +343,142 @@ void main() {
 
         expect(request.totalLiquidAndPaidDifference, -0.01);
         expect(request.isPaymentValid, isFalse);
+      },
+    );
+
+    test(
+      'should calculate difference correctly with financial increment as value (reais)',
+      () {
+        // totalProductsLiquid = 100.00, increment = 10.00, payback/payment = 110.00
+        final request = BSFSaleRequestEntity.empty().copyWith(
+          products: [
+            EntityFactory.makeBSFProductItemEntity().copyWith(
+              quantity: 1.0,
+              value: 100.0,
+              annulDiscounts: true,
+              annulIncrement: true,
+              annulDeliveryTax: true,
+            ),
+          ],
+          financialIncrement: const BSFValueTypeEntity(
+            type: PercentageOrValue.reais,
+            value: 10.00,
+          ),
+          financials: [
+            EntityFactory.makeBSFFinancialEntity().copyWith(
+              paymentFinalizations: [
+                EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                    .copyWith(value: 110.00),
+              ],
+              paybackValue: 0,
+            ),
+          ],
+        );
+
+        expect(request.totalLiquidAndPaidDifference, 0.0);
+        expect(request.isPaymentValid, isTrue);
+      },
+    );
+
+    test(
+      'should calculate difference correctly with financial increment as percentage',
+      () {
+        // totalProductsLiquid = 100.00, increment = 5% (5.00), payback/payment = 105.00
+        final request = BSFSaleRequestEntity.empty().copyWith(
+          products: [
+            EntityFactory.makeBSFProductItemEntity().copyWith(
+              quantity: 1.0,
+              value: 100.0,
+              annulDiscounts: true,
+              annulIncrement: true,
+              annulDeliveryTax: true,
+            ),
+          ],
+          financialIncrement: const BSFValueTypeEntity(
+            type: PercentageOrValue.percentage,
+            value: 5.0,
+          ),
+          financials: [
+            EntityFactory.makeBSFFinancialEntity().copyWith(
+              paymentFinalizations: [
+                EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                    .copyWith(value: 105.00),
+              ],
+              paybackValue: 0,
+            ),
+          ],
+        );
+
+        expect(request.totalLiquidAndPaidDifference, 0.0);
+        expect(request.isPaymentValid, isTrue);
+      },
+    );
+
+    test(
+      'should calculate difference correctly with financial discount as value (reais)',
+      () {
+        // totalProductsLiquid = 100.00, discount = 15.00, payback/payment = 85.00
+        final request = BSFSaleRequestEntity.empty().copyWith(
+          products: [
+            EntityFactory.makeBSFProductItemEntity().copyWith(
+              quantity: 1.0,
+              value: 100.0,
+              annulDiscounts: true,
+              annulIncrement: true,
+              annulDeliveryTax: true,
+            ),
+          ],
+          financialDiscount: const BSFValueTypeEntity(
+            type: PercentageOrValue.reais,
+            value: 15.00,
+          ),
+          financials: [
+            EntityFactory.makeBSFFinancialEntity().copyWith(
+              paymentFinalizations: [
+                EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                    .copyWith(value: 85.00),
+              ],
+              paybackValue: 0,
+            ),
+          ],
+        );
+
+        expect(request.totalLiquidAndPaidDifference, 0.0);
+        expect(request.isPaymentValid, isTrue);
+      },
+    );
+
+    test(
+      'should calculate difference correctly with financial discount as percentage',
+      () {
+        // totalProductsLiquid = 100.00, discount = 10% (10.00), payback/payment = 90.00
+        final request = BSFSaleRequestEntity.empty().copyWith(
+          products: [
+            EntityFactory.makeBSFProductItemEntity().copyWith(
+              quantity: 1.0,
+              value: 100.0,
+              annulDiscounts: true,
+              annulIncrement: true,
+              annulDeliveryTax: true,
+            ),
+          ],
+          financialDiscount: const BSFValueTypeEntity(
+            type: PercentageOrValue.percentage,
+            value: 10.0,
+          ),
+          financials: [
+            EntityFactory.makeBSFFinancialEntity().copyWith(
+              paymentFinalizations: [
+                EntityFactory.makeBSFPaymentFinalizationWrapperEntity()
+                    .copyWith(value: 90.00),
+              ],
+              paybackValue: 0,
+            ),
+          ],
+        );
+
+        expect(request.totalLiquidAndPaidDifference, 0.0);
+        expect(request.isPaymentValid, isTrue);
       },
     );
   });
