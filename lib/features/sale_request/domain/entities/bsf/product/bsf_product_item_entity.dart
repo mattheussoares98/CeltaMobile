@@ -138,28 +138,9 @@ class BSFProductItemEntity extends Equatable {
   }
 
   double get unitDiscountValue {
-    final allDiscountsAreZero =
-        discounts?.every((e) => (e.discount?.value ?? 0) == 0) ?? true;
-
-    if (allDiscountsAreZero) {
-      return 0;
-    }
-
-    var baseValue = value!;
-
+    var baseValue = value ?? 0;
     return discounts!.fold(0.0, (p, e) {
-      if ((e.discount?.value ?? 0) == 0) return p;
-
-      if (e.discount?.type == PercentageOrValue.reais) {
-        final discount = e.discount!.value!;
-        baseValue -= discount;
-
-        return p + discount;
-      } else {
-        final discount = baseValue * (e.discount!.value! / 100);
-        baseValue -= discount;
-        return p + discount;
-      }
+      return p + e.discount!.calculateItemValue(baseValue);
     });
   }
 
