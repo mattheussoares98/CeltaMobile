@@ -20,6 +20,8 @@ class SummaryPage extends ConsumerWidget {
         children: [
           CustomScrollView(
             slivers: [
+              const SliverToBoxAdapter(child: Summary()),
+              gapSliverH8,
               if (isDesktop) ...[
                 const SliverToBoxAdapter(
                   child: Row(
