@@ -125,16 +125,16 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                                 PercentageOrValue.percentage)
                           Consumer(
                             builder: (context, ref, child) {
-                              final currentSaleRequestTotalLiquid = ref.watch(
+                              final currentSaleRequestBrutValue = ref.watch(
                                 insertUpdateStateControllerProvider.select(
-                                  (s) => s.value?.currentSaleRequestLiquid ?? 0,
+                                  (s) => s.value?.totalProductsBrut ?? 0,
                                 ),
                               );
 
                               return TitleAndSubTitle(
                                 title: 'Valor líquido'.hardcoded,
                                 subTitle: widget.valueType?.calculateItemValue(
-                                  currentSaleRequestTotalLiquid,
+                                  currentSaleRequestBrutValue,
                                 ),
                                 subTitleIsPrice: true,
                               );
