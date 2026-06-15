@@ -204,6 +204,15 @@ class BSFSaleRequestEntity extends Equatable {
         0.0;
   }
 
+  double get totalDeliveryTax {
+    final productsDeliveryTax =
+        products?.fold(0.0, (p, n) {
+          return p + n.totalDeliveryTax;
+        }) ??
+        0.0;
+    return productsDeliveryTax + saleRequestDeliveryTax;
+  }
+
   double get totalFreight {
     //! total products (liquid) freight + sale request freight
     final totalProductsDeliveryTax =
