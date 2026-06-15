@@ -19,10 +19,12 @@ class ItemsPage extends ConsumerWidget {
 
     return Consumer(
       builder: (_, ref, _) {
-        final products = ref.watch(
-          insertUpdateStateControllerProvider.select((v) => v.value?.products),
+        final productsCount = ref.watch(
+          insertUpdateStateControllerProvider.select(
+            (v) => v.value?.products?.length ?? 0,
+          ),
         );
-        if (products?.isEmpty ?? true) {
+        if (productsCount == 0) {
           final child = Center(
             child: Text(
               'Adicione produtos no pedido!'.hardcoded,
@@ -41,17 +43,30 @@ class ItemsPage extends ConsumerWidget {
         return ResponsiveListFlow(
           padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
           isSliver: isSliver,
-          itemCount: products!.length,
+          itemCount: productsCount,
           itemBuilder: (context, index) {
-            final item = products[index];
-            return BSFProductItemSummary(
-              key: ValueKey('${item.productPackingCode ?? item.code}$isSliver'),
-              product: item.toProductEntity(args.enterpriseCode),
-              item: item,
-              enterpriseCode: args.enterpriseCode,
-              customerCode: args.customerCode,
-              saleRequestId: args.saleRequestId,
-              heroPrefix: 'items$isSliver',
+            return Consumer(
+              builder: (_, ref, _) {
+                final item = ref.watch(
+                  insertUpdateStateControllerProvider.select(
+                    (v) => v.value?.products?[index],
+                  ),
+                );
+                if (item == null) {
+                  return const SizedBox.shrink();
+                }
+                return BSFProductItemSummary(
+                  key: ValueKey(
+                    '${item.productPackingCode ?? item.code}$isSliver',
+                  ),
+                  product: item.toProductEntity(args.enterpriseCode),
+                  item: item,
+                  enterpriseCode: args.enterpriseCode,
+                  customerCode: args.customerCode,
+                  saleRequestId: args.saleRequestId,
+                  heroPrefix: 'items$isSliver',
+                );
+              },
             );
           },
         );
