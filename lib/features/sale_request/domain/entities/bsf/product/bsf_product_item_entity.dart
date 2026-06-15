@@ -139,9 +139,13 @@ class BSFProductItemEntity extends Equatable {
 
   double get unitDiscountValue {
     var baseValue = value ?? 0;
-    return discounts!.fold(0.0, (p, e) {
-      return p + e.discount!.calculateItemValue(baseValue);
-    });
+    var sumDiscountValues = 0.0;
+    for (var discount in discounts ?? <BSFDiscountEntity>[]) {
+      final itemDiscount = discount.discount!.calculateItemValue(baseValue);
+      sumDiscountValues += itemDiscount;
+      baseValue -= itemDiscount;
+    }
+    return sumDiscountValues;
   }
 
   double get totalDiscountValue {
