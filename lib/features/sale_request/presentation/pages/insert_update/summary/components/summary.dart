@@ -35,61 +35,55 @@ class Summary extends ConsumerWidget {
             subTitleIsPrice: true,
           ),
           ManageDiscountOrIncrement(
-            valueType: saleRequest.increment,
+            valueTypes: [saleRequest.increment],
             allowUpdate: saleRequest.requestType?.allowUseIncrement == true,
             title: 'Acréscimo no pedido'.hardcoded,
             onUpdate: notifier.updateIncrement,
             onRemove: notifier.removeIncrement,
             notAllowedMessage: 'Não permitido'.hardcoded,
+            liquidValue: saleRequest.saleRequestIncrement,
           ),
           ManageDiscountOrIncrement(
-            valueType: saleRequest.discounts?.firstOrNull?.discount,
+            valueTypes:
+                saleRequest.discounts?.map((e) => e.discount).toList() ?? [],
             allowUpdate: saleRequest.requestType?.allowUseDiscount == true,
             title: 'Desconto no pedido'.hardcoded,
             onUpdate: notifier.updateDiscount,
             onRemove: notifier.removeDiscount,
             notAllowedMessage: 'Não permitido'.hardcoded,
+            liquidValue: saleRequest.saleRequestDiscount,
           ),
-          //TODO show all discounts
           ManageDiscountOrIncrement(
-            valueType: saleRequest.deliveryTax?.deliveryTax,
+            valueTypes: [saleRequest.deliveryTax?.deliveryTax],
             allowUpdate: saleRequest.requestType?.allowUseDeliveryTax == true,
             title: 'Entrega do pedido'.hardcoded,
             onUpdate: notifier.updateDeliveryTax,
             onRemove: notifier.removeDeliveryTax,
             notAllowedMessage: 'Não permitido'.hardcoded,
+            liquidValue: saleRequest.saleRequestDeliveryTax,
           ),
           TitleAndSubTitle(
-            title: 'Acréscimo nos produtos'.hardcoded,
-            subTitle: saleRequest.productsIncrement,
+            title: 'Total dos acréscimos'.hardcoded,
+            subTitle: saleRequest.totalIncrement,
             subTitleIsPrice: true,
             subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
               color: Colors.amber,
             ),
           ),
           TitleAndSubTitle(
-            title: 'Desconto nos produtos'.hardcoded,
-            subTitle: saleRequest.productsDiscount,
+            title: 'Total dos descontos'.hardcoded,
+            subTitle: saleRequest.totalDiscount,
             subTitleIsPrice: true,
             subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
               color: Colors.red,
             ),
           ),
-
           TitleAndSubTitle(
-            title: 'Acréscimo financeiro'.hardcoded,
-            subTitle: saleRequest.financialIncrementValue,
+            title: 'Total das taxas de entrega'.hardcoded,
+            subTitle: saleRequest.totalDeliveryTax,
             subTitleIsPrice: true,
             subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-              color: Colors.amber,
-            ),
-          ),
-          TitleAndSubTitle(
-            title: 'Desconto financeiro'.hardcoded,
-            subTitle: saleRequest.financialDiscountValue,
-            subTitleIsPrice: true,
-            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-              color: Colors.red,
+              color: Colors.blue,
             ),
           ),
           TitleAndSubTitle(

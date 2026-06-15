@@ -14,17 +14,22 @@ class IncrementAndDiscount extends ConsumerWidget {
       children: [
         Consumer(
           builder: (_, ref, _) {
-            final (allowUpdate, financialIncrement) = ref.watch(
+            final (
+              allowUpdate,
+              financialIncrement,
+              financialIncrementValue,
+            ) = ref.watch(
               insertUpdateStateControllerProvider.select(
                 (s) => (
                   s.value?.requestType?.allowFinancialIncrement ?? false,
                   s.value?.financialIncrement,
+                  s.value?.financialIncrementValue,
                 ),
               ),
             );
 
             return ManageDiscountOrIncrement(
-              valueType: financialIncrement,
+              valueTypes: [financialIncrement],
               allowUpdate: allowUpdate,
               title: 'Acréscimo financeiro'.hardcoded,
               onUpdate: ref
@@ -36,22 +41,25 @@ class IncrementAndDiscount extends ConsumerWidget {
               notAllowedMessage:
                   'Esse modelo de pedido não permite acréscimo financeiro.'
                       .hardcoded,
+              liquidValue: financialIncrementValue,
             );
           },
         ),
         Consumer(
           builder: (_, ref, _) {
-            final (allowUpdate, financialDiscount) = ref.watch(
-              insertUpdateStateControllerProvider.select(
-                (s) => (
-                  s.value?.requestType?.allowFinancialDiscount ?? false,
-                  s.value?.financialDiscount,
-                ),
-              ),
-            );
+            final (allowUpdate, financialDiscount, financialDiscountValue) = ref
+                .watch(
+                  insertUpdateStateControllerProvider.select(
+                    (s) => (
+                      s.value?.requestType?.allowFinancialDiscount ?? false,
+                      s.value?.financialDiscount,
+                      s.value?.financialDiscountValue,
+                    ),
+                  ),
+                );
 
             return ManageDiscountOrIncrement(
-              valueType: financialDiscount,
+              valueTypes: [financialDiscount],
               allowUpdate: allowUpdate,
               title: 'Desconto financeiro'.hardcoded,
               //TODO test what happens if insert a discount bigger than the total liquid. Should have a "troco"/change field
@@ -64,6 +72,7 @@ class IncrementAndDiscount extends ConsumerWidget {
               notAllowedMessage:
                   'Esse modelo de pedido não permite desconto financeiro.'
                       .hardcoded,
+              liquidValue: financialDiscountValue,
             );
           },
         ),

@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,20 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ManageDiscountOrIncrement extends ConsumerStatefulWidget {
-  final BSFValueTypeEntity? valueType;
+  final List<BSFValueTypeEntity?> valueTypes;
   final bool allowUpdate;
   final String title;
   final void Function(BSFValueTypeEntity value) onUpdate;
   final VoidCallback onRemove;
   final String notAllowedMessage;
+  final double? liquidValue;
   const ManageDiscountOrIncrement({
     super.key,
-    required this.valueType,
+    required this.valueTypes,
     required this.allowUpdate,
     required this.title,
     required this.onUpdate,
     required this.onRemove,
     required this.notAllowedMessage,
+    required this.liquidValue,
   });
 
   @override
@@ -55,9 +56,12 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
   void _startEditing() {
     setState(() {
       _isEditing = true;
-      _selectedType = widget.valueType?.type ?? PercentageOrValue.percentage;
-      final val = widget.valueType?.value;
-      _valueController.text = (val != null && val > 0) ? val.toString() : '';
+      final firstValue = widget.valueTypes.firstOrNull;
+      _selectedType = firstValue?.type ?? PercentageOrValue.percentage;
+      final val = firstValue?.value;
+      _valueController.text = (val != null && val > 0)
+          ? val.toString().toBrazilianNumber()
+          : '';
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -83,15 +87,16 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
 
   @override
   Widget build(BuildContext context) {
-    final value = widget.valueType?.value ?? 0;
+    final atLeastOneValueBiggerThanZero = widget.valueTypes.any(
+      (e) => (e?.value ?? 0) > 0,
+    );
 
-    if (value == 0 && !widget.allowUpdate) {
+    if (!atLeastOneValueBiggerThanZero && !widget.allowUpdate) {
       return const SizedBox.shrink();
     }
 
-    final subtitle = value > 0
-        ? '${widget.valueType?.value?.toString().toBrazilianNumber()} ${widget.valueType?.type?.symbol ?? ''}'
-        : null;
+    final liquidValue = widget.liquidValue ?? 0;
+    final showLiquidValue = liquidValue > 0 || atLeastOneValueBiggerThanZero;
 
     return Card(
       child: Padding(
@@ -101,7 +106,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (!widget.allowUpdate && value > 0)
+              if (!widget.allowUpdate && !atLeastOneValueBiggerThanZero)
                 Text(
                   widget.notAllowedMessage,
                   style: context.theme.textTheme.titleMedium?.copyWith(
@@ -115,35 +120,57 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (atLeastOneValueBiggerThanZero)
+                          ...widget.valueTypes.map<Widget>((e) {
+                            return Builder(
+                              builder: (_) {
+                                final value = e?.value ?? 0;
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          TitleAndSubTitle(
+                                            title: widget.title,
+                                            subTitle: value == 0
+                                                ? null
+                                                : value
+                                                      .toString()
+                                                      .toBrazilianNumber(
+                                                        2,
+                                                        true,
+                                                      ),
+                                            removeColon: value == 0,
+                                            subTitleIsPercentage:
+                                                e?.type ==
+                                                PercentageOrValue.percentage,
+                                            subTitleIsPrice:
+                                                e?.type ==
+                                                PercentageOrValue.reais,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }),
                         TitleAndSubTitle(
-                          title: widget.title,
-                          subTitle: subtitle,
-                          removeColon: subtitle == null,
+                          title: showLiquidValue
+                              ? 'Valor líquido'.hardcoded
+                              : widget.title,
+                          subTitle: showLiquidValue ? widget.liquidValue : null,
+                          subTitleIsPrice: showLiquidValue,
+                          removeColon: !showLiquidValue,
                         ),
-                        if (value > 0 &&
-                            widget.valueType?.type ==
-                                PercentageOrValue.percentage)
-                          Consumer(
-                            builder: (context, ref, child) {
-                              final currentSaleRequestBrutValue = ref.watch(
-                                insertUpdateStateControllerProvider.select(
-                                  (s) => s.value?.totalProductsBrut ?? 0,
-                                ),
-                              );
-
-                              return TitleAndSubTitle(
-                                title: 'Valor líquido'.hardcoded,
-                                subTitle: widget.valueType?.calculateItemValue(
-                                  currentSaleRequestBrutValue,
-                                ),
-                                subTitleIsPrice: true,
-                              );
-                            },
-                          ),
                       ],
                     ),
                   ),
-                  if (value > 0)
+
+                  if (atLeastOneValueBiggerThanZero)
                     IconButton(
                       onPressed: () {
                         widget.onRemove();
@@ -173,7 +200,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                               cupertinoIcon: CupertinoIcons.xmark,
                               materialIcon: Icons.close,
                             )
-                          : (value > 0
+                          : (atLeastOneValueBiggerThanZero
                                 ? const PlatformIcon(
                                     cupertinoIcon: CupertinoIcons.pencil,
                                     materialIcon: Icons.edit,
@@ -185,6 +212,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                     ),
                 ],
               ),
+
               if (_isEditing) ...[
                 gapH8,
                 Row(
@@ -195,10 +223,12 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                       child: DefaultTextFormField(
                         controller: _valueController,
                         focusNode: _focusNode,
-                        labelText: 'Valor'.hardcoded,
+                        labelText:
+                            'Valor ${_selectedType?.symbol ?? ''}'.hardcoded,
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
+                        onFieldSubmitted: (_) => _confirmChanges(),
                         validator: FormValidators.compose([
                           NonEmptyValidator(),
                           NumberValidator(allowDecimal: true),
