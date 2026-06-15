@@ -27,7 +27,8 @@ class SummaryTooltip extends StatelessWidget {
     return Tooltip(
       message: message,
       triggerMode: TooltipTriggerMode.tap,
-      waitDuration: const Duration(seconds: 3),
+      showDuration: const Duration(seconds: 3),
+      waitDuration: const Duration(milliseconds: 10),
       child: Container(
         padding: const EdgeInsets.all(Sizes.p4),
         decoration: BoxDecoration(
