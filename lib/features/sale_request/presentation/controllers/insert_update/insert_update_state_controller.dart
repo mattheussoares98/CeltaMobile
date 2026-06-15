@@ -515,6 +515,39 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     state = AsyncData(state.value!.copyWith(observations: value));
   }
+
+  void updateIncrement(BSFValueTypeEntity value) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+
+    state = AsyncData(state.value!.copyWith(increment: value));
+  }
+
+  void removeIncrement() {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(state.value!.copyWith(annulIncrement: true));
+  }
+
+  void updateDiscount(BSFValueTypeEntity value) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(
+      state.value!.copyWith(
+        discounts: [
+          BSFDiscountEntity(
+            order: 0,
+            discountOrigin: DiscountOrigin.manual,
+            user: null,
+            justification: 'Desconto manual'.hardcoded,
+            discount: value,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void removeDiscount() {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(state.value!.copyWith(annulDiscounts: true));
+  }
 }
 
 @Riverpod(

@@ -3176,6 +3176,180 @@ void main() {
       );
     });
 
+    group('Update increment', () {
+      test(
+        'updateIncrement should update increment when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          // We wait for the asynchronous build method of the controller to complete, transitioning
+          // the state from AsyncLoading to AsyncData.
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateIncrement(incrementValue);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.increment, incrementValue);
+        },
+      );
+
+      test('updateIncrement should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        // We verify the initial state is AsyncLoading to ensure the Guard Clause 'state is! AsyncData' triggers.
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        final incrementValue = EntityFactory.makeBSFValueTypeEntity();
+        controller.updateIncrement(incrementValue);
+
+        // The state must remain AsyncLoading, verifying that updateIncrement is safely ignored.
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
+    group('Remove increment', () {
+      test(
+        'removeIncrement should nullify increment when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // First, we set an increment to establish a baseline state.
+          final incrementValue = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateIncrement(incrementValue);
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .increment,
+            incrementValue,
+          );
+
+          // We execute removeIncrement to clear the state.
+          controller.removeIncrement();
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.increment, isNull);
+        },
+      );
+
+      test('removeIncrement should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        controller.removeIncrement();
+
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
+    group('Update discount', () {
+      test(
+        'updateDiscount should update discounts when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final discountValue = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateDiscount(discountValue);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.discounts, [
+            BSFDiscountEntity(
+              order: 0,
+              discountOrigin: DiscountOrigin.manual,
+              user: null,
+              justification: 'Desconto manual',
+              discount: discountValue,
+            ),
+          ]);
+        },
+      );
+
+      test('updateDiscount should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        final discountValue = EntityFactory.makeBSFValueTypeEntity();
+        controller.updateDiscount(discountValue);
+
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
+
+    group('Remove discount', () {
+      test(
+        'removeDiscount should nullify discounts when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // Set a discount as baseline
+          final discountValue = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateDiscount(discountValue);
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .discounts,
+            isNotEmpty,
+          );
+
+          // Execute removeDiscount
+          controller.removeDiscount();
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.discounts, isNull);
+        },
+      );
+
+      test('removeDiscount should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        controller.removeDiscount();
+
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
+
     group('saleRequestHasChanges', () {
       test(
         'should return false for new request with empty entity (no customer or products)',
