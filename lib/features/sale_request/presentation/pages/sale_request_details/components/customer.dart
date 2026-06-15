@@ -55,7 +55,7 @@ class Customer extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TitleAndSubTitle(
-                    title: customerCode == null
+                    title: customerCode == null || isInternalCustomer
                         ? null
                         : '(${customerCode.toString()})',
                     removeColon: true,
