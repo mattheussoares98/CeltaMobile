@@ -5,12 +5,29 @@ extension StringModifier on String {
     int decimalHouses = 2,
     bool showDecimalUntilLastNumber = false,
   ]) {
-    final value = double.tryParse(this.replaceAll(',', '.'));
+    // Example input: "0,395" with decimalHouses = 2
+    // cleanString = "0.395"
+    final cleanString = replaceAll(',', '.');
+    final value = double.tryParse(cleanString);
     if (value == null) {
       return this;
     }
 
-    String formatted = value.toStringAsFixed(decimalHouses);
+    // mod = 100.0 (multiplier for 2 decimal places)
+    double mod = 1.0;
+    for (int i = 0; i < decimalHouses; i++) {
+      mod *= 10;
+    }
+
+    // sign = 1 (positive number)
+    final sign = value.isNegative ? -1 : 1;
+    // value.abs() * mod = 39.5
+    // 39.5 - 0.5 = 39.0
+    // ceil(39.0) = 39
+    // 39 / 100 * 1 = 0.39
+    final roundedValue = ((value.abs() * mod) - 0.5).ceil() / mod * sign;
+    // formatted = "0.39"
+    String formatted = roundedValue.toStringAsFixed(decimalHouses);
 
     if (showDecimalUntilLastNumber && formatted.contains('.')) {
       formatted = formatted
@@ -18,12 +35,15 @@ extension StringModifier on String {
           .replaceAll(RegExp(r'\.$'), '');
     }
 
+    // parts = ["0", "39"]
     final parts = formatted.split('.');
+    // Formats integer part with thousands separators (e.g., "1234" -> "1.234")
     parts[0] = parts[0].replaceAllMapped(
       RegExp(r'\B(?=(\d{3})+(?!\d))'),
       (match) => '.',
     );
 
+    // Returns "0,39"
     return parts.join(',');
   }
 
