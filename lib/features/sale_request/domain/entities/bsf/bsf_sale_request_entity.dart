@@ -219,6 +219,20 @@ class BSFSaleRequestEntity extends Equatable {
     return increment?.calculateItemValue(totalProductsLiquid) ?? 0.0;
   }
 
+  double get productsIncrement {
+    return products?.fold(0.0, (p, n) {
+          return (p ?? 0) + n.totalIncrement;
+        }) ??
+        0.0;
+  }
+
+  double get productsDiscount {
+    return products?.fold(0.0, (p, n) {
+          return (p ?? 0) + n.totalDiscountValue;
+        }) ??
+        0.0;
+  }
+
   double get totalIncrement {
     //! total products (brut) increment + total products (liquid) increment
     final totalBrutIncrement =
@@ -229,6 +243,11 @@ class BSFSaleRequestEntity extends Equatable {
 
     return totalBrutIncrement + saleRequestIncrement;
   }
+
+  double get financialIncrementValue =>
+      financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+  double get financialDiscountValue =>
+      financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
 
   double get saleRequestDiscount {
     double totalSaleRequestDiscount = 0;
@@ -265,20 +284,14 @@ class BSFSaleRequestEntity extends Equatable {
     });
   }
 
-  int get totalProductsCount => products?.length ?? 0;
-
   int get totalPaymentsCount =>
       financials?.firstOrNull?.paymentFinalizations?.length ?? 0;
+  int get totalProductsCount => products?.length ?? 0;
 
   double get totalLiquidAndPaidDifference {
     final totalPaymentsCents = (totalPayments.abs() * 100).round();
     final currentSaleRequestLiquidCents = (currentSaleRequestLiquid * 100)
         .round();
-
-    final financialIncrementValue =
-        financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
-    final financialDiscountValue =
-        financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
 
     final financialIncrementCents = (financialIncrementValue * 100).round();
     final financialDiscountCents = (financialDiscountValue * 100).round();
