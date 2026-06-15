@@ -362,6 +362,13 @@ class BSFSaleRequestEntity extends Equatable {
         customer?.selectedCovenant?.code !=
         other.customer?.selectedCovenant?.code;
     final changedSeller = seller?.code != other.seller?.code;
+    final changedIncrement = totalIncrement != other.totalIncrement;
+    final changedDiscount = totalDiscount != other.totalDiscount;
+    final changedDeliveryTax = totalDeliveryTax != other.totalDeliveryTax;
+    final changedFinancialIncrement =
+        financialIncrementValue != other.financialIncrementValue;
+    final changedFinancialDiscount =
+        financialDiscountValue != other.financialDiscountValue;
 
     bool changedProducts = products?.length != other.products?.length;
 
@@ -399,7 +406,12 @@ class BSFSaleRequestEntity extends Equatable {
     return changedCustomer ||
         changedCovenant ||
         changedSeller ||
-        changedProducts;
+        changedProducts ||
+        changedIncrement ||
+        changedDiscount ||
+        changedDeliveryTax ||
+        changedFinancialIncrement ||
+        changedFinancialDiscount;
   }
 
   SaleRequestEntity toSaleRequestEntity() {
