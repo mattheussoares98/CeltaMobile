@@ -527,6 +527,26 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     state = AsyncData(state.value!.copyWith(annulIncrement: true));
   }
 
+  void updateDeliveryTax(BSFValueTypeEntity value) {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+
+    state = AsyncData(
+      state.value!.copyWith(
+        deliveryTax: BSFDeliveryTaxWrapperEntity(
+          deliveryTax: value,
+          mailFreightType: state.value?.deliveryTax?.mailFreightType,
+          isFob: state.value?.deliveryTax?.isFob,
+          isDiscounted: state.value?.deliveryTax?.isDiscounted,
+        ),
+      ),
+    );
+  }
+
+  void removeDeliveryTax() {
+    if (state is! AsyncData<BSFSaleRequestEntity>) return;
+    state = AsyncData(state.value!.copyWith(annulDeliveryTax: true));
+  }
+
   void updateDiscount(BSFValueTypeEntity value) {
     if (state is! AsyncData<BSFSaleRequestEntity>) return;
     state = AsyncData(

@@ -3260,6 +3260,99 @@ void main() {
         expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
       });
     });
+    group('Update Delivery tax', () {
+      test(
+        'updateDeliveryTax should update increment when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          // We wait for the asynchronous build method of the controller to complete, transitioning
+          // the state from AsyncLoading to AsyncData.
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final deliveryTax = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateDeliveryTax(deliveryTax);
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(
+            state.value!.deliveryTax,
+            BSFDeliveryTaxWrapperEntity(
+              deliveryTax: deliveryTax,
+              mailFreightType: state.value?.deliveryTax?.mailFreightType,
+              isFob: state.value?.deliveryTax?.isFob,
+              isDiscounted: state.value?.deliveryTax?.isDiscounted,
+            ),
+          );
+        },
+      );
+
+      test('updateDeliveryTax should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        // We verify the initial state is AsyncLoading to ensure the Guard Clause 'state is! AsyncData' triggers.
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        final deliveryTax = EntityFactory.makeBSFValueTypeEntity();
+        controller.updateDeliveryTax(deliveryTax);
+
+        // The state must remain AsyncLoading, verifying that updateDeliveryTax is safely ignored.
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
+    group('Remove Delivery tax', () {
+      test(
+        'removeDeliveryTax should nullify deliveryTax when state is AsyncData',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          // First, we set an increment to establish a baseline state.
+          final deliveryTax = EntityFactory.makeBSFValueTypeEntity();
+          controller.updateDeliveryTax(deliveryTax);
+          expect(
+            container
+                .read(insertUpdateStateControllerProvider)
+                .value!
+                .deliveryTax
+                ?.deliveryTax,
+            deliveryTax,
+          );
+
+          // We execute removeDeliveryTax to clear the state.
+          controller.removeDeliveryTax();
+
+          final state = container.read(insertUpdateStateControllerProvider);
+          expect(state.value!.deliveryTax, isNull);
+        },
+      );
+
+      test('removeDeliveryTax should do nothing if state is not AsyncData', () {
+        final container = makeProviderContainer(saleRequestId: 0);
+        final controller = container.read(
+          insertUpdateStateControllerProvider.notifier,
+        );
+
+        final stateBefore = container.read(insertUpdateStateControllerProvider);
+        expect(stateBefore, isA<AsyncLoading<BSFSaleRequestEntity>>());
+
+        controller.removeIncrement();
+
+        final stateAfter = container.read(insertUpdateStateControllerProvider);
+        expect(stateAfter, isA<AsyncLoading<BSFSaleRequestEntity>>());
+      });
+    });
     group('Update discount', () {
       test(
         'updateDiscount should update discounts when state is AsyncData',
