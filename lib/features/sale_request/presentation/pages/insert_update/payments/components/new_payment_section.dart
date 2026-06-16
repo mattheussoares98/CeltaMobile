@@ -49,7 +49,8 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
     if (totalLiquidAndPaidDifference < 0) {
       return SliverToBoxAdapter(
         child: Text(
-          'O total das formas de pagamento está maior que o total dos produtos!'
+          'O total das formas de pagamento está maior que o total dos produtos!\n'
+                  'Diferença = ${totalLiquidAndPaidDifference.abs().toString().toBrazilianNumber()}'
               .hardcoded,
           textAlign: TextAlign.center,
           style: context.theme.textTheme.titleSmall?.copyWith(
