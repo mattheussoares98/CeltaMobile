@@ -500,8 +500,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
   }
 
   void updateProcessedCart(BSFSaleRequestEntity processedValue) {
-    _lastProcessedSaleRequest = processedValue;
-    state = AsyncData(processedValue);
+    final customer = state.value?.customer;
+    _lastProcessedSaleRequest = processedValue.copyWith(
+      customer: customer?.copyWith(selectedCovenant: customer.selectedCovenant),
+    );
+    state = AsyncData(_lastProcessedSaleRequest!);
   }
 
   void updateInstructions(String? value) {

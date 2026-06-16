@@ -3092,6 +3092,52 @@ void main() {
           expect(controller.needsProcessing, isFalse);
         },
       );
+
+      test(
+        'updateProcessedCart should maintain the last selected covenant of the customer',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 1);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final covenant = faker.randomGenerator.boolean()
+              ? EntityFactory.makeBsfCovenantEntity().copyWith(code: 123)
+              : null;
+          final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
+            code: 1,
+            covenants: [?covenant],
+            selectedCovenant: covenant,
+          );
+
+          controller.updateCustomerOrCovenant(
+            customer,
+            covenant: covenant,
+            isChangingCovenant: true,
+            onlyValidating: false,
+          );
+
+          final state = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          expect(state.customer?.selectedCovenant, covenant);
+
+          final processedCustomerWithoutCovenant = customer.copyWith(
+            annulSelectedCovenant: true,
+          );
+          final processedCart = state.copyWith(
+            customer: processedCustomerWithoutCovenant,
+          );
+
+          controller.updateProcessedCart(processedCart);
+
+          final updatedState = container
+              .read(insertUpdateStateControllerProvider)
+              .value!;
+          expect(updatedState.customer?.selectedCovenant, covenant);
+        },
+      );
     });
 
     group('Update Instructions and Observations', () {
