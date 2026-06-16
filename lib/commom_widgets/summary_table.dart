@@ -87,6 +87,7 @@ class SummaryTable extends StatelessWidget {
               ),
               if (priceText != null)
                 AnimatedPriceValue(
+                  key: ValueKey(item.title),
                   value: item.value as num,
                   style: effectiveValueStyle,
                   priceText: priceText,
