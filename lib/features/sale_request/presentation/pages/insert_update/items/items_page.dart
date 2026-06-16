@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/sale_request/presentation/pages/compon
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +50,9 @@ class ItemsPage extends ConsumerWidget {
               builder: (_, ref, _) {
                 final item = ref.watch(
                   insertUpdateStateControllerProvider.select(
-                    (v) => v.value?.products?[index],
+                    (v) => v.value!.products?.firstWhereIndexedOrNull(
+                      (i, _) => i == index,
+                    ),
                   ),
                 );
                 if (item == null) {
