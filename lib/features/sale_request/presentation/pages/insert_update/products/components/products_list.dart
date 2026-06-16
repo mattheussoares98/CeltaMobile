@@ -4,12 +4,11 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 
 class ProductsList extends ConsumerWidget {
   final SearchProductKey searchProductKey;
@@ -25,6 +24,7 @@ class ProductsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
+      tryAgain: null,
       data: (products) {
         if (products.isEmpty) {
           return Center(
@@ -68,9 +68,6 @@ class ProductsList extends ConsumerWidget {
           },
         );
       },
-      tryAgain: () => ref.invalidate(
-        searchProductsStateControllerProvider(searchProductKey),
-      ),
     );
   }
 }
