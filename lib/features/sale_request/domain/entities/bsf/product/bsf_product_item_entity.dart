@@ -42,7 +42,7 @@ class BSFProductItemEntity extends Equatable {
     required this.icms,
     required this.ipi,
     required this.priceCost,
-    this.saleBlockadeDiscountType = SaleBlockadeDiscountType.none,
+    required this.saleBlockadeDiscountType,
   });
 
   @override

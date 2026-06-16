@@ -56,6 +56,7 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
         practicePriceRoundRules: null,
         productPackingEanString: null,
       ),
+      saleBlockadeDiscountType: SaleBlockadeDiscountType.none,
       productPackingCode: ProductPackingCode,
       ipi: null,
       icms: null,

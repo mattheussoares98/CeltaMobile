@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class InsertProductUIState extends Equatable {
   final double quantity;
@@ -81,6 +80,7 @@ class InsertProductUIState extends Equatable {
       eanCode: product.eanCode,
       freight: product.freight,
       discounts: discounts,
+      saleBlockadeDiscountType: product.saleBlockadeDiscountType,
       expectedDeliveryDate: product.expectedDeliveryDate,
       deliveryTax: deliveryTaxValue > 0
           ? BSFValueTypeEntity(type: deliveryTaxType, value: deliveryTaxValue)
