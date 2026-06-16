@@ -1427,6 +1427,9 @@ class EntityFactory {
         code: faker.randomGenerator.integer(100),
         icms: makeBSFIcmsEntity(),
         ipi: makeBSFIpiEntity(),
+        saleBlockadeDiscountType: SaleBlockadeDiscountType.values.elementAt(
+          faker.randomGenerator.integer(SaleBlockadeDiscountType.values.length),
+        ),
         product: BSFProductDetailsEntity(
           name: faker.food.dish(),
           code: faker.randomGenerator.integer(100),

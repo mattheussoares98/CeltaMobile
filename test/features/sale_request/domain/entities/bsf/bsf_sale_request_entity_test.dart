@@ -494,6 +494,9 @@ void main() {
               EntityFactory.makeBSFProductItemEntity().copyWith(
                 quantity: 2.0,
                 value: 100.0,
+                //!Important. If there is a sale blockade discount type, is not
+                //!considering the product in the base value to calculate discounts
+                saleBlockadeDiscountType: SaleBlockadeDiscountType.none,
                 discounts: [
                   const BSFDiscountEntity(
                     order: 1,

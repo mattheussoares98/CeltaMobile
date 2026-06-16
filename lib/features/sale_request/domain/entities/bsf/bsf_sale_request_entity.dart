@@ -260,7 +260,16 @@ class BSFSaleRequestEntity extends Equatable {
 
   double get saleRequestDiscount {
     double totalSaleRequestDiscount = 0;
-    double baseValue = totalProductsLiquid;
+    double baseValue =
+        products
+            ?.where(
+              (e) =>
+                  e.saleBlockadeDiscountType == SaleBlockadeDiscountType.none,
+            )
+            .fold(0.0, (p, n) {
+              return (p ?? 0) + n.totalLiquid;
+            }) ??
+        0.0;
     for (var discount in discounts ?? <BSFDiscountEntity>[]) {
       final itemDiscount =
           (discount.discount?.calculateItemValue(baseValue) ?? 0);
