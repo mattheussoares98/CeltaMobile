@@ -87,7 +87,9 @@ class InsertProductPage extends ConsumerWidget {
               insertUpdateStateControllerProvider.select(
                 (s) => (
                   s.value?.requestType?.allowAlterCostOrSalePrice == true,
-                  s.value?.requestType?.allowUseDiscount == true,
+                  s.value?.requestType?.allowUseDiscount == true &&
+                      product.saleBlockadeDiscountType ==
+                          SaleBlockadeDiscountType.none,
                   s.value?.requestType?.allowUseDeliveryTax == true,
                   s.value?.requestType?.allowUseIncrement == true,
                 ),
