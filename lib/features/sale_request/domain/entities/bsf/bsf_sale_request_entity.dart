@@ -254,9 +254,9 @@ class BSFSaleRequestEntity extends Equatable {
   }
 
   double get financialIncrementValue =>
-      financialIncrement?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+      financialIncrement?.calculateItemValue(currentSaleRequestLiquid) ?? 0.0;
   double get financialDiscountValue =>
-      financialDiscount?.calculateItemValue(totalProductsLiquid) ?? 0.0;
+      financialDiscount?.calculateItemValue(currentSaleRequestLiquid) ?? 0.0;
 
   double get saleRequestDiscount {
     double totalSaleRequestDiscount = 0;
