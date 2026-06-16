@@ -122,9 +122,6 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       _infoRow('Data de Emissão:'.hardcoded, dateStr),
     ];
 
-    if (incrementStr.isNotEmpty) {
-      items.add(_infoRow('Acréscimo:'.hardcoded, incrementStr));
-    }
     if (financialDiscountStr.isNotEmpty) {
       items.add(
         _infoRow('Desconto Financeiro:'.hardcoded, financialDiscountStr),
@@ -134,6 +131,18 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       items.add(
         _infoRow('Acréscimo Financeiro:'.hardcoded, financialIncrementStr),
       );
+    }
+    final discount = saleRequest.toEntity().saleRequestDiscount;
+    if (discount > 0) {
+      items.add(
+        _infoRow(
+          'Desconto:'.hardcoded,
+          discount.toString().toBrazilianNumber().addBrazilianCoin(),
+        ),
+      );
+    }
+    if (incrementStr.isNotEmpty) {
+      items.add(_infoRow('Acréscimo:'.hardcoded, incrementStr));
     }
     if (deliveryTaxStr.isNotEmpty) {
       items.add(_infoRow('Frete:'.hardcoded, deliveryTaxStr));
