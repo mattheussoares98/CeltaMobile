@@ -54,10 +54,11 @@ class Financial extends ConsumerWidget {
               ],
             ),
             if (!isFinancialEmpty)
-              ListView.builder(
+              ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: financials!.length,
+                separatorBuilder: (context, index) => const Divider(),
                 itemBuilder: (context, fIndex) {
                   final financial = financials[fIndex];
 
