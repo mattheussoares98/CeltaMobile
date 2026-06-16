@@ -21,6 +21,7 @@ class BSFProductItemEntity extends Equatable {
   final BSFIcmsEntity? icms;
   final BSFIpiEntity? ipi;
   final BSFPriceCostEntity? priceCost;
+  final SaleBlockadeDiscountType? saleBlockadeDiscountType;
 
   const BSFProductItemEntity({
     required this.product,
@@ -41,6 +42,7 @@ class BSFProductItemEntity extends Equatable {
     required this.icms,
     required this.ipi,
     required this.priceCost,
+    this.saleBlockadeDiscountType = SaleBlockadeDiscountType.none,
   });
 
   @override
@@ -63,6 +65,7 @@ class BSFProductItemEntity extends Equatable {
     icms,
     ipi,
     priceCost,
+    saleBlockadeDiscountType,
   ];
 
   BSFProductItemEntity copyWith({
@@ -84,6 +87,7 @@ class BSFProductItemEntity extends Equatable {
     BSFIcmsEntity? icms,
     BSFIpiEntity? ipi,
     BSFPriceCostEntity? priceCost,
+    SaleBlockadeDiscountType? saleBlockadeDiscountType,
     bool? annulIncrement,
     bool? annulDeliveryTax,
     bool? annulDiscounts,
@@ -111,6 +115,8 @@ class BSFProductItemEntity extends Equatable {
       icms: icms ?? this.icms,
       ipi: ipi ?? this.ipi,
       priceCost: annulPriceCost == true ? null : priceCost ?? this.priceCost,
+      saleBlockadeDiscountType:
+          saleBlockadeDiscountType ?? this.saleBlockadeDiscountType,
     );
   }
 
@@ -134,6 +140,7 @@ class BSFProductItemEntity extends Equatable {
       icms: null,
       ipi: null,
       priceCost: null,
+      saleBlockadeDiscountType: SaleBlockadeDiscountType.none,
     );
   }
 

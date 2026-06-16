@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFProductItemModel extends BSFProductItemEntity {
   const BSFProductItemModel({
@@ -21,6 +21,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     required super.ipi,
     required super.priceCost,
     required super.productPackingCode,
+    super.saleBlockadeDiscountType = SaleBlockadeDiscountType.none,
   });
 
   factory BSFProductItemModel.fromJson(
@@ -74,6 +75,9 @@ class BSFProductItemModel extends BSFProductItemEntity {
         : null,
     quantity: (json['Quantity'] as num?)?.toDouble(),
     value: (json['Value'] as num?)?.toDouble(),
+    saleBlockadeDiscountType: SaleBlockadeDiscountType.fromValue(
+      json['CurrentBlockadeDiscountType'] as int?,
+    ),
   );
 
   Map<String, dynamic> toJson() => {
@@ -108,6 +112,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     'Quantity': quantity,
     'Value': value,
     'Code': code,
+    'CurrentBlockadeDiscountType': saleBlockadeDiscountType?.value,
     'Icms': icms != null ? BSFIcmsModel.fromEntity(icms!).toJson() : null,
     'Ipi': ipi != null ? BSFIpiModel.fromEntity(ipi!).toJson() : null,
     'ProductEnterprisePacking': priceCost != null
@@ -160,6 +165,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
             : BSFValueTypeModel.fromEntity(entity.compensation!),
         quantity: entity.quantity,
         value: entity.value,
+        saleBlockadeDiscountType: entity.saleBlockadeDiscountType,
       );
 
   BSFProductItemEntity toEntity() => BSFProductItemEntity(
@@ -189,5 +195,6 @@ class BSFProductItemModel extends BSFProductItemEntity {
     compensation: (compensation as BSFValueTypeModel?)?.toEntity(),
     quantity: quantity,
     value: value,
+    saleBlockadeDiscountType: saleBlockadeDiscountType,
   );
 }
