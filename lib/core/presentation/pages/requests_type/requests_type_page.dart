@@ -54,6 +54,20 @@ class RequestsTypePage extends ConsumerWidget {
                   ),
                 );
               }
+
+              final int? defaultRequestTypeCode = ref.watch(
+                selectedEnterpriseStateControllerProvider.select(
+                  (s) => s?.SaleRequestTypeCode,
+                ),
+              );
+
+              requests?.sort((a, b) {
+                final isADefault = a.code == defaultRequestTypeCode;
+                final isBDefault = b.code == defaultRequestTypeCode;
+                if (isADefault && !isBDefault) return -1;
+                if (!isADefault && isBDefault) return 1;
+                return (a.name ?? '').compareTo(b.name ?? '');
+              });
               return RefreshIndicator(
                 onRefresh: () async => ref.invalidate(provider),
                 child: ResponsiveListFlow(
