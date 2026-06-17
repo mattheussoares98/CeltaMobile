@@ -70,6 +70,54 @@ void main() {
   }
 
   group('SaleRequestsStateController', () {
+    test('Should return empty value if is inserting', () async {
+      // ARRANGE
+
+      when(
+        () => mockRepository.getComplete(
+          saleRequestCode: any(named: 'saleRequestCode'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          customerCode: any(named: 'customerCode'),
+          params: any(named: 'params'),
+        ),
+      ).thenAnswer((_) async => fakeBSFSaleRequestModel.toEntity());
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+
+      final insertingArgs = SaleRequestArgs(
+        enterpriseCode: faker.randomGenerator.integer(100),
+        saleRequestId: 0,
+      );
+
+      final states = <AsyncValue<BSFSaleRequestEntity>>[];
+      container.listen(
+        saleRequestDetailsStateControllerProvider(insertingArgs),
+        (_, next) => states.add(next),
+      );
+
+      // ACT
+      await container.read(
+        saleRequestDetailsStateControllerProvider(insertingArgs).future,
+      );
+
+      final state = container.read(
+        saleRequestDetailsStateControllerProvider(insertingArgs),
+      );
+      expect(
+        state,
+        AsyncData<BSFSaleRequestEntity>(BSFSaleRequestEntity.empty()),
+      );
+
+      verifyNever(
+        () => mockRepository.getComplete(
+          saleRequestCode: any(named: 'saleRequestCode'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          customerCode: any(named: 'customerCode'),
+          params: any(named: 'params'),
+        ),
+      );
+    });
     test('Build should load and behave correctly', () async {
       // ARRANGE
 

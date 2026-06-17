@@ -1,12 +1,11 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sale_request_details_state_controller.g.dart';
 
@@ -15,6 +14,9 @@ class SaleRequestDetailsStateController
     extends _$SaleRequestDetailsStateController {
   @override
   FutureOr<BSFSaleRequestEntity> build(SaleRequestArgs args) async {
+    if (args.isInserting) {
+      return BSFSaleRequestEntity.empty();
+    }
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {
