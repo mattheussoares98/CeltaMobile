@@ -16,11 +16,13 @@ class InsertUpdatePage extends ConsumerWidget {
   final int enterpriseCode;
   final int customerCode;
   final int saleRequestId;
+  final int? requestTypeCode;
   const InsertUpdatePage({
     super.key,
     required this.enterpriseCode,
     required this.customerCode,
     required this.saleRequestId,
+    required this.requestTypeCode,
   });
 
   @override
@@ -32,6 +34,7 @@ class InsertUpdatePage extends ConsumerWidget {
             enterpriseCode: enterpriseCode,
             customerCode: customerCode,
             saleRequestId: saleRequestId,
+            requestTypeCode: requestTypeCode,
           ),
         ),
       ],
