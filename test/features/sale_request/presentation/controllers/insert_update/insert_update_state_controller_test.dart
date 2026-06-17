@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
@@ -46,10 +48,24 @@ class FakeCanAccessResourceStateController
   }
 }
 
+class FakeRequestTypeStateController extends RequestTypeStateController {
+  final FutureOr<List<BSFRequestTypeEntity>?> requestsToReturn;
+  FakeRequestTypeStateController(this.requestsToReturn);
+
+  @override
+  FutureOr<List<BSFRequestTypeEntity>?> build(
+    Modules module,
+    int enterpriseCode,
+  ) {
+    return requestsToReturn;
+  }
+}
+
 void main() {
   late FakeCanAccessResourceStateController fakeCanAccessResourceController;
   late FakePaymentFinalizationsController fakePaymentsController;
   late FakeSearchedCustomersStateController fakeSearchedCustomersController;
+  late FakeRequestTypeStateController fakeRequestTypeStateController;
   late List<BSFPaymentFinalizationEntity> fakePayments;
   late BSFSaleRequestEntity fakeSaleRequest;
   late SaleRequestArgs fakeArgs;
@@ -62,7 +78,10 @@ void main() {
   });
 
   ProviderContainer makeProviderContainer({required int saleRequestId}) {
-    final args = fakeArgs.copyWith(saleRequestId: saleRequestId);
+    final args = fakeArgs.copyWith(
+      saleRequestId: saleRequestId,
+      requestTypeCode: fakeSaleRequest.requestType?.code,
+    );
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
@@ -70,6 +89,10 @@ void main() {
         filteredPaymentFinalizationsStateControllerProvider.overrideWith(
           () => fakePaymentsController,
         ),
+        requestTypeStateControllerProvider(
+          Modules.saleRequest,
+          args.enterpriseCode,
+        ).overrideWith(() => fakeRequestTypeStateController),
         saleRequestDetailsStateControllerProvider(
           args,
         ).overrideWith(() => FakeSaleRequestDetailsController(fakeSaleRequest)),
@@ -99,6 +122,9 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+    fakeRequestTypeStateController = FakeRequestTypeStateController([
+      ?fakeSaleRequest.requestType,
+    ]);
     fakePayments = [
       EntityFactory.makeBSFPaymentFinalizationEntity().copyWith(
         action: EntityFactory.makeBSFPaymentActionEntity().copyWith(
@@ -137,7 +163,7 @@ void main() {
   group('InsertUpdateStateController', () {
     group('build', () {
       test(
-        'should return empty entity when saleRequestId is 0 and load payment options',
+        'should return empty with requestType from args entity when saleRequestId is 0 and load payment options',
         () async {
           final container = makeProviderContainer(saleRequestId: 0);
 
@@ -145,8 +171,33 @@ void main() {
             insertUpdateStateControllerProvider.future,
           );
 
-          expect(result, BSFSaleRequestEntity.empty());
+          expect(
+            result,
+            BSFSaleRequestEntity.empty().copyWith(
+              requestType: fakeSaleRequest.requestType,
+            ),
+          );
           expect(fakePaymentsController.wasCalled, isFalse);
+        },
+      );
+      test(
+        'should throw when is inserting and didn\'t find the request type',
+        () async {
+          fakeSaleRequest = fakeSaleRequest.copyWith(
+            requestType: fakeSaleRequest.requestType?.copyWith(code: 999),
+          );
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          expect(
+            container.read(insertUpdateStateControllerProvider.future),
+            throwsA(
+              isA<AppException>().having(
+                (e) => e.message,
+                'message',
+                'Modelo de pedido não encontrado',
+              ),
+            ),
+          );
         },
       );
 

@@ -1,10 +1,13 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_update_state_controller.g.dart';
@@ -29,8 +32,22 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     final BSFSaleRequestEntity initialValue;
     if (args.saleRequestId == 0) {
+      final selectedRequest = ref.read(
+        requestTypeStateControllerProvider(
+          Modules.saleRequest,
+          args.enterpriseCode,
+        ).select(
+          (s) =>
+              s.value?.firstWhereOrNull((e) => e.code == args.requestTypeCode),
+        ),
+      );
+      if (selectedRequest == null) {
+        throw AppException('Modelo de pedido não encontrado'.hardcoded);
+      }
       //!inserting
-      initialValue = BSFSaleRequestEntity.empty();
+      initialValue = BSFSaleRequestEntity.empty().copyWith(
+        requestType: selectedRequest,
+      );
     } else {
       initialValue = await ref.read(
         saleRequestDetailsStateControllerProvider(args).future,
