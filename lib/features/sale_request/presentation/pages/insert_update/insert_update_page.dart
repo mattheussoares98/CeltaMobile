@@ -83,7 +83,7 @@ class _InsertUpdateContent extends ConsumerWidget {
                 ),
               );
               return DefaultAppBarTitle(
-                title: personalizedCode != null
+                title: personalizedCode?.isNotEmpty ?? false
                     ? 'Alterando ($personalizedCode)'.hardcoded
                     : 'Inserindo pedido'.hardcoded,
               );
