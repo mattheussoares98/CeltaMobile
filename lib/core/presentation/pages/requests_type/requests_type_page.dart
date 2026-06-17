@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/enterprises/presentation/controllers/c
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +21,29 @@ class RequestsTypePage extends ConsumerWidget {
       Modules.saleRequest,
       enterpriseCode,
     );
+    void goToInsertUpdateSaleRequest(int? requestTypeCode) {
+      if (kDebugMode) {
+        //TODO remove it
+        context.goNamed(
+          Routes.insertUpdateSaleRequest.name,
+          pathParameters: {
+            'enterpriseCode': enterpriseCode.toString(),
+            'requestTypeCode': requestTypeCode.toString(),
+            'saleRequestId': 0.toString(),
+            'customerCode': 0.toString(),
+          },
+        );
+      } else {
+        context.goNamed(
+          Routes.createSaleRequest.name,
+          pathParameters: {
+            'enterpriseCode': enterpriseCode.toString(),
+            'requestCode': requestTypeCode.toString(),
+          },
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
@@ -78,13 +102,7 @@ class RequestsTypePage extends ConsumerWidget {
                     return _RequestTypeItem(
                       key: ValueKey(request.code),
                       request: request,
-                      onTap: () => context.goNamed(
-                        Routes.createSaleRequest.name,
-                        pathParameters: {
-                          'enterpriseCode': enterpriseCode.toString(),
-                          'requestCode': request.code.toString(),
-                        },
-                      ),
+                      onTap: () => goToInsertUpdateSaleRequest(request.code),
                       enterpriseCode: enterpriseCode,
                     );
                   },
@@ -114,15 +132,7 @@ class _RequestTypeItem extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          context.goNamed(
-            Routes.createSaleRequest.name,
-            pathParameters: {
-              'enterpriseCode': enterpriseCode.toString(),
-              'requestCode': request.code.toString(),
-            },
-          );
-        },
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p8),
           child: Column(
