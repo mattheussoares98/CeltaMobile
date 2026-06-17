@@ -8,8 +8,8 @@ class SaleRequestArgs extends Equatable {
 
   const SaleRequestArgs({
     required this.enterpriseCode,
-    required this.customerCode,
     required this.saleRequestId,
+    this.customerCode = 0,
     this.requestTypeCode,
   });
 
