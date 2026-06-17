@@ -24,7 +24,7 @@ class RequestsTypePage extends ConsumerWidget {
     void goToInsertUpdateSaleRequest(int? requestTypeCode) {
       if (kDebugMode) {
         //TODO remove it
-        context.goNamed(
+        context.pushNamed(
           Routes.insertUpdateSaleRequest.name,
           pathParameters: {
             'enterpriseCode': enterpriseCode.toString(),
