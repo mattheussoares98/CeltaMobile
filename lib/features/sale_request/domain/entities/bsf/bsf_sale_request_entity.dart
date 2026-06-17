@@ -85,7 +85,7 @@ class BSFSaleRequestEntity extends Equatable {
   ];
 
   factory BSFSaleRequestEntity.empty() => BSFSaleRequestEntity(
-    code: null,
+    code: 0,
     dateOfEmission: null,
     dateOfDelivery: null,
     dateOfExpiration: null,
