@@ -36,4 +36,11 @@ class SaleRequestArgs extends Equatable {
       requestTypeCode: requestTypeCode ?? this.saleRequestId,
     );
   }
+
+  Map<String, String> toPathParametersJson() => {
+    'enterpriseCode': enterpriseCode.toString(),
+    'customerCode': customerCode.toString(),
+    'saleRequestId': saleRequestId.toString(),
+    'requestTypeCode': requestTypeCode.toString(),
+  };
 }

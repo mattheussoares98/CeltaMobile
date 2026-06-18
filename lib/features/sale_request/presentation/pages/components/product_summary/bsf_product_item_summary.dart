@@ -96,12 +96,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                   'heroTag': heroTag,
                   'container': ProviderScope.containerOf(context),
                 },
-                pathParameters: {
-                  'saleRequestId': args.saleRequestId.toString(),
-                  'enterpriseCode': args.enterpriseCode.toString(),
-                  'customerCode': args.customerCode.toString(),
-                  'requestTypeCode': args.requestTypeCode.toString(),
-                },
+                pathParameters: args.toPathParametersJson(),
               );
             },
             cartItemSummary: summaryContent,
