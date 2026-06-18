@@ -62,7 +62,6 @@ class IncrementAndDiscount extends ConsumerWidget {
               valueTypes: [financialDiscount],
               allowUpdate: allowUpdate,
               title: 'Desconto financeiro'.hardcoded,
-              //TODO test what happens if insert a discount bigger than the total liquid. Should have a "troco"/change field
               onUpdate: ref
                   .read(insertUpdateStateControllerProvider.notifier)
                   .updateFinancialDiscount,
