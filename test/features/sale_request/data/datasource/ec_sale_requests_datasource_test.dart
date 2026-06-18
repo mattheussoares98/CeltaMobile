@@ -240,6 +240,49 @@ void main() {
     });
   });
 
+  group('Insert', () {
+    test('should behave correctly on success', () async {
+      await sut.insert(
+        saleRequest: bSFSaleRequestModel,
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: bSFSaleRequestModel.toJson(),
+        ),
+      ).called(1);
+    });
+
+    test("should return false on error", () async {
+      httpClient.mockRequestError();
+
+      expectLater(
+        sut.insert(
+          saleRequest: bSFSaleRequestModel,
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+        throwsA(isA<Exception>()),
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: bSFSaleRequestModel.toJson(),
+        ),
+      ).called(1);
+    });
+  });
+
   group('ProcessCart', () {
     test('should behave correctly on success', () async {
       httpClient.mockRequest(json.encode(bSFSaleRequestModel.toJson()));

@@ -105,6 +105,21 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }
 
   @override
+  Future<void> insert({
+    required BSFSaleRequestModel saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  }) async {
+    await httpClient.request(
+      url:
+          '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: saleRequest.toJson(),
+    );
+  }
+
+  @override
   Future<BSFSaleRequestModel> processCart({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,

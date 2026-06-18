@@ -28,6 +28,12 @@ abstract class IEcSaleRequestsDatasource {
     required EcRequestParams params,
   });
 
+  Future<void> insert({
+    required BSFSaleRequestModel saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  });
+
   Future<BSFSaleRequestModel> processCart({
     required BSFSaleRequestModel saleRequest,
     required int enterpriseCode,
