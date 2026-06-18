@@ -19,80 +19,100 @@ class Summary extends ConsumerWidget {
 
     if (saleRequest == null) return const SizedBox();
 
-    //TODO use ExpansionTile instead. Create a default one
-    return Container(
-      padding: const EdgeInsets.all(Sizes.p8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Sizes.p8),
-        color: Colors.amber.withValues(alpha: .25),
+    return ExpansionTile(
+      title: Center(
+        child: Text(
+          'Sumário'.hardcoded,
+          style: context.theme.textTheme.titleMedium,
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TitleAndSubTitle(
-            title: 'Total bruto'.hardcoded,
-            subTitle: saleRequest.totalProductsBrut,
-            subTitleIsPrice: true,
-          ),
-          ManageDiscountOrIncrement(
-            valueTypes: [saleRequest.increment],
-            allowUpdate: saleRequest.requestType?.allowUseIncrement == true,
-            title: 'Acréscimo no pedido'.hardcoded,
-            onUpdate: notifier.updateIncrement,
-            onRemove: notifier.removeIncrement,
-            notAllowedMessage: 'Não permitido'.hardcoded,
-            liquidValue: saleRequest.saleRequestIncrement,
-          ),
-          ManageDiscountOrIncrement(
-            valueTypes:
-                saleRequest.discounts?.map((e) => e.discount).toList() ?? [],
-            allowUpdate: saleRequest.requestType?.allowUseDiscount == true,
-            title: 'Desconto no pedido'.hardcoded,
-            onUpdate: notifier.updateDiscount,
-            onRemove: notifier.removeDiscount,
-            notAllowedMessage: 'Não permitido'.hardcoded,
-            liquidValue: saleRequest.saleRequestDiscount,
-          ),
-          ManageDiscountOrIncrement(
-            valueTypes: [saleRequest.deliveryTax?.deliveryTax],
-            allowUpdate: saleRequest.requestType?.allowUseDeliveryTax == true,
-            title: 'Entrega do pedido'.hardcoded,
-            onUpdate: notifier.updateDeliveryTax,
-            onRemove: notifier.removeDeliveryTax,
-            notAllowedMessage: 'Não permitido'.hardcoded,
-            liquidValue: saleRequest.saleRequestDeliveryTax,
-          ),
-          TitleAndSubTitle(
-            title: 'Total dos acréscimos'.hardcoded,
-            subTitle: saleRequest.totalIncrement,
-            subTitleIsPrice: true,
-            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-              color: Colors.amber,
-            ),
-          ),
-          TitleAndSubTitle(
-            title: 'Total dos descontos'.hardcoded,
-            subTitle: saleRequest.totalDiscount,
-            subTitleIsPrice: true,
-            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-              color: Colors.red,
-            ),
-          ),
-          TitleAndSubTitle(
-            title: 'Total das taxas de entrega'.hardcoded,
-            subTitle: saleRequest.totalDeliveryTax,
-            subTitleIsPrice: true,
-            subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
-              color: Colors.blue,
-            ),
-          ),
-          TitleAndSubTitle(
-            title: 'Total líquido'.hardcoded,
-            subTitle: saleRequest.currentSaleRequestLiquid,
-            subTitleIsPrice: true,
-          ),
-        ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Sizes.p12),
       ),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Sizes.p12),
+      ),
+      backgroundColor: Colors.amber.withValues(alpha: .25),
+      collapsedBackgroundColor: Colors.amber.withValues(alpha: .3),
+      childrenPadding: const EdgeInsets.fromLTRB(
+        Sizes.p8,
+        0,
+        Sizes.p8,
+        Sizes.p8,
+      ),
+      iconColor: context.theme.primaryColorDark,
+      collapsedIconColor: context.theme.primaryColor,
+      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+      initiallyExpanded: true,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TitleAndSubTitle(
+              title: 'Total bruto'.hardcoded,
+              subTitle: saleRequest.totalProductsBrut,
+              subTitleIsPrice: true,
+            ),
+            ManageDiscountOrIncrement(
+              valueTypes: [saleRequest.increment],
+              allowUpdate: saleRequest.requestType?.allowUseIncrement == true,
+              title: 'Acréscimo no pedido'.hardcoded,
+              onUpdate: notifier.updateIncrement,
+              onRemove: notifier.removeIncrement,
+              notAllowedMessage: 'Não permitido'.hardcoded,
+              liquidValue: saleRequest.saleRequestIncrement,
+            ),
+            ManageDiscountOrIncrement(
+              valueTypes:
+                  saleRequest.discounts?.map((e) => e.discount).toList() ?? [],
+              allowUpdate: saleRequest.requestType?.allowUseDiscount == true,
+              title: 'Desconto no pedido'.hardcoded,
+              onUpdate: notifier.updateDiscount,
+              onRemove: notifier.removeDiscount,
+              notAllowedMessage: 'Não permitido'.hardcoded,
+              liquidValue: saleRequest.saleRequestDiscount,
+            ),
+            ManageDiscountOrIncrement(
+              valueTypes: [saleRequest.deliveryTax?.deliveryTax],
+              allowUpdate: saleRequest.requestType?.allowUseDeliveryTax == true,
+              title: 'Entrega do pedido'.hardcoded,
+              onUpdate: notifier.updateDeliveryTax,
+              onRemove: notifier.removeDeliveryTax,
+              notAllowedMessage: 'Não permitido'.hardcoded,
+              liquidValue: saleRequest.saleRequestDeliveryTax,
+            ),
+            TitleAndSubTitle(
+              title: 'Total dos acréscimos'.hardcoded,
+              subTitle: saleRequest.totalIncrement,
+              subTitleIsPrice: true,
+              subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: Colors.amber,
+              ),
+            ),
+            TitleAndSubTitle(
+              title: 'Total dos descontos'.hardcoded,
+              subTitle: saleRequest.totalDiscount,
+              subTitleIsPrice: true,
+              subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: Colors.red,
+              ),
+            ),
+            TitleAndSubTitle(
+              title: 'Total das taxas de entrega'.hardcoded,
+              subTitle: saleRequest.totalDeliveryTax,
+              subTitleIsPrice: true,
+              subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                color: Colors.blue,
+              ),
+            ),
+            TitleAndSubTitle(
+              title: 'Total líquido'.hardcoded,
+              subTitle: saleRequest.currentSaleRequestLiquid,
+              subTitleIsPrice: true,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
