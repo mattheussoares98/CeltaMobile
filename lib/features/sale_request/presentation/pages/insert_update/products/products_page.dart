@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/insert_products/components/search_products.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/products/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsPage extends ConsumerWidget {
   const ProductsPage({super.key});
@@ -18,7 +17,7 @@ class ProductsPage extends ConsumerWidget {
       args.enterpriseCode,
       BsRoutine.saleRequest,
       Modules.saleRequest,
-      anotherKey: args.saleRequestId.toString(),
+      anotherKey: args.toString(),
     );
 
     return Column(
@@ -27,12 +26,7 @@ class ProductsPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
           child: SearchProducts(searchProductKey: searchProductKey),
         ),
-        Expanded(
-          child: ProductsList(
-            searchProductKey: searchProductKey,
-            customerCode: args.customerCode,
-          ),
-        ),
+        Expanded(child: ProductsList(searchProductKey: searchProductKey)),
       ],
     );
   }

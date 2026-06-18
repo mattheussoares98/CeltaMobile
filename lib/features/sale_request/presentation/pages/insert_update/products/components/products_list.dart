@@ -12,13 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsList extends ConsumerWidget {
   final SearchProductKey searchProductKey;
-  final int customerCode;
 
-  const ProductsList({
-    super.key,
-    required this.searchProductKey,
-    required this.customerCode,
-  });
+  const ProductsList({super.key, required this.searchProductKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
