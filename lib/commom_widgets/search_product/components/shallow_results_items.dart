@@ -144,6 +144,7 @@ class _ShallowItemTile extends StatelessWidget {
                     subTitle: product.formattedPacking,
                     titleStyle: titleStyle,
                     subTitleStyle: packingStyle,
+                    removeColon: true,
                   ),
                   TitleAndSubTitle(
                     title: null,
