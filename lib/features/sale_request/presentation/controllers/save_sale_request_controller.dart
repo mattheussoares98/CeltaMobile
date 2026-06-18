@@ -162,15 +162,23 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         accessKey: userSession.user.AccessKey!,
       );
 
-      await ref
-          .read(ecSaleRequestsRepositoryProvider)
-          .update(
-            saleRequest: saleRequest,
-            enterpriseCode: enterpriseCode,
-            params: params,
-          );
+      if (saleRequestId == 0) {
+        await ref
+            .read(ecSaleRequestsRepositoryProvider)
+            .insert(
+              saleRequest: saleRequest,
+              enterpriseCode: enterpriseCode,
+              params: params,
+            );
+      } else {
+        await ref
+            .read(ecSaleRequestsRepositoryProvider)
+            .update(
+              saleRequest: saleRequest,
+              enterpriseCode: enterpriseCode,
+              params: params,
+            );
 
-      if (saleRequestId != 0) {
         final updatedBsfEntity = await ref
             .read(ecSaleRequestsRepositoryProvider)
             .getComplete(
