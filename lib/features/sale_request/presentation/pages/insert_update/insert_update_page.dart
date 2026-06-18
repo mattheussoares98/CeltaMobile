@@ -93,11 +93,17 @@ class _InsertUpdateContent extends ConsumerWidget {
           actions: [
             Consumer(
               builder: (_, ref, _) {
+                //!if there are changes, I can't calculate exactly the price. Because of
+                //!this, I show the sent total price by BS when there are no changes
+                final hasChanges = ref.watch(saleRequestHasChangesProvider);
+
                 final (int quantity, double totalPrice) = ref.watch(
                   insertUpdateStateControllerProvider.select(
                     (s) => (
                       s.value?.products?.length ?? 0,
-                      s.value?.currentSaleRequestLiquid ?? 0,
+                      hasChanges
+                          ? s.value?.currentSaleRequestLiquid ?? 0
+                          : s.value?.totalLiquid ?? 0,
                     ),
                   ),
                 );
