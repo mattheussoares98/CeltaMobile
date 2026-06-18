@@ -95,22 +95,17 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
         errorMessage =
             'Por favor, selecione um cliente antes de salvar.'.hardcoded;
         return;
-      }
-
-      if (saleRequest.products == null || saleRequest.products!.isEmpty) {
+      } else if (saleRequest.products == null ||
+          saleRequest.products!.isEmpty) {
         errorMessage = 'Adicione pelo menos um produto ao pedido.'.hardcoded;
         return;
-      }
-
-      if (saleRequest.requestType == null ||
+      } else if (saleRequest.requestType == null ||
           saleRequest.requestType?.code == null) {
         errorMessage =
             'O modelo de pedido não está selecionado. Esse erro jamais deveria acontecer, é um erro de programação. Entre em contato com o suporte técnico'
                 .hardcoded;
         return;
-      }
-
-      if (!saleRequest.isPaymentValid) {
+      } else if (!saleRequest.isPaymentValid) {
         errorMessage =
             'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.'
                 .hardcoded;
@@ -163,6 +158,10 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       );
 
       if (saleRequestId == 0) {
+        ref
+            .read(appUsageStateControllerProvider.notifier)
+            .addUsage(UsageType.insertSaleRequest);
+
         await ref
             .read(ecSaleRequestsRepositoryProvider)
             .insert(
@@ -171,6 +170,10 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
               params: params,
             );
       } else {
+        ref
+            .read(appUsageStateControllerProvider.notifier)
+            .addUsage(UsageType.updateSaleRequest);
+
         await ref
             .read(ecSaleRequestsRepositoryProvider)
             .update(

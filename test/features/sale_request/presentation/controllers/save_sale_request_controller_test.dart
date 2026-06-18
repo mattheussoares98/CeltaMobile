@@ -168,21 +168,9 @@ void main() {
     return container;
   }
 
-  setUpAll(() {
-    registerFallbackValue(EntityFactory.makeSaleRequestEntity());
-    registerFallbackValue(
-      LastSavedSaleRequestEntity(
-        saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
-        saleRequestNumber: faker.randomGenerator.integer(100).toString(),
-      ),
-    );
-    registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
-    registerFallbackValue(EntityFactory.makeEcRequestParams());
-
+  setUp(() {
     // --- Initialize Mocks and Data ONCE ---
-    mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
-    mockLocalPendingRepo = MockLocalSaleRequestRepository(); // New
-    mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
+
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -206,6 +194,25 @@ void main() {
           ),
           financials: [],
         );
+
+    fakeAppUsage = FakeAppUsageStateController();
+    mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
+    mockLocalPendingRepo = MockLocalSaleRequestRepository(); // New
+    mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
+  });
+  setUpAll(() {
+    registerFallbackValue(EntityFactory.makeSaleRequestEntity());
+    registerFallbackValue(
+      LastSavedSaleRequestEntity(
+        saleRequestEntity: EntityFactory.makeSaleRequestEntity(),
+        saleRequestNumber: faker.randomGenerator.integer(100).toString(),
+      ),
+    );
+    registerFallbackValue(EntityFactory.makeBSFSaleRequestEntity());
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
+    for (var usage in UsageType.values) {
+      registerFallbackValue(usage);
+    }
   });
 
   tearDown(() {
@@ -213,10 +220,6 @@ void main() {
     reset(mockSoapSaveSaleRequestRepository);
     reset(mockLocalPendingRepo);
     reset(mockEcSaleRequestsRepository);
-  });
-
-  setUp(() {
-    fakeAppUsage = FakeAppUsageStateController();
   });
 
   group('SaveSaleRequestController', () {
@@ -739,7 +742,7 @@ void main() {
       );
     });
     group('Update', () {
-      test('should call ecSaleRequestsRepository.update on success', () async {
+      test('should behave correctly on success', () async {
         // ARRANGE
         final container = makeProviderContainer();
 
@@ -796,6 +799,7 @@ void main() {
             params: fakeParams,
           ),
         ).called(1);
+        expect(fakeAppUsage.lastUsageType, UsageType.updateSaleRequest);
 
         verifyNever(
           () => mockEcSaleRequestsRepository.insert(
@@ -858,6 +862,7 @@ void main() {
               params: any(named: 'params'),
             ),
           );
+          expect(fakeAppUsage.lastUsageType, isNull);
         },
       );
       test(
@@ -947,7 +952,7 @@ void main() {
       });
     });
     group('Insert', () {
-      test('should call ecSaleRequestsRepository.insert on success', () async {
+      test('should behave correctly on success', () async {
         // ARRANGE
 
         final container = makeProviderContainer(
@@ -992,6 +997,7 @@ void main() {
             params: fakeParams,
           ),
         ).called(1);
+        expect(fakeAppUsage.lastUsageType, UsageType.insertSaleRequest);
         verifyNever(
           () => mockEcSaleRequestsRepository.update(
             saleRequest: any(named: 'saleRequest'),
@@ -1054,6 +1060,7 @@ void main() {
               params: any(named: 'params'),
             ),
           );
+          expect(fakeAppUsage.lastUsageType, isNull);
         },
       );
       test(

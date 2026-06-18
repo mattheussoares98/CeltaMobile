@@ -17,6 +17,7 @@ enum UsageType {
   insertUpdateCompetingPrices('Atualizou preços concorrentes'),
   liberateReceiptDocument('Liberou recebimento'),
   notDefined('Não definido'),
+  updateSaleRequest('Alterou pedido de vendas'),
   searchProducts('Pesquisou produtos'),
   sendToPrint('Marcou p/ impressão'),
   shallowSearchProduct('Consulta produtos (superficial)'),
