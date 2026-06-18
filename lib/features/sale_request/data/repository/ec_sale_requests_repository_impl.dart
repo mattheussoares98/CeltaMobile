@@ -68,6 +68,19 @@ class EcSaleRequestsRepositoryImpl implements IEcSaleRequestsRepository {
   }
 
   @override
+  Future<void> insert({
+    required BSFSaleRequestEntity saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  }) async {
+    await datasource.insert(
+      saleRequest: BSFSaleRequestModel.fromEntity(saleRequest),
+      enterpriseCode: enterpriseCode,
+      params: params,
+    );
+  }
+
+  @override
   Future<BSFSaleRequestEntity> processCart({
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,

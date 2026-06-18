@@ -28,6 +28,12 @@ abstract class IEcSaleRequestsRepository {
     required EcRequestParams params,
   });
 
+  Future<void> insert({
+    required BSFSaleRequestEntity saleRequest,
+    required int enterpriseCode,
+    required EcRequestParams params,
+  });
+
   Future<BSFSaleRequestEntity> processCart({
     required BSFSaleRequestEntity saleRequest,
     required int enterpriseCode,

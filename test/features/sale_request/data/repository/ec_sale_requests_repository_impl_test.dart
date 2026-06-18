@@ -1,9 +1,9 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
+import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
-import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -42,6 +42,14 @@ class EcGetSaleRequestsDatasourceSpy extends Mock
       params: any(named: 'params'),
     ),
   ).thenAnswer((_) async => response);
+
+  void mockInsert() => when(
+    () => this.insert(
+      saleRequest: any(named: 'saleRequest'),
+      enterpriseCode: any(named: 'enterpriseCode'),
+      params: any(named: 'params'),
+    ),
+  ).thenAnswer((_) async {});
 
   void mockProcessCart(BSFSaleRequestModel response) => when(
     () => this.processCart(
@@ -287,6 +295,57 @@ void main() {
 
       verify(
         () => mockDatasource.update(
+          saleRequest: BSFSaleRequestModel.fromEntity(
+            bSFSaleRequestModel.toEntity(),
+          ),
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+      ).called(1);
+    });
+  });
+
+  group('Insert', () {
+    test('should behave correctly on success', () async {
+      mockDatasource.mockInsert();
+
+      await sut.insert(
+        saleRequest: bSFSaleRequestModel.toEntity(),
+        enterpriseCode: enterpriseCode,
+        params: params,
+      );
+
+      verify(
+        () => mockDatasource.insert(
+          saleRequest: BSFSaleRequestModel.fromEntity(
+            bSFSaleRequestModel.toEntity(),
+          ),
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+      ).called(1);
+    });
+
+    test('should behave correctly on error', () async {
+      when(
+        () => mockDatasource.insert(
+          saleRequest: any(named: 'saleRequest'),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          params: any(named: 'params'),
+        ),
+      ).thenThrow(Exception());
+
+      expect(
+        sut.insert(
+          saleRequest: bSFSaleRequestModel.toEntity(),
+          enterpriseCode: enterpriseCode,
+          params: params,
+        ),
+        throwsA(isA<Exception>()),
+      );
+
+      verify(
+        () => mockDatasource.insert(
           saleRequest: BSFSaleRequestModel.fromEntity(
             bSFSaleRequestModel.toEntity(),
           ),
