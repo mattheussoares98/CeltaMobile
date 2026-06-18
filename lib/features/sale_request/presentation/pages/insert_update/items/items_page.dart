@@ -16,60 +16,51 @@ class ItemsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final args = ref.read(saleRequestArgsProvider);
-
-    return Consumer(
-      builder: (_, ref, _) {
-        final productsCount = ref.watch(
-          insertUpdateStateControllerProvider.select(
-            (v) => v.value?.products?.length ?? 0,
+    final productsCount = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (v) => v.value?.products?.length ?? 0,
+      ),
+    );
+    if (productsCount == 0) {
+      final child = Center(
+        child: Text(
+          'Adicione produtos no pedido!'.hardcoded,
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            color: Colors.red,
           ),
-        );
-        if (productsCount == 0) {
-          final child = Center(
-            child: Text(
-              'Adicione produtos no pedido!'.hardcoded,
-              style: context.theme.textTheme.titleMedium?.copyWith(
-                color: Colors.red,
+        ),
+      );
+
+      if (isSliver) {
+        return SliverToBoxAdapter(child: child);
+      }
+
+      return child;
+    }
+
+    final args = ref.read(saleRequestArgsProvider);
+    return ResponsiveListFlow(
+      padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
+      isSliver: isSliver,
+      itemCount: productsCount,
+      itemBuilder: (context, index) {
+        return Consumer(
+          builder: (_, ref, _) {
+            final item = ref.watch(
+              insertUpdateStateControllerProvider.select(
+                (v) => v.value!.products?.firstWhereIndexedOrNull(
+                  (i, _) => i == index,
+                ),
               ),
-            ),
-          );
-
-          if (isSliver) {
-            return SliverToBoxAdapter(child: child);
-          }
-
-          return child;
-        }
-        return ResponsiveListFlow(
-          padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
-          isSliver: isSliver,
-          itemCount: productsCount,
-          itemBuilder: (context, index) {
-            return Consumer(
-              builder: (_, ref, _) {
-                final item = ref.watch(
-                  insertUpdateStateControllerProvider.select(
-                    (v) => v.value!.products?.firstWhereIndexedOrNull(
-                      (i, _) => i == index,
-                    ),
-                  ),
-                );
-                if (item == null) {
-                  return const SizedBox.shrink();
-                }
-                return BSFProductItemSummary(
-                  key: ValueKey(
-                    '${item.productPackingCode ?? item.code}$isSliver',
-                  ),
-                  product: item.toProductEntity(args.enterpriseCode),
-                  item: item,
-                  enterpriseCode: args.enterpriseCode,
-                  customerCode: args.customerCode,
-                  saleRequestId: args.saleRequestId,
-                  heroPrefix: 'items$isSliver',
-                );
-              },
+            );
+            if (item == null) {
+              return const SizedBox.shrink();
+            }
+            return BSFProductItemSummary(
+              key: ValueKey('${item.productPackingCode ?? item.code}$isSliver'),
+              product: item.toProductEntity(args.enterpriseCode),
+              item: item,
+              heroPrefix: 'items$isSliver',
             );
           },
         );

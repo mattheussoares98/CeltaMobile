@@ -32,8 +32,6 @@ class ProductsList extends ConsumerWidget {
           );
         }
 
-        final saleRequestId = int.parse(searchProductKey.anotherKey!);
-
         return ResponsiveListFlow(
           padding: const EdgeInsets.all(Sizes.p4),
           itemCount: products.length,
@@ -58,9 +56,6 @@ class ProductsList extends ConsumerWidget {
                   key: ValueKey(product.PLU),
                   product: product,
                   item: existingItem ?? product.toBSFProductItemEntity(),
-                  enterpriseCode: searchProductKey.enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
                   heroPrefix: 'products',
                 );
               },

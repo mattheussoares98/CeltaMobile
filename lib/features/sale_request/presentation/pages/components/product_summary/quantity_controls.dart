@@ -10,18 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuantityControlButton extends ConsumerWidget {
   final BSFProductItemEntity item;
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
   final bool isAdding;
   final double size;
 
   const QuantityControlButton({
     super.key,
     required this.item,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
     required this.isAdding,
     this.size = 28,
   });

@@ -3,6 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -13,9 +14,6 @@ import 'package:go_router/go_router.dart';
 class BSFProductItemSummary extends ConsumerWidget {
   final ProductEntity product;
   final BSFProductItemEntity item;
-  final int enterpriseCode;
-  final int customerCode;
-  final int saleRequestId;
   final bool useCard;
   final String heroPrefix;
 
@@ -23,9 +21,6 @@ class BSFProductItemSummary extends ConsumerWidget {
     super.key,
     required this.product,
     required this.item,
-    required this.enterpriseCode,
-    required this.customerCode,
-    required this.saleRequestId,
     this.useCard = true,
     required this.heroPrefix,
   });
@@ -42,14 +37,7 @@ class BSFProductItemSummary extends ConsumerWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                QuantityControlButton(
-                  item: item,
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                  isAdding: false,
-                  size: 32,
-                ),
+                QuantityControlButton(item: item, isAdding: false, size: 32),
                 gapW12,
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -73,21 +61,9 @@ class BSFProductItemSummary extends ConsumerWidget {
                   ],
                 ),
                 gapW12,
-                QuantityControlButton(
-                  item: item,
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                  isAdding: true,
-                  size: 32,
-                ),
+                QuantityControlButton(item: item, isAdding: true, size: 32),
                 const Spacer(),
-                DeleteSummaryButton(
-                  item: item,
-                  enterpriseCode: enterpriseCode,
-                  customerCode: customerCode,
-                  saleRequestId: saleRequestId,
-                ),
+                DeleteSummaryButton(item: item),
               ],
             ),
           CartSummaryTable(item: item),
@@ -111,6 +87,7 @@ class BSFProductItemSummary extends ConsumerWidget {
             routine: BsRoutine.saleRequest,
             hideCurrentAndSaleStocks: true,
             onTap: () {
+              final args = ref.read(saleRequestArgsProvider);
               context.pushNamed(
                 Routes.saleRequestInsertProduct.name,
                 extra: {
@@ -120,9 +97,10 @@ class BSFProductItemSummary extends ConsumerWidget {
                   'container': ProviderScope.containerOf(context),
                 },
                 pathParameters: {
-                  'saleRequestId': saleRequestId.toString(),
-                  'enterpriseCode': enterpriseCode.toString(),
-                  'customerCode': customerCode.toString(),
+                  'saleRequestId': args.saleRequestId.toString(),
+                  'enterpriseCode': args.enterpriseCode.toString(),
+                  'customerCode': args.customerCode.toString(),
+                  'requestTypeCode': args.requestTypeCode.toString(),
                 },
               );
             },
