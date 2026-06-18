@@ -30,7 +30,6 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     Map<String, String>? pathParameters,
     Object? extra,
   }) async {
-    //TODO centralize all navigations here
     final minimumDateLoadRequestType = DateTime(2026, 5, 7);
     final minimumBsVersionDate = switch (route) {
       Routes.searchSaleRequests => DateTime(2026, 3, 26),

@@ -10,7 +10,6 @@ class CartItemSummary extends StatelessWidget {
   final ProductEntity product;
   final double? totalDiscount;
   final int priceDecimalHouses;
-  //TODO use equal BSFProductItemSummary
   const CartItemSummary({
     super.key,
     required this.cartQuantity,
