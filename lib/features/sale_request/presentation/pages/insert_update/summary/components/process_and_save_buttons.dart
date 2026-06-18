@@ -19,11 +19,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
 
       final (errorMessage, canSaveAndNeedProcessCart) = await ref
           .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
-          .saveBsfSaleRequest(
-            customerCode: args.customerCode,
-            saleRequestId: args.saleRequestId,
-            isOnlyValidating: true,
-          );
+          .saveBsfSaleRequest(true);
       if (errorMessage?.isNotEmpty == true && context.mounted) {
         final proceed = await showAlertDialog(
           context: context,
@@ -43,11 +39,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
 
       final (failedMessage, _) = await ref
           .read(saveSaleRequestControllerProvider(args.enterpriseCode).notifier)
-          .saveBsfSaleRequest(
-            customerCode: args.customerCode,
-            saleRequestId: args.saleRequestId,
-            isOnlyValidating: false,
-          );
+          .saveBsfSaleRequest(false);
 
       if (failedMessage?.isNotEmpty == true && context.mounted) {
         showAlertDialog(

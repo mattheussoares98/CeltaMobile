@@ -77,11 +77,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
     });
   }
 
-  Future<(String?, bool)> saveBsfSaleRequest({
-    required int customerCode,
-    required int saleRequestId, //0 == insert
-    required bool isOnlyValidating,
-  }) async {
+  Future<(String?, bool)> saveBsfSaleRequest(bool isOnlyValidating) async {
     String? errorMessage;
     bool canSaveAndNeedProcessCart = false;
     state = const AsyncValue.loading();
@@ -90,8 +86,10 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       final saleRequest = await ref.read(
         insertUpdateStateControllerProvider.future,
       );
+      final customerCode = saleRequest.customer?.code;
+      final saleRequestId = saleRequest.code ?? 0;
 
-      if (saleRequest.customer == null || saleRequest.customer?.code == null) {
+      if (customerCode == null) {
         errorMessage =
             'Por favor, selecione um cliente antes de salvar.'.hardcoded;
         return;
@@ -145,9 +143,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
             'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?'
                 .hardcoded;
         return;
-      }
-
-      if (isOnlyValidating) {
+      } else if (isOnlyValidating) {
         return;
       }
 

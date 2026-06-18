@@ -217,9 +217,9 @@ void main() {
 
   tearDown(() {
     // Reset mocks after each test
-    reset(mockSoapSaveSaleRequestRepository);
-    reset(mockLocalPendingRepo);
-    reset(mockEcSaleRequestsRepository);
+    // reset(mockSoapSaveSaleRequestRepository);
+    // reset(mockLocalPendingRepo);
+    // reset(mockEcSaleRequestsRepository);
   });
 
   group('SaveSaleRequestController', () {
@@ -395,12 +395,15 @@ void main() {
         () async {
           // ARRANGE
           final spySaleRequests = SpySaleRequestsStateController();
+          const validSaleRequestId = 99; // Not 0
+          final validSaleRequest = fakeBSFSaleRequestEntity.copyWith(
+            code: validSaleRequestId,
+          );
 
           final container = makeProviderContainer(
             spySaleRequestsStateController: spySaleRequests,
+            insertUpdateSaleRequestEntity: validSaleRequest,
           );
-
-          const validSaleRequestId = 99; // Not 0
 
           when(
             () => mockEcSaleRequestsRepository.update(
@@ -429,7 +432,7 @@ void main() {
           // We read the details future once to test invalidation
           final args = SaleRequestArgs(
             enterpriseCode: fakeEnterprise.Code!,
-            customerCode: fakePendingRequest.customer!.Code!,
+            customerCode: validSaleRequest.customer!.code!,
             saleRequestId: validSaleRequestId,
           );
           await container.read(
@@ -449,17 +452,13 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: validSaleRequestId,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           // ASSERT
           verify(
             () => mockEcSaleRequestsRepository.getComplete(
               enterpriseCode: fakeEnterprise.Code!,
-              customerCode: fakePendingRequest.customer!.Code!,
+              customerCode: validSaleRequest.customer!.code!,
               saleRequestCode: validSaleRequestId,
               params: any(named: 'params'),
             ),
@@ -508,11 +507,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           // ASSERT
           expect(errorMessage, isNotEmpty);
@@ -551,11 +546,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           // ASSERT
           expect(errorMessage, isNotEmpty);
@@ -594,11 +585,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           expect(errorMessage, isNotEmpty);
           expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -636,11 +623,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           // ASSERT
           expect(errorMessage, isNotEmpty);
@@ -676,11 +659,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           expect(errorMessage, isNotEmpty);
           expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -722,11 +701,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: false,
-              );
+              .saveBsfSaleRequest(false);
 
           expect(errorMessage, isNotEmpty);
           expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -752,7 +727,9 @@ void main() {
             enterpriseCode: any(named: 'enterpriseCode'),
             params: any(named: 'params'),
           ),
-        ).thenAnswer((_) async {});
+        ).thenAnswer((_) async {
+          await Future.delayed(Duration.zero);
+        });
         when(
           () => mockEcSaleRequestsRepository.getComplete(
             saleRequestCode: any(named: 'saleRequestCode'),
@@ -773,11 +750,7 @@ void main() {
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
-            .saveBsfSaleRequest(
-              customerCode: fakePendingRequest.customer!.Code!,
-              saleRequestId: fakeBSFSaleRequestEntity.code!,
-              isOnlyValidating: false,
-            );
+            .saveBsfSaleRequest(false);
 
         // ASSERT
         expect(errorMessage, isNull);
@@ -795,7 +768,7 @@ void main() {
           () => mockEcSaleRequestsRepository.getComplete(
             saleRequestCode: fakeBSFSaleRequestEntity.code!,
             enterpriseCode: fakeEnterprise.Code!,
-            customerCode: fakePendingRequest.customer!.Code!,
+            customerCode: fakeBSFSaleRequestEntity.customer!.code!,
             params: fakeParams,
           ),
         ).called(1);
@@ -845,11 +818,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: fakeBSFSaleRequestEntity.code!,
-                isOnlyValidating: true,
-              );
+              .saveBsfSaleRequest(true);
 
           // ASSERT
           expect(errorMessage, isNotEmpty);
@@ -893,11 +862,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: fakeBSFSaleRequestEntity.code!,
-                isOnlyValidating: true,
-              );
+              .saveBsfSaleRequest(true);
 
           // ASSERT
           expect(errorMessage, isNull);
@@ -937,11 +902,7 @@ void main() {
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
-            .saveBsfSaleRequest(
-              customerCode: fakePendingRequest.customer!.Code!,
-              saleRequestId: fakeBSFSaleRequestEntity.code!,
-              isOnlyValidating: false,
-            );
+            .saveBsfSaleRequest(false);
 
         // ASSERT
         expect(canSaveAndNeedProcessCart, isFalse);
@@ -980,11 +941,7 @@ void main() {
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
-            .saveBsfSaleRequest(
-              customerCode: fakePendingRequest.customer!.Code!,
-              saleRequestId: 0,
-              isOnlyValidating: false,
-            );
+            .saveBsfSaleRequest(false);
 
         // ASSERT
         expect(errorMessage, isNull);
@@ -1043,11 +1000,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: true,
-              );
+              .saveBsfSaleRequest(true);
 
           // ASSERT
           expect(errorMessage, isNotEmpty);
@@ -1094,11 +1047,7 @@ void main() {
                   fakeEnterprise.Code!,
                 ).notifier,
               )
-              .saveBsfSaleRequest(
-                customerCode: fakePendingRequest.customer!.Code!,
-                saleRequestId: 0,
-                isOnlyValidating: true,
-              );
+              .saveBsfSaleRequest(true);
 
           // ASSERT
           expect(errorMessage, isNull);
@@ -1142,11 +1091,7 @@ void main() {
             .read(
               saveSaleRequestControllerProvider(fakeEnterprise.Code!).notifier,
             )
-            .saveBsfSaleRequest(
-              customerCode: fakePendingRequest.customer!.Code!,
-              saleRequestId: 0,
-              isOnlyValidating: false,
-            );
+            .saveBsfSaleRequest(false);
 
         // ASSERT
         expect(canSaveAndNeedProcessCart, isFalse);
