@@ -21,8 +21,7 @@ class SaleRequestArgs extends Equatable {
     requestTypeCode,
   ];
 
-  bool get isInserting =>
-      saleRequestId == 0 || customerCode == 0 || requestTypeCode == null;
+  bool get isInserting => saleRequestId == 0 || customerCode == 0;
 
   SaleRequestArgs copyWith({
     int? enterpriseCode,

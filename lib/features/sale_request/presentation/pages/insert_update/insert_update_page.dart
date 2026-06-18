@@ -83,9 +83,9 @@ class _InsertUpdateContent extends ConsumerWidget {
                 ),
               );
               return DefaultAppBarTitle(
-                title: personalizedCode?.isNotEmpty ?? false
-                    ? 'Alterando ($personalizedCode)'.hardcoded
-                    : 'Inserindo pedido'.hardcoded,
+                title: saleRequestId == 0
+                    ? 'Inserindo pedido'.hardcoded
+                    : 'Alterando ($personalizedCode)'.hardcoded,
               );
             },
           ),
