@@ -26,7 +26,7 @@ class DefaultDropDown<T> extends StatefulWidget {
     required this.label,
     this.onBeforeChange,
     this.hint,
-    this.dropdownHeight = 40,
+    this.dropdownHeight = 50, //enough to show the error
     this.validator,
     this.showLabelAtTopLeft = false,
     this.isSimple = false,
@@ -201,60 +201,71 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
           child: Stack(
             children: [
               ?topLeftLabel,
-              DropdownButtonFormField<T>(
-                key: _fieldKey,
-                autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-                decoration: const InputDecoration(border: InputBorder.none),
-                isDense: true,
-                padding: const EdgeInsets.only(left: Sizes.p8),
-                dropdownColor: Colors.white,
-                validator: widget.validator,
-                initialValue: widget.selectedItem,
-                isExpanded: true,
-                alignment: Alignment.center,
-                iconSize: 17,
-                onTap: widget.adviceMessage == null
-                    ? null
-                    : () {
-                        showAlertDialog(
-                          context: context,
-                          title: 'Atenção!'.hardcoded,
-                          content: widget.adviceMessage!,
-                        );
-                      },
-                hint:
-                    widget.hint ??
-                    (widget.label != null ? Text(widget.label!) : null),
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: theme.textTheme.titleMedium?.fontSize,
-                  color: Colors.black,
-                  height: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                items: widget.items,
-                onChanged:
-                    widget.onChanged == null || (widget.items?.length ?? 0) < 1
-                    ? null
-                    : (value) async {
-                        if (value != null) {
-                          if (value == widget.selectedItem) return;
-                          if (widget.onBeforeChange != null) {
-                            final confirmed = await widget.onBeforeChange!(
-                              value,
-                            );
-                            if (confirmed) {
-                              widget.onChanged!(value);
-                            } else {
-                              _fieldKey.currentState?.didChange(
-                                widget.selectedItem,
+              Center(
+                child: DropdownButtonFormField<T>(
+                  key: _fieldKey,
+                  autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+                  decoration: const InputDecoration(border: InputBorder.none),
+                  isDense: true,
+                  padding: const EdgeInsets.only(left: Sizes.p8),
+                  dropdownColor: Colors.white,
+                  validator: widget.validator,
+                  initialValue: widget.selectedItem,
+                  errorBuilder: (context, errorText) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: Sizes.p8, bottom: 2),
+                      child: Text(errorText),
+                    );
+                  },
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  iconSize: 17,
+                  onTap: widget.adviceMessage == null
+                      ? null
+                      : () {
+                          showAlertDialog(
+                            context: context,
+                            title: 'Atenção!'.hardcoded,
+                            content: widget.adviceMessage!,
+                          );
+                        },
+                  hint:
+                      widget.hint ??
+                      (widget.label != null
+                          ? Center(child: Text(widget.label!))
+                          : null),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: theme.textTheme.titleMedium?.fontSize,
+                    color: Colors.black,
+                    height: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  items: widget.items,
+                  onChanged:
+                      widget.onChanged == null ||
+                          (widget.items?.length ?? 0) < 1
+                      ? null
+                      : (value) async {
+                          if (value != null) {
+                            if (value == widget.selectedItem) return;
+                            if (widget.onBeforeChange != null) {
+                              final confirmed = await widget.onBeforeChange!(
+                                value,
                               );
+                              if (confirmed) {
+                                widget.onChanged!(value);
+                              } else {
+                                _fieldKey.currentState?.didChange(
+                                  widget.selectedItem,
+                                );
+                              }
+                            } else {
+                              widget.onChanged!(value);
                             }
-                          } else {
-                            widget.onChanged!(value);
                           }
-                        }
-                      },
+                        },
+                ),
               ),
             ],
           ),
