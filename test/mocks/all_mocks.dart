@@ -1097,7 +1097,7 @@ class FakeAppUsageStateController extends AppUsageStateController {
   UsageType? get lastUsageType => _lastUsageType;
 
   @override
-  FutureOr<List<AppUsageEntity>?> build() => null;
+  FutureOr<List<GroupedUsageEntity>?> build() => null;
 
   @override
   Future<void> addUsage(UsageType usageType) async {

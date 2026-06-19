@@ -68,11 +68,11 @@ void main() {
         final start = fakerInstance.date.dateTime();
         final fakeList = List.generate(
           3,
-          (_) => EntityFactory.makeAppUsageEntity(),
+          (_) => EntityFactory.makeGroupedUsageEntity(),
         );
 
         when(
-          () => mockRepository.loadRemoteUsageReport(
+          () => mockRepository.loadGroupedUsageReport(
             enterpriseId: any(named: 'enterpriseId'),
             start: any(named: 'start'),
             end: any(named: 'end'),
@@ -88,7 +88,7 @@ void main() {
         );
 
         // PERFORMANCE: Using a listener to verify the loading state transition.
-        final states = <AsyncValue<List<AppUsageEntity>?>>[];
+        final states = <AsyncValue<List<GroupedUsageEntity>?>>[];
         container.listen(
           appUsageStateControllerProvider,
           (previous, next) => states.add(next),
@@ -98,11 +98,11 @@ void main() {
 
         expect(states, [
           isA<AsyncLoading>(),
-          AsyncData<List<AppUsageEntity>?>(fakeList),
+          AsyncData<List<GroupedUsageEntity>?>(fakeList),
         ]);
 
         verify(
-          () => mockRepository.loadRemoteUsageReport(
+          () => mockRepository.loadGroupedUsageReport(
             enterpriseId: null,
             start: start,
             end: start,
@@ -114,7 +114,7 @@ void main() {
         final exception = Exception('Remote failure');
 
         when(
-          () => mockRepository.loadRemoteUsageReport(
+          () => mockRepository.loadGroupedUsageReport(
             enterpriseId: any(named: 'enterpriseId'),
             start: any(named: 'start'),
             end: any(named: 'end'),

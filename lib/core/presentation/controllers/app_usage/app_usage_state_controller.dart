@@ -11,13 +11,13 @@ part 'app_usage_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class AppUsageStateController extends _$AppUsageStateController {
   @override
-  FutureOr<List<AppUsageEntity>?> build() => null;
+  FutureOr<List<GroupedUsageEntity>?> build() => null;
 
   Future<void> loadRemoteUsageReport(DateTime date) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(appUsageRepositoryProvider);
-      return await repository.loadRemoteUsageReport(
+      return await repository.loadGroupedUsageReport(
         enterpriseId: null, //load from all enterprises if it is null
         start: date, //considering only month and year
         end: date, //considering only month and year

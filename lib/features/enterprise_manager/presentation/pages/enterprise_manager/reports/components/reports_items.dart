@@ -29,92 +29,92 @@ class ReportsItems extends ConsumerWidget {
           child: AnimatedBuilder(
             animation: filterController,
             builder: (_, _) {
-              final usageByEnterprise = groupBy(
-                usageReports!.nonNulls.where((e) {
-                  final filter = filterController.text
-                      .toLowerCase()
-                      .removeWhiteSpaces();
-                  final enterpriseName = e.enterpriseName!
-                      .toLowerCase()
-                      .removeWhiteSpaces();
+              // final usageByEnterprise = groupBy(
+              //   usageReports!.nonNulls.where((e) {
+              //     final filter = filterController.text
+              //         .toLowerCase()
+              //         .removeWhiteSpaces();
+              //     final enterpriseName = e.enterpriseName!
+              //         .toLowerCase()
+              //         .removeWhiteSpaces();
 
-                  return filterController.text.isEmpty ||
-                      enterpriseName.contains(filter);
-                }),
-                (e) => e.enterpriseName!,
-              );
+              //     return filterController.text.isEmpty ||
+              //         enterpriseName.contains(filter);
+              //   }),
+              //   (e) => e.enterpriseName!,
+              // );
 
-              final groupEntries = usageByEnterprise.entries.toList()
-                ..sort(
-                  (a, b) => b.value
-                      .fold(0, (p, n) => p + n.requestCount)
-                      .compareTo(a.value.fold(0, (p, n) => p + n.requestCount)),
-                );
-              final totalRequests = groupEntries.fold<int>(
-                0,
-                (sum, e) =>
-                    sum +
-                    e.value.fold<int>(0, (sum, r) => sum + r.requestCount),
-              );
+              // final groupEntries = usageByEnterprise.entries.toList()
+              //   ..sort(
+              //     (a, b) => b.value
+              //         .fold(0, (p, n) => p + n.requestCount)
+              //         .compareTo(a.value.fold(0, (p, n) => p + n.requestCount)),
+              //   );
+              // final totalRequests = groupEntries.fold<int>(
+              //   0,
+              //   (sum, e) =>
+              //       sum +
+              //       e.value.fold<int>(0, (sum, r) => sum + r.requestCount),
+              // );
 
-              return Column(
+              return const Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          '${groupEntries.length} clientes'.hardcoded,
-                        ),
-                      ),
-                      gapW8,
-                      Flexible(
-                        flex: 2,
-                        child: Text('$totalRequests requisições'.hardcoded),
-                      ),
-                    ],
-                  ),
-                  ...groupEntries.map((e) {
-                    final enterpriseName = e.key;
-                    final reports = e.value;
-                    final typeTotals =
-                        groupBy(reports, (e) => e.usageType).entries.map((
-                          entry,
-                        ) {
-                          final type = entry.key;
-                          final total = entry.value.fold<int>(
-                            0,
-                            (sum, r) => sum + r.requestCount,
-                          );
-                          return (name: type?.description, total: total);
-                        }).toList()..sort((a, b) => b.total.compareTo(a.total));
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Flexible(
+                  //       child: Text(
+                  //         '${groupEntries.length} clientes'.hardcoded,
+                  //       ),
+                  //     ),
+                  //     gapW8,
+                  //     Flexible(
+                  //       flex: 2,
+                  //       child: Text('$totalRequests requisições'.hardcoded),
+                  //     ),
+                  //   ],
+                  // ),
+                  // ...groupEntries.map((e) {
+                  //   final enterpriseName = e.key;
+                  //   final reports = e.value;
+                  //   final typeTotals =
+                  //       groupBy(reports, (e) => e.usageType).entries.map((
+                  //         entry,
+                  //       ) {
+                  //         final type = entry.key;
+                  //         final total = entry.value.fold<int>(
+                  //           0,
+                  //           (sum, r) => sum + r.requestCount,
+                  //         );
+                  //         return (name: type?.description, total: total);
+                  //       }).toList()..sort((a, b) => b.total.compareTo(a.total));
 
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${enterpriseName.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
-                              style: context.theme.textTheme.titleMedium,
-                            ),
+                  //   return Card(
+                  //     margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.all(Sizes.p8),
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           Text(
+                  //             '${enterpriseName.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
+                  //             style: context.theme.textTheme.titleMedium,
+                  //           ),
 
-                            _RequestsByTypeOrUser(
-                              groupingByType: true,
-                              reports: reports,
-                            ),
-                            const Divider(),
-                            _RequestsByTypeOrUser(
-                              groupingByType: false,
-                              reports: reports,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
+                  //           _RequestsByTypeOrUser(
+                  //             groupingByType: true,
+                  //             reports: reports,
+                  //           ),
+                  //           const Divider(),
+                  //           _RequestsByTypeOrUser(
+                  //             groupingByType: false,
+                  //             reports: reports,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),
                   // ResponsiveListFlow(
                   //   itemCount: groupEntries.length,
                   //   itemBuilder: (_, enterpriseIndex) {
