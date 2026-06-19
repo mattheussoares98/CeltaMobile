@@ -9,8 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReportsItems extends ConsumerWidget {
-  final TextEditingController filterController;
-  const ReportsItems({super.key, required this.filterController});
+  final TextEditingController enterpriseController;
+  final TextEditingController usageTypeController;
+  const ReportsItems({
+    super.key,
+    required this.enterpriseController,
+    required this.usageTypeController,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,19 +32,42 @@ class ReportsItems extends ConsumerWidget {
 
         return SliverToBoxAdapter(
           child: AnimatedBuilder(
-            animation: filterController,
+            animation: Listenable.merge([
+              enterpriseController,
+              usageTypeController,
+            ]),
             builder: (_, _) {
-              final filteredEnterprises = usageReports?.where((e) {
-                final filter = filterController.text
-                    .toLowerCase()
-                    .removeWhiteSpaces();
-                final enterpriseName = e.enterpriseName!
-                    .toLowerCase()
-                    .removeWhiteSpaces();
+              final filterEnterprise = enterpriseController.text
+                  .toLowerCase()
+                  .removeWhiteSpaces();
+              final filterUsage = usageTypeController.text
+                  .toLowerCase()
+                  .removeWhiteSpaces();
 
-                return filterController.text.isEmpty ||
-                    enterpriseName.contains(filter);
-              });
+              final filteredEnterprises = usageReports
+                  ?.where((e) {
+                    final enterpriseName = e.enterpriseName!
+                        .toLowerCase()
+                        .removeWhiteSpaces();
+                    return enterpriseController.text.isEmpty ||
+                        enterpriseName.contains(filterEnterprise);
+                  })
+                  .map((e) {
+                    if (usageTypeController.text.isEmpty) {
+                      return e;
+                    }
+                    final filteredRequests = e.requests.where((r) {
+                      final usageTypeDesc =
+                          r.usageType?.description
+                              .toLowerCase()
+                              .removeWhiteSpaces() ??
+                          '';
+                      return usageTypeDesc.contains(filterUsage);
+                    }).toList();
+                    return e.copyWith(usages: filteredRequests);
+                  })
+                  .where((e) => e.requests.isNotEmpty)
+                  .toList();
 
               final totalRequests = filteredEnterprises
                   ?.expand((e) => e.requests)
@@ -65,18 +93,11 @@ class ReportsItems extends ConsumerWidget {
                   ),
                   ...?filteredEnterprises?.map((e) {
                     final enterpriseName = e.enterpriseName;
-                    final reports = e.requests;
-                    final typeTotals =
-                        groupBy(reports, (e) => e.usageType).entries.map((
-                          entry,
-                        ) {
-                          final type = entry.key;
-                          final total = entry.value.fold<int>(
-                            0,
-                            (sum, r) => sum + r.requestCount,
-                          );
-                          return (name: type?.description, total: total);
-                        }).toList()..sort((a, b) => b.total.compareTo(a.total));
+                    final requests = e.requests;
+                    final total = requests.fold<int>(
+                      0,
+                      (p, n) => p + n.requestCount,
+                    );
 
                     return Card(
                       margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
@@ -86,32 +107,24 @@ class ReportsItems extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '${enterpriseName?.toUpperCase()} (${typeTotals.fold<int>(0, (s, t) => s + t.total).toString().toBrazilianNumber(0)})',
+                              '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
                               style: context.theme.textTheme.titleMedium,
                             ),
 
                             _RequestsByTypeOrUser(
                               groupingByType: true,
-                              reports: reports,
+                              reports: requests,
                             ),
                             const Divider(),
                             _RequestsByTypeOrUser(
                               groupingByType: false,
-                              reports: reports,
+                              reports: requests,
                             ),
                           ],
                         ),
                       ),
                     );
                   }),
-                  // ResponsiveListFlow(
-                  //   itemCount: groupEntries.length,
-                  //   itemBuilder: (_, enterpriseIndex) {
-                  //     final enterpriseName = groupEntries[enterpriseIndex].key;
-                  //     final reports = groupEntries[enterpriseIndex].value;
-
-                  //   },
-                  // ),
                 ],
               );
             },

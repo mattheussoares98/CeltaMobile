@@ -14,11 +14,13 @@ class ReportsPage extends ConsumerStatefulWidget {
 }
 
 class _ReportsPageState extends ConsumerState<ReportsPage> {
-  final filterController = TextEditingController();
+  final enterpriseController = TextEditingController();
+  final usageTypeController = TextEditingController();
 
   @override
   void dispose() {
-    filterController.dispose();
+    enterpriseController.dispose();
+    usageTypeController.dispose();
     super.dispose();
   }
 
@@ -36,13 +38,27 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
             child: SizedBox(
               width: Breakpoint.tablet,
               child: DefaultTextFormField(
-                controller: filterController,
+                controller: enterpriseController,
                 hintText: 'Filtrar empresa'.hardcoded,
                 labelText: 'Filtrar empresa'.hardcoded,
               ),
             ),
           ),
-          ReportsItems(filterController: filterController),
+          gapSliverH8,
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: Breakpoint.tablet,
+              child: DefaultTextFormField(
+                controller: usageTypeController,
+                hintText: 'Filtrar tipo de uso'.hardcoded,
+                labelText: 'Filtrar tipo de uso'.hardcoded,
+              ),
+            ),
+          ),
+          ReportsItems(
+            enterpriseController: enterpriseController,
+            usageTypeController: usageTypeController,
+          ),
         ],
       ),
     );
