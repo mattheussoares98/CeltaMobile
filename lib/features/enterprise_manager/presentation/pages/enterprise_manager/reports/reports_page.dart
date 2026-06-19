@@ -26,6 +26,24 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktop = MediaQuery.sizeOf(context).width >= Breakpoint.desktop;
+    final filterEnterprise = SizedBox(
+      width: Breakpoint.tablet,
+      child: DefaultTextFormField(
+        controller: enterpriseController,
+        hintText: 'Filtrar empresa'.hardcoded,
+        labelText: 'Filtrar empresa'.hardcoded,
+      ),
+    );
+    final filterUsageType = SizedBox(
+      width: Breakpoint.tablet,
+      child: DefaultTextFormField(
+        controller: usageTypeController,
+        hintText: 'Filtrar tipo de uso'.hardcoded,
+        labelText: 'Filtrar tipo de uso'.hardcoded,
+      ),
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: CustomScrollView(
@@ -34,27 +52,23 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
           gapSliverH8,
           const StartAndEndDate(),
           gapSliverH8,
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: Breakpoint.tablet,
-              child: DefaultTextFormField(
-                controller: enterpriseController,
-                hintText: 'Filtrar empresa'.hardcoded,
-                labelText: 'Filtrar empresa'.hardcoded,
+          if (isDesktop)
+            SliverToBoxAdapter(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(child: filterEnterprise),
+                  gapW12,
+                  Flexible(child: filterUsageType),
+                ],
+              ),
+            )
+          else
+            SliverToBoxAdapter(
+              child: Column(
+                children: [filterEnterprise, gapH8, filterUsageType],
               ),
             ),
-          ),
-          gapSliverH8,
-          SliverToBoxAdapter(
-            child: SizedBox(
-              width: Breakpoint.tablet,
-              child: DefaultTextFormField(
-                controller: usageTypeController,
-                hintText: 'Filtrar tipo de uso'.hardcoded,
-                labelText: 'Filtrar tipo de uso'.hardcoded,
-              ),
-            ),
-          ),
           ReportsItems(
             enterpriseController: enterpriseController,
             usageTypeController: usageTypeController,
