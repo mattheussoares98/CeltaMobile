@@ -3,32 +3,44 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'app_usage.dart';
 
 class GroupedUsageModel extends GroupedUsageEntity {
-  const GroupedUsageModel({super.enterpriseName, required super.usages});
+  const GroupedUsageModel({
+    super.enterpriseName,
+    required super.requests,
+    required super.enterpriseId,
+  });
 
   @override
-  List<Object?> get props => [enterpriseName, usages];
+  List<Object?> get props => [enterpriseName, requests, enterpriseId];
 
   Map<String, dynamic> toJson() => {
     'enterprise_name': enterpriseName,
-    'usages': usages.map((e) => (e as AppUsageModel).toJson()).toList(),
+    'enterprise_id': enterpriseId,
+    'requests': requests.map((e) => (e as AppUsageModel).toJson()).toList(),
   };
 
   factory GroupedUsageModel.fromJson(Map map) {
     return GroupedUsageModel(
       enterpriseName: map['enterprise_name'],
-      usages: (map['usages'] as List<Map>)
+      enterpriseId: map['enterprise_id'],
+      requests: (map['requests'] as List)
           .map((e) => AppUsageModel.fromJson(e))
           .toList(),
     );
   }
 
-  GroupedUsageEntity toEntity() =>
-      GroupedUsageEntity(enterpriseName: enterpriseName, usages: usages);
+  GroupedUsageEntity toEntity() => GroupedUsageEntity(
+    enterpriseName: enterpriseName,
+    enterpriseId: enterpriseId,
+    requests: requests,
+  );
 
   factory GroupedUsageModel.fromEntity(GroupedUsageEntity entity) {
     return GroupedUsageModel(
       enterpriseName: entity.enterpriseName,
-      usages: entity.usages.map((e) => AppUsageModel.fromEntity(e)).toList(),
+      enterpriseId: entity.enterpriseId,
+      requests: entity.requests
+          .map((e) => AppUsageModel.fromEntity(e))
+          .toList(),
     );
   }
 }

@@ -1784,6 +1784,11 @@ class EntityFactory {
 
   static GroupedUsageEntity makeGroupedUsageEntity() => GroupedUsageEntity(
     enterpriseName: faker.company.name(),
-    usages: [makeAppUsageEntity(), makeAppUsageEntity(), makeAppUsageEntity()],
+    enterpriseId: faker.randomGenerator.integer(100),
+    requests: [
+      makeAppUsageEntity(),
+      makeAppUsageEntity(),
+      makeAppUsageEntity(),
+    ],
   );
 }
