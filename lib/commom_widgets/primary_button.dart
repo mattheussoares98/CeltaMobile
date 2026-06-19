@@ -39,7 +39,7 @@ class PrimaryButton extends ConsumerWidget {
         ? context.theme.disabledColor.withAlpha(30)
         : backgroundColor ?? context.theme.primaryColor;
 
-    const loadingWidget = Positioned.fill(child: LoadingWidget(padding: 0));
+    const loadingWidget = Positioned.fill(child: LoadingWidget());
 
     if (isIOS) {
       return LayoutBuilder(

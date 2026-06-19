@@ -90,7 +90,7 @@ class PrimaryTextButton extends StatelessWidget {
                 ),
                 if (isLoading)
                   const Positioned.fill(
-                    child: FittedBox(child: LoadingWidget(padding: 0)),
+                    child: FittedBox(child: LoadingWidget()),
                   ),
               ],
             ),
@@ -115,9 +115,7 @@ class PrimaryTextButton extends StatelessWidget {
             children: [
               FittedBox(child: textWidget),
               if (isLoading)
-                const Positioned.fill(
-                  child: FittedBox(child: LoadingWidget(padding: 0)),
-                ),
+                const Positioned.fill(child: FittedBox(child: LoadingWidget())),
             ],
           ),
         );

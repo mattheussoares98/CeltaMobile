@@ -60,7 +60,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
               });
             },
       icon: isLoading
-          ? const FittedBox(child: LoadingWidget(padding: 0))
+          ? const FittedBox(child: LoadingWidget())
           : PlatformIcon(
               cupertinoIcon: CupertinoIcons.doc_text_search,
               materialIcon: Icons.picture_as_pdf_rounded,

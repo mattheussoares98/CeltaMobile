@@ -1,11 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/validators/validators.dart';
 
 class ZipField extends ConsumerWidget {
   final VoidCallback seekAddress;
@@ -43,7 +41,7 @@ class ZipField extends ConsumerWidget {
         ),
       ),
       suffixIcon: isLoading
-          ? const LoadingWidget(size: Sizes.p16)
+          ? const LoadingWidget()
           : PrimaryTextButton(
               text: 'Pesquisar CEP'.hardcoded,
               onPressed: seekAddress,

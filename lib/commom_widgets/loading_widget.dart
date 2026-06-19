@@ -1,53 +1,117 @@
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoadingWidget extends StatelessWidget {
-  final double? size;
-  final String? title;
-  final double? padding;
+class LoadingWidget extends StatefulWidget {
   const LoadingWidget({
     super.key,
-    this.size = Sizes.p24,
-    this.title,
-    this.padding,
+    this.strokeWidth = 4,
+    this.height = 30,
+    this.width = 30,
+    this.color,
+    this.centered = true,
   });
+
+  factory LoadingWidget.small([Color? color]) =>
+      LoadingWidget(strokeWidth: 2, height: 20, width: 20, color: color);
+  final double strokeWidth;
+  final double height;
+  final double width;
+  final Color? color;
+  final bool centered;
+
+  @override
+  State<LoadingWidget> createState() => _LoadingWidgetState();
+}
+
+class _LoadingWidgetState extends State<LoadingWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<Color?> colorAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.color != null) {
+      return;
+    }
+
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat(reverse: true);
+
+    colorAnimation = TweenSequence([
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.deepPurple, end: Colors.indigo),
+        weight: 25,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.indigo, end: Colors.pink),
+        weight: 25,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.pink, end: Colors.teal),
+        weight: 25,
+      ),
+      TweenSequenceItem(
+        tween: ColorTween(begin: Colors.teal, end: Colors.deepPurple),
+        weight: 25,
+      ),
+    ]).animate(controller);
+  }
+
+  @override
+  void dispose() {
+    // Dispose animation controller only if it is initialized
+    // The animation controller is initialized only when the color is null
+    if (widget.color == null) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isIos = PlatformUtil.isCupertino;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (title != null) ...[
-          Text(
-            title!,
-            textAlign: TextAlign.center,
-            style: context.theme.textTheme.bodySmall?.copyWith(
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.w300,
-              fontSize:
-                  (context.theme.textTheme.bodySmall?.fontSize ?? 12) *
-                  size! *
-                  0.045,
-            ),
-          ),
-          gapH16,
-        ],
-        RepaintBoundary(
-          child: Padding(
-            padding: EdgeInsets.all(padding ?? Sizes.p16),
-            child: isIos
-                ? CupertinoActivityIndicator(radius: size! * 0.5)
-                : SizedBox(
-                    width: size,
-                    height: size,
-                    child: const CircularProgressIndicator(),
-                  ),
-          ),
-        ),
-      ],
-    );
+    late Widget child;
+
+    if (context.isCupertino && widget.color == null) {
+      child = AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) {
+          return CupertinoActivityIndicator(
+            color: colorAnimation.value,
+            radius: widget.width / 2,
+          );
+        },
+      );
+    } else if (context.isCupertino) {
+      child = CupertinoActivityIndicator(
+        color: widget.color,
+        radius: widget.width / 2,
+      );
+    } else if (widget.color != null) {
+      child = CircularProgressIndicator(
+        color: widget.color,
+        strokeWidth: widget.strokeWidth,
+      );
+    } else {
+      child = AnimatedBuilder(
+        animation: controller,
+        builder: (context, child) {
+          return CircularProgressIndicator(
+            color: colorAnimation.value,
+            strokeWidth: widget.strokeWidth,
+          );
+        },
+      );
+    }
+
+    child = SizedBox(height: widget.height, width: widget.width, child: child);
+
+    if (widget.centered) {
+      return Center(child: child);
+    }
+    return child;
   }
 }
