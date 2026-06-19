@@ -1,21 +1,13 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:collection/collection.dart';
 
-class AppUsageModel extends Equatable {
-  final String userName;
-  final int? enterpriseId;
-  final UsageType? usageType;
-  final int requestCount;
-  final String? enterpriseName;
-
+class AppUsageModel extends AppUsageEntity {
   const AppUsageModel({
-    required this.userName,
-    required this.enterpriseId,
-    required this.usageType,
-    required this.requestCount,
-    required this.enterpriseName,
+    required super.userName,
+    required super.enterpriseId,
+    required super.usageType,
+    required super.requestCount,
+    required super.enterpriseName,
   });
 
   @override
