@@ -11,6 +11,7 @@ void main() {
   late SupabaseClientSpy supabaseClient;
 
   late List<AppUsageModel> appUsageModels;
+  late List<GroupedUsageModel> groupedUsageModels;
   late int enterpriseId;
   late DateTime startDate;
   late DateTime endDate;
@@ -21,6 +22,11 @@ void main() {
       EntityFactory.makeAppUsageEntity(),
       EntityFactory.makeAppUsageEntity(),
     ].map((e) => AppUsageModel.fromEntity(e)).toList();
+    groupedUsageModels = [
+      EntityFactory.makeGroupedUsageEntity(),
+      EntityFactory.makeGroupedUsageEntity(),
+      EntityFactory.makeGroupedUsageEntity(),
+    ].map((e) => GroupedUsageModel.fromEntity(e)).toList();
     enterpriseId = faker.randomGenerator.integer(100);
     startDate = faker.date.dateTime();
     endDate = startDate.add(
@@ -36,9 +42,7 @@ void main() {
     supabaseClient = SupabaseClientSpy();
   }
 
-  void mockSuccess() {
-    supabaseClient.mockResponse(appUsageModels.map((e) => e.toJson()).toList());
-  }
+  void mockSuccess() {}
 
   setUp(() {
     initEntities();
@@ -49,6 +53,10 @@ void main() {
 
   group('Load', () {
     test('should behave correctly on success', () async {
+      supabaseClient.mockResponse(
+        appUsageModels.map((e) => e.toJson()).toList(),
+      );
+
       final result = await sut.load(
         enterpriseId: enterpriseId,
         startDate: startDate,
@@ -57,6 +65,26 @@ void main() {
 
       expect(result, appUsageModels);
       expect(supabaseClient.lastRpcFunction, 'get_app_usage_report');
+      expect(supabaseClient.lastRpcParams, {
+        'p_enterprise_id': enterpriseId,
+        'p_start_date': startDate.toIso8601String(),
+        'p_end_date': endDate.toIso8601String(),
+      });
+    });
+  });
+  group('Load grouped by enterprise', () {
+    test('should behave correctly on success', () async {
+      supabaseClient.mockResponse(
+        groupedUsageModels.map((e) => e.toJson()).toList(),
+      );
+      final result = await sut.loadGroupedByEnterprise(
+        enterpriseId: enterpriseId,
+        startDate: startDate,
+        endDate: endDate,
+      );
+
+      expect(result, groupedUsageModels);
+      expect(supabaseClient.lastRpcFunction, 'get_app_usage_report_grouped');
       expect(supabaseClient.lastRpcParams, {
         'p_enterprise_id': enterpriseId,
         'p_start_date': startDate.toIso8601String(),

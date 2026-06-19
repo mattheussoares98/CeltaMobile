@@ -7,4 +7,9 @@ abstract class IRemoteAppUsageDatasource {
     required DateTime startDate,
     required DateTime endDate,
   });
+  Future<List<GroupedUsageModel>> loadGroupedByEnterprise({
+    required int? enterpriseId,
+    required DateTime startDate,
+    required DateTime endDate,
+  });
 }

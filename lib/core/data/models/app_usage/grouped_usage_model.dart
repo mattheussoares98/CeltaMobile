@@ -28,7 +28,7 @@ class GroupedUsageModel extends GroupedUsageEntity {
   factory GroupedUsageModel.fromEntity(GroupedUsageEntity entity) {
     return GroupedUsageModel(
       enterpriseName: entity.enterpriseName,
-      usages: entity.usages as List<AppUsageModel>,
+      usages: entity.usages.map((e) => AppUsageModel.fromEntity(e)).toList(),
     );
   }
 }

@@ -1,7 +1,7 @@
-import 'package:celta_inventario/core/data/models/app_usage/app_usage_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/data/models/app_usage/app_usage_model.dart';
+import 'package:celta_inventario/core/data/models/app_usage/grouped_usage_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
   final SupabaseClient _supabase;
@@ -32,5 +32,23 @@ class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
     );
 
     return (result as List).map((e) => AppUsageModel.fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<GroupedUsageModel>> loadGroupedByEnterprise({
+    required int? enterpriseId,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
+    final result = await _supabase.rpc(
+      'get_app_usage_report_grouped',
+      params: {
+        'p_enterprise_id': enterpriseId,
+        'p_start_date': startDate.toIso8601String(),
+        'p_end_date': endDate.toIso8601String(),
+      },
+    );
+
+    return (result as List).map((e) => GroupedUsageModel.fromJson(e)).toList();
   }
 }

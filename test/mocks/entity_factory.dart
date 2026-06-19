@@ -1781,4 +1781,9 @@ class EntityFactory {
         creditCardValidate: faker.date.dateTime(),
         quantityOfPortions: faker.randomGenerator.integer(10),
       );
+
+  static GroupedUsageEntity makeGroupedUsageEntity() => GroupedUsageEntity(
+    enterpriseName: faker.company.name(),
+    usages: [makeAppUsageEntity(), makeAppUsageEntity(), makeAppUsageEntity()],
+  );
 }
