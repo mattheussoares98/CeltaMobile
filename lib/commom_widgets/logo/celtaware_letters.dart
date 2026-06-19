@@ -1,21 +1,35 @@
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
-import 'components.dart';
+import 'logo.dart';
 
 class CeltawareLetters extends StatelessWidget {
   final TextStyle textStyle;
-  final AnimationController _animationController;
+  final AnimationController? _animationController;
 
   const CeltawareLetters({
     super.key,
     required this.textStyle,
-    required AnimationController animationController,
+    required AnimationController? animationController,
   }) : _animationController = animationController;
 
   @override
   Widget build(BuildContext context) {
     final celtaStyle = textStyle.copyWith(color: Colors.red[700]);
+
+    if (_animationController == null) {
+      return IntrinsicHeight(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Celta'.hardcoded, style: celtaStyle),
+            CustomWAndAtWidget(style: textStyle),
+            Text('re'.hardcoded, style: textStyle),
+          ],
+        ),
+      );
+    }
 
     return IntrinsicHeight(
       child: Row(

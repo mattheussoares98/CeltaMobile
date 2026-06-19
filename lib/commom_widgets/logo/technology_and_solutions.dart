@@ -2,15 +2,28 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class TechnologyAndSolutions extends StatelessWidget {
-  final AnimationController _animationController;
+  final AnimationController? _animationController;
 
   const TechnologyAndSolutions({
     super.key,
-    required AnimationController animationController,
+    required AnimationController? animationController,
   }) : _animationController = animationController;
 
   @override
   Widget build(BuildContext context) {
+    final widget = Text(
+      'Tecnologia & Soluções'.hardcoded,
+      style: const TextStyle(
+        fontSize: 50,
+        fontWeight: FontWeight.w500,
+        color: Colors.black,
+        letterSpacing: 2.0,
+      ),
+    );
+
+    if (_animationController == null) {
+      return widget;
+    }
     // Tagline reveal slide: 100.0 -> 0.0 (0.5 to 0.85 duration)
     final taglineSlide = Tween<double>(begin: 100.0, end: 0.0).animate(
       CurvedAnimation(
@@ -58,15 +71,7 @@ class TechnologyAndSolutions extends StatelessWidget {
           opacity: currentOpacity,
           child: Transform.translate(
             offset: Offset(0.0, currentSlide),
-            child: Text(
-              'Tecnologia & Soluções'.hardcoded,
-              style: const TextStyle(
-                fontSize: 50,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-                letterSpacing: 2.0,
-              ),
-            ),
+            child: widget,
           ),
         );
       },

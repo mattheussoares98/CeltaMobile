@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
 
 class LogoImage extends StatelessWidget {
-  final AnimationController _animationController;
+  final AnimationController? _animationController;
   final TextStyle textStyle;
 
   const LogoImage({
     super.key,
-    required AnimationController animationController,
+    required AnimationController? animationController,
     required this.textStyle,
   }) : _animationController = animationController;
 
   @override
   Widget build(BuildContext context) {
+    final widget = Hero(
+      tag: 'logo',
+      child: Image.asset(
+        'lib/core/assets/images/CeltaLogo.png',
+        height: 230,
+        width: 230,
+        cacheHeight: 230,
+        cacheWidth: 250,
+        fit: BoxFit.contain,
+      ),
+    );
+
+    if (_animationController == null) {
+      return widget;
+    }
+    // If animation is disabled, render static logo without animation
     final fontSize = textStyle.fontSize ?? 150.0;
 
     // Logo entrance scale: 0.0 -> 1.0 (0.0 to 0.20 duration)
@@ -75,20 +91,7 @@ class LogoImage extends StatelessWidget {
           opacity: currentOpacity,
           child: Transform.translate(
             offset: Offset(currentTranslationX, 0.0),
-            child: Transform.scale(
-              scale: currentScale,
-              child: Hero(
-                tag: 'logo',
-                child: Image.asset(
-                  'lib/core/assets/images/CeltaLogo.png',
-                  height: 230,
-                  width: 230,
-                  cacheHeight: 230,
-                  cacheWidth: 250,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
+            child: Transform.scale(scale: currentScale, child: widget),
           ),
         );
       },

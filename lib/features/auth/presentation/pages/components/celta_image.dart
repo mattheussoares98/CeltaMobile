@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CeltaImage extends StatelessWidget {
   const CeltaImage({super.key});
@@ -13,10 +12,7 @@ class CeltaImage extends StatelessWidget {
       onLongPress: () {
         context.pushNamed(Routes.enterpriseManager.name);
       },
-      child: ResponsiveCenter(
-        maxContentWidth: 300,
-        child: Image.asset("lib/core/assets/images/logoCeltaTransparente.png"),
-      ),
+      child: const ResponsiveCenter(maxContentWidth: 300, child: LogoWidget()),
     );
   }
 }
