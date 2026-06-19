@@ -8,8 +8,8 @@ class CustomWAndAtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fontSize = style.fontSize ?? 150.0;
-    final wWidth = fontSize * 0.85;
-    final lineWidth = fontSize * 0.5;
+    final wWidth = fontSize * 0.78;
+    final lineWidth = fontSize * 0.55;
 
     return Stack(
       children: [
