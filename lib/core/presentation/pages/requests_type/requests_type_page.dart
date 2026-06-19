@@ -8,7 +8,6 @@ import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class RequestsTypePage extends ConsumerWidget {
   final int enterpriseCode;
@@ -21,15 +20,20 @@ class RequestsTypePage extends ConsumerWidget {
       enterpriseCode,
     );
     void goToInsertUpdateSaleRequest(int? requestTypeCode) {
-      context.pushNamed(
-        Routes.insertUpdateSaleRequest.name,
-        pathParameters: {
-          'enterpriseCode': enterpriseCode.toString(),
-          'requestTypeCode': requestTypeCode.toString(),
-          'saleRequestId': 0.toString(),
-          'customerCode': 0.toString(),
-        },
-      );
+      ref
+          .read(tryAccessModuleControllerProvider.notifier)
+          .tryAccess(
+            context: context,
+            route: Routes.insertUpdateSaleRequest,
+            enterpriseCode: enterpriseCode,
+            module: Modules.saleRequest,
+            pathParameters: {
+              'enterpriseCode': enterpriseCode.toString(),
+              'requestTypeCode': requestTypeCode.toString(),
+              'saleRequestId': 0.toString(),
+              'customerCode': 0.toString(),
+            },
+          );
     }
 
     return Scaffold(
