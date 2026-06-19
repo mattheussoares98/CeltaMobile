@@ -65,22 +65,23 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
             iconColor: widget.isLoading ? context.theme.disabledColor : null,
             showWhenIsSmallPage: true,
           ),
-        DefaultIcon(
-          showWhenIsSmallPage: true,
-          onPress: widget.isLoading
-              ? null
-              : () {
-                  ShallowProductsOverlay.hide();
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  showModalPage(
-                    SettingsPage(module: widget.searchProductKey.module),
-                    context,
-                  );
-                },
-          materialIcon: Icons.settings,
-          cupertinoIcon: CupertinoIcons.settings,
-          iconColor: widget.isLoading ? context.theme.disabledColor : null,
-        ),
+        if (width >= 220)
+          DefaultIcon(
+            showWhenIsSmallPage: true,
+            onPress: widget.isLoading
+                ? null
+                : () {
+                    ShallowProductsOverlay.hide();
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    showModalPage(
+                      SettingsPage(module: widget.searchProductKey.module),
+                      context,
+                    );
+                  },
+            materialIcon: Icons.settings,
+            cupertinoIcon: CupertinoIcons.settings,
+            iconColor: widget.isLoading ? context.theme.disabledColor : null,
+          ),
       ],
     );
   }
