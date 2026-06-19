@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
-
 import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
+import 'package:collection/collection.dart';
 
 class AppUsageRepositoryImpl implements IAppUsageRepository {
   final IRemoteAppUsageDatasource remoteDs;
@@ -65,5 +64,20 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
         localDs.updateLastUploadDate(),
       ]);
     }
+  }
+
+  @override
+  Future<List<GroupedUsageEntity>> loadGroupedUsageReport({
+    required int? enterpriseId,
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    final data = await remoteDs.loadGroupedByEnterprise(
+      enterpriseId: enterpriseId,
+      startDate: start,
+      endDate: end,
+    );
+
+    return data.map((e) => e.toEntity()).toList();
   }
 }

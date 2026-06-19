@@ -7,4 +7,9 @@ abstract class IAppUsageRepository {
     required DateTime start,
     required DateTime end,
   });
+  Future<List<GroupedUsageEntity>> loadGroupedUsageReport({
+    required int? enterpriseId,
+    required DateTime start,
+    required DateTime end,
+  });
 }

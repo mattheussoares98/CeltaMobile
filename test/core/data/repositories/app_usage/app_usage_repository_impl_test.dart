@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/data/repositories/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -21,6 +21,7 @@ void main() {
   late RemoteAppUsageDatasourceSpy remoteDs;
 
   late List<AppUsageModel> usageModels;
+  late List<GroupedUsageModel> groupedUsages;
   late int enterpriseId;
   late DateTime start;
   late DateTime end;
@@ -44,6 +45,13 @@ void main() {
       ),
     ).thenAnswer((_) async => usageModels);
     when(
+      () => remoteDs.loadGroupedByEnterprise(
+        enterpriseId: any(named: 'enterpriseId'),
+        startDate: any(named: 'startDate'),
+        endDate: any(named: 'endDate'),
+      ),
+    ).thenAnswer((_) async => groupedUsages);
+    when(
       () => localDs.getLastUpdatedDate(),
     ).thenAnswer((_) async => DateTime.now());
     when(() => localDs.clearData()).thenAnswer((_) async => 0);
@@ -51,6 +59,11 @@ void main() {
   }
 
   void initEntities() {
+    groupedUsages = [
+      EntityFactory.makeGroupedUsageEntity(),
+      EntityFactory.makeGroupedUsageEntity(),
+      EntityFactory.makeGroupedUsageEntity(),
+    ].map((e) => GroupedUsageModel.fromEntity(e)).toList();
     usageModels = [
       EntityFactory.makeAppUsageEntity(),
       EntityFactory.makeAppUsageEntity(),
@@ -86,6 +99,24 @@ void main() {
       expect(appUsages, usageModels.map((e) => e.toEntity()).toList());
       verify(
         () => remoteDs.load(
+          enterpriseId: enterpriseId,
+          startDate: start,
+          endDate: end,
+        ),
+      ).called(1);
+    });
+  });
+  group('Load remote grouped usage report', () {
+    test('should behave correctly', () async {
+      final appUsages = await sut.loadGroupedUsageReport(
+        enterpriseId: enterpriseId,
+        start: start,
+        end: end,
+      );
+
+      expect(appUsages, groupedUsages.map((e) => e.toEntity()).toList());
+      verify(
+        () => remoteDs.loadGroupedByEnterprise(
           enterpriseId: enterpriseId,
           startDate: start,
           endDate: end,
