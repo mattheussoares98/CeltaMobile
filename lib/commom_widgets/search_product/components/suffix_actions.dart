@@ -32,9 +32,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
     with DefaultSearchProductsMixin {
   @override
   Widget build(BuildContext context) {
-    final isMobile =
-        PlatformUtil.isCupertino ||
-        context.theme.platform == TargetPlatform.android;
+    final isMobile = PlatformUtil.isMobile;
     final width = MediaQuery.sizeOf(context).width;
 
     return Row(
