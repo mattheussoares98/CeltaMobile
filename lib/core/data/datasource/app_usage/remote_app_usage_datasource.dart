@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/data/models/app_usage/app_usage_model.dart';
 import 'package:celta_inventario/core/data/models/app_usage/grouped_usage_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
@@ -48,7 +49,10 @@ class RemoteAppUsageDatasource implements IRemoteAppUsageDatasource {
         'p_end_date': endDate.toIso8601String(),
       },
     );
-
-    return (result as List).map((e) => GroupedUsageModel.fromJson(e)).toList();
+    return await compute(_parseGroupedUsages, result as List);
   }
+}
+
+List<GroupedUsageModel> _parseGroupedUsages(List response) {
+  return (response).map((e) => GroupedUsageModel.fromJson(e)).toList();
 }
