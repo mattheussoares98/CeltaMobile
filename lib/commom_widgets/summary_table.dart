@@ -44,7 +44,8 @@ class SummaryTable extends StatelessWidget {
 
     return Row(
       mainAxisAlignment: mainAxisAlignment,
-      children: items.map((item) {
+      children: List.generate(items.length, (index) {
+        final item = items[index];
         String formattedValue = item.value.toString();
         String? priceText;
 
@@ -68,36 +69,59 @@ class SummaryTable extends StatelessWidget {
             ? valueStyle?.copyWith(color: item.color)
             : valueStyle;
 
+        var alignment = Alignment.center;
+        var mainAxisAlignment = MainAxisAlignment.center;
+
+        if (items.length > 2) {
+          if (index == 0) {
+            alignment = Alignment.centerLeft;
+            mainAxisAlignment = MainAxisAlignment.start;
+          } else if (index == items.length - 1) {
+            alignment = Alignment.centerRight;
+            mainAxisAlignment = MainAxisAlignment.end;
+          }
+        }
+
         return Flexible(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      item.title,
-                      style: labelStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+              Align(
+                alignment: alignment,
+                child: Row(
+                  mainAxisAlignment: mainAxisAlignment,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        item.title,
+                        style: labelStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  if (item.trailing != null) ...[gapW4, item.trailing!],
-                ],
+                    if (item.trailing != null) ...[gapW4, item.trailing!],
+                  ],
+                ),
               ),
               if (priceText != null)
-                AnimatedPriceValue(
-                  key: ValueKey(item.title),
-                  value: item.value as num,
-                  style: effectiveValueStyle,
-                  priceText: priceText,
+                Align(
+                  alignment: alignment,
+                  child: AnimatedPriceValue(
+                    key: ValueKey(item.title),
+                    value: item.value as num,
+                    style: effectiveValueStyle,
+                    priceText: priceText,
+                  ),
                 )
               else
-                Text(
-                  formattedValue,
-                  style: effectiveValueStyle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Align(
+                  alignment: alignment,
+                  child: Text(
+                    formattedValue,
+                    style: effectiveValueStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
             ],
           ),

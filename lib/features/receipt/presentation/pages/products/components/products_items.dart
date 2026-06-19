@@ -81,7 +81,7 @@ class _ProductItem extends ConsumerWidget {
       child: ProductItemWidget(
         product: product,
         routine: BsRoutine.goodsReceiving,
-        showDropIcon: true,
+        showEditIcon: true,
         isSelected: isSelected,
         onTap: () {
           quantityController.clear();

@@ -7,6 +7,7 @@ import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,10 +34,14 @@ class BSFProductItemSummary extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          CartSummaryTable(item: item),
+
           if (size.width > 200)
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                DeleteSummaryButton(item: item),
+                const Spacer(),
                 QuantityControlButton(item: item, isAdding: false, size: 32),
                 gapW12,
                 Column(
@@ -60,13 +65,9 @@ class BSFProductItemSummary extends ConsumerWidget {
                     ),
                   ],
                 ),
-                gapW12,
                 QuantityControlButton(item: item, isAdding: true, size: 32),
-                const Spacer(),
-                DeleteSummaryButton(item: item),
               ],
             ),
-          CartSummaryTable(item: item),
         ],
       ),
     );
@@ -83,6 +84,11 @@ class BSFProductItemSummary extends ConsumerWidget {
         type: MaterialType.transparency,
         child: SingleChildScrollView(
           child: ProductItemWidget(
+            showEditIcon: PlatformUtil.isCupertino,
+            editIcon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.arrow_up_right,
+              materialIcon: Icons.arrow_outward_rounded,
+            ),
             product: product,
             routine: BsRoutine.saleRequest,
             hideCurrentAndSaleStocks: true,

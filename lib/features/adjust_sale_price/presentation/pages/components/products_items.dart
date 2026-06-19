@@ -3,9 +3,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routes.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,42 +82,29 @@ class _ProductItem extends ConsumerWidget {
     return ProductItemWidget(
       product: product,
       routine: BsRoutine.adjustSalePrice,
-      notClickableBottom: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          if (PlatformUtil.isCupertino)
-            const Expanded(flex: 55, child: Text('')),
-          Flexible(
-            flex: 45,
-            child: PrimaryTextButton(
-              text: 'Alterar preços'.hardcoded,
-              icon: const PlatformIcon(
-                cupertinoIcon: CupertinoIcons.pencil,
-                materialIcon: Icons.edit,
-              ),
-              iconAlignment: IconAlignment.end,
-              onPressed: () {
-                ref
-                    .read(
-                      selectedProductStateControllerProvider(
-                        enterpriseCode,
-                        product.PLU!,
-                      ).notifier,
-                    )
-                    .updateSelectedProduct(product);
-                context.goNamed(
-                  Routes.adjustSalePrice.name,
-                  pathParameters: {
-                    'enterpriseCode': enterpriseCode.toString(),
-                    'plu': product.PLU!,
-                  },
-                  extra: product,
-                );
-              },
-            ),
-          ),
-        ],
+      showEditIcon: true,
+      editIcon: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.pencil,
+        materialIcon: Icons.edit,
       ),
+      onTap: () {
+        ref
+            .read(
+              selectedProductStateControllerProvider(
+                enterpriseCode,
+                product.PLU!,
+              ).notifier,
+            )
+            .updateSelectedProduct(product);
+        context.goNamed(
+          Routes.adjustSalePrice.name,
+          pathParameters: {
+            'enterpriseCode': enterpriseCode.toString(),
+            'plu': product.PLU!,
+          },
+          extra: product,
+        );
+      },
     );
   }
 }

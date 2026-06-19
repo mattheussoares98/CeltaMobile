@@ -27,7 +27,7 @@ class DefaultIcon extends StatelessWidget {
       visualDensity: VisualDensity.compact,
       onPressed: onPress,
       icon: isLoading
-          ? const LoadingWidget()
+          ? const LoadingWidget(padding: EdgeInsets.zero)
           : PlatformIcon(
               cupertinoIcon: cupertinoIcon,
               materialIcon: materialIcon,

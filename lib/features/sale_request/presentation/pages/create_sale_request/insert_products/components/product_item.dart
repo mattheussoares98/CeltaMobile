@@ -112,7 +112,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
     return ProductItemWidget(
       product: widget.product,
       routine: BsRoutine.saleRequest,
-      showDropIcon: true,
+      showEditIcon: true,
       isSelected: isSelected,
       onTap: () => onTapProduct(widget.product, cartProduct),
       cartItemSummary: cartProduct == null

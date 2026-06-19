@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerWidget {
   final ProductEntity product;
@@ -54,7 +53,7 @@ class ProductItem extends ConsumerWidget {
       child: ProductItemWidget(
         product: product,
         routine: BsRoutine.researchOfPrice,
-        showDropIcon: true,
+        showEditIcon: true,
         notClickableBottom: isSelected
             ? PricesFieldsAndSubmit(
                 product: product,

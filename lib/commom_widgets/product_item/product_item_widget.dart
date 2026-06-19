@@ -15,7 +15,8 @@ class ProductItemWidget extends ConsumerWidget {
   final Widget? clickableBottom;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
-  final bool? showDropIcon;
+  final bool showEditIcon;
+  final PlatformIcon? editIcon;
   final bool? isSelected;
   final bool? showInfoButton;
   final Widget? cartItemSummary;
@@ -30,10 +31,11 @@ class ProductItemWidget extends ConsumerWidget {
     required this.product,
     required this.routine,
     this.onTap,
+    this.editIcon,
     this.onDelete,
     this.notClickableBottom,
     this.clickableBottom,
-    this.showDropIcon,
+    this.showEditIcon = false,
     this.isSelected,
     this.showInfoButton = true,
     this.cartItemSummary,
@@ -112,42 +114,6 @@ class ProductItemWidget extends ConsumerWidget {
     return product.EANs?.any((s) => s.isNotEmpty) ?? false;
   }
 
-  bool get showingLittleInformations {
-    int value = [
-      showPracticedPrices,
-      showWholePrices,
-      showLiquidCosts,
-      showCurrentAndSaleStocks,
-    ].fold(0, (p, e) => e ? ++p : p);
-    if (showCurrentAndSaleStocks) {
-      //show 2 informations
-      value++;
-    }
-    if (clickableBottom != null) {
-      value++;
-    }
-
-    return value <= 1;
-  }
-
-  double get bottomPadding {
-    if (routine == BsRoutine.goodsReceiving) {
-      return Sizes.p8;
-    } else if (routine == BsRoutine.priceConference) {
-      return 0;
-    } else if (routine == BsRoutine.adjustSalePrice) {
-      return 0;
-    } else if (cartItemSummary != null) {
-      return Sizes.p8;
-    } else if (showEans && showingLittleInformations) {
-      return Sizes.p32;
-    } else if (showEans) {
-      return Sizes.p16;
-    }
-
-    return Sizes.p8;
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
@@ -168,126 +134,99 @@ class ProductItemWidget extends ConsumerWidget {
       },
     );
 
-    final isIOS = PlatformUtil.isCupertino;
-
     return Card(
       clipBehavior: Clip.antiAlias,
       margin: context.theme.cardTheme.margin?.add(
         const EdgeInsets.only(bottom: Sizes.p4),
       ),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: onTap == null || isIOS
-                ? null
-                : () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    onTap!();
-                  },
-            child: Row(
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              Sizes.p8,
-                              Sizes.p8,
-                              Sizes.p8,
-                              bottomPadding,
-                            ),
-                            child: Column(
+      child: InkWell(
+        onTap: onTap == null || PlatformUtil.isCupertino
+            ? null
+            : () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                onTap!();
+              },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ?itemBeforeProductName,
+                        NameAndPacking(product: product),
+                        Stack(
+                          children: [
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                ?itemBeforeProductName,
-                                NameAndPacking(product: product),
-                                Stack(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: [
-                                        TitleAndSubTitle(
-                                          copyableSubtitle: true,
-                                          title: "PLU ",
-                                          subTitle: product.PLU,
-                                        ),
-                                        if (showPracticedPrices)
-                                          PracticedPriceProperty(this),
-                                        if (showWholePrices)
-                                          WholePriceAndMinQuantity(this),
-                                        if (showLiquidCosts)
-                                          ReplacementCostProperty(this),
-                                        if (showCurrentAndSaleStocks)
-                                          CurrentAndSaleStocks(this),
-                                        if (showEans) EansProperty(this),
-                                        ?cartItemSummary,
-                                        ?clickableBottom,
-                                      ],
-                                    ),
-                                    if (!showingLittleInformations)
-                                      Positioned(
-                                        top: 0,
-                                        right: 0,
-                                        child: InfoButton(this),
-                                      ),
-                                  ],
+                                TitleAndSubTitle(
+                                  copyableSubtitle: true,
+                                  title: "PLU ",
+                                  subTitle: product.PLU,
                                 ),
+                                if (showPracticedPrices)
+                                  PracticedPriceProperty(this),
+                                if (showWholePrices)
+                                  WholePriceAndMinQuantity(this),
+                                if (showLiquidCosts)
+                                  ReplacementCostProperty(this),
+                                if (showCurrentAndSaleStocks)
+                                  CurrentAndSaleStocks(this),
+                                if (showEans) EansProperty(this),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        right: isIOS ? Sizes.p4 : 0,
-                        bottom: isIOS
-                            ? routine == BsRoutine.buyQuotation
-                                  ? -Sizes.p4
-                                  : Sizes.p4
-                            : 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                if (showingLittleInformations) ...[
-                                  InfoButton(this),
-                                  gapW12,
-                                ],
-                                if (onDelete != null) ...[
-                                  DeleteItemButton(onDelete: onDelete),
-                                  gapW12,
-                                ],
-                                if (showDropIcon == true)
-                                  SelectedIconIndicator(
-                                    selected: isSelected ?? false,
-                                    onTap: onTap,
-                                  ),
-                              ],
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: InfoButton(this),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        ?clickableBottom,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            if (onDelete != null) ...[
+                              Flexible(
+                                child: DeleteItemButton(onDelete: onDelete),
+                              ),
+                            ],
+                            if (showEditIcon)
+                              Flexible(
+                                child: SelectedIconIndicator(
+                                  selected: isSelected ?? false,
+                                  onTap: onTap,
+                                  editIcon: editIcon,
+                                ),
+                              ),
+                          ],
+                        ),
+                        ?cartItemSummary,
+                      ],
+                    ),
                   ),
-                ),
-                ?rightWidget,
-              ],
-            ),
-          ),
-          if (notClickableBottom != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                0,
-                Sizes.p8,
-                Sizes.p8,
+                  ?rightWidget,
+                ],
               ),
-              child: notClickableBottom,
-            ),
-        ],
+
+              if (notClickableBottom != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Sizes.p8,
+                    0,
+                    Sizes.p8,
+                    Sizes.p8,
+                  ),
+                  child: notClickableBottom,
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

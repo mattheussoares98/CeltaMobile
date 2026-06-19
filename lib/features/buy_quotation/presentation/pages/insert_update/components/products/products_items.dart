@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/models/models.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/pages/insert_update/components/components.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/pages/pages.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/models/models.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/pages/pages.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/pages/insert_update/components/components.dart';
 
 class ProductsItems extends ConsumerWidget {
   final List<EnterpriseUIController> uiControllers;

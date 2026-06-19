@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerStatefulWidget {
   const ProductItem({
@@ -91,7 +90,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       hidePrice: true,
       hideCurrentAndSaleStocks: true,
       hideWholeInformations: true,
-      showDropIcon: true,
+      showEditIcon: true,
       hideCost: true,
       isSelected: isSelected,
       onTap: () {
@@ -104,18 +103,11 @@ class _ProductItemState extends ConsumerState<ProductItem> {
             )
             .updateIndex(widget.index, annulWhenIsSame: true);
       },
-      clickableBottom: Padding(
-        padding: EdgeInsets.only(
-          bottom: (product.EANs?.every((x) => x.isEmpty) ?? true)
-              ? Sizes.p20
-              : 0,
-        ),
-        child: TitleAndSubTitle(
-          title: 'Custo de reposição'.hardcoded,
-          subTitle: product.ReplacementCost,
-          subTitleIsPrice: true,
-          emptyMessage: 'Sem custo de reposição'.hardcoded,
-        ),
+      clickableBottom: TitleAndSubTitle(
+        title: 'Custo de reposição'.hardcoded,
+        subTitle: product.ReplacementCost,
+        subTitleIsPrice: true,
+        emptyMessage: 'Sem custo de reposição'.hardcoded,
       ),
       notClickableBottom: isSelected
           ? Row(

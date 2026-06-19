@@ -48,8 +48,9 @@ class TopButtons extends ConsumerWidget {
     }
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(
+        Flexible(
           flex: 30,
           child: _DefaultSearchProduct(
             widget: this,
@@ -57,7 +58,7 @@ class TopButtons extends ConsumerWidget {
             searchProduct: searchProduct,
           ),
         ),
-        Expanded(
+        Flexible(
           flex: 30,
           child: _DefaultSearchProduct(
             widget: this,
@@ -65,8 +66,8 @@ class TopButtons extends ConsumerWidget {
             searchProduct: searchProduct,
           ),
         ),
-        Expanded(
-          flex: 30,
+        Flexible(
+          flex: 37,
           child: OptimazedAsyncValueWidget(
             provider: bsVersionStateControllerProvider,
             tryAgain: () => ref.invalidate(bsVersionStateControllerProvider),
@@ -113,15 +114,17 @@ class _DefaultSearchProduct extends ConsumerWidget {
       ).select((s) => s.isLoading),
     );
 
-    return PrimaryTextButton(
-      text: title,
-      isSmall: true,
-      icon: const PlatformIcon(
-        cupertinoIcon: CupertinoIcons.search,
-        materialIcon: Icons.search,
+    return FittedBox(
+      child: PrimaryTextButton(
+        text: title,
+        isSmall: true,
+        icon: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.search,
+          materialIcon: Icons.search,
+        ),
+        iconAlignment: IconAlignment.start,
+        onPressed: isLoading ? null : () => searchProduct(searchType),
       ),
-      iconAlignment: IconAlignment.start,
-      onPressed: isLoading ? null : () => searchProduct(searchType),
     );
   }
 }

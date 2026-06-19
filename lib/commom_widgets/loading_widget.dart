@@ -1,3 +1,4 @@
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,20 +6,19 @@ import 'package:flutter/material.dart';
 class LoadingWidget extends StatefulWidget {
   const LoadingWidget({
     super.key,
-    this.strokeWidth = 4,
-    this.height = 30,
-    this.width = 30,
+    this.strokeWidth = 2,
+    this.height = 20,
+    this.width = 20,
     this.color,
+    this.padding,
     this.centered = true,
   });
-
-  factory LoadingWidget.small([Color? color]) =>
-      LoadingWidget(strokeWidth: 2, height: 20, width: 20, color: color);
   final double strokeWidth;
   final double height;
   final double width;
   final Color? color;
   final bool centered;
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<LoadingWidget> createState() => _LoadingWidgetState();
@@ -107,7 +107,10 @@ class _LoadingWidgetState extends State<LoadingWidget>
       );
     }
 
-    child = SizedBox(height: widget.height, width: widget.width, child: child);
+    child = Padding(
+      padding: widget.padding ?? const EdgeInsetsGeometry.all(Sizes.p8),
+      child: SizedBox(height: widget.height, width: widget.width, child: child),
+    );
 
     if (widget.centered) {
       return Center(child: child);

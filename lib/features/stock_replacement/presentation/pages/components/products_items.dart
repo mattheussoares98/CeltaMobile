@@ -154,7 +154,7 @@ class _ProductItem extends ConsumerWidget {
           quantityFocusNode.requestFocus();
         });
       },
-      showDropIcon: true,
+      showEditIcon: true,
       isSelected: isSelected,
       clickableBottom:
           lastConfirmedAdjust?.productPackingCode == product.ProductPackingCode

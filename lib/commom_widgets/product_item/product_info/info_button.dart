@@ -76,30 +76,32 @@ class InfoButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return PrimaryTextButton(
-      text: 'Info'.hardcoded,
-      icon: PlatformIcon(
-        cupertinoIcon: CupertinoIcons.info_circle_fill,
-        materialIcon: Icons.info,
-        color: context.theme.primaryColor,
-        size: 18,
+    return FittedBox(
+      child: PrimaryTextButton(
+        text: 'Info'.hardcoded,
+        icon: PlatformIcon(
+          cupertinoIcon: CupertinoIcons.info_circle_fill,
+          materialIcon: Icons.info,
+          color: context.theme.primaryColor,
+          size: 18,
+        ),
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          showModalPage(
+            ProductInfoModal(
+              product: widget.product,
+              routine: widget.routine,
+              showPrices: showPrices,
+              showStocks: showStocks,
+              showAddresses: showAddresses,
+              showShoppings: showShoppings,
+              showCosts: showCosts,
+              showMargins: showMargins,
+            ),
+            context,
+          );
+        },
       ),
-      onPressed: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        showModalPage(
-          ProductInfoModal(
-            product: widget.product,
-            routine: widget.routine,
-            showPrices: showPrices,
-            showStocks: showStocks,
-            showAddresses: showAddresses,
-            showShoppings: showShoppings,
-            showCosts: showCosts,
-            showMargins: showMargins,
-          ),
-          context,
-        );
-      },
     );
   }
 }

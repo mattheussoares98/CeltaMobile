@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InformedProducts extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -160,7 +159,7 @@ class _ProductItem extends ConsumerWidget {
         hideCost: true,
         hideCurrentAndSaleStocks: true,
         hideWholeInformations: true,
-        showDropIcon: true,
+        showEditIcon: true,
         showInfoButton: false,
         isSelected: isSelected,
         onTap: onTap,

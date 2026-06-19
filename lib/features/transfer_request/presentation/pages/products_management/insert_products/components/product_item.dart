@@ -1,12 +1,11 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductItem extends ConsumerWidget {
   final ProductEntity product;
@@ -57,7 +56,7 @@ class ProductItem extends ConsumerWidget {
       product: product,
       routine: BsRoutine.transferRequest,
       isSelected: isSelected,
-      showDropIcon: true,
+      showEditIcon: true,
       onTap: () => onTap(transferRequestProductItem),
       onDelete: transferRequestProductItem != null
           ? () {

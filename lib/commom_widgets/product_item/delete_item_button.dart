@@ -1,8 +1,7 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class DeleteItemButton extends StatelessWidget {
   final VoidCallback? onDelete;
@@ -10,23 +9,25 @@ class DeleteItemButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onDelete == null
-          ? null
-          : () {
-              FocusManager.instance.primaryFocus?.unfocus();
-              showAlertDialog(
-                context: context,
-                title: 'Remover item?'.hardcoded,
-                onOkPressed: onDelete,
-                cancelActionText: 'Cancelar'.hardcoded,
-                defaultActionText: 'Remover'.hardcoded,
-              );
-            },
-      icon: const PlatformIcon(
-        cupertinoIcon: CupertinoIcons.delete,
-        materialIcon: Icons.delete,
-        color: Colors.red,
+    return FittedBox(
+      child: IconButton(
+        onPressed: onDelete == null
+            ? null
+            : () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                showAlertDialog(
+                  context: context,
+                  title: 'Remover item?'.hardcoded,
+                  onOkPressed: onDelete,
+                  cancelActionText: 'Cancelar'.hardcoded,
+                  defaultActionText: 'Remover'.hardcoded,
+                );
+              },
+        icon: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.delete,
+          materialIcon: Icons.delete,
+          color: Colors.red,
+        ),
       ),
     );
   }
