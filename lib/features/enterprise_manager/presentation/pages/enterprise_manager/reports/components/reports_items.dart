@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -8,7 +10,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ReportsItems extends ConsumerWidget {
+class ReportsItems extends ConsumerStatefulWidget {
   final TextEditingController enterpriseController;
   final TextEditingController usageTypeController;
   const ReportsItems({
@@ -18,7 +20,43 @@ class ReportsItems extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReportsItems> createState() => _ReportsItemsState();
+}
+
+class _ReportsItemsState extends ConsumerState<ReportsItems> {
+  String _enterpriseFilter = '';
+  String _usageTypeFilter = '';
+  Timer? _debounceTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.enterpriseController.addListener(_onFilterChanged);
+    widget.usageTypeController.addListener(_onFilterChanged);
+  }
+
+  @override
+  void dispose() {
+    widget.enterpriseController.removeListener(_onFilterChanged);
+    widget.usageTypeController.removeListener(_onFilterChanged);
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
+  void _onFilterChanged() {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 250), () {
+      if (mounted) {
+        setState(() {
+          _enterpriseFilter = widget.enterpriseController.text;
+          _usageTypeFilter = widget.usageTypeController.text;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(appUsageStateControllerProvider),
@@ -30,105 +68,112 @@ class ReportsItems extends ConsumerWidget {
           );
         }
 
-        return SliverToBoxAdapter(
-          child: AnimatedBuilder(
-            animation: Listenable.merge([
-              enterpriseController,
-              usageTypeController,
-            ]),
-            builder: (_, _) {
-              final filterEnterprise = enterpriseController.text
-                  .toLowerCase()
-                  .removeWhiteSpaces();
-              final filterUsage = usageTypeController.text
-                  .toLowerCase()
-                  .removeWhiteSpaces();
+        final filterEnterprise = _enterpriseFilter
+            .toLowerCase()
+            .removeWhiteSpaces();
+        final filterUsage = _usageTypeFilter.toLowerCase().removeWhiteSpaces();
 
-              final filteredEnterprises = usageReports
-                  ?.where((e) {
-                    final enterpriseName = e.enterpriseName!
-                        .toLowerCase()
-                        .removeWhiteSpaces();
-                    return enterpriseController.text.isEmpty ||
-                        enterpriseName.contains(filterEnterprise);
-                  })
-                  .map((e) {
-                    if (usageTypeController.text.isEmpty) {
-                      return e;
-                    }
-                    final filteredRequests = e.requests.where((r) {
-                      final usageTypeDesc =
-                          r.usageType?.description
-                              .toLowerCase()
-                              .removeWhiteSpaces() ??
-                          '';
-                      return usageTypeDesc.contains(filterUsage);
-                    }).toList();
-                    return e.copyWith(usages: filteredRequests);
-                  })
-                  .where((e) => e.requests.isNotEmpty)
-                  .toList();
+        final filteredEnterprises =
+            usageReports!
+                .where((e) {
+                  final enterpriseName = e.enterpriseName!
+                      .toLowerCase()
+                      .removeWhiteSpaces();
+                  return _enterpriseFilter.isEmpty ||
+                      enterpriseName.contains(filterEnterprise);
+                })
+                .map((e) {
+                  if (_usageTypeFilter.isEmpty) {
+                    return e;
+                  }
+                  final filteredRequests = e.requests.where((r) {
+                    final usageTypeDesc =
+                        r.usageType?.description
+                            .toLowerCase()
+                            .removeWhiteSpaces() ??
+                        '';
+                    return usageTypeDesc.contains(filterUsage);
+                  }).toList();
+                  return e.copyWith(usages: filteredRequests);
+                })
+                .where((e) => e.requests.isNotEmpty)
+                .toList()
+              ..sort((a, b) {
+                final aTotal = a.requests.fold<int>(
+                  0,
+                  (p, n) => p + n.requestCount,
+                );
+                final bTotal = b.requests.fold<int>(
+                  0,
+                  (p, n) => p + n.requestCount,
+                );
+                return bTotal.compareTo(aTotal);
+              });
 
-              final totalRequests = filteredEnterprises
-                  ?.expand((e) => e.requests)
-                  .fold<int>(0, (p, n) => p + n.requestCount);
+        if (filteredEnterprises.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Center(child: Text('Nenhum resultado encontrado'.hardcoded)),
+          );
+        }
 
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          '${filteredEnterprises?.length ?? 0} clientes'
-                              .hardcoded,
-                        ),
+        final totalRequests = filteredEnterprises
+            .expand((e) => e.requests)
+            .fold<int>(0, (p, n) => p + n.requestCount);
+
+        return SliverList.builder(
+          itemCount: filteredEnterprises.length + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        '${filteredEnterprises.length} clientes'.hardcoded,
                       ),
-                      gapW8,
-                      Flexible(
-                        flex: 2,
-                        child: Text('$totalRequests requisições'.hardcoded),
-                      ),
-                    ],
-                  ),
-                  ...?filteredEnterprises?.map((e) {
-                    final enterpriseName = e.enterpriseName;
-                    final requests = e.requests;
-                    final total = requests.fold<int>(
-                      0,
-                      (p, n) => p + n.requestCount,
-                    );
-
-                    return Card(
-                      margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
-                              style: context.theme.textTheme.titleMedium,
-                            ),
-
-                            _RequestsByTypeOrUser(
-                              groupingByType: true,
-                              reports: requests,
-                            ),
-                            const Divider(),
-                            _RequestsByTypeOrUser(
-                              groupingByType: false,
-                              reports: requests,
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-                ],
+                    ),
+                    gapW8,
+                    Flexible(
+                      flex: 2,
+                      child: Text('$totalRequests requisições'.hardcoded),
+                    ),
+                  ],
+                ),
               );
-            },
-          ),
+            }
+
+            final e = filteredEnterprises[index - 1];
+            final enterpriseName = e.enterpriseName;
+            final requests = e.requests;
+            final total = requests.fold<int>(0, (p, n) => p + n.requestCount);
+
+            return Card(
+              margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
+              child: Padding(
+                padding: const EdgeInsets.all(Sizes.p8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
+                      style: context.theme.textTheme.titleMedium,
+                    ),
+                    _RequestsByTypeOrUser(
+                      groupingByType: true,
+                      reports: requests,
+                    ),
+                    const Divider(),
+                    _RequestsByTypeOrUser(
+                      groupingByType: false,
+                      reports: requests,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );
