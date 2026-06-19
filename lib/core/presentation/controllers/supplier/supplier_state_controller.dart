@@ -1,9 +1,8 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/supplier/supplier.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'supplier_state_controller.g.dart';
 
@@ -14,10 +13,8 @@ class SupplierStateController extends _$SupplierStateController {
     SearchSupplierType searchType,
     int enterpriseCode,
   ) async {
-    final pendingRequest = await ref.watch(
-      pendingBuyRequestStateControllerProvider(
-        enterpriseCode,
-      ).future,
+    final pendingRequest = await ref.read(
+      pendingBuyRequestStateControllerProvider(enterpriseCode).future,
     );
     final selectedSupplier = pendingRequest.selectedSupplier;
     return [?selectedSupplier];
