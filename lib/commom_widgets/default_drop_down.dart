@@ -63,7 +63,8 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
       final selectedMenuItem = widget.items?.firstWhereOrNull(
         (item) => item.value == widget.selectedItem,
       );
-      return FormField(
+      return FormField<T>(
+        autovalidateMode: AutovalidateMode.onUserInteractionIfError,
         validator: widget.validator,
         initialValue: widget.selectedItem,
         builder: (state) {
@@ -129,6 +130,7 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                                       await widget.onBeforeChange!(selected);
                                   if (!confirmed) return;
                                 }
+                                state.didChange(selected);
                                 widget.onChanged!(selected);
                               }
                             },
