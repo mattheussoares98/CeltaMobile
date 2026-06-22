@@ -140,6 +140,7 @@ class ProductItemWidget extends ConsumerWidget {
         const EdgeInsets.only(bottom: Sizes.p4),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           InkWell(
             onTap: onTap == null || PlatformUtil.isCupertino
@@ -201,20 +202,6 @@ class ProductItemWidget extends ConsumerWidget {
                                       ],
                                     ),
                                     ?cartItemSummary,
-                                    if (notClickableBottom != null)
-                                      GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () {},
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                            Sizes.p8,
-                                            0,
-                                            Sizes.p8,
-                                            Sizes.p8,
-                                          ),
-                                          child: notClickableBottom,
-                                        ),
-                                      ),
                                   ],
                                 ),
                                 Positioned(
@@ -234,6 +221,16 @@ class ProductItemWidget extends ConsumerWidget {
               ),
             ),
           ),
+          if (notClickableBottom != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: notClickableBottom!,
+            ),
         ],
       ),
     );
