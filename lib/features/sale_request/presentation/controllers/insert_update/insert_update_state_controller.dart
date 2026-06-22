@@ -50,7 +50,6 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
             requestTypeCode: args.requestTypeCode ?? 0,
           );
       if (savedDraft != null) {
-        _lastProcessedSaleRequest = savedDraft;
         return savedDraft;
       }
 
@@ -85,10 +84,13 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     super.state = newState;
 
     final args = ref.read(saleRequestArgsProvider);
-    if (newState is AsyncData<BSFSaleRequestEntity> && args.saleRequestId == 0) {
+    if (newState is AsyncData<BSFSaleRequestEntity> &&
+        args.saleRequestId == 0) {
       _debounceTimer?.cancel();
       _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-        ref.read(localBsfSaleRequestDraftRepositoryProvider).save(
+        ref
+            .read(localBsfSaleRequestDraftRepositoryProvider)
+            .save(
               newState.value,
               enterpriseCode: args.enterpriseCode,
               requestTypeCode: args.requestTypeCode ?? 0,
