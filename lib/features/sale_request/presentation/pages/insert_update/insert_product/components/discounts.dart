@@ -15,7 +15,7 @@ class Discounts extends ConsumerWidget {
 
     final discounts = ref.watch(uiProvider.select((s) => s.discounts));
 
-    if (discounts.isEmpty) {
+    if (discounts.length <= 1) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
     }
     void removeDiscount(int index) {

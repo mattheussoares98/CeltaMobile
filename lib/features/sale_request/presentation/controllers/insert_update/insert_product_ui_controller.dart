@@ -17,7 +17,9 @@ class InsertProductUIController extends _$InsertProductUIController {
   }
 
   bool get hasNonManualDiscounts {
-    return state.discounts.any((e) => e.discountOrigin != DiscountOrigin.manual);
+    return state.discounts.any(
+      (e) => e.discountOrigin != DiscountOrigin.manual,
+    );
   }
 
   void updateQuantity(double quantity) {
@@ -61,9 +63,13 @@ class InsertProductUIController extends _$InsertProductUIController {
     state = state.copyWith(incrementType: type);
   }
 
-  bool addDiscount({required double value, required PercentageOrValue type}) {
+  void updateDiscount({
+    required double value,
+    required PercentageOrValue type,
+  }) {
     if (value <= 0) {
-      return false;
+      state = state.copyWith(discounts: []);
+      return;
     }
 
     final discount = BSFDiscountEntity(
@@ -74,20 +80,7 @@ class InsertProductUIController extends _$InsertProductUIController {
       discount: BSFValueTypeEntity(value: value, type: type),
     );
 
-    if (discount.discount?.type == PercentageOrValue.reais) {
-      state = state.copyWith(discounts: [discount]);
-      return true;
-    } else {
-      if (state.discounts.length >= 10) return false;
-
-      final discounts = state.discounts
-          .toList()
-          .where((e) => e.discountOrigin == DiscountOrigin.manual)
-          .toList();
-      discounts.add(discount);
-      state = state.copyWith(discounts: discounts);
-      return true;
-    }
+    state = state.copyWith(discounts: [discount]);
   }
 
   void removeDiscount(int index) {

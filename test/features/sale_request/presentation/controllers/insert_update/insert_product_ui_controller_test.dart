@@ -51,9 +51,8 @@ void main() {
         final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
           discountOrigin: DiscountOrigin.manual,
         );
-        final nonManualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
-          discountOrigin: DiscountOrigin.saleOffer,
-        );
+        final nonManualDiscount = EntityFactory.makeBSFDiscountEntity()
+            .copyWith(discountOrigin: DiscountOrigin.saleOffer);
         final product = testProduct.copyWith(
           discounts: [manualDiscount, nonManualDiscount],
         );
@@ -73,9 +72,7 @@ void main() {
         final manualDiscount = EntityFactory.makeBSFDiscountEntity().copyWith(
           discountOrigin: DiscountOrigin.manual,
         );
-        final product = testProduct.copyWith(
-          discounts: [manualDiscount],
-        );
+        final product = testProduct.copyWith(discounts: [manualDiscount]);
         final container = makeProviderContainer();
 
         // ACT
@@ -433,255 +430,85 @@ void main() {
       );
     });
 
-    group('addDiscount', () {
-      test(
-        'should add a discount to the list when type is percentage',
-        () async {
-          // ARRANGE
-          final productWithoutDiscounts = testProduct.copyWith(discounts: []);
-          final container = makeProviderContainer();
-          container.read(
-            insertProductUIControllerProvider(productWithoutDiscounts),
-          );
-
-          final states = <InsertProductUIState>[];
-          container.listen(
-            insertProductUIControllerProvider(productWithoutDiscounts),
-            (_, next) => states.add(next),
-          );
-
-          final firstValue = faker.randomGenerator.decimal();
-          final secondValue = faker.randomGenerator.decimal();
-
-          // ACT
-          container
-              .read(
-                insertProductUIControllerProvider(
-                  productWithoutDiscounts,
-                ).notifier,
-              )
-              .addDiscount(
-                value: firstValue,
-                type: PercentageOrValue.percentage,
-              );
-          container
-              .read(
-                insertProductUIControllerProvider(
-                  productWithoutDiscounts,
-                ).notifier,
-              )
-              .addDiscount(
-                value: secondValue,
-                type: PercentageOrValue.percentage,
-              );
-
-          // ASSERT
-          expect(states.length, 2);
-          expect(states.last.discounts.length, 2);
-          expect(states.last.discounts[0].discount?.value, firstValue);
-          expect(
-            states.last.discounts[0].discount?.type,
-            PercentageOrValue.percentage,
-          );
-          expect(states.last.discounts[1].discount?.value, secondValue);
-          expect(
-            states.last.discounts[1].discount?.type,
-            PercentageOrValue.percentage,
-          );
-        },
-      );
-
-      test(
-        'should filter out discounts that are not DiscountOrigin.manual when adding a new discount',
-        () async {
-          // ARRANGE
-          final manualDiscount = EntityFactory.makeBSFDiscountEntity(
-            discount: const BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: 5,
-            ),
-          ).copyWith(discountOrigin: DiscountOrigin.manual);
-
-          final nonManualDiscount = EntityFactory.makeBSFDiscountEntity(
-            discount: const BSFValueTypeEntity(
-              type: PercentageOrValue.percentage,
-              value: 10,
-            ),
-          ).copyWith(discountOrigin: DiscountOrigin.saleOffer);
-
-          final productWithMixedDiscounts = testProduct.copyWith(
-            discounts: [manualDiscount, nonManualDiscount],
-          );
-
-          final container = makeProviderContainer();
-          container.read(
-            insertProductUIControllerProvider(productWithMixedDiscounts),
-          );
-
-          final states = <InsertProductUIState>[];
-          container.listen(
-            insertProductUIControllerProvider(productWithMixedDiscounts),
-            (_, next) => states.add(next),
-          );
-
-          // ACT
-          container
-              .read(
-                insertProductUIControllerProvider(
-                  productWithMixedDiscounts,
-                ).notifier,
-              )
-              .addDiscount(value: 15, type: PercentageOrValue.percentage);
-
-          // ASSERT
-          expect(states.length, 1);
-          expect(
-            states.first.discounts.length,
-            2,
-          ); // manualDiscount + the new manual discount
-          expect(
-            states.first.discounts.any(
-              (e) => e.discountOrigin == DiscountOrigin.saleOffer,
-            ),
-            isFalse,
-          );
-          expect(
-            states.first.discounts.any((e) => e.discount?.value == 5),
-            isTrue,
-          );
-          expect(
-            states.first.discounts.any((e) => e.discount?.value == 15),
-            isTrue,
-          );
-        },
-      );
-
-      test(
-        'should assign correct order incrementally when adding discounts',
-        () async {
-          // ARRANGE
-          final productWithoutDiscounts = testProduct.copyWith(discounts: []);
-          final container = makeProviderContainer();
-          container.read(
-            insertProductUIControllerProvider(productWithoutDiscounts),
-          );
-
-          final states = <InsertProductUIState>[];
-          container.listen(
-            insertProductUIControllerProvider(productWithoutDiscounts),
-            (_, next) => states.add(next),
-          );
-
-          // ACT
-          container
-              .read(
-                insertProductUIControllerProvider(
-                  productWithoutDiscounts,
-                ).notifier,
-              )
-              .addDiscount(value: 5, type: PercentageOrValue.percentage);
-          container
-              .read(
-                insertProductUIControllerProvider(
-                  productWithoutDiscounts,
-                ).notifier,
-              )
-              .addDiscount(value: 10, type: PercentageOrValue.percentage);
-
-          // ASSERT
-          expect(states.length, 2);
-          expect(states.last.discounts.length, 2);
-          expect(states.last.discounts[0].order, 0);
-          expect(states.last.discounts[1].order, 1);
-        },
-      );
-
-      test('should replace all discounts when type is reais', () async {
+    group('Update discount', () {
+      test('should update the discount correctly', () async {
         // ARRANGE
+        final productWithoutDiscounts = testProduct.copyWith(discounts: []);
         final container = makeProviderContainer();
-        container.read(insertProductUIControllerProvider(testProduct));
-
-        final states = <InsertProductUIState>[];
-        container.listen(
-          insertProductUIControllerProvider(testProduct),
-          (_, next) => states.add(next),
+        container.read(
+          insertProductUIControllerProvider(productWithoutDiscounts),
         );
+
+        final firstValue = faker.randomGenerator.decimal();
+        final secondValue = faker.randomGenerator.decimal();
 
         // ACT
         container
-            .read(insertProductUIControllerProvider(testProduct).notifier)
-            .addDiscount(value: 10, type: PercentageOrValue.reais);
+            .read(
+              insertProductUIControllerProvider(
+                productWithoutDiscounts,
+              ).notifier,
+            )
+            .updateDiscount(
+              value: firstValue,
+              type: PercentageOrValue.percentage,
+            );
 
-        // ASSERT
-        expect(states.length, 1);
-        expect(states.first.discounts.length, 1);
-        expect(states.first.discounts.first.discount?.value, 10);
+        final state = container.read(
+          insertProductUIControllerProvider(productWithoutDiscounts),
+        );
+        expect(state.discounts.first.discount?.value, firstValue);
         expect(
-          states.first.discounts.first.discount?.type,
-          PercentageOrValue.reais,
+          state.discounts.first.discount?.type,
+          PercentageOrValue.percentage,
+        );
+
+        container
+            .read(
+              insertProductUIControllerProvider(
+                productWithoutDiscounts,
+              ).notifier,
+            )
+            .updateDiscount(
+              value: secondValue,
+              type: PercentageOrValue.percentage,
+            );
+
+        final state2 = container.read(
+          insertProductUIControllerProvider(productWithoutDiscounts),
+        );
+        expect(state2.discounts.first.discount?.value, secondValue);
+        expect(
+          state2.discounts.first.discount?.type,
+          PercentageOrValue.percentage,
         );
       });
 
-      test('should return false and not add more than 10 discounts', () async {
-        // ARRANGE
-        final productWithoutDiscounts = testProduct.copyWith(discounts: []);
-        final container = makeProviderContainer();
-        final notifier = container.read(
-          insertProductUIControllerProvider(productWithoutDiscounts).notifier,
-        );
-
-        // ACT - Add 10 discounts
-        for (var i = 0; i < 10; i++) {
-          final success = notifier.addDiscount(
-            value: 1,
-            type: PercentageOrValue.percentage,
+      test(
+        'should delete discounts when pass value equal or less than zero',
+        () async {
+          // ARRANGE
+          final product = testProduct.copyWith(
+            discounts: [EntityFactory.makeBSFDiscountEntity()],
           );
-          expect(success, isTrue);
-        }
+          final container = makeProviderContainer();
+          container.read(insertProductUIControllerProvider(product));
 
-        // Try to add the 11th
-        final result = notifier.addDiscount(
-          value: 1,
-          type: PercentageOrValue.percentage,
-        );
+          final value = faker.randomGenerator.boolean()
+              ? 0.0
+              : 0 - faker.randomGenerator.decimal();
 
-        // ASSERT
-        expect(result, isFalse);
-        final state = container.read(
-          insertProductUIControllerProvider(productWithoutDiscounts),
-        );
-        expect(state.discounts.length, 10);
-      });
-      test('should return false when discount value is <= 0', () async {
-        // ARRANGE
-        final productWithoutDiscounts = testProduct.copyWith(discounts: []);
-        final container = makeProviderContainer();
-        final notifier = container.read(
-          insertProductUIControllerProvider(productWithoutDiscounts).notifier,
-        );
+          // ACT
+          container
+              .read(insertProductUIControllerProvider(product).notifier)
+              .updateDiscount(value: value, type: PercentageOrValue.percentage);
 
-        final resultEqualZero = notifier.addDiscount(
-          value: 0,
-          type: PercentageOrValue.percentage,
-        );
-
-        // ASSERT
-        expect(resultEqualZero, isFalse);
-        final state = container.read(
-          insertProductUIControllerProvider(productWithoutDiscounts),
-        );
-        expect(state.discounts.length, 0);
-
-        final resultNegative = notifier.addDiscount(
-          value: -1,
-          type: PercentageOrValue.percentage,
-        );
-        expect(resultNegative, isFalse);
-        final stateNegative = container.read(
-          insertProductUIControllerProvider(productWithoutDiscounts),
-        );
-        expect(stateNegative.discounts.length, 0);
-      });
+          final state = container.read(
+            insertProductUIControllerProvider(product),
+          );
+          expect(state.discounts, isEmpty);
+        },
+      );
     });
 
     group('removeDiscount', () {

@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,7 +45,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     return proceed == true;
   }
 
-  void _addDiscount() async {
+  void _updateDiscount() async {
     if (formKey.currentState!.validate() != true) return;
 
     final proceed = await _confirmRemoveAutomaticDiscounts();
@@ -57,20 +56,12 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
 
     final type = ref.read(uiProvider.select((s) => s.discountType));
 
-    final success = ref
+    ref
         .read(uiProvider.notifier)
-        .addDiscount(value: _valueController.text.toDouble() ?? 0, type: type);
-
-    if (!success) {
-      if (!mounted) return;
-      showSnackBarMessage(
-        context,
-        'Limite de 10 descontos atingido'.hardcoded,
-        backgroundColor: Colors.red,
-      );
-      return;
-    }
-    _valueController.clear();
+        .updateDiscount(
+          value: _valueController.text.toDouble() ?? 0,
+          type: type,
+        );
   }
 
   void _onTypeChanged(PercentageOrValue type) async {
@@ -100,7 +91,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
               TextSpan(text: 'Descontos'.hardcoded),
               TextSpan(
                 text:
-                    ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()})',
+                    ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()}) ${item.discounts?.firstOrNull?.discountOrigin?.description ?? ''}',
                 style: context.theme.textTheme.labelMedium?.copyWith(
                   color: context.theme.colorScheme.error,
                   fontWeight: FontWeight.bold,
@@ -129,21 +120,14 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       ),
                       textInputAction: TextInputAction.done,
                       controller: _valueController,
-                      onFieldSubmitted: (_) => _addDiscount(),
-                      suffixIcon: ExcludeFocus(
-                        child: IconButton(
-                          onPressed: _addDiscount,
-                          icon: const PlatformIcon(
-                            materialIcon: Icons.add,
-                            cupertinoIcon: CupertinoIcons.add,
-                          ),
-                        ),
-                      ),
+                      onFieldSubmitted: (_) => _updateDiscount(),
+                      onChanged: (_) => _updateDiscount(),
                       validator: FormValidators.compose([
-                        NonEmptyValidator(),
                         NumberValidator(
                           allowDecimal: true,
                           maxDecimalHouses: 2,
+                          allowEmptyValue: true,
+                          needsBeGreaterThanZero: false,
                         ),
                       ]),
                     );
