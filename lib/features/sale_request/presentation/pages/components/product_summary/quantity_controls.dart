@@ -11,13 +11,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class QuantityControlButton extends ConsumerWidget {
   final BSFProductItemEntity item;
   final bool isAdding;
-  final double size;
+  final double? size;
 
   const QuantityControlButton({
     super.key,
     required this.item,
     required this.isAdding,
-    this.size = 28,
+    this.size,
   });
 
   @override
