@@ -43,27 +43,29 @@ class BSFProductItemSummary extends ConsumerWidget {
                 DeleteSummaryButton(item: item),
                 const Spacer(),
                 QuantityControlButton(item: item, isAdding: false, size: 32),
-                gapW12,
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      (item.quantity ?? 0).toString().toBrazilianNumber(
-                        3,
-                        true,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        (item.quantity ?? 0).toString().toBrazilianNumber(
+                          3,
+                          true,
+                        ),
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'Qtd'.hardcoded,
+                        style: context.theme.textTheme.labelSmall?.copyWith(
+                          color: context.theme.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Qtd'.hardcoded,
-                      style: context.theme.textTheme.labelSmall?.copyWith(
-                        color: context.theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 QuantityControlButton(item: item, isAdding: true, size: 32),
               ],
