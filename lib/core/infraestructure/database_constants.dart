@@ -13,6 +13,7 @@ class DatabaseConstants {
     transferBetweenStocks,
     transferRequest,
     userSession,
+    saleRequestDraft,
   ];
 
   static const appSettings = _HiveBoxConfig('app_settings');
@@ -28,6 +29,7 @@ class DatabaseConstants {
   );
   static const transferRequest = _HiveBoxConfig('transfer_request');
   static const userSession = _HiveBoxConfig('user_session');
+  static const saleRequestDraft = _HiveBoxConfig('sale_request_draft');
 }
 
 class _HiveBoxConfig {
