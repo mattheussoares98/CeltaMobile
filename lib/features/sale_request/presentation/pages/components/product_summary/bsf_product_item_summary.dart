@@ -28,17 +28,27 @@ class BSFProductItemSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
+    final breakLine =
+        item.totalDiscountValue > 0 ||
+        item.totalIncrement > 0 ||
+        item.totalDeliveryTax > 0;
 
     final summaryContent = SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (size.width > 200)
             Row(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DeleteSummaryButton(item: item),
-                const Spacer(),
+                FittedBox(child: DeleteSummaryButton(item: item)),
+                Expanded(
+                  child: Visibility(
+                    visible: !breakLine,
+                    child: CartSummaryTable(item: item),
+                  ),
+                ),
                 QuantityControlButton(item: item, isAdding: false),
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -64,7 +74,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                 QuantityControlButton(item: item, isAdding: true),
               ],
             ),
-          CartSummaryTable(item: item),
+          if (breakLine) CartSummaryTable(item: item),
         ],
       ),
     );
@@ -103,7 +113,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                 pathParameters: args.toPathParametersJson(),
               );
             },
-            cartItemSummary: summaryContent,
+            clickableBottom: summaryContent,
           ),
         ),
       ),
