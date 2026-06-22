@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 
 class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;
@@ -73,6 +72,7 @@ class FrozenItem extends StatelessWidget {
                       ? 'Sem observações'.hardcoded
                       : 'Observações'.hardcoded,
                   subTitle: frozenProcess.ObsInventario,
+                  removeColon: frozenProcess.ObsInventario?.isEmpty ?? true,
                 ),
               ],
             ),

@@ -1,14 +1,13 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class QuotationsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -98,6 +97,7 @@ class _QuotationItem extends StatelessWidget {
                 title: 'Observações'.hardcoded,
                 subTitle: quotation.Observations,
                 emptyMessage: 'Sem observações'.hardcoded,
+                removeColon: quotation.Observations?.isEmpty ?? true,
               ),
             ],
           ),
