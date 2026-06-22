@@ -161,3 +161,12 @@ ILocalBSFSaleRequestDraftDatasource localBsfSaleRequestDraftDatasource(
     ref.watch(hiveBoxSaleRequestDraftProvider),
   );
 }
+
+@riverpod
+ILocalBSFSaleRequestDraftRepository localBsfSaleRequestDraftRepository(
+  Ref ref,
+) {
+  return LocalBSFSaleRequestDraftRepositoryImpl(
+    ref.watch(localBsfSaleRequestDraftDatasourceProvider),
+  );
+}
