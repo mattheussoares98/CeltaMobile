@@ -1,4 +1,3 @@
-import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
@@ -25,9 +24,10 @@ void main() {
   }
 
   void mockSuccess() {
-    hive.mockGet(DatabaseConstants.buyRequest.name, {
-      enterpriseCode: PendingBuyRequestModel.fromEntity(entity).toJson(),
-    });
+    hive.mockGet(
+      'pending_buy_request_$enterpriseCode',
+      PendingBuyRequestModel.fromEntity(entity).toJson(),
+    );
   }
 
   void initEntities() {
@@ -45,7 +45,6 @@ void main() {
   group('Update', () {
     test('Should call hive with correct params', () async {
       final newEnterpriseCode = faker.randomGenerator.integer(100);
-      //using a enterprise that is not mocked
 
       await sut.update(
         PendingBuyRequestModel.fromEntity(entity),
@@ -53,22 +52,25 @@ void main() {
       );
 
       verify(
-        () => hive.put(DatabaseConstants.buyRequest.name, {
-          newEnterpriseCode: PendingBuyRequestModel.fromEntity(entity).toJson(),
-          //confirming this new enterprise is saved correctly
-        }),
+        () => hive.put(
+          'pending_buy_request_$newEnterpriseCode',
+          PendingBuyRequestModel.fromEntity(entity).toJson(),
+        ),
       ).called(1);
     });
   });
   group('Get', () {
     test('Should return correct value when is not null', () async {
-      expect(await sut.load(enterpriseCode), isNull);
+      expect(
+        await sut.load(enterpriseCode),
+        PendingBuyRequestModel.fromEntity(entity),
+      );
 
-      verify(() => hive.get(DatabaseConstants.buyRequest.name)).called(1);
+      verify(() => hive.get('pending_buy_request_$enterpriseCode')).called(1);
     });
 
     test('Should return correct value when returns null', () async {
-      hive.mockGet(DatabaseConstants.buyRequest.name, null);
+      hive.mockGet('pending_buy_request_$enterpriseCode', null);
 
       expect(await sut.load(enterpriseCode), null);
     });
