@@ -25,6 +25,25 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final product = ref.read(currentProductItemProvider);
+        final uiProvider = insertProductUIControllerProvider(product);
+        final uiState = ref.read(uiProvider);
+        final item = uiState.applyTo(product);
+        if (item.discounts?.length == 1) {
+          _valueController.text = item.totalDiscountValue
+              .toString()
+              .toBrazilianNumber();
+        }
+      }
+    });
+
+    super.initState();
+  }
+
   Future<bool> _confirmRemoveAutomaticDiscounts() async {
     final product = ref.read(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
