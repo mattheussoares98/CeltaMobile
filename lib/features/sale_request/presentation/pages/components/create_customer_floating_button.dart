@@ -1,6 +1,6 @@
 import 'package:celta_inventario/commom_widgets/platform_icon.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
