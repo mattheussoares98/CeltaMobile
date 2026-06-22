@@ -1,7 +1,6 @@
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:hive/hive.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 
 part 'hive.g.dart';
 
@@ -50,6 +49,11 @@ Box hiveBoxAppUsage(Ref ref) {
   return Hive.box(DatabaseConstants.appUsage.name);
 }
 
+@Riverpod(keepAlive: true)
+Box hiveBoxSaleRequestDraft(Ref ref) {
+  return Hive.box(DatabaseConstants.saleRequestDraft.name);
+}
+
 @riverpod
 List<Box> boxesToClearOnLogout(Ref ref) {
   return [
@@ -59,5 +63,6 @@ List<Box> boxesToClearOnLogout(Ref ref) {
     ref.watch(hiveBoxTransferBetweenStocksProvider),
     ref.watch(hiveBoxTransferRequestProvider),
     ref.watch(hiveBoxLastSelectedEnterpriseCodeProvider),
+    ref.watch(hiveBoxSaleRequestDraftProvider),
   ];
 }
