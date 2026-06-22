@@ -86,6 +86,7 @@ class BSFProductItemSummary extends ConsumerWidget {
         type: MaterialType.transparency,
         child: SingleChildScrollView(
           child: ProductItemWidget(
+            hideCost: true,
             showEditIcon: PlatformUtil.isCupertino,
             editIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.arrow_up_right,
@@ -94,7 +95,6 @@ class BSFProductItemSummary extends ConsumerWidget {
             hidePrice: true,
             product: product,
             routine: BsRoutine.saleRequest,
-            hideCurrentAndSaleStocks: true,
             onTap: () {
               final args = ref.read(saleRequestArgsProvider);
               context.pushNamed(
