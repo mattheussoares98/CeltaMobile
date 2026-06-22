@@ -130,7 +130,7 @@ class _InsertUpdateContent extends ConsumerWidget {
         final hasChanges = ref.watch(saleRequestHasChangesProvider);
 
         return PopScope(
-          canPop: !hasChanges,
+          canPop: !hasChanges || saleRequestId == 0,
           child: child!,
           onPopInvokedWithResult: (didPop, _) async {
             void dispose() {
