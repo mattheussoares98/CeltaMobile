@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
@@ -14,10 +16,15 @@ part 'insert_update_state_controller.g.dart';
 
 @Riverpod(
   keepAlive: true,
-  dependencies: [saleRequestArgs, SaleRequestDetailsStateController],
+  dependencies: [
+    saleRequestArgs,
+    SaleRequestDetailsStateController,
+    localBsfSaleRequestDraftRepository,
+  ],
 ) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
   BSFSaleRequestEntity? _lastProcessedSaleRequest;
+  Timer? _debounceTimer;
 
   @override
   FutureOr<BSFSaleRequestEntity> build() async {
@@ -30,8 +37,23 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     final args = ref.watch(saleRequestArgsProvider);
 
+    ref.onDispose(() {
+      _debounceTimer?.cancel();
+    });
+
     final BSFSaleRequestEntity initialValue;
     if (args.saleRequestId == 0) {
+      final savedDraft = await ref
+          .read(localBsfSaleRequestDraftRepositoryProvider)
+          .load(
+            enterpriseCode: args.enterpriseCode,
+            requestTypeCode: args.requestTypeCode ?? 0,
+          );
+      if (savedDraft != null) {
+        _lastProcessedSaleRequest = savedDraft;
+        return savedDraft;
+      }
+
       final selectedRequest = ref.read(
         requestTypeStateControllerProvider(
           Modules.saleRequest,
@@ -56,6 +78,23 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
     _lastProcessedSaleRequest = initialValue;
     return initialValue;
+  }
+
+  @override
+  set state(AsyncValue<BSFSaleRequestEntity> newState) {
+    super.state = newState;
+
+    final args = ref.read(saleRequestArgsProvider);
+    if (newState is AsyncData<BSFSaleRequestEntity> && args.saleRequestId == 0) {
+      _debounceTimer?.cancel();
+      _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+        ref.read(localBsfSaleRequestDraftRepositoryProvider).save(
+              newState.value,
+              enterpriseCode: args.enterpriseCode,
+              requestTypeCode: args.requestTypeCode ?? 0,
+            );
+      });
+    }
   }
 
   BSFSaleRequestEntity? get lastProcessedSaleRequest =>

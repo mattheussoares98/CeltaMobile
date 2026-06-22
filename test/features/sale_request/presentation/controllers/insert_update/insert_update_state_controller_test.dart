@@ -35,6 +35,9 @@ class FakePaymentFinalizationsController
 class MockEcSaleRequestsRepository extends Mock
     implements IEcSaleRequestsRepository {}
 
+class MockLocalBSFSaleRequestDraftRepository extends Mock
+    implements ILocalBSFSaleRequestDraftRepository {}
+
 // Tracks whether the canAccessResourceStateControllerProvider was called with
 // the exact (BsRoutine.saleRequest, BsResource.saleRequestChangeTPrice) args.
 class FakeCanAccessResourceStateController
@@ -70,6 +73,7 @@ void main() {
   late BSFSaleRequestEntity fakeSaleRequest;
   late SaleRequestArgs fakeArgs;
   late MockEcSaleRequestsRepository mockEcSaleRequestsRepository;
+  late MockLocalBSFSaleRequestDraftRepository mockLocalBSFSaleRequestDraftRepository;
   late UserSessionModel fakeSession;
 
   setUpAll(() {
@@ -106,6 +110,9 @@ void main() {
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
         ),
+        localBsfSaleRequestDraftRepositoryProvider.overrideWithValue(
+          mockLocalBSFSaleRequestDraftRepository,
+        ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(fakeSession),
         ),
@@ -118,6 +125,17 @@ void main() {
   setUp(() {
     fakeCanAccessResourceController = FakeCanAccessResourceStateController();
     mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
+    mockLocalBSFSaleRequestDraftRepository = MockLocalBSFSaleRequestDraftRepository();
+
+    when(() => mockLocalBSFSaleRequestDraftRepository.load(
+          enterpriseCode: any(named: 'enterpriseCode'),
+          requestTypeCode: any(named: 'requestTypeCode'),
+        )).thenAnswer((_) async => null);
+    when(() => mockLocalBSFSaleRequestDraftRepository.save(
+          any(),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          requestTypeCode: any(named: 'requestTypeCode'),
+        )).thenAnswer((_) async {});
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -223,6 +241,33 @@ void main() {
           await container.read(insertUpdateStateControllerProvider.future);
 
           expect(fakeCanAccessResourceController.wasCalled, isTrue);
+        },
+      );
+
+      test(
+        'should return the saved local draft when saleRequestId is 0 and draft exists',
+        () async {
+          final draftEntity = EntityFactory.makeBSFSaleRequestEntity().copyWith(
+            code: 0,
+            requestType: fakeSaleRequest.requestType,
+          );
+
+          when(() => mockLocalBSFSaleRequestDraftRepository.load(
+                enterpriseCode: fakeArgs.enterpriseCode,
+                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+              )).thenAnswer((_) async => draftEntity);
+
+          final container = makeProviderContainer(saleRequestId: 0);
+
+          final result = await container.read(
+            insertUpdateStateControllerProvider.future,
+          );
+
+          expect(result, draftEntity);
+          verify(() => mockLocalBSFSaleRequestDraftRepository.load(
+                enterpriseCode: fakeArgs.enterpriseCode,
+                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+              )).called(1);
         },
       );
     });
@@ -3614,6 +3659,50 @@ void main() {
 
           final hasChanges = container.read(saleRequestHasChangesProvider);
           expect(hasChanges, isTrue);
+        },
+      );
+    });
+
+    group('set state override debounce', () {
+      test(
+        'should save the draft to the repository after 500ms when state changes and saleRequestId is 0',
+        () async {
+          final container = makeProviderContainer(saleRequestId: 0);
+          final controller = container.read(
+            insertUpdateStateControllerProvider.notifier,
+          );
+          await container.read(insertUpdateStateControllerProvider.future);
+
+          final product = EntityFactory.makeProductEntity(
+            productPackingCode: faker.randomGenerator.integer(100),
+            enterpriseCode: fakeArgs.enterpriseCode,
+          );
+
+          controller.addItem(product);
+
+          final expectedEntity = BSFSaleRequestEntity.empty()
+              .copyWith(
+                requestType: fakeSaleRequest.requestType,
+              )
+              .copyWith(
+                products: [
+                  product.toBSFProductItemEntity().copyWith(quantity: 1),
+                ],
+              );
+
+          verifyNever(() => mockLocalBSFSaleRequestDraftRepository.save(
+                expectedEntity,
+                enterpriseCode: fakeArgs.enterpriseCode,
+                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+              ));
+
+          await Future.delayed(const Duration(milliseconds: 550));
+
+          verify(() => mockLocalBSFSaleRequestDraftRepository.save(
+                expectedEntity,
+                enterpriseCode: fakeArgs.enterpriseCode,
+                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+              )).called(1);
         },
       );
     });
