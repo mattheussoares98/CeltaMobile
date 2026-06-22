@@ -19,7 +19,7 @@ class ProductItemWidget extends ConsumerWidget {
   final PlatformIcon? editIcon;
   final bool? isSelected;
   final bool? showInfoButton;
-  final Widget? cartItemSummary;
+  final Widget? cartItemSummary; //TODO delete this parameter
   final Widget? itemBeforeProductName;
   final Widget? rightWidget;
   final bool? hideWholeInformations;
@@ -139,94 +139,97 @@ class ProductItemWidget extends ConsumerWidget {
       margin: context.theme.cardTheme.margin?.add(
         const EdgeInsets.only(bottom: Sizes.p4),
       ),
-      child: InkWell(
-        onTap: onTap == null || PlatformUtil.isCupertino
-            ? null
-            : () {
-                FocusManager.instance.primaryFocus?.unfocus();
-                onTap!();
-              },
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
+      child: Column(
+        children: [
+          InkWell(
+            onTap: onTap == null || PlatformUtil.isCupertino
+                ? null
+                : () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    onTap!();
+                  },
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ?itemBeforeProductName,
-                        NameAndPacking(product: product),
-                        Stack(
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            ?itemBeforeProductName,
+                            NameAndPacking(product: product),
+                            Stack(
                               children: [
-                                TitleAndSubTitle(
-                                  copyableSubtitle: true,
-                                  title: "PLU ",
-                                  subTitle: product.PLU,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TitleAndSubTitle(
+                                      copyableSubtitle: true,
+                                      title: "PLU ",
+                                      subTitle: product.PLU,
+                                    ),
+                                    if (showPracticedPrices)
+                                      PracticedPriceProperty(this),
+                                    if (showWholePrices)
+                                      WholePriceAndMinQuantity(this),
+                                    if (showLiquidCosts)
+                                      ReplacementCostProperty(this),
+                                    if (showCurrentAndSaleStocks)
+                                      CurrentAndSaleStocks(this),
+                                    if (showEans) EansProperty(this),
+                                  ],
                                 ),
-                                if (showPracticedPrices)
-                                  PracticedPriceProperty(this),
-                                if (showWholePrices)
-                                  WholePriceAndMinQuantity(this),
-                                if (showLiquidCosts)
-                                  ReplacementCostProperty(this),
-                                if (showCurrentAndSaleStocks)
-                                  CurrentAndSaleStocks(this),
-                                if (showEans) EansProperty(this),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: InfoButton(this),
+                                ),
                               ],
                             ),
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: InfoButton(this),
+                            ?clickableBottom,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                if (onDelete != null) ...[
+                                  Flexible(
+                                    child: DeleteItemButton(onDelete: onDelete),
+                                  ),
+                                ],
+                                if (showEditIcon)
+                                  Flexible(
+                                    child: SelectedIconIndicator(
+                                      selected: isSelected ?? false,
+                                      onTap: onTap,
+                                      editIcon: editIcon,
+                                    ),
+                                  ),
+                              ],
                             ),
+                            ?cartItemSummary,
                           ],
                         ),
-                        ?clickableBottom,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            if (onDelete != null) ...[
-                              Flexible(
-                                child: DeleteItemButton(onDelete: onDelete),
-                              ),
-                            ],
-                            if (showEditIcon)
-                              Flexible(
-                                child: SelectedIconIndicator(
-                                  selected: isSelected ?? false,
-                                  onTap: onTap,
-                                  editIcon: editIcon,
-                                ),
-                              ),
-                          ],
-                        ),
-                        ?cartItemSummary,
-                      ],
-                    ),
+                      ),
+                      ?rightWidget,
+                    ],
                   ),
-                  ?rightWidget,
                 ],
               ),
-
-              if (notClickableBottom != null)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Sizes.p8,
-                    0,
-                    Sizes.p8,
-                    Sizes.p8,
-                  ),
-                  child: notClickableBottom,
-                ),
-            ],
+            ),
           ),
-        ),
+          if (notClickableBottom != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: notClickableBottom,
+            ),
+        ],
       ),
     );
   }
