@@ -180,6 +180,41 @@ class ProductItemWidget extends ConsumerWidget {
                                     if (showCurrentAndSaleStocks)
                                       CurrentAndSaleStocks(this),
                                     if (showEans) EansProperty(this),
+                                    ?clickableBottom,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        if (onDelete != null) ...[
+                                          DeleteItemButton(onDelete: onDelete),
+                                        ],
+                                        if (showEditIcon)
+                                          Expanded(
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: SelectedIconIndicator(
+                                                selected: isSelected ?? false,
+                                                onTap: onTap,
+                                                editIcon: editIcon,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    ?cartItemSummary,
+                                    if (notClickableBottom != null)
+                                      GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () {},
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                            Sizes.p8,
+                                            0,
+                                            Sizes.p8,
+                                            Sizes.p8,
+                                          ),
+                                          child: notClickableBottom,
+                                        ),
+                                      ),
                                   ],
                                 ),
                                 Positioned(
@@ -189,26 +224,6 @@ class ProductItemWidget extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                            ?clickableBottom,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                if (onDelete != null) ...[
-                                  Flexible(
-                                    child: DeleteItemButton(onDelete: onDelete),
-                                  ),
-                                ],
-                                if (showEditIcon)
-                                  Flexible(
-                                    child: SelectedIconIndicator(
-                                      selected: isSelected ?? false,
-                                      onTap: onTap,
-                                      editIcon: editIcon,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            ?cartItemSummary,
                           ],
                         ),
                       ),
@@ -219,16 +234,6 @@ class ProductItemWidget extends ConsumerWidget {
               ),
             ),
           ),
-          if (notClickableBottom != null)
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Sizes.p8,
-                0,
-                Sizes.p8,
-                Sizes.p8,
-              ),
-              child: notClickableBottom,
-            ),
         ],
       ),
     );
