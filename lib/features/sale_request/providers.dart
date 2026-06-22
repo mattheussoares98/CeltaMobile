@@ -152,3 +152,12 @@ IEcSellerDatasource ecSellerDatasource(Ref ref) {
 IEcSellerRepository ecSellerRepository(Ref ref) {
   return EcSellerRepositoryImpl(ref.watch(ecSellerDatasourceProvider));
 }
+
+@riverpod
+ILocalBSFSaleRequestDraftDatasource localBsfSaleRequestDraftDatasource(
+  Ref ref,
+) {
+  return LocalBSFSaleRequestDraftDatasource(
+    ref.watch(hiveBoxSaleRequestDraftProvider),
+  );
+}
