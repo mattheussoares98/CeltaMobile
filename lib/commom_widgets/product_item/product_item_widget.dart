@@ -19,7 +19,7 @@ class ProductItemWidget extends ConsumerWidget {
   final PlatformIcon? editIcon;
   final bool? isSelected;
   final bool? showInfoButton;
-  final Widget? cartItemSummary; //TODO delete this parameter
+  final Widget? cartItemSummary;
   final Widget? itemBeforeProductName;
   final Widget? rightWidget;
   final bool? hideWholeInformations;
