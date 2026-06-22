@@ -34,6 +34,14 @@ class ProductsItems extends ConsumerWidget {
       ),
     );
 
+    // Watch products list so the widget rebuilds when a product is deleted
+    ref.watch(
+      completeBuyQuotationsStateControllerProvider(
+        widget.enterpriseCode,
+        widget.code.toString(),
+      ).select((s) => s.value?.Products),
+    );
+
     void updateSelectedPackingCode(int? productPackingCode) async {
       if (observationsFocusNode.hasFocus) {
         observationsFocusNode.unfocus();

@@ -67,11 +67,13 @@ class ProductItem extends ConsumerWidget {
                 buyQuotationCode.toString(),
               );
 
-          final currentProducts = ref.read(
-            completeBuyQuotationProvider.select((s) => s.value!.Products),
-          );
+          final currentProducts = [
+            ...?ref.read(
+              completeBuyQuotationProvider.select((s) => s.value!.Products),
+            ),
+          ];
 
-          currentProducts!.removeWhere(
+          currentProducts.removeWhere(
             (e) =>
                 e.Product!.ProductPackingCode ==
                 product.Product!.ProductPackingCode,
@@ -80,7 +82,6 @@ class ProductItem extends ConsumerWidget {
           ref
               .read(completeBuyQuotationProvider.notifier)
               .updateValues(Products: currentProducts);
-          //TODO fix it, is not working
         },
         itemBeforeProductName: QuantityByEnterprises(
           productEnterprises: productEnterprises,
