@@ -20,9 +20,7 @@ class BuyRequestEnterprisesStateController
     final enterprises = await repository.load(
       workingUrl: userSession!.enterprise!.workingUrl!,
       crossIdentity: userSession.user.CrossIdentity_Usuario!,
-      supplierCode: pending
-          .selectedSupplier!
-          .Code, //TODO add the supplierCode in the build constructor
+      supplierCode: pending.selectedSupplier!.Code,
       requestTypeCode: pending.selectedRequestType!.code!,
     );
 
