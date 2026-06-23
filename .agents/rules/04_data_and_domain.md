@@ -28,6 +28,21 @@ As a Principal Software Engineer, this document establishes the strict, non-nego
   2. `toJson`
   3. `fromEntity`
   4. `toEntity`
+- **JSON Serialization Safety Rule:** The `fromJson` factory and `toJson` method **must always** use the untyped `Map` instead of `Map<String, dynamic>`. This is non-negotiable and prevents a common runtime type-cast failure: when data comes from local storage (e.g., Hive, SharedPreferences) or passes through a `dynamic` variable, Dart's runtime type is `Map<dynamic, dynamic>`, which is **not** a subtype of `Map<String, dynamic>`. Since Dart generics are invariant, this causes a silent cast failure at runtime even though the data is structurally valid.
+  - **Correct:**
+    ```dart
+    factory MyModel.fromJson(Map json) { ... }
+    Map toJson() { ... }
+    ```
+  - **Incorrect:**
+    ```dart
+    factory MyModel.fromJson(Map<String, dynamic> json) { ... } // ❌ breaks with Hive/SharedPreferences
+    Map<String, dynamic> toJson() { ... } // ❌ avoid typed return
+    ```
+  - When accessing nested maps inside `fromJson`, always cast them explicitly:
+    ```dart
+    final nested = MyNestedModel.fromJson(json['nested'] as Map);
+    ```
 
 ## 4. Datasources and Repositories
 
