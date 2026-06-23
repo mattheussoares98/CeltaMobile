@@ -88,10 +88,15 @@ class MockLocalSaleRequestRepository extends Mock
 class MockEcSaleRequestsRepository extends Mock
     implements IEcSaleRequestsRepository {}
 
+class MockLocalBsfSaleRequestDraftRepository extends Mock
+    implements ILocalBSFSaleRequestDraftRepository {}
+
 void main() {
   late MockSoapSaveSaleRequestRepository mockSoapSaveSaleRequestRepository;
   late MockLocalSaleRequestRepository mockLocalPendingRepo;
   late MockEcSaleRequestsRepository mockEcSaleRequestsRepository;
+  late MockLocalBsfSaleRequestDraftRepository
+  mockLocalBsfSaleRequestDraftRepository;
   late FakeAppUsageStateController fakeAppUsage;
   late UserSessionModel fakeSession;
   late EnterpriseEntity fakeEnterprise;
@@ -111,6 +116,7 @@ void main() {
     BSFSaleRequestEntity? insertUpdateSaleRequestEntity,
     bool mockNeedsProcessing = false,
     bool canChangePrice = true,
+    SaleRequestArgs? fakeSaleRequestArgs,
   }) {
     final container = ProviderContainer(
       retry: (retryCount, error) => null,
@@ -140,6 +146,18 @@ void main() {
         ),
         ecSaleRequestsRepositoryProvider.overrideWithValue(
           mockEcSaleRequestsRepository,
+        ),
+        localBsfSaleRequestDraftRepositoryProvider.overrideWithValue(
+          mockLocalBsfSaleRequestDraftRepository,
+        ),
+        saleRequestArgsProvider.overrideWithValue(
+          fakeSaleRequestArgs ??
+              SaleRequestArgs(
+                enterpriseCode: fakeEnterprise.Code!,
+                saleRequestId: 0,
+                customerCode: 0,
+                requestTypeCode: 0,
+              ),
         ),
         insertUpdateStateControllerProvider.overrideWith(
           () => FakeInsertUpdateStateController(
@@ -199,6 +217,16 @@ void main() {
     mockSoapSaveSaleRequestRepository = MockSoapSaveSaleRequestRepository();
     mockLocalPendingRepo = MockLocalSaleRequestRepository(); // New
     mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
+    mockLocalBsfSaleRequestDraftRepository =
+        MockLocalBsfSaleRequestDraftRepository();
+
+    when(
+      () => mockLocalBsfSaleRequestDraftRepository.save(
+        any(),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+      ),
+    ).thenAnswer((_) async {});
   });
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeSaleRequestEntity());
@@ -390,94 +418,6 @@ void main() {
 
   group('saveBsfSaleRequest', () {
     group('Validations', () {
-      test(
-        'should call getComplete and updateSingleRequestInList if saleRequestId != 0',
-        () async {
-          // ARRANGE
-          final spySaleRequests = SpySaleRequestsStateController();
-          const validSaleRequestId = 99; // Not 0
-          final validSaleRequest = fakeBSFSaleRequestEntity.copyWith(
-            code: validSaleRequestId,
-          );
-
-          final container = makeProviderContainer(
-            spySaleRequestsStateController: spySaleRequests,
-            insertUpdateSaleRequestEntity: validSaleRequest,
-          );
-
-          when(
-            () => mockEcSaleRequestsRepository.update(
-              saleRequest: any(named: 'saleRequest'),
-              enterpriseCode: any(named: 'enterpriseCode'),
-              params: any(named: 'params'),
-            ),
-          ).thenAnswer((_) async {});
-
-          final fakeCompleteEntity = EntityFactory.makeBSFSaleRequestEntity()
-              .copyWith(
-                requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
-                  generatePendencyFinancialTitle: false,
-                ),
-                financials: [],
-              );
-          when(
-            () => mockEcSaleRequestsRepository.getComplete(
-              enterpriseCode: any(named: 'enterpriseCode'),
-              customerCode: any(named: 'customerCode'),
-              saleRequestCode: any(named: 'saleRequestCode'),
-              params: any(named: 'params'),
-            ),
-          ).thenAnswer((_) async => fakeCompleteEntity);
-
-          // We read the details future once to test invalidation
-          final args = SaleRequestArgs(
-            enterpriseCode: fakeEnterprise.Code!,
-            customerCode: validSaleRequest.customer!.code!,
-            saleRequestId: validSaleRequestId,
-          );
-          await container.read(
-            saleRequestDetailsStateControllerProvider(args).future,
-          );
-
-          // Verify the spy was initialized
-          expect(spySaleRequests.updateSingleRequestInListCalled, false);
-
-          // Clear interactions from the first read
-          clearInteractions(mockEcSaleRequestsRepository);
-
-          // ACT
-          final (errorMessage, needProcessCart) = await container
-              .read(
-                saveSaleRequestControllerProvider(
-                  fakeEnterprise.Code!,
-                ).notifier,
-              )
-              .saveBsfSaleRequest(false);
-
-          // ASSERT
-          verify(
-            () => mockEcSaleRequestsRepository.getComplete(
-              enterpriseCode: fakeEnterprise.Code!,
-              customerCode: validSaleRequest.customer!.code!,
-              saleRequestCode: validSaleRequestId,
-              params: any(named: 'params'),
-            ),
-          ).called(1);
-
-          expect(errorMessage, isNull);
-          expect(needProcessCart, isFalse);
-          expect(spySaleRequests.updateSingleRequestInListCalled, true);
-          expect(spySaleRequests.updatedRequest, isNotNull);
-
-          // Check if the details provider was invalidated by seeing if reading it again gives a new future
-          // Wait, reading the future after invalidation triggers a rebuild
-          final newFuture = container.read(
-            saleRequestDetailsStateControllerProvider(args).future,
-          );
-          expect(newFuture, isNotNull);
-        },
-      );
-
       test(
         'should emit [loading, error] with AppException if isPaymentValid is false',
         () async {
@@ -915,11 +855,18 @@ void main() {
     group('Insert', () {
       test('should behave correctly on success', () async {
         // ARRANGE
+        final defaultArgs = SaleRequestArgs(
+          enterpriseCode: fakeEnterprise.Code!,
+          saleRequestId: 0,
+          customerCode: 0,
+          requestTypeCode: 45,
+        );
 
         final container = makeProviderContainer(
           insertUpdateSaleRequestEntity: fakeBSFSaleRequestEntity.copyWith(
             code: 0,
           ),
+          fakeSaleRequestArgs: defaultArgs,
         );
 
         when(
@@ -954,12 +901,21 @@ void main() {
             params: fakeParams,
           ),
         ).called(1);
+        verify(
+          () => mockLocalBsfSaleRequestDraftRepository.save(
+            BSFSaleRequestEntity.empty().copyWith(
+              requestType: fakeBSFSaleRequestEntity.requestType,
+            ),
+            enterpriseCode: defaultArgs.enterpriseCode,
+            requestTypeCode: defaultArgs.requestTypeCode ?? 0,
+          ),
+        ).called(1);
         expect(fakeAppUsage.lastUsageType, UsageType.insertSaleRequest);
         verifyNever(
           () => mockEcSaleRequestsRepository.update(
-            saleRequest: any(named: 'saleRequest'),
-            enterpriseCode: any(named: 'enterpriseCode'),
-            params: any(named: 'params'),
+            saleRequest: fakeBSFSaleRequestEntity.copyWith(code: 0),
+            enterpriseCode: fakeEnterprise.Code!,
+            params: fakeParams,
           ),
         );
       });

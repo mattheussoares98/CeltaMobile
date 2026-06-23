@@ -165,6 +165,16 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
               enterpriseCode: enterpriseCode,
               params: params,
             );
+        final args = ref.read(saleRequestArgsProvider);
+        ref
+            .read(localBsfSaleRequestDraftRepositoryProvider)
+            .save(
+              BSFSaleRequestEntity.empty().copyWith(
+                requestType: saleRequest.requestType,
+              ),
+              enterpriseCode: args.enterpriseCode,
+              requestTypeCode: args.requestTypeCode ?? 0,
+            );
       } else {
         ref
             .read(appUsageStateControllerProvider.notifier)
