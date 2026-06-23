@@ -66,7 +66,9 @@ class ProductItemWidget extends ConsumerWidget {
   }
 
   bool get showWholePrices {
-    if (hideWholeInformations == true) {
+    if (hidePrice == true) {
+      return false;
+    } else if (hideWholeInformations == true) {
       return false;
     } else if ([
       BsRoutine.adjustSalePrice,
