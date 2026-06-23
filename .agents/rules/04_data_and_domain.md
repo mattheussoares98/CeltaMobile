@@ -3,63 +3,34 @@ trigger: model_decision
 description: Activate this rule whenever the user asks to create or modify data models, domain entities, datasources, repositories, or when handling API requests and JSON serialization
 ---
 
-# 04 Data and Domain Layer Rulebook
+## Barrel Files and Imports
+- Every directory must have a barrel `.dart` file (same name as the directory) exporting all its files.
+- Every import must target the barrel file, never a deep individual file.
 
-As a Principal Software Engineer, this document establishes the strict, non-negotiable architectural conventions and data mapping rules for the Domain and Data layers in the CeltaMobile application.
+## Entities (Domain Layer)
+- Name: `*Entity` / file: `*_entity.dart`
+- ERP-sourced entities: prefix `BSF` (e.g., `BSFCustomerEntity`)
+- Must extend `Equatable`; all properties must be in `props`.
 
-## 1. Barrel Files and Imports
+## Models (Data Layer)
+- Name: `*Model` / file: `*_model.dart`
+- ERP-sourced models: prefix `BSF` (e.g., `BSFSaleRequestModel`)
+- Every model must implement: `fromJson`, `toJson`, `fromEntity`, `toEntity`
+- **JSON Safety**: use untyped `Map` — never `Map<String, dynamic>`. Local storage (Hive, SharedPreferences) returns `Map<dynamic, dynamic>` at runtime, which is not a subtype of `Map<String, dynamic>` (Dart generics are invariant → runtime cast error).
+  - ✅ `factory MyModel.fromJson(Map json)`
+  - ✅ `Map toJson()`
+  - ❌ `factory MyModel.fromJson(Map<String, dynamic> json)`
+  - For nested maps: `MyNested.fromJson(json['x'] as Map)`
 
-- **Mandatory Exporters:** Every directory must contain a `.dart` barrel file with the exact same name as the directory. This file must export all files and subdirectories contained within that path.
-- **Import Rules:** Every import statement across the application MUST reference these exporter barrel files rather than targeting specific files deep within the tree.
-- **Automatic Resolution:** Always check and fix broken relative imports automatically to adhere to the barrel file convention.
+## Datasources and Repositories
+- Interfaces prefix: `I` (e.g., `IMyDatasource`, `IMyRepository`)
+- Datasource impl: strip `I` (e.g., `MyDatasource`)
+- Repository impl: strip `I` + append `Impl` (e.g., `MyRepositoryImpl`)
+- Repositories receive datasources via constructor — never instantiate them internally.
 
-## 2. Entities (Domain Layer)
-
-- **Naming Convention:** Entity class names must end with `Entity`, and their respective files must be named `_entity.dart`.
-- **ERP Prefix Requirement:** Every new entity generated from an ERP model MUST be prefixed with `BSF` (e.g., `BSFCustomerEntity`).
-- **Immutability and Comparison:** Entities must extend `Equatable` to ensure value equality. Every property defined in the entity must be included inside the overridden `props` list.
-
-## 3. Models (Data Layer)
-
-- **ERP Prefix Requirement:** Just like Entities, any Model generated from an ERP object MUST be prefixed with `BSF` (e.g., `BSFSaleRequestModel`).
-- **Naming Convention:** Model class names must end with `Model`, and their respective files must be named `_model.dart`.
-- **Mandatory Methods:** Every data model must implement the following four methods to handle serialization and domain mapping safely:
-  1. `fromJson`
-  2. `toJson`
-  3. `fromEntity`
-  4. `toEntity`
-- **JSON Serialization Safety Rule:** The `fromJson` factory and `toJson` method **must always** use the untyped `Map` instead of `Map<String, dynamic>`. This is non-negotiable and prevents a common runtime type-cast failure: when data comes from local storage (e.g., Hive, SharedPreferences) or passes through a `dynamic` variable, Dart's runtime type is `Map<dynamic, dynamic>`, which is **not** a subtype of `Map<String, dynamic>`. Since Dart generics are invariant, this causes a silent cast failure at runtime even though the data is structurally valid.
-  - **Correct:**
-    ```dart
-    factory MyModel.fromJson(Map json) { ... }
-    Map toJson() { ... }
-    ```
-  - **Incorrect:**
-    ```dart
-    factory MyModel.fromJson(Map<String, dynamic> json) { ... } // ❌ breaks with Hive/SharedPreferences
-    Map<String, dynamic> toJson() { ... } // ❌ avoid typed return
-    ```
-  - When accessing nested maps inside `fromJson`, always cast them explicitly:
-    ```dart
-    final nested = MyNestedModel.fromJson(json['nested'] as Map);
-    ```
-
-## 4. Datasources and Repositories
-
-- **Interface Naming:** Abstract contracts (interfaces) for both datasources and repositories must start with the prefix `I` (e.g., `ILocalLoadProductsDatasource`, `IProductRepository`).
-- **Implementation Naming:** 
-  - Datasource implementations must use the exact name of the interface, stripping the leading `I` (e.g., `LocalLoadProductsDatasource`).
-  - Repository implementations must strip the leading `I` and append `Impl` at the end (e.g., `ProductRepositoryImpl`).
-- **Dependency Injection Constraint:** Repositories must explicitly receive their dependencies (the abstract datasource) via their constructor. Do not instantiate datasources inside repositories.
-
-## 5. Ec Datasource HTTP Pattern
-
-If a datasource class name starts with the `Ec` prefix (e.g., `EcSaleRequestsDatasource`), it MUST strictly adhere to the following HTTP request execution pattern for every method:
-
-1. **Parameter Requirement:** The method signature must require an `EcRequestParams params` parameter.
-2. **URL Construction:** The endpoint URL must be dynamically constructed utilizing the parameter's working URL property.
-   - Example: `url: '${params.workingUrl}/api/EndpointName'`
-3. **Header Injection:** HTTP headers must be passed using the params object.
-   - Example: `headers: params.toHeaders()`
-4. **Body Construction:** When submitting a body payload (POST/PUT), the request body must spread the `params.toMap()` alongside any other necessary variables.
-   - Example: `body: { ...params.toMap(), 'myVariable': myVariable }`
+## Ec Datasource HTTP Pattern
+Any datasource prefixed `Ec` must follow this pattern in every method:
+- Param: `EcRequestParams params`
+- URL: `'${params.workingUrl}/api/Endpoint'`
+- Headers: `params.toHeaders()`
+- Body (POST/PUT): `{ ...params.toMap(), 'key': value }`

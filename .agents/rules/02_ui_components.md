@@ -3,131 +3,44 @@ trigger: model_decision
 description: Activate this rule whenever the user asks to create, modify, style, or review any Flutter UI components, widgets, screens, pages, or dialogs. This contains the required shared widgets, spacing/padding constants (Gaps), and theming rules
 ---
 
-UI Components Rulebook
+## Imports
+- Never add commented file path headers above code blocks.
+- Always import barrel files, not individual files.
 
-This document defines the strict rules for creating, modifying, and styling Flutter UI components within the CeltaMobile application.
-
-## 1. File Path Header and Imports (Barrel Files)
-- **No Commented File Paths:** NEVER include commented file paths (e.g., `// lib/features/...`) at the top of generated code blocks. Output the raw Dart code directly without any file path headers.
-Similarly, when importing widgets from a folder, always prefer to import its barrel file to gain access to all related widgets simultaneously.
-```dart
-// lib/features/sale_request/presentation/pages/components/components.dart
-import 'package:flutter/material.dart';
-...
-
-## 2. Reusability of Common Widgets
-
-**Prioritize reusing existing common widgets over creating new ones.** Check the `lib/commom_widgets` directory before building custom UI elements.
-
-Key reusable widgets include:
+## Reusable Widgets (check `lib/commom_widgets` first)
 - **Buttons**: `PrimaryButton`, `PrimaryTextButton`, `ActionTextButton`, `DefaultPaginationButtons`
-- **Inputs & Controls**: `DefaultDropDown`, `DefaultSimpleDropDown`, `DefaultCheckBox`, `DefaultSwitch`, `DefaultChoiceChip`, `DefaultSegmentedButtons`
-- **Layout & Structure**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`, `TitleAndSubtitle`. 
-  - **CRITICAL REQUIREMENT:** You MUST ALWAYS use `TitleAndSubtitle` whenever you need to display a row or column containing a label/title and a value/subtitle (e.g., summary rows, key-value pairs, or detail rows). NEVER create custom widgets like `SummaryRow` or `KeyValueRow` for this purpose.
-- **Feedback & States**: `LoadingWidget` (and `LoadingExtension`), `EmptyPlaceholderWidget`, `AsyncValueWidget`
-- **Dialogs & Overlays**: `AlertDialogs`, `ShowSnackBarMessage`, `ShowModalPage`
+- **Inputs**: `DefaultDropDown`, `DefaultSimpleDropDown`, `DefaultCheckBox`, `DefaultSwitch`, `DefaultChoiceChip`, `DefaultSegmentedButtons`
+- **Layout**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`
+- **Label+Value rows**: always use `TitleAndSubtitle` — never create custom `SummaryRow` or `KeyValueRow` widgets.
+- **Feedback**: `LoadingWidget`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`
+- **Overlays**: `AlertDialogs`, `ShowSnackBarMessage`, `ShowModalPage`
 - **Icons**: `PlatformIcon`
 
-## 3. Strict Real Data Requirement
+Never use `faker` or mock data in UI widgets. Always pass real entities or UI state models.
 
-**Never use `faker` or mock data when generating UI widgets.** 
-Always use real variable structures, passing the proper domain entities or UI state models to the widgets. Mocking UI state with fake values is strictly forbidden.
+## Spacing (lib/constants/app_sizes.dart)
+Never hardcode pixel values. Use:
+- **Padding**: `Sizes.p4` … `Sizes.p120`
+- **Row/Column gaps**: `gapW4/gapH4` … `gapW32/gapH32`
+- **Sliver gaps**: `gapSliverW4/gapSliverH4` etc.
 
-## 4. Padding and Spacing (Gap Pattern)
+## Theme
+- All texts → `.hardcoded`
+- Opacity → `.withAlpha(0–255)`. **`.withOpacity()` is forbidden.**
+- Colors → `context.theme.colorScheme` or `primaryColor / disabledColor / scaffoldBackgroundColor`. No hardcoded hex/RGB.
+- Typography → `context.theme.textTheme.*`
 
-Always use the standard spacing constants defined in `lib/constants/app_sizes.dart`. Never use hardcoded pixel values (e.g., `SizedBox(height: 16)`) or raw `EdgeInsets.all(16)`.
+## Widget Rules
+- Extract sub-widgets into `components/` when file exceeds 100 lines.
+- Extracted components read providers directly (`ref.watch/read`) — no prop drilling.
+- Follow `BuyRequestPage` folder pattern.
+- Never use `late` for `TextEditingController` or `FocusNode` unless value depends on `widget.*`. Initialize inline and dispose properly.
+- Wrap `Text` or dynamic content inside `Row` with `Expanded` or `Flexible` to prevent overflow.
 
-### Sizes
-Use the `Sizes` class for padding values (`EdgeInsets`):
-- `Sizes.p4` (4.0)
-- `Sizes.p8` (8.0)
-- `Sizes.p12` (12.0)
-- `Sizes.p16` (16.0)
-- `Sizes.p20` (20.0)
-- `Sizes.p24` (24.0)
-- `Sizes.p32` (32.0)
-- ... up to `Sizes.p120`
-
-### Gaps (Box/Flex Layouts)
-Use the predefined `SizedBox` constants for spacing between widgets in `Row` or `Column` layouts:
-- **Width**: `gapW4`, `gapW8`, `gapW12`, `gapW16`, `gapW24`, `gapW32`, etc.
-- **Height**: `gapH4`, `gapH8`, `gapH12`, `gapH16`, `gapH24`, `gapH32`, etc.
-
-### Sliver Gaps (CustomScrollView)
-Use the predefined `SliverToBoxAdapter` constants for spacing inside slivers:
-- **Width**: `gapSliverW4`, `gapSliverW8`, `gapSliverW16`, etc.
-- **Height**: `gapSliverH4`, `gapSliverH8`, `gapSliverH16`, etc.
-
-**Example Implementation:**
+## Platform Adaptation (DRY)
+Declare shared sub-widgets once as local variables before the platform check, then reference them in each branch:
 ```dart
-Column(
-  children: [
-    Text('First Item'),
-    gapH16, // Correct spacing
-    Text('Second Item'),
-  ],
-)
-```
-
-## 5. Typography and Theme
-
-- **Localization:** All widget texts should end with `.hardcoded`.
-
-- **Color Opacity (CRITICAL):** The `.withOpacity()` method is deprecated and strictly forbidden. You MUST NEVER use `.withOpacity()`. Instead, always use `.withAlpha()`. Remember that `withAlpha` takes an integer from 0 to 255 (e.g., for 50% opacity, use `Colors.black.withAlpha(127)` instead of `Colors.black.withOpacity(0.5)`).
-
-The application theme is defined in `lib/core/presentation/theme/app_theme.dart`.
-
-- **Colors**: Rely on `Theme.of(context).colorScheme` or specific theme colors:
-  - `Theme.of(context).primaryColor` (Green base)
-  - `Theme.of(context).disabledColor` (Grey base)
-  - `Theme.of(context).scaffoldBackgroundColor` (White)
-  - **Avoid hardcoding specific Hex or RGB colors.**
-
-- **Typography**: The text theme modifies `titleLarge`, `titleMedium`, and `titleSmall` to use `FontWeight.bold`. Use standard Material typography styles by accessing `Theme.of(context).textTheme`.
-
-```dart
-Text(
-  'Header',
-  style: Theme.of(context).textTheme.titleLarge,
-)
-```
-
-## 6. Other Rules
-- When a file exceeds 100 lines, extract parts of the UI into separate component files inside the `components` folder.
-- Extracted components should read providers directly (e.g., via `ref.watch` or `ref.read`) instead of receiving values through constructor parameters to avoid prop drilling.
-- Follow the exact folder and file organization pattern used in `BuyRequestPage`.
-- **Controller & Focus Node Initialization:** Never use the `late` keyword for `TextEditingController`, `FocusNode`, or similar UI controllers unless the initial value explicitly depends on a `widget.` property. Always initialize them directly inline (e.g., `final _controller = TextEditingController();`). Ensure they are still properly disposed of in the `dispose()` method.
-- **Overflow Prevention (CRITICAL):** When placing `Text` or dynamic content inside a `Row`, you MUST ALWAYS wrap the content in an `Expanded` or `Flexible` widget to prevent RenderFlex overflow errors. Never assume text will fit perfectly on small screens.
-
-## 7. Platform-Adaptive Widgets & Avoiding Code Duplication (DRY Principle)
-
-When building widgets that adapt to different target platforms (e.g., separating Cupertino/iOS and Material/Android layouts using `PlatformUtil.isCupertino`):
-- **Never duplicate common layout or sub-widgets across platform branches.**
-- **Rule:** If a sub-widget (like a title, icon row, or complex child container) is used on both platform paths, you MUST declare it once as a local variable (or lightweight helper) inside the build method/function body before the platform check.
-- **Rule:** Reference those predefined variables inside each platform branch instead of copying and pasting the full widget structures inside each path. This keeps both Cupertino and Material branches extremely focused and maintainable.
-
-**Example Pattern:**
-```dart
-Widget build(BuildContext context) {
-  // Declare shared sub-widgets once
-  final titleWidget = Row(
-    children: [
-      Expanded(child: Text(title)),
-      const Icon(Icons.info),
-    ],
-  );
-
-  // Deliver platform-specific wrappers with the same child instances
-  if (PlatformUtil.isCupertino) {
-    return CupertinoWidget(
-      title: titleWidget,
-      child: ...
-    );
-  } else {
-    return MaterialWidget(
-      title: titleWidget,
-      child: ...
-    );
-  }
-}
+final title = Row(children: [Expanded(child: Text(t)), const Icon(Icons.info)]);
+if (PlatformUtil.isCupertino) return CupertinoWidget(title: title, ...);
+return MaterialWidget(title: title, ...);
 ```
