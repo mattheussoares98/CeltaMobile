@@ -111,11 +111,7 @@ GoRouter goRouter(Ref ref) {
           inventoryCountingsRoute(),
           inventoryProductsRoute(),
         ]),
-        transferRequestRquestsTypesRoute([
-          originEnterprisesRoute([
-            destinyEnterprisesRoute([productsManagementRoute()]),
-          ]),
-        ]),
+        productsRegisterRoute(),
         receiptsRoute([
           productsReceiptRoute([productsNotFoundRoute()]),
         ]),
@@ -129,6 +125,11 @@ GoRouter goRouter(Ref ref) {
         searchProductsRoute(),
         stockReplacementRoute(),
         transferBetweenStocksRoute(),
+        transferRequestRquestsTypesRoute([
+          originEnterprisesRoute([
+            destinyEnterprisesRoute([productsManagementRoute()]),
+          ]),
+        ]),
         pdfViewerRoute(),
       ]),
       splashRoute(),

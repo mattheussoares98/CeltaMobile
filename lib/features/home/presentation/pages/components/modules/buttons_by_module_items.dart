@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class ButtonsByModuleItems {
   ButtonsByModuleItems._();
@@ -140,5 +140,14 @@ class ButtonsByModuleItems {
         cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
       ),
     ),
+    if (kDebugMode)
+      Modules.productsRegister: DefaultModuleButton(
+        route: Routes.productsRegister,
+        module: Modules.productsRegister,
+        platformIcon: PlatformIcon(
+          materialIcon: Icons.add_outlined,
+          cupertinoIcon: CupertinoIcons.add,
+        ),
+      ),
   };
 }

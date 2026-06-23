@@ -92,9 +92,8 @@ class DefaultModuleButton extends ConsumerWidget {
                     ],
                   ),
                 ),
-                // if ((module == Modules.adjustCost &&
-                //     ModuleIsFreeUntil.adjustCostIsFree))
-                //   const NewModuleBadge(),
+                if ((module == Modules.productsRegister))
+                  const NewModuleBadge(),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),
