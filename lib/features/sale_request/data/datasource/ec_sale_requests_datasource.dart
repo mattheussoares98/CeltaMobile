@@ -62,7 +62,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     );
 
     return EcPaginationResults<EcSaleRequestModel>.fromJson(
-      response as Map<String, dynamic>,
+      response as Map,
       (e) => EcSaleRequestModel.fromJson(e),
     );
   }

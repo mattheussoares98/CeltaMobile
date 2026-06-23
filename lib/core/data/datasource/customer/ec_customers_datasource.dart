@@ -32,7 +32,7 @@ class EcCustomersDatasource implements IEcCustomersDatasource {
     if (response?.isEmpty ?? true) return [];
 
     return (json.decode(response) as List)
-        .map((e) => BSFCustomerModel.fromJson(e as Map<String, dynamic>))
+        .map((e) => BSFCustomerModel.fromJson(e as Map))
         .toList();
   }
 }

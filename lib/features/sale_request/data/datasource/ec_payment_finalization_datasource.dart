@@ -26,7 +26,7 @@ class EcPaymentFinalizationDatasource
     return (json.decode(response) as List)
         .map(
           (e) =>
-              BSFPaymentFinalizationModel.fromJson(e as Map<String, dynamic>),
+              BSFPaymentFinalizationModel.fromJson(e as Map),
         )
         .toList();
   }
@@ -44,7 +44,7 @@ class EcPaymentFinalizationDatasource
 
     return (json.decode(response) as List)
         .map(
-          (e) => BSFPaymentConditionModel.fromJson(e as Map<String, dynamic>),
+          (e) => BSFPaymentConditionModel.fromJson(e as Map),
         )
         .toList();
   }

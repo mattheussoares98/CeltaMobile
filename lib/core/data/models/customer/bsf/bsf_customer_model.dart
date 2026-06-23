@@ -72,7 +72,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
     covenants: (json['Extensions']?['Covenants'] as List?)
         ?.map(
           (e) =>
-              BsfCovenantModel.fromJson(e['Covenant'] as Map<String, dynamic>),
+              BsfCovenantModel.fromJson(e['Covenant'] as Map),
         )
         .toList(),
   );

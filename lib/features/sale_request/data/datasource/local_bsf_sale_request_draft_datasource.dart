@@ -32,7 +32,7 @@ class LocalBSFSaleRequestDraftDatasource implements ILocalBSFSaleRequestDraftDat
       return null;
     }
 
-    return BSFSaleRequestModel.fromJson(Map<String, dynamic>.from(value));
+    return BSFSaleRequestModel.fromJson(Map.from(value));
   }
 
   @override

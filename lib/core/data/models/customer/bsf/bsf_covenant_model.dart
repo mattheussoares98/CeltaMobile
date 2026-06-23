@@ -48,26 +48,26 @@ class BsfCovenantModel extends BsfCovenantEntity {
     requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
     allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
     address: json['Address'] != null
-        ? BSFAddressModel.fromJson(json['Address'] as Map<String, dynamic>)
+        ? BSFAddressModel.fromJson(json['Address'] as Map)
         : null,
     deliveryAddress: json['DeliveryAddress'] != null
         ? BSFAddressModel.fromJson(
-            json['DeliveryAddress'] as Map<String, dynamic>,
+            json['DeliveryAddress'] as Map,
           )
         : null,
     collectAddress: json['CollectAddress'] != null
         ? BSFAddressModel.fromJson(
-            json['CollectAddress'] as Map<String, dynamic>,
+            json['CollectAddress'] as Map,
           )
         : null,
     saleBlockade: json['SaleBlockade'] != null
         ? BsfSaleBlockadeModel.fromJson(
-            json['SaleBlockade'] as Map<String, dynamic>,
+            json['SaleBlockade'] as Map,
           )
         : null,
     saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
         ? BsfSaleBlockadeInstructionModel.fromJson(
-            json['SaleBlockadeInstruction'] as Map<String, dynamic>,
+            json['SaleBlockadeInstruction'] as Map,
           )
         : null,
   );
