@@ -55,7 +55,7 @@ class PrimaryButton extends ConsumerWidget {
                   },
             sizeStyle: CupertinoButtonSize.medium,
             padding: const EdgeInsets.symmetric(
-              vertical: Sizes.p4,
+              vertical: Sizes.p8,
               horizontal: Sizes.p8,
             ),
             color: buttonColor,
