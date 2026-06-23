@@ -91,7 +91,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       hideCurrentAndSaleStocks: true,
       hideWholeInformations: true,
       showEditIcon: true,
-      hideCost: true,
       isSelected: isSelected,
       onTap: () {
         costController.clear();
@@ -103,12 +102,6 @@ class _ProductItemState extends ConsumerState<ProductItem> {
             )
             .updateIndex(widget.index, annulWhenIsSame: true);
       },
-      clickableBottom: TitleAndSubTitle(
-        title: 'Custo de reposição'.hardcoded,
-        subTitle: product.ReplacementCost,
-        subTitleIsPrice: true,
-        emptyMessage: 'Sem custo de reposição'.hardcoded,
-      ),
       notClickableBottom: isSelected
           ? Row(
               children: [
