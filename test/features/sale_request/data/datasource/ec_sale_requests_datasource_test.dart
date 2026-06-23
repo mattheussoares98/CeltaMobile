@@ -251,7 +251,10 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}',
+              '${params.workingUrl}/api/SaleRequests/Insert?'
+              'enterpriseCode=$enterpriseCode'
+              '&customerCode=${bSFSaleRequestModel.customer?.code}'
+              '&requestTypeCode=${bSFSaleRequestModel.requestType?.code}',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),
@@ -259,7 +262,7 @@ void main() {
       ).called(1);
     });
 
-    test("should return false on error", () async {
+    test("should throw on error", () async {
       httpClient.mockRequestError();
 
       expectLater(
@@ -274,7 +277,10 @@ void main() {
       verify(
         () => httpClient.request(
           url:
-              '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${bSFSaleRequestModel.customer?.code}',
+              '${params.workingUrl}/api/SaleRequests/Insert?'
+              'enterpriseCode=$enterpriseCode'
+              '&customerCode=${bSFSaleRequestModel.customer?.code}'
+              '&requestTypeCode=${bSFSaleRequestModel.requestType?.code}',
           method: 'post',
           headers: params.toHeaders(),
           body: bSFSaleRequestModel.toJson(),

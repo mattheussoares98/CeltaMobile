@@ -110,9 +110,15 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     required int enterpriseCode,
     required EcRequestParams params,
   }) async {
+    final customerCode = saleRequest.customer?.code ?? 0;
+    final requestTypeCode = saleRequest.requestType?.code ?? 0;
+
     await httpClient.request(
       url:
-          '${params.workingUrl}/api/SaleRequests/Insert?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}',
+          '${params.workingUrl}/api/SaleRequests/Insert?'
+          'enterpriseCode=$enterpriseCode'
+          '&customerCode=$customerCode&'
+          'requestTypeCode=$requestTypeCode',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),
