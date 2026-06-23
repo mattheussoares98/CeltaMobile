@@ -34,6 +34,11 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
       return;
     }
 
+    final annulSelectedSupplier = ref.read(
+      pendingBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.selectedEnterprises?.isNotEmpty ?? false),
+    );
     await ref
         .read(
           pendingBuyRequestStateControllerProvider(
@@ -41,7 +46,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
           ).notifier,
         )
         .updatePending(
-          annulSelectedSupplier: true,
+          annulSelectedSupplier: annulSelectedSupplier,
           annulSelectedEnterprises: true,
           annulProducts: true,
         );
