@@ -1,7 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/supplier/supplier.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
@@ -52,12 +50,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         );
 
     await ref
-        .read(
-          supplierStateControllerProvider(
-            SearchSupplierType.buyRequest,
-            widget.enterpriseCode,
-          ).notifier,
-        )
+        .read(supplierStateControllerProvider(widget.enterpriseCode).notifier)
         .load(supplierController.text);
   }
 
@@ -90,18 +83,12 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      supplierStateControllerProvider(
-        SearchSupplierType.buyRequest,
-        widget.enterpriseCode,
-      ),
-      (p, n) {
-        n.showSnackbarOnError(context, p);
-        n.doOnSuccess(p, () {
-          supplierController.clear();
-        });
-      },
-    );
+    ref.listen(supplierStateControllerProvider(widget.enterpriseCode), (p, n) {
+      n.showSnackbarOnError(context, p);
+      n.doOnSuccess(p, () {
+        supplierController.clear();
+      });
+    });
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +116,6 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                 ),
                 enabled: !ref.watch(
                   supplierStateControllerProvider(
-                    SearchSupplierType.buyRequest,
                     widget.enterpriseCode,
                   ).select((s) => s.isLoading),
                 ),

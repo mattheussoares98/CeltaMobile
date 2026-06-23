@@ -9,13 +9,10 @@ part 'supplier_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class SupplierStateController extends _$SupplierStateController {
   @override
-  FutureOr<List<SupplierEntity>?> build(
-    SearchSupplierType searchType,
-    int enterpriseCode,
-  ) async {
+  FutureOr<List<SupplierEntity>?> build(int enterpriseCode) async {
     final pendingRequest = await ref.read(
       pendingBuyRequestStateControllerProvider(enterpriseCode).future,
-    ); //TODO remove it from here!
+    );
     final selectedSupplier = pendingRequest.selectedSupplier;
     return [?selectedSupplier];
   }
@@ -24,14 +21,20 @@ class SupplierStateController extends _$SupplierStateController {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final userSession = await ref.watch(validatedUserSessionProvider.future);
-      return await ref
+      final result = await ref
           .read(soapLoadSupplierRepositoryProvider)
           .load(
             workingUrl: userSession!.enterprise!.workingUrl!,
             crossIdentity: userSession.user.CrossIdentity_Usuario!,
-            searchType: searchType,
+            searchType: SearchSupplierType.buyRequest,
             searchValue: searchValue,
           );
+      final selectedSupplier = await ref.read(
+        pendingBuyRequestStateControllerProvider(
+          enterpriseCode,
+        ).selectAsync((s) => s.selectedSupplier),
+      );
+      return [?selectedSupplier, ...result];
     });
   }
 }

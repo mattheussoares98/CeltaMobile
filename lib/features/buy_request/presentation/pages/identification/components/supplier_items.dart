@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/supplier/supplier.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/identification/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -72,12 +71,7 @@ class SupplierItems extends ConsumerWidget {
 
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(
-        supplierStateControllerProvider(
-          SearchSupplierType.buyRequest,
-          enterpriseCode,
-        ),
-      ),
+      value: ref.watch(supplierStateControllerProvider(enterpriseCode)),
       data: (suppliers) => _Items(
         key: const ValueKey('sliver'),
         suppliers: suppliers,

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/supplier/supplier.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
@@ -29,10 +28,7 @@ class FakeSupplierStateController extends SupplierStateController {
   FakeSupplierStateController(this.fakeSuppliers);
 
   @override
-  FutureOr<List<SupplierEntity>?> build(
-    SearchSupplierType searchType,
-    int enterpriseCode,
-  ) async {
+  FutureOr<List<SupplierEntity>?> build(int enterpriseCode) async {
     return fakeSuppliers;
   }
 }
@@ -76,7 +72,6 @@ void main() {
         userSessionProvider.overrideWith(() => FakeUserSession(fakeSession)),
         // Overriding the supplier list dependency
         supplierStateControllerProvider(
-          SearchSupplierType.buyRequest,
           enterpriseCode,
         ).overrideWith(() => FakeSupplierStateController(suppliers)),
         // Overriding the pending request dependency
