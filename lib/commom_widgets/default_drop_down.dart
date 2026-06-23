@@ -6,9 +6,21 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultDropDown<T> extends StatefulWidget {
+class DefaultDropDown<T> extends StatelessWidget {
+  const DefaultDropDown({
+    required this.onChanged,
+    required this.items,
+    required this.selectedItem,
+    required this.label,
+    this.hint,
+    this.dropdownHeight = 45,
+    this.validator,
+    this.showLabelAtTopLeft = false,
+    this.isSimple = false,
+    this.adviceMessage,
+    super.key,
+  });
   final void Function(T)? onChanged;
-  final Future<bool> Function(T)? onBeforeChange;
   final List<DropdownMenuItem<T>>? items;
   final Widget? hint;
   final T? selectedItem;
@@ -19,119 +31,121 @@ class DefaultDropDown<T> extends StatefulWidget {
   final bool isSimple;
   final String? adviceMessage;
 
-  const DefaultDropDown({
-    required this.onChanged,
-    required this.items,
-    required this.selectedItem,
-    required this.label,
-    this.onBeforeChange,
-    this.hint,
-    this.dropdownHeight = 50, //enough to show the error
-    this.validator,
-    this.showLabelAtTopLeft = false,
-    this.isSimple = false,
-    this.adviceMessage,
-    super.key,
-  });
-
-  @override
-  State<DefaultDropDown<T>> createState() => _DefaultDropDownState<T>();
-}
-
-class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
-  final _fieldKey = GlobalKey<FormFieldState<T>>();
-
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
 
+    final centeredItems = items?.map((item) {
+      return DropdownMenuItem<T>(
+        key: item.key,
+        value: item.value,
+        onTap: item.onTap,
+        enabled: item.enabled,
+        alignment: Alignment.center,
+        child: Center(child: item.child),
+      );
+    }).toList();
+
     final topLeftLabel =
-        widget.selectedItem != null &&
-            widget.showLabelAtTopLeft == true &&
-            widget.label?.isNotEmpty == true
+        selectedItem != null &&
+            showLabelAtTopLeft &&
+            (label?.isNotEmpty ?? false)
         ? Positioned(
             left: Sizes.p4,
             child: Text(
-              widget.label!,
-              style: theme.textTheme.bodyMedium?.copyWith(fontSize: 10),
+              label!,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontSize: 8,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w300,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
             ),
           )
         : null;
 
-    if (PlatformUtil.isCupertino && !widget.isSimple) {
+    if (PlatformUtil.isCupertino && !isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
-      final selectedMenuItem = widget.items?.firstWhereOrNull(
-        (item) => item.value == widget.selectedItem,
+      final selectedMenuItem = centeredItems?.firstWhereOrNull(
+        (item) => item.value == selectedItem,
       );
       return FormField<T>(
+        key: key,
         autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-        validator: widget.validator,
-        initialValue: widget.selectedItem,
+        validator: validator,
+        initialValue: selectedItem,
         builder: (state) {
           return Column(
             children: [
               SizedBox(
-                height: widget.dropdownHeight,
+                height: dropdownHeight,
                 child: Stack(
                   children: [
                     ?topLeftLabel,
                     CupertinoButton(
-                      disabledColor: theme.disabledColor.withAlpha(100),
+                      disabledColor: theme.disabledColor.withValues(
+                        alpha: 100 / 255,
+                      ),
                       padding: const EdgeInsets.only(left: 15),
-                      color: theme.disabledColor.withAlpha(50),
+                      color: theme.disabledColor.withValues(alpha: 50 / 255),
                       onPressed:
-                          widget.onChanged == null ||
-                              (widget.items?.length ?? 0) < 1
+                          onChanged == null || (centeredItems?.length ?? 0) < 1
                           ? null
                           : () async {
-                              if (widget.adviceMessage != null) {
-                                showAlertDialog(
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              if (adviceMessage != null) {
+                                final ok = await showAlertDialog(
                                   context: context,
                                   title: 'Atenção!'.hardcoded,
-                                  content: widget.adviceMessage!,
+                                  content: adviceMessage,
+                                  defaultActionText: 'Continuar'.hardcoded,
+                                  cancelActionText: 'Cancelar'.hardcoded,
                                 );
+                                if (ok != true) return;
                               }
-                              if (!context.mounted) return;
-                              final selected = await showCupertinoModalPopup<T>(
-                                context: context,
-                                builder: (_) => CupertinoActionSheet(
-                                  title: Text('Selecionar'.hardcoded),
-                                  actions: widget.items!.map((item) {
-                                    return CupertinoActionSheetAction(
-                                      onPressed: () {
-                                        if (item.enabled) {
-                                          Navigator.of(context).pop(item.value);
-                                        }
-                                      },
-                                      child: item.child,
-                                    );
-                                  }).toList(),
-                                  cancelButton: CupertinoActionSheetAction(
-                                    isDefaultAction: true,
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: Text(
-                                      'Cancelar'.hardcoded,
-                                      style: theme.textTheme.titleMedium
-                                          ?.copyWith(
-                                            color:
-                                                CupertinoColors.destructiveRed,
+                              if (context.mounted) {
+                                final selected =
+                                    await showCupertinoModalPopup<T>(
+                                      context: context,
+                                      builder: (sheetContext) =>
+                                          CupertinoActionSheet(
+                                            title: Text('Selecionar'.hardcoded),
+                                            actions: centeredItems!.map((item) {
+                                              return CupertinoActionSheetAction(
+                                                onPressed: () {
+                                                  if (item.enabled) {
+                                                    Navigator.of(
+                                                      sheetContext,
+                                                    ).pop(item.value);
+                                                  }
+                                                },
+                                                child: item.child,
+                                              );
+                                            }).toList(),
+                                            cancelButton:
+                                                CupertinoActionSheetAction(
+                                                  isDefaultAction: true,
+                                                  onPressed: () => Navigator.of(
+                                                    sheetContext,
+                                                  ).pop(),
+                                                  child: Text(
+                                                    'Cancelar'.hardcoded,
+                                                    style: theme
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.copyWith(
+                                                          color: CupertinoColors
+                                                              .destructiveRed,
+                                                        ),
+                                                  ),
+                                                ),
                                           ),
-                                    ),
-                                  ),
-                                ),
-                              );
+                                    );
 
-                              if (selected != null &&
-                                  widget.onChanged != null) {
-                                if (selected == widget.selectedItem) return;
-                                if (widget.onBeforeChange != null) {
-                                  final confirmed =
-                                      await widget.onBeforeChange!(selected);
-                                  if (!confirmed) return;
+                                if (selected != null && onChanged != null) {
+                                  state.didChange(selected);
+                                  onChanged!(selected);
                                 }
-                                state.didChange(selected);
-                                widget.onChanged!(selected);
                               }
                             },
                       child: Row(
@@ -147,12 +161,16 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
                                     overflow: TextOverflow.ellipsis,
                                     child: selectedMenuItem.child,
                                   )
-                                : Text(
-                                    widget.label ?? 'Selecionar'.hardcoded,
-                                    maxLines: 1,
-                                    style: theme.textTheme.bodyLarge,
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
+                                : Center(
+                                    child:
+                                        hint ??
+                                        Text(
+                                          label ?? 'Selecionar'.hardcoded,
+                                          maxLines: 1,
+                                          style: theme.textTheme.bodyLarge,
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                   ),
                           ),
                           if (screenWidth > 300)
@@ -186,93 +204,93 @@ class _DefaultDropDownState<T> extends State<DefaultDropDown<T>> {
     }
 
     final bool isDropdownEnabled =
-        widget.onChanged != null && (widget.items?.length ?? 0) > 0;
+        onChanged != null && (centeredItems?.length ?? 0) > 0;
 
-    return SizedBox(
-      height: widget.dropdownHeight,
-      child: Material(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
-        ),
-        color: theme.disabledColor.withAlpha(30),
-        child: InkWell(
-          onTap: isDropdownEnabled ? () {} : null,
-          customBorder: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
-          ),
-          child: Stack(
-            children: [
-              ?topLeftLabel,
-              Center(
-                child: DropdownButtonFormField<T>(
-                  key: _fieldKey,
-                  autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-                  decoration: const InputDecoration(border: InputBorder.none),
-                  isDense: true,
-                  padding: const EdgeInsets.only(left: Sizes.p8),
-                  dropdownColor: Colors.white,
-                  validator: widget.validator,
-                  initialValue: widget.selectedItem,
-                  errorBuilder: (context, errorText) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: Sizes.p8, bottom: 2),
-                      child: Text(errorText),
-                    );
-                  },
-                  isExpanded: true,
-                  alignment: Alignment.center,
-                  iconSize: 17,
-                  onTap: widget.adviceMessage == null
-                      ? null
-                      : () {
-                          showAlertDialog(
-                            context: context,
-                            title: 'Atenção!'.hardcoded,
-                            content: widget.adviceMessage!,
-                          );
-                        },
-                  hint:
-                      widget.hint ??
-                      (widget.label != null
-                          ? Center(child: Text(widget.label!))
-                          : null),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: theme.textTheme.titleMedium?.fontSize,
-                    color: Colors.black,
-                    height: 1,
-                    overflow: TextOverflow.ellipsis,
+    return FormField<T>(
+      key: key,
+      autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+      validator: validator,
+      initialValue: selectedItem,
+      builder: (state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: dropdownHeight,
+              child: Material(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+                ),
+                color: theme.disabledColor.withValues(alpha: 30 / 255),
+                child: InkWell(
+                  onTap: isDropdownEnabled ? () {} : null,
+                  customBorder: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
                   ),
-                  items: widget.items,
-                  onChanged:
-                      widget.onChanged == null ||
-                          (widget.items?.length ?? 0) < 1
-                      ? null
-                      : (value) async {
-                          if (value != null) {
-                            if (value == widget.selectedItem) return;
-                            if (widget.onBeforeChange != null) {
-                              final confirmed = await widget.onBeforeChange!(
-                                value,
-                              );
-                              if (confirmed) {
-                                widget.onChanged!(value);
-                              } else {
-                                _fieldKey.currentState?.didChange(
-                                  widget.selectedItem,
+                  child: Stack(
+                    children: [
+                      ?topLeftLabel,
+                      DropdownButtonFormField<T>(
+                        autovalidateMode:
+                            AutovalidateMode.onUserInteractionIfError,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          errorStyle: TextStyle(height: 0, fontSize: 0),
+                        ),
+                        padding: const EdgeInsets.only(left: Sizes.p8),
+                        dropdownColor: theme.colorScheme.surface,
+                        initialValue: selectedItem,
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        iconSize: 17,
+                        onTap: adviceMessage == null
+                            ? null
+                            : () {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Atenção!'.hardcoded,
+                                  content: adviceMessage,
                                 );
-                              }
-                            } else {
-                              widget.onChanged!(value);
-                            }
-                          }
-                        },
+                              },
+                        hint: hint ?? (label != null ? Text(label!) : null),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: theme.textTheme.titleMedium?.fontSize,
+                          color: theme.colorScheme.onSurface,
+                          height: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        items: centeredItems,
+                        onChanged:
+                            onChanged == null ||
+                                (centeredItems?.length ?? 0) < 1
+                            ? null
+                            : (value) {
+                                if (value != null) {
+                                  state.didChange(value);
+                                  onChanged?.call(value);
+                                }
+                              },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+            if (state.hasError)
+              Padding(
+                padding: const EdgeInsets.only(top: Sizes.p4),
+                child: Text(
+                  state.errorText!,
+                  style: TextStyle(
+                    color: theme.colorScheme.error,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
