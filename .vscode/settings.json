@@ -37,5 +37,11 @@
     // This results in code completion suggesting words when editing comments and
     // strings. This setting will prevent that.
     "editor.wordBasedSuggestions": "off",
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).mocks.dart, $(capture)_*.dart",
+    "pubspec.yaml": "pubspec.lock, pubspec_*.yaml, .flutter-plugins*, .packages, .metadata, analysis_options.yaml"
   }
 }
