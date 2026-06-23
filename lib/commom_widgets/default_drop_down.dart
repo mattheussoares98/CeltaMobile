@@ -64,6 +64,9 @@ class DefaultDropDown<T> extends StatelessWidget {
           )
         : null;
 
+    final disabledColor = theme.disabledColor.withValues(alpha: .2);
+    final enabledColor = theme.disabledColor.withValues(alpha: .1);
+
     if (PlatformUtil.isCupertino && !isSimple) {
       final double screenWidth = MediaQuery.sizeOf(context).width;
       final selectedMenuItem = centeredItems?.firstWhereOrNull(
@@ -83,11 +86,9 @@ class DefaultDropDown<T> extends StatelessWidget {
                   children: [
                     ?topLeftLabel,
                     CupertinoButton(
-                      disabledColor: theme.disabledColor.withValues(
-                        alpha: 100 / 255,
-                      ),
+                      disabledColor: disabledColor,
                       padding: const EdgeInsets.only(left: 15),
-                      color: theme.disabledColor.withValues(alpha: 50 / 255),
+                      color: enabledColor,
                       onPressed:
                           onChanged == null || (centeredItems?.length ?? 0) < 1
                           ? null
@@ -221,7 +222,7 @@ class DefaultDropDown<T> extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
                 ),
-                color: theme.disabledColor.withValues(alpha: 30 / 255),
+                color: isDropdownEnabled ? enabledColor : disabledColor,
                 child: InkWell(
                   onTap: isDropdownEnabled ? () {} : null,
                   customBorder: const RoundedRectangleBorder(
