@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreditCardFields extends ConsumerWidget {
+class CreditCardFields extends ConsumerStatefulWidget {
   final TextEditingController creditCardController;
   final TextEditingController portionsController;
   final TextEditingController validityController;
@@ -20,7 +20,24 @@ class CreditCardFields extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreditCardFields> createState() => CreditCardFieldsState();
+}
+
+class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
+  final cardNumberFocusNode = FocusNode();
+  final portionsFocusNode = FocusNode();
+  final validityFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    cardNumberFocusNode.dispose();
+    portionsFocusNode.dispose();
+    validityFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final selectedCreditCardType = ref.watch(
       selectedPaymentTypeStateControllerProvider.select(
         (s) => s?.action?.type == PaymentFinalizationActionType.creditCard,
@@ -32,50 +49,49 @@ class CreditCardFields extends ConsumerWidget {
     }
 
     final now = DateTime.now();
-    final children = [
-      DefaultTextFormField(
-        controller: creditCardController,
-        labelText: 'Número do cartão'.hardcoded,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        textInputAction: TextInputAction.next,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-          LengthLimitingTextInputFormatter(16),
-          CreditCardNumberInputFormatter(),
-        ],
-      ),
-      DefaultTextFormField(
-        controller: portionsController,
-        labelText: 'Qtd parcelas'.hardcoded,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        textInputAction: TextInputAction.next,
-        validator: FormValidators.compose([
-          NonEmptyValidator(),
-          NumberValidator(allowDecimal: false),
-        ]),
-      ),
-      DefaultTextFormField(
-        controller: validityController,
-        labelText: 'Validade'.hardcoded,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        textInputAction: TextInputAction.next,
-        inputFormatters: [DateInputFormatter(includeDay: false)],
-        validator: FormValidators.compose([
-          DateValidator(
-            minimumDate: now,
-            maximumDate: now.add(const Duration(days: 365 * 10)),
-            includeDay: false,
-            allowEmptyDate: true,
-          ),
-        ]),
-      ),
-    ];
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: children.length,
-      itemBuilder: (context, index) {
-        return children[index];
-      },
+
+    return Column(
+      children: [
+        DefaultTextFormField(
+          focusNode: cardNumberFocusNode,
+          controller: widget.creditCardController,
+          labelText: 'Número do cartão'.hardcoded,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          textInputAction: TextInputAction.next,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(16),
+            CreditCardNumberInputFormatter(),
+          ],
+        ),
+        DefaultTextFormField(
+          focusNode: portionsFocusNode,
+          controller: widget.portionsController,
+          labelText: 'Qtd parcelas'.hardcoded,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          textInputAction: TextInputAction.next,
+          validator: FormValidators.compose([
+            NonEmptyValidator(),
+            NumberValidator(allowDecimal: false),
+          ]),
+        ),
+        DefaultTextFormField(
+          focusNode: validityFocusNode,
+          controller: widget.validityController,
+          labelText: 'Validade'.hardcoded,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          textInputAction: TextInputAction.next,
+          inputFormatters: [DateInputFormatter(includeDay: false)],
+          validator: FormValidators.compose([
+            DateValidator(
+              minimumDate: now,
+              maximumDate: now.add(const Duration(days: 365 * 10)),
+              includeDay: false,
+              allowEmptyDate: true,
+            ),
+          ]),
+        ),
+      ],
     );
   }
 }

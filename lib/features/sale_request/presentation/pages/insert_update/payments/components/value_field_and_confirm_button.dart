@@ -30,10 +30,12 @@ class ValueFieldAndConfirmButton extends ConsumerStatefulWidget {
 class _ValueFieldAndConfirmButtonState
     extends ConsumerState<ValueFieldAndConfirmButton> {
   final valueController = TextEditingController();
+  final valueFocusNode = FocusNode();
 
   @override
   void dispose() {
     valueController.dispose();
+    valueFocusNode.dispose();
     super.dispose();
   }
 
@@ -85,6 +87,7 @@ class _ValueFieldAndConfirmButtonState
       children: [
         Flexible(
           child: DefaultTextFormField(
+            focusNode: valueFocusNode,
             controller: valueController,
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
