@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/insert_products/components/components.dart';
+import 'package:flutter/material.dart';
 
-class InsertProductsPage extends ConsumerWidget {
+class InsertProductsPage extends StatelessWidget {
   final int enterpriseCode;
   final BSFRequestTypeEntity selectedRequest;
   const InsertProductsPage({
@@ -15,27 +13,15 @@ class InsertProductsPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final searchProductKey = SearchProductKey(
-      enterpriseCode,
-      BsRoutine.saleRequest,
-      Modules.saleRequest,
-      anotherKey: selectedRequest.code.toString(),
-    );
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Column(
         children: [
-          SearchProducts(searchProductKey: searchProductKey),
+          SearchProducts(),
           gapH8,
           Expanded(
-            child: CustomScrollView(
-              slivers: [
-                ProductsItems(searchProductKey: searchProductKey),
-                gapSliverH48,
-              ],
-            ),
+            child: CustomScrollView(slivers: [ProductsItems(), gapSliverH48]),
           ),
         ],
       ),

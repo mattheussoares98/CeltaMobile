@@ -1,17 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/create_sale_request/insert_products/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsItems extends ConsumerWidget {
-  final SearchProductKey searchProductKey;
-  const ProductsItems({super.key, required this.searchProductKey});
+  const ProductsItems({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
+    final searchProductKey = SearchProductKey(
+      args.enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
+      anotherKey: args.toString(),
+    );
     return AsyncValueWidget(
       isSliver: true,
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),

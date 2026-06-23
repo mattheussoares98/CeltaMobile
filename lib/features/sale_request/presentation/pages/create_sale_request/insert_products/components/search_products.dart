@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchProducts extends ConsumerStatefulWidget {
-  final SearchProductKey searchProductKey;
-  const SearchProducts({super.key, required this.searchProductKey});
+  const SearchProducts({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SearchProductsState();
@@ -24,21 +23,27 @@ class _SearchProductsState extends ConsumerState<SearchProducts> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ref.watch(saleRequestArgsProvider);
+
+    final searchProductKey = SearchProductKey(
+      args.enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
+      anotherKey: args.toString(),
+    );
     return DefaultSearchProducts(
       searchValueController: searchProductsController,
-      searchProductKey: widget.searchProductKey,
+      searchProductKey: searchProductKey,
       searchProducts: (exactProductCode) {
         ref
             .read(
-              searchProductsStateControllerProvider(
-                widget.searchProductKey,
-              ).notifier,
+              searchProductsStateControllerProvider(searchProductKey).notifier,
             )
             .loadProducts(
               exactProductCode: exactProductCode,
               GetProductsJsonParams(
                 searchValue: searchProductsController.text,
-                enterpriseCodes: [widget.searchProductKey.enterpriseCode],
+                enterpriseCodes: [searchProductKey.enterpriseCode],
               ),
             );
       },

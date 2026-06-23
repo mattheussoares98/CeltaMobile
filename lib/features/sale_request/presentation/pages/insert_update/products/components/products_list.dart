@@ -5,18 +5,25 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsList extends ConsumerWidget {
-  final SearchProductKey searchProductKey;
-
-  const ProductsList({super.key, required this.searchProductKey});
+  const ProductsList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = ref.watch(saleRequestArgsProvider);
+
+    final searchProductKey = SearchProductKey(
+      args.enterpriseCode,
+      BsRoutine.saleRequest,
+      Modules.saleRequest,
+      anotherKey: args.toString(),
+    );
     return AsyncValueWidget(
       value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
