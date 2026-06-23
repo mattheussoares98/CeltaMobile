@@ -64,7 +64,9 @@ void main() {
 
   group('InsertUpdateProcessCartController', () {
     test('processCart should behave correctly on success', () async {
-      final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
+      final container = makeProviderContainer(
+        saleRequestId: fakeArgs.saleRequestId,
+      );
 
       final insertUpdateStateNotifier = container.read(
         insertUpdateStateControllerProvider.notifier,
@@ -90,7 +92,12 @@ void main() {
         onlyValidating: false,
       );
 
-      final processedRequest = fakeSaleRequest.copyWith(code: 999);
+      final processedRequest = EntityFactory.makeBSFSaleRequestEntity();
+      final currentCustomer = container
+          .read(insertUpdateStateControllerProvider)
+          .value
+          ?.customer;
+
       when(
         () => mockEcSaleRequestsRepository.processCart(
           saleRequest: any(named: 'saleRequest'),
@@ -112,7 +119,11 @@ void main() {
       // Main insertUpdateStateController state is updated to processed request
       expect(
         container.read(insertUpdateStateControllerProvider).value,
-        processedRequest,
+        processedRequest.copyWith(
+          customer: currentCustomer?.copyWith(
+            selectedCovenant: currentCustomer.selectedCovenant,
+          ),
+        ),
       );
       expect(insertUpdateStateNotifier.needsProcessing, isFalse);
 
@@ -131,7 +142,9 @@ void main() {
     test(
       'processCart should capture error and set state to AsyncError on failure',
       () async {
-        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
+        final container = makeProviderContainer(
+          saleRequestId: fakeArgs.saleRequestId,
+        );
 
         final insertUpdateStateNotifier = container.read(
           insertUpdateStateControllerProvider.notifier,
@@ -199,7 +212,9 @@ void main() {
         fakeSaleRequest = fakeSaleRequest.copyWith(
           requestType: BSFRequestTypeEntity.empty(),
         );
-        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
+        final container = makeProviderContainer(
+          saleRequestId: fakeArgs.saleRequestId,
+        );
 
         final processCartNotifier = container.read(
           insertUpdateProcessCartControllerProvider.notifier,
@@ -218,7 +233,10 @@ void main() {
         final errorState =
             container.read(insertUpdateProcessCartControllerProvider)
                 as AsyncError;
-        expect(errorState.error.toString(), contains('Modelo de pedido é obrigatório'));
+        expect(
+          errorState.error.toString(),
+          contains('Modelo de pedido é obrigatório'),
+        );
       },
     );
 
@@ -226,10 +244,14 @@ void main() {
       'processCart should throw mandatory customer error when customer code is null or zero',
       () async {
         fakeSaleRequest = fakeSaleRequest.copyWith(
-          requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(code: 1),
+          requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+            code: 1,
+          ),
           customer: EntityFactory.makeBSFCustomerEntity().copyWith(code: 0),
         );
-        final container = makeProviderContainer(saleRequestId: fakeArgs.saleRequestId);
+        final container = makeProviderContainer(
+          saleRequestId: fakeArgs.saleRequestId,
+        );
         final processCartNotifier = container.read(
           insertUpdateProcessCartControllerProvider.notifier,
         );

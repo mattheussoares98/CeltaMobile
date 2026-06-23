@@ -567,10 +567,14 @@ void main() {
             annulFinancialDiscount: true,
             annulIncrement: true,
             annulDeliveryTax: true,
+            requestType: EntityFactory.makeBSFRequestTypeEntity().copyWith(
+              allowUseDiscount: true,
+            ),
             products: [
               EntityFactory.makeBSFProductItemEntity().copyWith(
                 quantity: 1.0,
                 value: 100.0,
+                saleBlockadeDiscountType: SaleBlockadeDiscountType.none,
                 discounts: [
                   const BSFDiscountEntity(
                     order: 1,

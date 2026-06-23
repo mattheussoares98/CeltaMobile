@@ -213,7 +213,7 @@ void main() {
         final args = SaleRequestArgs(
           customerCode: 1,
           enterpriseCode: enterpriseCode,
-          saleRequestId: 0,
+          saleRequestId: 1,
         );
 
         when(
