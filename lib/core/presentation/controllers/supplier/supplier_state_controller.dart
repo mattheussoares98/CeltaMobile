@@ -15,7 +15,7 @@ class SupplierStateController extends _$SupplierStateController {
   ) async {
     final pendingRequest = await ref.read(
       pendingBuyRequestStateControllerProvider(enterpriseCode).future,
-    );
+    ); //TODO remove it from here!
     final selectedSupplier = pendingRequest.selectedSupplier;
     return [?selectedSupplier];
   }
