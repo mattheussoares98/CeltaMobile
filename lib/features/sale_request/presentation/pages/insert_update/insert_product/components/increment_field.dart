@@ -84,6 +84,8 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                onFieldSubmitted: (_) =>
+                    FocusManager.instance.primaryFocus?.nextFocus(),
                 textInputAction: TextInputAction.next,
                 onChanged: (value) {
                   ref

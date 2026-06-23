@@ -50,6 +50,7 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
             .read(insertProductUIControllerProvider(product).notifier)
             .updateQuantity(value.toDouble() ?? 1);
       },
+      onFieldSubmitted: (_) => FocusManager.instance.primaryFocus?.nextFocus(),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: TextInputAction.next,
       validator: FormValidators.compose([

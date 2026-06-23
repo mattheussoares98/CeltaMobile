@@ -100,6 +100,8 @@ class _PriceFieldState extends ConsumerState<PriceField>
             return DefaultTextFormField(
               controller: _valueController,
               focusNode: _focusNode,
+              onFieldSubmitted: (_) =>
+                  FocusManager.instance.primaryFocus?.nextFocus(),
               labelText:
                   'Preço R\$ (${practicedPriceType.abbreviation})'.hardcoded,
               enabled: widget.allowPriceChange,

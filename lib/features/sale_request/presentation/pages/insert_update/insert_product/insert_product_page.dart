@@ -104,63 +104,89 @@ class InsertProductPage extends ConsumerWidget {
               ),
               body: ResponsiveCenter(
                 padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Hero(
-                        tag:
-                            heroTag ??
-                            'product-${originalProduct.ProductPackingCode}',
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: SingleChildScrollView(
-                            child: ProductItemWidget(
-                              product: originalProduct,
-                              routine: BsRoutine.saleRequest,
+                child: FocusTraversalGroup(
+                  policy: OrderedTraversalPolicy(),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Hero(
+                          tag:
+                              heroTag ??
+                              'product-${originalProduct.ProductPackingCode}',
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: SingleChildScrollView(
+                              child: ProductItemWidget(
+                                product: originalProduct,
+                                routine: BsRoutine.saleRequest,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Row(
-                        children: [
-                          const Expanded(child: QuantityField()),
-                          gapW8,
-                          Expanded(
-                            child: PriceField(
-                              allowPriceChange: allowPriceChange,
+                      SliverToBoxAdapter(
+                        child: Row(
+                          children: [
+                            const Expanded(
+                              child: FocusTraversalOrder(
+                                order: NumericFocusOrder(1),
+                                child: QuantityField(),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (allowDeliveryTax) ...[
-                      const SliverToBoxAdapter(child: DefaultDivider()),
-                      const SliverToBoxAdapter(child: DeliveryTaxField()),
-                    ],
-                    if (allowDiscount) ...[
-                      const SliverToBoxAdapter(child: DefaultDivider()),
-                      const SliverToBoxAdapter(child: AddDiscount()),
-                      const Discounts(),
-                    ],
-                    if (allowIncrement) ...[
-                      const SliverToBoxAdapter(child: DefaultDivider()),
-                      const SliverToBoxAdapter(child: IncrementField()),
-                    ],
-                    const SliverToBoxAdapter(child: DefaultDivider()),
-                    const SliverToBoxAdapter(child: ProductSummary()),
-                    gapSliverH16,
-                    SliverToBoxAdapter(
-                      child: ExcludeFocus(
-                        child: PrimaryButton(
-                          text: 'CONFIRMAR'.hardcoded,
-                          onPressed: saveItem,
+                            gapW8,
+                            Expanded(
+                              child: FocusTraversalOrder(
+                                order: const NumericFocusOrder(2),
+                                child: PriceField(
+                                  allowPriceChange: allowPriceChange,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    gapSliverH16,
-                  ],
+                      if (allowDeliveryTax) ...[
+                        const SliverToBoxAdapter(child: DefaultDivider()),
+                        const SliverToBoxAdapter(
+                          child: FocusTraversalOrder(
+                            order: NumericFocusOrder(3),
+                            child: DeliveryTaxField(),
+                          ),
+                        ),
+                      ],
+                      if (allowDiscount) ...[
+                        const SliverToBoxAdapter(child: DefaultDivider()),
+                        const SliverToBoxAdapter(
+                          child: FocusTraversalOrder(
+                            order: NumericFocusOrder(4),
+                            child: AddDiscount(),
+                          ),
+                        ),
+                        const Discounts(),
+                      ],
+                      if (allowIncrement) ...[
+                        const SliverToBoxAdapter(child: DefaultDivider()),
+                        const SliverToBoxAdapter(
+                          child: FocusTraversalOrder(
+                            order: NumericFocusOrder(5),
+                            child: IncrementField(),
+                          ),
+                        ),
+                      ],
+                      const SliverToBoxAdapter(child: DefaultDivider()),
+                      const SliverToBoxAdapter(child: ProductSummary()),
+                      gapSliverH16,
+                      SliverToBoxAdapter(
+                        child: ExcludeFocus(
+                          child: PrimaryButton(
+                            text: 'CONFIRMAR'.hardcoded,
+                            onPressed: saveItem,
+                          ),
+                        ),
+                      ),
+                      gapSliverH16,
+                    ],
+                  ),
                 ),
               ),
             );

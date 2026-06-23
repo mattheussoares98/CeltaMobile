@@ -82,6 +82,8 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
               child: DefaultTextFormField(
                 focusNode: _focusNode,
                 controller: _deliveryTaxValueController,
+                onFieldSubmitted: (_) =>
+                    FocusManager.instance.primaryFocus?.nextFocus(),
                 labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
                 hintText: deliveryTaxType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
