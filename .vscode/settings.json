@@ -44,7 +44,7 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
-    "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).mocks.dart, $(capture)_*.dart",
+    "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).mocks.dart",
     "pubspec.yaml": "pubspec.lock, pubspec_*.yaml, .flutter-plugins*, .packages, .metadata, analysis_options.yaml"
   }
 }
