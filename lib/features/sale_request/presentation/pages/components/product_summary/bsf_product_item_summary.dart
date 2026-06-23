@@ -97,7 +97,15 @@ class BSFProductItemSummary extends ConsumerWidget {
               cupertinoIcon: CupertinoIcons.arrow_up_right,
               materialIcon: Icons.arrow_outward_rounded,
             ),
-            hidePrice: true,
+            hidePrice:
+                (product.WholePracticedPrice ??
+                        product.PriceCost?.WholePracticedPrice ??
+                        0) ==
+                    0 ||
+                (product.MinimumWholeQuantity ??
+                        product.PriceCost?.MinimumWholeQuantity ??
+                        0) ==
+                    0,
             product: product,
             routine: BsRoutine.saleRequest,
             onTap: () {
