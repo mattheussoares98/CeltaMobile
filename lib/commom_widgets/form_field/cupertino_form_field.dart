@@ -72,11 +72,12 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       context: context,
       focusNode: dtf.focusNode,
       onDone: () {
-        dtf.focusNode?.unfocus();
         if (dtf.onFieldSubmitted != null) {
-          dtf.onFieldSubmitted!(dtf.controller?.text ?? '');
+          dtf.onFieldSubmitted?.call(dtf.controller?.text ?? '');
         } else if (dtf.onEditingComplete != null) {
-          dtf.onEditingComplete!();
+          dtf.onEditingComplete?.call();
+        } else {
+          dtf.focusNode?.unfocus();
         }
       },
     );
