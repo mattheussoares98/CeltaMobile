@@ -38,6 +38,9 @@
     // strings. This setting will prevent that.
     "editor.wordBasedSuggestions": "off",
   },
+  "workbench.editorAssociations": {
+    "*.md": "default"
+  },
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
