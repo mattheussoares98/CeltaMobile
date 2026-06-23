@@ -158,7 +158,7 @@ extension BSFProductItemEntityToProductEntity on BSFProductItemEntity {
       Name: product?.name,
       PackingQuantity: product?.productPackingQuantity?.toString(),
       PackingAbbreviation: product?.productPackingTypeString,
-      Value: value ?? retailPracticedPrice,
+      Value: retailPracticedPrice,
       RetailPracticedPrice: retailPracticedPrice,
       RetailSalePrice: priceCost?.saleRetailPricePractice,
       RetailOfferPrice: priceCost?.saleRetailOfferPractice,
