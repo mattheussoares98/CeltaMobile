@@ -43,7 +43,7 @@ class _ValueFieldAndConfirmButtonState
     if (widget.formKey.currentState?.validate() != true) {
       return;
     }
-
+    primaryFocus?.unfocus();
     final selectedPayment = ref.read(
       selectedPaymentTypeStateControllerProvider,
     );

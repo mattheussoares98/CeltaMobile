@@ -57,6 +57,8 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           controller: widget.creditCardController,
           labelText: 'Número do cartão'.hardcoded,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           textInputAction: TextInputAction.next,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
@@ -70,6 +72,8 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           labelText: 'Qtd parcelas'.hardcoded,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           textInputAction: TextInputAction.next,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           validator: FormValidators.compose([
             NonEmptyValidator(),
             NumberValidator(allowDecimal: false),
@@ -80,6 +84,8 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           controller: widget.validityController,
           labelText: 'Validade'.hardcoded,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           textInputAction: TextInputAction.next,
           inputFormatters: [DateInputFormatter(includeDay: false)],
           validator: FormValidators.compose([

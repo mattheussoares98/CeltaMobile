@@ -65,15 +65,14 @@ class PaymentsList extends ConsumerWidget {
                           ],
                           gapH8,
                           DefaultListTile(
+                            tileColor: pIndex % 2 == 0 ? color : null,
+
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(Sizes.p12),
+                              borderRadius: BorderRadius.circular(Sizes.p8),
                               side: BorderSide(
-                                color: context.theme.disabledColor.withAlpha(
-                                  30,
-                                ),
+                                color: pIndex % 2 == 0 ? color : Colors.red,
                               ),
                             ),
-                            tileColor: fIndex % 2 == 0 ? color : null,
                             title: TitleAndSubTitle(
                               title:
                                   payment.paymentFinalization?.Description ??

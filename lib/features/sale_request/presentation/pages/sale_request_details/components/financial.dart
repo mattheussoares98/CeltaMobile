@@ -56,6 +56,7 @@ class Financial extends ConsumerWidget {
             if (!isFinancialEmpty)
               ListView.separated(
                 shrinkWrap: true,
+                padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: financials!.length,
                 separatorBuilder: (context, index) => const Divider(),
@@ -79,10 +80,6 @@ class Financial extends ConsumerWidget {
                             final name =
                                 payment.paymentFinalization?.Description;
                             return Container(
-                              margin: const EdgeInsets.only(
-                                bottom: Sizes.p4,
-                                right: Sizes.p4,
-                              ),
                               padding: const EdgeInsets.all(Sizes.p8),
                               decoration: BoxDecoration(
                                 color: fIndex % 2 == 0
