@@ -76,32 +76,28 @@ class ProcessAndSaveButtons extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: PrimaryButton(
-                        text: 'Processar pedido'.hardcoded,
-                        onPressed: needProcessingCart ? processCart : null,
-                        iconAlignment: IconAlignment.end,
-                        icon: const PlatformIcon(
-                          cupertinoIcon: CupertinoIcons.refresh,
-                          materialIcon: Icons.replay_outlined,
-                        ),
-                      ),
-                    ),
-                    gapW8,
-                  ],
+              Expanded(
+                flex: 6,
+                child: PrimaryButton(
+                  text: 'Calcular preços'.hardcoded,
+                  onPressed: needProcessingCart ? processCart : null,
+                  iconAlignment: IconAlignment.end,
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.refresh,
+                    materialIcon: Icons.replay_outlined,
+                  ),
                 ),
               ),
-              Flexible(
+              gapW8,
+              Expanded(
+                flex: 4,
                 child: Consumer(
                   builder: (_, ref, _) {
                     final hasChanges = ref.watch(saleRequestHasChangesProvider);
 
                     return PrimaryButton(
                       onPressed: hasChanges ? onSave : null,
-                      text: 'Salvar pedido'.hardcoded,
+                      text: 'Salvar'.hardcoded,
                       iconAlignment: IconAlignment.end,
                       icon: const PlatformIcon(
                         cupertinoIcon: CupertinoIcons.check_mark,
