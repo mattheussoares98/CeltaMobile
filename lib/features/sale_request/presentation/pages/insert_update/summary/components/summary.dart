@@ -46,7 +46,7 @@ class Summary extends ConsumerWidget {
       initiallyExpanded: true,
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TitleAndSubTitle(
               title: 'Total bruto'.hardcoded,
