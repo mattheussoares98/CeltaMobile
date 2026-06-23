@@ -27,14 +27,18 @@ class InsertUpdateProcessCartController
         throw Exception('Estado inválido'.hardcoded);
       }
 
+      if (current.products?.isEmpty ?? true) {
+        throw Exception('Insira produtos no pedido'.hardcoded);
+      }
+
       final requestTypeCode = current.requestType?.code;
       if (requestTypeCode == null || requestTypeCode == 0) {
-        throw Exception('Modelo de pedido é obrigatório'.hardcoded);
+        throw Exception('Informe o modelo de pedido'.hardcoded);
       }
 
       final customerCode = current.customer?.code ?? 0;
       if (customerCode == 0) {
-        throw Exception('Cliente é obrigatório'.hardcoded);
+        throw Exception('Informe o cliente'.hardcoded);
       }
 
       final saleRequestCode = current.code ?? 0;

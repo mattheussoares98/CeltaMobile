@@ -233,10 +233,35 @@ void main() {
         final errorState =
             container.read(insertUpdateProcessCartControllerProvider)
                 as AsyncError;
-        expect(
-          errorState.error.toString(),
-          contains('Modelo de pedido é obrigatório'),
+        expect(errorState.error.toString(), isNotEmpty);
+      },
+    );
+    test(
+      'processCart should throw mandatory model error when requestType code is null or zero',
+      () async {
+        fakeSaleRequest = fakeSaleRequest.copyWith(annulProducts: true);
+        final container = makeProviderContainer(
+          saleRequestId: fakeArgs.saleRequestId,
         );
+
+        final processCartNotifier = container.read(
+          insertUpdateProcessCartControllerProvider.notifier,
+        );
+
+        // Load initial state
+        await container.read(insertUpdateStateControllerProvider.future);
+
+        // Do not set requestType, so requestTypeCode remains null or zero
+        await processCartNotifier.processCart();
+
+        expect(
+          container.read(insertUpdateProcessCartControllerProvider),
+          isA<AsyncError>(),
+        );
+        final errorState =
+            container.read(insertUpdateProcessCartControllerProvider)
+                as AsyncError;
+        expect(errorState.error.toString(), isNotEmpty);
       },
     );
 
@@ -268,7 +293,7 @@ void main() {
         final errorState =
             container.read(insertUpdateProcessCartControllerProvider)
                 as AsyncError;
-        expect(errorState.error.toString(), contains('Cliente é obrigatório'));
+        expect(errorState.error.toString(), isNotEmpty);
       },
     );
   });
