@@ -34,48 +34,52 @@ class BSFProductItemSummary extends ConsumerWidget {
         item.totalDeliveryTax > 0;
 
     final summaryContent = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (size.width > 200)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FittedBox(child: DeleteSummaryButton(item: item)),
-                Expanded(
-                  child: Visibility(
-                    visible: !breakLine,
-                    child: CartSummaryTable(item: item),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {},
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (size.width > 200)
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FittedBox(child: DeleteSummaryButton(item: item)),
+                  Expanded(
+                    child: Visibility(
+                      visible: !breakLine,
+                      child: CartSummaryTable(item: item),
+                    ),
                   ),
-                ),
-                QuantityControlButton(item: item, isAdding: false),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      (item.quantity ?? 0).toString().toBrazilianNumber(
-                        3,
-                        true,
+                  QuantityControlButton(item: item, isAdding: false),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        (item.quantity ?? 0).toString().toBrazilianNumber(
+                          3,
+                          true,
+                        ),
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        'Qtd'.hardcoded,
+                        style: context.theme.textTheme.labelSmall?.copyWith(
+                          color: context.theme.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Qtd'.hardcoded,
-                      style: context.theme.textTheme.labelSmall?.copyWith(
-                        color: context.theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                QuantityControlButton(item: item, isAdding: true),
-              ],
-            ),
-          if (breakLine) CartSummaryTable(item: item),
-        ],
+                    ],
+                  ),
+                  QuantityControlButton(item: item, isAdding: true),
+                ],
+              ),
+            if (breakLine) CartSummaryTable(item: item),
+          ],
+        ),
       ),
     );
 
