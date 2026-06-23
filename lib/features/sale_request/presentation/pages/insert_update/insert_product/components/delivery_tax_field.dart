@@ -18,6 +18,7 @@ class DeliveryTaxField extends ConsumerStatefulWidget {
 
 class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
   final _deliveryTaxValueController = TextEditingController();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
   @override
   void dispose() {
     _deliveryTaxValueController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -78,6 +80,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
             Expanded(
               flex: 4,
               child: DefaultTextFormField(
+                focusNode: _focusNode,
                 controller: _deliveryTaxValueController,
                 labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
                 hintText: deliveryTaxType.symbol,

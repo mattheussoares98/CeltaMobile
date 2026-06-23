@@ -17,6 +17,7 @@ class IncrementField extends ConsumerStatefulWidget {
 
 class _IncrementFieldState extends ConsumerState<IncrementField> {
   final _incrementValueController = TextEditingController();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
   @override
   void dispose() {
     _incrementValueController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -75,6 +77,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
             Expanded(
               flex: 4,
               child: DefaultTextFormField(
+                focusNode: _focusNode,
                 controller: _incrementValueController,
                 labelText: 'Valor ${incrementType.symbol}'.hardcoded,
                 hintText: incrementType.symbol,

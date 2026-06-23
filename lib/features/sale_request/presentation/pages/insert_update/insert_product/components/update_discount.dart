@@ -18,10 +18,12 @@ class AddDiscount extends ConsumerStatefulWidget {
 class _DiscountsSectionState extends ConsumerState<AddDiscount> {
   final formKey = GlobalKey<FormState>();
   final _valueController = TextEditingController();
+  final _focusNode = FocusNode();
 
   @override
   void dispose() {
     _valueController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -133,6 +135,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                     );
 
                     return DefaultTextFormField(
+                      focusNode: _focusNode,
                       labelText: 'Desconto ${discountType.symbol}'.hardcoded,
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
