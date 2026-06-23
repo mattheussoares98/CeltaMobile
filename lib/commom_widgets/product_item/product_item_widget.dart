@@ -26,6 +26,7 @@ class ProductItemWidget extends ConsumerWidget {
   final bool? hideCost;
   final bool? hideCurrentAndSaleStocks;
   final bool? hidePrice;
+  final bool hideEans;
   const ProductItemWidget({
     super.key,
     required this.product,
@@ -45,6 +46,7 @@ class ProductItemWidget extends ConsumerWidget {
     this.hideCost,
     this.hideCurrentAndSaleStocks,
     this.hidePrice,
+    this.hideEans = false,
   });
 
   bool get showPracticedPrices {
@@ -111,7 +113,7 @@ class ProductItemWidget extends ConsumerWidget {
   }
 
   bool get showEans {
-    return product.EANs?.any((s) => s.isNotEmpty) ?? false;
+    return !hideEans && (product.EANs?.any((s) => s.isNotEmpty) ?? false);
   }
 
   @override
