@@ -1,12 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -48,32 +47,35 @@ class ProductsPage extends ConsumerWidget {
             ? 66
             : null,
       ),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Filters(
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: ResponsiveScrollableWidget(
+          isSliverPage: true,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Filters(
+                  enterpriseCode: enterpriseCode,
+                  researchCode: researchCode,
+                  concurrentCode: concurrentCode,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: SearchProductsField(
+                  enterpriseCode: enterpriseCode,
+                  researchCode: researchCode,
+                  concurrentCode: concurrentCode,
+                ),
+              ),
+              gapSliverH8,
+              ProductsItems(
                 enterpriseCode: enterpriseCode,
                 researchCode: researchCode,
                 concurrentCode: concurrentCode,
               ),
-            ),
-            SliverToBoxAdapter(
-              child: SearchProductsField(
-                enterpriseCode: enterpriseCode,
-                researchCode: researchCode,
-                concurrentCode: concurrentCode,
-              ),
-            ),
-            gapSliverH8,
-            ProductsItems(
-              enterpriseCode: enterpriseCode,
-              researchCode: researchCode,
-              concurrentCode: concurrentCode,
-            ),
-            gapSliverH48,
-          ],
+              gapSliverH48,
+            ],
+          ),
         ),
       ),
     );
