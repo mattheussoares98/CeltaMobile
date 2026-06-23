@@ -184,7 +184,7 @@ class InsertProductPage extends ConsumerWidget {
                           ),
                         ),
                       ),
-                      gapSliverH16,
+                      gapSliverH48,
                     ],
                   ),
                 ),
