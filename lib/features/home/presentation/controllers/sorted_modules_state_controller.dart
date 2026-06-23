@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/home/presentation/pages/models/models.dart';
 import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
 
@@ -17,8 +18,10 @@ class SortedModulesStateController extends _$SortedModulesStateController {
       ),
     );
 
-    // PERFORMANCE: Pre-allocate the list with fixed length for better memory efficiency.
-    final modules = List<Modules>.of(Modules.values);
+    // PERFORMANCE: Filter modules by availability in the buttons list to prevent lookup crashes.
+    final modules = Modules.values
+        .where((m) => ButtonsByModuleItems.buttonByModule.containsKey(m))
+        .toList();
     final favIndex = {
       for (int i = 0; i < favoriteModules.length; i++) favoriteModules[i]: i,
     };
