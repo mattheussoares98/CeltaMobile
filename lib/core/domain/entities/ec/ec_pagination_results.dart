@@ -28,7 +28,7 @@ class EcPaginationResults<T> extends Equatable {
   ];
 
   factory EcPaginationResults.fromJson(
-    Map<String, dynamic> json,
+    Map json,
     T Function(dynamic) fromJsonItem,
   ) {
     return EcPaginationResults<T>(

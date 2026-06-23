@@ -14,19 +14,18 @@ class BSFPaymentActionModel extends BSFPaymentActionEntity {
     required super.allowsEletronicCheckPredated,
   });
 
-  factory BSFPaymentActionModel.fromJson(Map<String, dynamic> json) =>
-      BSFPaymentActionModel(
-        code: json['Code'],
-        allowsCheck: json['AllowsCheck'],
-        allowsAdministrator: json['AllowsAdministrator'],
-        allowsCardTerminalType: json['AllowsCardTerminalType'],
-        name: json['Name'],
-        description: json['Description'],
-        type: PaymentFinalizationActionType.fromValue(json['Type']),
-        allowsSaleWithEntrance: json['AllowsSaleWithEntrance'],
-        allowsPaymentConditions: json['AllowsPaymentConditions'],
-        allowsEletronicCheckPredated: json['AllowsEletronicCheckPredated'],
-      );
+  factory BSFPaymentActionModel.fromJson(Map json) => BSFPaymentActionModel(
+    code: json['Code'],
+    allowsCheck: json['AllowsCheck'],
+    allowsAdministrator: json['AllowsAdministrator'],
+    allowsCardTerminalType: json['AllowsCardTerminalType'],
+    name: json['Name'],
+    description: json['Description'],
+    type: PaymentFinalizationActionType.fromValue(json['Type']),
+    allowsSaleWithEntrance: json['AllowsSaleWithEntrance'],
+    allowsPaymentConditions: json['AllowsPaymentConditions'],
+    allowsEletronicCheckPredated: json['AllowsEletronicCheckPredated'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

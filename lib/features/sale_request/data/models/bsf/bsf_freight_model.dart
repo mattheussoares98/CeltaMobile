@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFFreightModel extends BSFFreightEntity {
   const BSFFreightModel({
@@ -21,34 +21,32 @@ class BSFFreightModel extends BSFFreightEntity {
     required super.dateOfEntrance,
   });
 
-  factory BSFFreightModel.fromJson(Map<String, dynamic> json) =>
-      BSFFreightModel(
-        value: (json['Value'] as num?)?.toDouble(),
-        freightValueProrated: (json['FreightValueProrated'] as num?)
-            ?.toDouble(),
-        security: (json['Security'] as num?)?.toDouble(),
-        discount: json['Discount'] != null
-            ? BSFValueTypeModel.fromJson(json['Discount'])
-            : null,
-        increment: json['Increment'] != null
-            ? BSFValueTypeModel.fromJson(json['Increment'])
-            : null,
-        type: json['Type'],
-        icmsAliquot: (json['IcmsAliquot'] as num?)?.toDouble(),
-        irrf: (json['Irrf'] as num?)?.toDouble(),
-        inss: (json['Inss'] as num?)?.toDouble(),
-        icmsRetainByDestiny: json['IcmsRetainByDestiny'],
-        code: json['Code'],
-        documentNumber: json['DocumentNumber'],
-        documentNumberComplement: json['DocumentNumberComplement'],
-        eletronicAccessKey: json['EletronicAccessKey'],
-        dateOfEmission: json['DateOfEmission'] != null
-            ? DateTime.parse(json['DateOfEmission'])
-            : null,
-        dateOfEntrance: json['DateOfEntrance'] != null
-            ? DateTime.parse(json['DateOfEntrance'])
-            : null,
-      );
+  factory BSFFreightModel.fromJson(Map json) => BSFFreightModel(
+    value: (json['Value'] as num?)?.toDouble(),
+    freightValueProrated: (json['FreightValueProrated'] as num?)?.toDouble(),
+    security: (json['Security'] as num?)?.toDouble(),
+    discount: json['Discount'] != null
+        ? BSFValueTypeModel.fromJson(json['Discount'])
+        : null,
+    increment: json['Increment'] != null
+        ? BSFValueTypeModel.fromJson(json['Increment'])
+        : null,
+    type: json['Type'],
+    icmsAliquot: (json['IcmsAliquot'] as num?)?.toDouble(),
+    irrf: (json['Irrf'] as num?)?.toDouble(),
+    inss: (json['Inss'] as num?)?.toDouble(),
+    icmsRetainByDestiny: json['IcmsRetainByDestiny'],
+    code: json['Code'],
+    documentNumber: json['DocumentNumber'],
+    documentNumberComplement: json['DocumentNumberComplement'],
+    eletronicAccessKey: json['EletronicAccessKey'],
+    dateOfEmission: json['DateOfEmission'] != null
+        ? DateTime.parse(json['DateOfEmission'])
+        : null,
+    dateOfEntrance: json['DateOfEntrance'] != null
+        ? DateTime.parse(json['DateOfEntrance'])
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'Value': value,

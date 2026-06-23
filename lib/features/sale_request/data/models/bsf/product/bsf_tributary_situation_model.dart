@@ -12,7 +12,7 @@ class BSFTributarySituationModel extends BSFTributarySituationEntity {
     required super.isImported,
   });
 
-  factory BSFTributarySituationModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFTributarySituationModel.fromJson(Map json) =>
       BSFTributarySituationModel(
         code: json['Code'],
         codeCSOSN: json['CodeCSOSN'],

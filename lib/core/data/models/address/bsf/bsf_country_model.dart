@@ -7,12 +7,11 @@ class BSFCountryModel extends BSFCountryEntity {
     required super.spedCode,
   });
 
-  factory BSFCountryModel.fromJson(Map<String, dynamic> json) =>
-      BSFCountryModel(
-        name: json['Name'],
-        isExteriorCountry: json['IsExteriorCountry'],
-        spedCode: json['SpedCode'],
-      );
+  factory BSFCountryModel.fromJson(Map json) => BSFCountryModel(
+    name: json['Name'],
+    isExteriorCountry: json['IsExteriorCountry'],
+    spedCode: json['SpedCode'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Name': name,

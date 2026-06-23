@@ -7,12 +7,11 @@ class BSFFiscalCodeValueModel extends BSFFiscalCodeValueEntity {
     required super.isValid,
   });
 
-  factory BSFFiscalCodeValueModel.fromJson(Map<String, dynamic> json) =>
-      BSFFiscalCodeValueModel(
-        code: json['Code']?.toString(),
-        isOldFormat: json['IsOldFormat'],
-        isValid: json['IsValid'],
-      );
+  factory BSFFiscalCodeValueModel.fromJson(Map json) => BSFFiscalCodeValueModel(
+    code: json['Code']?.toString(),
+    isOldFormat: json['IsOldFormat'],
+    isValid: json['IsValid'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

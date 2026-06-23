@@ -8,7 +8,7 @@ class BsfSaleBlockadeInstructionModel extends BsfSaleBlockadeInstructionEntity {
     required super.description,
   });
 
-  factory BsfSaleBlockadeInstructionModel.fromJson(Map<String, dynamic> json) =>
+  factory BsfSaleBlockadeInstructionModel.fromJson(Map json) =>
       BsfSaleBlockadeInstructionModel(
         code: json['Code'] as int?,
         personalizedCode: json['PersonalizedCode'] as String?,

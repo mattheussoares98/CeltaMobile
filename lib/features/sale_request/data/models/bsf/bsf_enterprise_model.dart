@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFEnterpriseModel extends Equatable {
   final int? code;
@@ -44,20 +43,19 @@ class BSFEnterpriseModel extends Equatable {
     contactName,
   ];
 
-  factory BSFEnterpriseModel.fromJson(Map<String, dynamic> json) =>
-      BSFEnterpriseModel(
-        code: json['Code'],
-        fiscalType: json['FiscalType'],
-        federalSimpleType: json['FederalSimpleType'],
-        personalizedCode: json['PersonalizedCode'],
-        nationalSimple: json['NationalSimple'],
-        accountTreasury: json['AccountTreasury'],
-        cnpjNumber: json['CnpjNumber'],
-        suframaCode: json['SuframaCode'],
-        name: json['Name'],
-        fantasizesName: json['FantasizesName'],
-        contactName: json['ContactName'],
-      );
+  factory BSFEnterpriseModel.fromJson(Map json) => BSFEnterpriseModel(
+    code: json['Code'],
+    fiscalType: json['FiscalType'],
+    federalSimpleType: json['FederalSimpleType'],
+    personalizedCode: json['PersonalizedCode'],
+    nationalSimple: json['NationalSimple'],
+    accountTreasury: json['AccountTreasury'],
+    cnpjNumber: json['CnpjNumber'],
+    suframaCode: json['SuframaCode'],
+    name: json['Name'],
+    fantasizesName: json['FantasizesName'],
+    contactName: json['ContactName'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

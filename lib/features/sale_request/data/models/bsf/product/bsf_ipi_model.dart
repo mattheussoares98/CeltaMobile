@@ -9,7 +9,7 @@ class BSFIpiModel extends BSFIpiEntity {
     required super.isValid,
   });
 
-  factory BSFIpiModel.fromJson(Map<String, dynamic> json) => BSFIpiModel(
+  factory BSFIpiModel.fromJson(Map json) => BSFIpiModel(
     aliquot: (json['Aliquot'] as num?)?.toDouble(),
     type: json['Type'] as int?,
     tributarySituation: json['TributarySituation'],

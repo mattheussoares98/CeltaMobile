@@ -1,6 +1,6 @@
 // lib/features/sale_request/data/models/bsf/bsf_employee_model.dart
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFEmployeeModel extends BSFEmployeeEntity {
   const BSFEmployeeModel({
@@ -30,43 +30,42 @@ class BSFEmployeeModel extends BSFEmployeeEntity {
     required super.accountEmails,
   });
 
-  factory BSFEmployeeModel.fromJson(Map<String, dynamic> json) =>
-      BSFEmployeeModel(
-        code: json['Code'],
-        personalizedCode: json['PersonalizedCode'],
-        buyer: json['Buyer'],
-        seller: json['Seller'],
-        sellerType: json['SellerType'],
-        providerService: json['ProviderService'],
-        pdvOperator: json['PdvOperator'],
-        observations: json['Observations'],
-        paysBank: json['PaysBank'],
-        driverInfos: json['DriverInfos'] != null
-            ? BSFDriverInfosModel.fromJson(json['DriverInfos'])
-            : null,
-        admissionDate: json['AdmissionDate'] != null
-            ? DateTime.parse(json['AdmissionDate'])
-            : null,
-        dismissalDate: json['DismissalDate'] != null
-            ? DateTime.parse(json['DismissalDate'])
-            : null,
-        dateOfBirth: json['DateOfBirth'] != null
-            ? DateTime.parse(json['DateOfBirth'])
-            : null,
-        cpfNumber: json['CpfNumber'],
-        formatedCpfNumber: json['FormatedCpfNumber'],
-        rgNumber: json['RgNumber'],
-        pisNumber: json['PisNumber'],
-        formatedRgNumber: json['FormatedRgNumber'],
-        name: json['Name'],
-        nameReduced: json['NameReduced'],
-        email: json['Email'],
-        isFired: json['IsFired'],
-        jobRoleString: json['JobRoleString'],
-        accountEmails: json['AccountEmails'] != null
-            ? List<String>.from(json['AccountEmails'])
-            : null,
-      );
+  factory BSFEmployeeModel.fromJson(Map json) => BSFEmployeeModel(
+    code: json['Code'],
+    personalizedCode: json['PersonalizedCode'],
+    buyer: json['Buyer'],
+    seller: json['Seller'],
+    sellerType: json['SellerType'],
+    providerService: json['ProviderService'],
+    pdvOperator: json['PdvOperator'],
+    observations: json['Observations'],
+    paysBank: json['PaysBank'],
+    driverInfos: json['DriverInfos'] != null
+        ? BSFDriverInfosModel.fromJson(json['DriverInfos'])
+        : null,
+    admissionDate: json['AdmissionDate'] != null
+        ? DateTime.parse(json['AdmissionDate'])
+        : null,
+    dismissalDate: json['DismissalDate'] != null
+        ? DateTime.parse(json['DismissalDate'])
+        : null,
+    dateOfBirth: json['DateOfBirth'] != null
+        ? DateTime.parse(json['DateOfBirth'])
+        : null,
+    cpfNumber: json['CpfNumber'],
+    formatedCpfNumber: json['FormatedCpfNumber'],
+    rgNumber: json['RgNumber'],
+    pisNumber: json['PisNumber'],
+    formatedRgNumber: json['FormatedRgNumber'],
+    name: json['Name'],
+    nameReduced: json['NameReduced'],
+    email: json['Email'],
+    isFired: json['IsFired'],
+    jobRoleString: json['JobRoleString'],
+    accountEmails: json['AccountEmails'] != null
+        ? List<String>.from(json['AccountEmails'])
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

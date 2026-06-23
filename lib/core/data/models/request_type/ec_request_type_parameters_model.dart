@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class EcRequestTypeParametersModel extends Equatable {
   final int enterpriseCode;
@@ -46,7 +45,7 @@ class EcRequestTypeParametersModel extends Equatable {
     'InclusiveTransfer': inclusiveTransfer,
   };
 
-  factory EcRequestTypeParametersModel.fromJson(Map<String, dynamic> json) =>
+  factory EcRequestTypeParametersModel.fromJson(Map json) =>
       EcRequestTypeParametersModel(
         enterpriseCode: json['enterpriseCode'],
         inclusiveSale: json['InclusiveSale'],

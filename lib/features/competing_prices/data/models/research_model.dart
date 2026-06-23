@@ -1,8 +1,7 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/data/models/models.dart';
+import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class ResearchModel extends Equatable {
   final int Code;
@@ -43,7 +42,7 @@ class ResearchModel extends Equatable {
     Products,
   ];
 
-  factory ResearchModel.fromJson(Map<String, dynamic> json) {
+  factory ResearchModel.fromJson(Map json) {
     return ResearchModel(
       Code: json["Code"],
       IsAssociatingConcurrents: json["IsAssociatingConcurrents"],

@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/financial/financial.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFPaymentFinalizationWrapperModel extends Equatable {
   final BSFPaymentFinalizationModel? paymentFinalization;
@@ -48,30 +47,28 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        paymentFinalization,
-        value,
-        financialIncrement,
-        financialDiscount,
-        quantityOfPortions,
-        tefSequencialUniqueNumber,
-        tefAutorizationCreditCode,
-        devolutionCreditCode,
-        identificationCode,
-        paymentCondition,
-        creditCardNumber,
-        creditCardValidate,
-        portions,
-        userAuthorization,
-        code,
-        liquidValue,
-        totalFinancialTax,
-        creditCardSecurityCode,
-        observations,
-      ];
+    paymentFinalization,
+    value,
+    financialIncrement,
+    financialDiscount,
+    quantityOfPortions,
+    tefSequencialUniqueNumber,
+    tefAutorizationCreditCode,
+    devolutionCreditCode,
+    identificationCode,
+    paymentCondition,
+    creditCardNumber,
+    creditCardValidate,
+    portions,
+    userAuthorization,
+    code,
+    liquidValue,
+    totalFinancialTax,
+    creditCardSecurityCode,
+    observations,
+  ];
 
-  factory BSFPaymentFinalizationWrapperModel.fromJson(
-    Map<String, dynamic> json,
-  ) =>
+  factory BSFPaymentFinalizationWrapperModel.fromJson(Map json) =>
       BSFPaymentFinalizationWrapperModel(
         paymentFinalization: json['PaymentFinalization'] != null
             ? BSFPaymentFinalizationModel.fromJson(json['PaymentFinalization'])
@@ -103,58 +100,56 @@ class BSFPaymentFinalizationWrapperModel extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        'PaymentFinalization': paymentFinalization?.toJson(),
-        'Value': value,
-        'FinancialIncrement': financialIncrement,
-        'FinancialDiscount': financialDiscount,
-        'QuantityOfPortions': quantityOfPortions,
-        'TefSequencialUniqueNumber': tefSequencialUniqueNumber,
-        'TefAutorizationCreditCode': tefAutorizationCreditCode,
-        'DevolutionCreditCode': devolutionCreditCode,
-        'IdentificationCode': identificationCode,
-        'PaymentCondition': paymentCondition?.toJson(),
-        'CreditCardNumber': creditCardNumber,
-        'CreditCardValidate': creditCardValidate?.toIso8601String(),
-        'Portions': portions,
-        'UserAuthorization': userAuthorization?.toJson(),
-        'Code': code,
-        'LiquidValue': liquidValue,
-        'TotalFinancialTax': totalFinancialTax,
-        'CreditCardSecurityCode': creditCardSecurityCode,
-        'Observations': observations,
-      };
+    'PaymentFinalization': paymentFinalization?.toJson(),
+    'Value': value,
+    'FinancialIncrement': financialIncrement,
+    'FinancialDiscount': financialDiscount,
+    'QuantityOfPortions': quantityOfPortions,
+    'TefSequencialUniqueNumber': tefSequencialUniqueNumber,
+    'TefAutorizationCreditCode': tefAutorizationCreditCode,
+    'DevolutionCreditCode': devolutionCreditCode,
+    'IdentificationCode': identificationCode,
+    'PaymentCondition': paymentCondition?.toJson(),
+    'CreditCardNumber': creditCardNumber,
+    'CreditCardValidate': creditCardValidate?.toIso8601String(),
+    'Portions': portions,
+    'UserAuthorization': userAuthorization?.toJson(),
+    'Code': code,
+    'LiquidValue': liquidValue,
+    'TotalFinancialTax': totalFinancialTax,
+    'CreditCardSecurityCode': creditCardSecurityCode,
+    'Observations': observations,
+  };
 
   factory BSFPaymentFinalizationWrapperModel.fromEntity(
     BSFPaymentFinalizationWrapperEntity entity,
-  ) =>
-      BSFPaymentFinalizationWrapperModel(
-        paymentFinalization: entity.paymentFinalization == null
-            ? null
-            : BSFPaymentFinalizationModel.fromEntity(
-                entity.paymentFinalization!),
-        value: entity.value,
-        financialIncrement: entity.financialIncrement,
-        financialDiscount: entity.financialDiscount,
-        quantityOfPortions: entity.quantityOfPortions,
-        tefSequencialUniqueNumber: entity.tefSequencialUniqueNumber,
-        tefAutorizationCreditCode: entity.tefAutorizationCreditCode,
-        devolutionCreditCode: entity.devolutionCreditCode,
-        identificationCode: entity.identificationCode,
-        paymentCondition: entity.paymentCondition == null
-            ? null
-            : BSFPaymentConditionModel.fromEntity(entity.paymentCondition!),
-        creditCardNumber: entity.creditCardNumber,
-        creditCardValidate: entity.creditCardValidate,
-        portions: entity.portions,
-        userAuthorization: entity.userAuthorization == null
-            ? null
-            : BSFUserAuthorizationModel.fromEntity(entity.userAuthorization!),
-        code: entity.code,
-        liquidValue: entity.liquidValue,
-        totalFinancialTax: entity.totalFinancialTax,
-        creditCardSecurityCode: entity.creditCardSecurityCode,
-        observations: entity.observations,
-      );
+  ) => BSFPaymentFinalizationWrapperModel(
+    paymentFinalization: entity.paymentFinalization == null
+        ? null
+        : BSFPaymentFinalizationModel.fromEntity(entity.paymentFinalization!),
+    value: entity.value,
+    financialIncrement: entity.financialIncrement,
+    financialDiscount: entity.financialDiscount,
+    quantityOfPortions: entity.quantityOfPortions,
+    tefSequencialUniqueNumber: entity.tefSequencialUniqueNumber,
+    tefAutorizationCreditCode: entity.tefAutorizationCreditCode,
+    devolutionCreditCode: entity.devolutionCreditCode,
+    identificationCode: entity.identificationCode,
+    paymentCondition: entity.paymentCondition == null
+        ? null
+        : BSFPaymentConditionModel.fromEntity(entity.paymentCondition!),
+    creditCardNumber: entity.creditCardNumber,
+    creditCardValidate: entity.creditCardValidate,
+    portions: entity.portions,
+    userAuthorization: entity.userAuthorization == null
+        ? null
+        : BSFUserAuthorizationModel.fromEntity(entity.userAuthorization!),
+    code: entity.code,
+    liquidValue: entity.liquidValue,
+    totalFinancialTax: entity.totalFinancialTax,
+    creditCardSecurityCode: entity.creditCardSecurityCode,
+    observations: entity.observations,
+  );
 
   BSFPaymentFinalizationWrapperEntity toEntity() =>
       BSFPaymentFinalizationWrapperEntity(

@@ -6,12 +6,11 @@ class BSFPaymentFormModel extends BSFPaymentFormEntity {
   @override
   List<Object?> get props => [type, reducedName, name];
 
-  factory BSFPaymentFormModel.fromJson(Map<String, dynamic> json) =>
-      BSFPaymentFormModel(
-        type: PaymentFormType.fromValue(json['Type']),
-        reducedName: json['ReducedName'],
-        name: json['Name'],
-      );
+  factory BSFPaymentFormModel.fromJson(Map json) => BSFPaymentFormModel(
+    type: PaymentFormType.fromValue(json['Type']),
+    reducedName: json['ReducedName'],
+    name: json['Name'],
+  );
 
   Map<String, dynamic> toJson() => {
     'Type': type?.value,

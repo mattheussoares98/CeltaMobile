@@ -66,9 +66,7 @@ class BSFProductDetailsModel extends BSFProductDetailsEntity {
     manufacturerString,
   ];
 
-  factory BSFProductDetailsModel.fromJson(
-    Map<String, dynamic> json,
-  ) => BSFProductDetailsModel(
+  factory BSFProductDetailsModel.fromJson(Map json) => BSFProductDetailsModel(
     name: json['Name'],
     isScheduledToUnify: json['IsScheduledToUnify'],
     code: json['Code'],

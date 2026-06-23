@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/financial/payment_condition/payment_condition.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFPaymentConditionModel extends BSFPaymentConditionEntity {
   const BSFPaymentConditionModel({
@@ -28,7 +28,7 @@ class BSFPaymentConditionModel extends BSFPaymentConditionEntity {
   });
 
   factory BSFPaymentConditionModel.fromJson(
-    Map<String, dynamic> json,
+    Map json,
   ) => BSFPaymentConditionModel(
     isShielded: json['IsShielded'] ?? false,
     code: json['Code'] ?? 0,

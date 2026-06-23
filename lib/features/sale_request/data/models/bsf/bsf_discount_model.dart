@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFDiscountModel extends BSFDiscountEntity {
   const BSFDiscountModel({
@@ -10,16 +10,15 @@ class BSFDiscountModel extends BSFDiscountEntity {
     required super.discount,
   });
 
-  factory BSFDiscountModel.fromJson(Map<String, dynamic> json) =>
-      BSFDiscountModel(
-        order: json['Order'],
-        discountOrigin: DiscountOrigin.fromValue(json['DiscountOrigin']),
-        user: json['User'],
-        justification: json['Justification'],
-        discount: json['Discount'] != null
-            ? BSFValueTypeModel.fromJson(json['Discount'])
-            : null,
-      );
+  factory BSFDiscountModel.fromJson(Map json) => BSFDiscountModel(
+    order: json['Order'],
+    discountOrigin: DiscountOrigin.fromValue(json['DiscountOrigin']),
+    user: json['User'],
+    justification: json['Justification'],
+    discount: json['Discount'] != null
+        ? BSFValueTypeModel.fromJson(json['Discount'])
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'Order': order,

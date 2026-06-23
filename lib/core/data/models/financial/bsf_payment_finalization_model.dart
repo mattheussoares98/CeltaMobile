@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/financial/financial.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
   const BSFPaymentFinalizationModel({
@@ -17,7 +17,7 @@ class BSFPaymentFinalizationModel extends BSFPaymentFinalizationEntity {
     required super.action,
   });
 
-  factory BSFPaymentFinalizationModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFPaymentFinalizationModel.fromJson(Map json) =>
       BSFPaymentFinalizationModel(
         paymentForm: json['PaymentForm'] != null
             ? BSFPaymentFormModel.fromJson(json['PaymentForm'])

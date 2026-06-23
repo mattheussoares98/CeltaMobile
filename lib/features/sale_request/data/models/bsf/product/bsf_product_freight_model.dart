@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFProductFreightModel extends BSFProductFreightEntity {
   const BSFProductFreightModel({
@@ -11,16 +11,15 @@ class BSFProductFreightModel extends BSFProductFreightEntity {
   @override
   List<Object?> get props => [discount, increment, value];
 
-  factory BSFProductFreightModel.fromJson(Map<String, dynamic> json) =>
-      BSFProductFreightModel(
-        discount: json['Discount'] != null
-            ? BSFValueTypeModel.fromJson(json['Discount'])
-            : null,
-        increment: json['Increment'] != null
-            ? BSFValueTypeModel.fromJson(json['Increment'])
-            : null,
-        value: (json['Value'] as num?)?.toDouble(),
-      );
+  factory BSFProductFreightModel.fromJson(Map json) => BSFProductFreightModel(
+    discount: json['Discount'] != null
+        ? BSFValueTypeModel.fromJson(json['Discount'])
+        : null,
+    increment: json['Increment'] != null
+        ? BSFValueTypeModel.fromJson(json['Increment'])
+        : null,
+    value: (json['Value'] as num?)?.toDouble(),
+  );
 
   Map<String, dynamic> toJson() => {
     'Discount': (discount as BSFValueTypeModel?)?.toJson(),

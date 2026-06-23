@@ -7,7 +7,7 @@ class UtilizationParametersModel extends UtilizationParametersEntity {
     required super.valueParcel,
   });
 
-  factory UtilizationParametersModel.fromJson(Map<String, dynamic> json) =>
+  factory UtilizationParametersModel.fromJson(Map json) =>
       UtilizationParametersModel(
         isShielded: json['IsShielded'] ?? false,
         baseDate: json['BaseDate'] != null

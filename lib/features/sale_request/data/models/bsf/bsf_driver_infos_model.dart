@@ -9,15 +9,14 @@ class BSFDriverInfosModel extends BSFDriverInfosEntity {
     required super.driverCategory,
   });
 
-  factory BSFDriverInfosModel.fromJson(Map<String, dynamic> json) =>
-      BSFDriverInfosModel(
-        isDriver: json['IsDriver'],
-        driverDocument: json['DriverDocument'],
-        driverDocumentExpiration: json['DriverDocumentExpiration'] != null
-            ? DateTime.parse(json['DriverDocumentExpiration'])
-            : null,
-        driverCategory: json['DriverCategory'],
-      );
+  factory BSFDriverInfosModel.fromJson(Map json) => BSFDriverInfosModel(
+    isDriver: json['IsDriver'],
+    driverDocument: json['DriverDocument'],
+    driverDocumentExpiration: json['DriverDocumentExpiration'] != null
+        ? DateTime.parse(json['DriverDocumentExpiration'])
+        : null,
+    driverCategory: json['DriverCategory'],
+  );
 
   Map<String, dynamic> toJson() => {
     'IsDriver': isDriver,

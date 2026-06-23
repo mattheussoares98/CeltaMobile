@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFUserAuthorizationModel extends Equatable {
   final String? identification;
@@ -10,7 +9,7 @@ class BSFUserAuthorizationModel extends Equatable {
   @override
   List<Object?> get props => [identification];
 
-  factory BSFUserAuthorizationModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFUserAuthorizationModel.fromJson(Map json) =>
       BSFUserAuthorizationModel(identification: json['Identification']);
 
   Map<String, dynamic> toJson() => {'Identification': identification};

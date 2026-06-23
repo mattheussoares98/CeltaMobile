@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BsfCovenantModel extends BsfCovenantEntity {
   const BsfCovenantModel({
@@ -26,52 +26,51 @@ class BsfCovenantModel extends BsfCovenantEntity {
     required super.saleBlockadeInstruction,
   });
 
-  factory BsfCovenantModel.fromJson(Map<String, dynamic> json) =>
-      BsfCovenantModel(
-        code: json['Code'] as int?,
-        personalizedCode: json['PersonalizedCode'] as String?,
-        legacyCode: json['LegacyCode'] as String?,
-        name: json['Name'] as String? ?? '',
-        fantasyName: json['FantasyName'] as String?,
-        cnpjNumber: json['CnpjNumber'] as String?,
-        formatedCnpjNumber: json['FormatedCnpjNumber'] as String?,
-        stateRegistration: json['StateRegistration'] as String?,
-        formatedStateRegistration: json['FormatedStateRegistration'] as String?,
-        dateOfCadaster: json['DateOfCadaster'] != null
-            ? DateTime.tryParse(json['DateOfCadaster'] as String)
-            : null,
-        email: json['Email'] as String?,
-        dateOfBirthContact: json['DateOfBirthContact'] != null
-            ? DateTime.tryParse(json['DateOfBirthContact'] as String)
-            : null,
-        nameOfContact: json['NameOfContact'] as String?,
-        haveObservations: json['HaveObservations'] as bool?,
-        requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
-        allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
-        address: json['Address'] != null
-            ? BSFAddressModel.fromJson(json['Address'] as Map<String, dynamic>)
-            : null,
-        deliveryAddress: json['DeliveryAddress'] != null
-            ? BSFAddressModel.fromJson(
-                json['DeliveryAddress'] as Map<String, dynamic>,
-              )
-            : null,
-        collectAddress: json['CollectAddress'] != null
-            ? BSFAddressModel.fromJson(
-                json['CollectAddress'] as Map<String, dynamic>,
-              )
-            : null,
-        saleBlockade: json['SaleBlockade'] != null
-            ? BsfSaleBlockadeModel.fromJson(
-                json['SaleBlockade'] as Map<String, dynamic>,
-              )
-            : null,
-        saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
-            ? BsfSaleBlockadeInstructionModel.fromJson(
-                json['SaleBlockadeInstruction'] as Map<String, dynamic>,
-              )
-            : null,
-      );
+  factory BsfCovenantModel.fromJson(Map json) => BsfCovenantModel(
+    code: json['Code'] as int?,
+    personalizedCode: json['PersonalizedCode'] as String?,
+    legacyCode: json['LegacyCode'] as String?,
+    name: json['Name'] as String? ?? '',
+    fantasyName: json['FantasyName'] as String?,
+    cnpjNumber: json['CnpjNumber'] as String?,
+    formatedCnpjNumber: json['FormatedCnpjNumber'] as String?,
+    stateRegistration: json['StateRegistration'] as String?,
+    formatedStateRegistration: json['FormatedStateRegistration'] as String?,
+    dateOfCadaster: json['DateOfCadaster'] != null
+        ? DateTime.tryParse(json['DateOfCadaster'] as String)
+        : null,
+    email: json['Email'] as String?,
+    dateOfBirthContact: json['DateOfBirthContact'] != null
+        ? DateTime.tryParse(json['DateOfBirthContact'] as String)
+        : null,
+    nameOfContact: json['NameOfContact'] as String?,
+    haveObservations: json['HaveObservations'] as bool?,
+    requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
+    allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
+    address: json['Address'] != null
+        ? BSFAddressModel.fromJson(json['Address'] as Map<String, dynamic>)
+        : null,
+    deliveryAddress: json['DeliveryAddress'] != null
+        ? BSFAddressModel.fromJson(
+            json['DeliveryAddress'] as Map<String, dynamic>,
+          )
+        : null,
+    collectAddress: json['CollectAddress'] != null
+        ? BSFAddressModel.fromJson(
+            json['CollectAddress'] as Map<String, dynamic>,
+          )
+        : null,
+    saleBlockade: json['SaleBlockade'] != null
+        ? BsfSaleBlockadeModel.fromJson(
+            json['SaleBlockade'] as Map<String, dynamic>,
+          )
+        : null,
+    saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
+        ? BsfSaleBlockadeInstructionModel.fromJson(
+            json['SaleBlockadeInstruction'] as Map<String, dynamic>,
+          )
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

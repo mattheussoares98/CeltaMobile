@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFDeliveryTaxWrapperModel extends Equatable {
   final BSFValueTypeModel? deliveryTax;
@@ -24,7 +23,7 @@ class BSFDeliveryTaxWrapperModel extends Equatable {
     isDiscounted,
   ];
 
-  factory BSFDeliveryTaxWrapperModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFDeliveryTaxWrapperModel.fromJson(Map json) =>
       BSFDeliveryTaxWrapperModel(
         deliveryTax: json['DeliveryTax'] != null
             ? BSFValueTypeModel.fromJson(json['DeliveryTax'])

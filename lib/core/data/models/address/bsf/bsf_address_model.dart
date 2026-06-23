@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/address/bsf/bsf.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFAddressModel extends BSFAddressEntity {
   const BSFAddressModel({
@@ -22,7 +22,7 @@ class BSFAddressModel extends BSFAddressEntity {
     required super.addressType,
   });
 
-  factory BSFAddressModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFAddressModel.fromJson(Map json) =>
       BSFAddressModel(
         code: json['Code'],
         zip: json['Zip'],

@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class ExpeditionProductModel extends Equatable {
   final int EnterpriseCode;
@@ -32,16 +31,15 @@ class ExpeditionProductModel extends Equatable {
     Packing,
   ];
 
-  factory ExpeditionProductModel.fromJson(Map<String, dynamic> json) =>
-      ExpeditionProductModel(
-        EnterpriseCode: json["EnterpriseCode"],
-        ProductCode: json["ProductCode"],
-        ProductPackingCode: json["ProductPackingCode"],
-        Quantity: json["Quantity"],
-        PriceLookUp: json["PriceLookUp"],
-        Name: json["Name"],
-        Packing: json["Packing"],
-      );
+  factory ExpeditionProductModel.fromJson(Map json) => ExpeditionProductModel(
+    EnterpriseCode: json["EnterpriseCode"],
+    ProductCode: json["ProductCode"],
+    ProductPackingCode: json["ProductPackingCode"],
+    Quantity: json["Quantity"],
+    PriceLookUp: json["PriceLookUp"],
+    Name: json["Name"],
+    Packing: json["Packing"],
+  );
 
   Map<String, dynamic> toJson() => {
     "EnterpriseCode": EnterpriseCode,

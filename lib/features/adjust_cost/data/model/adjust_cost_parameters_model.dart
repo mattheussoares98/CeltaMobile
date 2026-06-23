@@ -23,7 +23,7 @@ class AdjustCostParametersModel extends AdjustCostParametersEntity {
     required super.UpdateEnterpriseGroup,
   });
 
-  factory AdjustCostParametersModel.fromJson(Map<String, dynamic> json) {
+  factory AdjustCostParametersModel.fromJson(Map json) {
     return AdjustCostParametersModel(
       ProductCode: json['ProductCode'],
       EnterpriseCode: json['EnterpriseCode'],

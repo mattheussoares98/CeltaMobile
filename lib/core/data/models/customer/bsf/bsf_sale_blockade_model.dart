@@ -14,22 +14,21 @@ class BsfSaleBlockadeModel extends BsfSaleBlockadeEntity {
     required super.stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion,
   });
 
-  factory BsfSaleBlockadeModel.fromJson(Map<String, dynamic> json) =>
-      BsfSaleBlockadeModel(
-        code: json['Code'] as int?,
-        personalizedCode: json['PersonalizedCode'] as String?,
-        legacyCode: json['LegacyCode'] as String?,
-        description: json['Description'] as String?,
-        allowSale: json['AllowSale'] as bool?,
-        allowSaleRequest: json['AllowSaleRequest'] as bool?,
-        allowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            json['AllowSaleWithPaymentFinalizationTypeCheckOrPortion'] as bool?,
-        stringAllowSale: json['StringAllowSale'] as String?,
-        stringAllowSaleRequest: json['StringAllowSaleRequest'] as String?,
-        stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
-            json['StringAllowSaleWithPaymentFinalizationTypeCheckOrPortion']
-                as String?,
-      );
+  factory BsfSaleBlockadeModel.fromJson(Map json) => BsfSaleBlockadeModel(
+    code: json['Code'] as int?,
+    personalizedCode: json['PersonalizedCode'] as String?,
+    legacyCode: json['LegacyCode'] as String?,
+    description: json['Description'] as String?,
+    allowSale: json['AllowSale'] as bool?,
+    allowSaleRequest: json['AllowSaleRequest'] as bool?,
+    allowSaleWithPaymentFinalizationTypeCheckOrPortion:
+        json['AllowSaleWithPaymentFinalizationTypeCheckOrPortion'] as bool?,
+    stringAllowSale: json['StringAllowSale'] as String?,
+    stringAllowSaleRequest: json['StringAllowSaleRequest'] as String?,
+    stringAllowSaleWithPaymentFinalizationTypeCheckOrPortion:
+        json['StringAllowSaleWithPaymentFinalizationTypeCheckOrPortion']
+            as String?,
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

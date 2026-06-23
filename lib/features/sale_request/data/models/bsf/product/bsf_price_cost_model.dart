@@ -56,7 +56,7 @@ class BSFPriceCostModel extends BSFPriceCostEntity {
   });
 
   factory BSFPriceCostModel.fromJson(
-    Map<String, dynamic> json, {
+    Map json, {
     double? mininumQuantityForWholeSale,
   }) => BSFPriceCostModel(
     saleRetailPricePractice: (json['SaleRetailPricePractice'] as num?)

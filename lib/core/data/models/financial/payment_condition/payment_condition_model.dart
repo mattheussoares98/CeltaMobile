@@ -9,14 +9,13 @@ class PaymentConditionModel extends PaymentConditionEntity {
     required super.portionCount,
   });
 
-  factory PaymentConditionModel.fromJson(Map<String, dynamic> json) =>
-      PaymentConditionModel(
-        isShielded: json['IsShielded'] ?? false,
-        composition: json['Composition'],
-        symbolType: PaymentConditionSymbolType.fromValue(json['SymbolType']),
-        fillType: PaymentConditionFillType.fromValue(json['FillType']),
-        portionCount: json['PortionCount'] ?? 0,
-      );
+  factory PaymentConditionModel.fromJson(Map json) => PaymentConditionModel(
+    isShielded: json['IsShielded'] ?? false,
+    composition: json['Composition'],
+    symbolType: PaymentConditionSymbolType.fromValue(json['SymbolType']),
+    fillType: PaymentConditionFillType.fromValue(json['FillType']),
+    portionCount: json['PortionCount'] ?? 0,
+  );
 
   Map<String, dynamic> toJson() => {
     'IsShielded': isShielded,

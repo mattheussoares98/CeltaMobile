@@ -1,8 +1,7 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/data/models/models.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestModel extends Equatable {
   final int? code;
@@ -85,7 +84,7 @@ class BSFSaleRequestModel extends Equatable {
     seller,
   ];
 
-  factory BSFSaleRequestModel.fromJson(Map<String, dynamic> json) {
+  factory BSFSaleRequestModel.fromJson(Map json) {
     return BSFSaleRequestModel(
       code: json['Code'],
       dateOfEmission: json['DateOfEmission'] != null

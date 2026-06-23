@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class BSFCustomerModel extends BSFCustomerEntity {
   const BSFCustomerModel({
@@ -38,46 +38,44 @@ class BSFCustomerModel extends BSFCustomerEntity {
     selectedCovenant,
   ];
 
-  factory BSFCustomerModel.fromJson(Map<String, dynamic> json) =>
-      BSFCustomerModel(
-        code: json['Code'],
-        personalizedCode: json['PersonalizedCode'],
-        covenantCode: json['CovenantCode'],
-        name: json['Name'],
-        nameReduced: json['NameReduced'],
-        cnpjCpfNumber: json['CnpjCpfNumber'],
-        suframaCode: json['SuframaCode'],
-        limitOfPurchase: (json['LimitOfPurchase'] as num?)?.toDouble(),
-        inscriptionRgNumber: json['InscriptionRgNumber'],
-        selectedCovenant: json['Covenant'] != null
-            ? BsfCovenantModel.fromJson(json['Covenant'])
-            : null,
-        paymentFinalizations: json['PaymentFinalizations'] != null
-            ? (json['PaymentFinalizations'] as List)
-                  .map((x) => BSFPaymentFinalizationModel.fromJson(x))
-                  .toList()
-            : null,
-        paymentConditions: json['PaymentConditions'] != null
-            ? (json['PaymentConditions'] as List)
-                  .map((x) => BSFPaymentConditionModel.fromJson(x))
-                  .toList()
-            : null,
-        saleBlockade: json['SaleBlockade'] != null
-            ? BsfSaleBlockadeModel.fromJson(json['SaleBlockade'])
-            : null,
-        saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
-            ? BsfSaleBlockadeInstructionModel.fromJson(
-                json['SaleBlockadeInstruction'],
-              )
-            : null,
-        covenants: (json['Extensions']?['Covenants'] as List?)
-            ?.map(
-              (e) => BsfCovenantModel.fromJson(
-                e['Covenant'] as Map<String, dynamic>,
-              ),
-            )
-            .toList(),
-      );
+  factory BSFCustomerModel.fromJson(Map json) => BSFCustomerModel(
+    code: json['Code'],
+    personalizedCode: json['PersonalizedCode'],
+    covenantCode: json['CovenantCode'],
+    name: json['Name'],
+    nameReduced: json['NameReduced'],
+    cnpjCpfNumber: json['CnpjCpfNumber'],
+    suframaCode: json['SuframaCode'],
+    limitOfPurchase: (json['LimitOfPurchase'] as num?)?.toDouble(),
+    inscriptionRgNumber: json['InscriptionRgNumber'],
+    selectedCovenant: json['Covenant'] != null
+        ? BsfCovenantModel.fromJson(json['Covenant'])
+        : null,
+    paymentFinalizations: json['PaymentFinalizations'] != null
+        ? (json['PaymentFinalizations'] as List)
+              .map((x) => BSFPaymentFinalizationModel.fromJson(x))
+              .toList()
+        : null,
+    paymentConditions: json['PaymentConditions'] != null
+        ? (json['PaymentConditions'] as List)
+              .map((x) => BSFPaymentConditionModel.fromJson(x))
+              .toList()
+        : null,
+    saleBlockade: json['SaleBlockade'] != null
+        ? BsfSaleBlockadeModel.fromJson(json['SaleBlockade'])
+        : null,
+    saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
+        ? BsfSaleBlockadeInstructionModel.fromJson(
+            json['SaleBlockadeInstruction'],
+          )
+        : null,
+    covenants: (json['Extensions']?['Covenants'] as List?)
+        ?.map(
+          (e) =>
+              BsfCovenantModel.fromJson(e['Covenant'] as Map<String, dynamic>),
+        )
+        .toList(),
+  );
 
   Map<String, dynamic> toJson() => {
     'Code': code,

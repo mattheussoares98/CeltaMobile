@@ -24,9 +24,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     super.saleBlockadeDiscountType = SaleBlockadeDiscountType.none,
   });
 
-  factory BSFProductItemModel.fromJson(
-    Map<String, dynamic> json,
-  ) => BSFProductItemModel(
+  factory BSFProductItemModel.fromJson(Map json) => BSFProductItemModel(
     code: json['Code'],
     productPackingCode: json['ProductPackingCode'],
     icms: json['Icms'] != null ? BSFIcmsModel.fromJson(json['Icms']) : null,
@@ -34,7 +32,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
     priceCost:
         json['ProductEnterprisePacking']?['Extensions']?['PriceCost'] != null
         ? BSFPriceCostModel.fromJson(
-            json['ProductEnterprisePacking']['Extensions']['PriceCost'],
+            json['ProductEnterprisePacking']?['Extensions']?['PriceCost'],
             mininumQuantityForWholeSale:
                 (json['ProductEnterprisePacking']?['MininumQuantityForWholeSale']
                         as num?)

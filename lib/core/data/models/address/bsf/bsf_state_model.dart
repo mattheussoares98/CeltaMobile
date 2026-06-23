@@ -3,7 +3,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 class BSFStateModel extends BSFStateEntity {
   const BSFStateModel({required super.acronym, required super.description});
 
-  factory BSFStateModel.fromJson(Map<String, dynamic> json) =>
+  factory BSFStateModel.fromJson(Map json) =>
       BSFStateModel(acronym: json['Acronym'], description: json['Description']);
 
   Map<String, dynamic> toJson() => {

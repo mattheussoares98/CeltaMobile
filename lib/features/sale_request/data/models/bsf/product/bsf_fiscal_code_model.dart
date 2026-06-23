@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/product/product.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
 class BSFFiscalCodeModel extends BSFFiscalCodeEntity {
   const BSFFiscalCodeModel({
@@ -59,9 +59,7 @@ class BSFFiscalCodeModel extends BSFFiscalCodeEntity {
     required super.isInterstateSaleSubstitutionForConsumption,
   });
 
-  factory BSFFiscalCodeModel.fromJson(
-    Map<String, dynamic> json,
-  ) => BSFFiscalCodeModel(
+  factory BSFFiscalCodeModel.fromJson(Map json) => BSFFiscalCodeModel(
     code: json['Code'] != null
         ? BSFFiscalCodeValueModel.fromJson(json['Code'])
         : null,
