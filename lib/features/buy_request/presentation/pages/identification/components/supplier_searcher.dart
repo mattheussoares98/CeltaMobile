@@ -1,9 +1,3 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -11,6 +5,11 @@ import 'package:celta_inventario/core/presentation/controllers/supplier/supplier
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SupplierSearcher extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -57,16 +56,35 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         .load(supplierController.text);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final hasSelectedEnterprisesOrProducts = ref.watch(
+  void onSubmit() {
+    final (hasSelectedEnterprisesOrProducts, selectedSupplier) = ref.read(
       pendingBuyRequestStateControllerProvider(widget.enterpriseCode).select(
-        (s) =>
-            (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
-            (s.value?.products?.isNotEmpty ?? false),
+        (s) => (
+          (s.value?.selectedEnterprises?.isNotEmpty ?? false) ||
+              (s.value?.products?.isNotEmpty ?? false),
+          s.value?.selectedSupplier,
+        ),
       ),
     );
 
+    if (selectedSupplier != null && hasSelectedEnterprisesOrProducts) {
+      showAlertDialog(
+        context: context,
+        title: 'Consultar fornecedores?'.hardcoded,
+        content:
+            'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
+                .hardcoded,
+        cancelActionText: 'Cancelar'.hardcoded,
+        defaultActionText: 'Consultar'.hardcoded,
+        onOkPressed: loadSuppliers,
+      );
+    } else {
+      loadSuppliers();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.listen(
       supplierStateControllerProvider(
         SearchSupplierType.buyRequest,
@@ -85,43 +103,19 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
       children: [
         DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
         gapH8,
-        Consumer(
-          builder: (_, ref, _) {
-            final selectedSupplier = ref.watch(
-              pendingBuyRequestStateControllerProvider(
-                widget.enterpriseCode,
-              ).select((s) => s.value?.selectedSupplier),
-            );
-
-            return Form(
-              key: formKey,
-              child: DefaultTextFormField(
+        Form(
+          key: formKey,
+          child: Consumer(
+            builder: (_, ref, _) {
+              return DefaultTextFormField(
                 labelText: 'Fornecedor'.hardcoded,
                 hintText: 'Fornecedor'.hardcoded,
                 controller: supplierController,
                 maxLength: 50,
                 validator: FormValidators.compose([NonEmptyValidator()]),
-                onFieldSubmitted: (value) {
-                  if (selectedSupplier != null &&
-                      hasSelectedEnterprisesOrProducts) {
-                    showAlertDialog(
-                      context: context,
-                      title: 'Consultar fornecedores?'.hardcoded,
-                      content:
-                          'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
-                              .hardcoded,
-                      cancelActionText: 'Cancelar'.hardcoded,
-                      defaultActionText: 'Consultar'.hardcoded,
-                      onOkPressed: loadSuppliers,
-                    );
-                  } else {
-                    loadSuppliers();
-                  }
-                },
+                onFieldSubmitted: (_) => onSubmit(),
                 prefixIcon: IconButton(
-                  onPressed: () {
-                    supplierController.clear();
-                  },
+                  onPressed: supplierController.clear,
                   icon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.delete,
                     materialIcon: Icons.delete,
@@ -135,15 +129,15 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                   ).select((s) => s.isLoading),
                 ),
                 suffixIcon: IconButton(
-                  onPressed: loadSuppliers,
+                  onPressed: onSubmit,
                   icon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.search,
                     materialIcon: Icons.search,
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ],
     );
