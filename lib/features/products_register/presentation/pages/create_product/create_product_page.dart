@@ -23,15 +23,17 @@ class CreateProductPage extends StatelessWidget {
             enterpriseCode: enterpriseCode,
             productCode: productCode,
           );
-          return AsyncValueWidget(
-            value: ref.watch(provider),
-            tryAgain: () => ref.invalidate(provider),
-            data: (data) {
-              if (data == null) {
-                return const SizedBox.shrink();
-              }
-              return Text(data.toString());
-            },
+          return ResponsiveScrollableWidget(
+            child: AsyncValueWidget(
+              value: ref.watch(provider),
+              tryAgain: () => ref.invalidate(provider),
+              data: (data) {
+                if (data == null) {
+                  return const SizedBox.shrink();
+                }
+                return Text(data.toString());
+              },
+            ),
           );
         },
       ),
