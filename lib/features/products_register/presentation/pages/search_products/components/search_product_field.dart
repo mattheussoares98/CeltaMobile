@@ -60,7 +60,7 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
       },
       searchValueController: searchController,
       searchProductKey: searchProductKey,
-      isLoading: false, //TODO implement
+      isLoading: false,
     );
   }
 }

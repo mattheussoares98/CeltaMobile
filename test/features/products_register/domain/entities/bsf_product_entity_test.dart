@@ -1,5 +1,3 @@
-// test/features/products_register/domain/bsf_product_detail_entity_test.dart
-
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../mocks/mocks.dart';
@@ -12,7 +10,7 @@ void main() {
       final index = entity.toSearchIndex();
 
       // Update this number every time you add a new field
-      expect(index.length, equals(3));
+      expect(index.length, equals(4));
     });
 
     test('all entries must have non-empty labelPt and displayValue', () {

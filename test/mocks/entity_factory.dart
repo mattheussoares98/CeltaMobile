@@ -1797,5 +1797,57 @@ class EntityFactory {
     code: faker.randomGenerator.integer(100),
     name: faker.lorem.word(),
     isDesativate: faker.randomGenerator.boolean(),
+    fiscalClassification: makeBsfFiscalClassificationEntity(),
+  );
+
+  static BsfFiscalClassificationEntity makeBsfFiscalClassificationEntity() =>
+      BsfFiscalClassificationEntity(
+        code: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.numberOfLength(8),
+        complement: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+        observations: faker.lorem.sentence(),
+        legacyCode: faker.randomGenerator.numberOfLength(6),
+        natureOperationRecipeCodePISCOFINS: faker.lorem.word(),
+        spedType: faker.randomGenerator.integer(5),
+        pisCofinsApurationType: faker.randomGenerator.integer(5),
+        possessIpiTypeInformation: faker.randomGenerator.boolean(),
+        possessPisCofinsTypeInformation: faker.randomGenerator.boolean(),
+        ipi: makeBsfFiscalClassificationIpiEntity(),
+        pisType: faker.randomGenerator.integer(5),
+        cofinsType: faker.randomGenerator.integer(5),
+        aliquotCredPresumedOfPis: faker.randomGenerator.decimal(),
+        aliquotCredPresumedOfCofins: faker.randomGenerator.decimal(),
+        aliquotImportPis: faker.randomGenerator.decimal(),
+        aliquotImportCofins: faker.randomGenerator.decimal(),
+        aliquotImportTax: faker.randomGenerator.decimal(),
+        percentageReducionBenefitPisCofins: faker.randomGenerator.decimal(),
+        aliquotIcmsInterState: faker.randomGenerator.decimal(),
+        pisCofinsTypeScheduling: faker.randomGenerator.integer(5),
+        natureOperationRecipeCodePISCOFINSScheduling: faker.lorem.word(),
+        datePisCofinsTypeScheduling: faker.date.dateTime().toIso8601String(),
+        dateTimeOfImport: faker.date.dateTime().toIso8601String(),
+        isIncludeInAccordingIcmsSpecialRegimeForWholesale: faker.randomGenerator
+            .boolean(),
+        isPetroleumDerivative: faker.randomGenerator.boolean(),
+        cest: faker.randomGenerator.numberOfLength(7),
+        internalImportCadasterCode: faker.randomGenerator.numberOfLength(20),
+        isIncludeInIcmsSpecialRegimeForMeasure: faker.randomGenerator.boolean(),
+        isPresumedPis: faker.randomGenerator.boolean(),
+        isPresumedCofins: faker.randomGenerator.boolean(),
+        isEspecialRegimeCadaster: faker.randomGenerator.boolean(),
+        cbsAliquot: faker.randomGenerator.decimal(),
+        cbsReduction: faker.randomGenerator.decimal(),
+        cbsCst: faker.randomGenerator.numberOfLength(3),
+        cbsCodeClassification: faker.randomGenerator.numberOfLength(6),
+        hash: faker.lorem.word(),
+      );
+
+  static BsfFiscalClassificationIpiEntity
+  makeBsfFiscalClassificationIpiEntity() => BsfFiscalClassificationIpiEntity(
+    aliquot: faker.randomGenerator.decimal(),
+    type: faker.randomGenerator.integer(5),
+    tributarySituation: faker.lorem.word(),
+    isValid: faker.randomGenerator.boolean(),
   );
 }

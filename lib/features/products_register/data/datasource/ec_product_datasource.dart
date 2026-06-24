@@ -27,7 +27,6 @@ class EcProductDatasource implements IEcProductDatasource {
     if (response == null) {
       throw Exception('O produto não foi encontrado'.hardcoded);
     }
-    //TODO create tests
     return BsfProductModel.fromJson(response);
   }
 }
