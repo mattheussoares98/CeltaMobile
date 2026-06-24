@@ -166,10 +166,11 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.allowAlterCostOrSalePrice == true
                     ? 'Permite alterar o preço'.hardcoded
                     : 'Não permite alterar o preço'.hardcoded,
-                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
                   color: request.allowAlterCostOrSalePrice == true
                       ? context.theme.primaryColor
                       : context.theme.colorScheme.error,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
               TitleAndSubTitle(
@@ -177,10 +178,11 @@ class _RequestTypeItem extends StatelessWidget {
                 subTitle: request.allowUseDiscount == true
                     ? 'Permite desconto manual'.hardcoded
                     : 'Não permite desconto manual'.hardcoded,
-                subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
+                subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
                   color: request.allowUseDiscount == true
                       ? context.theme.primaryColor
                       : context.theme.colorScheme.error,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ],
