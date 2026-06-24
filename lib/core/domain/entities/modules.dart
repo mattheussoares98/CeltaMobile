@@ -8,6 +8,7 @@ enum Modules {
   customerRegister('Cadastro de clientes'),
   expeditionConference('Expedição (conferência)'),
   inventory('Inventário'),
+  processAuthrozition('Processos de autorização'),
   productsRegister('Cadastro de produtos'),
   receipt('Recebimento'),
   reports('Relatórios'),
