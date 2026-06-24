@@ -8,9 +8,16 @@ class EcProductDatasource implements IEcProductDatasource {
   EcProductDatasource(this.httpClient);
 
   @override
-  Future<dynamic> get(EcRequestParams params) async {
+  Future<dynamic> get(
+    EcRequestParams params, {
+    required int productCode,
+    required int enterpriseCode,
+  }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/Products',
+      url:
+          '${params.workingUrl}/api/Products/GetCompleteProducts'
+          '?enterpriseCode=$enterpriseCode'
+          '&productCode=$productCode',
       method: 'get',
       headers: params.toHeaders(),
     );

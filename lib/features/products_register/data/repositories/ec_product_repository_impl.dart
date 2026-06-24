@@ -9,7 +9,15 @@ class EcProductRepositoryImpl implements IEcProductRepository {
   EcProductRepositoryImpl(this._datasource);
 
   @override
-  Future<dynamic> get(EcRequestParams params) {
-    return _datasource.get(params);
+  Future<dynamic> get(
+    EcRequestParams params, {
+    required int productCode,
+    required int enterpriseCode,
+  }) {
+    return _datasource.get(
+      params,
+      productCode: productCode,
+      enterpriseCode: enterpriseCode,
+    );
   }
 }
