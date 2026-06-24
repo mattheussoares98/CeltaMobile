@@ -1,9 +1,11 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/routing/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -41,7 +43,13 @@ class ProductsItems extends ConsumerWidget {
                 materialIcon: Icons.arrow_outward_outlined,
               ),
               onTap: () {
-                //TODO navigate to the next page
+                context.goNamed(
+                  Routes.productsRegisterCreateProduct.name,
+                  pathParameters: {
+                    'enterpriseCode': enterpriseCode.toString(),
+                    'productCode': product.ProductCode.toString(),
+                  },
+                );
               },
             );
           },
