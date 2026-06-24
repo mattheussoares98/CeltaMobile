@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,9 +34,12 @@ class ProductsItems extends ConsumerWidget {
               hideCurrentAndSaleStocks: true,
               hidePrice: true,
               hideWholeInformations: true,
-              showEditIcon: false,
+              showEditIcon: true,
               showInfoButton: false,
-              hideEans: true,
+              editIcon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.arrow_up_right,
+                materialIcon: Icons.arrow_outward_outlined,
+              ),
               onTap: () {
                 //TODO navigate to the next page
               },
