@@ -15,10 +15,10 @@ class EcProductDatasource implements IEcProductDatasource {
   }) async {
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/Products/GetCompleteProducts'
-          '?enterpriseCode=$enterpriseCode'
+          '${params.workingUrl}/api/Products/Complete'
+          '?enterpriseId=$enterpriseCode'
           '&productCode=$productCode',
-      method: 'get',
+      method: 'post',
       headers: params.toHeaders(),
     );
     //TODO create tests
