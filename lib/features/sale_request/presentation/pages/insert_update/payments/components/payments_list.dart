@@ -70,7 +70,9 @@ class PaymentsList extends ConsumerWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(Sizes.p8),
                               side: BorderSide(
-                                color: pIndex % 2 == 0 ? color : Colors.red,
+                                color: pIndex % 2 == 0
+                                    ? color
+                                    : context.theme.disabledColor,
                               ),
                             ),
                             title: TitleAndSubTitle(
