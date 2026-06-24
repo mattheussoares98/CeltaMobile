@@ -1,7 +1,7 @@
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class NewModuleBadge extends StatelessWidget {
   const NewModuleBadge({super.key});
@@ -13,8 +13,8 @@ class NewModuleBadge extends StatelessWidget {
       left: 0,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(Sizes.p8),
-          bottomRight: Radius.circular(Sizes.p8),
+          topLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
         ),
         child: Container(
           color: Colors.red,
