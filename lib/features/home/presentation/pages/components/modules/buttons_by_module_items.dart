@@ -3,6 +3,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ButtonsByModuleItems {
@@ -139,6 +140,15 @@ class ButtonsByModuleItems {
         cupertinoIcon: CupertinoIcons.arrow_2_circlepath_circle,
       ),
     ),
+    if (kDebugMode)
+      Modules.processAuthrozition: DefaultModuleButton(
+        route: Routes.processAuthorization,
+        module: Modules.processAuthrozition,
+        platformIcon: PlatformIcon(
+          materialIcon: Icons.lock_person,
+          cupertinoIcon: CupertinoIcons.lock_fill,
+        ),
+      ),
     // if (kDebugMode)
     //   Modules.productsRegister: DefaultModuleButton(
     //     route: Routes.productsRegisterSearchProduct,

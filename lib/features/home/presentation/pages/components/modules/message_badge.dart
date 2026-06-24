@@ -2,9 +2,9 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-class MessgeBadge extends StatelessWidget {
+class MessageBadge extends StatelessWidget {
   final String message;
-  const MessgeBadge({super.key, required this.message});
+  const MessageBadge({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

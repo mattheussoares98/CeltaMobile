@@ -4,4 +4,4 @@ export './favorite_icon_button.dart';
 export './module_icon.dart';
 export './module_name.dart';
 export './modules_widget.dart';
-export './new_module_badge.dart';
+export 'message_badge.dart';

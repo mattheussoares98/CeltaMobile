@@ -94,7 +94,9 @@ class DefaultModuleButton extends ConsumerWidget {
                   ),
                 ),
                 if ((module == Modules.productsRegister))
-                  MessgeBadge(message: 'Suspenso'.hardcoded),
+                  MessageBadge(message: 'Suspenso'.hardcoded),
+                if ((module == Modules.processAuthrozition))
+                  MessageBadge(message: 'Novo'.hardcoded),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),
