@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class EansProperty extends StatelessWidget {
   final ProductItemWidget widget;
@@ -15,6 +15,10 @@ class EansProperty extends StatelessWidget {
         copyableSubtitle: true,
         title: 'EANs'.hardcoded,
         subTitle: widget.product.EANs?.map((e) => e.toString()).join(', '),
+        subTitleStyle: context.theme.textTheme.bodySmall?.copyWith(
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
