@@ -79,8 +79,8 @@ class _SearchSaleRequestAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionCard(
-      title: 'Pesquisar pedidos'.hardcoded,
-      subtitle: 'Pesquisar pedidos já criados'.hardcoded,
+      title: 'Pesquisar'.hardcoded,
+      subtitle: 'Pesquise pedidos de vendas'.hardcoded,
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.search,
         materialIcon: Icons.search,
@@ -99,8 +99,8 @@ class _CreateSaleRequestAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionCard(
-      title: 'Criar pedido'.hardcoded,
-      subtitle: 'Criar um novo pedido de vendas'.hardcoded,
+      title: 'Criar'.hardcoded,
+      subtitle: 'Crie pedidos de venda'.hardcoded,
       icon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.add_circled,
         materialIcon: Icons.add_circle_outline,
