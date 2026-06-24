@@ -9,7 +9,7 @@ class EcProcessAuthorizationRepositoryImpl
   EcProcessAuthorizationRepositoryImpl(this.datasource);
 
   @override
-  Future<List<dynamic>> getJudgments(EcRequestParams params) async {
+  Future<dynamic> getJudgments(EcRequestParams params) async {
     final response = await datasource.getJudgments(params);
 
     //TODO convert to entity and create tests
@@ -17,7 +17,7 @@ class EcProcessAuthorizationRepositoryImpl
   }
 
   @override
-  Future<List<dynamic>> getStatistics(EcRequestParams params) async {
+  Future<dynamic> getStatistics(EcRequestParams params) async {
     final response = await datasource.getStatistics(params);
 
     //TODO convert to entity and create tests

@@ -10,10 +10,12 @@ class EcProcessAuthorizationDatasource
   EcProcessAuthorizationDatasource(this.httpClient);
 
   @override
-  Future<List<dynamic>> getJudgments(EcRequestParams params) async {
+  Future<dynamic> getJudgments(EcRequestParams params) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/Judgment',
+      url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
       method: 'post',
+      headers: params.toHeaders(),
+      body: params.toMap(),
     );
 
     //TODO convert to model and create tests
@@ -21,10 +23,12 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<List<dynamic>> getStatistics(EcRequestParams params) async {
+  Future<dynamic> getStatistics(EcRequestParams params) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/Statistics',
+      url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
       method: 'post',
+      headers: params.toHeaders(),
+      body: params.toMap(),
     );
 
     //TODO convert to model and create tests
