@@ -92,7 +92,7 @@ class _ValueFieldAndConfirmButtonState
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             onFieldSubmitted: (_) => onTap(),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             validator: FormValidators.compose([
               NonEmptyValidator(),
               NumberValidator(allowDecimal: true, maxDecimalHouses: 2),
