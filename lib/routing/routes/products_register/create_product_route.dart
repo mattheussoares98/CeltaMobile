@@ -2,14 +2,15 @@ import 'package:celta_inventario/features/products_register/presentation/pages/p
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase productsRegisterRoute() => GoRoute(
-  path: ':enterpriseCode/products-register',
-  name: Routes.productsRegister.name,
+RouteBase productsRegisterCreateProductRoute() => GoRoute(
+  path: ':productCode/create',
+  name: Routes.productsRegisterCreateProduct.name,
   builder: (context, state) {
-    return ProductsRegisterPage(
+    return CreateProductPage(
       enterpriseCode: int.parse(
         state.pathParameters['enterpriseCode'].toString(),
       ),
+      productCode: int.parse(state.pathParameters['productCode'].toString()),
     );
   },
 );

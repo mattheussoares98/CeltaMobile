@@ -142,7 +142,7 @@ class ButtonsByModuleItems {
     ),
     if (kDebugMode)
       Modules.productsRegister: DefaultModuleButton(
-        route: Routes.productsRegister,
+        route: Routes.productsRegisterSearchProduct,
         module: Modules.productsRegister,
         platformIcon: PlatformIcon(
           materialIcon: Icons.add_outlined,
