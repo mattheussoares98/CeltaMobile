@@ -59,6 +59,8 @@ class ProductsList extends ConsumerWidget {
                   product: product,
                   item: existingItem ?? product.toBSFProductItemEntity(),
                   heroPrefix: 'products',
+                  showInfoButton: true,
+                  showStock: true,
                 );
               },
             );

@@ -16,6 +16,8 @@ class BSFProductItemSummary extends ConsumerWidget {
   final BSFProductItemEntity item;
   final bool useCard;
   final String heroPrefix;
+  final bool showStock;
+  final bool showInfoButton;
 
   const BSFProductItemSummary({
     super.key,
@@ -23,6 +25,8 @@ class BSFProductItemSummary extends ConsumerWidget {
     required this.item,
     this.useCard = true,
     required this.heroPrefix,
+    required this.showStock,
+    required this.showInfoButton,
   });
 
   @override
@@ -96,6 +100,8 @@ class BSFProductItemSummary extends ConsumerWidget {
         child: SingleChildScrollView(
           child: ProductItemWidget(
             hideCost: true,
+            showInfoButton: showInfoButton,
+            hideCurrentAndSaleStocks: !showStock,
             showEditIcon: PlatformUtil.isCupertino,
             editIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.arrow_up_right,

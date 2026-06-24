@@ -61,6 +61,8 @@ class ItemsPage extends ConsumerWidget {
               product: item.toProductEntity(args.enterpriseCode),
               item: item,
               heroPrefix: 'items$isSliver',
+              showInfoButton: false,
+              showStock: false,
             );
           },
         );
