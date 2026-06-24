@@ -4,6 +4,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class DefaultModuleButton extends ConsumerWidget {
                   ),
                 ),
                 if ((module == Modules.productsRegister))
-                  const NewModuleBadge(),
+                  MessgeBadge(message: 'Suspenso'.hardcoded),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),
