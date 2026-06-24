@@ -14,6 +14,7 @@ import 'package:celta_inventario/features/customer_register/domain/entities/enti
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
+import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -1790,5 +1791,11 @@ class EntityFactory {
       makeAppUsageEntity(),
       makeAppUsageEntity(),
     ],
+  );
+
+  static BsfProductEntity makeBsfProductEntity() => BsfProductEntity(
+    code: faker.randomGenerator.integer(100),
+    name: faker.lorem.word(),
+    isDesativate: faker.randomGenerator.boolean(),
   );
 }

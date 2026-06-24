@@ -2,9 +2,11 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/products_register/domain/entities/bsf_product_entity.dart';
 import 'package:celta_inventario/features/products_register/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/products_register/presentation/controllers/product_state_controller.dart';
 import 'package:celta_inventario/features/products_register/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,7 +18,7 @@ class MockEcProductRepository extends Mock implements IEcProductRepository {}
 void main() {
   late MockEcProductRepository mockRepository;
   late UserSessionModel fakeSession;
-  late ProductEntity fakeProduct;
+  late BsfProductEntity fakeProduct;
   late int enterpriseCode;
   late int productCode;
   late EcRequestParams expectedParams;
@@ -28,9 +30,9 @@ void main() {
     final sessionEntity = EntityFactory.makeUserSessionEntity();
     fakeSession = UserSessionModel.fromEntity(sessionEntity);
 
-    fakeProduct = EntityFactory.makeProductEntity();
-    enterpriseCode = fakeProduct.EnterpriseCode!;
-    productCode = fakeProduct.ProductCode!;
+    fakeProduct = EntityFactory.makeBsfProductEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
+    productCode = faker.randomGenerator.integer(100);
 
     expectedParams = EcRequestParams(
       workingUrl: fakeSession.enterprise!.workingUrl!,
