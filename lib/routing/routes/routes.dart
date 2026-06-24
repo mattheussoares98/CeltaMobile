@@ -17,6 +17,7 @@ export 'buy_quotation/buy_quotation.dart';
 export 'competing_prices/competing_prices.dart';
 export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
+export 'process_authorization/process_authorization.dart';
 export 'products_register/products_register.dart';
 export 'receipts/receipts.dart';
 export 'sale_request/sale_request.dart';
