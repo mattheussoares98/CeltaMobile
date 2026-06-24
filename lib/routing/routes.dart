@@ -27,6 +27,7 @@ enum Routes {
   inventoryProducts,
   home,
   pdfViewer,
+  processAuthorization,
   productsRegisterSearchProduct,
   productsRegisterCreateProduct,
   reports,
