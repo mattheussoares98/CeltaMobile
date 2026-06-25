@@ -14,6 +14,7 @@ import 'package:celta_inventario/features/customer_register/domain/entities/enti
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
@@ -1850,4 +1851,15 @@ class EntityFactory {
     tributarySituation: faker.lorem.word(),
     isValid: faker.randomGenerator.boolean(),
   );
+
+  static BsfProcessAuthorizationStatisticEntity
+  makeBsfProcessAuthorizationStatisticEntity() =>
+      BsfProcessAuthorizationStatisticEntity(
+        allJudgements: faker.randomGenerator.integer(100),
+        openedJudgements: faker.randomGenerator.integer(100),
+        closedNotAuthorizedJudgements: faker.randomGenerator.integer(100),
+        judgementsToVote: faker.randomGenerator.integer(100),
+        judgementsCreatedByUser: faker.randomGenerator.integer(100),
+        allFinishJudgementThatUserNotSaw: faker.randomGenerator.integer(100),
+      );
 }
