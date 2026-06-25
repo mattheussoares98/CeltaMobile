@@ -4,11 +4,11 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultPaginationButtons<T> extends ConsumerWidget {
   final void Function(int page) onChangePage;
@@ -89,28 +89,19 @@ class DefaultPaginationButtons<T> extends ConsumerWidget {
                             final isLoading = ref.watch(
                               provider.select((s) => s.isLoading),
                             );
-                            return Text(
+                            return DefaultText(
                               '${results.actualPage} / ${results.totalPages}',
-                              style: context.theme.textTheme.bodyMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.1,
-                                    color: isLoading
-                                        ? context.theme.disabledColor
-                                        : null,
-                                  ),
+                              fontWeight: FontWeight.bold,
+                              color: isLoading
+                                  ? context.theme.disabledColor
+                                  : null,
                             );
                           },
                         ),
-                        Text(
+                        DefaultText.caption(
                           '$startItem-$endItem de ${results.totalRecords}'
                               .hardcoded,
-                          style: context.theme.textTheme.labelSmall?.copyWith(
-                            fontSize: 9,
-                            height: 1.0,
-                            color: context.theme.hintColor,
-                            // fontWeight: FontWeight.w400,
-                          ),
+                          color: context.theme.hintColor,
                         ),
                       ],
                     ),

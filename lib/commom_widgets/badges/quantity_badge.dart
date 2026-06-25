@@ -113,7 +113,7 @@ class _QuantityBadgeState extends State<QuantityBadge>
                   child: AnimatedBuilder(
                     animation: _quantityRollingAnimation,
                     builder: (context, child) {
-                      return Text(
+                      return DefaultText(
                         _quantityRollingAnimation.value.round().toString(),
                       );
                     },

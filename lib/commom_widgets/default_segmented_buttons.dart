@@ -1,8 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultSegmentedButtons<T extends SelectableItem<T>>
     extends StatelessWidget {
@@ -49,14 +50,12 @@ class DefaultSegmentedButtons<T extends SelectableItem<T>>
                   vertical: Sizes.p8,
                 ),
                 child: FittedBox(
-                  child: Text(
+                  child: DefaultText(
                     item.name,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: selectedValue == item.value
-                          ? Colors.white
-                          : CupertinoColors.black,
-                    ),
+                    color: selectedValue == item.value
+                        ? Colors.white
+                        : CupertinoColors.black,
                   ),
                 ),
               ),

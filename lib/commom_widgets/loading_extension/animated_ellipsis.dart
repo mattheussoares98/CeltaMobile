@@ -1,5 +1,5 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class AnimatedEllipsis extends StatefulWidget {
   const AnimatedEllipsis({super.key});
@@ -44,7 +44,7 @@ class _AnimatedEllipsisState extends State<AnimatedEllipsis>
           // PERFORMANCE: Using a fixed width prevents the text from shifting
           // adjacent widgets when the dot count changes (Layout Jitters).
           width: 24,
-          child: Text(dots, style: context.theme.textTheme.titleMedium),
+          child: DefaultText.titleMedium(dots),
         );
       },
     );

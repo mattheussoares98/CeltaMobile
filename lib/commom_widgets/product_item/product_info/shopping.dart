@@ -15,9 +15,8 @@ class Shopping extends StatelessWidget {
     if (widget.product.LastBuyEntrances == null ||
         widget.product.LastBuyEntrances!.isEmpty) {
       return Center(
-        child: Text(
+        child: DefaultText.titleMedium(
           'Nenhuma compra foi encontrada'.hardcoded,
-          style: context.theme.textTheme.titleMedium,
         ),
       );
     }

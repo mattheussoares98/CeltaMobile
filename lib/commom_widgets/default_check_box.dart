@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,7 +53,7 @@ class DefaultCheckBox extends StatelessWidget {
                     horizontal: Sizes.p12,
                     vertical: Sizes.p4,
                   ),
-                  title: Text(name, style: context.theme.textTheme.bodyMedium),
+                  title: DefaultText(name),
                   subtitle: subtitle,
                   trailing: CupertinoSwitch(
                     value: enabled,
@@ -65,10 +66,7 @@ class DefaultCheckBox extends StatelessWidget {
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Sizes.p12,
                     ),
-                    title: Text(
-                      name,
-                      style: context.theme.textTheme.bodyMedium,
-                    ),
+                    title: DefaultText(name),
                     subtitle: subtitle,
                     value: enabled,
                     onChanged: onChanged,

@@ -45,14 +45,11 @@ class PrimaryTextButton extends StatelessWidget {
         ? Colors.transparent
         : color ?? context.theme.primaryColor;
 
-    final textWidget = Text(
+    final textWidget = DefaultText(
       text,
       textAlign: textAlign,
-      style:
-          (isSmall == true
-                  ? context.theme.textTheme.titleSmall
-                  : context.theme.textTheme.titleMedium)
-              ?.copyWith(color: textColor),
+      textType: isSmall == true ? TextType.titleSmall : TextType.titleMedium,
+      color: textColor,
     );
     final iconWidget = icon == null
         ? null

@@ -52,14 +52,11 @@ class DefaultDropDown<T> extends StatelessWidget {
             (label?.isNotEmpty ?? false)
         ? Positioned(
             left: Sizes.p4,
-            child: Text(
+            child: DefaultText(
               label!,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontSize: 8,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.w300,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
+              textType: TextType.caption,
+              fontWeight: FontWeight.w300,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           )
         : null;
@@ -110,7 +107,9 @@ class DefaultDropDown<T> extends StatelessWidget {
                                       context: context,
                                       builder: (sheetContext) =>
                                           CupertinoActionSheet(
-                                            title: Text('Selecionar'.hardcoded),
+                                            title: DefaultText(
+                                              'Selecionar'.hardcoded,
+                                            ),
                                             actions: centeredItems!.map((item) {
                                               return CupertinoActionSheetAction(
                                                 onPressed: () {
@@ -129,16 +128,13 @@ class DefaultDropDown<T> extends StatelessWidget {
                                                   onPressed: () => Navigator.of(
                                                     sheetContext,
                                                   ).pop(),
-                                                  child: Text(
-                                                    'Cancelar'.hardcoded,
-                                                    style: theme
-                                                        .textTheme
-                                                        .titleMedium
-                                                        ?.copyWith(
-                                                          color: CupertinoColors
-                                                              .destructiveRed,
-                                                        ),
-                                                  ),
+                                                  child:
+                                                      DefaultText.titleMedium(
+                                                        'Cancelar'.hardcoded,
+
+                                                        color: CupertinoColors
+                                                            .destructiveRed,
+                                                      ),
                                                 ),
                                           ),
                                     );
@@ -165,10 +161,10 @@ class DefaultDropDown<T> extends StatelessWidget {
                                 : Center(
                                     child:
                                         hint ??
-                                        Text(
+                                        DefaultText(
                                           label ?? 'Selecionar'.hardcoded,
+                                          textType: TextType.bodyLarge,
                                           maxLines: 1,
-                                          style: theme.textTheme.bodyLarge,
                                           textAlign: TextAlign.center,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -190,12 +186,9 @@ class DefaultDropDown<T> extends StatelessWidget {
               if (state.hasError)
                 Padding(
                   padding: const EdgeInsets.only(top: 5, left: 15),
-                  child: Text(
+                  child: DefaultText.bodySmall(
                     state.errorText!,
-                    style: const TextStyle(
-                      color: CupertinoColors.systemRed,
-                      fontSize: 12,
-                    ),
+                    color: CupertinoColors.systemRed,
                   ),
                 ),
             ],
@@ -253,7 +246,9 @@ class DefaultDropDown<T> extends StatelessWidget {
                                   content: adviceMessage,
                                 );
                               },
-                        hint: hint ?? (label != null ? Text(label!) : null),
+                        hint:
+                            hint ??
+                            (label != null ? DefaultText(label!) : null),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: theme.textTheme.titleMedium?.fontSize,
@@ -281,12 +276,9 @@ class DefaultDropDown<T> extends StatelessWidget {
             if (state.hasError)
               Padding(
                 padding: const EdgeInsets.only(top: Sizes.p4),
-                child: Text(
+                child: DefaultText.bodySmall(
                   state.errorText!,
-                  style: TextStyle(
-                    color: theme.colorScheme.error,
-                    fontSize: 12,
-                  ),
+                  color: theme.colorScheme.error,
                 ),
               ),
           ],

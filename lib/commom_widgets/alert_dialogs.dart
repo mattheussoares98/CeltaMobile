@@ -20,7 +20,7 @@ Future<bool?> showAlertDialog({
   final titleWidget = Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Expanded(child: Center(child: Text(title))),
+      Expanded(child: Center(child: DefaultText(title))),
       if (kDebugMode)
         IconButton(
           onPressed: () {
@@ -35,7 +35,7 @@ Future<bool?> showAlertDialog({
   );
 
   final contentWidget = content != null
-      ? SingleChildScrollView(child: Text(content))
+      ? SingleChildScrollView(child: DefaultText(content))
       : null;
 
   if (PlatformUtil.isCupertino) {
@@ -48,11 +48,11 @@ Future<bool?> showAlertDialog({
         actions: <Widget>[
           if (cancelActionText != null)
             CupertinoDialogAction(
-              child: Text(cancelActionText),
+              child: DefaultText(cancelActionText),
               onPressed: () => Navigator.of(context).pop(false),
             ),
           CupertinoDialogAction(
-            child: Text(defaultActionText),
+            child: DefaultText(defaultActionText),
             onPressed: () {
               Navigator.of(context).pop(true);
               onOkPressed?.call();
@@ -71,11 +71,11 @@ Future<bool?> showAlertDialog({
         actions: <Widget>[
           if (cancelActionText != null)
             TextButton(
-              child: Text(cancelActionText),
+              child: DefaultText(cancelActionText),
               onPressed: () => Navigator.of(context).pop(false),
             ),
           TextButton(
-            child: Text(defaultActionText),
+            child: DefaultText(defaultActionText),
             onPressed: () {
               Navigator.of(context).pop(true);
               onOkPressed?.call();

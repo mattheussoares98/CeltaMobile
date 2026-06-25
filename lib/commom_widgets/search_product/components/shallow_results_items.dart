@@ -102,7 +102,7 @@ class _EmptyResult extends StatelessWidget {
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p16),
-        child: Text('Nenhum produto'.hardcoded),
+        child: DefaultText('Nenhum produto'.hardcoded),
       ),
     );
   }

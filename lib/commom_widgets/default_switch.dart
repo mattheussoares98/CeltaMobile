@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/text/text.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,9 @@ class DefaultSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.theme.textTheme.titleSmall;
-
     if (PlatformUtil.isCupertino) {
       return CupertinoListTile(
-        title: Text(title, style: textStyle),
+        title: DefaultText.title(title),
         padding: EdgeInsets.zero,
         trailing: CupertinoSwitch(value: value, onChanged: onChanged),
       );
@@ -27,7 +26,7 @@ class DefaultSwitch extends StatelessWidget {
       return SwitchListTile.adaptive(
         dense: true,
         contentPadding: EdgeInsetsGeometry.zero,
-        title: Text(title, style: textStyle),
+        title: DefaultText.title(title),
         value: value,
         onChanged: onChanged,
       );

@@ -6,7 +6,6 @@ import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class EmptyPlaceholderWidget extends ConsumerWidget {
   const EmptyPlaceholderWidget({super.key, required this.message});
@@ -27,11 +26,7 @@ class EmptyPlaceholderWidget extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              message,
-              style: context.theme.textTheme.headlineMedium,
-              textAlign: TextAlign.center,
-            ),
+            DefaultText.headline(message),
             gapH32,
             PrimaryButton(
               onPressed: () => context.goNamed(

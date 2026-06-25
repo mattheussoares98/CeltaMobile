@@ -3,11 +3,11 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class Stocks extends ConsumerWidget {
   const Stocks({super.key, required this.widget});
@@ -59,9 +59,9 @@ class Stocks extends ConsumerWidget {
                 title: Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: DefaultText(
                         enterpriseName,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     IconButton(

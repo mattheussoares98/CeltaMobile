@@ -1,6 +1,6 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultTitle extends StatelessWidget {
   final String title;
@@ -12,9 +12,8 @@ class DefaultTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
-          child: Text(
+          child: DefaultText.titleMedium(
             title.hardcoded,
-            style: context.theme.textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
         ),

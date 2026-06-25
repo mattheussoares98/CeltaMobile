@@ -1,4 +1,4 @@
-import 'package:celta_inventario/commom_widgets/animations/animations.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +34,6 @@ class SummaryTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = context.theme.textTheme.labelSmall?.copyWith(
-      color: context.theme.hintColor,
-      fontWeight: FontWeight.bold,
-    );
     final valueStyle = context.theme.textTheme.bodyMedium?.copyWith(
       fontWeight: FontWeight.bold,
     );
@@ -92,9 +88,10 @@ class SummaryTable extends StatelessWidget {
                   mainAxisAlignment: mainAxisAlignment,
                   children: [
                     Flexible(
-                      child: Text(
+                      child: DefaultText.caption(
                         item.title,
-                        style: labelStyle,
+                        fontWeight: FontWeight.bold,
+                        color: context.theme.hintColor,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -116,10 +113,10 @@ class SummaryTable extends StatelessWidget {
               else
                 Align(
                   alignment: alignment,
-                  child: Text(
+                  child: DefaultText.bodyMedium(
                     formattedValue,
-                    style: effectiveValueStyle,
-                    maxLines: 1,
+                    fontWeight: FontWeight.bold,
+                    color: item.color,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

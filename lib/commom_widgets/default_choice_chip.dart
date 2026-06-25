@@ -1,7 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 /// PERFORMANCE: This widget chooses between a Segmented Control and a Wrap
 /// layout based on available width to prevent text overflow and unreadable labels.
@@ -31,7 +32,7 @@ class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
           final isSelected = item.value == selectedValue;
           return ChoiceChip(
             key: ValueKey(item),
-            label: Text(item.name),
+            label: DefaultText(item.name),
             selected: isSelected,
             onSelected: (selected) {
               if (allowNullSelection) {

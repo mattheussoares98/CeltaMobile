@@ -135,15 +135,11 @@ class _Error extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            DefaultText.bodySmall(
               parseErrorMessage(e),
               textAlign: TextAlign.center,
               maxLines: maxLines,
-              style: const TextStyle(
-                color: Colors.red,
-                fontStyle: FontStyle.italic,
-                fontSize: 12,
-              ),
+              color: Colors.red,
             ),
             if (tryAgain != null)
               PrimaryTextButton(

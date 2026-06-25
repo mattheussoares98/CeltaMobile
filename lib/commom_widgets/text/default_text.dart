@@ -14,6 +14,7 @@ class DefaultText extends StatelessWidget {
     this.fontWeight = FontWeight.normal,
     this.decoration,
     this.decorationColor,
+    this.fontStyle,
   });
 
   factory DefaultText.caption(
@@ -24,15 +25,19 @@ class DefaultText extends StatelessWidget {
     FontWeight? fontWeight,
     TextDecoration? decoration,
     Color? decorationColor,
+    FontStyle? fontStyle,
+    int? maxLines,
   }) => DefaultText(
     text,
     textAlign: textAlign,
+    maxLines: maxLines,
     overflow: overflow,
     color: color,
     textType: TextType.caption,
     fontWeight: fontWeight ?? FontWeight.w400,
     decoration: decoration,
     decorationColor: decorationColor,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.bodySmall(
@@ -44,6 +49,7 @@ class DefaultText extends StatelessWidget {
     FontWeight? fontWeight,
     TextDecoration? decoration,
     Color? decorationColor,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign,
@@ -54,6 +60,7 @@ class DefaultText extends StatelessWidget {
     fontWeight: fontWeight ?? FontWeight.w400,
     decoration: decoration,
     decorationColor: decorationColor,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.bodyLarge(
@@ -61,24 +68,28 @@ class DefaultText extends StatelessWidget {
     TextAlign? textAlign,
     Color? color,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign,
     color: color,
     textType: TextType.bodyLarge,
     fontWeight: fontWeight ?? FontWeight.w400,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.title(
     String text, {
     TextAlign? textAlign,
     Color? color,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign,
     color: color,
     textType: TextType.titleSmall,
     fontWeight: FontWeight.w600,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.titleMedium(
@@ -86,53 +97,82 @@ class DefaultText extends StatelessWidget {
     TextAlign? textAlign,
     Color? color,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign,
     color: color,
     textType: TextType.titleMedium,
     fontWeight: fontWeight ?? FontWeight.w600,
+    fontStyle: fontStyle,
+  );
+  factory DefaultText.titleLarge(
+    String text, {
+    TextAlign? textAlign,
+    Color? color,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+  }) => DefaultText(
+    text,
+    textAlign: textAlign,
+    color: color,
+    textType: TextType.titleLarge,
+    fontWeight: fontWeight ?? FontWeight.w600,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.bodyMedium(
     String text, {
     TextAlign? textAlign,
+    TextOverflow? overflow,
     Color? color,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign,
+    overflow: overflow,
     color: color,
     fontWeight: fontWeight ?? FontWeight.w400,
+    fontStyle: fontStyle,
   );
 
   factory DefaultText.headline(
     String text, {
     Color? color,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     color: color,
     textType: TextType.headline,
     fontWeight: fontWeight ?? FontWeight.w600,
+    fontStyle: fontStyle,
   );
 
-  factory DefaultText.headlineLarge(String text, {Color? color}) => DefaultText(
+  factory DefaultText.headlineLarge(
+    String text, {
+    Color? color,
+    FontStyle? fontStyle,
+  }) => DefaultText(
     text,
     color: color,
     textType: TextType.headlineLarge,
     fontWeight: FontWeight.w600,
+    fontStyle: fontStyle,
   );
   factory DefaultText.error(
     String text, {
     TextAlign? textAlign,
     FontWeight? fontWeight,
+    FontStyle? fontStyle,
   }) => DefaultText(
     text,
     textAlign: textAlign ?? TextAlign.center,
     color: Colors.red,
     textType: TextType.titleMedium,
     fontWeight: fontWeight ?? FontWeight.w600,
+    fontStyle: fontStyle,
   );
 
   final String text;
@@ -144,6 +184,7 @@ class DefaultText extends StatelessWidget {
   final FontWeight fontWeight;
   final TextDecoration? decoration;
   final Color? decorationColor;
+  final FontStyle? fontStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +198,7 @@ class DefaultText extends StatelessWidget {
         fontWeight: fontWeight,
         decoration: decoration,
         decorationColor: decorationColor,
+        fontStyle: fontStyle,
       ),
     );
   }

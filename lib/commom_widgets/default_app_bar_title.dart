@@ -1,9 +1,10 @@
+import 'package:celta_inventario/commom_widgets/text/text.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DefaultAppBarTitle extends StatelessWidget {
   final String? title;
@@ -18,7 +19,7 @@ class DefaultAppBarTitle extends StatelessWidget {
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
       children: [
-        if (title != null) FittedBox(child: Text(title!)),
+        if (title != null) FittedBox(child: DefaultText.title(title!)),
         const CorrespondentEnterpriseByEnterpriseCode(),
       ],
     );
@@ -66,9 +67,8 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
         Expanded(
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(
+            child: DefaultText.bodySmall(
               '$personalizedCode - $enterpriseName',
-              style: context.theme.textTheme.bodySmall,
               textAlign: centerTitle ? TextAlign.center : null,
             ),
           ),

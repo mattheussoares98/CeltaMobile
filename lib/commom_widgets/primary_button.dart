@@ -25,12 +25,10 @@ class PrimaryButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isIOS = PlatformUtil.isCupertino;
 
-    final textWidget = Text(
+    final textWidget = DefaultText.titleMedium(
       text,
       textAlign: TextAlign.center,
-      style: context.theme.textTheme.titleMedium?.copyWith(
-        color: isLoading ? Colors.transparent : Colors.white,
-      ),
+      color: isLoading ? Colors.transparent : Colors.white,
     );
 
     const minimumIconSize = 150;

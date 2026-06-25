@@ -1,8 +1,8 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class Addresses extends StatelessWidget {
   const Addresses({super.key, required this.widget});
@@ -14,9 +14,8 @@ class Addresses extends StatelessWidget {
     if (widget.product.StorageAreaAddress == null &&
         (widget.product.StockByEnterpriseAssociateds?.length ?? 0) == 0) {
       return Center(
-        child: Text(
+        child: DefaultText.titleMedium(
           'Não há endereços cadastrados para esse produto'.hardcoded,
-          style: context.theme.textTheme.titleMedium,
         ),
       );
     }
