@@ -1,12 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InformedEmails extends ConsumerWidget {
   const InformedEmails({super.key});
@@ -22,9 +21,9 @@ class InformedEmails extends ConsumerWidget {
     }
 
     void removeEmail(int index) {
-      ref.read(customerStateControllerProvider.notifier).updateEmails([
-        ...emails..removeAt(index),
-      ]);
+      ref
+          .read(customerStateControllerProvider.notifier)
+          .updateEmails([...emails]..removeAt(index));
     }
 
     return SliverList.builder(
@@ -52,31 +51,29 @@ class _EmailItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: Sizes.p8),
-          child: Row(
-            children: [
-              Expanded(child: DefaultText(email)),
-              IconButton(
-                onPressed: () {
-                  showAlertDialog(
-                    context: context,
-                    title: 'Remover e-mail?'.hardcoded,
-                    onOkPressed: removeEmail,
-                    defaultActionText: 'Sim'.hardcoded,
-                    cancelActionText: 'Não'.hardcoded,
-                  );
-                },
-                icon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.delete,
-                  materialIcon: Icons.delete,
-                  color: Colors.red,
-                ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(left: Sizes.p8),
+        child: Row(
+          children: [
+            Expanded(child: DefaultText(email)),
+            IconButton(
+              onPressed: () {
+                showAlertDialog(
+                  context: context,
+                  title: 'Remover e-mail?'.hardcoded,
+                  onOkPressed: removeEmail,
+                  defaultActionText: 'Sim'.hardcoded,
+                  cancelActionText: 'Não'.hardcoded,
+                );
+              },
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.delete,
+                materialIcon: Icons.delete,
+                color: Colors.red,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

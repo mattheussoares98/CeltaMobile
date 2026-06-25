@@ -36,7 +36,7 @@ class BindedCovenants extends ConsumerWidget {
           removeCovenant: () {
             ref
                 .read(customerStateControllerProvider.notifier)
-                .updateCustomerCovenants([...covenants..removeAt(index - 1)]);
+                .updateCustomerCovenants([...covenants]..removeAt(index - 1));
           },
         );
       },
@@ -64,9 +64,7 @@ class _CovenantItem extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DefaultText.titleMedium(
-                    covenant.covenant?.Name ?? '',
-                  ),
+                  DefaultText.titleMedium(covenant.covenant?.Name ?? ''),
                   TitleAndSubTitle(
                     title: 'Código '.hardcoded,
                     subTitle: covenant.covenant?.Code.toString(),
