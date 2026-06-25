@@ -19,7 +19,7 @@ class ProcessAuthorizationPage extends ConsumerWidget {
         tryAgain: () =>
             ref.invalidate(processAuthorizationStateControllerProvider),
         data: (data) {
-          return ResponsiveScrollableWidget(child: Text(data));
+          return ResponsiveScrollableWidget(child: Text(data.toString()));
         },
       ),
     );
