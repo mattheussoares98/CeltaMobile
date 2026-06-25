@@ -87,10 +87,7 @@ class AppTheme {
         ),
       ),
       cardTheme: CardThemeData(
-        margin: const EdgeInsets.symmetric(
-          vertical: Sizes.p8,
-          horizontal: Sizes.p4,
-        ),
+        margin: const EdgeInsets.symmetric(vertical: Sizes.p8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(color: primaryColorDark, width: 1.0),
