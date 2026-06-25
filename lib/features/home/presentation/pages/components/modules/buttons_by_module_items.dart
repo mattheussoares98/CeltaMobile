@@ -141,9 +141,9 @@ class ButtonsByModuleItems {
       ),
     ),
     if (kDebugMode)
-      Modules.processAuthrozition: DefaultModuleButton(
+      Modules.processAuthorization: DefaultModuleButton(
         route: Routes.processAuthorization,
-        module: Modules.processAuthrozition,
+        module: Modules.processAuthorization,
         platformIcon: PlatformIcon(
           materialIcon: Icons.lock_person,
           cupertinoIcon: CupertinoIcons.lock_fill,
