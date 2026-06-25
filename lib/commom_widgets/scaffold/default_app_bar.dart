@@ -4,17 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DefaultAppBar extends StatelessWidget {
+class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DefaultAppBar({
     super.key,
     this.showLeading = true,
     this.leading,
-    required this.title,
+    this.title = '',
     this.titleFontWeight,
     this.titleStyle,
     this.centerTitle = false,
     this.actions,
     this.showSelectedEnterprise = false,
+    this.subtitle,
+    this.actionsPadding,
   });
   final bool showLeading;
   final Widget? leading;
@@ -24,6 +26,8 @@ class DefaultAppBar extends StatelessWidget {
   final bool centerTitle;
   final List<Widget>? actions;
   final bool showSelectedEnterprise;
+  final Widget? subtitle;
+  final EdgeInsetsGeometry? actionsPadding;
 
   DefaultAppBar copyWith({
     bool? showLeading,
@@ -34,6 +38,7 @@ class DefaultAppBar extends StatelessWidget {
     bool? centerTitle,
     List<Widget>? actions,
     bool? showSelectedEnterprise,
+    Widget? subtitle,
   }) {
     return DefaultAppBar(
       key: key,
@@ -46,6 +51,7 @@ class DefaultAppBar extends StatelessWidget {
       actions: actions ?? this.actions,
       showSelectedEnterprise:
           showSelectedEnterprise ?? this.showSelectedEnterprise,
+      subtitle: subtitle ?? this.subtitle,
     );
   }
 
@@ -63,7 +69,7 @@ class DefaultAppBar extends StatelessWidget {
     final double titleSpacing = showLeading ? 8 : horizontalPadding;
 
     Widget? leadingWidget;
-    Widget? titleWidget;
+    Widget? appBarTitleWidget;
 
     if (showLeading) {
       leadingWidget =
@@ -79,27 +85,73 @@ class DefaultAppBar extends StatelessWidget {
           );
     }
 
-    if (title.isNotEmpty) {
-      titleWidget = showSelectedEnterprise
-          ? DefaultAppBarTitle(title: title)
-          : DefaultText.bodyLarge(
-              title,
-              color: context.colorScheme.onSurface,
-              fontWeight: titleFontWeight,
-            );
+    if (title.isNotEmpty || showSelectedEnterprise || subtitle != null) {
+      final centerTitle = !PlatformUtil.isAndroid;
+      final crossAxisAlignment = centerTitle
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start;
+
+      appBarTitleWidget = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: crossAxisAlignment,
+        children: [
+          if (title.isNotEmpty) ...[
+            DefaultText.title(title, color: context.colorScheme.onSurface),
+          ],
+          if (showSelectedEnterprise)
+            const CorrespondentEnterpriseByEnterpriseCode(),
+          if (subtitle != null)
+            Align(alignment: Alignment.centerLeft, child: subtitle),
+        ],
+      );
     }
 
     if (context.isCupertino) {
+      if (subtitle != null) {
+        return Container(
+          height:
+              preferredSize.height +
+              MediaQuery.paddingOf(context).top +
+              (actionsPadding?.vertical ?? 0),
+          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+          decoration: BoxDecoration(
+            color: context.colorScheme.surface,
+            border: const Border(bottom: BorderSide(color: Colors.transparent)),
+          ),
+          child: Row(
+            children: [
+              if (showLeading)
+                SizedBox(width: leadingWidth, child: leadingWidget),
+              Expanded(child: Center(child: appBarTitleWidget)),
+              if (actions != null)
+                Padding(
+                  padding: actionsPadding ?? EdgeInsets.zero,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: actions!,
+                  ),
+                )
+              else if (showLeading)
+                SizedBox(width: leadingWidth),
+            ],
+          ),
+        );
+      }
+
       return CupertinoNavigationBar(
         automaticallyImplyLeading: false,
         transitionBetweenRoutes: false,
         leading: leadingWidget,
-        middle: titleWidget,
+        middle: appBarTitleWidget,
         trailing: actions != null
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: actions!,
+            ? Padding(
+                padding: actionsPadding ?? EdgeInsets.zero,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: actions!,
+                ),
               )
             : null,
         backgroundColor: context.colorScheme.surface,
@@ -107,14 +159,21 @@ class DefaultAppBar extends StatelessWidget {
       );
     }
 
-    return AppBar(
-      automaticallyImplyLeading: false,
-      leading: leadingWidget,
-      leadingWidth: leadingWidth,
-      titleSpacing: titleSpacing,
-      title: titleWidget,
-      centerTitle: centerTitle,
-      actions: actions,
+    return SizedBox(
+      height: preferredSize.height,
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        leading: leadingWidget,
+        leadingWidth: leadingWidth,
+        titleSpacing: titleSpacing,
+        title: appBarTitleWidget,
+        centerTitle: centerTitle,
+        actions: actions,
+        actionsPadding: actionsPadding,
+      ),
     );
   }
+
+  @override
+  Size get preferredSize => Size.fromHeight(subtitle != null ? 64 : 50.0);
 }

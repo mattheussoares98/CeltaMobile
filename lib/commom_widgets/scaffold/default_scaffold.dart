@@ -133,12 +133,16 @@ class _BaseScaffold extends StatelessWidget {
       );
     }
 
-    PreferredSize? appBarWidget;
+    PreferredSizeWidget? appBarWidget;
     if (finalAppBar != null) {
-      appBarWidget = PreferredSize(
-        preferredSize: const Size(double.maxFinite, 50),
-        child: finalAppBar,
-      );
+      if (finalAppBar is PreferredSizeWidget) {
+        appBarWidget = finalAppBar;
+      } else {
+        appBarWidget = PreferredSize(
+          preferredSize: const Size(double.maxFinite, 50),
+          child: finalAppBar,
+        );
+      }
     }
 
     Widget? bottomNavigationWidget = params.bottomNavigationBar;
