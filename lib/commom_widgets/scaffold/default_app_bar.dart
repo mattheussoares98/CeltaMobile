@@ -92,12 +92,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           : CrossAxisAlignment.start;
 
       appBarTitleWidget = Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         crossAxisAlignment: crossAxisAlignment,
         children: [
-          if (title.isNotEmpty) ...[
-            DefaultText.title(title, color: context.colorScheme.onSurface),
-          ],
+          if (title.isNotEmpty) ...[DefaultText.titleLarge(title)],
           if (showSelectedEnterprise)
             const CorrespondentEnterpriseByEnterpriseCode(),
           if (subtitle != null)
@@ -159,18 +157,16 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     }
 
-    return SizedBox(
-      height: preferredSize.height,
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        leading: leadingWidget,
-        leadingWidth: leadingWidth,
-        titleSpacing: titleSpacing,
-        title: appBarTitleWidget,
-        centerTitle: centerTitle,
-        actions: actions,
-        actionsPadding: actionsPadding,
-      ),
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading: leadingWidget,
+      leadingWidth: leadingWidth,
+      titleSpacing: titleSpacing,
+      title: appBarTitleWidget,
+      centerTitle: centerTitle,
+      actions: actions,
+      actionsPadding: actionsPadding,
+      toolbarHeight: preferredSize.height + MediaQuery.paddingOf(context).top,
     );
   }
 
