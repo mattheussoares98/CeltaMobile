@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart';
 import 'package:celta_inventario/features/process_authorization/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/repositories/repositories.dart';
 
 class EcProcessAuthorizationRepositoryImpl
@@ -17,10 +18,11 @@ class EcProcessAuthorizationRepositoryImpl
   }
 
   @override
-  Future<dynamic> getStatistics(EcRequestParams params) async {
+  Future<BsfProcessAuthorizationStatisticEntity> getStatistics(
+    EcRequestParams params,
+  ) async {
     final response = await datasource.getStatistics(params);
 
-    //TODO convert to entity and create tests
-    return response;
+    return response.toEntity();
   }
 }

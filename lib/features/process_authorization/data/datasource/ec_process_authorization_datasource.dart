@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart';
+import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 
 import 'datasource.dart';
 
@@ -23,7 +24,9 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<dynamic> getStatistics(EcRequestParams params) async {
+  Future<BsfProcessAuthorizationStatisticModel> getStatistics(
+    EcRequestParams params,
+  ) async {
     final response = await httpClient.request(
       url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
       method: 'post',
@@ -31,7 +34,6 @@ class EcProcessAuthorizationDatasource
       body: params.toMap(),
     );
 
-    //TODO convert to model and create tests
-    return response;
+    return BsfProcessAuthorizationStatisticModel.fromJson(response as Map);
   }
 }
