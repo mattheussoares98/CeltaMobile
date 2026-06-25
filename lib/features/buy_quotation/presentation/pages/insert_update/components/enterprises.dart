@@ -99,12 +99,10 @@ class Enterprises extends ConsumerWidget {
               itemCount: filteredEnterprises.length + 1,
               itemBuilder: (_, index) {
                 if (index == 0) {
-                  return Text(
+                  return DefaultText.title(
                     'Empresas'.hardcoded,
-                    style: context.theme.textTheme.titleSmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: context.theme.primaryColor,
-                    ),
+                    color: context.theme.primaryColor,
+                    fontStyle: FontStyle.italic,
                   );
                 }
                 final enterprise = filteredEnterprises[index - 1];

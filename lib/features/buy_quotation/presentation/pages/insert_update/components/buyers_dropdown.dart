@@ -49,7 +49,7 @@ class BuyersDropdown extends ConsumerWidget {
                   (e) => DropdownMenuItem(
                     key: ValueKey('buyer_item_${e.Code}'),
                     value: e,
-                    child: Center(child: Text(e.Name)),
+                    child: DefaultText(e.Name),
                   ),
                 )
                 .toList(),

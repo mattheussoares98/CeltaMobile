@@ -15,9 +15,12 @@ class QuotationsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Cotações'.hardcoded),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: 'Cotações'.hardcoded,
+        showSelectedEnterprise: true,
         actions: [
           ReloadIconButton(
             provider: buyQuotationsStateControllerProvider(enterpriseCode),

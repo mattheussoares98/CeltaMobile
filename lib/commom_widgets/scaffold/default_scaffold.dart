@@ -27,6 +27,8 @@ class BaseScaffold extends StatelessWidget {
     this.bottomNavigationIndex,
     this.onBottomNavigationTap,
     this.drawer,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
   });
 
   final bool showAnnotatedRegion;
@@ -47,6 +49,8 @@ class BaseScaffold extends StatelessWidget {
   final int? bottomNavigationIndex;
   final ValueChanged<int>? onBottomNavigationTap;
   final Widget? drawer;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +206,21 @@ class _BaseScaffold extends StatelessWidget {
         );
       }
 
+      if (params.floatingActionButton != null) {
+        scaffold = Stack(
+          children: [
+            scaffold,
+            Positioned(
+              right: 16.0,
+              bottom: bottomNavigationWidget != null
+                  ? 49.0 + 16.0 + MediaQuery.paddingOf(context).bottom
+                  : 16.0 + MediaQuery.paddingOf(context).bottom,
+              child: params.floatingActionButton!,
+            ),
+          ],
+        );
+      }
+
       scaffold = Material(color: Colors.transparent, child: scaffold);
     } else {
       scaffold = Scaffold(
@@ -210,6 +229,8 @@ class _BaseScaffold extends StatelessWidget {
         body: SafeArea(child: newChild),
         bottomNavigationBar: bottomNavigationWidget,
         drawer: params.drawer,
+        floatingActionButton: params.floatingActionButton,
+        floatingActionButtonLocation: params.floatingActionButtonLocation,
       );
     }
 

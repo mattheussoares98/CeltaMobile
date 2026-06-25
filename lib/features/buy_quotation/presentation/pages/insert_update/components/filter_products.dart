@@ -58,13 +58,11 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                     final hasFiltered =
                         filteredProducts.length != totalProductsLength;
 
-                    return Text(
+                    return DefaultText.title(
                       'Produtos (${filteredProducts.length}${hasFiltered ? ' de $totalProductsLength' : ''})'
                           .hardcoded,
-                      style: context.theme.textTheme.titleSmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: context.theme.primaryColor,
-                      ),
+                      color: context.theme.primaryColor,
+                      fontStyle: FontStyle.italic,
                     );
                   },
                 ),

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -22,12 +23,11 @@ class QuantityByEnterprises extends ConsumerWidget {
           return Row(
             children: [
               Expanded(
-                child: Text(
+                child: DefaultText.title(
                   "(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}",
-                  style: context.theme.textTheme.titleSmall,
                 ),
               ),
-              Text((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),
+              DefaultText((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),
             ],
           );
         }),

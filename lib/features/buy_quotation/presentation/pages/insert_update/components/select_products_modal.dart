@@ -148,12 +148,10 @@ class _ProductItem extends ConsumerWidget {
           showInfoButton: false,
           onTap: isIOS ? null : toggleSelection,
           clickableBottom: alreadyInBuyQuotation
-              ? Text(
+              ? DefaultText.title(
                   'Esse produto já foi inserido!'.hardcoded,
-                  style: context.theme.textTheme.titleSmall?.copyWith(
-                    color: context.theme.primaryColor,
-                    fontStyle: FontStyle.italic,
-                  ),
+                  color: context.theme.primaryColor,
+                  fontStyle: FontStyle.italic,
                 )
               : null,
           rightWidget: ValueListenableBuilder<Map<String, ProductEntity>>(
