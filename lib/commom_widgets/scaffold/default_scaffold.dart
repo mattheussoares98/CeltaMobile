@@ -1,9 +1,9 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../commom_widgets.dart';
 
@@ -85,7 +85,7 @@ class _BaseScaffold extends StatelessWidget {
 
     if (params.onRefresh != null &&
         (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
-      if (finalAppBar is BaseAppBar) {
+      if (finalAppBar is DefaultAppBar) {
         final refreshAction = IconButton(
           onPressed: params.onRefresh,
           icon: const PlatformIcon(

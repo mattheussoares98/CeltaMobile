@@ -1,6 +1,5 @@
 export './alert_dialogs.dart';
 export './async_value_widget.dart';
-export './default_app_bar_title.dart';
 export './default_bottom_navigation_bar.dart';
 export './default_check_box.dart';
 export './default_choice_chip.dart';

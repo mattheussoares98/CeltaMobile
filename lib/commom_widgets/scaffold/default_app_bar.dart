@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class BaseAppBar extends StatelessWidget {
-  const BaseAppBar({
+class DefaultAppBar extends StatelessWidget {
+  const DefaultAppBar({
     super.key,
     this.showLeading = true,
     this.leading,
@@ -14,6 +14,7 @@ class BaseAppBar extends StatelessWidget {
     this.titleStyle,
     this.centerTitle = false,
     this.actions,
+    this.showSelectedEnterprise = false,
   });
   final bool showLeading;
   final Widget? leading;
@@ -22,8 +23,9 @@ class BaseAppBar extends StatelessWidget {
   final TextStyle? titleStyle;
   final bool centerTitle;
   final List<Widget>? actions;
+  final bool showSelectedEnterprise;
 
-  BaseAppBar copyWith({
+  DefaultAppBar copyWith({
     bool? showLeading,
     Widget? leading,
     String? title,
@@ -31,8 +33,9 @@ class BaseAppBar extends StatelessWidget {
     TextStyle? titleStyle,
     bool? centerTitle,
     List<Widget>? actions,
+    bool? showSelectedEnterprise,
   }) {
-    return BaseAppBar(
+    return DefaultAppBar(
       key: key,
       showLeading: showLeading ?? this.showLeading,
       leading: leading ?? this.leading,
@@ -41,6 +44,8 @@ class BaseAppBar extends StatelessWidget {
       titleStyle: titleStyle ?? this.titleStyle,
       centerTitle: centerTitle ?? this.centerTitle,
       actions: actions ?? this.actions,
+      showSelectedEnterprise:
+          showSelectedEnterprise ?? this.showSelectedEnterprise,
     );
   }
 
@@ -49,7 +54,7 @@ class BaseAppBar extends StatelessWidget {
     // AppBar padding
     final double horizontalPadding = ScreenUtil.I.horizontalSpace;
     // AppBar leading height and width
-    const double leadingSize = 25;
+    const double leadingSize = 40;
     // The maximum width of the AppBar leading
     final double leadingWidth = showLeading
         ? horizontalPadding + leadingSize
@@ -75,11 +80,13 @@ class BaseAppBar extends StatelessWidget {
     }
 
     if (title.isNotEmpty) {
-      titleWidget = DefaultText.bodyLarge(
-        title,
-        color: context.colorScheme.onSurface,
-        fontWeight: titleFontWeight,
-      );
+      titleWidget = showSelectedEnterprise
+          ? DefaultAppBarTitle(title: title)
+          : DefaultText.bodyLarge(
+              title,
+              color: context.colorScheme.onSurface,
+              fontWeight: titleFontWeight,
+            );
     }
 
     if (context.isCupertino) {
