@@ -75,47 +75,46 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       });
     });
 
-    return Scaffold(
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-          child: ResponsiveScrollableWidget(
-            child: Form(
-              key: formKey,
-              child: AutofillGroup(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const CeltaImage(),
-                    EnterpriseField(
-                      enterpriseController: enterpriseController,
-                      userFocusNode: userFocusNode,
-                    ),
-                    gapH8,
-                    UserField(
-                      userController: userController,
-                      userFocusNode: userFocusNode,
-                      passwordFocusNode: passwordFocusNode,
-                    ),
-                    gapH8,
-                    PasswordField(
-                      passwordController: passwordController,
-                      passwordFocusNode: passwordFocusNode,
-                      onSubmit: onSubmit,
-                    ),
-                    gapH32,
-                    Consumer(
-                      builder: (context, ref, child) {
-                        return PrimaryButton(
-                          text: 'Entrar'.hardcoded,
-                          onPressed: onSubmit,
-                          isLoading: ref.watch(loginControllerProvider).isLoading,
-                        );
-                      },
-                    ),
-                  ],
-                ),
+        child: ResponsiveScrollableWidget(
+          child: Form(
+            key: formKey,
+            child: AutofillGroup(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const CeltaImage(),
+                  EnterpriseField(
+                    enterpriseController: enterpriseController,
+                    userFocusNode: userFocusNode,
+                  ),
+                  gapH8,
+                  UserField(
+                    userController: userController,
+                    userFocusNode: userFocusNode,
+                    passwordFocusNode: passwordFocusNode,
+                  ),
+                  gapH8,
+                  PasswordField(
+                    passwordController: passwordController,
+                    passwordFocusNode: passwordFocusNode,
+                    onSubmit: onSubmit,
+                  ),
+                  gapH32,
+                  Consumer(
+                    builder: (context, ref, child) {
+                      return PrimaryButton(
+                        text: 'Entrar'.hardcoded,
+                        onPressed: onSubmit,
+                        isLoading: ref.watch(loginControllerProvider).isLoading,
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
