@@ -14,30 +14,31 @@ class EnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Empresas'.hardcoded)),
-      body: Consumer(
-        builder: (context, ref, child) {
-          return AsyncValueWidget(
-            value: ref.watch((enterprisesStateControllerProvider())),
-            tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
-            data: (enterprises) {
-              return RefreshIndicator(
-                onRefresh: () async =>
-                    ref.invalidate(enterprisesStateControllerProvider),
-                child: ListView.builder(
-                  itemCount: enterprises.length,
-                  itemBuilder: (_, index) {
-                    final enterprise = enterprises[index];
-                    return _EnterpriseItem(
-                      key: ValueKey(enterprise.Code),
-                      nextRoute: nextRoute,
-                      enterprise: enterprise,
-                    );
-                  },
-                ),
-              );
-            },
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Empresas'.hardcoded,
+        showSelectedEnterprise: false,
+      ),
+      body: AsyncValueWidget(
+        value: ref.watch((enterprisesStateControllerProvider())),
+        tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
+        data: (enterprises) {
+          return RefreshIndicator(
+            onRefresh: () async =>
+                ref.invalidate(enterprisesStateControllerProvider),
+            child: ListView.builder(
+              itemCount: enterprises.length,
+              itemBuilder: (_, index) {
+                final enterprise = enterprises[index];
+                return _EnterpriseItem(
+                  key: ValueKey(enterprise.Code),
+                  nextRoute: nextRoute,
+                  enterprise: enterprise,
+                );
+              },
+            ),
           );
         },
       ),
