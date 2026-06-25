@@ -2,7 +2,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'commom_widgets.dart';
+import '../commom_widgets.dart';
 
 class DefaultBottomNavigationBarItem {
   const DefaultBottomNavigationBarItem({
