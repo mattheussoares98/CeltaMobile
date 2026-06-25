@@ -42,7 +42,7 @@ class BaseScaffold extends StatelessWidget {
 
   final bool usePadding;
   final Widget body;
-  final Widget? bottomNavigationBar;
+  final Widget? bottomNavigationBar; //TODO change to DefaultBottomNavigationBar
   final bool useBottomNavigationPadding;
   final bool observeScreenChanges;
   final List<DefaultBottomNavigationBarItem>? bottomNavigationItems;
