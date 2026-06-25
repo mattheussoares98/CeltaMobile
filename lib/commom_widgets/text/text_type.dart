@@ -3,9 +3,9 @@ enum TextType {
   bodySmall(12),
   bodyMedium(14),
   bodyLarge(16),
-  titleSmall(18),
-  titleMedium(20),
-  titleLarge(22),
+  titleSmall(14),
+  titleMedium(16),
+  titleLarge(18),
   headline(24),
   headlineLarge(32);
 
