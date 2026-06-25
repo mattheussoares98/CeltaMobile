@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
@@ -97,11 +98,9 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
                 children: enterprise.globalModules
                     .where((e) => e.isEnabled == true)
                     .map((e) {
-                      return Text(
+                      return DefaultText.bodySmall(
                         "${e.name}; ",
-                        style: context.theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.green,
-                        ),
+                        color: Colors.green,
                       );
                     })
                     .toList(),

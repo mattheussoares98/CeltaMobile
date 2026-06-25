@@ -109,15 +109,14 @@ class _ChangeModulesPermissionPageState
 
     final isGlobalChange = widget.subEnterpriseId == null;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(
-          child: Text(
-            isGlobalChange
-                ? 'Permissões globais'.hardcoded
-                : 'Permissões específicas'.hardcoded,
-          ),
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: isGlobalChange
+            ? 'Permissões globais'.hardcoded
+            : 'Permissões específicas'.hardcoded,
+        showSelectedEnterprise: false,
         actions: [
           if (enterpriseAsync.hasValue)
             SaveButton(
@@ -128,7 +127,6 @@ class _ChangeModulesPermissionPageState
               localHttpUrlController: localHttpUrlController,
               localHttpsUrlController: localHttpsUrlController,
               remoteHttpsUrlController: remoteHttpsUrlController,
-
               formKey: formKey,
               isGlobalChange: isGlobalChange,
             ),
@@ -141,7 +139,7 @@ class _ChangeModulesPermissionPageState
             value: enterpriseAsync,
             data: (enterprise) {
               if (enterprise == null) {
-                return Center(child: Text('Empresa não encontrada.'.hardcoded));
+                return Center(child: DefaultText('Empresa não encontrada.'.hardcoded));
               }
               final modulesToDisplay = _getModulesForScope(enterprise);
               final scopeName = getEnterpriseName(
@@ -153,9 +151,8 @@ class _ChangeModulesPermissionPageState
                 physics: const ClampingScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: Text(
+                    child: DefaultText.titleMedium(
                       scopeName,
-                      style: context.theme.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
                   ),

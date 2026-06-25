@@ -55,39 +55,41 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
     });
     final authManagerState = ref.watch(authManagerControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Login'.hardcoded)),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: ResponsiveScrollableWidget(
-          centralize: true,
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                EmailField(
-                  emailController: emailController,
-                  passwordFocusNode: passwordFocusNode,
-                  isLoading: authManagerState.isLoading,
-                ),
-                gapH16,
-                PasswordField(
-                  passwordFocusNode: passwordFocusNode,
-                  passwordController: passwordController,
-                  isLoading: authManagerState.isLoading,
-                  onSubmit: onSubmit,
-                ),
-                gapH32,
-                EnterButton(
-                  emailController: emailController,
-                  passwordController: passwordController,
-                  isLoading: authManagerState.isLoading,
-                  onSubmit: onSubmit,
-                ),
-              ],
-            ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Login'.hardcoded,
+        showSelectedEnterprise: false,
+      ),
+      body: ResponsiveScrollableWidget(
+        centralize: true,
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              EmailField(
+                emailController: emailController,
+                passwordFocusNode: passwordFocusNode,
+                isLoading: authManagerState.isLoading,
+              ),
+              gapH16,
+              PasswordField(
+                passwordFocusNode: passwordFocusNode,
+                passwordController: passwordController,
+                isLoading: authManagerState.isLoading,
+                onSubmit: onSubmit,
+              ),
+              gapH32,
+              EnterButton(
+                emailController: emailController,
+                passwordController: passwordController,
+                isLoading: authManagerState.isLoading,
+                onSubmit: onSubmit,
+              ),
+            ],
           ),
         ),
       ),

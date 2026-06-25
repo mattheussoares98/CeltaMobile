@@ -51,7 +51,7 @@ class _SelectPeriod extends ConsumerWidget {
 
     return Column(
       children: [
-        Text('Mês/ano'.hardcoded),
+        DefaultText('Mês/ano'.hardcoded),
         Row(
           children: [
             Flexible(
@@ -65,7 +65,7 @@ class _SelectPeriod extends ConsumerWidget {
                       12,
                       (index) => DropdownMenuItem(
                         value: index + 1,
-                        child: Center(child: Text('${index + 1}')),
+                        child: DefaultText('${index + 1}'),
                       ),
                     ),
                     selectedItem: ref.watch(
@@ -92,7 +92,7 @@ class _SelectPeriod extends ConsumerWidget {
                       2,
                       (index) => DropdownMenuItem(
                         value: now.year - index,
-                        child: Center(child: Text('${now.year - index}')),
+                        child: DefaultText('${now.year - index}'),
                       ),
                     ),
                     selectedItem: ref.watch(

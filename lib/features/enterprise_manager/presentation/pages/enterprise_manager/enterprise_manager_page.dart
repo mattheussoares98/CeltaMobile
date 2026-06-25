@@ -105,9 +105,12 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Gerenciar módulos'.hardcoded),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: 'Gerenciar módulos'.hardcoded,
+        showSelectedEnterprise: false,
         actions: const [LogoutButton()],
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
@@ -152,44 +155,34 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           );
         },
       ),
-      bottomNavigationBar: Consumer(
-        builder: (_, ref, _) {
-          return BottomNavigationBar(
-            onTap: ref
-                .read(pageIndexStateControllerProvider.notifier)
-                .updateIndex,
-            currentIndex: ref.watch(pageIndexStateControllerProvider),
-            items: [
-              BottomNavigationBarItem(
-                label: 'Empresas'.hardcoded,
-                icon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.list_bullet,
-                  materialIcon: Icons.list,
-                ),
-              ),
-              BottomNavigationBarItem(
-                label: 'Uso'.hardcoded,
-                icon: const PlatformIcon(
-                  cupertinoIcon: CupertinoIcons.chart_bar,
-                  materialIcon: Icons.bar_chart,
-                ),
-              ),
-            ],
-          );
-        },
+      bottomNavigationBar: DefaultBottomNavigationBar(
+        onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
+        currentIndex: ref.watch(pageIndexStateControllerProvider),
+        items: [
+          DefaultBottomNavigationBarItem(
+            label: 'Empresas'.hardcoded,
+            platformIcon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.list_bullet,
+              materialIcon: Icons.list,
+            ),
+          ),
+          DefaultBottomNavigationBarItem(
+            label: 'Uso'.hardcoded,
+            platformIcon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.chart_bar,
+              materialIcon: Icons.bar_chart,
+            ),
+          ),
+        ],
       ),
-      body: Consumer(
-        builder: (_, ref, _) {
-          return IndexedStack(
-            index: ref.watch(pageIndexStateControllerProvider),
-            children: [
-              EnterprisesPage(
-                filterEnterpriseNameController: filterEnterpriseNameController,
-              ),
-              ReportsPage(scrollController: _reportsScrollController),
-            ],
-          );
-        },
+      body: IndexedStack(
+        index: ref.watch(pageIndexStateControllerProvider),
+        children: [
+          EnterprisesPage(
+            filterEnterpriseNameController: filterEnterpriseNameController,
+          ),
+          ReportsPage(scrollController: _reportsScrollController),
+        ],
       ),
     );
   }

@@ -64,7 +64,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
       data: (usageReports) {
         if (usageReports?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(child: Text('Nenhum uso encontrado'.hardcoded)),
+            child: Center(child: DefaultText('Nenhum uso encontrado'.hardcoded)),
           );
         }
 
@@ -112,7 +112,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
 
         if (filteredEnterprises.isEmpty) {
           return SliverToBoxAdapter(
-            child: Center(child: Text('Nenhum resultado encontrado'.hardcoded)),
+            child: Center(child: DefaultText('Nenhum resultado encontrado'.hardcoded)),
           );
         }
 
@@ -130,14 +130,14 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
-                      child: Text(
+                      child: DefaultText(
                         '${filteredEnterprises.length} clientes'.hardcoded,
                       ),
                     ),
                     gapW8,
                     Flexible(
                       flex: 2,
-                      child: Text('$totalRequests requisições'.hardcoded),
+                      child: DefaultText('$totalRequests requisições'.hardcoded),
                     ),
                   ],
                 ),
@@ -156,9 +156,8 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    DefaultText.titleMedium(
                       '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
-                      style: context.theme.textTheme.titleMedium,
                     ),
                     _RequestsByTypeOrUser(
                       groupingByType: true,
@@ -204,13 +203,11 @@ class _RequestsByTypeOrUser extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        DefaultText.title(
           groupingByType
               ? 'Requisições por tipo'.hardcoded
               : 'Requisições por usuário'.hardcoded,
-          style: context.theme.textTheme.titleSmall?.copyWith(
-            color: context.theme.primaryColor,
-          ),
+          color: context.theme.primaryColor,
         ),
         gapH4,
         Wrap(
@@ -221,7 +218,7 @@ class _RequestsByTypeOrUser extends StatelessWidget {
                   right: Sizes.p4,
                   bottom: Sizes.p4,
                 ),
-                child: Chip(label: Text('${t.name}-${t.total}')),
+                child: Chip(label: DefaultText('${t.name}-${t.total}')),
               );
             }),
           ],

@@ -3,10 +3,10 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 enum ModulePermissionValue { inherit, trueValue, falseValue }
 
@@ -101,40 +101,34 @@ class _Module extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                module.name,
-                style: context.theme.textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-              gapH8,
-              CupertinoSlidingSegmentedControl<ModulePermissionValue>(
-                groupValue: groupValue,
-                onValueChanged: onValueChanged,
-                thumbColor: thumbColor,
-                children: <ModulePermissionValue, Widget>{
-                  ModulePermissionValue.trueValue: _Item(
-                    selected: value == true,
-                    message: 'Habilitado'.hardcoded,
-                  ),
-                  ModulePermissionValue.inherit: _Item(
-                    selected: value == null,
-                    message: 'Herdar'.hardcoded,
-                  ),
-                  ModulePermissionValue.falseValue: _Item(
-                    selected: value == false,
-                    message: 'Desabilitado'.hardcoded,
-                  ),
-                },
-              ),
-            ],
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DefaultText.titleMedium(module.name, textAlign: TextAlign.center),
+            gapH8,
+            CupertinoSlidingSegmentedControl<ModulePermissionValue>(
+              groupValue: groupValue,
+              onValueChanged: onValueChanged,
+              thumbColor: thumbColor,
+              children: <ModulePermissionValue, Widget>{
+                ModulePermissionValue.trueValue: _Item(
+                  selected: value == true,
+                  message: 'Habilitado'.hardcoded,
+                ),
+                ModulePermissionValue.inherit: _Item(
+                  selected: value == null,
+                  message: 'Herdar'.hardcoded,
+                ),
+                ModulePermissionValue.falseValue: _Item(
+                  selected: value == false,
+                  message: 'Desabilitado'.hardcoded,
+                ),
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -153,11 +147,9 @@ class _Item extends StatelessWidget {
         horizontal: Sizes.p4,
         vertical: Sizes.p8,
       ),
-      child: Text(
+      child: DefaultText(
         message,
-        style: TextStyle(
-          color: selected == true ? Colors.white : CupertinoColors.black,
-        ),
+        color: selected == true ? Colors.white : CupertinoColors.black,
       ),
     );
   }

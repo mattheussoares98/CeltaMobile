@@ -20,7 +20,7 @@ class EnterprisesPage extends ConsumerWidget {
       tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),
       data: (enterprises) {
         if (enterprises.isEmpty) {
-          return Center(child: Text('Nenhuma empresa encontrada.'.hardcoded));
+          return Center(child: DefaultText('Nenhuma empresa encontrada.'.hardcoded));
         }
         return EnterpriseItems(
           enterprises: enterprises,

@@ -68,7 +68,7 @@ class _ModuleItem extends StatelessWidget {
             inactiveThumbColor: Colors.redAccent,
             inactiveTrackColor: Colors.red.shade100,
             dense: true,
-            title: Text(module.name),
+            title: DefaultText(module.name),
             value: value ?? false, // Default global to false
             onChanged: onChanged,
           ),
