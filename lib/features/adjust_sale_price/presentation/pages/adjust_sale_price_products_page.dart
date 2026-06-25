@@ -12,21 +12,19 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(
-          title: 'Produtos (ajuste de preços)'.hardcoded,
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Produtos (ajuste de preços)'.hardcoded,
+        showSelectedEnterprise: true,
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: Column(
-          children: [
-            SearchProduct(),
-            gapH8,
-            Expanded(child: ProductsItems()),
-          ],
-        ),
+      body: const Column(
+        children: [
+          SearchProduct(),
+          gapH8,
+          Expanded(child: ProductsItems()),
+        ],
       ),
     );
   }

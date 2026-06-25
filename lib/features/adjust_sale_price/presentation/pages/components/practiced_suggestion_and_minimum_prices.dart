@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
@@ -121,9 +122,9 @@ class _SuggestionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (value == null || value == 0) {
-      return Text(
+      return DefaultText.title(
         emptyMessage,
-        style: context.theme.textTheme.titleSmall?.copyWith(color: Colors.red),
+        color: Colors.red,
         textAlign: TextAlign.start,
       );
     }

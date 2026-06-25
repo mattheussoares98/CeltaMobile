@@ -145,16 +145,14 @@ class _GetDateItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                  child: Text(
+                  child: DefaultText.bodyMedium(
                     currentSelectedDate == null && isEndDate
                         ? "Não definido".hardcoded
                         : DateFormat(
                             'dd/MM/yyyy HH:mm',
                           ).format(currentSelectedDate ?? now),
-                    style: context.theme.textTheme.bodyMedium?.copyWith(
-                      color: enabled ? null : context.theme.disabledColor,
-                    ),
                     textAlign: TextAlign.center,
+                    color: enabled ? null : context.theme.disabledColor,
                   ),
                 ),
                 if (isEndDate && currentSelectedDate != null)

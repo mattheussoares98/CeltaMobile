@@ -64,71 +64,64 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
     ref.observeLoading([confirmAdjustControllerProvider]);
 
-    return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 40,
-        titleSpacing: Sizes.p4,
-        title: DefaultAppBarTitle(
-          title: selectedProduct == null
-              ? ""
-              : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: selectedProduct == null
+            ? ""
+            : "(${selectedProduct.PLU}) ${selectedProduct.Name}",
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-          child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
-            slivers: [
-              if (selectedProduct != null)
-                PriceSchedules(
-                  enterpriseCode: widget.enterpriseCode,
-                  product: selectedProduct,
-                ),
-              OptimazedAsyncValueWidget(
-                isSliver: true,
-                provider: provider,
-                tryAgain: null,
-                child: SliverToBoxAdapter(
-                  child: ResponsiveScrollableWidget(
-                    child: Column(
-                      children: [
-                        _DefaultDivider(),
-                        SalesTypeWidget(plu: widget.plu),
-                        _DefaultDivider(),
-                        PricesTypesWidget(plu: widget.plu),
-                        _DefaultDivider(),
-                        ReplicationTypesWidget(plu: widget.plu),
-                        _DefaultDivider(),
-                        StartAndEndDates(plu: widget.plu),
-                        _DefaultDivider(),
-                        if (selectedProduct != null) ...[
-                          RepaintBoundary(
-                            child: InfoButton(
-                              ProductItemWidget(
-                                product: selectedProduct,
-                                routine: BsRoutine.adjustSalePrice,
-                              ),
-                            ),
-                          ),
-                          PracticedSuggestionAndMinimumPrices(
+      body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          if (selectedProduct != null)
+            PriceSchedules(
+              enterpriseCode: widget.enterpriseCode,
+              product: selectedProduct,
+            ),
+          OptimazedAsyncValueWidget(
+            isSliver: true,
+            provider: provider,
+            tryAgain: null,
+            child: SliverToBoxAdapter(
+              child: ResponsiveScrollableWidget(
+                child: Column(
+                  children: [
+                    _DefaultDivider(),
+                    SalesTypeWidget(plu: widget.plu),
+                    _DefaultDivider(),
+                    PricesTypesWidget(plu: widget.plu),
+                    _DefaultDivider(),
+                    ReplicationTypesWidget(plu: widget.plu),
+                    _DefaultDivider(),
+                    StartAndEndDates(plu: widget.plu),
+                    _DefaultDivider(),
+                    if (selectedProduct != null) ...[
+                      RepaintBoundary(
+                        child: InfoButton(
+                          ProductItemWidget(
                             product: selectedProduct,
+                            routine: BsRoutine.adjustSalePrice,
                           ),
-                          _DefaultDivider(),
-                        ],
-                        PriceFieldAndConfirmButton(
-                          enterpriseCode: widget.enterpriseCode,
-                          plu: widget.plu,
                         ),
-                        gapH48,
-                      ],
+                      ),
+                      PracticedSuggestionAndMinimumPrices(
+                        product: selectedProduct,
+                      ),
+                      _DefaultDivider(),
+                    ],
+                    PriceFieldAndConfirmButton(
+                      enterpriseCode: widget.enterpriseCode,
+                      plu: widget.plu,
                     ),
-                  ),
+                    gapH48,
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -94,7 +94,7 @@ class _PriceTypeItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(child: Text(priceType.name)),
+            Flexible(child: DefaultText(priceType.name)),
             Radio(value: priceType),
           ],
         ),
