@@ -2,7 +2,8 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchCustomerField extends ConsumerStatefulWidget {
@@ -25,6 +26,20 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
 
   @override
   Widget build(BuildContext context) {
+    void onSubmit() async {
+      if (formKey.currentState?.validate() != true) {
+        return;
+      }
+
+      final succeeds = await ref
+          .read(searchedCustomersStateControllerProvider.notifier)
+          .loadCustomer(searchController.text);
+      if (succeeds) {
+        FocusManager.instance.primaryFocus?.unfocus();
+        searchController.clear();
+      }
+    }
+
     return Form(
       key: formKey,
       child: Consumer(
@@ -41,18 +56,14 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
                 ? 'Código personalizado'.hardcoded
                 : 'Nome|Cód|CPF/CNPJ',
             validator: FormValidators.compose([MinLengthValidator(3)]),
-            onFieldSubmitted: (value) async {
-              if (formKey.currentState?.validate() != true) {
-                return;
-              }
-
-              final succeeds = await ref
-                  .read(searchedCustomersStateControllerProvider.notifier)
-                  .loadCustomer(value);
-              if (succeeds) {
-                searchController.clear();
-              }
-            },
+            onFieldSubmitted: (_) => onSubmit(),
+            suffixIcon: IconButton(
+              icon: const PlatformIcon(
+                materialIcon: Icons.search,
+                cupertinoIcon: CupertinoIcons.search,
+              ),
+              onPressed: () => onSubmit(),
+            ),
           );
         },
       ),
