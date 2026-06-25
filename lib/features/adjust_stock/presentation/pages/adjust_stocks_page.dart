@@ -89,55 +89,55 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     ref.observeLoading([confirmAdjustStockControllerProvider]);
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Ajuste de estoque'.hardcoded),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Ajuste de estoque'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Form(
         key: formKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-          child: Column(
-            children: [
-              SearchProductField(enterpriseCode: widget.enterpriseCode),
-              gapH8,
-              if (isDesktop) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: JustificationsDropdown(
-                        enterpriseCode: widget.enterpriseCode,
-                      ),
-                    ),
-                    gapW8,
-                    Expanded(
-                      child: StocksDropdown(
-                        enterpriseCode: widget.enterpriseCode,
-                      ),
-                    ),
-                  ],
-                ),
-              ] else ...[
-                JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-                gapH8,
-                StocksDropdown(enterpriseCode: widget.enterpriseCode),
-              ],
-              gapH8,
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    ProductsItems(
-                      quantityFocusNode: quantityFocusNode,
-                      formKey: formKey,
+        child: Column(
+          children: [
+            SearchProductField(enterpriseCode: widget.enterpriseCode),
+            gapH8,
+            if (isDesktop) ...[
+              Row(
+                children: [
+                  Expanded(
+                    child: JustificationsDropdown(
                       enterpriseCode: widget.enterpriseCode,
-                      quantityController: quantityController,
                     ),
-                    gapSliverH48,
-                  ],
-                ),
+                  ),
+                  gapW8,
+                  Expanded(
+                    child: StocksDropdown(
+                      enterpriseCode: widget.enterpriseCode,
+                    ),
+                  ),
+                ],
               ),
+            ] else ...[
+              JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
+              gapH8,
+              StocksDropdown(enterpriseCode: widget.enterpriseCode),
             ],
-          ),
+            gapH8,
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  ProductsItems(
+                    quantityFocusNode: quantityFocusNode,
+                    formKey: formKey,
+                    enterpriseCode: widget.enterpriseCode,
+                    quantityController: quantityController,
+                  ),
+                  gapSliverH48,
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
