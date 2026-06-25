@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/researchs/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ResearchsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -15,14 +13,14 @@ class ResearchsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = researchsStateControllerProvider(enterpriseCode);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Pesquisas cadastradas'.hardcoded),
-        actions: [
-          ReloadIconButton(provider: provider),
-          gapW24,
-          InsertResearchButton(enterpriseCode: enterpriseCode),
-        ],
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      onRefresh: () async => ref.invalidate(provider),
+      appBar: DefaultAppBar(
+        title: 'Pesquisas cadastradas'.hardcoded,
+        showSelectedEnterprise: true,
+        actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],
       ),
       body: Consumer(
         builder: (context, ref, child) {

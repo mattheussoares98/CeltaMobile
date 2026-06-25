@@ -92,11 +92,10 @@ class _InsertUpdateResearchPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(
+              DefaultText.titleLarge(
                 widget.research == null
                     ? 'Inserindo pesquisa'.hardcoded
                     : 'Editando pesquisa'.hardcoded,
-                style: context.theme.textTheme.titleLarge,
               ),
               gapH32,
               DefaultTextFormField(

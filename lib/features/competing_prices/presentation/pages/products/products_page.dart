@@ -40,42 +40,39 @@ class ProductsPage extends ConsumerWidget {
 
     ref.observeLoading([updatePricesControllerProvider]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppBarTitle(widget: this),
-        toolbarHeight: researchName != null && concurrentName != null
-            ? 66
-            : null,
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        showSelectedEnterprise: false,
+        subtitle: AppBarTitle(widget: this),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: ResponsiveScrollableWidget(
-          isSliverPage: true,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: Filters(
-                  enterpriseCode: enterpriseCode,
-                  researchCode: researchCode,
-                  concurrentCode: concurrentCode,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: SearchProductsField(
-                  enterpriseCode: enterpriseCode,
-                  researchCode: researchCode,
-                  concurrentCode: concurrentCode,
-                ),
-              ),
-              gapSliverH8,
-              ProductsItems(
+      body: ResponsiveScrollableWidget(
+        isSliverPage: true,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Filters(
                 enterpriseCode: enterpriseCode,
                 researchCode: researchCode,
                 concurrentCode: concurrentCode,
               ),
-              gapSliverH48,
-            ],
-          ),
+            ),
+            SliverToBoxAdapter(
+              child: SearchProductsField(
+                enterpriseCode: enterpriseCode,
+                researchCode: researchCode,
+                concurrentCode: concurrentCode,
+              ),
+            ),
+            gapSliverH8,
+            ProductsItems(
+              enterpriseCode: enterpriseCode,
+              researchCode: researchCode,
+              concurrentCode: concurrentCode,
+            ),
+            gapSliverH48,
+          ],
         ),
       ),
     );
