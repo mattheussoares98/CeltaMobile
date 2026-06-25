@@ -64,7 +64,7 @@ class _TelephoneItem extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: Text('(${telephone.AreaCode}) ${telephone.PhoneNumber}'),
+                child: DefaultText('(${telephone.AreaCode}) ${telephone.PhoneNumber}'),
               ),
               IconButton(
                 onPressed: () {

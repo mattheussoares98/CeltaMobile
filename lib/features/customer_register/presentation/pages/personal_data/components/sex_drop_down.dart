@@ -34,7 +34,7 @@ class SexDropDown extends ConsumerWidget {
           .map(
             (e) => DropdownMenuItem(
               value: e,
-              child: Center(child: Text(e.name)),
+              child: DefaultText(e.name),
             ),
           )
           .toList(),

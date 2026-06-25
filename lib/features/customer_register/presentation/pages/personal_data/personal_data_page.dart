@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class PersonalDataPage extends ConsumerStatefulWidget {
   const PersonalDataPage({super.key});
@@ -127,68 +126,68 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
 
     final customer = ref.watch(customerStateControllerProvider).value;
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Dados pessoais'.hardcoded)),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: ResponsiveScrollableWidget(
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                CpfCnpjField(
-                  cpfCnpjController: cpfCnpjController,
-                  nameFocusNode: nameFocusNode,
-                  cpfCnpjFocusNode: cpfCnpjFocusNode,
-                ),
-                if (customer != null) ...[
-                  if (cpfCnpjController.text.length == 14) ...[
-                    gapH8,
-                    InscriptionField(
-                      inscriptionController: inscriptionController,
-                      inscriptionFocusNode: inscriptionFocusNode,
-                      nameFocusNode: nameFocusNode,
-                    ),
-                  ],
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Dados pessoais'.hardcoded,
+        showSelectedEnterprise: false,
+      ),
+      body: ResponsiveScrollableWidget(
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              CpfCnpjField(
+                cpfCnpjController: cpfCnpjController,
+                nameFocusNode: nameFocusNode,
+                cpfCnpjFocusNode: cpfCnpjFocusNode,
+              ),
+              if (customer != null) ...[
+                if (cpfCnpjController.text.length == 14) ...[
                   gapH8,
-                  NameField(
-                    nameController: nameController,
+                  InscriptionField(
+                    inscriptionController: inscriptionController,
+                    inscriptionFocusNode: inscriptionFocusNode,
                     nameFocusNode: nameFocusNode,
-                    reducedNameFocusNode: reducedNameFocusNode,
                   ),
+                ],
+                gapH8,
+                NameField(
+                  nameController: nameController,
+                  nameFocusNode: nameFocusNode,
+                  reducedNameFocusNode: reducedNameFocusNode,
+                ),
+                gapH8,
+                ReducedNameField(
+                  reducedNameController: reducedNameController,
+                  reducedNameFocusNode: reducedNameFocusNode,
+                  passwordFocusNode: passwordFocusNode,
+                ),
+                gapH8,
+                BirthDateField(
+                  birthDateController: birthDateController,
+                  birthDateFocusNode: birthDateFocusNode,
+                ),
+                gapH8,
+                PasswordField(
+                  passwordController: passwordController,
+                  passwordFocusNode: passwordFocusNode,
+                  passwordConfirmationFocusNode: passwordConfirmationFocusNode,
+                ),
+                gapH8,
+                PasswordConfirmationField(
+                  passwordController: passwordController,
+                  passwordConfirmationController:
+                      passwordConfirmationController,
+                  passwordConfirmationFocusNode: passwordConfirmationFocusNode,
+                ),
+                if (cpfCnpjController.text.length == 11) ...[
                   gapH8,
-                  ReducedNameField(
-                    reducedNameController: reducedNameController,
-                    reducedNameFocusNode: reducedNameFocusNode,
-                    passwordFocusNode: passwordFocusNode,
-                  ),
-                  gapH8,
-                  BirthDateField(
-                    birthDateController: birthDateController,
-                    birthDateFocusNode: birthDateFocusNode,
-                  ),
-                  gapH8,
-                  PasswordField(
-                    passwordController: passwordController,
-                    passwordFocusNode: passwordFocusNode,
-                    passwordConfirmationFocusNode:
-                        passwordConfirmationFocusNode,
-                  ),
-                  gapH8,
-                  PasswordConfirmationField(
-                    passwordController: passwordController,
-                    passwordConfirmationController:
-                        passwordConfirmationController,
-                    passwordConfirmationFocusNode:
-                        passwordConfirmationFocusNode,
-                  ),
-                  if (cpfCnpjController.text.length == 11) ...[
-                    gapH8,
-                    const SexDropDown(),
-                  ],
+                  const SexDropDown(),
                 ],
               ],
-            ),
+            ],
           ),
         ),
       ),

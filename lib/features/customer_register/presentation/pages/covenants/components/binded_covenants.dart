@@ -64,9 +64,8 @@ class _CovenantItem extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
+                  DefaultText.titleMedium(
                     covenant.covenant?.Name ?? '',
-                    style: context.theme.textTheme.titleMedium,
                   ),
                   TitleAndSubTitle(
                     title: 'Código '.hardcoded,

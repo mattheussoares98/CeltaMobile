@@ -1,14 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/covenants/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CovenantsPage extends ConsumerStatefulWidget {
   const CovenantsPage({super.key});
@@ -88,8 +86,13 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
     );
     final covenantsAsync = ref.watch(covenantsStateControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text('Convênios'.hardcoded)),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Convênios'.hardcoded,
+        showSelectedEnterprise: false,
+      ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
@@ -98,27 +101,24 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
             data: (covenants) {
               return Form(
                 key: formKey,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-                  child: ResponsiveScrollableWidget(
-                    isSliverPage: true,
-                    child: CustomScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      slivers: [
-                        NotBindedCovenants(
-                          covenants: covenants,
-                          changeSelectedIndex: changeSelectedIndex,
-                          selectedIndex: selectedIndex,
-                          bindCovenant: bindCovenant,
-                          limitController: limitController,
-                          limitFocusNode: limitFocusNode,
-                        ),
-                        if (customerCovenants != null &&
-                            customerCovenants.isNotEmpty) ...[
-                          const BindedCovenants(),
-                        ],
+                child: ResponsiveScrollableWidget(
+                  isSliverPage: true,
+                  child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    slivers: [
+                      NotBindedCovenants(
+                        covenants: covenants,
+                        changeSelectedIndex: changeSelectedIndex,
+                        selectedIndex: selectedIndex,
+                        bindCovenant: bindCovenant,
+                        limitController: limitController,
+                        limitFocusNode: limitFocusNode,
+                      ),
+                      if (customerCovenants != null &&
+                          customerCovenants.isNotEmpty) ...[
+                        const BindedCovenants(),
                       ],
-                    ),
+                    ],
                   ),
                 ),
               );

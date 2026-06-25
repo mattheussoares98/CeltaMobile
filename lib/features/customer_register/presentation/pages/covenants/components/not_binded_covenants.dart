@@ -108,9 +108,8 @@ class _CovenantItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
+                    DefaultText.titleMedium(
                       covenant.Nome_Convenio ?? '',
-                      style: context.theme.textTheme.titleMedium,
                     ),
                     TitleAndSubTitle(
                       title: 'CNPJ '.hardcoded,
