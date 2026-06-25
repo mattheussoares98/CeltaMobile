@@ -44,6 +44,11 @@ String parseErrorMessage(Object? error) {
   } else if (lowerMessage.contains('duplicate key value')) {
     return 'Essa ação está duplicando dados que não podem ser duplicados. \n$supabaseDetails'
         .hardcoded;
+  } else if (lowerMessage.contains(
+    "Closure: ([String?]) => HttpError from Function".toLowerCase(),
+  )) {
+    return 'O método não foi encontrado. Informe o suporte técnico que a API deve ser atualizada'
+        .hardcoded;
   }
   return message.formatBreakLines();
 }
