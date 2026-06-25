@@ -95,7 +95,9 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisSize: .min,
         crossAxisAlignment: crossAxisAlignment,
         children: [
-          if (title.isNotEmpty) ...[DefaultText.titleLarge(title)],
+          if (title.isNotEmpty) ...[
+            FittedBox(child: DefaultText.titleLarge(title)),
+          ],
           if (showSelectedEnterprise)
             const CorrespondentEnterpriseByEnterpriseCode(),
           if (subtitle != null)
