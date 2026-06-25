@@ -28,6 +28,8 @@ class SellerDropdown extends ConsumerWidget {
             .where((s) => s.Id == selectedSellerCode)
             .firstOrNull;
 
+        sellers.sort((a, b) => a.Name.compareTo(b.Name));
+
         return Row(
           children: [
             Expanded(
