@@ -1,3 +1,4 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
 
@@ -7,12 +8,10 @@ class DefaultSmallTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return DefaultText.title(
       title,
-      style: context.theme.textTheme.titleSmall?.copyWith(
-        fontStyle: FontStyle.italic,
-        color: context.theme.primaryColor,
-      ),
+      color: context.theme.primaryColor,
+      fontStyle: FontStyle.italic,
     );
   }
 }

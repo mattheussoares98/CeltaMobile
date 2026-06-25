@@ -37,42 +37,41 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
       n.showAlertDialogOnError(context);
     });
 
-    return Scaffold(
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
       floatingActionButton: RepaintBoundary(
         child: FloatingSaveButton(
           observationsController: observationsController,
           enterpriseCode: widget.enterpriseCode,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-        child: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: DefaultTextFormField(
-                controller: observationsController,
-                hintText: 'Observações'.hardcoded,
-                labelText: 'Observações'.hardcoded,
-                maxLines: 4,
-                maxLength: 500,
-              ),
+      body: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: DefaultTextFormField(
+              controller: observationsController,
+              hintText: 'Observações'.hardcoded,
+              labelText: 'Observações'.hardcoded,
+              maxLines: 4,
+              maxLength: 500,
             ),
-            SliverToBoxAdapter(
-              child: BuyersAndRequestsDropdown(
-                enabled: false,
-                enterpriseCode: widget.enterpriseCode,
-              ),
+          ),
+          SliverToBoxAdapter(
+            child: BuyersAndRequestsDropdown(
+              enabled: false,
+              enterpriseCode: widget.enterpriseCode,
             ),
-            gapSliverH8,
-            SelectedSupplier(enterpriseCode: widget.enterpriseCode),
-            SelectedEnterprisesQuantity(enterpriseCode: widget.enterpriseCode),
-            SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
-            InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
-            InformedProducts(enterpriseCode: widget.enterpriseCode),
-            gapSliverH120,
-          ],
-        ),
+          ),
+          gapSliverH8,
+          SelectedSupplier(enterpriseCode: widget.enterpriseCode),
+          SelectedEnterprisesQuantity(enterpriseCode: widget.enterpriseCode),
+          SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
+          InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
+          InformedProducts(enterpriseCode: widget.enterpriseCode),
+          gapSliverH120,
+        ],
       ),
     );
   }

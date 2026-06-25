@@ -1,12 +1,11 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/pages.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BuyRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -47,29 +46,22 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       insertBuyRequestControllerProvider(widget.enterpriseCode),
     ]);
 
-    return Scaffold(
-      appBar: AppBar(
-        leadingWidth: Sizes.p32,
-        toolbarHeight: Sizes.p64,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Consumer(
-              builder: (_, ref, _) {
-                return DefaultAppBarTitle(
-                  title:
-                      appBarTitles[ref.watch(
-                        uiStateControllerProvider(
-                          widget.enterpriseCode,
-                        ).select((s) => s.value?.currentPageIndex ?? 0),
-                      )],
-                );
-              },
-            ),
-            LastSavedRequestsNumbers(enterpriseCode: widget.enterpriseCode),
-          ],
-        ),
+    final currentPageIndex = ref.watch(
+      uiStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.value?.currentPageIndex ?? 0),
+    );
+
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: appBarTitles[currentPageIndex],
+        showSelectedEnterprise: true,
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
+        subtitle: LastSavedRequestsNumbers(
+          enterpriseCode: widget.enterpriseCode,
+        ),
         actions: [
           if (MediaQuery.sizeOf(context).width > 200) ...[
             ClearRequestButton(
@@ -80,18 +72,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
           CartPriceIcon(enterpriseCode: widget.enterpriseCode),
         ],
       ),
-      body: Consumer(
-        builder: (_, ref, _) {
-          return IndexedStack(
-            index: ref.watch(
-              uiStateControllerProvider(
-                widget.enterpriseCode,
-              ).select((s) => s.value?.currentPageIndex ?? 0),
-            ),
-            children: pages,
-          );
-        },
-      ),
+      body: IndexedStack(index: currentPageIndex, children: pages),
       bottomNavigationBar: BottomNavBar(enterpriseCode: widget.enterpriseCode),
     );
   }

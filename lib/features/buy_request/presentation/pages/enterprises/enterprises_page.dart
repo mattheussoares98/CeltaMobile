@@ -89,7 +89,9 @@ class EnterprisesPage extends ConsumerWidget {
           );
     }
 
-    return Scaffold(
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(

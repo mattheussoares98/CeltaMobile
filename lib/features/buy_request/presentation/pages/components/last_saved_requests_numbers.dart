@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LastSavedRequestsNumbers extends ConsumerWidget {
   final int enterpriseCode;
@@ -28,14 +27,12 @@ class LastSavedRequestsNumbers extends ConsumerWidget {
       lastSavedRequestNumber,
     );
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Sizes.p8),
-      child: TitleAndSubTitle(
-        title:
-            'Último(s) pedido(s) ${screenWidth > Breakpoint.tablet ? "salvo(s)" : ""}'
-                .hardcoded,
-        subTitle: requestCodes.join('|'),
-      ),
+    return TitleAndSubTitle(
+      title:
+          'Último(s) pedido(s) ${screenWidth > Breakpoint.tablet ? "salvo(s)" : ""}'
+              .hardcoded,
+      subTitle: requestCodes.join('|'),
+      subTitleStyle: context.theme.textTheme.titleSmall,
     );
   }
 }

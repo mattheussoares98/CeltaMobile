@@ -53,27 +53,26 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-        child: CustomScrollView(
-          slivers: [
-            Consumer(
-              builder: (_, ref, _) {
-                return SliverToBoxAdapter(
-                  child: DefaultSearchProducts(
-                    searchProductKey: searchProductKey,
-                    searchProducts: searchProducts,
-                    searchValueController: searchProductController,
-                  ),
-                );
-              },
-            ),
-            gapSliverH8,
-            ProductsItems(enterpriseCode: widget.enterpriseCode),
-            gapSliverH48,
-          ],
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      body: CustomScrollView(
+        slivers: [
+          Consumer(
+            builder: (_, ref, _) {
+              return SliverToBoxAdapter(
+                child: DefaultSearchProducts(
+                  searchProductKey: searchProductKey,
+                  searchProducts: searchProducts,
+                  searchValueController: searchProductController,
+                ),
+              );
+            },
+          ),
+          gapSliverH8,
+          ProductsItems(enterpriseCode: widget.enterpriseCode),
+          gapSliverH48,
+        ],
       ),
     );
   }

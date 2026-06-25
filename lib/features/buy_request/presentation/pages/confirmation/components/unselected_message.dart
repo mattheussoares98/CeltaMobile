@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class UnselectedMessage extends StatelessWidget {
   final String title;
@@ -14,12 +13,10 @@ class UnselectedMessage extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: Text(
+            child: DefaultText.titleMedium(
               title,
-              style: context.theme.textTheme.titleMedium?.copyWith(
-                color: Colors.red,
-                fontStyle: FontStyle.italic,
-              ),
+              color: Colors.red,
+              fontStyle: FontStyle.italic,
             ),
           ),
           gapW12,

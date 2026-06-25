@@ -98,7 +98,7 @@ class _RequestDropdown extends ConsumerWidget {
                     (e) => DropdownMenuItem(
                       key: ValueKey(e),
                       value: e,
-                      child: Center(child: Text(e.name ?? '')),
+                      child: DefaultText(e.name ?? ''),
                     ),
                   )
                   .toList(),
