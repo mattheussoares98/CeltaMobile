@@ -34,6 +34,7 @@ class ValidatedBadge extends StatelessWidget {
       child: PlatformIcon(
         cupertinoIcon: platformIcon.cupertinoIcon,
         materialIcon: platformIcon.materialIcon,
+        size: platformIcon.size,
         color: isSelected
             ? context.theme.primaryColor
             : context.theme.disabledColor,

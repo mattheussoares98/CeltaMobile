@@ -15,6 +15,20 @@ class PlatformIcon extends StatelessWidget {
     this.size,
   });
 
+  PlatformIcon copyWith({
+    IconData? cupertinoIcon,
+    IconData? materialIcon,
+    Color? color,
+    double? size,
+  }) {
+    return PlatformIcon(
+      cupertinoIcon: cupertinoIcon ?? this.cupertinoIcon,
+      materialIcon: materialIcon ?? this.materialIcon,
+      color: color ?? this.color,
+      size: size ?? this.size,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Icon(
