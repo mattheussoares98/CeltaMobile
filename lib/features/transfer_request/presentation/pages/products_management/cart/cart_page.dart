@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/transfer_request/domain/entities/entit
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/cart/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,12 +21,10 @@ class CartPage extends ConsumerWidget {
 
     return productsInCartLength == 0
         ? Center(
-            child: Text(
+            child: DefaultText.titleMedium(
               'Nenhum produto adicionado ao carrinho'.hardcoded,
               textAlign: TextAlign.center,
-              style: context.theme.textTheme.titleMedium?.copyWith(
-                color: Colors.red,
-              ),
+              color: Colors.red,
             ),
           )
         : CustomScrollView(

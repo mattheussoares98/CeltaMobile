@@ -24,18 +24,23 @@ class DestinyEnterprisesPage extends ConsumerWidget {
       enterpriseOriginCode: enterpriseOriginCode,
       requestTypeCode: requestTypeCode,
     );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Empresa de destino'.hardcoded),
-        actions: [ReloadIconButton(provider: provider)],
+
+    Future<void> onRefresh() async {
+      ref.invalidate(provider);
+    }
+
+    return BaseScaffold(
+      isScrollable: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Empresa de destino'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(provider),
-            tryAgain: () {
-              ref.invalidate(provider);
-            },
+            tryAgain: onRefresh,
             data: (enterprises) {
               return EnterpriseItems(
                 enterprises: enterprises
@@ -72,9 +77,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
                     },
                   );
                 },
-                onRefresh: () {
-                  ref.invalidate(provider);
-                },
+                onRefresh: onRefresh,
               );
             },
           );

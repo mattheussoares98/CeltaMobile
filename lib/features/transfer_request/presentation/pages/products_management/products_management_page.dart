@@ -44,19 +44,18 @@ class ProductsManagementPage extends ConsumerWidget {
 
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
+    return BaseScaffold(
+      isScrollable: false,
+      appBar: DefaultAppBar(
+        showSelectedEnterprise: false,
+        titleWidget: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (screenWidth > 250) ...[
               Row(
                 children: [
-                  Text(
-                    'De '.hardcoded,
-                    style: context.theme.textTheme.bodySmall,
-                  ),
+                  DefaultText.bodySmall('De '.hardcoded),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseOriginCode,
@@ -66,10 +65,7 @@ class ProductsManagementPage extends ConsumerWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    'Para '.hardcoded,
-                    style: context.theme.textTheme.bodySmall,
-                  ),
+                  DefaultText.bodySmall('Para '.hardcoded),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseDestinyCode,
@@ -81,7 +77,6 @@ class ProductsManagementPage extends ConsumerWidget {
             const LastSavedNumber(),
           ],
         ),
-        titleSpacing: 0,
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         actions: [
           if (MediaQuery.sizeOf(context).width > 250)
@@ -125,7 +120,13 @@ class ProductsManagementPage extends ConsumerWidget {
             ).select((s) => s.value?.pageIndex ?? 0),
           );
 
-          return BottomNavigationBar(
+          final productsLength = ref.watch(
+            cartProductsStateControllerProvider(
+              draftKey,
+            ).select((s) => s.value?.length),
+          );
+
+          return DefaultBottomNavigationBar(
             currentIndex: pageIndex,
             onTap: ref
                 .read(
@@ -136,31 +137,21 @@ class ProductsManagementPage extends ConsumerWidget {
                 )
                 .updatePageIndex,
             items: [
-              BottomNavigationBarItem(
+              DefaultBottomNavigationBarItem(
                 label: 'Inserir'.hardcoded,
-                icon: const PlatformIcon(
+                platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.cart_badge_plus,
                   materialIcon: Icons.add_shopping_cart_outlined,
                 ),
               ),
-              BottomNavigationBarItem(
+              DefaultBottomNavigationBarItem(
                 label: 'Carrinho'.hardcoded,
-                icon: Consumer(
-                  builder: (_, ref, _) {
-                    final productsLength = ref.watch(
-                      cartProductsStateControllerProvider(
-                        draftKey,
-                      ).select((s) => s.value?.length),
-                    );
-                    return QuantityBadge(
-                      quantity: productsLength,
-                      platformIcon: const PlatformIcon(
-                        materialIcon: Icons.shopping_cart,
-                        cupertinoIcon: CupertinoIcons.shopping_cart,
-                      ),
-                      isSelected: pageIndex == 1,
-                    );
-                  },
+                badgeLabel: productsLength != null && productsLength > 0
+                    ? productsLength.toString()
+                    : null,
+                platformIcon: const PlatformIcon(
+                  materialIcon: Icons.shopping_cart,
+                  cupertinoIcon: CupertinoIcons.shopping_cart,
                 ),
               ),
             ],

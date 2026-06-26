@@ -14,22 +14,25 @@ class OriginEnterprisesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Empresa de origem'.hardcoded),
-        actions: [
-          ReloadIconButton(provider: enterprisesStateControllerProvider()),
-        ],
+    Future<void> onRefresh() async {
+      ref.invalidate(enterprisesStateControllerProvider());
+    }
+
+    return BaseScaffold(
+      isScrollable: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Empresa de origem'.hardcoded,
+        showSelectedEnterprise: false,
       ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(enterprisesStateControllerProvider()),
-            tryAgain: () {
-              ref.invalidate(enterprisesStateControllerProvider());
-            },
+            tryAgain: onRefresh,
             data: (enterprises) {
               return EnterpriseItems(
+                onRefresh: onRefresh,
                 enterprises: enterprises,
                 onTap: (enterprise) async {
                   bool moduleIsEnabled = await ref.read(
@@ -59,9 +62,6 @@ class OriginEnterprisesPage extends ConsumerWidget {
                       'enterpriseCode': enterprise.Code.toString(),
                     },
                   );
-                },
-                onRefresh: () {
-                  ref.invalidate(enterprisesStateControllerProvider());
                 },
               );
             },

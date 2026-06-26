@@ -1,10 +1,9 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EnterpriseItems extends ConsumerWidget {
   final List<EnterpriseEntity> enterprises;
@@ -19,19 +18,16 @@ class EnterpriseItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return RefreshIndicator(
-      onRefresh: () async => onRefresh(),
-      child: ResponsiveListFlow(
-        itemCount: enterprises.length,
-        itemBuilder: (_, index) {
-          final enterprise = enterprises[index];
-          return _EnterpriseItem(
-            key: ValueKey(enterprise.id),
-            enterprise: enterprise,
-            onTap: () => onTap(enterprise),
-          );
-        },
-      ),
+    return ResponsiveListFlow(
+      itemCount: enterprises.length,
+      itemBuilder: (_, index) {
+        final enterprise = enterprises[index];
+        return _EnterpriseItem(
+          key: ValueKey(enterprise.id),
+          enterprise: enterprise,
+          onTap: () => onTap(enterprise),
+        );
+      },
     );
   }
 }

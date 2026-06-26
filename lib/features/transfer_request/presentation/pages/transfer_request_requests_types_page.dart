@@ -33,34 +33,34 @@ class TransferRequestRequestsTypesPage extends ConsumerWidget {
       enterpriseCode,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
-        actions: [ReloadIconButton(provider: provider)],
+    Future<void> onRefresh() async {
+      ref.invalidate(provider);
+    }
+
+    //TODO use the core page
+    return BaseScaffold(
+      isScrollable: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Modelos de pedido'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(provider),
-            tryAgain: () {
-              ref.invalidate(provider);
-            },
+            tryAgain: onRefresh,
             data: (requests) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(provider);
+              return ResponsiveListFlow(
+                itemCount: requests?.length ?? 0,
+                itemBuilder: (_, index) {
+                  final request = requests![index];
+                  return _RequestTypeItem(
+                    key: ValueKey(request.code),
+                    request: request,
+                    onTap: () => onTap(request),
+                  );
                 },
-                child: ResponsiveListFlow(
-                  itemCount: requests?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final request = requests![index];
-                    return _RequestTypeItem(
-                      key: ValueKey(request.code),
-                      request: request,
-                      onTap: () => onTap(request),
-                    );
-                  },
-                ),
               );
             },
           );
