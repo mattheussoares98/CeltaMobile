@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class PrintButton extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -81,14 +80,11 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
+                DefaultText.headline(
                   isSaleDetailsPage
                       ? 'Imprimir pedido'.hardcoded
                       : 'Imprimir último pedido salvo na empresa'.hardcoded,
                   textAlign: TextAlign.center,
-                  style: context.theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
                 gapH16,
                 Consumer(
