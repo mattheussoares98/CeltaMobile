@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/transfer_between_stocks/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TransferBetweenStocksPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -41,11 +40,12 @@ class TransferBetweenStocksPage extends ConsumerWidget {
 
     ref.observeLoading([confirmAdjustStockControllerProvider]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(
-          title: "Transferência entre estoques".hardcoded,
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: "Transferência entre estoques".hardcoded,
+        showSelectedEnterprise: true,
         actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
       ),
       body: Consumer(
