@@ -62,18 +62,12 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
 
     ref.observeLoading([confirmAdjustStockControllerProvider]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(
-              child: DefaultAppBarTitle(
-                title: 'Substituição de estoque'.hardcoded,
-              ),
-            ),
-          ],
-        ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: 'Substituição de estoque'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Form(
         key: formKey,
