@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/address/soap/address_entity.dart';
+import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
 
 class InformedAddressess extends ConsumerWidget {
   const InformedAddressess({super.key});
@@ -55,54 +54,52 @@ class _AddressItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TitleAndSubTitle(
-                      title: 'CEP '.hardcoded,
-                      subTitle: address.Zip,
-                    ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Sizes.p8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TitleAndSubTitle(
+                    title: 'CEP '.hardcoded,
+                    subTitle: address.Zip,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      showAlertDialog(
-                        context: context,
-                        title: 'Excluir endereço?'.hardcoded,
-                        onOkPressed: removeAddress,
-                        cancelActionText: 'Não'.hardcoded,
-                        defaultActionText: 'Sim'.hardcoded,
-                      );
-                    },
-                    icon: const PlatformIcon(
-                      cupertinoIcon: CupertinoIcons.delete,
-                      materialIcon: Icons.delete,
-                      color: Colors.red,
-                    ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    showAlertDialog(
+                      context: context,
+                      title: 'Excluir endereço?'.hardcoded,
+                      onOkPressed: removeAddress,
+                      cancelActionText: 'Não'.hardcoded,
+                      defaultActionText: 'Sim'.hardcoded,
+                    );
+                  },
+                  icon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.delete,
+                    materialIcon: Icons.delete,
+                    color: Colors.red,
                   ),
-                ],
-              ),
-              DefaultText(
-                '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
-              ),
-              if (address.Complement != null && address.Complement!.isNotEmpty)
-                TitleAndSubTitle(
-                  title: 'Complemento '.hardcoded,
-                  subTitle: address.Complement,
                 ),
-              if (address.Reference != null && address.Reference!.isNotEmpty)
-                TitleAndSubTitle(
-                  title: 'Referência '.hardcoded,
-                  subTitle: address.Reference,
-                ),
-            ],
-          ),
+              ],
+            ),
+            DefaultText(
+              '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
+            ),
+            if (address.Complement != null && address.Complement!.isNotEmpty)
+              TitleAndSubTitle(
+                title: 'Complemento '.hardcoded,
+                subTitle: address.Complement,
+              ),
+            if (address.Reference != null && address.Reference!.isNotEmpty)
+              TitleAndSubTitle(
+                title: 'Referência '.hardcoded,
+                subTitle: address.Reference,
+              ),
+          ],
         ),
       ),
     );

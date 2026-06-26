@@ -9,32 +9,23 @@ class SavePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
-      isScrollable: false,
-      usePadding: true,
-      appBar: DefaultAppBar(
-        title: 'Salvar'.hardcoded,
-        showSelectedEnterprise: false,
-        actions: const [SaveButton()],
-      ),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: DefaultText.headline(
-                'Dados pessoais'.hardcoded,
-                textAlign: TextAlign.center,
-              ),
+    return ResponsiveScrollableWidget(
+      isSliverPage: true,
+      child: CustomScrollView(
+        physics: const ClampingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: DefaultText.headline(
+              'Dados pessoais'.hardcoded,
+              textAlign: TextAlign.center,
             ),
-            const SliverToBoxAdapter(child: PersonalDataInformations()),
-            const InformedAddressess(),
-            const InformedEmails(),
-            const InformedPhones(),
-            const BindedCovenants(),
-          ],
-        ),
+          ),
+          const SliverToBoxAdapter(child: PersonalDataInformations()),
+          const InformedAddressess(),
+          const InformedEmails(),
+          const InformedPhones(),
+          const BindedCovenants(),
+        ],
       ),
     );
   }

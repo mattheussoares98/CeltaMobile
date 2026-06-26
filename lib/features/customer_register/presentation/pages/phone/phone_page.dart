@@ -69,57 +69,49 @@ class _PhonePageState extends ConsumerState<PhonePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseScaffold(
-      isScrollable: false,
-      usePadding: true,
-      appBar: DefaultAppBar(
-        title: 'Telefones'.hardcoded,
-        showSelectedEnterprise: false,
-      ),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: Form(
-          key: phoneFormKey,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: DddField(
-                          dddController: dddController,
-                          phoneFocusNode: phoneFocusNode,
-                          dddFocusNode: dddFocusNode,
-                        ),
+    return ResponsiveScrollableWidget(
+      isSliverPage: true,
+      child: Form(
+        key: phoneFormKey,
+        child: Column(
+          children: [
+            Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: DddField(
+                        dddController: dddController,
+                        phoneFocusNode: phoneFocusNode,
+                        dddFocusNode: dddFocusNode,
                       ),
-                      gapW8,
-                      Expanded(
-                        flex: 3,
-                        child: PhoneField(
-                          phoneController: phoneController,
-                          phoneFocusNode: phoneFocusNode,
-                          addPhone: addPhone,
-                        ),
+                    ),
+                    gapW8,
+                    Expanded(
+                      flex: 3,
+                      child: PhoneField(
+                        phoneController: phoneController,
+                        phoneFocusNode: phoneFocusNode,
+                        addPhone: addPhone,
                       ),
-                    ],
-                  ),
-                  gapH32,
-                  PrimaryButton(
-                    text: 'Adicionar telefone'.hardcoded,
-                    onPressed: addPhone,
-                  ),
-                ],
-              ),
-              const Expanded(
-                child: CustomScrollView(
-                  physics: ClampingScrollPhysics(),
-                  slivers: [InformedPhones()],
+                    ),
+                  ],
                 ),
+                gapH32,
+                PrimaryButton(
+                  text: 'Adicionar telefone'.hardcoded,
+                  onPressed: addPhone,
+                ),
+              ],
+            ),
+            const Expanded(
+              child: CustomScrollView(
+                physics: ClampingScrollPhysics(),
+                slivers: [InformedPhones()],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

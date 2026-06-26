@@ -62,11 +62,27 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       const SavePage(),
     ];
 
+    final appBarsTitles = [
+      'Dados pessoais',
+      'Endereços',
+      'E-mails',
+      'Telefones',
+      'Convênios',
+      'Salvar',
+    ];
+
     final customer = ref.watch(customerStateControllerProvider).value;
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
+      appBar: Consumer(
+        builder: (context, ref, _) {
+          return DefaultAppBar(
+            title: appBarsTitles[ref.watch(pageIndexStateControllerProvider)],
+            showSelectedEnterprise: false,
+          );
+        },
+      ),
       onPopInvokedWithResult: () async {
         await updateCustomerInProvider(validateField: false);
         if (context.mounted) {
