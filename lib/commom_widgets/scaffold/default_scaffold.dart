@@ -89,13 +89,7 @@ class _BaseScaffold extends StatelessWidget {
     if (params.onRefresh != null &&
         (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
       if (finalAppBar is DefaultAppBar) {
-        final refreshAction = IconButton(
-          onPressed: params.onRefresh,
-          icon: const PlatformIcon(
-            materialIcon: Icons.refresh,
-            cupertinoIcon: CupertinoIcons.refresh,
-          ),
-        );
+        final refreshAction = ReloadIconButton(onRefresh: params.onRefresh);
         finalAppBar = finalAppBar.copyWith(
           actions: [
             ...?finalAppBar.actions,
