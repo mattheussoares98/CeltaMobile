@@ -18,14 +18,12 @@ class QuotationsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      onRefresh: () async => ref.invalidate(
+        buyQuotationsStateControllerProvider(enterpriseCode),
+      ),
       appBar: DefaultAppBar(
         title: 'Cotações'.hardcoded,
         showSelectedEnterprise: true,
-        actions: [
-          ReloadIconButton(
-            provider: buyQuotationsStateControllerProvider(enterpriseCode),
-          ),
-        ],
       ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),
       floatingActionButton: FloatingActionButton(
