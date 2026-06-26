@@ -9,6 +9,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showLeading = true,
     this.leading,
     this.title = '',
+    this.titleWidget,
     this.titleFontWeight,
     this.titleStyle,
     this.centerTitle = false,
@@ -20,6 +21,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLeading;
   final Widget? leading;
   final String title;
+  final Widget? titleWidget;
   final FontWeight? titleFontWeight;
   final TextStyle? titleStyle;
   final bool centerTitle;
@@ -32,6 +34,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     bool? showLeading,
     Widget? leading,
     String? title,
+    Widget? titleWidget,
     FontWeight? titleFontWeight,
     TextStyle? titleStyle,
     bool? centerTitle,
@@ -44,6 +47,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       showLeading: showLeading ?? this.showLeading,
       leading: leading ?? this.leading,
       title: title ?? this.title,
+      titleWidget: titleWidget ?? this.titleWidget,
       titleFontWeight: titleFontWeight ?? this.titleFontWeight,
       titleStyle: titleStyle ?? this.titleStyle,
       centerTitle: centerTitle ?? this.centerTitle,
@@ -87,17 +91,19 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
     }
 
-    if (title.isNotEmpty || showSelectedEnterprise || subtitle != null) {
+    if (title.isNotEmpty || titleWidget != null || showSelectedEnterprise || subtitle != null) {
       final centerTitle = !PlatformUtil.isAndroid;
       final crossAxisAlignment = centerTitle
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start;
 
       appBarTitleWidget = Column(
-        mainAxisSize: .min,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: crossAxisAlignment,
         children: [
-          if (title.isNotEmpty) ...[
+          if (titleWidget != null)
+            titleWidget!
+          else if (title.isNotEmpty) ...[
             FittedBox(child: DefaultText.titleLarge(title)),
           ],
           if (showSelectedEnterprise)
