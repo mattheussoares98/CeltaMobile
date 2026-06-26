@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/confirmation/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConfirmationPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -37,42 +36,31 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
       n.showAlertDialogOnError(context);
     });
 
-    return BaseScaffold(
-      isScrollable: false,
-      usePadding: true,
-      floatingActionButton: RepaintBoundary(
-        child: FloatingSaveButton(
-          observationsController: observationsController,
-          enterpriseCode: widget.enterpriseCode,
+    return CustomScrollView(
+      physics: const ClampingScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: DefaultTextFormField(
+            controller: observationsController,
+            hintText: 'Observações'.hardcoded,
+            labelText: 'Observações'.hardcoded,
+            maxLines: 4,
+            maxLength: 500,
+          ),
         ),
-      ),
-      body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-            child: DefaultTextFormField(
-              controller: observationsController,
-              hintText: 'Observações'.hardcoded,
-              labelText: 'Observações'.hardcoded,
-              maxLines: 4,
-              maxLength: 500,
-            ),
+        SliverToBoxAdapter(
+          child: BuyersAndRequestsDropdown(
+            enabled: false,
+            enterpriseCode: widget.enterpriseCode,
           ),
-          SliverToBoxAdapter(
-            child: BuyersAndRequestsDropdown(
-              enabled: false,
-              enterpriseCode: widget.enterpriseCode,
-            ),
-          ),
-          gapSliverH8,
-          SelectedSupplier(enterpriseCode: widget.enterpriseCode),
-          SelectedEnterprisesQuantity(enterpriseCode: widget.enterpriseCode),
-          SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
-          InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
-          InformedProducts(enterpriseCode: widget.enterpriseCode),
-          gapSliverH120,
-        ],
-      ),
+        ),
+        gapSliverH8,
+        SelectedSupplier(enterpriseCode: widget.enterpriseCode),
+        SelectedEnterprisesQuantity(enterpriseCode: widget.enterpriseCode),
+        SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
+        InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
+        InformedProducts(enterpriseCode: widget.enterpriseCode),
+      ],
     );
   }
 }

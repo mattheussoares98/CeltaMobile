@@ -7,6 +7,8 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'confirmation/components/components.dart';
+
 class BuyRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
   const BuyRequestPage({super.key, required this.enterpriseCode});
@@ -54,6 +56,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
     return BaseScaffold(
       isScrollable: false,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         title: appBarTitles[currentPageIndex],
         showSelectedEnterprise: true,
@@ -71,6 +74,12 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
           CartPriceIcon(enterpriseCode: widget.enterpriseCode),
         ],
       ),
+      floatingActionButton: currentPageIndex == 3
+          ? FloatingSaveButton(
+              observationsController: observationsController,
+              enterpriseCode: widget.enterpriseCode,
+            )
+          : null,
       body: IndexedStack(index: currentPageIndex, children: pages),
       bottomNavigationBar: BottomNavBar(enterpriseCode: widget.enterpriseCode),
     );
