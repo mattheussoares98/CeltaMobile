@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
@@ -94,44 +93,41 @@ class PendingProductsPage extends ConsumerWidget {
       });
     });
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Column(
-        children: [
-          Consumer(
-            builder: (_, ref, _) {
-              return DefaultSearchProducts(
-                searchProductKey: searchProductKey,
-                isLoading:
-                    ref.watch(
-                      expeditionConferenceControllerProvider(
-                        expeditionControlCode,
-                      ).select((state) => state.isLoading),
-                    ) ||
-                    ref.watch(
-                      searchProductsStateControllerProvider(
-                        searchProductKey,
-                      ).select((state) => state.isLoading),
-                    ) ||
-                    ref.watch(
-                      confirmConferenceControllerProvider.select(
-                        (state) => state.isLoading,
-                      ),
+    return Column(
+      children: [
+        Consumer(
+          builder: (_, ref, _) {
+            return DefaultSearchProducts(
+              searchProductKey: searchProductKey,
+              isLoading:
+                  ref.watch(
+                    expeditionConferenceControllerProvider(
+                      expeditionControlCode,
+                    ).select((state) => state.isLoading),
+                  ) ||
+                  ref.watch(
+                    searchProductsStateControllerProvider(
+                      searchProductKey,
+                    ).select((state) => state.isLoading),
+                  ) ||
+                  ref.watch(
+                    confirmConferenceControllerProvider.select(
+                      (state) => state.isLoading,
                     ),
-                focusNode: focusNode,
-                searchProducts: (exactProductCode) =>
-                    searchProducts(false, exactProductCode),
-                searchValueController: searchProductController,
-              );
-            },
+                  ),
+              focusNode: focusNode,
+              searchProducts: (exactProductCode) =>
+                  searchProducts(false, exactProductCode),
+              searchValueController: searchProductController,
+            );
+          },
+        ),
+        Expanded(
+          child: PendingProductsItems(
+            expeditionControlCode: expeditionControlCode,
           ),
-          Expanded(
-            child: PendingProductsItems(
-              expeditionControlCode: expeditionControlCode,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

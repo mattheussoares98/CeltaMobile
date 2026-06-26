@@ -136,9 +136,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       entryQuantityStateControllerProvider(widget.codigoInternoInvCont),
       (p, n) async {
         final products = await ref.read(
-          searchProductsStateControllerProvider(
-            searchProductKey,
-          ).future,
+          searchProductsStateControllerProvider(searchProductKey).future,
         );
 
         if (!context.mounted) return;
@@ -171,49 +169,42 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
       appBar: DefaultAppBar(
         title: 'Produtos'.hardcoded,
         showSelectedEnterprise: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-        child: Column(
-          children: [
-            Consumer(
-              builder: (_, ref, _) {
-                return DefaultSearchProducts(
-                  focusNode: searchProductsFocusNode,
-                  searchProducts: (exactProductCode) => _searchProducts(
-                    searchProductKey,
-                    false,
-                    exactProductCode,
-                  ),
-                  searchValueController: searchProductsController,
+      body: Column(
+        children: [
+          Consumer(
+            builder: (_, ref, _) {
+              return DefaultSearchProducts(
+                focusNode: searchProductsFocusNode,
+                searchProducts: (exactProductCode) =>
+                    _searchProducts(searchProductKey, false, exactProductCode),
+                searchValueController: searchProductsController,
+                searchProductKey: searchProductKey,
+              );
+            },
+          ),
+          InsertIndividuallySwitch(
+            codigoInternoInventario: widget.codigoInternoInventario,
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                ProductsItems(
+                  codigoInternoInventario: widget.codigoInternoInventario,
+                  codigoInternoInvCont: widget.codigoInternoInvCont,
+                  enterpriseCode: widget.enterpriseCode,
                   searchProductKey: searchProductKey,
-                );
-              },
+                  quantityFocusNode: quantityFocusNode,
+                  quantityController: quantityController,
+                ),
+                gapSliverH48,
+              ],
             ),
-            InsertIndividuallySwitch(
-              codigoInternoInventario: widget.codigoInternoInventario,
-            ),
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  ProductsItems(
-                    codigoInternoInventario: widget.codigoInternoInventario,
-                    codigoInternoInvCont: widget.codigoInternoInvCont,
-                    enterpriseCode: widget.enterpriseCode,
-                    searchProductKey: searchProductKey,
-                    quantityFocusNode: quantityFocusNode,
-                    quantityController: quantityController,
-                  ),
-                  gapSliverH48,
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

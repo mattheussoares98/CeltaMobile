@@ -86,7 +86,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
       onPopInvokedWithResult: () async {
         if (scannedProducts.isEmpty) {
           if (context.mounted) {
