@@ -1,15 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/providers/resource/resource.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Prices extends ConsumerWidget {
   const Prices({super.key, required this.widget});
@@ -31,10 +30,12 @@ class Prices extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
-                child: DefaultTitle(title: 'Preços praticados'.hardcoded),
+                child: DefaultText.headline('Preços praticados'.hardcoded),
               ),
+              gapW12,
               IconButton(
                 onPressed: () {
                   ref
@@ -99,7 +100,7 @@ class Prices extends ConsumerWidget {
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[
             gapH32,
-            DefaultTitle(title: 'Preços sugeridos'.hardcoded),
+            DefaultText.headline('Preços sugeridos'.hardcoded),
             gapH8,
             if (retailSuggestion > 0)
               TitleAndSubTitle(
@@ -124,7 +125,7 @@ class Prices extends ConsumerWidget {
               retailMinimum > 0 ||
               ecommerceMinimum > 0) ...[
             gapH32,
-            DefaultTitle(title: 'Preços mínimos'.hardcoded),
+            DefaultText.headline('Preços mínimos'.hardcoded),
             gapH8,
             if (retailMinimum > 0)
               TitleAndSubTitle(

@@ -26,7 +26,10 @@ class Addresses extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultTitle(title: 'Endereços'.hardcoded),
+            child: DefaultText.headline(
+              'Endereços'.hardcoded,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         SliverToBoxAdapter(

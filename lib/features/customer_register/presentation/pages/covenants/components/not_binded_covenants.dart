@@ -53,7 +53,10 @@ class NotBindedCovenants extends ConsumerWidget {
       itemCount: notBindedCovenants.length + 1,
       itemBuilder: (_, index) {
         if (index == 0) {
-          return DefaultTitle(title: 'Convênios sem vínculo'.hardcoded);
+          return DefaultText.headline(
+            'Convênios sem vínculo'.hardcoded,
+            textAlign: TextAlign.center,
+          );
         }
 
         final covenant = notBindedCovenants[index - 1];
@@ -108,9 +111,7 @@ class _CovenantItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    DefaultText.titleMedium(
-                      covenant.Nome_Convenio ?? '',
-                    ),
+                    DefaultText.titleMedium(covenant.Nome_Convenio ?? ''),
                     TitleAndSubTitle(
                       title: 'CNPJ '.hardcoded,
                       subTitle: covenant.Cnpj_Convenio,

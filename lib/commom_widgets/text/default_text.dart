@@ -142,12 +142,14 @@ class DefaultText extends StatelessWidget {
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
+    TextAlign? textAlign,
   }) => DefaultText(
     text,
     color: color,
     textType: TextType.headline,
     fontWeight: fontWeight ?? FontWeight.w600,
     fontStyle: fontStyle,
+    textAlign: textAlign,
   );
 
   factory DefaultText.headlineLarge(

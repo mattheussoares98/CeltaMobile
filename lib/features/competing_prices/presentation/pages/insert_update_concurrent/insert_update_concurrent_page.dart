@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class InsertUpdateConcurrentPage extends ConsumerStatefulWidget {
   final ConcurrentEntity? concurrentUpdating;
@@ -93,10 +92,11 @@ class _UpdateConcurrentPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              DefaultTitle(
-                title: widget.concurrentUpdating == null
+              DefaultText.headline(
+                widget.concurrentUpdating == null
                     ? 'Inserindo concorrente'.hardcoded
                     : 'Alterando concorrente'.hardcoded,
+                textAlign: TextAlign.center,
               ),
               gapH16,
               NameField(
@@ -117,7 +117,10 @@ class _UpdateConcurrentPageState
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: Column(
                     children: [
-                      DefaultTitle(title: 'Inserir/alterar endereço'.hardcoded),
+                      DefaultText.headline(
+                        'Inserir/alterar endereço'.hardcoded,
+                        textAlign: TextAlign.center,
+                      ),
                       gapH8,
                       AddressForm(
                         module: Modules.competingPrices,

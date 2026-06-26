@@ -23,7 +23,10 @@ class SavePage extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(
-              child: DefaultTitle(title: 'Dados pessoais'.hardcoded),
+              child: DefaultText.headline(
+                'Dados pessoais'.hardcoded,
+                textAlign: TextAlign.center,
+              ),
             ),
             const SliverToBoxAdapter(child: PersonalDataInformations()),
             const InformedAddressess(),

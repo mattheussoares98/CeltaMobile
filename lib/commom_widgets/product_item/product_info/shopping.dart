@@ -26,7 +26,10 @@ class Shopping extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultTitle(title: 'Últimas compras'.hardcoded),
+            child: DefaultText.headline(
+              'Últimas compras'.hardcoded,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         SliverList.builder(

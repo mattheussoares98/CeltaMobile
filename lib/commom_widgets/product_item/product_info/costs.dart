@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class Costs extends ConsumerWidget {
   const Costs({super.key, required this.widget});
@@ -17,11 +16,18 @@ class Costs extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ResponsiveScrollableWidget(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            mainAxisAlignment: .center,
             children: [
-              Flexible(child: DefaultTitle(title: 'Custos'.hardcoded)),
+              Flexible(
+                child: DefaultText.headline(
+                  'Custos'.hardcoded,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              gapW12,
               IconButton(
                 onPressed: () {
                   ref
