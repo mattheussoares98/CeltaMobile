@@ -1,4 +1,3 @@
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,6 @@ class DefaultBottomNavigationBarItem {
   final bool showSuccessBadge;
 }
 
-//TODO check in all pages that is using it if really need a bottom padding page
 class DefaultBottomNavigationBar extends StatelessWidget {
   const DefaultBottomNavigationBar({
     super.key,
@@ -46,7 +44,7 @@ class DefaultBottomNavigationBar extends StatelessWidget {
     List<BottomNavigationBarItem> localItems = items.map((e) {
       final isSelected = items.indexOf(e) == currentIndex;
 
-      Widget icon = e.platformIcon.copyWith(size: isSelected ? 26.0 : 22.0);
+      Widget icon = e.platformIcon;
 
       if (e.isValid != null) {
         icon = ValidatedBadge(
@@ -60,46 +58,34 @@ class DefaultBottomNavigationBar extends StatelessWidget {
       if (e.badgeLabel != null) {
         icon = Badge(
           label: DefaultText(e.badgeLabel!),
-          offset: const Offset(8, -6),
+          offset: const Offset(10, -2),
+          alignment: Alignment.topRight,
           child: icon,
         );
       }
 
       if (isCupertino && e.label != null) {
-        icon = SizedBox.expand(
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => onTap(items.indexOf(e)),
-              splashColor:
-                  theme.selectedItemColor?.withAlpha(30) ??
-                  Colors.green.withAlpha(30),
-              highlightColor:
-                  theme.selectedItemColor?.withAlpha(15) ??
-                  Colors.green.withAlpha(15),
-              borderRadius: BorderRadius.circular(Sizes.p8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Flexible(child: icon),
-                  if (isSelected)
-                    FittedBox(
-                      child: DefaultText.title(
-                        e.label!,
-                        color: theme.selectedItemColor,
-                      ),
-                    )
-                  else
-                    DefaultText.bodySmall(
-                      e.label!,
-                      color:
-                          theme.unselectedItemColor ?? const Color(0xFF64748B),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                ],
-              ),
-            ),
+        icon = GestureDetector(
+          onTap: () => onTap(items.indexOf(e)),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Flexible(child: icon),
+              if (isSelected)
+                FittedBox(
+                  child: DefaultText.title(
+                    e.label!,
+                    color: theme.selectedItemColor,
+                  ),
+                )
+              else
+                DefaultText.bodySmall(
+                  e.label!,
+                  color: theme.unselectedItemColor ?? const Color(0xFF64748B),
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
           ),
         );
       }
@@ -115,8 +101,10 @@ class DefaultBottomNavigationBar extends StatelessWidget {
 
     final Widget bottomBar;
 
+    final buttonNavigationsHeight = MediaQuery.viewPaddingOf(context).bottom;
+
     final height = items.any((e) => e.badgeLabel != null || e.isValid != null)
-        ? 62.0
+        ? 64 + buttonNavigationsHeight
         : 54.0;
 
     if (isCupertino) {
@@ -145,13 +133,12 @@ class DefaultBottomNavigationBar extends StatelessWidget {
         ),
       );
     }
-
     return Stack(
       clipBehavior: Clip.none,
       children: [
         bottomBar,
         Positioned(
-          top: -8.0,
+          top: -2,
           left: 0,
           right: 0,
           height: 8.0,
