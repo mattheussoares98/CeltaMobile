@@ -231,7 +231,9 @@ class _BaseScaffold extends StatelessWidget {
         resizeToAvoidBottomInset: params.resizeToAvoidBottomInset,
         appBar: appBarWidget,
         body: SafeArea(child: newChild),
-        bottomNavigationBar: bottomNavigationWidget,
+        bottomNavigationBar: bottomNavigationWidget != null
+            ? SafeArea(top: false, child: bottomNavigationWidget)
+            : null,
         drawer: params.drawer,
         floatingActionButton: params.floatingActionButton,
         floatingActionButtonLocation: params.floatingActionButtonLocation,
