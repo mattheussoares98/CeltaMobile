@@ -62,28 +62,23 @@ class DefaultBottomNavigationBar extends StatelessWidget {
       }
 
       if (isCupertino && e.label != null) {
-        icon = Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => onTap(items.indexOf(e)),
-            splashColor:
-                theme.selectedItemColor?.withAlpha(30) ??
-                Colors.green.withAlpha(30),
-            highlightColor:
-                theme.selectedItemColor?.withAlpha(15) ??
-                Colors.green.withAlpha(15),
-            borderRadius: BorderRadius.circular(Sizes.p8),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.p4,
-                horizontal: Sizes.p8,
-              ),
+        icon = SizedBox.expand(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => onTap(items.indexOf(e)),
+              splashColor:
+                  theme.selectedItemColor?.withAlpha(30) ??
+                  Colors.green.withAlpha(30),
+              highlightColor:
+                  theme.selectedItemColor?.withAlpha(15) ??
+                  Colors.green.withAlpha(15),
+              borderRadius: BorderRadius.circular(Sizes.p8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Flexible(child: icon),
-                  const SizedBox(height: Sizes.p4),
                   if (isSelected)
                     FittedBox(
                       child: DefaultText.title(
@@ -114,8 +109,14 @@ class DefaultBottomNavigationBar extends StatelessWidget {
 
     // Premium separation border
 
+    final Widget bottomBar;
+
     if (isCupertino) {
-      return CupertinoTabBar(
+      final increaseHeight = items.any(
+        (e) => e.badgeLabel != null || e.isValid != null,
+      );
+
+      bottomBar = CupertinoTabBar(
         currentIndex: currentIndex,
         onTap: onTap,
         activeColor: theme.selectedItemColor,
@@ -123,16 +124,38 @@ class DefaultBottomNavigationBar extends StatelessWidget {
         backgroundColor: theme.backgroundColor,
         border: border,
         items: localItems,
-        height: 54.0,
+        height: increaseHeight ? 62 : 54,
+      );
+    } else {
+      bottomBar = BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: onTap,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        items: localItems,
       );
     }
 
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      items: localItems,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        bottomBar,
+        Positioned(
+          top: -8.0,
+          left: 0,
+          right: 0,
+          height: 8.0,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.transparent, Colors.black.withAlpha(15)],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
