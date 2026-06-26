@@ -921,6 +921,72 @@ void main() {
       });
 
       test(
+        'should invalidate insertUpdateStateControllerProvider on success',
+        () async {
+          // ARRANGE
+          when(
+            () => mockEcSaleRequestsRepository.insert(
+              saleRequest: any(named: 'saleRequest'),
+              enterpriseCode: any(named: 'enterpriseCode'),
+              params: any(named: 'params'),
+            ),
+          ).thenAnswer((_) async {});
+          when(
+            () => mockLocalBsfSaleRequestDraftRepository.save(
+              any(),
+              enterpriseCode: any(named: 'enterpriseCode'),
+              requestTypeCode: any(named: 'requestTypeCode'),
+            ),
+          ).thenAnswer((_) async {});
+
+          final defaultArgs = SaleRequestArgs(
+            enterpriseCode: fakeEnterprise.Code!,
+            saleRequestId: 0,
+            customerCode: 0,
+            requestTypeCode: 45,
+          );
+
+          final container = makeProviderContainer(
+            insertUpdateSaleRequestEntity: fakeBSFSaleRequestEntity.copyWith(
+              code: 0,
+            ),
+            fakeSaleRequestArgs: defaultArgs,
+          );
+
+          int buildCount = 0;
+          container.listen(
+            insertUpdateStateControllerProvider,
+            (previous, next) {
+              // Notifiers emit AsyncLoading then AsyncData on each build.
+              // We count the number of times it successfully finishes building.
+              if (next is AsyncData && !next.isLoading) {
+                buildCount++;
+              }
+            },
+            fireImmediately: true,
+          );
+
+          // Warm up the provider so the first build is counted
+          await container.read(insertUpdateStateControllerProvider.future);
+          expect(buildCount, 1);
+
+          // ACT
+          await container
+              .read(
+                saveSaleRequestControllerProvider(
+                  fakeEnterprise.Code!,
+                ).notifier,
+              )
+              .saveBsfSaleRequest(false);
+
+          // ASSERT
+          await container.read(insertUpdateStateControllerProvider.future);
+          // After invalidation and reading, the provider rebuilt and emitted a new AsyncData.
+          expect(buildCount, 2);
+        },
+      );
+
+      test(
         'should NOT call ecSaleRequestsRepository.insert when need process cart',
         () async {
           // ARRANGE

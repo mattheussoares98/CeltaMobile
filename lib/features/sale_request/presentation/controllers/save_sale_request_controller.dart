@@ -175,6 +175,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
               enterpriseCode: args.enterpriseCode,
               requestTypeCode: args.requestTypeCode ?? 0,
             );
+        ref.invalidate(insertUpdateStateControllerProvider);
       } else {
         ref
             .read(appUsageStateControllerProvider.notifier)
