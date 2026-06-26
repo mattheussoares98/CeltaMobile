@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
@@ -79,49 +78,23 @@ class _LotPageState extends ConsumerState<LotPage> {
                 enterpriseCode: widget.enterpriseCode,
                 quantityFocusNode: lotQuantityFocusNode,
               ),
-              Consumer(
-                builder: (_, ref, _) {
-                  final keyboardIsOpen = ref.watch(
-                    keyboardVisibilityStateControllerProvider,
-                  );
-                  if (!keyboardIsOpen) {
-                    return const SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
 
-                  return AnimatedBuilder(
-                    animation: lotQuantityFocusNode,
-                    builder: (_, _) {
-                      return SliverToBoxAdapter(
-                        child: ConfirmAndRequestButtons(
-                          enterpriseCode: widget.enterpriseCode,
-                          confirmRequest: confirmRequest,
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
               gapSliverH48,
             ],
           ),
         ),
         Consumer(
           builder: (_, ref, _) {
-            final keyboardIsOpen = ref.watch(
-              keyboardVisibilityStateControllerProvider,
+            final selectedIndex = ref.watch(
+              selectedLotIndexStateControllerProvider,
             );
-
-            if (keyboardIsOpen) {
-              return const SizedBox.shrink();
-            }
-
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              child: ConfirmAndRequestButtons(
+            if (selectedIndex == null) {
+              return ConfirmAndRequestButtons(
                 enterpriseCode: widget.enterpriseCode,
                 confirmRequest: confirmRequest,
-              ),
-            );
+              );
+            }
+            return const SizedBox.shrink();
           },
         ),
       ],
