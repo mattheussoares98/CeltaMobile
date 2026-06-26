@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
@@ -101,16 +102,11 @@ class ProductsManagementPage extends ConsumerWidget {
       ),
       floatingActionButton: Consumer(
         builder: (_, ref, _) {
-          final (pageIndex, cartProductIndex) = ref.watch(
-            uiStateControllerProvider(
-              requestTypeCode,
-              enterpriseOriginCode,
-            ).select(
-              (s) =>
-                  (s.value?.pageIndex ?? 0, s.value?.selectedCartProductIndex),
-            ),
+          final keyboardIsOpen = ref.watch(
+            keyboardVisibilityStateControllerProvider,
           );
-          return pageIndex == 0 || cartProductIndex != null
+
+          return keyboardIsOpen
               ? const SizedBox.shrink()
               : SaveFloatingButton(draftKey: draftKey);
         },
