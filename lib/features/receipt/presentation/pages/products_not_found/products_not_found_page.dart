@@ -102,7 +102,9 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: onRefresh,
+      refreshProvider: productsNotFoundStateControllerProvider(
+        widget.receiptCode,
+      ),
       appBar: DefaultAppBar(
         title: 'Produtos não encontrados'.hardcoded,
         showSelectedEnterprise: true,

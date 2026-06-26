@@ -26,8 +26,7 @@ class ConcurrentsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      onRefresh: () =>
-          ref.refresh(researchsStateControllerProvider(enterpriseCode).future),
+      refreshProvider: researchsStateControllerProvider(enterpriseCode),
       appBar: DefaultAppBar(
         title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
         showSelectedEnterprise: true,

@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReceiptsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -39,7 +38,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      onRefresh: onRefresh,
+      refreshProvider: receiptsStateControllerProvider(widget.enterpriseCode),
       appBar: DefaultAppBar(
         title: 'Recebimentos'.hardcoded,
         showSelectedEnterprise: true,
@@ -66,8 +65,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                     child: AnimatedBuilder(
                       animation: filterReceiptController,
                       builder: (_, _) {
-                        final lowerCaseController = filterReceiptController
-                            .text
+                        final lowerCaseController = filterReceiptController.text
                             .toLowerCase();
                         final filteredReceipts = receipts
                             .where(

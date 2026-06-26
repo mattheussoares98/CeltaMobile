@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 
 import '../commom_widgets.dart';
 
@@ -15,7 +16,7 @@ class BaseScaffold extends StatelessWidget {
     this.onPopInvokedWithResult,
     this.resizeToAvoidBottomInset,
     this.appBar,
-    this.onRefresh,
+    this.refreshProvider,
     this.isScrollable = true,
     this.scrollPhysics,
     this.padding,
@@ -35,7 +36,7 @@ class BaseScaffold extends StatelessWidget {
   final void Function()? onPopInvokedWithResult;
   final bool? resizeToAvoidBottomInset;
   final Widget? appBar;
-  final Future<void> Function()? onRefresh;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final bool isScrollable;
   final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
@@ -86,10 +87,12 @@ class _BaseScaffold extends StatelessWidget {
 
     Widget? finalAppBar = params.appBar;
 
-    if (params.onRefresh != null &&
+    if (params.refreshProvider != null &&
         (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
       if (finalAppBar is DefaultAppBar) {
-        final refreshAction = ReloadIconButton(onRefresh: params.onRefresh);
+        final refreshAction = ReloadIconButton(
+          refreshProvider: params.refreshProvider,
+        );
         finalAppBar = finalAppBar.copyWith(
           actions: [
             ...?finalAppBar.actions,
@@ -116,12 +119,22 @@ class _BaseScaffold extends StatelessWidget {
       newChild = Padding(padding: effectivePadding, child: params.body);
     }
 
-    if (params.onRefresh != null) {
-      newChild = RefreshIndicator(
-        onRefresh: params.onRefresh!,
-        backgroundColor: context.theme.colorScheme.surface,
-        strokeWidth: 2,
-        edgeOffset: 100,
+    if (params.refreshProvider != null) {
+      newChild = Consumer(
+        builder: (context, ref, child) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(params.refreshProvider!);
+              try {
+                await ref.read((params.refreshProvider! as dynamic).future);
+              } catch (_) {}
+            },
+            backgroundColor: context.theme.colorScheme.surface,
+            strokeWidth: 2,
+            edgeOffset: 100,
+            child: child!,
+          );
+        },
         child: newChild,
       );
     }

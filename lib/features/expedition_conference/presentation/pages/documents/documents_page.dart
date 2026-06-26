@@ -19,8 +19,8 @@ class DocumentsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: () => ref.refresh(
-        expeditionDocumentsStateControllerProvider(enterpriseCode).future,
+      refreshProvider: expeditionDocumentsStateControllerProvider(
+        enterpriseCode,
       ),
       appBar: DefaultAppBar(
         title: 'Documentos'.hardcoded,

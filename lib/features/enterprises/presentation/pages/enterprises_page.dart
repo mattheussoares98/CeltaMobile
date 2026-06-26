@@ -17,7 +17,7 @@ class EnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      onRefresh: () => ref.refresh(enterprisesStateControllerProvider().future),
+      refreshProvider: enterprisesStateControllerProvider(),
       appBar: DefaultAppBar(
         title: 'Empresas'.hardcoded,
         showSelectedEnterprise: false,

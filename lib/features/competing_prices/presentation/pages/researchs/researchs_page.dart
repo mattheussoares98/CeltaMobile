@@ -16,7 +16,7 @@ class ResearchsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      onRefresh: () => ref.refresh(provider.future),
+      refreshProvider: provider,
       appBar: DefaultAppBar(
         title: 'Pesquisas cadastradas'.hardcoded,
         showSelectedEnterprise: true,

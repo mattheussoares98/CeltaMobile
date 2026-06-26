@@ -18,7 +18,7 @@ class ReportsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: onRefresh, //TODO use a local loading while it is loading
+      refreshProvider: reportsStateControllerProvider,
       appBar: DefaultAppBar(
         title: 'Relatórios'.hardcoded,
         showSelectedEnterprise: false,

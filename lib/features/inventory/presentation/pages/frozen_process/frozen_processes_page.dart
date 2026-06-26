@@ -17,7 +17,7 @@ class FrozenProcessesPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: onRefresh,
+      refreshProvider: inventoryStateControllerProvider(enterpriseCode),
       appBar: DefaultAppBar(
         title: 'Processos congelados'.hardcoded,
         showSelectedEnterprise: true,
