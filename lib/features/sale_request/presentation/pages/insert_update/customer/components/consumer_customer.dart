@@ -10,14 +10,20 @@ class ConsumerCustomer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
+      isSliver: true,
       value: ref.watch(consumerCustomerStateControllerProvider),
       tryAgain: () => ref.invalidate(consumerCustomerStateControllerProvider),
       data: (customer) {
         if (customer == null) {
-          return const SizedBox();
+          return const SliverToBoxAdapter(child: SizedBox());
         }
-        return ResponsiveCenter(
-          child: CustomerItem(key: ValueKey(customer.code), customer: customer),
+        return SliverToBoxAdapter(
+          child: ResponsiveCenter(
+            child: CustomerItem(
+              key: ValueKey(customer.code),
+              customer: customer,
+            ),
+          ),
         );
       },
     );

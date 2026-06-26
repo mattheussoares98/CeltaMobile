@@ -38,7 +38,6 @@ class CustomersPage extends ConsumerWidget {
             );
           },
         ),
-        const ConsumerCustomer(),
       ],
     );
 
@@ -48,11 +47,19 @@ class CustomersPage extends ConsumerWidget {
       );
     }
 
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(child: searchFieldAndConsumerCustomer),
-        const SearchedCustomersItems(),
-        gapSliverH32,
+    return Column(
+      children: [
+        searchFieldAndConsumerCustomer,
+
+        const Expanded(
+          child: CustomScrollView(
+            slivers: [
+              ConsumerCustomer(),
+              SearchedCustomersItems(),
+              gapSliverH32,
+            ],
+          ),
+        ),
       ],
     );
   }
