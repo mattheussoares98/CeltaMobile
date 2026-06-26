@@ -114,7 +114,7 @@ class BottomNavBar extends ConsumerWidget {
         ),
         DefaultBottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
-          badgeLabel: enterprisesCount > 0 ? enterprisesCount.toString() : null,
+          badgeLabel: enterprisesCount.toString(),
           platformIcon: const PlatformIcon(
             materialIcon: Icons.business,
             cupertinoIcon: CupertinoIcons.building_2_fill,
@@ -122,7 +122,7 @@ class BottomNavBar extends ConsumerWidget {
         ),
         DefaultBottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
-          badgeLabel: productsCount > 0 ? productsCount.toString() : null,
+          badgeLabel: productsCount.toString(),
           platformIcon: const PlatformIcon(
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,
