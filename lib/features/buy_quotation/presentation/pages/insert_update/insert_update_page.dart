@@ -104,6 +104,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      resizeToAvoidBottomInset: true,
       onPopInvokedWithResult: () async {
         bool? confirmed = await showAlertDialog(
           context: context,
@@ -149,10 +150,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
               enterpriseCode: widget.enterpriseCode,
               code: widget.code,
             ),
-            LimitDate(
-              code: widget.code,
-              enterpriseCode: widget.enterpriseCode,
-            ),
+            LimitDate(code: widget.code, enterpriseCode: widget.enterpriseCode),
             gapSliverH8,
             BuyersDropdown(
               enterpriseCode: widget.enterpriseCode,

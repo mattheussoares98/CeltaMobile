@@ -169,6 +169,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     return BaseScaffold(
       isScrollable: false,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         title: 'Produtos'.hardcoded,
         showSelectedEnterprise: true,

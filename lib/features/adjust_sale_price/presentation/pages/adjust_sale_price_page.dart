@@ -66,6 +66,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         showSelectedEnterprise: true,
         title: selectedProduct == null
