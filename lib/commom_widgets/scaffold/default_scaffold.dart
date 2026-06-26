@@ -1,3 +1,4 @@
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -21,7 +22,6 @@ class BaseScaffold extends StatelessWidget {
     this.usePadding = true,
     required this.body,
     this.bottomNavigationBar,
-    this.useBottomNavigationPadding = true,
     this.observeScreenChanges = false,
     this.bottomNavigationItems,
     this.bottomNavigationIndex,
@@ -43,7 +43,6 @@ class BaseScaffold extends StatelessWidget {
   final bool usePadding;
   final Widget body;
   final Widget? bottomNavigationBar; //TODO change to DefaultBottomNavigationBar
-  final bool useBottomNavigationPadding;
   final bool observeScreenChanges;
   final List<DefaultBottomNavigationBarItem>? bottomNavigationItems;
   final int? bottomNavigationIndex;
@@ -157,13 +156,6 @@ class _BaseScaffold extends StatelessWidget {
       );
     }
 
-    if (bottomNavigationWidget != null && params.useBottomNavigationPadding) {
-      bottomNavigationWidget = Padding(
-        padding: effectivePadding.copyWith(top: 0),
-        child: bottomNavigationWidget,
-      );
-    }
-
     Widget scaffold;
 
     if (context.isCupertino && params.drawer == null) {
@@ -172,8 +164,9 @@ class _BaseScaffold extends StatelessWidget {
           ? Padding(
               padding: EdgeInsets.only(
                 bottom:
-                    cupertinoTabBarHeight +
-                    MediaQuery.paddingOf(context).bottom,
+                    (cupertinoTabBarHeight +
+                        MediaQuery.paddingOf(context).bottom) +
+                    Sizes.p8,
               ),
               child: newChild,
             )
