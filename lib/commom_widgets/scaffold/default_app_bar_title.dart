@@ -61,19 +61,14 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
 
     final centerTitle = context.theme.platform != TargetPlatform.android;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: DefaultText.bodySmall(
-              '$personalizedCode - $enterpriseName',
-              textAlign: centerTitle ? TextAlign.center : null,
-            ),
-          ),
-        ),
-      ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: DefaultText.bodySmall(
+        '$personalizedCode - $enterpriseName',
+        textAlign: centerTitle ? TextAlign.center : null,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }
