@@ -40,6 +40,7 @@ class RequestsTypePage extends ConsumerWidget {
       appBar: AppBar(
         title: DefaultAppBarTitle(title: 'Modelos de pedido'.hardcoded),
         actions: [ReloadIconButton(provider: provider)],
+        //TODO use DefaultScaffold
       ),
       body: Consumer(
         builder: (context, ref, child) {
@@ -94,7 +95,9 @@ class RequestsTypePage extends ConsumerWidget {
                     return _RequestTypeItem(
                       key: ValueKey(request.code),
                       request: request,
-                      onTap: () => goToInsertUpdateSaleRequest(request.code),
+                      onTap: () => goToInsertUpdateSaleRequest(
+                        request.code,
+                      ), //TODO receive as parameter
                       enterpriseCode: enterpriseCode,
                     );
                   },
