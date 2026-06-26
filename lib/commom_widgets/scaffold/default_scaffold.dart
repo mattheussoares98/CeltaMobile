@@ -106,7 +106,9 @@ class _BaseScaffold extends StatelessWidget {
         ? params.padding ??
               (params.observeScreenChanges
                   ? _getHorizontalPadding()
-                  : ScreenUtil.I.pagePadding())
+                  : ScreenUtil.I.pagePadding().copyWith(
+                      bottom: params.bottomNavigationBar == null ? null : 0,
+                    ))
         : EdgeInsets.zero;
 
     if (params.isScrollable) {
