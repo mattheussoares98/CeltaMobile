@@ -13,56 +13,44 @@ class BottomNavBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(pageIndexStateControllerProvider);
-    return BottomNavigationBar(
+
+    final isCustomerValid = ref.watch(
+      pendingSaleRequestStateControllerProvider(enterpriseCode).select(
+        (state) => state.value?.customer != null,
+      ),
+    );
+
+    final productsLength = ref.watch(
+      pendingSaleRequestStateControllerProvider(enterpriseCode).select(
+        (s) => s.value?.cart.length ?? 0,
+      ),
+    );
+
+    return DefaultBottomNavigationBar(
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
       currentIndex: index,
       items: [
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Inserir produtos'.hardcoded,
-          icon: const PlatformIcon(
+          platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.cart_fill,
             materialIcon: Icons.add_shopping_cart,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Cliente'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              return ValidatedBadge(
-                isSelected: index == 1,
-                isValid:
-                    ref.watch(
-                      pendingSaleRequestStateControllerProvider(
-                        enterpriseCode,
-                      ).select((state) => state.value?.customer),
-                    ) !=
-                    null,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.person,
-                  cupertinoIcon: CupertinoIcons.person,
-                ),
-              );
-            },
+          isValid: isCustomerValid,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.person,
+            cupertinoIcon: CupertinoIcons.person,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Carrinho'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              final productsLength = ref.watch(
-                pendingSaleRequestStateControllerProvider(
-                  enterpriseCode,
-                ).select((s) => s.value?.cart.values.length ?? 0),
-              );
-              return QuantityBadge(
-                quantity: productsLength,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.shopping_cart,
-                ),
-                isSelected: index == 2,
-              );
-            },
+          badgeLabel: productsLength > 0 ? productsLength.toString() : null,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.shopping_cart,
+            cupertinoIcon: CupertinoIcons.shopping_cart,
           ),
         ),
       ],

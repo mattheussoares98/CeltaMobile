@@ -54,7 +54,6 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
       appBar: DefaultAppBar(
         title: appBarTitles[currentPageIndex],
         showSelectedEnterprise: true,

@@ -12,84 +12,64 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pageIndex = ref.watch(pageIndexStateControllerProvider);
 
-    return BottomNavigationBar(
+    final isCustomerValid = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (state) => state.value?.customer != null,
+      ),
+    );
+
+    final quantity = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (s) => s.value?.products?.length ?? 0,
+      ),
+    );
+
+    final isPaymentValid = ref.watch(
+      insertUpdateStateControllerProvider.select(
+        (s) => s.value?.isPaymentValid ?? true,
+      ),
+    );
+
+    return DefaultBottomNavigationBar(
       currentIndex: pageIndex,
-      type: BottomNavigationBarType.fixed,
       onTap: (index) => ref
           .read(pageIndexStateControllerProvider.notifier)
           .updateIndex(index),
       items: [
-        BottomNavigationBarItem(
-          icon: const PlatformIcon(
+        DefaultBottomNavigationBarItem(
+          platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.search,
             materialIcon: Icons.search,
           ),
           label: 'Produtos'.hardcoded,
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Cliente'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              return ValidatedBadge(
-                isSelected: pageIndex == 1,
-                isValid: ref.watch(
-                  insertUpdateStateControllerProvider.select(
-                    (state) => state.value?.customer != null,
-                  ),
-                ),
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.person,
-                  cupertinoIcon: CupertinoIcons.person,
-                ),
-              );
-            },
+          isValid: isCustomerValid,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.person,
+            cupertinoIcon: CupertinoIcons.person,
           ),
         ),
-        BottomNavigationBarItem(
-          icon: Consumer(
-            builder: (context, ref, child) {
-              final quantity = ref.watch(
-                insertUpdateStateControllerProvider.select(
-                  (s) => s.value?.products?.length ?? 0,
-                ),
-              );
-
-              return QuantityBadge(
-                quantity: quantity,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.cart,
-                ),
-                isSelected: pageIndex == 2,
-              );
-            },
+        DefaultBottomNavigationBarItem(
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.shopping_cart,
+            cupertinoIcon: CupertinoIcons.cart,
           ),
+          badgeLabel: quantity > 0 ? quantity.toString() : null,
           label: 'Itens'.hardcoded,
         ),
-        BottomNavigationBarItem(
-          icon: Consumer(
-            builder: (context, ref, child) {
-              final isPaymentValid = ref.watch(
-                insertUpdateStateControllerProvider.select(
-                  (s) => s.value?.isPaymentValid ?? true,
-                ),
-              );
-
-              return ValidatedBadge(
-                isValid: isPaymentValid,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.payment,
-                  cupertinoIcon: CupertinoIcons.creditcard,
-                ),
-                isSelected: pageIndex == 3,
-                showSuccessBadge: false,
-              );
-            },
+        DefaultBottomNavigationBarItem(
+          isValid: isPaymentValid,
+          showSuccessBadge: false,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.payment,
+            cupertinoIcon: CupertinoIcons.creditcard,
           ),
           label: 'Pagamento'.hardcoded,
         ),
-        BottomNavigationBarItem(
-          icon: const PlatformIcon(
+        DefaultBottomNavigationBarItem(
+          platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.info,
             materialIcon: Icons.info,
           ),

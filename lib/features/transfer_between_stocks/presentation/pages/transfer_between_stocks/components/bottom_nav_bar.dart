@@ -18,7 +18,15 @@ class BottomNavBar extends ConsumerWidget {
       ).select((s) => s.pageIndex),
     );
 
-    return BottomNavigationBar(
+    final quantityLength = ref.watch(
+      lotStateControllerProvider(enterpriseCode).select(
+        (s) => s.value
+            ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
+            .length ?? 0,
+      ),
+    );
+
+    return DefaultBottomNavigationBar(
       currentIndex: selectedPageIndex,
       onTap: (index) {
         ref
@@ -28,35 +36,19 @@ class BottomNavBar extends ConsumerWidget {
             .updateValues(pageIndex: index);
       },
       items: [
-        BottomNavigationBarItem(
-          icon: const PlatformIcon(
+        DefaultBottomNavigationBarItem(
+          platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.list_bullet,
             materialIcon: Icons.list,
           ),
           label: 'Produtos'.hardcoded,
         ),
-        BottomNavigationBarItem(
-          icon: Consumer(
-            builder: (_, ref, _) {
-              final quantityLength = ref.watch(
-                lotStateControllerProvider(enterpriseCode).select(
-                  (s) => s.value
-                      ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
-                      .toList()
-                      .length,
-                ),
-              );
-
-              return QuantityBadge(
-                quantity: quantityLength,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.shopping_cart,
-                ),
-                isSelected: selectedPageIndex == 1,
-              );
-            },
+        DefaultBottomNavigationBarItem(
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.shopping_cart,
+            cupertinoIcon: CupertinoIcons.shopping_cart,
           ),
+          badgeLabel: quantityLength > 0 ? quantityLength.toString() : null,
           label: 'Lote'.hardcoded,
         ),
       ],

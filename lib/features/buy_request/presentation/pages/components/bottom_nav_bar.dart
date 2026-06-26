@@ -17,7 +17,38 @@ class BottomNavBar extends ConsumerWidget {
       ).select((s) => s.value?.currentPageIndex ?? 0),
     );
 
-    return BottomNavigationBar(
+    final isIdentificationValid = ref.watch(
+      pendingBuyRequestStateControllerProvider(enterpriseCode).select(
+        (s) =>
+            (s.value?.selectedBuyer != null) &&
+            (s.value?.selectedRequestType != null) &&
+            (s.value?.selectedSupplier != null),
+      ),
+    );
+
+    final enterprisesCount = ref.watch(
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.selectedEnterprises?.length ?? 0),
+    );
+
+    final productsCount = ref.watch(
+      pendingBuyRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.products?.length ?? 0),
+    );
+
+    final isConfirmationValid = ref.watch(
+      pendingBuyRequestStateControllerProvider(enterpriseCode).select(
+        (s) =>
+            (s.value?.selectedBuyer != null) &&
+            (s.value?.selectedRequestType != null) &&
+            (s.value?.selectedSupplier != null) &&
+            (s.value?.products?.isNotEmpty == true),
+      ),
+    );
+
+    return DefaultBottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) async {
         final pendingValue = await ref.read(
@@ -73,90 +104,36 @@ class BottomNavBar extends ConsumerWidget {
             .updatePageIndex(index);
       },
       items: [
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Identificação'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              final isValid = ref.watch(
-                pendingBuyRequestStateControllerProvider(enterpriseCode).select(
-                  (s) =>
-                      (s.value?.selectedBuyer != null) &&
-                      (s.value?.selectedRequestType != null) &&
-                      (s.value?.selectedSupplier != null),
-                ),
-              );
-              return ValidatedBadge(
-                isValid: isValid,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.info,
-                  cupertinoIcon: CupertinoIcons.info,
-                ),
-                isSelected: currentIndex == 0,
-              );
-            },
+          isValid: isIdentificationValid,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.info,
+            cupertinoIcon: CupertinoIcons.info,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              return QuantityBadge(
-                quantity: ref.watch(
-                  pendingBuyRequestStateControllerProvider(
-                    enterpriseCode,
-                  ).select((s) => s.value?.selectedEnterprises?.length),
-                ),
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.business,
-                  cupertinoIcon: CupertinoIcons.building_2_fill,
-                ),
-                isSelected: currentIndex == 1,
-              );
-            },
+          badgeLabel: enterprisesCount > 0 ? enterprisesCount.toString() : null,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.business,
+            cupertinoIcon: CupertinoIcons.building_2_fill,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              return QuantityBadge(
-                quantity: ref.watch(
-                  pendingBuyRequestStateControllerProvider(
-                    enterpriseCode,
-                  ).select((s) => s.value?.products?.length),
-                ),
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.shopping_cart,
-                  cupertinoIcon: CupertinoIcons.shopping_cart,
-                ),
-                isSelected: currentIndex == 2,
-              );
-            },
+          badgeLabel: productsCount > 0 ? productsCount.toString() : null,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.shopping_cart,
+            cupertinoIcon: CupertinoIcons.shopping_cart,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Confirmação'.hardcoded,
-          icon: Consumer(
-            builder: (_, ref, _) {
-              final isValid = ref.watch(
-                pendingBuyRequestStateControllerProvider(enterpriseCode).select(
-                  (s) =>
-                      (s.value?.selectedBuyer != null) &&
-                      (s.value?.selectedRequestType != null) &&
-                      (s.value?.selectedSupplier != null) &&
-                      (s.value?.products?.isNotEmpty == true),
-                ),
-              );
-
-              return ValidatedBadge(
-                isValid: isValid,
-                platformIcon: const PlatformIcon(
-                  materialIcon: Icons.check_box_outlined,
-                  cupertinoIcon: CupertinoIcons.checkmark_square,
-                ),
-                isSelected: currentIndex == 3,
-              );
-            },
+          isValid: isConfirmationValid,
+          platformIcon: const PlatformIcon(
+            materialIcon: Icons.check_box_outlined,
+            cupertinoIcon: CupertinoIcons.checkmark_square,
           ),
         ),
       ],

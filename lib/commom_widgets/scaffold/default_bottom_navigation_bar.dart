@@ -12,6 +12,7 @@ class DefaultBottomNavigationBarItem {
     this.tooltip,
     this.isValid,
     this.badgeLabel,
+    this.showSuccessBadge = true,
   });
 
   final PlatformIcon platformIcon;
@@ -19,6 +20,7 @@ class DefaultBottomNavigationBarItem {
   final String? tooltip;
   final bool? isValid;
   final String? badgeLabel;
+  final bool showSuccessBadge;
 }
 
 //TODO check in all pages that is using it if really need a bottom padding page
@@ -51,6 +53,7 @@ class DefaultBottomNavigationBar extends StatelessWidget {
           isValid: e.isValid == true,
           platformIcon: icon as PlatformIcon,
           isSelected: isSelected,
+          showSuccessBadge: e.showSuccessBadge,
         );
       }
 
