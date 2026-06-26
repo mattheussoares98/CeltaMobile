@@ -53,14 +53,18 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: LogoWidget(
-          animate: true,
-          animationDuration: const Duration(milliseconds: 3500),
-          onAnimationComplete: _navigateToNextScreen,
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      body: ColoredBox(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+          child: LogoWidget(
+            animate: true,
+            animationDuration: const Duration(milliseconds: 3500),
+            onAnimationComplete: _navigateToNextScreen,
+          ),
         ),
       ),
     );
