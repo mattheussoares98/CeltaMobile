@@ -55,22 +55,26 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      body: CustomScrollView(
-        slivers: [
+      body: Column(
+        children: [
           Consumer(
             builder: (_, ref, _) {
-              return SliverToBoxAdapter(
-                child: DefaultSearchProducts(
-                  searchProductKey: searchProductKey,
-                  searchProducts: searchProducts,
-                  searchValueController: searchProductController,
-                ),
+              return DefaultSearchProducts(
+                searchProductKey: searchProductKey,
+                searchProducts: searchProducts,
+                searchValueController: searchProductController,
               );
             },
           ),
-          gapSliverH8,
-          ProductsItems(enterpriseCode: widget.enterpriseCode),
-          gapSliverH48,
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                gapSliverH8,
+                ProductsItems(enterpriseCode: widget.enterpriseCode),
+                gapSliverH48,
+              ],
+            ),
+          ),
         ],
       ),
     );
