@@ -1,13 +1,12 @@
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 
 class ModulesWidget extends StatelessWidget {
   const ModulesWidget({super.key});
@@ -52,28 +51,25 @@ class MyGridView extends ConsumerWidget {
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
       slivers: [
-        SliverPadding(
-          padding: EdgeInsets.all(spacing),
-          sliver: SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              mainAxisSpacing: spacing,
-              crossAxisSpacing: spacing,
-              mainAxisExtent: 90,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final module = data.list[index];
-                return StaticModuleItem(key: ValueKey(module), module: module);
-              },
-              childCount: data.list.length,
-              findChildIndexCallback: (Key key) {
-                if (key is ValueKey<Modules>) {
-                  return data.indexMap[key.value];
-                }
-                return null;
-              },
-            ),
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            mainAxisSpacing: spacing,
+            crossAxisSpacing: spacing,
+            mainAxisExtent: 90,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final module = data.list[index];
+              return StaticModuleItem(key: ValueKey(module), module: module);
+            },
+            childCount: data.list.length,
+            findChildIndexCallback: (Key key) {
+              if (key is ValueKey<Modules>) {
+                return data.indexMap[key.value];
+              }
+              return null;
+            },
           ),
         ),
       ],
