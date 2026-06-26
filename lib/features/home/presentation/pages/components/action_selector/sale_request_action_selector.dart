@@ -31,7 +31,7 @@ class SaleRequestActionSelector extends StatelessWidget {
           Sizes.p16,
           Sizes.p12,
           Sizes.p16,
-          Sizes.p32,
+          Sizes.p80,
         ),
         decoration: BoxDecoration(
           color: context.theme.scaffoldBackgroundColor,
