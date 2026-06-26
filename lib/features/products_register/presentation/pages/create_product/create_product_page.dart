@@ -15,14 +15,20 @@ class CreateProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Cadastro de produtos'.hardcoded)),
+    final provider = productStateControllerProvider(
+      enterpriseCode: enterpriseCode,
+      productCode: productCode,
+    );
+
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: true,
+      appBar: DefaultAppBar(
+        title: 'Cadastro de produtos'.hardcoded,
+        showSelectedEnterprise: true,
+      ),
       body: Consumer(
         builder: (_, ref, _) {
-          final provider = productStateControllerProvider(
-            enterpriseCode: enterpriseCode,
-            productCode: productCode,
-          );
           return ResponsiveScrollableWidget(
             child: AsyncValueWidget(
               value: ref.watch(provider),
@@ -31,7 +37,7 @@ class CreateProductPage extends StatelessWidget {
                 if (data == null) {
                   return const SizedBox.shrink();
                 }
-                return Text(data.toString());
+                return DefaultText(data.toString());
               },
             ),
           );

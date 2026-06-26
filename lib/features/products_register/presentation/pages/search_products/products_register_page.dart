@@ -11,9 +11,12 @@ class SearchProductsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Cadastro de produtos'.hardcoded),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: 'Cadastro de produtos'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),

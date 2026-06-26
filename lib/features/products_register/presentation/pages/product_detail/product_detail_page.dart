@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/presentation/controllers/product_detail_controller.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,15 +31,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Detalhes do produto'.hardcoded)),
+    final provider = productDetailControllerProvider(
+      enterpriseCode: widget.enterpriseCode,
+      productCode: widget.productCode,
+    );
+
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        title: 'Detalhes do produto'.hardcoded,
+        showSelectedEnterprise: true,
+      ),
       body: Consumer(
         builder: (_, ref, _) {
-          final provider = productDetailControllerProvider(
-            enterpriseCode: widget.enterpriseCode,
-            productCode: widget.productCode,
-          );
-
           return AsyncValueWidget(
             value: ref.watch(provider),
             tryAgain: () => ref.invalidate(provider),
@@ -90,14 +94,8 @@ class _SearchResultList extends StatelessWidget {
       itemBuilder: (_, index) {
         final property = results[index];
         return ListTile(
-          title: Text(
-            property.labelPt,
-            style: context.theme.textTheme.bodySmall,
-          ),
-          subtitle: Text(
-            property.displayValue,
-            style: context.theme.textTheme.bodyMedium,
-          ),
+          title: DefaultText.bodySmall(property.labelPt),
+          subtitle: DefaultText.bodyMedium(property.displayValue),
         );
       },
     );
