@@ -112,11 +112,11 @@ class DefaultBottomNavigationBar extends StatelessWidget {
 
     final Widget bottomBar;
 
-    if (isCupertino) {
-      final increaseHeight = items.any(
-        (e) => e.badgeLabel != null || e.isValid != null,
-      );
+    final height = items.any((e) => e.badgeLabel != null || e.isValid != null)
+        ? 62.0
+        : 54.0;
 
+    if (isCupertino) {
       bottomBar = CupertinoTabBar(
         currentIndex: currentIndex,
         onTap: onTap,
@@ -125,15 +125,21 @@ class DefaultBottomNavigationBar extends StatelessWidget {
         backgroundColor: theme.backgroundColor,
         border: border,
         items: localItems,
-        height: increaseHeight ? 62 : 54,
+        height: height,
       );
     } else {
-      bottomBar = BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTap,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        items: localItems,
+      bottomBar = SizedBox(
+        height: height,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: BottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: onTap,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            items: localItems,
+          ),
+        ),
       );
     }
 
