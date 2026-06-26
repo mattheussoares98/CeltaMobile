@@ -1,7 +1,7 @@
-import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/features/transfer_request/presentation/pages/pages.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/pages/pages.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:go_router/go_router.dart';
 
 RouteBase transferRequestRquestsTypesRoute(List<RouteBase> routes) => GoRoute(
   path: ':enterpriseCode/transfer-request',
@@ -9,6 +9,18 @@ RouteBase transferRequestRquestsTypesRoute(List<RouteBase> routes) => GoRoute(
   routes: routes,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    return TransferRequestRequestsTypesPage(enterpriseCode: enterpriseCode);
+    return RequestsTypePage(
+      enterpriseCode: enterpriseCode,
+      module: Modules.transferRequest,
+      onTap: (ref, request) {
+        context.goNamed(
+          Routes.transferRequestOriginEnterprises.name,
+          pathParameters: {
+            'requestTypeCode': request.code.toString(),
+            'enterpriseCode': enterpriseCode.toString(),
+          },
+        );
+      },
+    );
   },
 );
