@@ -91,7 +91,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           );
     }
 
-    if (title.isNotEmpty || titleWidget != null || showSelectedEnterprise || subtitle != null) {
+    if (title.isNotEmpty ||
+        titleWidget != null ||
+        showSelectedEnterprise ||
+        subtitle != null) {
       final centerTitle = !PlatformUtil.isAndroid;
       final crossAxisAlignment = centerTitle
           ? CrossAxisAlignment.center
@@ -115,45 +118,20 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     if (context.isCupertino) {
-      if (subtitle != null) {
-        return Container(
-          height:
-              preferredSize.height +
-              MediaQuery.paddingOf(context).top +
-              (actionsPadding?.vertical ?? 0),
-          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
-          decoration: BoxDecoration(
-            color: context.colorScheme.surface,
-            border: const Border(bottom: BorderSide(color: Colors.transparent)),
-          ),
-          child: Row(
-            children: [
-              if (showLeading)
-                SizedBox(width: leadingWidth, child: leadingWidget),
-              Expanded(child: Center(child: appBarTitleWidget)),
-              if (actions != null)
-                Padding(
-                  padding: actionsPadding ?? EdgeInsets.zero,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: actions!,
-                  ),
-                )
-              else if (showLeading)
-                SizedBox(width: leadingWidth),
-            ],
-          ),
-        );
-      }
-
-      return CupertinoNavigationBar(
-        automaticallyImplyLeading: false,
-        transitionBetweenRoutes: false,
-        leading: leadingWidget,
-        middle: appBarTitleWidget,
-        trailing: actions != null
-            ? Padding(
+      return Container(
+        height: _appBarHeight,
+        padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
+        decoration: BoxDecoration(
+          color: context.colorScheme.surface,
+          border: const Border(bottom: BorderSide(color: Colors.transparent)),
+        ),
+        child: Row(
+          children: [
+            if (showLeading)
+              SizedBox(width: leadingWidth, child: leadingWidget),
+            Expanded(child: Center(child: appBarTitleWidget)),
+            if (actions != null)
+              Padding(
                 padding: actionsPadding ?? EdgeInsets.zero,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -161,9 +139,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
                   children: actions!,
                 ),
               )
-            : null,
-        backgroundColor: context.colorScheme.surface,
-        border: const Border(bottom: BorderSide(color: Colors.transparent)),
+            else if (showLeading)
+              SizedBox(width: leadingWidth),
+          ],
+        ),
       );
     }
 
@@ -180,6 +159,16 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  double get _appBarHeight {
+    double value = 50.0;
+    if (subtitle != null) {
+      return value += 14;
+    } else if (actionsPadding != null) {
+      return value += (actionsPadding?.vertical ?? 0);
+    }
+    return value;
+  }
+
   @override
-  Size get preferredSize => Size.fromHeight(subtitle != null ? 64 : 50.0);
+  Size get preferredSize => Size.fromHeight(_appBarHeight);
 }
