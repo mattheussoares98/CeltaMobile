@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/components.dart';
 
 class SearchSaleRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -47,9 +46,11 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Busca de pedidos'.hardcoded),
+    return BaseScaffold(
+      isScrollable: false,
+      appBar: DefaultAppBar(
+        title: 'Busca de pedidos'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Column(
         children: [

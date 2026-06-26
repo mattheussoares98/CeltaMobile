@@ -56,11 +56,13 @@ class CreateSaleRequestPage extends ConsumerWidget {
 
     final screenWidth = MediaQuery.sizeOf(context).width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppBarTitle(enterpriseCode: enterpriseCode),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(
+        showSelectedEnterprise: false,
+        titleWidget: AppBarTitle(enterpriseCode: enterpriseCode),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
-        titleSpacing: 0,
         actions: [
           if (screenWidth > 200) ...[
             ShowPdfButton(enterpriseCode: enterpriseCode),

@@ -96,11 +96,12 @@ class InsertProductPage extends ConsumerWidget {
               ),
             );
 
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  product.product?.name ?? 'Detalhe do Produto'.hardcoded,
-                ),
+            return BaseScaffold(
+              isScrollable: false,
+              usePadding: false,
+              appBar: DefaultAppBar(
+                showSelectedEnterprise: false,
+                title: product.product?.name ?? 'Detalhe do Produto'.hardcoded,
               ),
               body: ResponsiveCenter(
                 padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

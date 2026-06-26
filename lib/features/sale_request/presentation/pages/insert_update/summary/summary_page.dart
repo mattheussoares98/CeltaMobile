@@ -75,7 +75,7 @@ class SummaryPage extends ConsumerWidget {
             ],
           ),
           const Positioned(
-            bottom: Sizes.p8,
+            bottom: Sizes.p16,
             right: 0,
             left: 0,
             child: ProcessAndSaveButtons(),

@@ -41,9 +41,11 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           ),
         ),
       ],
-      child: Scaffold(
-        appBar: AppBar(
-          title: DefaultAppBarTitle(title: 'Detalhes do pedido'.hardcoded),
+      child: BaseScaffold(
+        isScrollable: false,
+        appBar: DefaultAppBar(
+          title: 'Detalhes do pedido'.hardcoded,
+          showSelectedEnterprise: true,
           actions: [
             const EditButton(),
             const ShowPdfButton(),
