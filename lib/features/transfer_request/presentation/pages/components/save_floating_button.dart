@@ -1,6 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -21,38 +19,31 @@ class SaveFloatingButton extends ConsumerWidget {
       ).select((s) => s.value?.isEmpty ?? true),
     );
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: ref.watch(keyboardVisibilityStateControllerProvider)
-            ? Sizes.p48
-            : 0,
-      ),
-      child: FloatingActionButton(
-        backgroundColor: cartIsEmpty
-            ? Colors.grey
-            : context.theme.primaryColor.withAlpha(170),
-        onPressed: cartIsEmpty
-            ? null
-            : () {
-                showAlertDialog(
-                  context: context,
-                  title: 'Salvar pedido?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Sim'.hardcoded,
-                  onOkPressed: ref
-                      .read(
-                        insertTransferRequestControllerProvider(
-                          draftKey,
-                        ).notifier,
-                      )
-                      .insert,
-                );
-              },
-        child: const PlatformIcon(
-          cupertinoIcon: CupertinoIcons.check_mark,
-          materialIcon: Icons.save_rounded,
-          color: Colors.white,
-        ),
+    return FloatingActionButton(
+      backgroundColor: cartIsEmpty
+          ? Colors.grey
+          : context.theme.primaryColor.withAlpha(170),
+      onPressed: cartIsEmpty
+          ? null
+          : () {
+              showAlertDialog(
+                context: context,
+                title: 'Salvar pedido?'.hardcoded,
+                cancelActionText: 'Cancelar'.hardcoded,
+                defaultActionText: 'Sim'.hardcoded,
+                onOkPressed: ref
+                    .read(
+                      insertTransferRequestControllerProvider(
+                        draftKey,
+                      ).notifier,
+                    )
+                    .insert,
+              );
+            },
+      child: const PlatformIcon(
+        cupertinoIcon: CupertinoIcons.check_mark,
+        materialIcon: Icons.save_rounded,
+        color: Colors.white,
       ),
     );
   }

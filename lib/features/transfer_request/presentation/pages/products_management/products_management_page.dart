@@ -101,13 +101,16 @@ class ProductsManagementPage extends ConsumerWidget {
       ),
       floatingActionButton: Consumer(
         builder: (_, ref, _) {
-          final pageIndex = ref.watch(
+          final (pageIndex, cartProductIndex) = ref.watch(
             uiStateControllerProvider(
               requestTypeCode,
               enterpriseOriginCode,
-            ).select((s) => s.value?.pageIndex ?? 0),
+            ).select(
+              (s) =>
+                  (s.value?.pageIndex ?? 0, s.value?.selectedCartProductIndex),
+            ),
           );
-          return pageIndex == 0
+          return pageIndex == 0 || cartProductIndex != null
               ? const SizedBox.shrink()
               : SaveFloatingButton(draftKey: draftKey);
         },
