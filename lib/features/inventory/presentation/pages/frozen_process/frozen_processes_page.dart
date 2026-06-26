@@ -1,10 +1,9 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/inventory/presentation/pages/frozen_process/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FrozenProcessesPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -12,42 +11,35 @@ class FrozenProcessesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: FittedBox(child: Text('Processos congelados'.hardcoded)),
-        actions: [
-          ReloadIconButton(
-            provider: inventoryStateControllerProvider(enterpriseCode),
-          ),
-        ],
+    Future<void> onRefresh() async {
+      ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
+    }
+
+    return BaseScaffold(
+      isScrollable: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Processos congelados'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(inventoryStateControllerProvider(enterpriseCode)),
-            tryAgain: () {
-              ref.invalidate(inventoryStateControllerProvider(enterpriseCode));
-            },
+            tryAgain: onRefresh,
             data: (inventories) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(
-                    inventoryStateControllerProvider(enterpriseCode),
+              return ResponsiveListFlow(
+                itemCount: inventories?.frozenProcesses.length ?? 0,
+                itemBuilder: (_, index) {
+                  final frozenProcess = inventories!.frozenProcesses[index];
+
+                  return FrozenItem(
+                    key: ValueKey(frozenProcess.CodigoInternoInventario),
+                    frozenProcess: frozenProcess,
+                    inventories: inventories,
+                    enterpriseCode: enterpriseCode,
                   );
                 },
-                child: ResponsiveListFlow(
-                  itemCount: inventories?.frozenProcesses.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final frozenProcess = inventories!.frozenProcesses[index];
-
-                    return FrozenItem(
-                      key: ValueKey(frozenProcess.CodigoInternoInventario),
-                      frozenProcess: frozenProcess,
-                      inventories: inventories,
-                      enterpriseCode: enterpriseCode,
-                    );
-                  },
-                ),
               );
             },
           );
