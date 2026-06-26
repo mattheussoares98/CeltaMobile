@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 
 class EmptyProductsMessage extends ConsumerWidget {
   final VoidCallback onRefreshEmptyProducts;
@@ -18,10 +17,11 @@ class EmptyProductsMessage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
+          DefaultText.error(
             'Nenhum produto foi encontrado'.hardcoded,
             textAlign: TextAlign.center,
           ),
+          gapH8,
           PrimaryTextButton(
             text: 'Pesquisar novamente'.hardcoded,
             icon: const PlatformIcon(

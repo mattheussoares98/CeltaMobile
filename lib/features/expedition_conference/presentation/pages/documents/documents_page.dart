@@ -1,10 +1,9 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/documents/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DocumentsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -18,19 +17,17 @@ class DocumentsPage extends ConsumerWidget {
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Documentos'.hardcoded),
-        actions: [
-          ReloadIconButton(
-            provider: expeditionDocumentsStateControllerProvider(
-              enterpriseCode,
-            ),
-          ),
-        ],
+    return BaseScaffold(
+      isScrollable: false,
+      onRefresh: () async => ref.invalidate(
+        expeditionDocumentsStateControllerProvider(enterpriseCode),
+      ),
+      appBar: DefaultAppBar(
+        title: 'Documentos'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
-        builder: (context, ref, child) {
+        builder: (_, ref, _) {
           return AsyncValueWidget(
             value: ref.watch(
               expeditionDocumentsStateControllerProvider(enterpriseCode),

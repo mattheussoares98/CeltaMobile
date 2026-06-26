@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 
 class EmptyDocumentsMessage extends ConsumerWidget {
   final VoidCallback onRefresh;
@@ -18,11 +17,12 @@ class EmptyDocumentsMessage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          DefaultText.error(
             'Nenhum documento está no processo de conferência de produtos'
                 .hardcoded,
             textAlign: TextAlign.center,
           ),
+          gapH12,
           PrimaryTextButton(
             text: 'Pesquisar novamente'.hardcoded,
             icon: const PlatformIcon(

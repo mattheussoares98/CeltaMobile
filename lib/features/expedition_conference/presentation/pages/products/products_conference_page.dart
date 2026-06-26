@@ -84,10 +84,16 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
 
     ref.observeLoading([confirmConferenceControllerProvider]);
 
-    return PopScope(
-      canPop: scannedProducts.isEmpty,
-      onPopInvokedWithResult: (didPop, _) async {
-        if (didPop) return;
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      onPopInvokedWithResult: () async {
+        if (scannedProducts.isEmpty) {
+          if (context.mounted) {
+            context.pop();
+          }
+          return;
+        }
 
         if (scannedProducts.any((x) => x.Quantity > 0)) {
           bool? pressed = await showAlertDialog(
@@ -103,61 +109,62 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           if (pressed == true && context.mounted) {
             context.pop();
           }
+        } else {
+          if (context.mounted) {
+            context.pop();
+          }
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Consumer(
-            builder: (_, ref, _) {
-              return DefaultAppBarTitle(
-                title:
-                    '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                        .hardcoded,
-              );
-            },
-          ),
-        ),
-        body: OptimazedAsyncValueWidget(
-          provider: expeditionConferenceControllerProvider(
-            widget.expeditionControlCode,
-          ),
-          tryAgain: () => ref.invalidate(
-            expeditionConferenceControllerProvider(
+      appBar: DefaultAppBar(
+        title:
+            '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
+                .hardcoded,
+        showSelectedEnterprise: false,
+      ),
+      body: Consumer(
+        builder: (_, ref, _) {
+          return OptimazedAsyncValueWidget(
+            provider: expeditionConferenceControllerProvider(
               widget.expeditionControlCode,
             ),
-          ),
-          child:
-              ref.watch(
-                confirmConferenceControllerProvider.select(
-                  (state) => state.hasError,
-                ),
-              )
-              ? TryConfirmAgain(
-                  expeditionControlCode: widget.expeditionControlCode,
-                  stepCode: widget.stepCode,
+            tryAgain: () => ref.invalidate(
+              expeditionConferenceControllerProvider(
+                widget.expeditionControlCode,
+              ),
+            ),
+            child:
+                ref.watch(
+                  confirmConferenceControllerProvider.select(
+                    (state) => state.hasError,
+                  ),
                 )
-              : Consumer(
-                  builder: (_, ref, _) {
-                    return IndexedStack(
-                      index: ref.watch(pageIndexStateControllerProvider),
-                      children: [
-                        PendingProductsPage(
-                          focusNode: searchProductFocusNode,
-                          searchProductController: searchProductController,
-                          enterpriseCode: widget.enterpriseCode,
-                          expeditionControlCode: widget.expeditionControlCode,
-                        ),
-                        ConferedProductsPage(
-                          expeditionControlCode: widget.expeditionControlCode,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-        ),
-        bottomNavigationBar: BottomNavBar(
-          expeditionControlCode: widget.expeditionControlCode,
-        ),
+                ? TryConfirmAgain(
+                    expeditionControlCode: widget.expeditionControlCode,
+                    stepCode: widget.stepCode,
+                  )
+                : Consumer(
+                    builder: (_, ref, _) {
+                      return IndexedStack(
+                        index: ref.watch(pageIndexStateControllerProvider),
+                        children: [
+                          PendingProductsPage(
+                            focusNode: searchProductFocusNode,
+                            searchProductController: searchProductController,
+                            enterpriseCode: widget.enterpriseCode,
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                          ConferedProductsPage(
+                            expeditionControlCode: widget.expeditionControlCode,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavBar(
+        expeditionControlCode: widget.expeditionControlCode,
       ),
     );
   }

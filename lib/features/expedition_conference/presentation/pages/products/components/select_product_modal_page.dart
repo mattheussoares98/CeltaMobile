@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,9 +26,8 @@ class SelectProductModalPage extends ConsumerWidget {
         physics: const ClampingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
-            child: Text(
+            child: DefaultText.titleMedium(
               'Selecione o produto que deseja confirmar'.hardcoded,
-              style: context.theme.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
           ),

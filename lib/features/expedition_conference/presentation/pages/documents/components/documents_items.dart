@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DocumentsItems extends StatelessWidget {
   final List<ExpeditionDocumentEntity> documents;
@@ -50,41 +49,39 @@ class _DocumentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {
-            context.goNamed(
-              Routes.expeditionConferenceProducts.name,
-              pathParameters: {
-                'expeditionControlCode':
-                    document.ExpeditionControlCode.toString(),
-                'stepCode': document.StepCode.toString(),
-                'documentNumber': document.DocumentNumber.toString(),
-                'enterpriseCode': enterpriseCode.toString(),
-              },
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleAndSubTitle(
-                  title: 'Documento'.hardcoded,
-                  subTitle: document.DocumentNumber,
-                ),
-                TitleAndSubTitle(
-                  title: 'Etapa'.hardcoded,
-                  subTitle: document.StepName,
-                ),
-                TitleAndSubTitle(
-                  title: 'Origem'.hardcoded,
-                  subTitle: document.OriginTypeString,
-                ),
-              ],
-            ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          context.goNamed(
+            Routes.expeditionConferenceProducts.name,
+            pathParameters: {
+              'expeditionControlCode':
+                  document.ExpeditionControlCode.toString(),
+              'stepCode': document.StepCode.toString(),
+              'documentNumber': document.DocumentNumber.toString(),
+              'enterpriseCode': enterpriseCode.toString(),
+            },
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TitleAndSubTitle(
+                title: 'Documento'.hardcoded,
+                subTitle: document.DocumentNumber,
+              ),
+              TitleAndSubTitle(
+                title: 'Etapa'.hardcoded,
+                subTitle: document.StepName,
+              ),
+              TitleAndSubTitle(
+                title: 'Origem'.hardcoded,
+                subTitle: document.OriginTypeString,
+              ),
+            ],
           ),
         ),
       ),

@@ -12,54 +12,36 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return BottomNavigationBar(
+    final pendingCount = ref.watch(
+      expeditionConferenceControllerProvider(
+        expeditionControlCode,
+      ).select((s) => s.value?.pendingProducts.length ?? 0),
+    );
+
+    final scannedCount = ref.watch(
+      expeditionConferenceControllerProvider(
+        expeditionControlCode,
+      ).select((s) => s.value?.scannedProducts.length ?? 0),
+    );
+
+    return DefaultBottomNavigationBar(
       currentIndex: ref.watch(pageIndexStateControllerProvider),
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
       items: [
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Pendentes'.hardcoded,
-          icon: Badge(
-            label: Consumer(
-              builder: (_, ref, _) {
-                return Text(
-                  ref
-                      .watch(
-                        expeditionConferenceControllerProvider(
-                          expeditionControlCode,
-                        ).select((s) => s.value?.pendingProducts.length ?? 0),
-                      )
-                      .toString(),
-                );
-              },
-            ),
-            offset: const Offset(8, -6),
-            child: const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
-              materialIcon: Icons.error,
-            ),
+          badgeLabel: pendingCount.toString(),
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
+            materialIcon: Icons.error,
           ),
         ),
-        BottomNavigationBarItem(
+        DefaultBottomNavigationBarItem(
           label: 'Conferidos'.hardcoded,
-          icon: Badge(
-            label: Consumer(
-              builder: (_, ref, _) {
-                return Text(
-                  ref
-                      .watch(
-                        expeditionConferenceControllerProvider(
-                          expeditionControlCode,
-                        ).select((s) => s.value?.scannedProducts.length ?? 0),
-                      )
-                      .toString(),
-                );
-              },
-            ),
-            offset: const Offset(8, -6),
-            child: const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.checkmark_seal,
-              materialIcon: Icons.verified_rounded,
-            ),
+          badgeLabel: scannedCount.toString(),
+          platformIcon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.checkmark_seal,
+            materialIcon: Icons.verified_rounded,
           ),
         ),
       ],
