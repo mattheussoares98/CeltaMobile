@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/reports/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReportsPage extends ConsumerWidget {
   const ReportsPage({super.key});
@@ -19,11 +18,10 @@ class ReportsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
-      onRefresh: onRefresh,
+      onRefresh: onRefresh, //TODO use a local loading while it is loading
       appBar: DefaultAppBar(
         title: 'Relatórios'.hardcoded,
-        showSelectedEnterprise: true,
+        showSelectedEnterprise: false,
       ),
       body: Consumer(
         builder: (context, ref, child) {
