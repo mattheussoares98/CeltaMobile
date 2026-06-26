@@ -62,9 +62,6 @@ class DefaultTextFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: Sizes.p4),
       child: TextFormField(
-        scrollPadding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
         key: key,
         textInputAction: textInputAction,
         onEditingComplete: onEditingComplete,
