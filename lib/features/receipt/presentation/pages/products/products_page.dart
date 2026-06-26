@@ -120,13 +120,10 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
 
     const horizontalPadding = EdgeInsets.symmetric(horizontal: Sizes.p4);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppBarTitle(
-          receipt: receiptState,
-          enterpriseCode: widget.enterpriseCode,
-        ),
-      ),
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      appBar: DefaultAppBar(titleWidget: AppBarTitle(receipt: receiptState)),
       floatingActionButton: AnimatedBuilder(
         animation:
             context.theme.platform == TargetPlatform.android ||

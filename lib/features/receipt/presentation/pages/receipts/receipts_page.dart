@@ -32,14 +32,17 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
       selectedIndexUpdateObservationsStateControllerProvider,
     ]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: DefaultAppBarTitle(title: 'Recebimentos'.hardcoded),
-        actions: [
-          ReloadIconButton(
-            provider: receiptsStateControllerProvider(widget.enterpriseCode),
-          ),
-        ],
+    Future<void> onRefresh() async {
+      ref.invalidate(receiptsStateControllerProvider(widget.enterpriseCode));
+    }
+
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Recebimentos'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
         builder: (context, ref, child) {
@@ -47,69 +50,60 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
             value: ref.watch(
               receiptsStateControllerProvider(widget.enterpriseCode),
             ),
-            tryAgain: () => ref.invalidate(
-              receiptsStateControllerProvider(widget.enterpriseCode),
-            ),
+            tryAgain: onRefresh,
             data: (receipts) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(
-                    receiptsStateControllerProvider(widget.enterpriseCode),
-                  );
-                },
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(Sizes.p4),
-                      child: DefaultTextFormField(
-                        controller: filterReceiptController,
-                        hintText: 'Número|Emitente|Status|Observação'.hardcoded,
-                        labelText: 'Filtrar'.hardcoded,
-                      ),
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(Sizes.p4),
+                    child: DefaultTextFormField(
+                      controller: filterReceiptController,
+                      hintText: 'Número|Emitente|Status|Observação'.hardcoded,
+                      labelText: 'Filtrar'.hardcoded,
                     ),
-                    Expanded(
-                      child: AnimatedBuilder(
-                        animation: filterReceiptController,
-                        builder: (_, _) {
-                          final lowerCaseController = filterReceiptController
-                              .text
-                              .toLowerCase();
-                          final filteredReceipts = receipts
-                              .where(
-                                (e) =>
-                                    e.Numero_ProcRecebDoc.toString().contains(
-                                      lowerCaseController,
-                                    ) ||
-                                    e.status.description.toLowerCase().contains(
-                                      lowerCaseController,
-                                    ) ||
-                                    e.Observacoes_ProcRecebDoc.toString()
-                                        .toLowerCase()
-                                        .contains(lowerCaseController) ||
-                                    e.EmitterName.toString()
-                                        .toLowerCase()
-                                        .contains(lowerCaseController),
-                              )
-                              .toList();
-                          return ResponsiveListFlow(
-                            itemCount: filteredReceipts.length,
-                            itemBuilder: (_, index) {
-                              final receipt = filteredReceipts[index];
+                  ),
+                  Expanded(
+                    child: AnimatedBuilder(
+                      animation: filterReceiptController,
+                      builder: (_, _) {
+                        final lowerCaseController = filterReceiptController
+                            .text
+                            .toLowerCase();
+                        final filteredReceipts = receipts
+                            .where(
+                              (e) =>
+                                  e.Numero_ProcRecebDoc.toString().contains(
+                                    lowerCaseController,
+                                  ) ||
+                                  e.status.description.toLowerCase().contains(
+                                    lowerCaseController,
+                                  ) ||
+                                  e.Observacoes_ProcRecebDoc.toString()
+                                      .toLowerCase()
+                                      .contains(lowerCaseController) ||
+                                  e.EmitterName.toString()
+                                      .toLowerCase()
+                                      .contains(lowerCaseController),
+                            )
+                            .toList();
+                        return ResponsiveListFlow(
+                          itemCount: filteredReceipts.length,
+                          itemBuilder: (_, index) {
+                            final receipt = filteredReceipts[index];
 
-                              return ReceiptItem(
-                                key: ValueKey(receipt.Numero_ProcRecebDoc),
-                                receipt: receipt,
-                                index: index,
-                                enterpriseCode: widget.enterpriseCode,
-                                observationsController: observationsController,
-                              );
-                            },
-                          );
-                        },
-                      ),
+                            return ReceiptItem(
+                              key: ValueKey(receipt.Numero_ProcRecebDoc),
+                              receipt: receipt,
+                              index: index,
+                              enterpriseCode: widget.enterpriseCode,
+                              observationsController: observationsController,
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
             },
           );

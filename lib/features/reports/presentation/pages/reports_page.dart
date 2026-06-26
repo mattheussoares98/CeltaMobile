@@ -13,31 +13,34 @@ class ReportsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Relatórios'.hardcoded),
-        actions: [ReloadIconButton(provider: reportsStateControllerProvider)],
+    Future<void> onRefresh() async {
+      ref.invalidate(reportsStateControllerProvider);
+    }
+
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      onRefresh: onRefresh,
+      appBar: DefaultAppBar(
+        title: 'Relatórios'.hardcoded,
+        showSelectedEnterprise: true,
       ),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
             value: ref.watch(reportsStateControllerProvider),
-            tryAgain: () => ref.invalidate(reportsStateControllerProvider),
+            tryAgain: onRefresh,
             data: (reports) {
-              return RefreshIndicator(
-                onRefresh: () async =>
-                    ref.invalidate(reportsStateControllerProvider),
-                child: ResponsiveListFlow(
-                  itemCount: reports.length,
-                  itemBuilder: (_, index) {
-                    final report = reports[index];
+              return ResponsiveListFlow(
+                itemCount: reports.length,
+                itemBuilder: (_, index) {
+                  final report = reports[index];
 
-                    return _ReportItem(
-                      key: ValueKey(report.Code),
-                      report: report,
-                    );
-                  },
-                ),
+                  return _ReportItem(
+                    key: ValueKey(report.Code),
+                    report: report,
+                  );
+                },
               );
             },
           );
