@@ -27,12 +27,14 @@ class LastSavedRequestsNumbers extends ConsumerWidget {
       lastSavedRequestNumber,
     );
 
-    return TitleAndSubTitle(
-      title:
-          'Último(s) pedido(s) ${screenWidth > Breakpoint.tablet ? "salvo(s)" : ""}'
-              .hardcoded,
-      subTitle: requestCodes.join('|'),
-      subTitleStyle: context.theme.textTheme.titleSmall,
+    return FittedBox(
+      child: TitleAndSubTitle(
+        title:
+            'Último(s) pedido(s) ${screenWidth > Breakpoint.tablet ? "salvo(s)" : ""}'
+                .hardcoded,
+        subTitle: requestCodes.join('|'),
+        subTitleStyle: context.theme.textTheme.titleSmall,
+      ),
     );
   }
 }
