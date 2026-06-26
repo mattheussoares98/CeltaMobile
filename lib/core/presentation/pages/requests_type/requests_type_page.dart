@@ -26,7 +26,7 @@ class RequestsTypePage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: () async => ref.invalidate(provider),
+      onRefresh: () => ref.refresh(provider.future),
       appBar: DefaultAppBar(
         title: 'Modelos de pedido'.hardcoded,
         showSelectedEnterprise: true,
@@ -84,22 +84,19 @@ class RequestsTypePage extends ConsumerWidget {
                 );
               }
 
-              return RefreshIndicator(
-                onRefresh: () async => ref.invalidate(provider),
-                child: ResponsiveListFlow(
-                  itemCount: sortedRequests.length,
-                  itemBuilder: (_, index) {
-                    final request = sortedRequests[index];
+              return ResponsiveListFlow(
+                itemCount: sortedRequests.length,
+                itemBuilder: (_, index) {
+                  final request = sortedRequests[index];
 
-                    return _RequestTypeItem(
-                      key: ValueKey(request.code),
-                      request: request,
-                      onTap: () => onTap(ref, request),
-                      enterpriseCode: enterpriseCode,
-                      module: module,
-                    );
-                  },
-                ),
+                  return _RequestTypeItem(
+                    key: ValueKey(request.code),
+                    request: request,
+                    onTap: () => onTap(ref, request),
+                    enterpriseCode: enterpriseCode,
+                    module: module,
+                  );
+                },
               );
             },
           );

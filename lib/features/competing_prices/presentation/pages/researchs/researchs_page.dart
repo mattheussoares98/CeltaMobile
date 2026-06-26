@@ -16,7 +16,7 @@ class ResearchsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      onRefresh: () async => ref.invalidate(provider),
+      onRefresh: () => ref.refresh(provider.future),
       appBar: DefaultAppBar(
         title: 'Pesquisas cadastradas'.hardcoded,
         showSelectedEnterprise: true,
@@ -30,21 +30,16 @@ class ResearchsPage extends ConsumerWidget {
             data: (researchs) {
               researchs.sort((a, b) => a.Code.compareTo(b.Code));
 
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(provider);
+              return ResponsiveListFlow(
+                itemCount: researchs.length,
+                itemBuilder: (context, index) {
+                  final research = researchs[index];
+                  return ResearchItem(
+                    key: ValueKey(research.Code),
+                    research: research,
+                    enterpriseCode: enterpriseCode,
+                  );
                 },
-                child: ResponsiveListFlow(
-                  itemCount: researchs.length,
-                  itemBuilder: (context, index) {
-                    final research = researchs[index];
-                    return ResearchItem(
-                      key: ValueKey(research.Code),
-                      research: research,
-                      enterpriseCode: enterpriseCode,
-                    );
-                  },
-                ),
               );
             },
           );

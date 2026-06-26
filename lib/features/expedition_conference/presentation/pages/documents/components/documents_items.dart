@@ -8,32 +8,25 @@ import 'package:go_router/go_router.dart';
 
 class DocumentsItems extends StatelessWidget {
   final List<ExpeditionDocumentEntity> documents;
-  final VoidCallback? onRefresh;
   final int enterpriseCode;
   const DocumentsItems({
     super.key,
     required this.documents,
-    required this.onRefresh,
     required this.enterpriseCode,
   });
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        onRefresh?.call();
+    return ResponsiveListFlow(
+      itemCount: documents.length,
+      itemBuilder: (_, index) {
+        final document = documents[index];
+        return _DocumentItem(
+          key: ValueKey(document.DocumentNumber),
+          document: document,
+          enterpriseCode: enterpriseCode,
+        );
       },
-      child: ResponsiveListFlow(
-        itemCount: documents.length,
-        itemBuilder: (_, index) {
-          final document = documents[index];
-          return _DocumentItem(
-            key: ValueKey(document.DocumentNumber),
-            document: document,
-            enterpriseCode: enterpriseCode,
-          );
-        },
-      ),
     );
   }
 }

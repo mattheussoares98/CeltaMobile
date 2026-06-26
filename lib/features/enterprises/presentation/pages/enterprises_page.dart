@@ -3,10 +3,10 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class EnterprisesPage extends ConsumerWidget {
   final String nextRoute;
@@ -17,6 +17,7 @@ class EnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      onRefresh: () => ref.refresh(enterprisesStateControllerProvider().future),
       appBar: DefaultAppBar(
         title: 'Empresas'.hardcoded,
         showSelectedEnterprise: false,
@@ -25,20 +26,16 @@ class EnterprisesPage extends ConsumerWidget {
         value: ref.watch((enterprisesStateControllerProvider())),
         tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),
         data: (enterprises) {
-          return RefreshIndicator(
-            onRefresh: () async =>
-                ref.invalidate(enterprisesStateControllerProvider),
-            child: ListView.builder(
-              itemCount: enterprises.length,
-              itemBuilder: (_, index) {
-                final enterprise = enterprises[index];
-                return _EnterpriseItem(
-                  key: ValueKey(enterprise.Code),
-                  nextRoute: nextRoute,
-                  enterprise: enterprise,
-                );
-              },
-            ),
+          return ListView.builder(
+            itemCount: enterprises.length,
+            itemBuilder: (_, index) {
+              final enterprise = enterprises[index];
+              return _EnterpriseItem(
+                key: ValueKey(enterprise.Code),
+                nextRoute: nextRoute,
+                enterprise: enterprise,
+              );
+            },
           );
         },
       ),

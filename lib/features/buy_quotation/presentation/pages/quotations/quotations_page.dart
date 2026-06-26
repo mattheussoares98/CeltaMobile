@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/pages/quotations/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/pages/quotations/components/components.dart';
 
 class QuotationsPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -18,8 +17,8 @@ class QuotationsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      onRefresh: () async => ref.invalidate(
-        buyQuotationsStateControllerProvider(enterpriseCode),
+      onRefresh: () => ref.refresh(
+        buyQuotationsStateControllerProvider(enterpriseCode).future,
       ),
       appBar: DefaultAppBar(
         title: 'Cotações'.hardcoded,

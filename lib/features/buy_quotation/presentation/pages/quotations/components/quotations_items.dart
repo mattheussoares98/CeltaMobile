@@ -21,11 +21,9 @@ class QuotationsItems extends ConsumerWidget {
           ref.invalidate(buyQuotationsStateControllerProvider(enterpriseCode)),
       data: (quotations) {
         return RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(
-              buyQuotationsStateControllerProvider(enterpriseCode),
-            );
-          },
+          onRefresh: () => ref.refresh(
+            buyQuotationsStateControllerProvider(enterpriseCode).future,
+          ),
           child: ResponsiveListFlow(
             padding: const EdgeInsets.only(bottom: Sizes.p64),
             itemCount: quotations.length,

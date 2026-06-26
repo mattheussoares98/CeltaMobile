@@ -19,8 +19,8 @@ class DocumentsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      onRefresh: () async => ref.invalidate(
-        expeditionDocumentsStateControllerProvider(enterpriseCode),
+      onRefresh: () => ref.refresh(
+        expeditionDocumentsStateControllerProvider(enterpriseCode).future,
       ),
       appBar: DefaultAppBar(
         title: 'Documentos'.hardcoded,
@@ -40,7 +40,6 @@ class DocumentsPage extends ConsumerWidget {
 
               return DocumentsItems(
                 documents: documents,
-                onRefresh: onRefresh,
                 enterpriseCode: enterpriseCode,
               );
             },

@@ -8,11 +8,11 @@ import 'package:celta_inventario/features/competing_prices/presentation/controll
 import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class ConcurrentsItems extends ConsumerWidget {
   final ResearchEntity selectedResearch;
@@ -72,30 +72,26 @@ class ConcurrentsItems extends ConsumerWidget {
             b.ConcurrentCode.toString(),
           ),
         );
-        return RefreshIndicator(
-          onRefresh: () async =>
-              ref.invalidate(concurrentsStateControllerProvider),
-          child: ResponsiveListFlow(
-            itemCount: concurrents.length,
-            itemBuilder: (context, index) {
-              final concurrent = concurrents[index];
+        return ResponsiveListFlow(
+          itemCount: concurrents.length,
+          itemBuilder: (context, index) {
+            final concurrent = concurrents[index];
 
-              bool? concurrentBindedInResearch =
-                  selectedResearch.Concurrents?.any(
-                    (e) => e.ConcurrentCode == concurrent.ConcurrentCode,
-                  );
+            bool? concurrentBindedInResearch =
+                selectedResearch.Concurrents?.any(
+                  (e) => e.ConcurrentCode == concurrent.ConcurrentCode,
+                );
 
-              return ConcurrentItem(
-                key: ValueKey(concurrent.ConcurrentCode),
-                onTap: () => onTap(
-                  concurrent: concurrent,
-                  concurrentBindedInResearch: concurrentBindedInResearch,
-                ),
+            return ConcurrentItem(
+              key: ValueKey(concurrent.ConcurrentCode),
+              onTap: () => onTap(
                 concurrent: concurrent,
                 concurrentBindedInResearch: concurrentBindedInResearch,
-              );
-            },
-          ),
+              ),
+              concurrent: concurrent,
+              concurrentBindedInResearch: concurrentBindedInResearch,
+            );
+          },
         );
       },
     );
