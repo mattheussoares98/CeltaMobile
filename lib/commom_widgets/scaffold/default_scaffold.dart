@@ -14,7 +14,7 @@ class BaseScaffold extends StatelessWidget {
     super.key,
     this.showAnnotatedRegion = false,
     this.onPopInvokedWithResult,
-    this.resizeToAvoidBottomInset,
+    this.resizeToAvoidBottomInset = false,
     this.appBar,
     this.refreshProvider,
     this.isScrollable = true,
