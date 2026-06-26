@@ -43,6 +43,7 @@ class ProductsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         showSelectedEnterprise: false,
         subtitle: AppBarTitle(widget: this),

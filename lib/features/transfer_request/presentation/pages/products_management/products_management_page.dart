@@ -46,6 +46,7 @@ class ProductsManagementPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         showSelectedEnterprise: false,
         titleWidget: Column(

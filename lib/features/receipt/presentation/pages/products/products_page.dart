@@ -123,34 +123,22 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(titleWidget: AppBarTitle(receipt: receiptState)),
-      floatingActionButton: AnimatedBuilder(
-        animation:
-            context.theme.platform == TargetPlatform.android ||
-                PlatformUtil.isCupertino
-            ? quantityFocusNode
-            : Listenable.merge([]),
-        builder: (_, _) {
-          final padding = quantityFocusNode.hasFocus ? Sizes.p48 : 0.0;
-          return Padding(
-            padding: EdgeInsets.only(bottom: padding),
-            child: FloatingActionButton(
-              onPressed: () {
-                context.goNamed(
-                  Routes.receiptProductsNotFound.name,
-                  pathParameters: {
-                    'enterpriseCode': widget.enterpriseCode.toString(),
-                    'receiptCode': widget.receiptCode.toString(),
-                  },
-                );
-              },
-              child: const PlatformIcon(
-                cupertinoIcon: CupertinoIcons.add,
-                materialIcon: Icons.add,
-              ),
-            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.goNamed(
+            Routes.receiptProductsNotFound.name,
+            pathParameters: {
+              'enterpriseCode': widget.enterpriseCode.toString(),
+              'receiptCode': widget.receiptCode.toString(),
+            },
           );
         },
+        child: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.add,
+          materialIcon: Icons.add,
+        ),
       ),
       body: Column(
         children: [
@@ -180,7 +168,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     quantityController: quantityController,
                     quantityFocusNode: quantityFocusNode,
                   ),
-                  gapSliverH120,
+                  gapSliverH80,
                 ],
               ),
             ),

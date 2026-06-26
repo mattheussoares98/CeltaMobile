@@ -43,6 +43,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: DefaultAppBar(
         title: "Transferência entre estoques".hardcoded,
         showSelectedEnterprise: true,
