@@ -21,6 +21,7 @@ class DefaultBottomNavigationBarItem {
   final String? badgeLabel;
 }
 
+//TODO check in all pages that is using it if really need a bottom padding page
 class DefaultBottomNavigationBar extends StatelessWidget {
   const DefaultBottomNavigationBar({
     super.key,
