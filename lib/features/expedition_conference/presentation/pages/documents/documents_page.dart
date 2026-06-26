@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/documents/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -19,6 +20,7 @@ class DocumentsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
+      usePadding: false,
       refreshProvider: expeditionDocumentsStateControllerProvider(
         enterpriseCode,
       ),
@@ -26,25 +28,28 @@ class DocumentsPage extends ConsumerWidget {
         title: 'Documentos'.hardcoded,
         showSelectedEnterprise: true,
       ),
-      body: Consumer(
-        builder: (_, ref, _) {
-          return AsyncValueWidget(
-            value: ref.watch(
-              expeditionDocumentsStateControllerProvider(enterpriseCode),
-            ),
-            tryAgain: onRefresh,
-            data: (documents) {
-              if (documents == null || documents.isEmpty) {
-                return EmptyDocumentsMessage(onRefresh: onRefresh);
-              }
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+        child: Consumer(
+          builder: (_, ref, _) {
+            return AsyncValueWidget(
+              value: ref.watch(
+                expeditionDocumentsStateControllerProvider(enterpriseCode),
+              ),
+              tryAgain: onRefresh,
+              data: (documents) {
+                if (documents == null || documents.isEmpty) {
+                  return EmptyDocumentsMessage(onRefresh: onRefresh);
+                }
 
-              return DocumentsItems(
-                documents: documents,
-                enterpriseCode: enterpriseCode,
-              );
-            },
-          );
-        },
+                return DocumentsItems(
+                  documents: documents,
+                  enterpriseCode: enterpriseCode,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
