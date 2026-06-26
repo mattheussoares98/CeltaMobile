@@ -72,9 +72,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         ],
       ),
       body: IndexedStack(index: currentPageIndex, children: pages),
-      bottomNavigationBar: BottomNavBar(
-        enterpriseCode: widget.enterpriseCode,
-      ), //TODO use DefaultBottomNavigationBar
+      bottomNavigationBar: BottomNavBar(enterpriseCode: widget.enterpriseCode),
     );
   }
 }
