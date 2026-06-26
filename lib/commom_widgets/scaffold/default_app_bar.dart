@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DefaultAppBar({
@@ -75,7 +74,10 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidget =
           leading ??
           IconButton(
-            onPressed: context.pop,
+            onPressed: () => Navigator.maybePop(
+              context,
+            ), //!only method that queries the widget tree for active
+            //!PopScopes (to check if canPop is false) before actually popping
             icon: PlatformIcon(
               materialIcon: Icons.arrow_back,
               cupertinoIcon: CupertinoIcons.back,
