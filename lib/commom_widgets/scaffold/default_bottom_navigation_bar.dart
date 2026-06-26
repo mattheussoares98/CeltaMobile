@@ -11,12 +11,14 @@ class DefaultBottomNavigationBarItem {
     this.label,
     this.tooltip,
     this.isValid,
+    this.badgeLabel,
   });
 
   final PlatformIcon platformIcon;
   final String? label;
   final String? tooltip;
   final bool? isValid;
+  final String? badgeLabel;
 }
 
 class DefaultBottomNavigationBar extends StatelessWidget {
@@ -48,6 +50,14 @@ class DefaultBottomNavigationBar extends StatelessWidget {
           isValid: e.isValid == true,
           platformIcon: icon as PlatformIcon,
           isSelected: isSelected,
+        );
+      }
+
+      if (e.badgeLabel != null) {
+        icon = Badge(
+          label: DefaultText(e.badgeLabel!),
+          offset: const Offset(8, -6),
+          child: icon,
         );
       }
 
