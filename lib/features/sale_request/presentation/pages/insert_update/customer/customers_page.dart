@@ -48,15 +48,12 @@ class CustomersPage extends ConsumerWidget {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: searchFieldAndConsumerCustomer),
-          const SearchedCustomersItems(),
-          gapSliverH32,
-        ],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: searchFieldAndConsumerCustomer),
+        const SearchedCustomersItems(),
+        gapSliverH32,
+      ],
     );
   }
 }

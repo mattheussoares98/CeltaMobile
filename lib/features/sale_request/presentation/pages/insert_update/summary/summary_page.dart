@@ -14,74 +14,71 @@ class SummaryPage extends ConsumerWidget {
         (PlatformUtil.isDesktop || PlatformUtil.isWeb) &&
         MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              const SliverToBoxAdapter(child: Summary()),
-              gapSliverH8,
-              if (isDesktop) ...[
-                const SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: DebounceField(
-                          type: DebounceFieldType.observations,
-                        ),
-                      ),
-                      gapW8,
-                      Expanded(
-                        child: DebounceField(
-                          type: DebounceFieldType.instructions,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ] else ...[
-                const SliverToBoxAdapter(
-                  child: DebounceField(type: DebounceFieldType.observations),
-                ),
-                gapSliverH8,
-                const SliverToBoxAdapter(
-                  child: DebounceField(type: DebounceFieldType.instructions),
-                ),
-              ],
-              gapSliverH8,
-              if (isDesktop) ...[
-                const SliverToBoxAdapter(
-                  child: Row(
-                    children: [
-                      Expanded(child: RequestTypeDropDown()),
-                      gapW8,
-                      Expanded(child: SellerDropdown()),
-                    ],
-                  ),
-                ),
-              ] else ...[
-                const SliverToBoxAdapter(child: RequestTypeDropDown()),
-                gapSliverH8,
-                const SliverToBoxAdapter(child: SellerDropdown()),
-              ],
-              gapSliverH8,
+    return Stack(
+      children: [
+        CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(child: Summary()),
+            gapSliverH8,
+            if (isDesktop) ...[
               const SliverToBoxAdapter(
-                child: ResponsiveCenter(child: SelectedCustomer()),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: DebounceField(
+                        type: DebounceFieldType.observations,
+                      ),
+                    ),
+                    gapW8,
+                    Expanded(
+                      child: DebounceField(
+                        type: DebounceFieldType.instructions,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ] else ...[
+              const SliverToBoxAdapter(
+                child: DebounceField(type: DebounceFieldType.observations),
               ),
               gapSliverH8,
-              const ItemsPage(isSliver: true),
-              gapSliverH80,
+              const SliverToBoxAdapter(
+                child: DebounceField(type: DebounceFieldType.instructions),
+              ),
             ],
-          ),
-          const Positioned(
-            bottom: Sizes.p16,
-            right: 0,
-            left: 0,
-            child: ProcessAndSaveButtons(),
-          ),
-        ],
-      ),
+            gapSliverH8,
+            if (isDesktop) ...[
+              const SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    Expanded(child: RequestTypeDropDown()),
+                    gapW8,
+                    Expanded(child: SellerDropdown()),
+                  ],
+                ),
+              ),
+            ] else ...[
+              const SliverToBoxAdapter(child: RequestTypeDropDown()),
+              gapSliverH8,
+              const SliverToBoxAdapter(child: SellerDropdown()),
+            ],
+            gapSliverH8,
+            const SliverToBoxAdapter(
+              child: ResponsiveCenter(child: SelectedCustomer()),
+            ),
+            gapSliverH8,
+            const ItemsPage(isSliver: true),
+            gapSliverH80,
+          ],
+        ),
+        const Positioned(
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: ProcessAndSaveButtons(),
+        ),
+      ],
     );
   }
 }
