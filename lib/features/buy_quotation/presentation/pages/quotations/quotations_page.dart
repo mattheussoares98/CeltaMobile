@@ -16,7 +16,6 @@ class QuotationsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      usePadding: false,
       refreshProvider: buyQuotationsStateControllerProvider(enterpriseCode),
       appBar: DefaultAppBar(
         title: 'Cotações'.hardcoded,
