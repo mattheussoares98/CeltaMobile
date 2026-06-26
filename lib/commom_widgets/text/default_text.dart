@@ -117,7 +117,7 @@ class DefaultText extends StatelessWidget {
     textAlign: textAlign,
     color: color,
     textType: TextType.titleLarge,
-    fontWeight: fontWeight ?? FontWeight.w600,
+    fontWeight: fontWeight ?? FontWeight.bold,
     fontStyle: fontStyle,
   );
 
