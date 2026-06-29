@@ -130,6 +130,7 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
 
                   return ResponsiveListFlow(
                     isSliver: true,
+                    maxItemWidth: double.infinity,
                     itemCount: totalRecords,
                     itemBuilder: (context, index) {
                       final item = saleRequests?.collection[index];
@@ -137,7 +138,10 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
                         enterpriseCode: widget.enterpriseCode,
                         saleRequestId: item!.Id!,
                       );
-                      return RequestSummary(args: args);
+                      return RequestSummary(
+                        args: args,
+                        showPrintAndPdfButtons: true,
+                      );
                     },
                   );
                 },
