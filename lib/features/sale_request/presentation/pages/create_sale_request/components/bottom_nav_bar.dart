@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
   final int enterpriseCode;
@@ -15,29 +14,29 @@ class BottomNavBar extends ConsumerWidget {
     final index = ref.watch(pageIndexStateControllerProvider);
 
     final isCustomerValid = ref.watch(
-      pendingSaleRequestStateControllerProvider(enterpriseCode).select(
-        (state) => state.value?.customer != null,
-      ),
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((state) => state.value?.customer != null),
     );
 
     final productsLength = ref.watch(
-      pendingSaleRequestStateControllerProvider(enterpriseCode).select(
-        (s) => s.value?.cart.length ?? 0,
-      ),
+      pendingSaleRequestStateControllerProvider(
+        enterpriseCode,
+      ).select((s) => s.value?.cart.length ?? 0),
     );
 
-    return DefaultBottomNavigationBar(
+    return BaseBottomNavigationBar(
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
       currentIndex: index,
       items: [
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Inserir produtos'.hardcoded,
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.cart_fill,
             materialIcon: Icons.add_shopping_cart,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Cliente'.hardcoded,
           isValid: isCustomerValid,
           platformIcon: const PlatformIcon(
@@ -45,7 +44,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.person,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Carrinho'.hardcoded,
           badgeLabel: productsLength > 0 ? productsLength.toString() : null,
           platformIcon: const PlatformIcon(

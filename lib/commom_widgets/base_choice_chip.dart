@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 /// PERFORMANCE: This widget chooses between a Segmented Control and a Wrap
 /// layout based on available width to prevent text overflow and unreadable labels.
-class DefaultChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
-  const DefaultChoiceChip({
+class BaseChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
+  const BaseChoiceChip({
     super.key,
     required this.items,
     required this.selectedValue,

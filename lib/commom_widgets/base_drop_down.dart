@@ -6,8 +6,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultDropDown<T> extends StatelessWidget {
-  const DefaultDropDown({
+class BaseDropDown<T> extends StatelessWidget {
+  const BaseDropDown({
     required this.onChanged,
     required this.items,
     required this.selectedItem,

@@ -59,7 +59,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         children: [
           Consumer(
             builder: (_, ref, _) {
-              return DefaultSearchProducts(
+              return BaseSearchProducts(
                 searchProductKey: searchProductKey,
                 searchProducts: searchProducts,
                 searchValueController: searchProductController,

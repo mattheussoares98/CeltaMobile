@@ -22,7 +22,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
       children: [
         Expanded(
           flex: 2,
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: quantityController,
             maxLength: 10,
             autovalidateMode: AutovalidateMode.onUserInteraction,

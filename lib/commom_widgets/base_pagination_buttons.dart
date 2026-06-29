@@ -10,12 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class DefaultPaginationButtons<T> extends ConsumerWidget {
+class BasePaginationButtons<T> extends ConsumerWidget {
   final void Function(int page) onChangePage;
   final int enterpriseCode;
   final ProviderListenable<AsyncValue<dynamic>> provider;
 
-  const DefaultPaginationButtons({
+  const BasePaginationButtons({
     super.key,
     required this.onChangePage,
     required this.enterpriseCode,

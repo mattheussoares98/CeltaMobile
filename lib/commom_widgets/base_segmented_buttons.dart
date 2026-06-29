@@ -5,9 +5,9 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultSegmentedButtons<T extends SelectableItem<T>>
+class BaseSegmentedButtons<T extends SelectableItem<T>>
     extends StatelessWidget {
-  const DefaultSegmentedButtons({
+  const BaseSegmentedButtons({
     super.key,
     required this.items,
     required this.selectedValue,

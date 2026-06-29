@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FieldsAndConfirm extends ConsumerWidget {
   final GlobalKey<FormState> fieldsFormKey;
@@ -84,7 +83,7 @@ class FieldsAndConfirm extends ConsumerWidget {
           Expanded(
             child: Form(
               key: quantityFormKey,
-              child: DefaultTextFormField(
+              child: BaseTextFormField(
                 focusNode: quantityFocusNode,
                 controller: quantityController,
                 labelText: 'Quantidade'.hardcoded,
@@ -123,7 +122,7 @@ class FieldsAndConfirm extends ConsumerWidget {
           ),
           gapW8,
           Expanded(
-            child: DefaultTextFormField(
+            child: BaseTextFormField(
               onTap: () {
                 if (costFocusNode.hasFocus) {
                   return;

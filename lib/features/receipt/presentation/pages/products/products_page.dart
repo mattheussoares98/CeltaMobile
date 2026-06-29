@@ -124,7 +124,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       isScrollable: false,
       usePadding: false,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(titleWidget: AppBarTitle(receipt: receiptState)),
+      appBar: BaseAppBar(titleWidget: AppBarTitle(receipt: receiptState)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.goNamed(

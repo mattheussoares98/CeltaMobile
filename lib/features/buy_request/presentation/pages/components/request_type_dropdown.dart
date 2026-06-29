@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RequestTypeDropdown extends ConsumerWidget {
   final bool enabled;
@@ -87,10 +86,10 @@ class _RequestDropdown extends ConsumerWidget {
                   );
             }
 
-            return DefaultDropDown<BSFRequestTypeEntity?>(
+            return BaseDropDown<BSFRequestTypeEntity?>(
               adviceMessage: hasSelectedEnterprises
                   ? 'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
-                      .hardcoded
+                        .hardcoded
                   : null,
               onChanged: enabled ? update : null,
               items: requests

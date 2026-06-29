@@ -29,7 +29,7 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(Sizes.p8),
-            child: DefaultTextFormField(
+            child: BaseTextFormField(
               controller: widget.filterEnterpriseNameController,
               onChanged: (_) {},
               hintText: "Filtrar empresa".hardcoded,

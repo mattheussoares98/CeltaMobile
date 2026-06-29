@@ -37,7 +37,7 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
       loginControllerProvider.select((s) => s.isLoading),
     );
 
-    return DefaultTextFormField(
+    return BaseTextFormField(
       enabled: !isLoading,
       focusNode: widget.passwordFocusNode,
       controller: widget.passwordController,

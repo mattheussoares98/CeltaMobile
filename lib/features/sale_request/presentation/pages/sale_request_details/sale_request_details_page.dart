@@ -43,7 +43,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
       ],
       child: BaseScaffold(
         isScrollable: false,
-        appBar: DefaultAppBar(
+        appBar: BaseAppBar(
           title: 'Detalhes do pedido'.hardcoded,
           showSelectedEnterprise: true,
           actions: [

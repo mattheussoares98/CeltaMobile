@@ -30,7 +30,7 @@ class BuyersDropdown extends ConsumerWidget {
       tryAgain: () => ref.invalidate(buyersStateControllerProvider),
       data: (buyers) {
         return SliverToBoxAdapter(
-          child: DefaultDropDown<BuyerEntity?>(
+          child: BaseDropDown<BuyerEntity?>(
             onChanged: (buyer) {
               ref
                   .read(

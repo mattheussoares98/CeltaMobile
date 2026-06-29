@@ -1,8 +1,7 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 
 class PasswordConfirmationField extends StatelessWidget {
   final TextEditingController passwordConfirmationController;
@@ -18,7 +17,7 @@ class PasswordConfirmationField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       controller: passwordConfirmationController,
       maxLength: 20,
       hintText: 'Confirmar senha'.hardcoded,

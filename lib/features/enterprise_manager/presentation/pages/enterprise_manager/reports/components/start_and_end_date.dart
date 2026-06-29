@@ -57,7 +57,7 @@ class _SelectPeriod extends ConsumerWidget {
             Flexible(
               child: Consumer(
                 builder: (_, ref, _) {
-                  return DefaultDropDown<int>(
+                  return BaseDropDown<int>(
                     onChanged: (month) => ref
                         .read(reportPeriodStateControllerProvider.notifier)
                         .update(startMonth: month),
@@ -84,7 +84,7 @@ class _SelectPeriod extends ConsumerWidget {
               flex: 2,
               child: Consumer(
                 builder: (_, ref, _) {
-                  return DefaultDropDown<int>(
+                  return BaseDropDown<int>(
                     onChanged: (year) => ref
                         .read(reportPeriodStateControllerProvider.notifier)
                         .update(startYear: year),

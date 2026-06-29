@@ -22,7 +22,7 @@ class ZipField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       controller: zipController,
       enabled: !isLoading,
       focusNode: zipFocusNode,

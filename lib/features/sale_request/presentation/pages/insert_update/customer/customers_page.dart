@@ -27,7 +27,7 @@ class CustomersPage extends ConsumerWidget {
                 (s) => s.value?.searchByPersonalizedCode == true,
               ),
             );
-            return DefaultSwitch(
+            return BaseSwitch(
               title: 'Pesquisar pelo código personalizado'.hardcoded,
               value: searchByPersonalizedCode,
               onChanged: (_) {

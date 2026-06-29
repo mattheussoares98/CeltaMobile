@@ -30,20 +30,20 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
       ),
     );
 
-    return DefaultBottomNavigationBar(
+    return BaseBottomNavigationBar(
       currentIndex: pageIndex,
       onTap: (index) => ref
           .read(pageIndexStateControllerProvider.notifier)
           .updateIndex(index),
       items: [
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.search,
             materialIcon: Icons.search,
           ),
           label: 'Produtos'.hardcoded,
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Cliente'.hardcoded,
           isValid: isCustomerValid,
           platformIcon: const PlatformIcon(
@@ -51,7 +51,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.person,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.cart,
@@ -59,7 +59,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           badgeLabel: quantity > 0 ? quantity.toString() : null,
           label: 'Itens'.hardcoded,
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           isValid: isPaymentValid,
           showSuccessBadge: false,
           platformIcon: const PlatformIcon(
@@ -68,7 +68,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
           ),
           label: 'Pagamento'.hardcoded,
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.info,
             materialIcon: Icons.info,

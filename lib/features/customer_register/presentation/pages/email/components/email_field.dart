@@ -57,7 +57,7 @@ class _EmailFieldState extends ConsumerState<EmailField> {
       children: [
         Form(
           key: formKey,
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: emailController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             hintText: 'E-mail'.hardcoded,

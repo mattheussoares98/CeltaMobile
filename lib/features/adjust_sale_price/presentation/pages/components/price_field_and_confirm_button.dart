@@ -1,12 +1,11 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PriceFieldAndConfirmButton extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -77,7 +76,7 @@ class _PriceFieldAndConfirmButtonState
           children: [
             Expanded(
               flex: 65,
-              child: DefaultTextFormField(
+              child: BaseTextFormField(
                 autofocus: false,
                 controller: priceController,
                 focusNode: priceFocusNode,

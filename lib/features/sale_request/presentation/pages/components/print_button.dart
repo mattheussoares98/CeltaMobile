@@ -97,7 +97,7 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
 
                     return Column(
                       children: [
-                        DefaultTextFormField(
+                        BaseTextFormField(
                           labelText: 'IP da impressora'.hardcoded,
                           hintText: '192.168.0.1',
                           maxLength: 15,

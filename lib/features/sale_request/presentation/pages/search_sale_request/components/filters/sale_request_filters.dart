@@ -136,7 +136,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
                         },
                       ),
                       gapH8,
-                      DefaultTextFormField(
+                      BaseTextFormField(
                         controller: _codeController,
                         focusNode: _codFocusNode,
                         labelText: 'Código Personalizado'.hardcoded,

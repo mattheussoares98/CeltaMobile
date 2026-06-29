@@ -4,11 +4,11 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class Filters extends ConsumerWidget {
   final int enterpriseCode;
@@ -87,7 +87,7 @@ class Filters extends ConsumerWidget {
             if (!restrictProducts)
               Consumer(
                 builder: (_, ref, _) {
-                  return DefaultSwitch(
+                  return BaseSwitch(
                     title: 'Somente associados'.hardcoded,
                     value: selectedItem.onlyAssociateds,
                     onChanged: (value) {
@@ -102,9 +102,7 @@ class Filters extends ConsumerWidget {
             if (selectedItem.onlyAssociateds)
               Consumer(
                 builder: (_, ref, _) {
-                  return DefaultSegmentedButtons<
-                    SearchProductCompetingPriceType
-                  >(
+                  return BaseSegmentedButtons<SearchProductCompetingPriceType>(
                     selectedValue: selectedItem.searchType,
                     onChanged: (value) {
                       ref

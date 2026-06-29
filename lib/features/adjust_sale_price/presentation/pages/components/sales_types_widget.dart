@@ -49,7 +49,7 @@ class SalesTypeWidget extends ConsumerWidget {
         TitleWidget(title: "Tipo de venda".hardcoded),
         gapH8,
         if (PlatformUtil.isCupertino)
-          DefaultSegmentedButtons<SaleType>(
+          BaseSegmentedButtons<SaleType>(
             items: items,
             selectedValue: selectedSaleType?.value,
             onChanged: updateValue,

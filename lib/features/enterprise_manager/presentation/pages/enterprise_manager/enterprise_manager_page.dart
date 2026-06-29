@@ -108,7 +108,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Gerenciar módulos'.hardcoded,
         showSelectedEnterprise: false,
         actions: const [LogoutButton()],
@@ -155,18 +155,18 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
           );
         },
       ),
-      bottomNavigationBar: DefaultBottomNavigationBar(
+      bottomNavigationBar: BaseBottomNavigationBar(
         onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
         currentIndex: ref.watch(pageIndexStateControllerProvider),
         items: [
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Empresas'.hardcoded,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.list_bullet,
               materialIcon: Icons.list,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Uso'.hardcoded,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.chart_bar,

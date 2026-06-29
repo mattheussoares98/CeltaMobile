@@ -18,7 +18,7 @@ class EnterprisesPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       refreshProvider: enterprisesStateControllerProvider(),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Empresas'.hardcoded,
         showSelectedEnterprise: false,
       ),

@@ -15,7 +15,7 @@ class AppBarTitle extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const DefaultAppBarTitle(),
+        const BaseAppBarTitle(),
         Consumer(
           builder: (_, ref, _) {
             final lastSavedNumber = ref.watch(

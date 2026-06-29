@@ -64,7 +64,7 @@ class PaymentsList extends ConsumerWidget {
                             ),
                           ],
                           gapH8,
-                          DefaultListTile(
+                          BaseListTile(
                             tileColor: pIndex % 2 == 0 ? color : null,
 
                             shape: RoundedRectangleBorder(

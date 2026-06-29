@@ -2,7 +2,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultListTile extends StatelessWidget {
+class BaseListTile extends StatelessWidget {
   final Widget? leading;
   final Widget? title;
   final Widget? subtitle;
@@ -13,7 +13,7 @@ class DefaultListTile extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final bool? dense;
 
-  const DefaultListTile({
+  const BaseListTile({
     super.key,
     this.leading,
     this.title,

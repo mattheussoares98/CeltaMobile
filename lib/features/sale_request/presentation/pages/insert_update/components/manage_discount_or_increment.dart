@@ -220,7 +220,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                   children: [
                     Expanded(
                       flex: 65,
-                      child: DefaultTextFormField(
+                      child: BaseTextFormField(
                         controller: _valueController,
                         focusNode: _focusNode,
                         labelText:
@@ -238,7 +238,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                     gapW8,
                     Flexible(
                       flex: 35,
-                      child: DefaultDropDown<PercentageOrValue>(
+                      child: BaseDropDown<PercentageOrValue>(
                         onChanged: (value) {
                           setState(() {
                             _selectedType = value;

@@ -1,8 +1,7 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
 
 class StatesDropDown extends StatelessWidget {
   const StatesDropDown({
@@ -18,7 +17,7 @@ class StatesDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultDropDown<BrazilStates?>(
+    return BaseDropDown<BrazilStates?>(
       onChanged: null,
       items: BrazilStates.values
           .map(

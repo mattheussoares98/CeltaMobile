@@ -1,9 +1,8 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 
 class QuantityField extends StatelessWidget {
   final VoidCallback insertProduct;
@@ -16,7 +15,7 @@ class QuantityField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       labelText: 'Quantidade'.hardcoded,
       hintText: 'Quantidade'.hardcoded,
       maxLength: 13,

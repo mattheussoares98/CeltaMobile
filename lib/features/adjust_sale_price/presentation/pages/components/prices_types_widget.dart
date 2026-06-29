@@ -33,7 +33,7 @@ class PricesTypesWidget extends ConsumerWidget {
         TitleWidget(title: "Tipo de preço".hardcoded),
         gapH8,
         if (PlatformUtil.isCupertino)
-          DefaultSegmentedButtons<PriceType>(
+          BaseSegmentedButtons<PriceType>(
             items: items,
             selectedValue: selectedPriceType?.value,
             onChanged: unTap,

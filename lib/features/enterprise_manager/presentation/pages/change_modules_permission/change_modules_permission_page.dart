@@ -112,7 +112,7 @@ class _ChangeModulesPermissionPageState
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: isGlobalChange
             ? 'Permissões globais'.hardcoded
             : 'Permissões específicas'.hardcoded,
@@ -139,7 +139,9 @@ class _ChangeModulesPermissionPageState
             value: enterpriseAsync,
             data: (enterprise) {
               if (enterprise == null) {
-                return Center(child: DefaultText('Empresa não encontrada.'.hardcoded));
+                return Center(
+                  child: DefaultText('Empresa não encontrada.'.hardcoded),
+                );
               }
               final modulesToDisplay = _getModulesForScope(enterprise);
               final scopeName = getEnterpriseName(

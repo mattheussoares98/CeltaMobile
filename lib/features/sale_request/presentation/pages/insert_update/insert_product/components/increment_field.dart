@@ -76,7 +76,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
           children: [
             Expanded(
               flex: 4,
-              child: DefaultTextFormField(
+              child: BaseTextFormField(
                 focusNode: _focusNode,
                 controller: _incrementValueController,
                 labelText: 'Valor ${incrementType.symbol}'.hardcoded,
@@ -101,7 +101,7 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
             Expanded(
               flex: 6,
               child: ExcludeFocus(
-                child: DefaultSegmentedButtons(
+                child: BaseSegmentedButtons(
                   items: PercentageOrValue.values,
                   selectedValue: incrementType,
                   onChanged: (value) =>

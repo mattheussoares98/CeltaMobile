@@ -50,7 +50,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Pesquisar produtos'.hardcoded,
         showSelectedEnterprise: true,
       ),
@@ -58,7 +58,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
         children: [
           Consumer(
             builder: (_, ref, _) {
-              return DefaultSearchProducts(
+              return BaseSearchProducts(
                 searchValueController: searchValueController,
                 searchProductKey: searchProductKey,
                 searchProducts: (exactProductCode) =>

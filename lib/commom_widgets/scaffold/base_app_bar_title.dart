@@ -6,9 +6,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DefaultAppBarTitle extends StatelessWidget {
+class BaseAppBarTitle extends StatelessWidget {
   final String? title;
-  const DefaultAppBarTitle({super.key, this.title});
+  const BaseAppBarTitle({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {

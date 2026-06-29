@@ -1,10 +1,9 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConfirmAdjustStock extends ConsumerWidget {
   final TextEditingController quantityController;
@@ -23,7 +22,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
       children: [
         Expanded(
           flex: 2,
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: quantityController,
             maxLength: 10,
             autovalidateMode: AutovalidateMode.onUserInteraction,

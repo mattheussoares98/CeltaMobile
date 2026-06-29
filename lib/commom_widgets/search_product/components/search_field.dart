@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
-import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchField extends ConsumerStatefulWidget {
   final bool? isLoading;
@@ -33,7 +32,7 @@ class SearchField extends ConsumerStatefulWidget {
 }
 
 class _SearchFieldState extends ConsumerState<SearchField>
-    with DefaultSearchProductsMixin {
+    with BaseSearchProductsMixin {
   final LayerLink _layerLink = LayerLink();
   final formKey = GlobalKey<FormState>();
   final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
@@ -70,7 +69,7 @@ class _SearchFieldState extends ConsumerState<SearchField>
                 ? defaultHint
                 : (pref?.name ?? defaultHint);
 
-            return DefaultTextFormField(
+            return BaseTextFormField(
               key: const ValueKey('search_input_field'),
               maxLength: 40,
               onChanged: hasShallowApiImplemented

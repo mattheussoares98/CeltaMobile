@@ -48,7 +48,7 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
   Widget build(BuildContext context) {
     return BaseScaffold(
       isScrollable: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Busca de pedidos'.hardcoded,
         showSelectedEnterprise: true,
       ),
@@ -59,7 +59,7 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
             startController: _startController,
             enterpriseCode: widget.enterpriseCode,
           ),
-          DefaultPaginationButtons(
+          BasePaginationButtons(
             enterpriseCode: widget.enterpriseCode,
             onChangePage: onChangePage,
             provider: saleRequestsStateControllerProvider(

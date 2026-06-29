@@ -14,7 +14,7 @@ class HomePage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       drawer: const CompleteDrawer(),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         showLeading: true,
         leading: Builder(
           builder: (context) => IconButton(

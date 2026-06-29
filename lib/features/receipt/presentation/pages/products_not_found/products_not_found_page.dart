@@ -105,7 +105,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
       refreshProvider: productsNotFoundStateControllerProvider(
         widget.receiptCode,
       ),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Produtos não encontrados'.hardcoded,
         showSelectedEnterprise: true,
       ),

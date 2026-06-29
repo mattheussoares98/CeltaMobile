@@ -27,7 +27,7 @@ class ConcurrentsPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       refreshProvider: researchsStateControllerProvider(enterpriseCode),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
         showSelectedEnterprise: true,
         actions: const [InsertConcurrentButton()],

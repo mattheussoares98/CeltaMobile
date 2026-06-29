@@ -77,7 +77,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
       isScrollable: false,
       appBar: Consumer(
         builder: (context, ref, _) {
-          return DefaultAppBar(
+          return BaseAppBar(
             title: appBarsTitles[ref.watch(pageIndexStateControllerProvider)],
             showSelectedEnterprise: false,
           );
@@ -93,7 +93,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         index: ref.watch(pageIndexStateControllerProvider),
         children: pages,
       ),
-      bottomNavigationBar: DefaultBottomNavigationBar(
+      bottomNavigationBar: BaseBottomNavigationBar(
         currentIndex: ref.watch(pageIndexStateControllerProvider),
         onTap: (index) async {
           final updated = await updateCustomerInProvider(validateField: true);
@@ -106,14 +106,14 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               .updateIndex(index);
         },
         items: [
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Dados'.hardcoded,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.person,
               materialIcon: Icons.person,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Endereço'.hardcoded,
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
@@ -122,7 +122,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               cupertinoIcon: CupertinoIcons.location,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'E-mail'.hardcoded,
             isValid: customer?.Emails != null && customer!.Emails!.isNotEmpty,
             platformIcon: const PlatformIcon(
@@ -130,7 +130,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               cupertinoIcon: CupertinoIcons.mail,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Telefone'.hardcoded,
             isValid: customer?.Telephones?.isNotEmpty ?? false,
             platformIcon: const PlatformIcon(
@@ -138,7 +138,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               cupertinoIcon: CupertinoIcons.phone,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Convênios'.hardcoded,
             isValid: customer?.CustomerCovenants?.isNotEmpty ?? false,
             platformIcon: const PlatformIcon(
@@ -146,7 +146,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
               cupertinoIcon: CupertinoIcons.creditcard,
             ),
           ),
-          DefaultBottomNavigationBarItem(
+          BaseBottomNavigationBarItem(
             label: 'Salvar'.hardcoded,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.check_mark,

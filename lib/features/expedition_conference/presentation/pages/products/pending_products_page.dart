@@ -97,7 +97,7 @@ class PendingProductsPage extends ConsumerWidget {
       children: [
         Consumer(
           builder: (_, ref, _) {
-            return DefaultSearchProducts(
+            return BaseSearchProducts(
               searchProductKey: searchProductKey,
               isLoading:
                   ref.watch(

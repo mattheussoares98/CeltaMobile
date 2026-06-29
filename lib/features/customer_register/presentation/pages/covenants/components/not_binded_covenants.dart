@@ -143,7 +143,7 @@ class _CovenantItem extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 3,
-                      child: DefaultTextFormField(
+                      child: BaseTextFormField(
                         controller: limitController,
                         focusNode: limitFocusNode,
                         labelText: 'Limite R\$'.hardcoded,

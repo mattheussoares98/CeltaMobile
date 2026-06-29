@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:flutter/material.dart';
 
 class DddField extends StatelessWidget {
   const DddField({
@@ -17,7 +16,7 @@ class DddField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       key: const ValueKey('DDD'),
       controller: dddController,
       focusNode: dddFocusNode,

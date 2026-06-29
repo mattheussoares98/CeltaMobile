@@ -33,7 +33,7 @@ class StocksDropdown extends ConsumerWidget {
           ref.invalidate(stockTypeStateControllerProvider(enterpriseCode));
         },
         data: (stocks) {
-          return DefaultDropDown<StockTypeEntity?>(
+          return BaseDropDown<StockTypeEntity?>(
             onChanged: selectedJustificationInternalCode != null
                 ? null
                 : (value) {

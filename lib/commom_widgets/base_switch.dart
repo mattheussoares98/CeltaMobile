@@ -3,11 +3,11 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultSwitch extends StatelessWidget {
+class BaseSwitch extends StatelessWidget {
   final String title;
   final bool value;
   final void Function(bool)? onChanged;
-  const DefaultSwitch({
+  const BaseSwitch({
     super.key,
     required this.title,
     required this.value,

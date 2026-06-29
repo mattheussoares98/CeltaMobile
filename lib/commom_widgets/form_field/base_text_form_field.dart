@@ -5,7 +5,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class DefaultTextFormField extends StatelessWidget {
+class BaseTextFormField extends StatelessWidget {
   final bool? enabled;
   final TextEditingController? controller;
   final void Function(String)? onFieldSubmitted;
@@ -28,7 +28,7 @@ class DefaultTextFormField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
   final Iterable<String>? autofillHints;
-  const DefaultTextFormField({
+  const BaseTextFormField({
     super.key,
     this.maxLength = 50,
     this.controller,

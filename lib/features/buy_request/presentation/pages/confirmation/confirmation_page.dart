@@ -40,7 +40,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
       physics: const ClampingScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: observationsController,
             hintText: 'Observações'.hardcoded,
             labelText: 'Observações'.hardcoded,

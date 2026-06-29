@@ -100,7 +100,7 @@ class InsertProductPage extends ConsumerWidget {
               isScrollable: false,
               usePadding: false,
               resizeToAvoidBottomInset: true,
-              appBar: DefaultAppBar(
+              appBar: BaseAppBar(
                 showSelectedEnterprise: false,
                 title: product.product?.name ?? 'Detalhe do Produto'.hardcoded,
               ),

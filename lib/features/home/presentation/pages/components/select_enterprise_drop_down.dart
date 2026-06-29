@@ -3,9 +3,9 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class SelectEnterpriseDropDown extends ConsumerWidget {
   const SelectEnterpriseDropDown({super.key});
@@ -42,7 +42,7 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
               selectedEnterpriseStateControllerProvider,
             );
             return RepaintBoundary(
-              child: DefaultDropDown<EnterpriseEntity>(
+              child: BaseDropDown<EnterpriseEntity>(
                 hint: Text('Selecione a empresa'.hardcoded),
                 selectedItem: selectedEnterprise,
                 label: selectedEnterprise != null

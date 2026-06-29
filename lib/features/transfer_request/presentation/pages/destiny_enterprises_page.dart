@@ -32,7 +32,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Empresa de destino'.hardcoded,
         showSelectedEnterprise: true,
       ),

@@ -3,8 +3,8 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const DefaultAppBar({
+class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BaseAppBar({
     super.key,
     this.showLeading = true,
     this.leading,
@@ -30,7 +30,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? subtitle;
   final EdgeInsetsGeometry? actionsPadding;
 
-  DefaultAppBar copyWith({
+  BaseAppBar copyWith({
     bool? showLeading,
     Widget? leading,
     String? title,
@@ -42,7 +42,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     bool? showSelectedEnterprise,
     Widget? subtitle,
   }) {
-    return DefaultAppBar(
+    return BaseAppBar(
       key: key,
       showLeading: showLeading ?? this.showLeading,
       leading: leading ?? this.leading,

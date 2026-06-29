@@ -22,7 +22,7 @@ class AdjustCostPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Alterar custo de reposição'.hardcoded,
         showSelectedEnterprise: true,
       ),

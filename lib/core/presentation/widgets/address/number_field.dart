@@ -1,8 +1,7 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
 
 class NumberField extends StatelessWidget {
   final bool isLoading;
@@ -19,7 +18,7 @@ class NumberField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       enabled: !isLoading,
       controller: numberController,
       focusNode: numberFocusNode,

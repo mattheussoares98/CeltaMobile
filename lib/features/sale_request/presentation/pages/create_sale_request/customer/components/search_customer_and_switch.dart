@@ -1,13 +1,12 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 
 class SearchFieldAndSwitch extends ConsumerStatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -55,7 +54,7 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
       children: [
         Form(
           key: widget.formKey,
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: widget.searchController,
             labelText: 'Pesquisar cliente'.hardcoded,
             hintText: searchByPersonalizedCode
@@ -82,7 +81,7 @@ class _SearchFieldAndSwitchState extends ConsumerState<SearchFieldAndSwitch> {
           ),
         ),
         gapH4,
-        DefaultSwitch(
+        BaseSwitch(
           title: 'Pesquisar pelo código personalizado',
           value: searchByPersonalizedCode,
           onChanged: (_) => onTapSwitch(),

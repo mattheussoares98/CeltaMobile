@@ -1,14 +1,13 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/quantity_price_discount/quantity_price_discount.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DiscountFieldAndTypeDropdown extends ConsumerWidget {
   final VoidCallback insertProduct;
@@ -36,7 +35,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                         widget.priceController.text.isEmpty &&
                         widget.product.getPrice > 0;
 
-                    return DefaultTextFormField(
+                    return BaseTextFormField(
                       hintText: 'Desconto unitário'.hardcoded,
                       labelText: 'Desconto unitário'.hardcoded,
                       controller: widget.discountController,
@@ -99,7 +98,7 @@ class DiscountFieldAndTypeDropdown extends ConsumerWidget {
                       ).select((state) => state.discountType),
                     );
 
-                    return DefaultDropDown<PercentageOrValue?>(
+                    return BaseDropDown<PercentageOrValue?>(
                       onChanged: widget.priceController.text.isNotEmpty
                           ? null
                           : (value) {

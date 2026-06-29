@@ -5,9 +5,9 @@ import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class ReceiptItem extends ConsumerStatefulWidget {
   final ReceiptEntity receipt;
@@ -113,7 +113,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 children: [
                   Form(
                     key: formKey,
-                    child: DefaultTextFormField(
+                    child: BaseTextFormField(
                       maxLines: 13,
                       maxLength: 500,
                       controller: widget.observationsController,

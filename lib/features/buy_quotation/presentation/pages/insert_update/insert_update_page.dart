@@ -120,7 +120,7 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
           context.pop();
         }
       },
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: widget.code == 0 ? 'Inserindo'.hardcoded : 'Alterando'.hardcoded,
         actions: [
           SaveIconButton(

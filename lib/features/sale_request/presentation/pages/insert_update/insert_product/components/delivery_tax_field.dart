@@ -79,7 +79,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
           children: [
             Expanded(
               flex: 4,
-              child: DefaultTextFormField(
+              child: BaseTextFormField(
                 focusNode: _focusNode,
                 controller: _deliveryTaxValueController,
                 onFieldSubmitted: (_) =>
@@ -104,7 +104,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
             Expanded(
               flex: 6,
               child: ExcludeFocus(
-                child: DefaultSegmentedButtons(
+                child: BaseSegmentedButtons(
                   items: PercentageOrValue.values,
                   selectedValue: deliveryTaxType,
                   onChanged: (value) => ref

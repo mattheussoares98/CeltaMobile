@@ -1,12 +1,11 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchProductsField extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -60,7 +59,7 @@ class _SearchProductsFieldState extends ConsumerState<SearchProductsField> {
       Modules.competingPrices,
     );
 
-    return DefaultSearchProducts(
+    return BaseSearchProducts(
       allowEmptySearchValue: true,
       searchProductKey: searchProductKey,
       searchProducts: (exactProductCode) {

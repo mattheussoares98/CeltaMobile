@@ -132,7 +132,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
               child: RepaintBoundary(
                 child: Form(
                   key: formKey,
-                  child: DefaultTextFormField(
+                  child: BaseTextFormField(
                     hintText: 'Quantidade'.hardcoded,
                     labelText: 'Quantidade'.hardcoded,
                     controller: widget.quantityController,

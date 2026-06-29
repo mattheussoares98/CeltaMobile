@@ -50,7 +50,7 @@ class PaymentMethodDropdown extends ConsumerWidget {
               selectedPaymentTypeStateControllerProvider,
             );
 
-            return DefaultDropDown<BSFPaymentFinalizationEntity>(
+            return BaseDropDown<BSFPaymentFinalizationEntity>(
               selectedItem: selectedPayment,
               showLabelAtTopLeft: true,
               label: 'Forma de pagamento'.hardcoded,

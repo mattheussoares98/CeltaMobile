@@ -65,7 +65,7 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
       isScrollable: false,
       usePadding: false,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Substituição de estoque'.hardcoded,
         showSelectedEnterprise: true,
       ),

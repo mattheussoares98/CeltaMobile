@@ -19,7 +19,7 @@ class ReportsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: reportsStateControllerProvider,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Relatórios'.hardcoded,
         showSelectedEnterprise: false,
       ),

@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 
 class BottomNavBar extends ConsumerWidget {
   final int enterpriseCode;
@@ -20,13 +19,15 @@ class BottomNavBar extends ConsumerWidget {
 
     final quantityLength = ref.watch(
       lotStateControllerProvider(enterpriseCode).select(
-        (s) => s.value
-            ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
-            .length ?? 0,
+        (s) =>
+            s.value
+                ?.where((e) => e.product.EnterpriseCode == enterpriseCode)
+                .length ??
+            0,
       ),
     );
 
-    return DefaultBottomNavigationBar(
+    return BaseBottomNavigationBar(
       currentIndex: selectedPageIndex,
       onTap: (index) {
         ref
@@ -36,14 +37,14 @@ class BottomNavBar extends ConsumerWidget {
             .updateValues(pageIndex: index);
       },
       items: [
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.list_bullet,
             materialIcon: Icons.list,
           ),
           label: 'Produtos'.hardcoded,
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             materialIcon: Icons.shopping_cart,
             cupertinoIcon: CupertinoIcons.shopping_cart,

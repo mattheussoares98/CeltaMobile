@@ -99,7 +99,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
           key: formKey,
           child: Consumer(
             builder: (_, ref, _) {
-              return DefaultTextFormField(
+              return BaseTextFormField(
                 labelText: 'Fornecedor'.hardcoded,
                 hintText: 'Fornecedor'.hardcoded,
                 controller: supplierController,

@@ -48,7 +48,7 @@ class BottomNavBar extends ConsumerWidget {
       ),
     );
 
-    return DefaultBottomNavigationBar(
+    return BaseBottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) async {
         final pendingValue = await ref.read(
@@ -104,7 +104,7 @@ class BottomNavBar extends ConsumerWidget {
             .updatePageIndex(index);
       },
       items: [
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Identificação'.hardcoded,
           isValid: isIdentificationValid,
           platformIcon: const PlatformIcon(
@@ -112,7 +112,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.info,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Empresas'.hardcoded,
           badgeLabel: enterprisesCount.toString(),
           platformIcon: const PlatformIcon(
@@ -120,7 +120,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.building_2_fill,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Produtos'.hardcoded,
           badgeLabel: productsCount.toString(),
           platformIcon: const PlatformIcon(
@@ -128,7 +128,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.shopping_cart,
           ),
         ),
-        DefaultBottomNavigationBarItem(
+        BaseBottomNavigationBarItem(
           label: 'Confirmação'.hardcoded,
           isValid: isConfirmationValid,
           platformIcon: const PlatformIcon(

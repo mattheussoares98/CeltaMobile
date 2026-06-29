@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
+import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InsertUpdateProductPage extends ConsumerWidget {
   final int receiptCode;
@@ -52,7 +51,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
           padding: const EdgeInsets.all(Sizes.p8),
           child: Column(
             children: [
-              DefaultTextFormField(
+              BaseTextFormField(
                 controller: eanController,
                 enabled: !isLoading && !isEditing,
                 focusNode: eanFocusNode,
@@ -68,7 +67,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 hintText: 'EAN'.hardcoded,
                 maxLength: 22,
               ),
-              DefaultTextFormField(
+              BaseTextFormField(
                 controller: quantityController,
                 enabled: !isLoading,
                 focusNode: quantityFocusNode,
@@ -83,7 +82,7 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 hintText: 'Quantidade'.hardcoded,
                 maxLength: 10,
               ),
-              DefaultTextFormField(
+              BaseTextFormField(
                 controller: observationsController,
                 enabled: !isLoading,
                 focusNode: observationsFocusNode,

@@ -39,7 +39,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
       isScrollable: false,
       resizeToAvoidBottomInset: true,
       refreshProvider: receiptsStateControllerProvider(widget.enterpriseCode),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Recebimentos'.hardcoded,
         showSelectedEnterprise: true,
       ),
@@ -55,7 +55,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(Sizes.p4),
-                    child: DefaultTextFormField(
+                    child: BaseTextFormField(
                       controller: filterReceiptController,
                       hintText: 'Número|Emitente|Status|Observação'.hardcoded,
                       labelText: 'Filtrar'.hardcoded,

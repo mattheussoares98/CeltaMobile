@@ -1,9 +1,8 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
 
 class LocalHttpUrl extends StatelessWidget {
   final TextEditingController urlController;
@@ -20,7 +19,7 @@ class LocalHttpUrl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTextFormField(
+    return BaseTextFormField(
       enabled: !isLoading,
       controller: urlController,
       focusNode: urlFocusNode,

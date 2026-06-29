@@ -68,7 +68,7 @@ class PaymentConditionDropdown extends ConsumerWidget {
               final selectedItem = ref.watch(
                 selectedPaymentConditionStateControllerProvider,
               );
-              return DefaultDropDown<BSFPaymentConditionEntity>(
+              return BaseDropDown<BSFPaymentConditionEntity>(
                 onChanged: ref
                     .read(
                       selectedPaymentConditionStateControllerProvider.notifier,

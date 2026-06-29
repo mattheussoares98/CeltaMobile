@@ -34,7 +34,7 @@ class _SearchProductFieldState extends ConsumerState<SearchProductField> {
       BsRoutine.generic,
       Modules.productsRegister,
     );
-    return DefaultSearchProducts(
+    return BaseSearchProducts(
       searchProducts: (exactProductCode) {
         //remove the selected index when search the product
         // ref

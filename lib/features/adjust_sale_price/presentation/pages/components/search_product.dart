@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchProduct extends ConsumerStatefulWidget {
   const SearchProduct({super.key});
@@ -60,7 +59,7 @@ class _SearchProductState extends ConsumerState<SearchProduct> {
       Modules.adjustPrice,
     );
 
-    return DefaultSearchProducts(
+    return BaseSearchProducts(
       searchValueController: searchValueController,
       searchProductKey: searchProductKey,
       searchProducts: (exactProductCode) =>

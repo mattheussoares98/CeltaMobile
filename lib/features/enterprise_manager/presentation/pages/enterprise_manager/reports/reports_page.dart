@@ -29,7 +29,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
     final isDesktop = MediaQuery.sizeOf(context).width >= Breakpoint.desktop;
     final filterEnterprise = SizedBox(
       width: Breakpoint.tablet,
-      child: DefaultTextFormField(
+      child: BaseTextFormField(
         controller: enterpriseController,
         hintText: 'Filtrar empresa'.hardcoded,
         labelText: 'Filtrar empresa'.hardcoded,
@@ -37,7 +37,7 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
     );
     final filterUsageType = SizedBox(
       width: Breakpoint.tablet,
-      child: DefaultTextFormField(
+      child: BaseTextFormField(
         controller: usageTypeController,
         hintText: 'Filtrar tipo de uso'.hardcoded,
         labelText: 'Filtrar tipo de uso'.hardcoded,

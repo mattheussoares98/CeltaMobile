@@ -114,7 +114,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           }
         }
       },
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title:
             '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
                 .hardcoded,

@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/filters/filters.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class StartDateField extends StatelessWidget {
   final TextEditingController controller;
@@ -20,7 +19,7 @@ class StartDateField extends StatelessWidget {
     final now = DateTime.now();
     final minimumDate = now.subtract(const Duration(days: 365 * 5));
 
-    return DefaultTextFormField(
+    return BaseTextFormField(
       controller: controller,
       onFieldSubmitted: (_) => onSubmit.call(),
       onTap: () {

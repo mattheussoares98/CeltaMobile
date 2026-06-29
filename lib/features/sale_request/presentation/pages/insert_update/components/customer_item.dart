@@ -28,7 +28,7 @@ class CustomerItem extends ConsumerWidget {
     final hasCovenants =
         customer.covenants != null && customer.covenants!.isNotEmpty;
 
-    return DefaultRadio<bool>(
+    return BaseRadio<bool>(
       name: customer.name ?? '',
       toggleable: toggleable,
       subtitle: Column(
@@ -55,7 +55,7 @@ class CustomerItem extends ConsumerWidget {
                         : null,
                   ),
                 );
-                return DefaultChoiceChip<BsfCovenantEntity>(
+                return BaseChoiceChip<BsfCovenantEntity>(
                   items: customer.covenants!,
                   selectedValue: selectedCovenant,
                   allowNullSelection: true,

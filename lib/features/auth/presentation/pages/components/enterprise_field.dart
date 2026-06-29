@@ -2,10 +2,10 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class EnterpriseField extends ConsumerWidget {
   final TextEditingController enterpriseController;
@@ -22,7 +22,7 @@ class EnterpriseField extends ConsumerWidget {
       loginControllerProvider.select((s) => s.isLoading),
     );
 
-    return DefaultTextFormField(
+    return BaseTextFormField(
       controller: enterpriseController,
       enabled: !isLoading,
       labelText: 'Empresa'.hardcoded,

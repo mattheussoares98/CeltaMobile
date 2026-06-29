@@ -136,7 +136,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                       uiProvider.select((s) => s.discountType),
                     );
 
-                    return DefaultTextFormField(
+                    return BaseTextFormField(
                       focusNode: _focusNode,
                       labelText: 'Desconto ${discountType.symbol}'.hardcoded,
                       keyboardType: const TextInputType.numberWithOptions(
@@ -169,7 +169,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                   );
 
                   return ExcludeFocus(
-                    child: DefaultSegmentedButtons<PercentageOrValue>(
+                    child: BaseSegmentedButtons<PercentageOrValue>(
                       items: PercentageOrValue.values,
                       selectedValue: discountType,
                       onChanged: _onTypeChanged,

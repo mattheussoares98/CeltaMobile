@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuantityButtonsAndField extends ConsumerWidget {
   final FocusNode quantityFocusNode;
@@ -115,7 +114,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
 
                   return Expanded(
                     flex: 2,
-                    child: DefaultTextFormField(
+                    child: BaseTextFormField(
                       focusNode: quantityFocusNode,
                       controller: quantityController,
                       labelText: 'Quantidade'.hardcoded,

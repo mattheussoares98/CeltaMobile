@@ -52,7 +52,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
 
     return Column(
       children: [
-        DefaultTextFormField(
+        BaseTextFormField(
           focusNode: cardNumberFocusNode,
           controller: widget.creditCardController,
           labelText: 'Número do cartão'.hardcoded,
@@ -66,7 +66,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
             CreditCardNumberInputFormatter(),
           ],
         ),
-        DefaultTextFormField(
+        BaseTextFormField(
           focusNode: portionsFocusNode,
           controller: widget.portionsController,
           labelText: 'Qtd parcelas'.hardcoded,
@@ -79,7 +79,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
             NumberValidator(allowDecimal: false),
           ]),
         ),
-        DefaultTextFormField(
+        BaseTextFormField(
           focusNode: validityFocusNode,
           controller: widget.validityController,
           labelText: 'Validade'.hardcoded,

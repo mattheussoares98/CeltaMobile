@@ -41,7 +41,7 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
       children: [
         Consumer(
           builder: (_, ref, _) {
-            return DefaultSearchProducts(
+            return BaseSearchProducts(
               searchProductKey: searchProductKey,
               focusNode: searchValueFocusNode,
               searchProducts: (exactProductCode) {

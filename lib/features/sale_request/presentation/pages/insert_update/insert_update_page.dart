@@ -83,7 +83,7 @@ class _InsertUpdateContent extends ConsumerWidget {
 
           return BaseScaffold(
             isScrollable: false,
-            appBar: DefaultAppBar(
+            appBar: BaseAppBar(
               showSelectedEnterprise: true,
               title: saleRequestId == 0
                   ? 'Inserindo pedido'.hardcoded

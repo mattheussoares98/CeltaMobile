@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../commom_widgets.dart';
 
-class DefaultBottomNavigationBarItem {
-  const DefaultBottomNavigationBarItem({
+class BaseBottomNavigationBarItem {
+  const BaseBottomNavigationBarItem({
     required this.platformIcon,
     this.label,
     this.tooltip,
@@ -22,8 +22,8 @@ class DefaultBottomNavigationBarItem {
   final bool showSuccessBadge;
 }
 
-class DefaultBottomNavigationBar extends StatelessWidget {
-  const DefaultBottomNavigationBar({
+class BaseBottomNavigationBar extends StatelessWidget {
+  const BaseBottomNavigationBar({
     super.key,
     required this.items,
     required this.currentIndex,
@@ -31,7 +31,7 @@ class DefaultBottomNavigationBar extends StatelessWidget {
     this.border = const Border(top: BorderSide(color: Colors.transparent)),
   });
 
-  final List<DefaultBottomNavigationBarItem> items;
+  final List<BaseBottomNavigationBarItem> items;
   final int currentIndex;
   final ValueChanged<int> onTap;
   final Border? border;

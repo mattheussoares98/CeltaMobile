@@ -29,7 +29,7 @@ class SuffixActions extends ConsumerStatefulWidget {
 }
 
 class _SuffixActionsState extends ConsumerState<SuffixActions>
-    with DefaultSearchProductsMixin {
+    with BaseSearchProductsMixin {
   @override
   Widget build(BuildContext context) {
     final isMobile = PlatformUtil.isMobile;

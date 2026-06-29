@@ -131,7 +131,7 @@ class SearchProductField extends ConsumerWidget {
     });
 
     return SliverToBoxAdapter(
-      child: DefaultSearchProducts(
+      child: BaseSearchProducts(
         searchProducts: (exactProductCode) {
           ref
               .read(searchProductProvider.notifier)

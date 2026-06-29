@@ -42,7 +42,7 @@ class CovenantDropdown extends ConsumerWidget {
       );
     }
 
-    return DefaultDropDown<BsfCovenantEntity>(
+    return BaseDropDown<BsfCovenantEntity>(
       selectedItem: selectedCovenant,
       showLabelAtTopLeft: true,
       label: 'Convênio do cliente'.hardcoded,

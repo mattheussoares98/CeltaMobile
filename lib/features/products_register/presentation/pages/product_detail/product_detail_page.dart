@@ -39,7 +39,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Detalhes do produto'.hardcoded,
         showSelectedEnterprise: true,
       ),

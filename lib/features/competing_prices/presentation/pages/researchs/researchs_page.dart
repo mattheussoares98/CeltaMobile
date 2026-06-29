@@ -17,7 +17,7 @@ class ResearchsPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       refreshProvider: provider,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Pesquisas cadastradas'.hardcoded,
         showSelectedEnterprise: true,
         actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],

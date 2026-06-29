@@ -1,2 +1,2 @@
 export './text_type.dart';
-export 'default_text.dart';
+export 'base_text.dart';

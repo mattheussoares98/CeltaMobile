@@ -13,7 +13,7 @@ class ProcessAuthorizationPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: processAuthorizationStateControllerProvider,
-      appBar: DefaultAppBar(title: 'Autorização de processos'.hardcoded),
+      appBar: BaseAppBar(title: 'Autorização de processos'.hardcoded),
       body: AsyncValueWidget(
         value: ref.watch(processAuthorizationStateControllerProvider),
         tryAgain: () =>

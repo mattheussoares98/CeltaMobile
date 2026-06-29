@@ -86,7 +86,7 @@ class _ValueFieldAndConfirmButtonState
     return Row(
       children: [
         Flexible(
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             focusNode: valueFocusNode,
             controller: valueController,
             labelText: 'Valor'.hardcoded,

@@ -58,7 +58,7 @@ class _DebounceFieldState extends ConsumerState<DebounceField> {
   Widget build(BuildContext context) {
     final isInstructions = widget.type == DebounceFieldType.instructions;
 
-    return DefaultTextFormField(
+    return BaseTextFormField(
       controller: _controller,
       labelText: isInstructions
           ? 'Instruções'.hardcoded

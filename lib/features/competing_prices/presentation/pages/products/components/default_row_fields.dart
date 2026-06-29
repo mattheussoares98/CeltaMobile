@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
 
 class DefaultRowFields extends StatelessWidget {
   final TextEditingController controller;
@@ -29,7 +28,7 @@ class DefaultRowFields extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: controller,
             focusNode: focusNode,
             labelText: priceType,
@@ -50,7 +49,7 @@ class DefaultRowFields extends StatelessWidget {
         ),
         gapW4,
         Expanded(
-          child: DefaultTextFormField(
+          child: BaseTextFormField(
             controller: offerController,
             focusNode: offerFocusNode,
             onFieldSubmitted: (_) => onSubmit(),

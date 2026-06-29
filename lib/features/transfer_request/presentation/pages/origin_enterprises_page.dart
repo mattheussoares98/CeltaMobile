@@ -21,7 +21,7 @@ class OriginEnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: enterprisesStateControllerProvider(),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Empresa de origem'.hardcoded,
         showSelectedEnterprise: false,
       ),

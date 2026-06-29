@@ -170,7 +170,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Produtos'.hardcoded,
         showSelectedEnterprise: true,
       ),
@@ -178,7 +178,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         children: [
           Consumer(
             builder: (_, ref, _) {
-              return DefaultSearchProducts(
+              return BaseSearchProducts(
                 focusNode: searchProductsFocusNode,
                 searchProducts: (exactProductCode) =>
                     _searchProducts(searchProductKey, false, exactProductCode),

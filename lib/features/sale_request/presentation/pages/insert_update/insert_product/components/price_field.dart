@@ -97,7 +97,7 @@ class _PriceFieldState extends ConsumerState<PriceField>
             );
             final practicedPriceType = currentProduct.practicedPriceType;
 
-            return DefaultTextFormField(
+            return BaseTextFormField(
               controller: _valueController,
               focusNode: _focusNode,
               onFieldSubmitted: (_) =>

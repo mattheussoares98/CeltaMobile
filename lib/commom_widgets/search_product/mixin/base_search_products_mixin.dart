@@ -1,13 +1,12 @@
 import 'dart:async';
 
+import 'package:celta_inventario/commom_widgets/search_product/search_product.dart';
+import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
-import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/commom_widgets/search_product/search_product.dart';
-
-mixin DefaultSearchProductsMixin<T extends ConsumerStatefulWidget>
+mixin BaseSearchProductsMixin<T extends ConsumerStatefulWidget>
     on ConsumerState<T> {
   Timer? _debounce;
 

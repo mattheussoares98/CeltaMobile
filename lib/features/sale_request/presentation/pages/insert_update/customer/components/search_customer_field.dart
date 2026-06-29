@@ -49,7 +49,7 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
               (s) => s.value?.searchByPersonalizedCode == true,
             ),
           );
-          return DefaultTextFormField(
+          return BaseTextFormField(
             controller: searchController,
             labelText: 'Pesquisar'.hardcoded,
             hintText: searchByPersonalizedCode

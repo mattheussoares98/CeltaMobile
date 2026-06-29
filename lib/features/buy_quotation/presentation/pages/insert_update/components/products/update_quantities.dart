@@ -139,7 +139,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                       );
                       return Padding(
                         padding: const EdgeInsets.only(bottom: Sizes.p8),
-                        child: DefaultTextFormField(
+                        child: BaseTextFormField(
                           maxLength: 10,
                           controller: controller.controller,
                           focusNode: controller.focusNode,

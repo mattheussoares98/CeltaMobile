@@ -31,7 +31,7 @@ class _SearchProductsState extends ConsumerState<SearchProducts> {
       Modules.saleRequest,
       anotherKey: args.toString(),
     );
-    return DefaultSearchProducts(
+    return BaseSearchProducts(
       searchValueController: searchProductsController,
       searchProductKey: searchProductKey,
       searchProducts: (exactProductCode) {

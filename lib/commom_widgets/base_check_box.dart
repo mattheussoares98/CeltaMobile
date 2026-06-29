@@ -4,12 +4,12 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultCheckBox extends StatelessWidget {
+class BaseCheckBox extends StatelessWidget {
   final String name;
   final Widget? subtitle;
   final bool enabled;
   final void Function(bool?)? onChanged;
-  const DefaultCheckBox({
+  const BaseCheckBox({
     super.key,
     required this.name,
     this.subtitle,

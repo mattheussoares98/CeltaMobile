@@ -92,7 +92,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       isScrollable: false,
       usePadding: true,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Ajuste de estoque'.hardcoded,
         showSelectedEnterprise: true,
       ),

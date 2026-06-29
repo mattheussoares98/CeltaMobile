@@ -27,7 +27,7 @@ class RequestsTypePage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Modelos de pedido'.hardcoded,
         showSelectedEnterprise: true,
       ),

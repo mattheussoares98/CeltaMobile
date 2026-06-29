@@ -14,7 +14,7 @@ class SearchProductsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Cadastro de produtos'.hardcoded,
         showSelectedEnterprise: true,
       ),

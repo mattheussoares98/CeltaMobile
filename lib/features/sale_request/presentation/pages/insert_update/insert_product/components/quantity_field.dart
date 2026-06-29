@@ -41,7 +41,7 @@ class _QuantityFieldState extends ConsumerState<QuantityField> {
   @override
   Widget build(BuildContext context) {
     final product = ref.watch(currentProductItemProvider);
-    return DefaultTextFormField(
+    return BaseTextFormField(
       focusNode: _focusNode,
       controller: _quantityController,
       labelText: 'Quantidade'.hardcoded,

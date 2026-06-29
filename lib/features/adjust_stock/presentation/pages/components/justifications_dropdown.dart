@@ -36,7 +36,7 @@ class JustificationsDropdown extends ConsumerWidget {
           );
         },
         data: (justifications) {
-          return DefaultDropDown<TransferJustificationEntity?>(
+          return BaseDropDown<TransferJustificationEntity?>(
             onChanged: (value) async {
               ref
                   .read(

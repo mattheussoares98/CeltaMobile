@@ -59,7 +59,7 @@ class CreateSaleRequestPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         showSelectedEnterprise: false,
         titleWidget: AppBarTitle(enterpriseCode: enterpriseCode),
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),

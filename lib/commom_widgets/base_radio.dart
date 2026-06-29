@@ -4,7 +4,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DefaultRadio<T> extends StatelessWidget {
+class BaseRadio<T> extends StatelessWidget {
   final String name;
   final Widget? subtitle;
   final T value;
@@ -12,7 +12,7 @@ class DefaultRadio<T> extends StatelessWidget {
   final void Function(T?)? onChanged;
   final bool toggleable;
 
-  const DefaultRadio({
+  const BaseRadio({
     super.key,
     required this.name,
     this.subtitle,

@@ -98,7 +98,7 @@ class _InsertUpdateResearchPageState
                     : 'Editando pesquisa'.hardcoded,
               ),
               gapH32,
-              DefaultTextFormField(
+              BaseTextFormField(
                 controller: nameController,
                 labelText: 'Nome'.hardcoded,
                 hintText: 'Nome'.hardcoded,
@@ -110,7 +110,7 @@ class _InsertUpdateResearchPageState
                 },
               ),
               gapH8,
-              DefaultTextFormField(
+              BaseTextFormField(
                 controller: observarionsController,
                 focusNode: observationsFocusNode,
                 labelText: 'Observações'.hardcoded,

@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CupertinoFormField extends ConsumerStatefulWidget {
-  final DefaultTextFormField defaultTextFormField;
+  final BaseTextFormField defaultTextFormField;
 
   const CupertinoFormField({super.key, required this.defaultTextFormField});
 

@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
 
 class UrlsFields extends StatelessWidget {
   final TextEditingController remoteHttpUrlController;
@@ -24,7 +23,7 @@ class UrlsFields extends StatelessWidget {
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
         children: [
-          DefaultTextFormField(
+          BaseTextFormField(
             labelText: 'HTTP remoto'.hardcoded,
             hintText: 'HTTP remoto'.hardcoded,
             controller: remoteHttpUrlController,
@@ -34,7 +33,7 @@ class UrlsFields extends StatelessWidget {
             validator: FormValidators.compose([UrlValidator()]),
           ),
           gapH8,
-          DefaultTextFormField(
+          BaseTextFormField(
             labelText: 'HTTPS remoto'.hardcoded,
             hintText: 'HTTPS remoto'.hardcoded,
             controller: remoteHttpsUrlController,
@@ -46,7 +45,7 @@ class UrlsFields extends StatelessWidget {
             ]),
           ),
           gapH8,
-          DefaultTextFormField(
+          BaseTextFormField(
             labelText: 'HTTP local'.hardcoded,
             hintText: 'HTTP local'.hardcoded,
             controller: localHttpUrlController,
@@ -58,7 +57,7 @@ class UrlsFields extends StatelessWidget {
             ]),
           ),
           gapH8,
-          DefaultTextFormField(
+          BaseTextFormField(
             labelText: 'HTTPS local'.hardcoded,
             hintText: 'HTTPS local'.hardcoded,
             controller: localHttpsUrlController,

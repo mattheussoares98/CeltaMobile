@@ -13,7 +13,7 @@ class RequestTypeDropDown extends ConsumerWidget {
     final selectedRequest = ref.watch(
       insertUpdateStateControllerProvider.select((s) => s.value?.requestType),
     );
-    return DefaultDropDown<BSFRequestTypeEntity>(
+    return BaseDropDown<BSFRequestTypeEntity>(
       showLabelAtTopLeft: true,
       label: 'Modelo de pedido'.hardcoded,
       selectedItem: selectedRequest,

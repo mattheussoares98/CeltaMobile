@@ -48,7 +48,7 @@ class ProductsManagementPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         showSelectedEnterprise: false,
         titleWidget: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +126,7 @@ class ProductsManagementPage extends ConsumerWidget {
             ).select((s) => s.value?.length),
           );
 
-          return DefaultBottomNavigationBar(
+          return BaseBottomNavigationBar(
             currentIndex: pageIndex,
             onTap: ref
                 .read(
@@ -137,14 +137,14 @@ class ProductsManagementPage extends ConsumerWidget {
                 )
                 .updatePageIndex,
             items: [
-              DefaultBottomNavigationBarItem(
+              BaseBottomNavigationBarItem(
                 label: 'Inserir'.hardcoded,
                 platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.cart_badge_plus,
                   materialIcon: Icons.add_shopping_cart_outlined,
                 ),
               ),
-              DefaultBottomNavigationBarItem(
+              BaseBottomNavigationBarItem(
                 label: 'Carrinho'.hardcoded,
                 badgeLabel: productsLength != null && productsLength > 0
                     ? productsLength.toString()

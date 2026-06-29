@@ -24,7 +24,7 @@ class DocumentsPage extends ConsumerWidget {
       refreshProvider: expeditionDocumentsStateControllerProvider(
         enterpriseCode,
       ),
-      appBar: DefaultAppBar(
+      appBar: BaseAppBar(
         title: 'Documentos'.hardcoded,
         showSelectedEnterprise: true,
       ),

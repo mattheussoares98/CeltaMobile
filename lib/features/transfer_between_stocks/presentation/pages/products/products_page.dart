@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/products/components/components.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
@@ -60,7 +59,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                 children: [
                   Consumer(
                     builder: (_, ref, _) {
-                      return DefaultSearchProducts(
+                      return BaseSearchProducts(
                         searchValueController: searchValueController,
                         searchProductKey: searchProductKey,
                         searchProducts: (exactProductCode) =>

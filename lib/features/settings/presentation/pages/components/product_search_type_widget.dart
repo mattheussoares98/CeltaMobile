@@ -1,4 +1,4 @@
-import 'package:celta_inventario/commom_widgets/default_choice_chip.dart';
+import 'package:celta_inventario/commom_widgets/base_choice_chip.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
@@ -30,7 +30,7 @@ class ProductSearchTypeWidget extends StatelessWidget {
                   (s) => s.value?.searchPreference,
                 ),
               );
-              return DefaultChoiceChip(
+              return BaseChoiceChip(
                 items: SearchProductTypePreference.values,
                 selectedValue: searchPreference,
                 onChanged: (searchPreference) async {

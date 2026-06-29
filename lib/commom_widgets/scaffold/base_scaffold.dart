@@ -45,7 +45,7 @@ class BaseScaffold extends StatelessWidget {
   final Widget body;
   final Widget? bottomNavigationBar;
   final bool observeScreenChanges;
-  final List<DefaultBottomNavigationBarItem>? bottomNavigationItems;
+  final List<BaseBottomNavigationBarItem>? bottomNavigationItems;
   final int? bottomNavigationIndex;
   final ValueChanged<int>? onBottomNavigationTap;
   final Widget? drawer;
@@ -89,7 +89,7 @@ class _BaseScaffold extends StatelessWidget {
 
     if (params.refreshProvider != null &&
         (PlatformUtil.isWeb || PlatformUtil.isDesktop)) {
-      if (finalAppBar is DefaultAppBar) {
+      if (finalAppBar is BaseAppBar) {
         final refreshAction = ReloadIconButton(
           refreshProvider: params.refreshProvider,
         );
@@ -157,7 +157,7 @@ class _BaseScaffold extends StatelessWidget {
         params.bottomNavigationItems != null &&
         params.bottomNavigationIndex != null &&
         params.onBottomNavigationTap != null) {
-      bottomNavigationWidget = DefaultBottomNavigationBar(
+      bottomNavigationWidget = BaseBottomNavigationBar(
         items: params.bottomNavigationItems!,
         currentIndex: params.bottomNavigationIndex!,
         onTap: params.onBottomNavigationTap!,
