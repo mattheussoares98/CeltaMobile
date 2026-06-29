@@ -1,24 +1,13 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
+import 'package:flutter/foundation.dart';
 
 class GeneratePdfRepositoryImpl implements IGeneratePdfRepository {
-  final ISoapGeneratePdfDatasource soapDatasource;
   final IBSFGeneratePdfDatasource bsfDatasource;
 
-  GeneratePdfRepositoryImpl(this.soapDatasource, this.bsfDatasource);
-
-  @override
-  Future<Uint8List> soapGeneration(
-    LastSavedSaleRequestEntity saleRequest,
-  ) async {
-    return await soapDatasource.generate(
-      SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
-    );
-  }
+  GeneratePdfRepositoryImpl(this.bsfDatasource);
 
   @override
   Future<Uint8List> bsfGeneration(BSFSaleRequestEntity saleRequest) async {

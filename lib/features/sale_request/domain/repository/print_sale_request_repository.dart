@@ -4,22 +4,8 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
 
 class PrintSaleRequestRepositoryImpl implements IPrintSaleRequestRepository {
-  final IPrintSoapLastSavedSaleRequestDatasource soapPrintDatasource;
   final IPrintBSFSaleRequestDatasource bsfDatasource;
-  PrintSaleRequestRepositoryImpl(this.soapPrintDatasource, this.bsfDatasource);
-
-  @override
-  Future<void> soapPrint({
-    required LastSavedSaleRequestEntity saleRequest,
-    required String ip,
-    required String userName,
-  }) async {
-    await soapPrintDatasource.print(
-      saleRequest: SoapLastSavedSaleRequestModel.fromEntity(saleRequest),
-      ip: ip,
-      userName: userName,
-    );
-  }
+  PrintSaleRequestRepositoryImpl(this.bsfDatasource);
 
   @override
   Future<void> bsfPrint({

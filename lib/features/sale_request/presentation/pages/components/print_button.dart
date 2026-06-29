@@ -63,10 +63,6 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
             enterpriseCode: widget.enterpriseCode,
             ip: ipController.text,
           );
-    } else {
-      await ref
-          .read(printSaleRequestControllerProvider.notifier)
-          .soapPrint(ipController.text);
     }
   }
 
@@ -139,11 +135,10 @@ class _PrintLastSavedSaleRequestButtonState extends ConsumerState<PrintButton> {
     final isSaleDetailsPage =
         widget.customerCode != null && widget.saleRequestId != null;
 
-    final ProviderBase<AsyncValue<dynamic>> provider = isSaleDetailsPage
-        ? saleRequestDetailsStateControllerProvider(
-            ref.read(saleRequestArgsProvider),
-          )
-        : lastSavedSaleRequestStateControllerProvider(widget.enterpriseCode);
+    final ProviderBase<AsyncValue<dynamic>> provider =
+        saleRequestDetailsStateControllerProvider(
+          ref.read(saleRequestArgsProvider),
+        );
 
     return Consumer(
       builder: (_, ref, _) {

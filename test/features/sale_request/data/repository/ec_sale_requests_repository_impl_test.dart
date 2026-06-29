@@ -128,9 +128,6 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(
-      SoapSaleRequestModel.fromEntity(EntityFactory.makeSaleRequestEntity()),
-    );
     registerFallbackValue(EntityFactory.makeEcRequestParams());
     registerFallbackValue(
       BSFSaleRequestModel.fromEntity(EntityFactory.makeBSFSaleRequestEntity()),

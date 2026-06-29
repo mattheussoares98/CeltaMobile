@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -19,63 +18,6 @@ part 'save_sale_request_controller.g.dart';
 class SaveSaleRequestController extends _$SaveSaleRequestController {
   @override
   FutureOr<void> build(int enterpriseCode) {}
-
-  Future<void> save({
-    required int requestTypeCode,
-    required String observations,
-    required String instructions,
-    required int enterpriseCode,
-  }) async {
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final validateduser = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
-      final pending = await ref.read(
-        pendingSaleRequestStateControllerProvider(enterpriseCode).future,
-      );
-
-      if (pending.customer == null) {
-        throw AppException('Selecione o cliente!'.hardcoded);
-      }
-
-      ref
-          .read(appUsageStateControllerProvider.notifier)
-          .addUsage(UsageType.insertSaleRequest);
-
-      final saleRequestNumber = await ref
-          .read(soapSaveSaleRequestRepositoryProvider)
-          .save(
-            workingUrl: validateduser!.enterprise!.workingUrl!,
-            crossIdentity: validateduser.user.CrossIdentity_Usuario!,
-            enterpriseCode: enterpriseCode,
-            requestTypeCode: requestTypeCode,
-            saleRequest: pending.copyWith(
-              observations: observations,
-              instructions: instructions,
-            ),
-          );
-
-      await ref
-          .read(
-            lastSavedSaleRequestStateControllerProvider(
-              enterpriseCode,
-            ).notifier,
-          )
-          .save(
-            LastSavedSaleRequestEntity(
-              saleRequestEntity: pending.copyWith(
-                observations: observations,
-                instructions: instructions,
-              ),
-              saleRequestNumber: saleRequestNumber!,
-            ),
-          );
-
-      await ref.read(localSaleRequestRepositoryProvider).clear(enterpriseCode);
-      ref.invalidate(localSaleRequestRepositoryProvider);
-    });
-  }
 
   Future<(String?, bool)> saveBsfSaleRequest(bool isOnlyValidating) async {
     String? errorMessage;

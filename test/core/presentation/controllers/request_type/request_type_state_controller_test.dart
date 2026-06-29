@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../features/sale_request/presentation/controllers/customers_state_controller_test.dart';
 import '../../../../mocks/mocks.dart';
 
 class MockEcGetRequestTypesRepository extends Mock
@@ -59,7 +58,7 @@ void main() {
           () => FakeValidatedUserSession(session),
         ),
         selectedEnterpriseStateControllerProvider.overrideWith(
-          () => FakeSelectedEnterprise(selectedEnterprise),
+          () => FakeSelectedEnterpriseStateController(selectedEnterprise),
         ),
       ],
     );

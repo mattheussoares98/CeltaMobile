@@ -1,6 +1,5 @@
 import 'package:celta_inventario/core/providers/hive/hive.dart';
 import 'package:celta_inventario/core/providers/http/http.dart';
-import 'package:celta_inventario/core/providers/soap/soap.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -10,69 +9,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'providers.g.dart';
 
 @riverpod
-ILocalSaleRequestDatasource localSaleRequestDatasource(Ref ref) {
-  return LocalSaleRequestDatasource(ref.watch(hiveBoxSaleRequestProvider));
-}
-
-@riverpod
-ILocalSaleRequestRepository localSaleRequestRepository(Ref ref) {
-  return LocalSaleRequestRepositoryImpl(
-    ref.watch(localSaleRequestDatasourceProvider),
-  );
-}
-
-@riverpod
-ISoapProcessCartDatasource soapProcessCartDatasource(Ref ref) {
-  return SoapProcessCartDatasource(ref.watch(soapRequestProvider));
-}
-
-@riverpod
-ISoapProcessCartRepository soapProcessCartRepository(Ref ref) {
-  return SoapProcessCartRepositoryImpl(
-    ref.watch(soapProcessCartDatasourceProvider),
-  );
-}
-
-@riverpod
-ISoapSaveSaleRequestDatasource soapSaveSaleRequestDatasource(Ref ref) {
-  return SoapSaveSaleRequestDatasource(ref.watch(soapRequestProvider));
-}
-
-@riverpod
-ISoapSaveSaleRequestRepository soapSaveSaleRequestRepository(Ref ref) {
-  return SoapSaveSaleRequestRepositoryImpl(
-    ref.watch(soapSaveSaleRequestDatasourceProvider),
-  );
-}
-
-@riverpod
-ILocalLastSavedSaleRequestDatasource localLastSavedSaleRequestDatasource(
-  Ref ref,
-) {
-  return LocalLastSavedSaleRequestDatasource(
-    ref.watch(hiveBoxSaleRequestProvider),
-  );
-}
-
-@riverpod
-ILocalLastSavedSaleRequestRepository localLastSavedSaleRequestRepository(
-  Ref ref,
-) {
-  return LocalLastSavedSaleRequestRepositoryImpl(
-    ref.watch(localLastSavedSaleRequestDatasourceProvider),
-  );
-}
-
-@riverpod
-IPrintSoapLastSavedSaleRequestDatasource
-printSoapLastSavedSaleRequestDatasource(Ref ref) {
-  return PrintSoapLastSavedSaleRequestDatasource();
-}
-
-@riverpod
 IPrintSaleRequestRepository printSaleRequestRepository(Ref ref) {
   return PrintSaleRequestRepositoryImpl(
-    ref.watch(printSoapLastSavedSaleRequestDatasourceProvider),
     ref.watch(printBsfSaleRequestDatasourceProvider),
   );
 }
@@ -92,16 +30,8 @@ ILocalIpPrintSaleRequestRepository localIpPrintSaleRequestRepository(Ref ref) {
 }
 
 @riverpod
-ISoapGeneratePdfDatasource soapGeneratePdfDatasource(Ref ref) {
-  return SoapGeneratePdfDatasource();
-}
-
-@riverpod
 IGeneratePdfRepository generatePdfRepository(Ref ref) {
-  return GeneratePdfRepositoryImpl(
-    ref.watch(soapGeneratePdfDatasourceProvider),
-    ref.watch(bSFGeneratePdfDatasourceProvider),
-  );
+  return GeneratePdfRepositoryImpl(ref.watch(bSFGeneratePdfDatasourceProvider));
 }
 
 @riverpod

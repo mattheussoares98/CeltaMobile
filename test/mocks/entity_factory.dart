@@ -794,12 +794,6 @@ class EntityFactory {
         ],
   );
 
-  static LastSavedSaleRequestEntity makeLastSavedSaleRequestEntity() =>
-      LastSavedSaleRequestEntity(
-        saleRequestNumber: faker.lorem.word(),
-        saleRequestEntity: makeSaleRequestEntity(),
-      );
-
   static ResearchEntity makeResearchEntity() => ResearchEntity(
     EnterpriseCode: faker.randomGenerator.integer(100),
     EnterpriseName: faker.company.name(),

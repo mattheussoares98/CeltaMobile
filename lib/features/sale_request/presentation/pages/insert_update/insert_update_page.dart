@@ -63,9 +63,6 @@ class _InsertUpdateContent extends ConsumerWidget {
     ref.listen(insertUpdateProcessCartControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
-    ref.listen(processCartControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-    });
 
     ref.observeLoading([
       saveSaleRequestControllerProvider(enterpriseCode),

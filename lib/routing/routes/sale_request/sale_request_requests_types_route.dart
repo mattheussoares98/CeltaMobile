@@ -3,10 +3,9 @@ import 'package:celta_inventario/core/presentation/pages/pages.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase saleRequestRequestsTypesRoute(List<RouteBase> routes) => GoRoute(
+RouteBase saleRequestRequestsTypesRoute() => GoRoute(
   path: ':enterpriseCode/requests',
   name: Routes.saleRequestRequestsTypes.name,
-  routes: routes,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
 
