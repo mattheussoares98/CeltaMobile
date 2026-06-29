@@ -39,7 +39,7 @@ class DefaultBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).bottomNavigationBarTheme;
-    final isCupertino = context.isCupertino;
+    final isCupertino = PlatformUtil.isCupertino;
 
     List<BottomNavigationBarItem> localItems = items.map((e) {
       final isSelected = items.indexOf(e) == currentIndex;
