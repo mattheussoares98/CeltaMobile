@@ -103,7 +103,7 @@ class _HeroRequestSummary extends ConsumerWidget {
       tag: 'sale_request_$saleRequestId',
       child: Material(
         type: MaterialType.transparency,
-        child: RequestSummary(
+        child: RequestSummaryWidget(
           showDetails: true,
           showCustomer: false,
           args: SaleRequestArgs(

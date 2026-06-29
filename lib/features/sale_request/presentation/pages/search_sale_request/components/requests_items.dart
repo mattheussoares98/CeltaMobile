@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class RequestsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -56,7 +55,7 @@ class _SaleRequestItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Hero(
       tag: 'sale_request_$saleRequestId',
-      child: RequestSummary(
+      child: RequestSummaryWidget(
         args: SaleRequestArgs(
           enterpriseCode: enterpriseCode,
           customerCode: customerCode,

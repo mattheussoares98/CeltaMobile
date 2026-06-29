@@ -10,16 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class RequestSummary extends ConsumerWidget {
+import 'request_summary.dart';
+
+class RequestSummaryWidget extends ConsumerWidget {
   final VoidCallback? onTap;
   final bool showCustomer;
   final bool showDetails;
   final SaleRequestArgs args;
-  const RequestSummary({
+  final bool showPrintAndPdfButtons;
+  const RequestSummaryWidget({
     super.key,
     this.onTap,
     this.showCustomer = true,
     this.showDetails = false,
+    this.showPrintAndPdfButtons = false,
     required this.args,
   });
 
@@ -155,6 +159,26 @@ class RequestSummary extends ConsumerWidget {
                       subTitle: saleRequest.TotalLiquid,
                       subTitleIsPrice: true,
                     ),
+                    if (showPrintAndPdfButtons) ...[
+                      gapH8,
+                      Row(
+                        mainAxisAlignment: .spaceBetween,
+                        children: [
+                          Expanded(
+                            child: PrimaryButton(
+                              text: 'Imprimir'.hardcoded,
+                              icon: const PlatformIcon(
+                                cupertinoIcon: CupertinoIcons.printer,
+                                materialIcon: Icons.print,
+                              ),
+                              onPressed: () async {},
+                            ),
+                          ),
+                          gapW12,
+                          Expanded(child: PdfButton(args: args)),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
                 if (onTap != null) const _CliclableIconIndicator(),

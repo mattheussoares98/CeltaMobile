@@ -138,7 +138,7 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
                         enterpriseCode: widget.enterpriseCode,
                         saleRequestId: item!.Id!,
                       );
-                      return RequestSummary(
+                      return RequestSummaryWidget(
                         args: args,
                         showPrintAndPdfButtons: true,
                       );
