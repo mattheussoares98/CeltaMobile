@@ -91,7 +91,13 @@ class _InsertUpdateContent extends ConsumerWidget {
                 Sizes.p12,
                 0,
               ),
-              actions: [AppBarActions()],
+              actions: [
+                PrintButtonAction(
+                  enterpriseCode: enterpriseCode,
+                  isInserting: saleRequestId == 0,
+                ),
+                const CartBadgeAction(),
+              ],
             ),
             body: const InsertUpdateBody(),
             bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
