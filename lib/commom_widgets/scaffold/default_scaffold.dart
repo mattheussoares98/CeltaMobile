@@ -133,7 +133,6 @@ class _BaseScaffold extends StatelessWidget {
             },
             backgroundColor: context.theme.colorScheme.surface,
             strokeWidth: 2,
-            edgeOffset: 100,
             child: child!,
           );
         },
