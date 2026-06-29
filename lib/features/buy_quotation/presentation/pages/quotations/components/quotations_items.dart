@@ -20,28 +20,23 @@ class QuotationsItems extends ConsumerWidget {
       tryAgain: () =>
           ref.invalidate(buyQuotationsStateControllerProvider(enterpriseCode)),
       data: (quotations) {
-        return RefreshIndicator(
-          onRefresh: () => ref.refresh(
-            buyQuotationsStateControllerProvider(enterpriseCode).future,
-          ),
-          child: ResponsiveListFlow(
-            padding: const EdgeInsets.only(bottom: Sizes.p64),
-            itemCount: quotations.length,
-            itemBuilder: (_, index) {
-              final quotation = quotations[index];
-              return _QuotationItem(
-                key: ValueKey(quotation.Code.toString()),
-                quotation: quotation,
-                onTap: () => context.goNamed(
-                  Routes.buyQuotationInsertUpdate.name,
-                  pathParameters: {
-                    'code': quotation.Code.toString(),
-                    'enterpriseCode': enterpriseCode.toString(),
-                  },
-                ),
-              );
-            },
-          ),
+        return ResponsiveListFlow(
+          padding: const EdgeInsets.only(bottom: Sizes.p64),
+          itemCount: quotations.length,
+          itemBuilder: (_, index) {
+            final quotation = quotations[index];
+            return _QuotationItem(
+              key: ValueKey(quotation.Code.toString()),
+              quotation: quotation,
+              onTap: () => context.goNamed(
+                Routes.buyQuotationInsertUpdate.name,
+                pathParameters: {
+                  'code': quotation.Code.toString(),
+                  'enterpriseCode': enterpriseCode.toString(),
+                },
+              ),
+            );
+          },
         );
       },
     );
