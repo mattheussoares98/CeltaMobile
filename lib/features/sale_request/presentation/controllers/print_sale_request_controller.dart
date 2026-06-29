@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,7 +25,11 @@ class PrintSaleRequestController extends _$PrintSaleRequestController {
 
       final saleRequest = await ref.read(
         saleRequestDetailsStateControllerProvider(
-          ref.read(saleRequestArgsProvider),
+          SaleRequestArgs(
+            enterpriseCode: enterpriseCode,
+            customerCode: customerCode,
+            saleRequestId: saleRequestCode,
+          ),
         ).future,
       );
 
