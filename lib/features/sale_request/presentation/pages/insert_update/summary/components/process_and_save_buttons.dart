@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:celta_inventario/features/sale_request/presentation/controllers/save_sale_request_controller.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +24,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
         final proceed = await showAlertDialog(
           context: context,
           title: 'Atenção'.hardcoded,
-          content: errorMessage,
+          content: errorMessage?.formatBreakLines(),
           defaultActionText: canSaveAndNeedProcessCart
               ? 'Salvar'.hardcoded
               : 'OK'.hardcoded,
