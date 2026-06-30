@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
@@ -21,37 +23,45 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
 
   void _buildPdf() async {
     if (_isLoading) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-    final personalizedCode = await ref.read(
-      saleRequestDetailsStateControllerProvider(
-        widget.args,
-      ).selectAsync((s) => s.personalizedCode),
-    );
-    final bytes = await ref.read(
-      pdfFromSaleRequestDetailsStateControllerProvider(widget.args).future,
-    );
-
-    if (!context.mounted) return;
-
-    if (bytes == null) {
-      showAlertDialog(
-        // ignore: use_build_context_synchronously
-        context: context,
-        title: 'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final saleRequest = await ref.read(
+        saleRequestDetailsStateControllerProvider(widget.args).future,
       );
-    } else {
-      // ignore: use_build_context_synchronously
-      context.pushNamed(
-        Routes.pdfViewer.name,
-        extra: <String, dynamic>{'bytes': bytes, 'fileName': personalizedCode},
+      //* don't need to refresh because when loading the sale requests, already
+      //* is doing it inside the controller
+      final bytes = await ref.read(
+        pdfFromSaleRequestDetailsStateControllerProvider(widget.args).future,
       );
+
+      if (!context.mounted) return;
+
+      if (bytes == null) {
+        showSnackBarMessage(
+          context,
+          'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
+          backgroundColor: Colors.red,
+        );
+      } else {
+        context.pushNamed(
+          Routes.pdfViewer.name,
+          extra: <String, dynamic>{
+            'bytes': bytes,
+            'fileName': saleRequest.personalizedCode,
+          },
+        );
+      }
+    } catch (e) {
+      showSnackBarMessage(context, e.toString(), backgroundColor: Colors.red);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override

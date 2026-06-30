@@ -2,7 +2,8 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart'
+    hide PrintButton;
 import 'package:celta_inventario/features/sale_request/presentation/pages/sale_request_details/components/components.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -24,7 +25,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(printSaleRequestControllerProvider, (p, n) {
-      n.showSnackbarOnError(context, p);
       n.showSnackbarOnSuccess(
         context,
         previous: p,

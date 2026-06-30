@@ -92,7 +92,7 @@ class _InsertUpdateContent extends ConsumerWidget {
                 0,
               ),
               actions: [
-                PrintButtonAction(
+                PrintAndGeneratePdfActions(
                   enterpriseCode: enterpriseCode,
                   isInserting: saleRequestId == 0,
                 ),

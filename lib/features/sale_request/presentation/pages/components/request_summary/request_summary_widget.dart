@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import 'request_summary.dart';
+import '../components.dart';
 
 class RequestSummaryWidget extends ConsumerWidget {
   final VoidCallback? onTap;
@@ -162,18 +162,8 @@ class RequestSummaryWidget extends ConsumerWidget {
                     if (showPrintAndPdfButtons) ...[
                       gapH8,
                       Row(
-                        mainAxisAlignment: .spaceBetween,
                         children: [
-                          Expanded(
-                            child: PrimaryButton(
-                              text: 'Imprimir'.hardcoded,
-                              icon: const PlatformIcon(
-                                cupertinoIcon: CupertinoIcons.printer,
-                                materialIcon: Icons.print,
-                              ),
-                              onPressed: () async {},
-                            ),
-                          ),
+                          Expanded(child: PrintButton(args: args)),
                           gapW12,
                           Expanded(child: PdfButton(args: args)),
                         ],

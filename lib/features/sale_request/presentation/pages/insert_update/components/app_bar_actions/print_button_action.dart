@@ -8,10 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PrintButtonAction extends ConsumerWidget {
+class PrintAndGeneratePdfActions extends ConsumerWidget {
   final int enterpriseCode;
   final bool isInserting;
-  const PrintButtonAction({
+  const PrintAndGeneratePdfActions({
     super.key,
     required this.enterpriseCode,
     required this.isInserting,
@@ -19,6 +19,8 @@ class PrintButtonAction extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!isInserting) return const SizedBox.shrink();
+
     final now = DateTime.now();
     Future<void> searchTodaySaleRequests() async {
       ref
@@ -28,24 +30,32 @@ class PrintButtonAction extends ConsumerWidget {
           );
     }
 
+    void onTap() {
+      showModalPage(
+        _TodaySaleRequests(
+          enterpriseCode: enterpriseCode,
+          searchTodaySaleRequests: searchTodaySaleRequests,
+        ),
+        context,
+      );
+    }
+
     return Row(
       children: [
-        if (isInserting)
-          IconButton(
-            onPressed: () async {
-              showModalPage(
-                _TodaySaleRequests(
-                  enterpriseCode: enterpriseCode,
-                  searchTodaySaleRequests: searchTodaySaleRequests,
-                ),
-                context,
-              );
-            },
-            icon: const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.printer,
-              materialIcon: Icons.print,
-            ),
+        IconButton(
+          onPressed: onTap,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.printer,
+            materialIcon: Icons.print,
           ),
+        ),
+        IconButton(
+          onPressed: onTap,
+          icon: const PlatformIcon(
+            cupertinoIcon: CupertinoIcons.doc_text_search,
+            materialIcon: Icons.picture_as_pdf_rounded,
+          ),
+        ),
       ],
     );
   }
