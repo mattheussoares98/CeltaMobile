@@ -28,7 +28,7 @@ class ResponsiveListFlow extends StatelessWidget {
           ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
           : ListView.builder(
               physics: physics,
-              padding: padding,
+              padding: padding ?? EdgeInsets.zero,
               itemBuilder: itemBuilder,
               itemCount: itemCount,
             );
