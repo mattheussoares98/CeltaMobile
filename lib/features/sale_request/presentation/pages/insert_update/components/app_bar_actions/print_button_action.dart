@@ -88,83 +88,89 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
   Widget build(BuildContext context) {
     return BaseScaffold(
       isScrollable: false,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Row(
-              mainAxisAlignment: .center,
-              children: [
-                Flexible(
-                  child: DefaultText.headline(
-                    'Pedidos de hoje'.hardcoded,
-                    textAlign: TextAlign.center,
-                  ),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: .center,
+            children: [
+              Flexible(
+                child: DefaultText.headline(
+                  'Pedidos de hoje'.hardcoded,
+                  textAlign: TextAlign.center,
                 ),
-                gapW12,
-                IconButton(
-                  icon: const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.refresh,
-                    materialIcon: Icons.refresh,
-                  ),
-                  onPressed: widget.searchTodaySaleRequests,
+              ),
+              gapW12,
+              IconButton(
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.refresh,
+                  materialIcon: Icons.refresh,
+                ),
+                onPressed: widget.searchTodaySaleRequests,
+              ),
+            ],
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                gapSliverH8,
+                Consumer(
+                  builder: (context, ref, _) {
+                    return AsyncValueWidget(
+                      isSliver: true,
+                      value: ref.watch(
+                        saleRequestsStateControllerProvider(
+                          widget.enterpriseCode,
+                        ),
+                      ),
+                      tryAgain: null,
+                      data: (saleRequests) {
+                        final totalRecords = saleRequests?.totalRecords ?? 0;
+                        if (totalRecords == 0) {
+                          return SliverToBoxAdapter(
+                            child: Column(
+                              children: [
+                                DefaultText.error(
+                                  'Nenhum pedido encontrado'.hardcoded,
+                                ),
+                                PrimaryButton(
+                                  text: 'Pesquisar novamente'.hardcoded,
+                                  onPressed: widget.searchTodaySaleRequests,
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        saleRequests!.collection.sort((a, b) {
+                          if (b.DateHourOfCreation == null) return -1;
+                          if (a.DateHourOfCreation == null) return 1;
+                          return b.DateHourOfCreation!.compareTo(
+                            a.DateHourOfCreation!,
+                          );
+                        });
+
+                        return ResponsiveListFlow(
+                          isSliver: true,
+                          maxItemWidth: double.infinity,
+                          itemCount: totalRecords,
+                          itemBuilder: (context, index) {
+                            final item = saleRequests.collection[index];
+                            final args = SaleRequestArgs(
+                              enterpriseCode: widget.enterpriseCode,
+                              saleRequestId: item.Id!,
+                            );
+                            return RequestSummaryWidget(
+                              args: args,
+                              showPrintAndPdfButtons: true,
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               ],
             ),
-          ),
-          gapSliverH8,
-          Consumer(
-            builder: (context, ref, _) {
-              return AsyncValueWidget(
-                isSliver: true,
-                value: ref.watch(
-                  saleRequestsStateControllerProvider(widget.enterpriseCode),
-                ),
-                tryAgain: null,
-                data: (saleRequests) {
-                  final totalRecords = saleRequests?.totalRecords ?? 0;
-                  if (totalRecords == 0) {
-                    return SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          DefaultText.error(
-                            'Nenhum pedido encontrado'.hardcoded,
-                          ),
-                          PrimaryButton(
-                            text: 'Pesquisar novamente'.hardcoded,
-                            onPressed: widget.searchTodaySaleRequests,
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  saleRequests!.collection.sort((a, b) {
-                    if (b.DateHourOfCreation == null) return -1;
-                    if (a.DateHourOfCreation == null) return 1;
-                    return b.DateHourOfCreation!.compareTo(
-                      a.DateHourOfCreation!,
-                    );
-                  });
-
-                  return ResponsiveListFlow(
-                    isSliver: true,
-                    maxItemWidth: double.infinity,
-                    itemCount: totalRecords,
-                    itemBuilder: (context, index) {
-                      final item = saleRequests.collection[index];
-                      final args = SaleRequestArgs(
-                        enterpriseCode: widget.enterpriseCode,
-                        saleRequestId: item.Id!,
-                      );
-                      return RequestSummaryWidget(
-                        args: args,
-                        showPrintAndPdfButtons: true,
-                      );
-                    },
-                  );
-                },
-              );
-            },
           ),
         ],
       ),
