@@ -192,7 +192,7 @@ class _BaseScaffold extends StatelessWidget {
 
       cupertinoBody = SafeArea(
         top: finalAppBar == null,
-        bottom: bottomNavigationWidget == null,
+        bottom: bottomNavigationWidget != null,
         child: cupertinoBody,
       );
 
