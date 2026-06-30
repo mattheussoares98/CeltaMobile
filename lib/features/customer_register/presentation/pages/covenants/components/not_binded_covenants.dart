@@ -99,84 +99,82 @@ class _CovenantItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isIOS = PlatformUtil.isCupertino;
 
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            InkWell(
-              onTap: isIOS ? null : () => changeSelectedIndex(index),
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    DefaultText.titleMedium(covenant.Nome_Convenio ?? ''),
-                    TitleAndSubTitle(
-                      title: 'CNPJ '.hardcoded,
-                      subTitle: covenant.Cnpj_Convenio,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TitleAndSubTitle(
-                            title: 'Endereço '.hardcoded,
-                            subTitle:
-                                "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
-                          ),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          InkWell(
+            onTap: isIOS ? null : () => changeSelectedIndex(index),
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DefaultText.titleMedium(covenant.Nome_Convenio ?? ''),
+                  TitleAndSubTitle(
+                    title: 'CNPJ '.hardcoded,
+                    subTitle: covenant.Cnpj_Convenio,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TitleAndSubTitle(
+                          title: 'Endereço '.hardcoded,
+                          subTitle:
+                              "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
                         ),
-                        SelectedIconIndicator(
-                          selected: selectedIndex == index,
-                          onTap: () => changeSelectedIndex(index),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SelectedIconIndicator(
+                        selected: selectedIndex == index,
+                        onTap: () => changeSelectedIndex(index),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            if (selectedIndex == index)
-              Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: BaseTextFormField(
-                        controller: limitController,
-                        focusNode: limitFocusNode,
-                        labelText: 'Limite R\$'.hardcoded,
-                        hintText: 'Limite R\$'.hardcoded,
-                        maxLength: 12,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
+          ),
+          if (selectedIndex == index)
+            Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: BaseTextFormField(
+                      controller: limitController,
+                      focusNode: limitFocusNode,
+                      labelText: 'Limite R\$'.hardcoded,
+                      hintText: 'Limite R\$'.hardcoded,
+                      maxLength: 12,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      validator: FormValidators.compose([
+                        NonEmptyValidator(),
+                        NumberValidator(
+                          allowDecimal: true,
+                          maxDecimalHouses: 2,
                         ),
-                        validator: FormValidators.compose([
-                          NonEmptyValidator(),
-                          NumberValidator(
-                            allowDecimal: true,
-                            maxDecimalHouses: 2,
-                          ),
-                        ]),
-                        onFieldSubmitted: (_) {
-                          bindCovenant(covenant);
-                        },
-                      ),
+                      ]),
+                      onFieldSubmitted: (_) {
+                        bindCovenant(covenant);
+                      },
                     ),
-                    gapW16,
-                    Flexible(
-                      child: PrimaryButton(
-                        text: 'Vincular'.hardcoded,
-                        onPressed: () => bindCovenant(covenant),
-                      ),
+                  ),
+                  gapW16,
+                  Flexible(
+                    child: PrimaryButton(
+                      text: 'Vincular'.hardcoded,
+                      onPressed: () => bindCovenant(covenant),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

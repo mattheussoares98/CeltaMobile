@@ -85,34 +85,37 @@ class _CovenantsPageState extends ConsumerState<CovenantsPage> {
     );
     final covenantsAsync = ref.watch(covenantsStateControllerProvider);
 
-    return AsyncValueWidget(
-      value: covenantsAsync,
-      tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
-      data: (covenants) {
-        return Form(
-          key: formKey,
-          child: ResponsiveScrollableWidget(
-            isSliverPage: true,
-            child: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                NotBindedCovenants(
-                  covenants: covenants,
-                  changeSelectedIndex: changeSelectedIndex,
-                  selectedIndex: selectedIndex,
-                  bindCovenant: bindCovenant,
-                  limitController: limitController,
-                  limitFocusNode: limitFocusNode,
-                ),
-                if (customerCovenants != null &&
-                    customerCovenants.isNotEmpty) ...[
-                  const BindedCovenants(),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: AsyncValueWidget(
+        value: covenantsAsync,
+        tryAgain: () => ref.invalidate(covenantsStateControllerProvider),
+        data: (covenants) {
+          return Form(
+            key: formKey,
+            child: ResponsiveScrollableWidget(
+              isSliverPage: true,
+              child: CustomScrollView(
+                physics: const ClampingScrollPhysics(),
+                slivers: [
+                  NotBindedCovenants(
+                    covenants: covenants,
+                    changeSelectedIndex: changeSelectedIndex,
+                    selectedIndex: selectedIndex,
+                    bindCovenant: bindCovenant,
+                    limitController: limitController,
+                    limitFocusNode: limitFocusNode,
+                  ),
+                  if (customerCovenants != null &&
+                      customerCovenants.isNotEmpty) ...[
+                    const BindedCovenants(),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
