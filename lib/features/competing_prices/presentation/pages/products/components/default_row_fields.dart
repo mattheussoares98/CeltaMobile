@@ -11,7 +11,7 @@ class DefaultRowFields extends StatelessWidget {
   final FocusNode focusNode;
   final FocusNode offerFocusNode;
   final String priceType;
-  final VoidCallback onSubmit;
+  final VoidCallback? onSubmit;
 
   const DefaultRowFields({
     super.key,
@@ -52,7 +52,7 @@ class DefaultRowFields extends StatelessWidget {
           child: BaseTextFormField(
             controller: offerController,
             focusNode: offerFocusNode,
-            onFieldSubmitted: (_) => onSubmit(),
+            onFieldSubmitted: (_) => onSubmit?.call(),
             labelText: '$priceType (oferta)'.hardcoded,
             hintText: '$priceType (oferta)'.hardcoded,
             autovalidateMode: AutovalidateMode.onUserInteraction,
