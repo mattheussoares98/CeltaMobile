@@ -52,6 +52,8 @@ final _loadingOverlayControllerProvider =
 
 class _LoadingOverlayController extends Notifier<void> {
   OverlayEntry? _entry;
+  _LoadingPopEntry? _popEntry;
+  ModalRoute<Object?>? _route;
 
   @override
   void build() {
@@ -62,6 +64,13 @@ class _LoadingOverlayController extends Notifier<void> {
   void show(BuildContext context) {
     if (_entry != null) return;
     FocusManager.instance.primaryFocus?.unfocus();
+
+    final route = ModalRoute.of(context);
+    if (route != null) {
+      _route = route;
+      _popEntry = _LoadingPopEntry();
+      _route!.registerPopEntry(_popEntry!);
+    }
 
     final isIOS = PlatformUtil.isCupertino;
 
@@ -103,7 +112,26 @@ class _LoadingOverlayController extends Notifier<void> {
   }
 
   void hide() {
+    if (_route != null && _popEntry != null) {
+      if (_route!.isActive) {
+        _route!.unregisterPopEntry(_popEntry!);
+      }
+      _route = null;
+      _popEntry = null;
+    }
     _entry?.remove();
     _entry = null;
   }
 }
+
+class _LoadingPopEntry implements PopEntry<Object?> {
+  @override
+  final ValueNotifier<bool> canPopNotifier = ValueNotifier<bool>(false);
+
+  @override
+  void onPopInvoked(bool didPop) {}
+
+  @override
+  void onPopInvokedWithResult(bool didPop, Object? result) {}
+}
+
