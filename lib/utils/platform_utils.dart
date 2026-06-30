@@ -10,7 +10,7 @@ abstract final class PlatformUtil {
   static bool get isWindows => !kIsWeb && Platform.isWindows;
   static bool get isLinux => !kIsWeb && Platform.isLinux;
   static bool get isFuchsia => !kIsWeb && Platform.isFuchsia;
-  static bool get isCupertino => true;
+  static bool get isCupertino => isIOS || isMacOS;
   static bool get isMobile => isAndroid || isIOS;
   static bool get isDesktop => isMacOS || isWindows || isLinux;
 }
