@@ -190,6 +190,12 @@ class _BaseScaffold extends StatelessWidget {
             )
           : newChild;
 
+      cupertinoBody = SafeArea(
+        top: finalAppBar == null,
+        bottom: bottomNavigationWidget == null,
+        child: cupertinoBody,
+      );
+
       if (finalAppBar != null) {
         cupertinoBody = Column(
           children: [
@@ -201,10 +207,7 @@ class _BaseScaffold extends StatelessWidget {
 
       scaffold = CupertinoPageScaffold(
         resizeToAvoidBottomInset: params.resizeToAvoidBottomInset ?? true,
-        child: SafeArea(
-          bottom: bottomNavigationWidget == null,
-          child: cupertinoBody,
-        ),
+        child: cupertinoBody,
       );
 
       if (bottomNavigationWidget != null) {
