@@ -138,15 +138,23 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
                     );
                   }
 
+                  saleRequests!.collection.sort((a, b) {
+                    if (b.DateHourOfCreation == null) return -1;
+                    if (a.DateHourOfCreation == null) return 1;
+                    return b.DateHourOfCreation!.compareTo(
+                      a.DateHourOfCreation!,
+                    );
+                  });
+
                   return ResponsiveListFlow(
                     isSliver: true,
                     maxItemWidth: double.infinity,
                     itemCount: totalRecords,
                     itemBuilder: (context, index) {
-                      final item = saleRequests?.collection[index];
+                      final item = saleRequests.collection[index];
                       final args = SaleRequestArgs(
                         enterpriseCode: widget.enterpriseCode,
-                        saleRequestId: item!.Id!,
+                        saleRequestId: item.Id!,
                       );
                       return RequestSummaryWidget(
                         args: args,
