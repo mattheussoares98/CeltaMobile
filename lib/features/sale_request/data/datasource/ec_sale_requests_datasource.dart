@@ -41,7 +41,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     bool? mountProducts,
   }) async {
     final response = await httpClient.request(
-      url: 'http://localhost:58915/SaleRequests/GetSaleRequests',
+      url: '${params.workingUrl}/api/SaleRequests/GetSaleRequests',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -75,7 +75,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
     required EcRequestParams params,
   }) async {
     final response = await httpClient.request(
-      url: 'http://localhost:58915/SaleRequests/GetCompleteForMobileApp',
+      url: '${params.workingUrl}/api/SaleRequests/GetCompleteForMobileApp',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -97,7 +97,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }) async {
     await httpClient.request(
       url:
-          'http://localhost:58915/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
+          '${params.workingUrl}/api/SaleRequests/Update?enterpriseCode=$enterpriseCode&customerCode=${saleRequest.customer?.code}&saleRequestCode=${saleRequest.code}',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),
@@ -115,7 +115,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
 
     await httpClient.request(
       url:
-          'http://localhost:58915/SaleRequests/Insert?'
+          '${params.workingUrl}/api/SaleRequests/Insert?'
           'enterpriseCode=$enterpriseCode'
           '&customerCode=$customerCode&'
           'requestTypeCode=$requestTypeCode',
@@ -136,7 +136,7 @@ class EcSaleRequestsDatasource implements IEcSaleRequestsDatasource {
   }) async {
     final response = await httpClient.request(
       url:
-          'http://localhost:58915/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode&customerCode=$customerCode&saleRequestCode=$saleRequestCode',
+          '${params.workingUrl}/api/SaleRequests/ProcessCart?enterpriseCode=$enterpriseCode&requestTypeCode=$requestTypeCode&customerCode=$customerCode&saleRequestCode=$saleRequestCode',
       method: 'post',
       headers: params.toHeaders(),
       body: saleRequest.toJson(),
