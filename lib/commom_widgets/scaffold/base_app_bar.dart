@@ -119,7 +119,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (context.isCupertino) {
       return Container(
-        height: _appBarHeight,
+        height: _appBarHeight + MediaQuery.paddingOf(context).top,
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
         decoration: BoxDecoration(
           color: context.colorScheme.surface,

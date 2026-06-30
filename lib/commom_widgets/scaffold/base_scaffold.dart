@@ -143,7 +143,17 @@ class _BaseScaffold extends StatelessWidget {
     PreferredSizeWidget? appBarWidget;
     if (finalAppBar != null) {
       if (finalAppBar is PreferredSizeWidget) {
-        appBarWidget = finalAppBar;
+        if (context.isCupertino) {
+          appBarWidget = PreferredSize(
+            preferredSize: Size.fromHeight(
+              finalAppBar.preferredSize.height +
+                  MediaQuery.paddingOf(context).top,
+            ),
+            child: finalAppBar,
+          );
+        } else {
+          appBarWidget = finalAppBar;
+        }
       } else {
         appBarWidget = PreferredSize(
           preferredSize: const Size(double.maxFinite, 50),
