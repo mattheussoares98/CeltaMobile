@@ -28,6 +28,16 @@ class BsfCovenantEntity extends Equatable
   final BsfSaleBlockadeEntity? saleBlockade;
   final BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction;
 
+  // Customer-Covenant link specific fields
+  final int? customerCode;
+  final double? limitOfPurchase;
+  final String? matriculate;
+  final DateTime? dismissalDate;
+  final bool? isFired;
+  final BSFAddressEntity? billingAddress;
+  final BSFAddressEntity? customerDeliveryAddress;
+  final BSFAddressEntity? customerCollectAddress;
+
   const BsfCovenantEntity({
     required this.code,
     required this.personalizedCode,
@@ -50,6 +60,14 @@ class BsfCovenantEntity extends Equatable
     required this.collectAddress,
     required this.saleBlockade,
     required this.saleBlockadeInstruction,
+    this.customerCode,
+    this.limitOfPurchase,
+    this.matriculate,
+    this.dismissalDate,
+    this.isFired,
+    this.billingAddress,
+    this.customerDeliveryAddress,
+    this.customerCollectAddress,
   });
 
   @override
@@ -75,6 +93,14 @@ class BsfCovenantEntity extends Equatable
     collectAddress,
     saleBlockade,
     saleBlockadeInstruction,
+    customerCode,
+    limitOfPurchase,
+    matriculate,
+    dismissalDate,
+    isFired,
+    billingAddress,
+    customerDeliveryAddress,
+    customerCollectAddress,
   ];
 
   BsfCovenantEntity copyWith({
@@ -99,6 +125,14 @@ class BsfCovenantEntity extends Equatable
     BSFAddressEntity? collectAddress,
     BsfSaleBlockadeEntity? saleBlockade,
     BsfSaleBlockadeInstructionEntity? saleBlockadeInstruction,
+    int? customerCode,
+    double? limitOfPurchase,
+    String? matriculate,
+    DateTime? dismissalDate,
+    bool? isFired,
+    BSFAddressEntity? billingAddress,
+    BSFAddressEntity? customerDeliveryAddress,
+    BSFAddressEntity? customerCollectAddress,
   }) {
     return BsfCovenantEntity(
       code: code ?? this.code,
@@ -125,6 +159,14 @@ class BsfCovenantEntity extends Equatable
       saleBlockade: saleBlockade ?? this.saleBlockade,
       saleBlockadeInstruction:
           saleBlockadeInstruction ?? this.saleBlockadeInstruction,
+      customerCode: customerCode ?? this.customerCode,
+      limitOfPurchase: limitOfPurchase ?? this.limitOfPurchase,
+      matriculate: matriculate ?? this.matriculate,
+      dismissalDate: dismissalDate ?? this.dismissalDate,
+      isFired: isFired ?? this.isFired,
+      billingAddress: billingAddress ?? this.billingAddress,
+      customerDeliveryAddress: customerDeliveryAddress ?? this.customerDeliveryAddress,
+      customerCollectAddress: customerCollectAddress ?? this.customerCollectAddress,
     );
   }
 

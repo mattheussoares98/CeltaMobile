@@ -24,53 +24,80 @@ class BsfCovenantModel extends BsfCovenantEntity {
     required super.collectAddress,
     required super.saleBlockade,
     required super.saleBlockadeInstruction,
+    super.customerCode,
+    super.limitOfPurchase,
+    super.matriculate,
+    super.dismissalDate,
+    super.isFired,
+    super.billingAddress,
+    super.customerDeliveryAddress,
+    super.customerCollectAddress,
   });
 
-  factory BsfCovenantModel.fromJson(Map json) => BsfCovenantModel(
-    code: json['Code'] as int?,
-    personalizedCode: json['PersonalizedCode'] as String?,
-    legacyCode: json['LegacyCode'] as String?,
-    name: json['Name'] as String? ?? '',
-    fantasyName: json['FantasyName'] as String?,
-    cnpjNumber: json['CnpjNumber'] as String?,
-    formatedCnpjNumber: json['FormatedCnpjNumber'] as String?,
-    stateRegistration: json['StateRegistration'] as String?,
-    formatedStateRegistration: json['FormatedStateRegistration'] as String?,
-    dateOfCadaster: json['DateOfCadaster'] != null
-        ? DateTime.tryParse(json['DateOfCadaster'] as String)
-        : null,
-    email: json['Email'] as String?,
-    dateOfBirthContact: json['DateOfBirthContact'] != null
-        ? DateTime.tryParse(json['DateOfBirthContact'] as String)
-        : null,
-    nameOfContact: json['NameOfContact'] as String?,
-    haveObservations: json['HaveObservations'] as bool?,
-    requiredConveneMatriculate: json['RequiredConveneMatriculate'] as bool?,
-    allowSaleAdditional: json['AllowSaleAdditional'] as bool?,
-    address: json['Address'] != null
-        ? BSFAddressModel.fromJson(json['Address'] as Map)
-        : null,
-    deliveryAddress: json['DeliveryAddress'] != null
-        ? BSFAddressModel.fromJson(
-            json['DeliveryAddress'] as Map,
-          )
-        : null,
-    collectAddress: json['CollectAddress'] != null
-        ? BSFAddressModel.fromJson(
-            json['CollectAddress'] as Map,
-          )
-        : null,
-    saleBlockade: json['SaleBlockade'] != null
-        ? BsfSaleBlockadeModel.fromJson(
-            json['SaleBlockade'] as Map,
-          )
-        : null,
-    saleBlockadeInstruction: json['SaleBlockadeInstruction'] != null
-        ? BsfSaleBlockadeInstructionModel.fromJson(
-            json['SaleBlockadeInstruction'] as Map,
-          )
-        : null,
-  );
+  factory BsfCovenantModel.fromJson(Map json) {
+    final covenantJson = json['Covenant'] as Map?;
+    final targetJson = covenantJson ?? json;
+
+    return BsfCovenantModel(
+      code: targetJson['Code'] as int?,
+      personalizedCode: targetJson['PersonalizedCode'] as String?,
+      legacyCode: targetJson['LegacyCode'] as String?,
+      name: targetJson['Name'] as String? ?? '',
+      fantasyName: targetJson['FantasyName'] as String?,
+      cnpjNumber: targetJson['CnpjNumber'] as String?,
+      formatedCnpjNumber: targetJson['FormatedCnpjNumber'] as String?,
+      stateRegistration: targetJson['StateRegistration'] as String?,
+      formatedStateRegistration:
+          targetJson['FormatedStateRegistration'] as String?,
+      dateOfCadaster: targetJson['DateOfCadaster'] != null
+          ? DateTime.tryParse(targetJson['DateOfCadaster'] as String)
+          : null,
+      email: targetJson['Email'] as String?,
+      dateOfBirthContact: targetJson['DateOfBirthContact'] != null
+          ? DateTime.tryParse(targetJson['DateOfBirthContact'] as String)
+          : null,
+      nameOfContact: targetJson['NameOfContact'] as String?,
+      haveObservations: targetJson['HaveObservations'] as bool?,
+      requiredConveneMatriculate:
+          targetJson['RequiredConveneMatriculate'] as bool?,
+      allowSaleAdditional: targetJson['AllowSaleAdditional'] as bool?,
+      address: targetJson['Address'] != null
+          ? BSFAddressModel.fromJson(targetJson['Address'] as Map)
+          : null,
+      deliveryAddress: targetJson['DeliveryAddress'] != null
+          ? BSFAddressModel.fromJson(targetJson['DeliveryAddress'] as Map)
+          : null,
+      collectAddress: targetJson['CollectAddress'] != null
+          ? BSFAddressModel.fromJson(targetJson['CollectAddress'] as Map)
+          : null,
+      saleBlockade: targetJson['SaleBlockade'] != null
+          ? BsfSaleBlockadeModel.fromJson(targetJson['SaleBlockade'] as Map)
+          : null,
+      saleBlockadeInstruction: targetJson['SaleBlockadeInstruction'] != null
+          ? BsfSaleBlockadeInstructionModel.fromJson(
+              targetJson['SaleBlockadeInstruction'] as Map,
+            )
+          : null,
+      customerCode: covenantJson != null ? json['Code'] as int? : null,
+      limitOfPurchase: (json['LimitOfPurchase'] as num?)?.toDouble(),
+      matriculate: json['Matriculate'] as String?,
+      dismissalDate: json['DismissalDate'] != null
+          ? DateTime.tryParse(json['DismissalDate'] as String)
+          : null,
+      isFired: json['IsFired'] as bool?,
+      billingAddress: json['BillingAddress'] != null
+          ? BSFAddressModel.fromJson(json['BillingAddress'] as Map)
+          : null,
+      customerDeliveryAddress:
+          covenantJson != null && json['DeliveryAddress'] != null
+          ? BSFAddressModel.fromJson(json['DeliveryAddress'] as Map)
+          : null,
+      customerCollectAddress:
+          covenantJson != null && json['CollectAddress'] != null
+          ? BSFAddressModel.fromJson(json['CollectAddress'] as Map)
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     'Code': code,
@@ -105,6 +132,20 @@ class BsfCovenantModel extends BsfCovenantEntity {
         ? BsfSaleBlockadeInstructionModel.fromEntity(
             saleBlockadeInstruction!,
           ).toJson()
+        : null,
+    'CustomerCode': customerCode,
+    'LimitOfPurchase': limitOfPurchase,
+    'Matriculate': matriculate,
+    'DismissalDate': dismissalDate?.toIso8601String(),
+    'IsFired': isFired,
+    'BillingAddress': billingAddress != null
+        ? BSFAddressModel.fromEntity(billingAddress!).toJson()
+        : null,
+    'CustomerDeliveryAddress': customerDeliveryAddress != null
+        ? BSFAddressModel.fromEntity(customerDeliveryAddress!).toJson()
+        : null,
+    'CustomerCollectAddress': customerCollectAddress != null
+        ? BSFAddressModel.fromEntity(customerCollectAddress!).toJson()
         : null,
   };
 
@@ -143,6 +184,20 @@ class BsfCovenantModel extends BsfCovenantEntity {
                 entity.saleBlockadeInstruction!,
               )
             : null,
+        customerCode: entity.customerCode,
+        limitOfPurchase: entity.limitOfPurchase,
+        matriculate: entity.matriculate,
+        dismissalDate: entity.dismissalDate,
+        isFired: entity.isFired,
+        billingAddress: entity.billingAddress != null
+            ? BSFAddressModel.fromEntity(entity.billingAddress!)
+            : null,
+        customerDeliveryAddress: entity.customerDeliveryAddress != null
+            ? BSFAddressModel.fromEntity(entity.customerDeliveryAddress!)
+            : null,
+        customerCollectAddress: entity.customerCollectAddress != null
+            ? BSFAddressModel.fromEntity(entity.customerCollectAddress!)
+            : null,
       );
 
   BsfCovenantEntity toEntity() => BsfCovenantEntity(
@@ -167,5 +222,13 @@ class BsfCovenantModel extends BsfCovenantEntity {
     collectAddress: collectAddress,
     saleBlockade: saleBlockade,
     saleBlockadeInstruction: saleBlockadeInstruction,
+    customerCode: customerCode,
+    limitOfPurchase: limitOfPurchase,
+    matriculate: matriculate,
+    dismissalDate: dismissalDate,
+    isFired: isFired,
+    billingAddress: billingAddress,
+    customerDeliveryAddress: customerDeliveryAddress,
+    customerCollectAddress: customerCollectAddress,
   );
 }

@@ -72,7 +72,7 @@ class BSFCustomerModel extends BSFCustomerEntity {
     covenants: (json['Extensions']?['Covenants'] as List?)
         ?.map(
           (e) =>
-              BsfCovenantModel.fromJson(e['Covenant'] as Map),
+              BsfCovenantModel.fromJson(e as Map),
         )
         .toList(),
   );
@@ -106,7 +106,26 @@ class BSFCustomerModel extends BSFCustomerEntity {
         : null,
     'Extensions': {
       'Covenants': covenants
-          ?.map((e) => {'Covenant': BsfCovenantModel.fromEntity(e).toJson()})
+          ?.map((e) {
+            final model = BsfCovenantModel.fromEntity(e);
+            return {
+              'Covenant': model.toJson(),
+              'DeliveryAddress': model.customerDeliveryAddress != null
+                  ? BSFAddressModel.fromEntity(model.customerDeliveryAddress!).toJson()
+                  : null,
+              'CollectAddress': model.customerCollectAddress != null
+                  ? BSFAddressModel.fromEntity(model.customerCollectAddress!).toJson()
+                  : null,
+              'BillingAddress': model.billingAddress != null
+                  ? BSFAddressModel.fromEntity(model.billingAddress!).toJson()
+                  : null,
+              'Code': model.customerCode,
+              'LimitOfPurchase': model.limitOfPurchase,
+              'Matriculate': model.matriculate,
+              'DismissalDate': model.dismissalDate?.toIso8601String(),
+              'IsFired': model.isFired,
+            };
+          })
           .toList(),
     },
   };

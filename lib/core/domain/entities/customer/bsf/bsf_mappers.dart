@@ -76,6 +76,8 @@ extension CustomerCovenantEntityToBsf on CustomerCovenantEntity {
       collectAddress: null,
       saleBlockade: null,
       saleBlockadeInstruction: null,
+      limitOfPurchase: LimitOfPurchase,
+      matriculate: Matriculate,
     );
   }
 }
