@@ -83,8 +83,6 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
           value: _valueController.text.toDouble() ?? 0,
           type: type,
         );
-
-    FocusManager.instance.primaryFocus?.nextFocus();
   }
 
   void _onTypeChanged(PercentageOrValue type) async {
