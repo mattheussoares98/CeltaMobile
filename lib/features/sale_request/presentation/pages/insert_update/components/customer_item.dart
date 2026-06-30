@@ -55,8 +55,14 @@ class CustomerItem extends ConsumerWidget {
                         : null,
                   ),
                 );
+
+                final allowedCovenantes = customer.covenants!.where((e) {
+                  return e.isFired != true &&
+                      (e.saleBlockade?.allowSale ?? true) &&
+                      (e.dismissalDate?.isBefore(DateTime(0002)) ?? true);
+                }).toList();
                 return BaseChoiceChip<BsfCovenantEntity>(
-                  items: customer.covenants!,
+                  items: allowedCovenantes,
                   selectedValue: selectedCovenant,
                   allowNullSelection: true,
                   onChanged: (covenant) async {
