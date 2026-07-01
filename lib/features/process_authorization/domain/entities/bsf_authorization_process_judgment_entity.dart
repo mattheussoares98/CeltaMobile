@@ -1,8 +1,8 @@
-// lib/features/process_authorization/domain/entities/bsf_authorization_process_judgment_entity.dart
-import 'package:equatable/equatable.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
+//TODO change to ProcessAuthorization instead of AuthorizationProcess
 class BSFAuthorizationProcessJudgmentEntity extends Equatable {
   final int? code;
   final BSFAuthorizationProcessJudgementStatus? status;
@@ -32,16 +32,16 @@ class BSFAuthorizationProcessJudgmentEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        code,
-        status,
-        statusString,
-        observationsVotes,
-        dateTimeOfCreation,
-        wasSawByOwner,
-        authorizationProcessConfigItemType,
-        user,
-        enterprise,
-        authorizationProcessItem,
-        authorizators,
-      ];
+    code,
+    status,
+    statusString,
+    observationsVotes,
+    dateTimeOfCreation,
+    wasSawByOwner,
+    authorizationProcessConfigItemType,
+    user,
+    enterprise,
+    authorizationProcessItem,
+    authorizators,
+  ];
 }
