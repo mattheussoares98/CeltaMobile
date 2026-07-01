@@ -44,7 +44,7 @@ class BSFUserModel extends BSFUserEntity {
         crossIdentity: json['CrossIdentity'] != null
             ? BSFCrossIdentityModel.fromJson(json['CrossIdentity'])
             : null,
-        bondType: json['BondType'],
+        bondType: BSFUserBondType.fromValue(json['BondType']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,7 +66,7 @@ class BSFUserModel extends BSFUserEntity {
         'CrossIdentity': crossIdentity != null
             ? BSFCrossIdentityModel.fromEntity(crossIdentity!).toJson()
             : null,
-        'BondType': bondType,
+        'BondType': bondType?.value,
       };
 
   factory BSFUserModel.fromEntity(BSFUserEntity entity) => BSFUserModel(

@@ -19,7 +19,7 @@ class BSFUserEntity extends Equatable {
   final int? passwordExpiration;
   final bool? canLogin;
   final BSFCrossIdentityEntity? crossIdentity;
-  final int? bondType;
+  final BSFUserBondType? bondType;
 
   const BSFUserEntity({
     this.code,
