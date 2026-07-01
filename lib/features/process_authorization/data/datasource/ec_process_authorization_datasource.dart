@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
@@ -34,6 +36,8 @@ class EcProcessAuthorizationDatasource
       body: params.toMap(),
     );
 
-    return BsfProcessAuthorizationStatisticModel.fromJson(response as Map);
+    return BsfProcessAuthorizationStatisticModel.fromJson(
+      json.decode(response) as Map,
+    );
   }
 }
