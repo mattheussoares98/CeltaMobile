@@ -1,5 +1,6 @@
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../domain/entities/enterprise/bsf_enterprise_entity.dart';
 
 class BSFEnterpriseModel extends Equatable {
   final int? code;
