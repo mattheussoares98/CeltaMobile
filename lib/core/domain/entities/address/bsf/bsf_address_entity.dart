@@ -5,8 +5,13 @@ import 'package:celta_inventario/core/domain/entities/address/bsf/bsf.dart';
 class BSFAddressEntity extends Equatable {
   final int? code;
   final String? zip;
+  final String? formetedZip;
   final String? sash;
   final String? address;
+  final String? addressWithNumber;
+  final String? addressWithNumberAndComplement;
+  final String? addressWithNumberDistrictAndComplement;
+  final String? addressWithNumberComplementDistrictCityZipState;
   final String? number;
   final String? complement;
   final String? district;
@@ -17,15 +22,23 @@ class BSFAddressEntity extends Equatable {
   final bool? addressContainsNumber;
   final bool? addressIsInAreaOfDeliveryRestriction;
   final String? inscriptionNumber;
+  final BSFCityEntity? city;
   final BSFCountryEntity? country;
+  final String? cityString;
   final BSFStateEntity? state;
+  final String? stateString;
   final int? addressType;
 
   const BSFAddressEntity({
     required this.code,
     required this.zip,
+    this.formetedZip,
     required this.sash,
     required this.address,
+    this.addressWithNumber,
+    this.addressWithNumberAndComplement,
+    this.addressWithNumberDistrictAndComplement,
+    this.addressWithNumberComplementDistrictCityZipState,
     required this.number,
     required this.complement,
     required this.district,
@@ -36,29 +49,40 @@ class BSFAddressEntity extends Equatable {
     required this.addressContainsNumber,
     required this.addressIsInAreaOfDeliveryRestriction,
     required this.inscriptionNumber,
+    this.city,
     required this.country,
+    this.cityString,
     required this.state,
+    this.stateString,
     required this.addressType,
   });
 
   @override
   List<Object?> get props => [
-    code,
-    zip,
-    sash,
-    address,
-    number,
-    complement,
-    district,
-    reference,
-    mainAddress,
-    defaultDeliveryAddress,
-    defaultCollectAddress,
-    addressContainsNumber,
-    addressIsInAreaOfDeliveryRestriction,
-    inscriptionNumber,
-    country,
-    state,
-    addressType,
-  ];
+        code,
+        zip,
+        formetedZip,
+        sash,
+        address,
+        addressWithNumber,
+        addressWithNumberAndComplement,
+        addressWithNumberDistrictAndComplement,
+        addressWithNumberComplementDistrictCityZipState,
+        number,
+        complement,
+        district,
+        reference,
+        mainAddress,
+        defaultDeliveryAddress,
+        defaultCollectAddress,
+        addressContainsNumber,
+        addressIsInAreaOfDeliveryRestriction,
+        inscriptionNumber,
+        city,
+        country,
+        cityString,
+        state,
+        stateString,
+        addressType,
+      ];
 }
