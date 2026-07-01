@@ -13,7 +13,9 @@ class EcProcessAuthorizationDatasource
   EcProcessAuthorizationDatasource(this.httpClient);
 
   @override
-  Future<dynamic> getJudgments(EcRequestParams params) async {
+  Future<List<BSFAuthorizationProcessJudgmentModel>> getJudgments(
+    EcRequestParams params,
+  ) async {
     final response = await httpClient.request(
       url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
       method: 'post',
