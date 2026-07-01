@@ -253,7 +253,9 @@ class _BaseScaffold extends ConsumerWidget {
       );
     }
 
+    final systemBottomInset = MediaQuery.viewInsetsOf(context).bottom;
     final showDoneBar = context.isCupertino &&
+        systemBottomInset > 0 &&
         ref.watch(activeNumericFocusNodeProvider) != null;
 
     if (showDoneBar) {
@@ -261,7 +263,7 @@ class _BaseScaffold extends ConsumerWidget {
       scaffold = MediaQuery(
         data: mediaQuery.copyWith(
           viewInsets: mediaQuery.viewInsets.copyWith(
-            bottom: mediaQuery.viewInsets.bottom + OverlayManager.accessoryBarHeight,
+            bottom: systemBottomInset + OverlayManager.accessoryBarHeight,
           ),
         ),
         child: scaffold,

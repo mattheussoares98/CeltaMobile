@@ -62,7 +62,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       if (hasFocus && isKeyboardOpen && isNumeric) {
         debugPrint('show');
         _showOverlay();
-      } else if (!hasFocus) {
+      } else {
         debugPrint('Hide');
         overlayManager.hide();
         ref.read(activeNumericFocusNodeProvider.notifier).clearIfActive(dtf.focusNode);
