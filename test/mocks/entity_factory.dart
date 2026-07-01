@@ -1856,4 +1856,82 @@ class EntityFactory {
         judgementsCreatedByUser: faker.randomGenerator.integer(100),
         allFinishJudgementThatUserNotSaw: faker.randomGenerator.integer(100),
       );
+
+  static BSFCrossIdentityEntity makeBSFCrossIdentityEntity() =>
+      BSFCrossIdentityEntity(
+        identification: faker.lorem.word(),
+        password: faker.lorem.word(),
+      );
+
+  static BSFUserEntity makeBSFUserEntity() => BSFUserEntity(
+        code: faker.randomGenerator.integer(100),
+        isInternalUser: faker.randomGenerator.boolean(),
+        excludedUser: faker.randomGenerator.boolean(),
+        isBuyer: faker.randomGenerator.boolean(),
+        isSeller: faker.randomGenerator.boolean(),
+        isAdministrator: faker.randomGenerator.boolean(),
+        isTimeForChangePassword: faker.randomGenerator.boolean(),
+        identification: faker.lorem.word(),
+        emailSignature: faker.lorem.sentence(),
+        containsMd5Password: faker.randomGenerator.boolean(),
+        cipCode: faker.randomGenerator.integer(100),
+        changePasswordNextLogin: faker.randomGenerator.boolean(),
+        lastPasswordChange: faker.date.dateTime(),
+        passwordExpiration: faker.randomGenerator.integer(100),
+        canLogin: faker.randomGenerator.boolean(),
+        crossIdentity: makeBSFCrossIdentityEntity(),
+        bondType: BSFUserBondType.values[faker.randomGenerator.integer(BSFUserBondType.values.length)],
+      );
+
+  static BSFEnterpriseEntity makeBSFEnterpriseEntity() => BSFEnterpriseEntity(
+        code: faker.randomGenerator.integer(100),
+        fiscalType: faker.randomGenerator.integer(100),
+        federalSimpleType: faker.randomGenerator.integer(100),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        nationalSimple: const {},
+        accountTreasury: const {},
+        cnpjNumber: faker.randomGenerator.numberOfLength(14),
+        suframaCode: faker.guid.guid(),
+        name: faker.company.name(),
+        fantasizesName: faker.company.name(),
+        contactName: faker.person.name(),
+      );
+
+  static BSFAuthorizationProcessCategoryEntity
+      makeBSFAuthorizationProcessCategoryEntity() =>
+          BSFAuthorizationProcessCategoryEntity(
+            code: faker.randomGenerator.integer(100),
+            name: faker.lorem.word(),
+          );
+
+  static BSFAuthorizationProcessItemEntity
+      makeBSFAuthorizationProcessItemEntity() =>
+          BSFAuthorizationProcessItemEntity(
+            code: faker.randomGenerator.integer(100),
+            name: faker.lorem.word(),
+            description: faker.lorem.sentence(),
+            type: BSFAuthorizationProcessItemType.values[
+                faker.randomGenerator.integer(BSFAuthorizationProcessItemType.values.length)],
+            category: makeBSFAuthorizationProcessCategoryEntity(),
+          );
+
+  static BSFAuthorizationProcessJudgmentEntity
+      makeBSFAuthorizationProcessJudgmentEntity() =>
+          BSFAuthorizationProcessJudgmentEntity(
+            code: faker.randomGenerator.integer(100),
+            status: BSFAuthorizationProcessJudgementStatus.values[
+                faker.randomGenerator.integer(BSFAuthorizationProcessJudgementStatus.values.length)],
+            statusString: faker.lorem.word(),
+            observationsVotes: faker.lorem.sentence(),
+            dateTimeOfCreation: faker.date.dateTime(),
+            wasSawByOwner: faker.randomGenerator.boolean(),
+            authorizationProcessConfigItemType: faker.randomGenerator.integer(100),
+            user: makeBSFUserEntity(),
+            enterprise: makeBSFEnterpriseEntity(),
+            authorizationProcessItem: makeBSFAuthorizationProcessItemEntity(),
+            authorizators: [
+              makeBSFUserEntity(),
+              makeBSFUserEntity(),
+            ],
+          );
 }

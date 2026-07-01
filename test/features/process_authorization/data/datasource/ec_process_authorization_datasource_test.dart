@@ -1,3 +1,6 @@
+// test/features/process_authorization/data/datasource/ec_process_authorization_datasource_test.dart
+import 'dart:convert';
+
 import 'package:celta_inventario/core/domain/entities/ec/ec.dart';
 import 'package:celta_inventario/features/process_authorization/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
@@ -10,60 +13,77 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late IEcProcessAuthorizationDatasource sut;
-
   late HttpClientSpy httpClient;
-
   late EcRequestParams params;
-  late BsfProcessAuthorizationStatisticEntity entity;
 
-  void initSut() {
-    sut = EcProcessAuthorizationDatasource(httpClient);
-  }
-
-  void initInjections() {
+  setUp(() {
     httpClient = HttpClientSpy();
-  }
-
-  void mockSuccess() {
-    httpClient.mockRequest(
-      BsfProcessAuthorizationStatisticModel.fromEntity(entity).toJson(),
-    );
-  }
-
-  void initEntities() {
+    sut = EcProcessAuthorizationDatasource(httpClient);
     params = EcRequestParams(
       workingUrl: faker.internet.httpUrl(),
       user: faker.guid.guid(),
       accessKey: faker.guid.guid(),
     );
-    entity = EntityFactory.makeBsfProcessAuthorizationStatisticEntity();
-  }
-
-  setUp(() {
-    initEntities();
-    initInjections();
-    initSut();
-    mockSuccess();
   });
 
-  test('should call http with correct parameters', () async {
-    final response = await sut.getStatistics(
-      EcRequestParams(
-        workingUrl: params.workingUrl,
-        user: params.user,
-        accessKey: params.accessKey,
-      ),
-    );
+  group('getJudgments', () {
+    late List<BSFAuthorizationProcessJudgmentEntity> entities;
 
-    expect(response, BsfProcessAuthorizationStatisticModel.fromEntity(entity));
+    setUp(() {
+      entities = [
+        EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+        EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+      ];
+    });
 
-    verify(
-      () => httpClient.request(
-        url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
-        method: 'post',
-        headers: params.toHeaders(),
-        body: params.toMap(),
-      ),
-    ).called(1);
+    test('should call http with correct parameters and return judgments on success', () async {
+      final models = entities
+          .map((e) => BSFAuthorizationProcessJudgmentModel.fromJson(
+                BSFAuthorizationProcessJudgmentModel.fromEntity(e).toJson(),
+              ))
+          .toList();
+      final jsonResponse = json.encode(models.map((e) => e.toJson()).toList());
+
+      httpClient.mockRequest(jsonResponse);
+
+      final response = await sut.getJudgments(params);
+
+      expect(response, models);
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: params.toMap(),
+        ),
+      ).called(1);
+    });
+  });
+
+  group('getStatistics', () {
+    late BsfProcessAuthorizationStatisticEntity entity;
+
+    setUp(() {
+      entity = EntityFactory.makeBsfProcessAuthorizationStatisticEntity();
+    });
+
+    test('should call http with correct parameters and return statistics on success', () async {
+      final model = BsfProcessAuthorizationStatisticModel.fromEntity(entity);
+      final jsonResponse = json.encode(model.toJson());
+
+      httpClient.mockRequest(jsonResponse);
+
+      final response = await sut.getStatistics(params);
+
+      expect(response, model);
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: params.toMap(),
+        ),
+      ).called(1);
+    });
   });
 }

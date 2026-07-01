@@ -23,8 +23,9 @@ class EcProcessAuthorizationDatasource
       body: params.toMap(),
     );
 
-    //TODO convert to model and create tests
-    return response;
+    return (json.decode(response) as List)
+        .map((e) => BSFAuthorizationProcessJudgmentModel.fromJson(e))
+        .toList();
   }
 
   @override
