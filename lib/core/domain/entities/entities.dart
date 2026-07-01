@@ -20,4 +20,5 @@ export 'request_type/request_type.dart';
 export 'settings/settings.dart';
 export 'stock/stock.dart';
 export 'supplier/supplier.dart';
+export 'telephone/telephone.dart';
 export 'transfer_justification/transfer_justification.dart';
