@@ -10,11 +10,12 @@ class EcProcessAuthorizationRepositoryImpl
   EcProcessAuthorizationRepositoryImpl(this.datasource);
 
   @override
-  Future<dynamic> getJudgments(EcRequestParams params) async {
+  Future<List<BSFAuthorizationProcessJudgmentEntity>> getJudgments(
+    EcRequestParams params,
+  ) async {
     final response = await datasource.getJudgments(params);
 
-    //TODO convert to entity and create tests
-    return response;
+    return response.map((e) => e.toEntity()).toList();
   }
 
   @override
