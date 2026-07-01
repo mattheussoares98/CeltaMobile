@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,18 +45,6 @@ class Stocks extends ConsumerWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: Sizes.p8),
               child: ExpansionTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Sizes.p12),
-                ),
-                collapsedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Sizes.p12),
-                ),
-                backgroundColor: context.theme.primaryColorLight.withAlpha(30),
-                collapsedBackgroundColor: context.theme.primaryColorDark
-                    .withAlpha(30),
-                childrenPadding: const EdgeInsets.all(Sizes.p8),
-                iconColor: context.theme.primaryColorDark,
-                collapsedIconColor: context.theme.primaryColor,
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 title: Row(
                   children: [

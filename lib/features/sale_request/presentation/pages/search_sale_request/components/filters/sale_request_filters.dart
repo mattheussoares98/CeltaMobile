@@ -76,93 +76,77 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
       });
     });
 
-    return RepaintBoundary(
-      child: ResponsiveScrollableWidget(
-        child: Card(
-          child: ExpansionTile(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Sizes.p12),
+    return ResponsiveScrollableWidget(
+      child: Card(
+        child: ExpansionTile(
+          controller: expansibleController,
+          initiallyExpanded: true,
+          title: Text(
+            'Filtros de busca'.hardcoded,
+            style: context.theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-            collapsedShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Sizes.p12),
-            ),
-            backgroundColor: context.theme.primaryColorLight.withAlpha(30),
-            collapsedBackgroundColor: context.theme.primaryColorDark.withAlpha(
-              30,
-            ),
-            childrenPadding: const EdgeInsets.all(Sizes.p8),
-            iconColor: context.theme.primaryColorDark,
-            collapsedIconColor: context.theme.primaryColor,
-            expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            controller: expansibleController,
-            initiallyExpanded: true,
-            title: Text(
-              'Filtros de busca'.hardcoded,
-              style: context.theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Sizes.p16,
-                  0,
-                  Sizes.p16,
-                  Sizes.p16,
-                ),
-                child: Form(
-                  key: widget.filtersFormKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      StartDateField(
-                        controller: widget.startController,
-                        onSubmit: _endFocusNode.requestFocus,
-                      ),
-                      gapH8,
-                      AnimatedBuilder(
-                        animation: widget.startController,
-                        builder: (context, child) {
-                          final minimumDate =
-                              widget.startController.text.toDateTime() ??
-                              now.subtract(const Duration(days: 365 * 5));
-
-                          return EndDateField(
-                            controller: _endController,
-                            focusNode: _endFocusNode,
-                            onSubmit: _codFocusNode.requestFocus,
-                            minimumDate: minimumDate,
-                          );
-                        },
-                      ),
-                      gapH8,
-                      BaseTextFormField(
-                        controller: _codeController,
-                        focusNode: _codFocusNode,
-                        labelText: 'Código Personalizado'.hardcoded,
-                        hintText: 'Digite o código...'.hardcoded,
-                        onFieldSubmitted: (_) => _onSearch(),
-                      ),
-                      gapH20,
-                      Consumer(
-                        builder: (_, ref, child) {
-                          return PrimaryButton(
-                            text: 'Pesquisar'.hardcoded,
-                            onPressed: _onSearch,
-                            isLoading: ref.watch(
-                              saleRequestsStateControllerProvider(
-                                widget.enterpriseCode,
-                              ).select((s) => s.isLoading),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ),
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p16,
+                0,
+                Sizes.p16,
+                Sizes.p16,
+              ),
+              child: Form(
+                key: widget.filtersFormKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    StartDateField(
+                      controller: widget.startController,
+                      onSubmit: _endFocusNode.requestFocus,
+                    ),
+                    gapH8,
+                    AnimatedBuilder(
+                      animation: widget.startController,
+                      builder: (context, child) {
+                        final minimumDate =
+                            widget.startController.text.toDateTime() ??
+                            now.subtract(const Duration(days: 365 * 5));
+
+                        return EndDateField(
+                          controller: _endController,
+                          focusNode: _endFocusNode,
+                          onSubmit: _codFocusNode.requestFocus,
+                          minimumDate: minimumDate,
+                        );
+                      },
+                    ),
+                    gapH8,
+                    BaseTextFormField(
+                      controller: _codeController,
+                      focusNode: _codFocusNode,
+                      labelText: 'Código Personalizado'.hardcoded,
+                      hintText: 'Digite o código...'.hardcoded,
+                      onFieldSubmitted: (_) => _onSearch(),
+                    ),
+                    gapH20,
+                    Consumer(
+                      builder: (_, ref, child) {
+                        return PrimaryButton(
+                          text: 'Pesquisar'.hardcoded,
+                          onPressed: _onSearch,
+                          isLoading: ref.watch(
+                            saleRequestsStateControllerProvider(
+                              widget.enterpriseCode,
+                            ).select((s) => s.isLoading),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

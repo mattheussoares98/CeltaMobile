@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -26,23 +25,8 @@ class Summary extends ConsumerWidget {
           style: context.theme.textTheme.titleMedium,
         ),
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Sizes.p12),
-      ),
-      collapsedShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Sizes.p12),
-      ),
       backgroundColor: Colors.amber.withValues(alpha: .25),
       collapsedBackgroundColor: Colors.amber.withValues(alpha: .3),
-      childrenPadding: const EdgeInsets.fromLTRB(
-        Sizes.p8,
-        0,
-        Sizes.p8,
-        Sizes.p8,
-      ),
-      iconColor: context.theme.primaryColorDark,
-      collapsedIconColor: context.theme.primaryColor,
-      expandedCrossAxisAlignment: CrossAxisAlignment.start,
       initiallyExpanded: true,
       children: [
         Column(

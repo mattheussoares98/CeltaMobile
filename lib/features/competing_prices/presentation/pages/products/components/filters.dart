@@ -36,19 +36,6 @@ class Filters extends ConsumerWidget {
     );
 
     return ExpansionTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Sizes.p12),
-      ),
-      collapsedShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Sizes.p12),
-      ),
-      backgroundColor: context.theme.primaryColorLight.withAlpha(30),
-      collapsedBackgroundColor: context.theme.primaryColorDark.withAlpha(30),
-      childrenPadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      tilePadding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      iconColor: context.theme.primaryColorDark,
-      collapsedIconColor: context.theme.primaryColor,
-      expandedCrossAxisAlignment: CrossAxisAlignment.start,
       initiallyExpanded: false,
       title: RichText(
         text: TextSpan(

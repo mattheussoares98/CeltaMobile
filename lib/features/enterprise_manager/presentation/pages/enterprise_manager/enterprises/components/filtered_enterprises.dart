@@ -52,22 +52,6 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
           return Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: ExpansionTile(
-              tilePadding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Sizes.p12),
-              ),
-              collapsedShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Sizes.p12),
-              ),
-              backgroundColor: context.theme.primaryColorLight.withAlpha(30),
-              collapsedBackgroundColor: context.theme.primaryColorDark
-                  .withAlpha(30),
-              // tilePadding: const EdgeInsets.all(Sizes.p4),
-              childrenPadding: EdgeInsets.only(
-                bottom: index + 1 == filteredEnterprises.length ? Sizes.p8 : 0,
-              ),
-              iconColor: context.theme.primaryColorDark,
-              collapsedIconColor: context.theme.primaryColor,
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
