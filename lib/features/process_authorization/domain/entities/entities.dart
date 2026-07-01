@@ -6,5 +6,9 @@ export 'bsf_authorization_process_category_entity.dart';
 
 export 'bsf_authorization_process_item_entity.dart';
 export 'bsf_authorization_process_item_type.dart';
+export 'bsf_authorization_process_judgement_type.dart';
+export 'bsf_authorization_process_judgement_status.dart';
+
+
 
 
