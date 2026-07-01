@@ -64,7 +64,9 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
       data: (usageReports) {
         if (usageReports?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(child: DefaultText('Nenhum uso encontrado'.hardcoded)),
+            child: Center(
+              child: DefaultText('Nenhum uso encontrado'.hardcoded),
+            ),
           );
         }
 
@@ -112,7 +114,9 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
 
         if (filteredEnterprises.isEmpty) {
           return SliverToBoxAdapter(
-            child: Center(child: DefaultText('Nenhum resultado encontrado'.hardcoded)),
+            child: Center(
+              child: DefaultText('Nenhum resultado encontrado'.hardcoded),
+            ),
           );
         }
 
@@ -137,7 +141,9 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                     gapW8,
                     Flexible(
                       flex: 2,
-                      child: DefaultText('$totalRequests requisições'.hardcoded),
+                      child: DefaultText(
+                        '$totalRequests requisições'.hardcoded,
+                      ),
                     ),
                   ],
                 ),
@@ -151,25 +157,30 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
 
             return Card(
               margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
-              child: Padding(
-                padding: const EdgeInsets.all(Sizes.p8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DefaultText.titleMedium(
-                      '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
-                    ),
-                    _RequestsByTypeOrUser(
-                      groupingByType: true,
-                      reports: requests,
-                    ),
-                    const Divider(),
-                    _RequestsByTypeOrUser(
-                      groupingByType: false,
-                      reports: requests,
-                    ),
-                  ],
+              child: ExpansionTile(
+                initiallyExpanded: false,
+                title: DefaultText.titleMedium(
+                  '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
                 ),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(Sizes.p8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _RequestsByTypeOrUser(
+                          groupingByType: true,
+                          reports: requests,
+                        ),
+                        const Divider(),
+                        _RequestsByTypeOrUser(
+                          groupingByType: false,
+                          reports: requests,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             );
           },
