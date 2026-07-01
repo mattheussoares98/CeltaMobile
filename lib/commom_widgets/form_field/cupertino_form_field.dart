@@ -36,6 +36,9 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       _onControllerChanged,
     );
     overlayManager.hide();
+    ref.read(activeNumericFocusNodeProvider.notifier).clearIfActive(
+      widget.defaultTextFormField.focusNode,
+    );
     super.dispose();
   }
 
@@ -62,6 +65,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       } else if (!hasFocus) {
         debugPrint('Hide');
         overlayManager.hide();
+        ref.read(activeNumericFocusNodeProvider.notifier).clearIfActive(dtf.focusNode);
       }
     });
   }
@@ -81,6 +85,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
         }
       },
     );
+    ref.read(activeNumericFocusNodeProvider.notifier).setActiveNode(dtf.focusNode);
   }
 
   bool get isNumeric =>
@@ -147,6 +152,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
             ConstrainedBox(
               constraints: const BoxConstraints(minHeight: Sizes.p48),
               child: CupertinoTextField(
+                scrollPadding: dtf.scrollPadding,
                 onTap: dtf.onTap,
                 onEditingComplete: dtf.onEditingComplete,
                 inputFormatters: dtf.inputFormatters,
