@@ -110,8 +110,8 @@ class AppTheme {
         collapsedShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Sizes.p12),
         ),
-        backgroundColor: primaryColorLight.withAlpha(30),
-        collapsedBackgroundColor: primaryColorDark.withAlpha(30),
+        backgroundColor: primaryColorDark.withAlpha(30),
+        collapsedBackgroundColor: primaryColorDark.withAlpha(50),
         childrenPadding: const EdgeInsets.all(Sizes.p8),
         iconColor: primaryColorDark,
         collapsedIconColor: primaryColor,
