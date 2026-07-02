@@ -15,10 +15,14 @@ void main() {
   late IEcProcessAuthorizationDatasource sut;
   late HttpClientSpy httpClient;
   late EcRequestParams params;
+  late int? processCode;
 
   setUp(() {
     httpClient = HttpClientSpy();
     sut = EcProcessAuthorizationDatasource(httpClient);
+    processCode = faker.randomGenerator.boolean()
+        ? null
+        : faker.randomGenerator.integer(100);
     params = EcRequestParams(
       workingUrl: faker.internet.httpUrl(),
       user: faker.guid.guid(),
@@ -52,12 +56,16 @@ void main() {
 
         httpClient.mockRequest(jsonResponse);
 
-        final response = await sut.getJudgments(params);
+        final response = await sut.getJudgments(
+          params,
+          processCode: processCode,
+        );
 
         expect(response, models);
         verify(
           () => httpClient.request(
-            url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
+            url:
+                '${params.workingUrl}/api/ProcessAuthorization/Judgment&processCode=$processCode',
             method: 'post',
             headers: params.toHeaders(),
             body: params.toMap(),

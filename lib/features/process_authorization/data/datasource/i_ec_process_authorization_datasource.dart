@@ -3,8 +3,9 @@ import 'package:celta_inventario/features/process_authorization/data/models/mode
 
 abstract class IEcProcessAuthorizationDatasource {
   Future<List<BSFProcessAuthorizationJudgmentModel>> getJudgments(
-    EcRequestParams params,
-  );
+    EcRequestParams params, {
+    int? processCode,
+  });
   Future<BsfProcessAuthorizationStatisticModel> getStatistics(
     EcRequestParams params,
   );

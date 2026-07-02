@@ -16,10 +16,14 @@ void main() {
   late EcProcessAuthorizationRepositoryImpl sut;
   late EcProcessAuthorizationDatasourceSpy datasource;
   late EcRequestParams params;
+  late int? processCode;
 
   setUp(() {
     datasource = EcProcessAuthorizationDatasourceSpy();
     sut = EcProcessAuthorizationRepositoryImpl(datasource);
+    processCode = faker.randomGenerator.boolean()
+        ? null
+        : faker.randomGenerator.integer(100);
     params = EcRequestParams(
       workingUrl: faker.internet.httpUrl(),
       user: faker.guid.guid(),
@@ -49,13 +53,18 @@ void main() {
 
     test('should return list of judgments on success', () async {
       when(
-        () => datasource.getJudgments(any()),
+        () => datasource.getJudgments(
+          any(),
+          processCode: any(named: 'processCode'),
+        ),
       ).thenAnswer((_) async => models);
 
-      final response = await sut.getJudgments(params);
+      final response = await sut.getJudgments(params, processCode: processCode);
 
       expect(response, models.map((e) => e.toEntity()).toList());
-      verify(() => datasource.getJudgments(params)).called(1);
+      verify(
+        () => datasource.getJudgments(params, processCode: processCode),
+      ).called(1);
     });
   });
 

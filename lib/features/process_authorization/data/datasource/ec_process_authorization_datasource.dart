@@ -14,10 +14,12 @@ class EcProcessAuthorizationDatasource
 
   @override
   Future<List<BSFProcessAuthorizationJudgmentModel>> getJudgments(
-    EcRequestParams params,
-  ) async {
+    EcRequestParams params, {
+    int? processCode,
+  }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
+      url:
+          '${params.workingUrl}/api/ProcessAuthorization/Judgment&processCode=$processCode',
       method: 'post',
       headers: params.toHeaders(),
       body: params.toMap(),

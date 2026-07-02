@@ -3,8 +3,9 @@ import 'package:celta_inventario/features/process_authorization/domain/entities/
 
 abstract class IEcProcessAuthorizationRepository {
   Future<List<BSFProcessAuthorizationJudgmentEntity>> getJudgments(
-    EcRequestParams params,
-  );
+    EcRequestParams params, {
+    int? processCode,
+  });
   Future<BsfProcessAuthorizationStatisticEntity> getStatistics(
     EcRequestParams params,
   );
