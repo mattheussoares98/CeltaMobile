@@ -45,7 +45,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
         showAlertDialog(
           context: context,
           title: 'Atenção'.hardcoded,
-          content: failedMessage,
+          content: failedMessage?.formatBreakLines(),
           defaultActionText: 'OK'.hardcoded,
         );
       } else {
