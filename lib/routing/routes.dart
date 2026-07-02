@@ -28,6 +28,7 @@ enum Routes {
   home,
   pdfViewer,
   processAuthorization,
+  processAuthorizationDetails,
   productsRegisterSearchProduct,
   productsRegisterCreateProduct,
   reports,
