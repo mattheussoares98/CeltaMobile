@@ -46,4 +46,27 @@ class EcProcessAuthorizationDatasource
       json.decode(response) as Map,
     );
   }
+
+  @override
+  Future<dynamic> getSaleRequestErrors(
+    //TODO create entity
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int saleRequestCode,
+    required int customerCode,
+  }) async {
+    final response = await httpClient.request(
+      url:
+          '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors'
+          '?enterpriseCode=$enterpriseCode'
+          '&saleRequestCode=$saleRequestCode'
+          '&customerCode=$customerCode',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: params.toMap(),
+    );
+
+    //TODO create tests
+    return json.decode(response);
+  }
 }

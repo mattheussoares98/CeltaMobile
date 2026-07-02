@@ -30,4 +30,23 @@ class EcProcessAuthorizationRepositoryImpl
 
     return response.toEntity();
   }
+
+  @override
+  Future<dynamic> getSaleRequestErrors(
+    //TODO create entity
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int saleRequestCode,
+    required int customerCode,
+  }) async {
+    final response = await datasource.getSaleRequestErrors(
+      params,
+      enterpriseCode: enterpriseCode,
+      saleRequestCode: saleRequestCode,
+      customerCode: customerCode,
+    );
+
+    //TODO create tests
+    return response;
+  }
 }

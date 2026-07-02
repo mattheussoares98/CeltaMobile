@@ -9,4 +9,12 @@ abstract class IEcProcessAuthorizationRepository {
   Future<BsfProcessAuthorizationStatisticEntity> getStatistics(
     EcRequestParams params,
   );
+
+  Future<dynamic> getSaleRequestErrors(
+    //TODO create entity
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int saleRequestCode,
+    required int customerCode,
+  });
 }
