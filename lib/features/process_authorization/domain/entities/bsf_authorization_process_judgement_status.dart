@@ -1,7 +1,7 @@
 // lib/features/process_authorization/domain/entities/bsf_authorization_process_judgement_status.dart
 enum BSFAuthorizationProcessJudgementStatus {
-  awaiting(1, 'Aguardando'),
-  notAuthorized(2, 'Não Autorizado'),
+  awaiting(1, 'Aguardando autorização'),
+  notAuthorized(2, 'Não autorizado'),
   authorized(3, 'Autorizado');
 
   final int value;
