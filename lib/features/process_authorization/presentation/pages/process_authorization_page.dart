@@ -12,15 +12,18 @@ class ProcessAuthorizationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      refreshProvider: processAuthorizationStateControllerProvider,
+      refreshProvider: judgmentsStateControllerProvider,
       appBar: BaseAppBar(title: 'Autorização de processos'.hardcoded),
       body: AsyncValueWidget(
-        value: ref.watch(processAuthorizationStateControllerProvider),
-        tryAgain: () =>
-            ref.invalidate(processAuthorizationStateControllerProvider),
+        value: ref.watch(judgmentsStateControllerProvider),
+        tryAgain: () => ref.invalidate(judgmentsStateControllerProvider),
         data: (data) {
-          return ResponsiveScrollableWidget(
-            child: DefaultText(data.toString()),
+          return ResponsiveListFlow(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final item = data[index];
+              return DefaultText(item.toString());
+            },
           );
         },
       ),
