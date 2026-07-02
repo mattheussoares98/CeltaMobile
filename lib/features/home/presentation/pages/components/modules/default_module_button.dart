@@ -87,7 +87,7 @@ class DefaultModuleButton extends ConsumerWidget {
                       if (isLoading)
                         const LoadingWidget()
                       else
-                        ModuleIcon(platformIcon: platformIcon),
+                        ModuleIcon(platformIcon: platformIcon, module: module),
                       gapH12,
                       ModuleName(module: module),
                     ],

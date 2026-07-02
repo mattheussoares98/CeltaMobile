@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -7,12 +8,14 @@ class QuantityBadge extends StatefulWidget {
   final PlatformIcon platformIcon;
   final bool isSelected;
   final double? totalPrice;
+  final bool animateInfinite;
   const QuantityBadge({
     super.key,
     required this.quantity,
     required this.platformIcon,
     required this.isSelected,
     this.totalPrice,
+    this.animateInfinite = false,
   });
 
   @override
@@ -27,6 +30,9 @@ class _QuantityBadgeState extends State<QuantityBadge>
 
   late AnimationController _priceController;
   late Animation<double> _priceRollingAnimation;
+
+  late AnimationController _infiniteController;
+  late Animation<double> _infiniteScaleAnimation;
 
   @override
   void initState() {
@@ -54,6 +60,23 @@ class _QuantityBadgeState extends State<QuantityBadge>
     );
 
     _priceRollingAnimation = AlwaysStoppedAnimation(widget.totalPrice ?? 0.0);
+
+    _infiniteController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    _infiniteScaleAnimation =
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 1, end: 1.5), weight: 100),
+          TweenSequenceItem(tween: Tween(begin: 1.5, end: 1), weight: 100),
+        ]).animate(
+          CurvedAnimation(parent: _infiniteController, curve: Curves.easeInOut),
+        );
+
+    if (widget.animateInfinite && (widget.quantity ?? 0) > 0) {
+      _infiniteController.repeat();
+    }
   }
 
   @override
@@ -82,12 +105,24 @@ class _QuantityBadgeState extends State<QuantityBadge>
           );
       _priceController.forward(from: 0.0);
     }
+
+    final shouldAnimate = widget.animateInfinite && (widget.quantity ?? 0) > 0;
+    final wasAnimating =
+        oldWidget.animateInfinite && (oldWidget.quantity ?? 0) > 0;
+
+    if (shouldAnimate && !wasAnimating) {
+      _infiniteController.repeat();
+    } else if (!shouldAnimate && wasAnimating) {
+      _infiniteController.stop();
+      _infiniteController.value = 0.0;
+    }
   }
 
   @override
   void dispose() {
     _quantityController.dispose();
     _priceController.dispose();
+    _infiniteController.dispose();
     super.dispose();
   }
 
@@ -99,9 +134,12 @@ class _QuantityBadgeState extends State<QuantityBadge>
     //*actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
     return RepaintBoundary(
       child: Badge(
+        padding: const EdgeInsets.all(Sizes.p4),
         backgroundColor: Colors.transparent,
         label: ScaleTransition(
-          scale: _quantityScaleAnimation,
+          scale: (widget.animateInfinite && (widget.quantity ?? 0) > 0)
+              ? _infiniteScaleAnimation
+              : _quantityScaleAnimation,
           child: CircleAvatar(
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
