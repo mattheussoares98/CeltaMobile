@@ -2,10 +2,13 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class ProcessAuthorizationPage extends ConsumerWidget {
@@ -43,34 +46,61 @@ class ProcessAuthorizationPage extends ConsumerWidget {
                   childrenPadding: const EdgeInsets.all(Sizes.p4),
                   children: value.map((e) {
                     return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(Sizes.p8),
-                        child: Column(
-                          crossAxisAlignment: .stretch,
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        onTap: () {
+                          context.goNamed(
+                            Routes.processAuthorizationDetails.name,
+                            pathParameters: {
+                              'enterpriseCode': e.enterprise!.code.toString(),
+                              'processCode': e.code.toString(),
+                            },
+                          );
+                        },
+                        child: Stack(
                           children: [
-                            TitleAndSubTitle(
-                              title: null,
-                              subTitle: e.enterprise?.name ?? '',
-                            ),
-                            TitleAndSubTitle(
-                              title: null,
-                              subTitle:
-                                  e.authorizationProcessItem?.category?.name ??
-                                  '',
-                            ),
-                            DefaultText.titleMedium(
-                              e.authorizationProcessItem?.name ?? '',
-                            ),
-                            if (e.dateTimeOfCreation != null)
-                              TitleAndSubTitle(
-                                title: 'Data',
-                                subTitle: DateFormat(
-                                  'dd/MM/yyyy HH:mm:ss',
-                                ).format(e.dateTimeOfCreation!),
+                            Padding(
+                              padding: const EdgeInsets.all(Sizes.p8),
+                              child: Column(
+                                crossAxisAlignment: .stretch,
+                                children: [
+                                  TitleAndSubTitle(
+                                    title: null,
+                                    subTitle: e.enterprise?.name ?? '',
+                                  ),
+                                  TitleAndSubTitle(
+                                    title: null,
+                                    subTitle:
+                                        e
+                                            .authorizationProcessItem
+                                            ?.category
+                                            ?.name ??
+                                        '',
+                                  ),
+                                  DefaultText.titleMedium(
+                                    e.authorizationProcessItem?.name ?? '',
+                                  ),
+                                  if (e.dateTimeOfCreation != null)
+                                    TitleAndSubTitle(
+                                      title: 'Data',
+                                      subTitle: DateFormat(
+                                        'dd/MM/yyyy HH:mm:ss',
+                                      ).format(e.dateTimeOfCreation!),
+                                    ),
+                                  TitleAndSubTitle(
+                                    title: 'Processo iniciado por',
+                                    subTitle: e.user?.identification,
+                                  ),
+                                ],
                               ),
-                            TitleAndSubTitle(
-                              title: 'Processo iniciado por',
-                              subTitle: e.user?.identification,
+                            ),
+                            const Positioned(
+                              bottom: Sizes.p8,
+                              right: Sizes.p8,
+                              child: PlatformIcon(
+                                materialIcon: Icons.arrow_outward_rounded,
+                                cupertinoIcon: CupertinoIcons.arrow_up_right,
+                              ),
                             ),
                           ],
                         ),
