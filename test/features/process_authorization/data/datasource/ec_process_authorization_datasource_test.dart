@@ -27,37 +27,44 @@ void main() {
   });
 
   group('getJudgments', () {
-    late List<BSFAuthorizationProcessJudgmentEntity> entities;
+    late List<BSFProcessAuthorizationJudgmentEntity> entities;
 
     setUp(() {
       entities = [
-        EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
-        EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
+        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
       ];
     });
 
-    test('should call http with correct parameters and return judgments on success', () async {
-      final models = entities
-          .map((e) => BSFAuthorizationProcessJudgmentModel.fromJson(
-                BSFAuthorizationProcessJudgmentModel.fromEntity(e).toJson(),
-              ))
-          .toList();
-      final jsonResponse = json.encode(models.map((e) => e.toJson()).toList());
+    test(
+      'should call http with correct parameters and return judgments on success',
+      () async {
+        final models = entities
+            .map(
+              (e) => BSFProcessAuthorizationJudgmentModel.fromJson(
+                BSFProcessAuthorizationJudgmentModel.fromEntity(e).toJson(),
+              ),
+            )
+            .toList();
+        final jsonResponse = json.encode(
+          models.map((e) => e.toJson()).toList(),
+        );
 
-      httpClient.mockRequest(jsonResponse);
+        httpClient.mockRequest(jsonResponse);
 
-      final response = await sut.getJudgments(params);
+        final response = await sut.getJudgments(params);
 
-      expect(response, models);
-      verify(
-        () => httpClient.request(
-          url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
-          method: 'post',
-          headers: params.toHeaders(),
-          body: params.toMap(),
-        ),
-      ).called(1);
-    });
+        expect(response, models);
+        verify(
+          () => httpClient.request(
+            url: '${params.workingUrl}/api/ProcessAuthorization/Judgment',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: params.toMap(),
+          ),
+        ).called(1);
+      },
+    );
   });
 
   group('getStatistics', () {
@@ -67,23 +74,26 @@ void main() {
       entity = EntityFactory.makeBsfProcessAuthorizationStatisticEntity();
     });
 
-    test('should call http with correct parameters and return statistics on success', () async {
-      final model = BsfProcessAuthorizationStatisticModel.fromEntity(entity);
-      final jsonResponse = json.encode(model.toJson());
+    test(
+      'should call http with correct parameters and return statistics on success',
+      () async {
+        final model = BsfProcessAuthorizationStatisticModel.fromEntity(entity);
+        final jsonResponse = json.encode(model.toJson());
 
-      httpClient.mockRequest(jsonResponse);
+        httpClient.mockRequest(jsonResponse);
 
-      final response = await sut.getStatistics(params);
+        final response = await sut.getStatistics(params);
 
-      expect(response, model);
-      verify(
-        () => httpClient.request(
-          url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
-          method: 'post',
-          headers: params.toHeaders(),
-          body: params.toMap(),
-        ),
-      ).called(1);
-    });
+        expect(response, model);
+        verify(
+          () => httpClient.request(
+            url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: params.toMap(),
+          ),
+        ).called(1);
+      },
+    );
   });
 }

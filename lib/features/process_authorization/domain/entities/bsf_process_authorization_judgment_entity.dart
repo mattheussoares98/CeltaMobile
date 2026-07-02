@@ -2,10 +2,9 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
-//TODO change to ProcessAuthorization instead of AuthorizationProcess
-class BSFAuthorizationProcessJudgmentEntity extends Equatable {
+class BSFProcessAuthorizationJudgmentEntity extends Equatable {
   final int? code;
-  final BSFAuthorizationProcessJudgementStatus? status;
+  final BSFProcessAuthorizationJudgementStatus? status;
   final String? statusString;
   final String? observationsVotes;
   final DateTime? dateTimeOfCreation;
@@ -13,10 +12,10 @@ class BSFAuthorizationProcessJudgmentEntity extends Equatable {
   final int? authorizationProcessConfigItemType;
   final BSFUserEntity? user;
   final BSFEnterpriseEntity? enterprise;
-  final BSFAuthorizationProcessItemEntity? authorizationProcessItem;
+  final BSFProcessAuthorizationItemEntity? authorizationProcessItem;
   final List<BSFUserEntity>? authorizators;
 
-  const BSFAuthorizationProcessJudgmentEntity({
+  const BSFProcessAuthorizationJudgmentEntity({
     this.code,
     this.status,
     this.statusString,

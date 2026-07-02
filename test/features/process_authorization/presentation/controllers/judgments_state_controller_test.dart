@@ -19,7 +19,7 @@ class MockEcProcessAuthorizationRepository extends Mock
 void main() {
   late MockEcProcessAuthorizationRepository mockRepository;
   late UserSessionModel fakeSession;
-  late List<BSFAuthorizationProcessJudgmentEntity> fakeJudgments;
+  late List<BSFProcessAuthorizationJudgmentEntity> fakeJudgments;
 
   setUp(() {
     mockRepository = MockEcProcessAuthorizationRepository();
@@ -27,8 +27,8 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeJudgments = [
-      EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
-      EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+      EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
+      EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
     ];
     registerFallbackValue(
       const EcRequestParams(workingUrl: '', user: '', accessKey: ''),

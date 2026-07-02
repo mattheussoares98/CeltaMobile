@@ -10,7 +10,7 @@ class EcProcessAuthorizationRepositoryImpl
   EcProcessAuthorizationRepositoryImpl(this.datasource);
 
   @override
-  Future<List<BSFAuthorizationProcessJudgmentEntity>> getJudgments(
+  Future<List<BSFProcessAuthorizationJudgmentEntity>> getJudgments(
     EcRequestParams params,
   ) async {
     final response = await datasource.getJudgments(params);

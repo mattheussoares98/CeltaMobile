@@ -1898,32 +1898,32 @@ class EntityFactory {
     contactName: faker.person.name(),
   );
 
-  static BSFAuthorizationProcessCategoryEntity
-  makeBSFAuthorizationProcessCategoryEntity() =>
-      BSFAuthorizationProcessCategoryEntity(
+  static BSFProcessAuthorizationCategoryEntity
+  makeBSFProcessAuthorizationCategoryEntity() =>
+      BSFProcessAuthorizationCategoryEntity(
         code: faker.randomGenerator.integer(100),
         name: faker.lorem.word(),
       );
 
-  static BSFAuthorizationProcessItemEntity
-  makeBSFAuthorizationProcessItemEntity() => BSFAuthorizationProcessItemEntity(
+  static BSFProcessAuthorizationItemEntity
+  makeBSFProcessAuthorizationItemEntity() => BSFProcessAuthorizationItemEntity(
     code: faker.randomGenerator.integer(100),
     name: faker.lorem.word(),
     description: faker.lorem.sentence(),
     type:
-        BSFAuthorizationProcessItemType.values[faker.randomGenerator.integer(
-          BSFAuthorizationProcessItemType.values.length,
+        BSFProcessAuthorizationItemType.values[faker.randomGenerator.integer(
+          BSFProcessAuthorizationItemType.values.length,
         )],
-    category: makeBSFAuthorizationProcessCategoryEntity(),
+    category: makeBSFProcessAuthorizationCategoryEntity(),
   );
 
-  static BSFAuthorizationProcessJudgmentEntity
-  makeBSFAuthorizationProcessJudgmentEntity() =>
-      BSFAuthorizationProcessJudgmentEntity(
+  static BSFProcessAuthorizationJudgmentEntity
+  makeBSFProcessAuthorizationJudgmentEntity() =>
+      BSFProcessAuthorizationJudgmentEntity(
         code: faker.randomGenerator.integer(100),
         status:
-            BSFAuthorizationProcessJudgementStatus.values[faker.randomGenerator
-                .integer(BSFAuthorizationProcessJudgementStatus.values.length)],
+            BSFProcessAuthorizationJudgementStatus.values[faker.randomGenerator
+                .integer(BSFProcessAuthorizationJudgementStatus.values.length)],
         statusString: faker.lorem.word(),
         observationsVotes: faker.lorem.sentence(),
         dateTimeOfCreation: faker.date.dateTime(),
@@ -1931,7 +1931,7 @@ class EntityFactory {
         authorizationProcessConfigItemType: faker.randomGenerator.integer(100),
         user: makeBSFUserEntity(),
         enterprise: makeBSFEnterpriseEntity(),
-        authorizationProcessItem: makeBSFAuthorizationProcessItemEntity(),
+        authorizationProcessItem: makeBSFProcessAuthorizationItemEntity(),
         authorizators: [makeBSFUserEntity(), makeBSFUserEntity()],
       );
 }

@@ -1,15 +1,15 @@
 // lib/features/process_authorization/domain/entities/bsf_authorization_process_item_entity.dart
-import 'package:equatable/equatable.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
-class BSFAuthorizationProcessItemEntity extends Equatable {
+class BSFProcessAuthorizationItemEntity extends Equatable {
   final int? code;
   final String? name;
   final String? description;
-  final BSFAuthorizationProcessItemType? type;
-  final BSFAuthorizationProcessCategoryEntity? category;
+  final BSFProcessAuthorizationItemType? type;
+  final BSFProcessAuthorizationCategoryEntity? category;
 
-  const BSFAuthorizationProcessItemEntity({
+  const BSFProcessAuthorizationItemEntity({
     this.code,
     this.name,
     this.description,

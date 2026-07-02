@@ -9,7 +9,7 @@ part 'judgments_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class JudgmentsStateController extends _$JudgmentsStateController {
   @override
-  FutureOr<List<BSFAuthorizationProcessJudgmentEntity>> build() async {
+  FutureOr<List<BSFProcessAuthorizationJudgmentEntity>> build() async {
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);

@@ -34,15 +34,15 @@ void main() {
   });
 
   group('getJudgments', () {
-    late List<BSFAuthorizationProcessJudgmentModel> models;
+    late List<BSFProcessAuthorizationJudgmentModel> models;
 
     setUp(() {
       models = [
-        BSFAuthorizationProcessJudgmentModel.fromEntity(
-          EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+        BSFProcessAuthorizationJudgmentModel.fromEntity(
+          EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
         ),
-        BSFAuthorizationProcessJudgmentModel.fromEntity(
-          EntityFactory.makeBSFAuthorizationProcessJudgmentEntity(),
+        BSFProcessAuthorizationJudgmentModel.fromEntity(
+          EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
         ),
       ];
     });

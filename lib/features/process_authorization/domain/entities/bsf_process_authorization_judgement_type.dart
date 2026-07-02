@@ -1,5 +1,5 @@
 // lib/features/process_authorization/domain/entities/bsf_authorization_process_judgement_type.dart
-enum BSFAuthorizationProcessJudgementType {
+enum BSFProcessAuthorizationJudgementType {
   anyUserCanAuthorize(1, 'Qualquer usuário pode autorizar'),
   allUsersShouldAuthorize(2, 'Todos os usuários devem autorizar'),
   closedProcess(3, 'Processo encerrado'),
@@ -7,12 +7,12 @@ enum BSFAuthorizationProcessJudgementType {
 
   final int value;
   final String label;
-  const BSFAuthorizationProcessJudgementType(this.value, this.label);
+  const BSFProcessAuthorizationJudgementType(this.value, this.label);
 
-  factory BSFAuthorizationProcessJudgementType.fromValue(int? value) {
-    return BSFAuthorizationProcessJudgementType.values.firstWhere(
+  factory BSFProcessAuthorizationJudgementType.fromValue(int? value) {
+    return BSFProcessAuthorizationJudgementType.values.firstWhere(
       (e) => e.value == value,
-      orElse: () => BSFAuthorizationProcessJudgementType.anyUserCanAuthorize,
+      orElse: () => BSFProcessAuthorizationJudgementType.anyUserCanAuthorize,
     );
   }
 }

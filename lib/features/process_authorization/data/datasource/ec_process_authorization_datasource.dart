@@ -13,7 +13,7 @@ class EcProcessAuthorizationDatasource
   EcProcessAuthorizationDatasource(this.httpClient);
 
   @override
-  Future<List<BSFAuthorizationProcessJudgmentModel>> getJudgments(
+  Future<List<BSFProcessAuthorizationJudgmentModel>> getJudgments(
     EcRequestParams params,
   ) async {
     final response = await httpClient.request(
@@ -24,7 +24,7 @@ class EcProcessAuthorizationDatasource
     );
 
     return (json.decode(response) as List)
-        .map((e) => BSFAuthorizationProcessJudgmentModel.fromJson(e))
+        .map((e) => BSFProcessAuthorizationJudgmentModel.fromJson(e))
         .toList();
   }
 
