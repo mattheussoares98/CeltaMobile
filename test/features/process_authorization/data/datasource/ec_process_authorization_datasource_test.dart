@@ -65,7 +65,7 @@ void main() {
         verify(
           () => httpClient.request(
             url:
-                '${params.workingUrl}/api/ProcessAuthorization/Judgment&processCode=$processCode',
+                '${params.workingUrl}/api/ProcessAuthorization/Judgment?processCode=$processCode',
             method: 'post',
             headers: params.toHeaders(),
             body: params.toMap(),
