@@ -1,8 +1,12 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class ProcessAuthorizationPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -18,11 +22,63 @@ class ProcessAuthorizationPage extends ConsumerWidget {
         value: ref.watch(judgmentsStateControllerProvider),
         tryAgain: () => ref.invalidate(judgmentsStateControllerProvider),
         data: (data) {
+          final groupedData = groupBy(data, (e) => e.status);
+
           return ResponsiveListFlow(
-            itemCount: data.length,
+            itemCount: groupedData.length,
             itemBuilder: (context, index) {
-              final item = data[index];
-              return DefaultText(item.toString());
+              final key = groupedData.keys.elementAt(index);
+              final value = groupedData.values.elementAt(index);
+              return Padding(
+                padding: const EdgeInsets.only(bottom: Sizes.p8),
+                child: ExpansionTile(
+                  title: TitleAndSubTitle(
+                    title: key?.label ?? '',
+                    subTitle: value.length,
+                    removeColon: true,
+                    subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  childrenPadding: const EdgeInsets.all(Sizes.p4),
+                  children: value.map((e) {
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(Sizes.p8),
+                        child: Column(
+                          crossAxisAlignment: .stretch,
+                          children: [
+                            TitleAndSubTitle(
+                              title: null,
+                              subTitle: e.enterprise?.name ?? '',
+                            ),
+                            TitleAndSubTitle(
+                              title: null,
+                              subTitle:
+                                  e.authorizationProcessItem?.category?.name ??
+                                  '',
+                            ),
+                            DefaultText.titleMedium(
+                              e.authorizationProcessItem?.name ?? '',
+                            ),
+                            if (e.dateTimeOfCreation != null)
+                              TitleAndSubTitle(
+                                title: 'Data',
+                                subTitle: DateFormat(
+                                  'dd/MM/yyyy HH:mm:ss',
+                                ).format(e.dateTimeOfCreation!),
+                              ),
+                            TitleAndSubTitle(
+                              title: 'Processo iniciado por',
+                              subTitle: e.user?.identification,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
             },
           );
         },
