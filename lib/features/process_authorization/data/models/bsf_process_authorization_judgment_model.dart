@@ -17,37 +17,44 @@ class BSFProcessAuthorizationJudgmentModel
     super.enterprise,
     super.authorizationProcessItem,
     super.authorizators,
+    super.defendants,
   });
 
-  factory BSFProcessAuthorizationJudgmentModel.fromJson(Map json) =>
-      BSFProcessAuthorizationJudgmentModel(
-        code: json['Code'],
-        status: BSFProcessAuthorizationJudgementStatus.fromValue(
-          json['Status'],
-        ),
-        statusString: json['StatusString']?.toString(),
-        observationsVotes: json['ObservationsVotes']?.toString(),
-        dateTimeOfCreation: json['DateTimeOfCreation'] != null
-            ? DateTime.parse(json['DateTimeOfCreation'])
-            : null,
-        wasSawByOwner: json['WasSawByOwner'],
-        authorizationProcessConfigItemType:
-            json['AuthorizationProcessConfigItemType'],
-        user: json['User'] != null ? BSFUserModel.fromJson(json['User']) : null,
-        enterprise: json['Enterprise'] != null
-            ? BSFEnterpriseModel.fromJson(json['Enterprise'])
-            : null,
-        authorizationProcessItem: json['AuthorizationProcessItem'] != null
-            ? BSFProcessAuthorizationItemModel.fromJson(
-                json['AuthorizationProcessItem'],
-              )
-            : null,
-        authorizators: json['Authorizators'] != null
-            ? List<BSFUserModel>.from(
-                json['Authorizators'].map((x) => BSFUserModel.fromJson(x)),
-              )
-            : null,
-      );
+  factory BSFProcessAuthorizationJudgmentModel.fromJson(Map json) {
+    final processItem = json['AuthorizationProcessItem'] != null
+        ? BSFProcessAuthorizationItemModel.fromJson(
+            json['AuthorizationProcessItem'],
+          )
+        : null;
+    return BSFProcessAuthorizationJudgmentModel(
+      code: json['Code'],
+      status: BSFProcessAuthorizationJudgementStatus.fromValue(json['Status']),
+      statusString: json['StatusString']?.toString(),
+      observationsVotes: json['ObservationsVotes']?.toString(),
+      dateTimeOfCreation: json['DateTimeOfCreation'] != null
+          ? DateTime.parse(json['DateTimeOfCreation'])
+          : null,
+      wasSawByOwner: json['WasSawByOwner'],
+      authorizationProcessConfigItemType:
+          json['AuthorizationProcessConfigItemType'],
+      user: json['User'] != null ? BSFUserModel.fromJson(json['User']) : null,
+      enterprise: json['Enterprise'] != null
+          ? BSFEnterpriseModel.fromJson(json['Enterprise'])
+          : null,
+      authorizationProcessItem: processItem,
+      authorizators: json['Authorizators'] != null
+          ? List<BSFUserModel>.from(
+              (json['Authorizators'] as List).map(
+                (x) => BSFUserModel.fromJson(x),
+              ),
+            )
+          : null,
+      defendants: (json['Defendants'] as List?)
+          ?.map((x) => BSFDefendantModel.fromJson(x, processItem?.category))
+          .whereType<BSFDefendantModel>()
+          .toList(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
     'Code': code,
@@ -69,6 +76,9 @@ class BSFProcessAuthorizationJudgmentModel
     'Authorizators': authorizators
         ?.map((x) => BSFUserModel.fromEntity(x).toJson())
         .toList(),
+    'Defendants': defendants
+        ?.map((x) => BSFDefendantModel.fromEntity(x).toJson())
+        .toList(),
   };
 
   factory BSFProcessAuthorizationJudgmentModel.fromEntity(
@@ -86,6 +96,7 @@ class BSFProcessAuthorizationJudgmentModel
     enterprise: entity.enterprise,
     authorizationProcessItem: entity.authorizationProcessItem,
     authorizators: entity.authorizators,
+    defendants: entity.defendants,
   );
 
   BSFProcessAuthorizationJudgmentEntity toEntity() =>
@@ -101,5 +112,8 @@ class BSFProcessAuthorizationJudgmentModel
         enterprise: enterprise,
         authorizationProcessItem: authorizationProcessItem,
         authorizators: authorizators,
+        defendants: defendants
+            ?.map((e) => BSFDefendantModel.fromEntity(e).toEntity())
+            .toList(),
       );
 }

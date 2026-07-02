@@ -1,5 +1,4 @@
 // lib/features/process_authorization/data/models/bsf_authorization_process_item_model.dart
-import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 class BSFProcessAuthorizationItemModel
@@ -18,8 +17,10 @@ class BSFProcessAuthorizationItemModel
         name: json['Name']?.toString(),
         description: json['Description']?.toString(),
         type: BSFProcessAuthorizationItemType.fromValue(json['Type']),
-        category: json['Category'] != null
-            ? BSFProcessAuthorizationCategoryModel.fromJson(json['Category'])
+        category: json['Category']?['Code'] != null
+            ? BSFProcessAuthorizationCategoryType.fromCode(
+                json['Category']?['Code'],
+              )
             : null,
       );
 
@@ -28,9 +29,7 @@ class BSFProcessAuthorizationItemModel
     'Name': name,
     'Description': description,
     'Type': type?.value,
-    'Category': category != null
-        ? BSFProcessAuthorizationCategoryModel.fromEntity(category!).toJson()
-        : null,
+    'Category': {'Code': category?.code},
   };
 
   factory BSFProcessAuthorizationItemModel.fromEntity(

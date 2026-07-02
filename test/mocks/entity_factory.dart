@@ -1914,7 +1914,9 @@ class EntityFactory {
         BSFProcessAuthorizationItemType.values[faker.randomGenerator.integer(
           BSFProcessAuthorizationItemType.values.length,
         )],
-    category: makeBSFProcessAuthorizationCategoryEntity(),
+    category:
+        BSFProcessAuthorizationCategoryType.values[faker.randomGenerator
+            .integer(BSFProcessAuthorizationCategoryType.values.length)],
   );
 
   static BSFProcessAuthorizationJudgmentEntity

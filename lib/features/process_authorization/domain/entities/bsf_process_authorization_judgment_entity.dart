@@ -14,6 +14,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
   final BSFEnterpriseEntity? enterprise;
   final BSFProcessAuthorizationItemEntity? authorizationProcessItem;
   final List<BSFUserEntity>? authorizators;
+  final List<BSFDefendantEntity>? defendants;
 
   const BSFProcessAuthorizationJudgmentEntity({
     this.code,
@@ -27,6 +28,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     this.enterprise,
     this.authorizationProcessItem,
     this.authorizators,
+    this.defendants,
   });
 
   @override
@@ -42,5 +44,6 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     enterprise,
     authorizationProcessItem,
     authorizators,
+    defendants,
   ];
 }

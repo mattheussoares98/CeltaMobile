@@ -1,6 +1,7 @@
 // lib/features/process_authorization/data/models/bsf_authorization_process_category_model.dart
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
+//TODO created BSFProcessAuthorizationCategory TYPE. If it works, should delete this model here
 class BSFProcessAuthorizationCategoryModel
     extends BSFProcessAuthorizationCategoryEntity {
   const BSFProcessAuthorizationCategoryModel({super.code, super.name});
