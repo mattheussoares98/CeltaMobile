@@ -20,10 +20,25 @@ void showSnackBarMessage(
           : null);
   if (scaffoldMessenger == null) return;
 
+  // Compute the current keyboard height so the snackbar always floats
+  // above it. Prefer the caller's context; fall back to the global key's
+  // context (which is inside MaterialApp and has the same MediaQuery data).
+  final resolvedContext = (context != null && context.mounted)
+      ? context
+      : scaffoldMessengerKey.currentContext;
+  final keyboardHeight = resolvedContext != null && resolvedContext.mounted
+      ? MediaQuery.viewInsetsOf(resolvedContext).bottom
+      : 0.0;
+
   scaffoldMessenger.clearSnackBars();
   scaffoldMessenger.showSnackBar(
     SnackBar(
       behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: keyboardHeight > 0 ? keyboardHeight + 8 : 8,
+      ),
       duration: duration ?? const Duration(seconds: 3),
       backgroundColor: backgroundColor,
       content: DefaultText(
