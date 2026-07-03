@@ -25,8 +25,7 @@ class ResponsiveListFlow extends StatelessWidget {
   Widget build(BuildContext context) {
     if (PlatformUtil.isMobile) {
       final effectivePadding =
-          padding ??
-          EdgeInsets.only(bottom: PlatformUtil.isIOS ? Sizes.p48 : 0);
+          padding ?? const EdgeInsets.only(bottom: Sizes.p48);
       if (isSliver) {
         return SliverPadding(
           padding: effectivePadding,
