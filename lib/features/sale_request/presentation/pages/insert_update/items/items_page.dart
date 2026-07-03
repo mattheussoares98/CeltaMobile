@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
@@ -37,7 +36,6 @@ class ItemsPage extends ConsumerWidget {
 
     final args = ref.read(saleRequestArgsProvider);
     return ResponsiveListFlow(
-      padding: isSliver ? null : const EdgeInsets.all(Sizes.p8),
       isSliver: isSliver,
       itemCount: productsCount,
       itemBuilder: (context, index) {

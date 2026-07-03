@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -35,7 +34,6 @@ class ProductsList extends ConsumerWidget {
         }
 
         return ResponsiveListFlow(
-          padding: const EdgeInsets.all(Sizes.p4),
           itemCount: products.length,
           itemBuilder: (context, index) {
             final product = products[index];

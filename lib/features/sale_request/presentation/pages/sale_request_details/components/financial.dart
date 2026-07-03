@@ -64,6 +64,8 @@ class Financial extends ConsumerWidget {
                   final financial = financials[fIndex];
 
                   return Wrap(
+                    spacing: Sizes.p4,
+                    runSpacing: Sizes.p4,
                     children: [
                       for (
                         var pIndex = 0;

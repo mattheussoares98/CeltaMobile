@@ -69,11 +69,10 @@ class SummaryPage extends ConsumerWidget {
             ),
             gapSliverH8,
             const ItemsPage(isSliver: true),
-            gapSliverH80,
           ],
         ),
         const Positioned(
-          bottom: 0,
+          bottom: Sizes.p8,
           right: 0,
           left: 0,
           child: ProcessAndSaveButtons(),
