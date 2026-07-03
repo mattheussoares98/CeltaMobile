@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
@@ -201,7 +200,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                   quantityFocusNode: quantityFocusNode,
                   quantityController: quantityController,
                 ),
-                gapSliverH48,
               ],
             ),
           ),
