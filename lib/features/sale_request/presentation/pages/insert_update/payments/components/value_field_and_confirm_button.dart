@@ -117,25 +117,34 @@ class _ValueFieldAndConfirmButtonState
     return Row(
       children: [
         Flexible(
-          child: BaseTextFormField(
-            focusNode: valueFocusNode,
-            controller: valueController,
-            labelText: 'Valor'.hardcoded,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onFieldSubmitted: (_) => onSubmit(),
-            onTap: () {
-              if (!valueFocusNode.hasFocus) {
-                valueController.selection = TextSelection(
-                  baseOffset: 0,
-                  extentOffset: valueController.text.length,
-                );
-              }
+          child: Consumer(
+            builder: (_, ref, _) {
+              valueController.text = getCurrentDifference()
+                  .toString()
+                  .toBrazilianNumber();
+              return BaseTextFormField(
+                focusNode: valueFocusNode,
+                controller: valueController,
+                labelText: 'Valor'.hardcoded,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onFieldSubmitted: (_) => onSubmit(),
+                onTap: () {
+                  if (!valueFocusNode.hasFocus) {
+                    valueController.selection = TextSelection(
+                      baseOffset: 0,
+                      extentOffset: valueController.text.length,
+                    );
+                  }
+                },
+                autovalidateMode: AutovalidateMode.onUserInteractionIfError,
+                validator: FormValidators.compose([
+                  NonEmptyValidator(),
+                  NumberValidator(allowDecimal: true, maxDecimalHouses: 2),
+                ]),
+              );
             },
-            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-            validator: FormValidators.compose([
-              NonEmptyValidator(),
-              NumberValidator(allowDecimal: true, maxDecimalHouses: 2),
-            ]),
           ),
         ),
         gapW16,
