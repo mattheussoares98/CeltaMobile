@@ -61,7 +61,7 @@ class CartPage extends ConsumerWidget {
                   );
                 },
               ),
-              gapSliverH120,
+              gapSliverH32,
             ],
           );
   }
