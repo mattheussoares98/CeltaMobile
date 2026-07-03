@@ -6,7 +6,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class CustomerRegisterPage extends ConsumerStatefulWidget {
   const CustomerRegisterPage({super.key});
@@ -83,12 +82,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           );
         },
       ),
-      onPopInvokedWithResult: () async {
-        await updateCustomerInProvider(validateField: false);
-        if (context.mounted) {
-          context.pop();
-        }
-      },
       body: IndexedStack(
         index: ref.watch(pageIndexStateControllerProvider),
         children: pages,
