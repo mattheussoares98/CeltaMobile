@@ -79,7 +79,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
               ),
             ),
             const ProductsItems(),
-            gapSliverH48,
           ],
         ),
       ),
