@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:open_file_plus/open_file_plus.dart';
 
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DownloadButtons extends ConsumerWidget {
   final ReportScheduleEntity report;
@@ -18,7 +18,7 @@ class DownloadButtons extends ConsumerWidget {
     }
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .center,
       children: [
         DefaultButton(DownloadType.pdf, report),
         gapH8,

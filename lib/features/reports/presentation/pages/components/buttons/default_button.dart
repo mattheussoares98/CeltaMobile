@@ -94,15 +94,9 @@ class DefaultButton extends ConsumerWidget {
       ).select((s) => s.isLoading),
     );
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        Flexible(
-          flex: downloadedLastExecution
-              ? isXlsx
-                    ? 3
-                    : 2
-              : 3,
+        FittedBox(
           child: PrimaryTextButton(
             color: downloadedLastExecution ? context.theme.disabledColor : null,
             textAlign: TextAlign.start,
@@ -133,22 +127,18 @@ class DefaultButton extends ConsumerWidget {
 
             if (error == null) return const SizedBox.shrink();
 
-            return Expanded(
-              flex: 6,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: Sizes.p8),
-                child: Text(
-                  error.toString(),
-                  style: context.theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.red,
-                    fontStyle: FontStyle.italic,
-                  ),
+            return Padding(
+              padding: const EdgeInsets.only(bottom: Sizes.p8),
+              child: Text(
+                error.toString(),
+                style: context.theme.textTheme.bodySmall?.copyWith(
+                  color: Colors.red,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             );
           },
         ),
-        const Spacer(),
         Consumer(
           builder: (_, ref, _) {
             final Uint8List? fileBytes = extractBytes();
