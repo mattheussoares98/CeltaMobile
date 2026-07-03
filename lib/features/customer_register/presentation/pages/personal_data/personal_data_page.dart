@@ -177,10 +177,15 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                       passwordConfirmationController,
                   passwordConfirmationFocusNode: passwordConfirmationFocusNode,
                 ),
-                if (cpfCnpjController.text.length == 11) ...[
-                  gapH8,
-                  const SexDropDown(),
-                ],
+                AnimatedBuilder(
+                  animation: cpfCnpjController,
+                  builder: (_, _) {
+                    if (cpfCnpjController.text.length == 11) {
+                      return const Column(children: [gapH8, SexDropDown()]);
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
               ],
             ],
           ),
