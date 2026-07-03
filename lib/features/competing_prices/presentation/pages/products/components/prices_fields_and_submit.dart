@@ -115,51 +115,51 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          DefaultRowFields(
-            controller: widget.retailController,
-            offerController: widget.retailOfferController,
-            focusNode: widget.retailFocusNode,
-            offerFocusNode: widget.retailOfferFocusNode,
-            priceType: 'Venda',
-            onSubmit: widget.wholeFocusNode.requestFocus,
-          ),
-          DefaultRowFields(
-            controller: widget.wholeController,
-            offerController: widget.wholeOfferController,
-            focusNode: widget.wholeFocusNode,
-            offerFocusNode: widget.wholeOfferFocusNode,
-            priceType: 'Atacado',
-            onSubmit: widget.ecommerceFocusNode.requestFocus,
-          ),
-          DefaultRowFields(
-            controller: widget.ecommerceController,
-            offerController: widget.ecommerceOfferController,
-            focusNode: widget.ecommerceFocusNode,
-            offerFocusNode: widget.ecommerceOfferFocusNode,
-            priceType: 'Ecommerce',
-            onSubmit: hasChangedAnyValue ? insertUpdate : null,
-          ),
-          gapH8,
-          AnimatedBuilder(
-            animation: Listenable.merge([
-              widget.retailController,
-              widget.retailOfferController,
-              widget.wholeController,
-              widget.wholeOfferController,
-              widget.ecommerceController,
-              widget.ecommerceOfferController,
-            ]),
-            builder: (_, _) {
-              return PrimaryButton(
+      child: AnimatedBuilder(
+        animation: Listenable.merge([
+          widget.retailController,
+          widget.retailOfferController,
+          widget.wholeController,
+          widget.wholeOfferController,
+          widget.ecommerceController,
+          widget.ecommerceOfferController,
+        ]),
+        builder: (_, _) {
+          return Column(
+            crossAxisAlignment: .stretch,
+            children: [
+              DefaultRowFields(
+                controller: widget.retailController,
+                offerController: widget.retailOfferController,
+                focusNode: widget.retailFocusNode,
+                offerFocusNode: widget.retailOfferFocusNode,
+                priceType: 'Venda',
+                onSubmit: widget.wholeFocusNode.requestFocus,
+              ),
+              DefaultRowFields(
+                controller: widget.wholeController,
+                offerController: widget.wholeOfferController,
+                focusNode: widget.wholeFocusNode,
+                offerFocusNode: widget.wholeOfferFocusNode,
+                priceType: 'Atacado',
+                onSubmit: widget.ecommerceFocusNode.requestFocus,
+              ),
+              DefaultRowFields(
+                controller: widget.ecommerceController,
+                offerController: widget.ecommerceOfferController,
+                focusNode: widget.ecommerceFocusNode,
+                offerFocusNode: widget.ecommerceOfferFocusNode,
+                priceType: 'Ecommerce',
+                onSubmit: hasChangedAnyValue ? insertUpdate : null,
+              ),
+              gapH8,
+              PrimaryButton(
                 text: 'Confirmar alterações'.hardcoded,
                 onPressed: hasChangedAnyValue ? insertUpdate : null,
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
