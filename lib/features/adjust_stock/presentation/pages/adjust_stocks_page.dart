@@ -125,16 +125,11 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
             ],
             gapH8,
             Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  ProductsItems(
-                    quantityFocusNode: quantityFocusNode,
-                    formKey: formKey,
-                    enterpriseCode: widget.enterpriseCode,
-                    quantityController: quantityController,
-                  ),
-                  gapSliverH48,
-                ],
+              child: ProductsItems(
+                quantityFocusNode: quantityFocusNode,
+                formKey: formKey,
+                enterpriseCode: widget.enterpriseCode,
+                quantityController: quantityController,
               ),
             ),
           ],
