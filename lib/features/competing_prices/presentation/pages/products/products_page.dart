@@ -72,7 +72,6 @@ class ProductsPage extends ConsumerWidget {
               researchCode: researchCode,
               concurrentCode: concurrentCode,
             ),
-            gapSliverH48,
           ],
         ),
       ),

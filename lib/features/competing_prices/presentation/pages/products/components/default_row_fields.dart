@@ -53,6 +53,7 @@ class DefaultRowFields extends StatelessWidget {
             controller: offerController,
             focusNode: offerFocusNode,
             onFieldSubmitted: (_) => onSubmit?.call(),
+            onEditingComplete: onSubmit?.call,
             labelText: '$priceType (oferta)'.hardcoded,
             hintText: '$priceType (oferta)'.hardcoded,
             autovalidateMode: AutovalidateMode.onUserInteraction,
