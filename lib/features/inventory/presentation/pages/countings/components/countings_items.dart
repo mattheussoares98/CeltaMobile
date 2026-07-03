@@ -1,12 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/routing/routing.dart';
-import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 
 class CountingsItems extends ConsumerWidget {
   final List<CountingEntity>? countings;
@@ -22,6 +21,7 @@ class CountingsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       itemCount: countings?.length ?? 0,
       itemBuilder: (_, index) {
         final counting = countings![index];
@@ -49,37 +49,34 @@ class _CountingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {
-            context.pushNamed(
-              Routes.inventoryProducts.name,
-              pathParameters: {
-                'codigoInternoInvCont':
-                    counting.CodigoInternoInvCont.toString(),
-                'enterpriseCode': enterpriseCode.toString(),
-                'codigoInternoInventario': codigoInternoInventario.toString(),
-              },
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: () {
+          context.pushNamed(
+            Routes.inventoryProducts.name,
+            pathParameters: {
+              'codigoInternoInvCont': counting.CodigoInternoInvCont.toString(),
+              'enterpriseCode': enterpriseCode.toString(),
+              'codigoInternoInventario': codigoInternoInventario.toString(),
+            },
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(Sizes.p8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TitleAndSubTitle(
+                title: 'Número'.hardcoded,
+                subTitle: counting.NumeroContagemInvCont.toString(),
+              ),
+              if (counting.ObsInvCont != null)
                 TitleAndSubTitle(
-                  title: 'Número'.hardcoded,
-                  subTitle: counting.NumeroContagemInvCont.toString(),
+                  title: 'Obs'.hardcoded,
+                  subTitle: counting.ObsInvCont,
                 ),
-                if (counting.ObsInvCont != null)
-                  TitleAndSubTitle(
-                    title: 'Obs'.hardcoded,
-                    subTitle: counting.ObsInvCont,
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),
