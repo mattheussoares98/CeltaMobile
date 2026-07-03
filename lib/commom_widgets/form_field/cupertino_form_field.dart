@@ -36,9 +36,13 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       _onControllerChanged,
     );
     overlayManager.hide();
-    ref
-        .read(activeNumericFocusNodeProvider.notifier)
-        .clearIfActive(widget.defaultTextFormField.focusNode);
+    try {
+      ref
+          .read(activeNumericFocusNodeProvider.notifier)
+          .clearIfActive(widget.defaultTextFormField.focusNode);
+    } catch (_) {
+      // Safely ignore if the ref or provider container is already inactive/disposed.
+    }
     super.dispose();
   }
 
