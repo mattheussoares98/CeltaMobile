@@ -124,21 +124,25 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       isScrollable: false,
       usePadding: false,
       resizeToAvoidBottomInset: true,
-      appBar: BaseAppBar(titleWidget: AppBarTitle(receipt: receiptState)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed(
-            Routes.receiptProductsNotFound.name,
-            pathParameters: {
-              'enterpriseCode': widget.enterpriseCode.toString(),
-              'receiptCode': widget.receiptCode.toString(),
+      appBar: BaseAppBar(
+        titleWidget: AppBarTitle(receipt: receiptState),
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.goNamed(
+                Routes.receiptProductsNotFound.name,
+                pathParameters: {
+                  'enterpriseCode': widget.enterpriseCode.toString(),
+                  'receiptCode': widget.receiptCode.toString(),
+                },
+              );
             },
-          );
-        },
-        child: const PlatformIcon(
-          cupertinoIcon: CupertinoIcons.add,
-          materialIcon: Icons.add,
-        ),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.add,
+              materialIcon: Icons.add,
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -168,7 +172,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     quantityController: quantityController,
                     quantityFocusNode: quantityFocusNode,
                   ),
-                  gapSliverH80,
                 ],
               ),
             ),
