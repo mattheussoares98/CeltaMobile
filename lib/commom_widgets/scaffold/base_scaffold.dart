@@ -240,6 +240,15 @@ class _BaseScaffold extends StatelessWidget {
       }
 
       scaffold = Material(color: Colors.transparent, child: scaffold);
+
+      // Wrap in a transparent Material Scaffold so that ScaffoldMessenger
+      // can find an anchor to render SnackBars on iOS (CupertinoPageScaffold
+      // has no Material Scaffold, so showSnackBar is otherwise silently ignored).
+      scaffold = Scaffold(
+        backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
+        body: scaffold,
+      );
     } else {
       scaffold = Scaffold(
         resizeToAvoidBottomInset: params.resizeToAvoidBottomInset,

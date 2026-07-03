@@ -5,14 +5,19 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 void showSnackBarMessage(
-  BuildContext context,
+  BuildContext? context,
   String message, {
   Color? backgroundColor = Colors.green,
   Duration? duration,
 }) {
-  if (!context.mounted) return;
+  // Always prefer the global key (attached to MaterialApp root).
+  // This works on iOS where CupertinoPageScaffold is used and
+  // ScaffoldMessenger.maybeOf(context) would return null.
   final scaffoldMessenger =
-      ScaffoldMessenger.maybeOf(context) ?? scaffoldMessengerKey.currentState;
+      scaffoldMessengerKey.currentState ??
+      (context != null && context.mounted
+          ? ScaffoldMessenger.maybeOf(context)
+          : null);
   if (scaffoldMessenger == null) return;
 
   scaffoldMessenger.clearSnackBars();
