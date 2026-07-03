@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/pages.dart';
@@ -75,9 +76,17 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
         ],
       ),
       floatingActionButton: currentPageIndex == 3
-          ? FloatingSaveButton(
-              observationsController: observationsController,
-              enterpriseCode: widget.enterpriseCode,
+          ? Consumer(
+              builder: (_, ref, _) {
+                final keyboardIsOpen = ref.watch(
+                  keyboardVisibilityStateControllerProvider,
+                );
+                if (keyboardIsOpen) return const SizedBox.shrink();
+                return FloatingSaveButton(
+                  observationsController: observationsController,
+                  enterpriseCode: widget.enterpriseCode,
+                );
+              },
             )
           : null,
       body: IndexedStack(index: currentPageIndex, children: pages),
