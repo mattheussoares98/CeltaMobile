@@ -38,92 +38,96 @@ class SummaryTable extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    return Row(
-      mainAxisAlignment: mainAxisAlignment,
-      children: List.generate(items.length, (index) {
-        final item = items[index];
-        String formattedValue = item.value.toString();
-        String? priceText;
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisAlignment: mainAxisAlignment,
+        children: List.generate(items.length, (index) {
+          final item = items[index];
+          String formattedValue = item.value.toString();
+          String? priceText;
 
-        if (item.value is num) {
-          if (item.isPrice) {
-            priceText = item.value.toString().toBrazilianNumber(
-              item.decimalHouses,
-            );
-          } else if (item.isPercentage) {
-            formattedValue =
-                '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
-          } else {
-            formattedValue = item.value.toString().toBrazilianNumber(
-              item.decimalHouses,
-              true,
-            );
+          if (item.value is num) {
+            if (item.isPrice) {
+              priceText = item.value.toString().toBrazilianNumber(
+                item.decimalHouses,
+              );
+            } else if (item.isPercentage) {
+              formattedValue =
+                  '${item.value.toString().toBrazilianNumber(item.decimalHouses)} %';
+            } else {
+              formattedValue = item.value.toString().toBrazilianNumber(
+                item.decimalHouses,
+                true,
+              );
+            }
           }
-        }
 
-        final effectiveValueStyle = item.color != null
-            ? valueStyle?.copyWith(color: item.color)
-            : valueStyle;
+          final effectiveValueStyle = item.color != null
+              ? valueStyle?.copyWith(color: item.color)
+              : valueStyle;
 
-        var alignment = Alignment.center;
-        var mainAxisAlignment = MainAxisAlignment.center;
+          var alignment = Alignment.center;
+          var mainAxisAlignment = MainAxisAlignment.center;
 
-        if (items.length > 2) {
-          if (index == 0) {
-            alignment = Alignment.centerLeft;
-            mainAxisAlignment = MainAxisAlignment.start;
-          } else if (index == items.length - 1) {
-            alignment = Alignment.centerRight;
-            mainAxisAlignment = MainAxisAlignment.end;
+          if (items.length > 2) {
+            if (index == 0) {
+              alignment = Alignment.centerLeft;
+              mainAxisAlignment = MainAxisAlignment.start;
+            } else if (index == items.length - 1) {
+              alignment = Alignment.centerRight;
+              mainAxisAlignment = MainAxisAlignment.end;
+            }
           }
-        }
 
-        return Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: alignment,
-                child: Row(
-                  mainAxisAlignment: mainAxisAlignment,
-                  children: [
-                    Flexible(
-                      child: DefaultText.caption(
-                        item.title,
-                        fontWeight: FontWeight.bold,
-                        color: context.theme.hintColor,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+          return Flexible(
+            child: Column(
+              mainAxisAlignment: .spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: alignment,
+                  child: Row(
+                    mainAxisAlignment: mainAxisAlignment,
+                    crossAxisAlignment: .start,
+                    children: [
+                      Flexible(
+                        child: DefaultText.caption(
+                          item.title,
+                          fontWeight: FontWeight.bold,
+                          color: context.theme.hintColor,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
+                      if (item.trailing != null) ...[gapW4, item.trailing!],
+                    ],
+                  ),
+                ),
+                if (priceText != null)
+                  Align(
+                    alignment: alignment,
+                    child: AnimatedPriceValue(
+                      key: ValueKey(item.title),
+                      value: item.value as num,
+                      style: effectiveValueStyle,
+                      priceText: priceText,
                     ),
-                    if (item.trailing != null) ...[gapW4, item.trailing!],
-                  ],
-                ),
-              ),
-              if (priceText != null)
-                Align(
-                  alignment: alignment,
-                  child: AnimatedPriceValue(
-                    key: ValueKey(item.title),
-                    value: item.value as num,
-                    style: effectiveValueStyle,
-                    priceText: priceText,
+                  )
+                else
+                  Align(
+                    alignment: alignment,
+                    child: DefaultText.bodyMedium(
+                      formattedValue,
+                      fontWeight: FontWeight.bold,
+                      color: item.color,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                )
-              else
-                Align(
-                  alignment: alignment,
-                  child: DefaultText.bodyMedium(
-                    formattedValue,
-                    fontWeight: FontWeight.bold,
-                    color: item.color,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-            ],
-          ),
-        );
-      }).toList(),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 }
