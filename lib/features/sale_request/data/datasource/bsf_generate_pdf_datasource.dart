@@ -189,6 +189,10 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
           'Cliente: ${saleRequest.customer?.name ?? "Não informado".hardcoded}',
           style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14),
         ),
+        pw.Text(
+          'Vendedor: ${saleRequest.seller?.name ?? "Não informado".hardcoded}',
+          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14),
+        ),
         pw.SizedBox(height: 12),
         if (saleRequest.instructions?.isNotEmpty ?? false) ...[
           _buildInfoSection('Instruções:'.hardcoded, saleRequest.instructions!),
