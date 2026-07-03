@@ -39,7 +39,31 @@ class _ValueFieldAndConfirmButtonState
     super.dispose();
   }
 
-  void onTap() {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        final totalLiquidAndPaidDifference = getCurrentDifference();
+        if (totalLiquidAndPaidDifference > 0) {
+          valueController.text = totalLiquidAndPaidDifference
+              .toString()
+              .toBrazilianNumber();
+        }
+      }
+    });
+  }
+
+  double getCurrentDifference() {
+    return ref.read(
+      insertUpdateStateControllerProvider.select(
+        (s) => s.value?.totalLiquidAndPaidDifference ?? 0,
+      ),
+    );
+  }
+
+  void onSubmit() {
     if (widget.formKey.currentState?.validate() != true) {
       return;
     }
@@ -71,6 +95,13 @@ class _ValueFieldAndConfirmButtonState
         widget.creditCardController.clear();
         widget.portionsController.clear();
         widget.validityController.clear();
+
+        final currentDifference = getCurrentDifference();
+        if (currentDifference > 0) {
+          valueController.text = currentDifference
+              .toString()
+              .toBrazilianNumber();
+        }
       } else {
         showSnackBarMessage(
           context,
@@ -91,7 +122,15 @@ class _ValueFieldAndConfirmButtonState
             controller: valueController,
             labelText: 'Valor'.hardcoded,
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onFieldSubmitted: (_) => onTap(),
+            onFieldSubmitted: (_) => onSubmit(),
+            onTap: () {
+              if (!valueFocusNode.hasFocus) {
+                valueController.selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: valueController.text.length,
+                );
+              }
+            },
             autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             validator: FormValidators.compose([
               NonEmptyValidator(),
@@ -101,7 +140,10 @@ class _ValueFieldAndConfirmButtonState
         ),
         gapW16,
         Expanded(
-          child: PrimaryButton(onPressed: onTap, text: 'ADICIONAR'.hardcoded),
+          child: PrimaryButton(
+            onPressed: onSubmit,
+            text: 'ADICIONAR'.hardcoded,
+          ),
         ),
       ],
     );
