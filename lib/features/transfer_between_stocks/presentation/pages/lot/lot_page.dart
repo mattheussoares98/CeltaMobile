@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
@@ -79,8 +78,6 @@ class _LotPageState extends ConsumerState<LotPage> {
                 enterpriseCode: widget.enterpriseCode,
                 quantityFocusNode: lotQuantityFocusNode,
               ),
-
-              gapSliverH48,
             ],
           ),
         ),

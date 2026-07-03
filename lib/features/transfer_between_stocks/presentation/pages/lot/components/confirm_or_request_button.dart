@@ -1,9 +1,8 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 
 class ConfirmAndRequestButtons extends ConsumerWidget {
   final int enterpriseCode;
@@ -16,22 +15,25 @@ class ConfirmAndRequestButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      children: [
-        Expanded(
-          child: _ConfirmOrRequestButton(
-            isRequest: true,
-            confirmRequest: confirmRequest,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Sizes.p8),
+      child: Row(
+        children: [
+          Expanded(
+            child: _ConfirmOrRequestButton(
+              isRequest: true,
+              confirmRequest: confirmRequest,
+            ),
           ),
-        ),
-        gapW8,
-        Expanded(
-          child: _ConfirmOrRequestButton(
-            isRequest: false,
-            confirmRequest: confirmRequest,
+          gapW8,
+          Expanded(
+            child: _ConfirmOrRequestButton(
+              isRequest: false,
+              confirmRequest: confirmRequest,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

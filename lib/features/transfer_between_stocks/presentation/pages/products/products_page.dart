@@ -85,7 +85,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     enterpriseCode: widget.enterpriseCode,
                     formKey: formKey,
                   ),
-                  gapSliverH48,
                 ],
               ),
             ),
