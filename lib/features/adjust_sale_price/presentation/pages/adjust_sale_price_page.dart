@@ -56,7 +56,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        showSnackBarMessage(context, 'Preço alterado com sucesso'.hardcoded);
+        showToastMessage('Preço alterado com sucesso'.hardcoded);
         context.pop();
       });
     });

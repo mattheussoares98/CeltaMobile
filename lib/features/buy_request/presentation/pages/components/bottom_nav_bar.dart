@@ -63,24 +63,21 @@ class BottomNavBar extends ConsumerWidget {
           if (!context.mounted) return;
 
           if (!buyerIsSelected) {
-            showSnackBarMessage(
-              context,
+            showToastMessage(
               'Selecione um comprador'.hardcoded,
-              backgroundColor: Colors.red,
+              type: ToastType.error,
             );
             return;
           } else if (!requestTypeIsSelected) {
-            showSnackBarMessage(
-              context,
+            showToastMessage(
               'Selecione um modelo de pedido'.hardcoded,
-              backgroundColor: Colors.red,
+              type: ToastType.error,
             );
             return;
           } else if (!supplierIsSelected) {
-            showSnackBarMessage(
-              context,
+            showToastMessage(
               'Selecione um fornecedor'.hardcoded,
-              backgroundColor: Colors.red,
+              type: ToastType.error,
             );
             return;
           }
@@ -91,10 +88,9 @@ class BottomNavBar extends ConsumerWidget {
             pendingValue.selectedEnterprises!.isNotEmpty;
         if (index == 2 && !enterprisesAreValid) {
           if (!context.mounted) return;
-          showSnackBarMessage(
-            context,
+          showToastMessage(
             'Selecione pelo menos uma empresa'.hardcoded,
-            backgroundColor: Colors.red,
+            type: ToastType.error,
           );
           return;
         }

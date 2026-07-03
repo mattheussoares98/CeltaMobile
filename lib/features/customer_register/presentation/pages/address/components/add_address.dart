@@ -19,10 +19,9 @@ class AddAddress extends ConsumerWidget {
             (e) => e.Zip == newAddress.Zip && e.Number == newAddress.Number,
           ) ??
           false) {
-        showSnackBarMessage(
-          null,
+        showToastMessage(
           'Esse endereço já foi inserido'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
 
         return false;

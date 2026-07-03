@@ -50,10 +50,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
         );
       } else {
         if (context.mounted) {
-          showSnackBarMessage(
-            context,
-            'O pedido foi salvo com sucesso'.hardcoded,
-          );
+          showToastMessage('O pedido foi salvo com sucesso'.hardcoded);
         }
       }
     }

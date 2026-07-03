@@ -38,10 +38,9 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
       if (!context.mounted) return;
 
       if (bytes == null) {
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
       } else {
         context.pushNamed(
@@ -53,7 +52,7 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
         );
       }
     } catch (e) {
-      showSnackBarMessage(context, e.toString(), backgroundColor: Colors.red);
+      showToastMessage(e.toString(), type: ToastType.error);
     } finally {
       if (mounted) {
         setState(() {

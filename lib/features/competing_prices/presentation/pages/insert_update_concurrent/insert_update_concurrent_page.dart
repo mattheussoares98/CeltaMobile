@@ -78,8 +78,7 @@ class _UpdateConcurrentPageState
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
         context.pop();
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'Concorrente ${widget.concurrentUpdating == null ? 'inserido' : 'alterado'} com sucesso'
               .hardcoded,
         );

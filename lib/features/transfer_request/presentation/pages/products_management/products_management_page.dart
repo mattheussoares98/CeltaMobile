@@ -32,7 +32,7 @@ class ProductsManagementPage extends ConsumerWidget {
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
-        showSnackBarMessage(context, 'Pedido salvo com sucesso'.hardcoded);
+        showToastMessage('Pedido salvo com sucesso'.hardcoded);
       });
     });
 

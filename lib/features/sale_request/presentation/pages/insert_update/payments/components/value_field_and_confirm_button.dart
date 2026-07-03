@@ -103,10 +103,9 @@ class _ValueFieldAndConfirmButtonState
               .toBrazilianNumber();
         }
       } else {
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           error ?? 'Erro ao adicionar pagamento'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
       }
     }

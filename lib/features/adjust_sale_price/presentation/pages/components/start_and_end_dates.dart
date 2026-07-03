@@ -3,11 +3,11 @@ import 'package:celta_inventario/features/adjust_sale_price/domain/entities/enti
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class StartAndEndDates extends ConsumerWidget {
   final String plu;
@@ -32,10 +32,9 @@ class StartAndEndDates extends ConsumerWidget {
       if (selectedEndDate != null &&
           date != null &&
           selectedEndDate.isBefore(date)) {
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'A data de início precisa ser anterior a data de término'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
       } else {
         ref
@@ -48,10 +47,9 @@ class StartAndEndDates extends ConsumerWidget {
       if (selectedStartDate != null &&
           date != null &&
           selectedStartDate.isAfter(date)) {
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'A data de término precisa ser após a data de início'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
       } else {
         ref

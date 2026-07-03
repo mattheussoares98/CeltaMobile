@@ -57,8 +57,7 @@ class TitleAndSubTitle extends StatelessWidget {
     if (!context.mounted) return;
 
     // Provide visual feedback
-    showSnackBarMessage(
-      context,
+    showToastMessage(
       'Copiado: $text'.hardcoded,
       duration: const Duration(seconds: 2),
     );

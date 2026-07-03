@@ -45,11 +45,10 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     required bool requestTypeAllowChangePrice,
   }) {
     if (product.Value == 0 && !requestTypeAllowChangePrice) {
-      showSnackBarMessage(
-        context,
+      showToastMessage(
         'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
             .hardcoded,
-        backgroundColor: Colors.red,
+        type: ToastType.error,
       );
       ref
           .read(

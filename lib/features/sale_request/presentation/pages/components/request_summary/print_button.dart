@@ -36,10 +36,9 @@ class _PrintButtonState extends ConsumerState<PrintButton> {
       if (!context.mounted) return;
 
       if (saleRequest.code == null) {
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'Não foi possível carregar o pedido. Tente novamente'.hardcoded,
-          backgroundColor: Colors.red,
+          type: ToastType.error,
         );
       } else {
         if (context.mounted) {
@@ -63,7 +62,7 @@ class _PrintButtonState extends ConsumerState<PrintButton> {
         }
       }
     } catch (e) {
-      showSnackBarMessage(context, e.toString(), backgroundColor: Colors.red);
+      showToastMessage(e.toString(), type: ToastType.error);
     } finally {
       if (mounted) {
         setState(() {

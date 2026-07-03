@@ -78,10 +78,9 @@ class GetNewDate {
 
     if (selectedTime == null) {
       if (!context.mounted) return null;
-      showSnackBarMessage(
-        context,
+      showToastMessage(
         'Horário não atualizado'.hardcoded,
-        backgroundColor: Colors.red,
+        type: ToastType.error,
       );
 
       return null;
@@ -97,10 +96,9 @@ class GetNewDate {
 
     if (finalDateTime.isBefore(firstDate)) {
       if (!context.mounted) return null;
-      showSnackBarMessage(
-        context,
+      showToastMessage(
         'O horário não pode ser menor que a data mínima'.hardcoded,
-        backgroundColor: Colors.red,
+        type: ToastType.error,
       );
       return null;
     }

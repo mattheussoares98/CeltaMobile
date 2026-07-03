@@ -76,8 +76,7 @@ class _InsertUpdateResearchPageState
     ref.listen(insertUpdateResearchControllerProvider, (p, n) {
       n.doOnSuccess(p, () {
         context.pop();
-        showSnackBarMessage(
-          context,
+        showToastMessage(
           'Pesquisa ${widget.research == null ? 'inserida' : 'alterada'} com sucesso'
               .hardcoded,
         );

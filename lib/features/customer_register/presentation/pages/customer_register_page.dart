@@ -36,10 +36,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   Widget build(BuildContext context) {
     ref.listen(insertUpdateCustomerControllerProvider, (p, n) {
       n.doOnSuccess(p, () async {
-        showSnackBarMessage(
-          context,
-          'Cliente cadastrado/atualizado com sucesso'.hardcoded,
-        );
+        showToastMessage('Cliente cadastrado/atualizado com sucesso'.hardcoded);
         ref.invalidate(customerStateControllerProvider);
         personalDataPageKey.currentState?.updateFields(clearCpf: true);
         ref.read(pageIndexStateControllerProvider.notifier).updateIndex(0);

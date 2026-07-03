@@ -45,10 +45,9 @@ class _PhonePageState extends ConsumerState<PhonePage> {
         ) ??
         false) {
       if (!mounted) return;
-      showSnackBarMessage(
-        context,
+      showToastMessage(
         'Esse telefone já foi adicionado'.hardcoded,
-        backgroundColor: Colors.red,
+        type: ToastType.error,
       );
       return;
     }

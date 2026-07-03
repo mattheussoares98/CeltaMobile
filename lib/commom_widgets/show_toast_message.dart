@@ -8,18 +8,18 @@ import 'package:toastification/toastification.dart';
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
-void showSnackBarMessage(
-  BuildContext? context,
+enum ToastType { error, success }
+
+void showToastMessage(
   String message, {
-  Color? backgroundColor = Colors.green,
+  ToastType type = ToastType.success,
   Duration? duration,
 }) {
   toastification.show(
-    context: context?.mounted == true ? context : null,
     title: DefaultText.title(message, textAlign: TextAlign.center),
     alignment: Alignment.bottomCenter,
     autoCloseDuration: duration ?? const Duration(seconds: 4),
-    backgroundColor: backgroundColor ?? Colors.green,
+    backgroundColor: type == ToastType.success ? Colors.green : Colors.red,
     foregroundColor: Colors.white,
     borderRadius: BorderRadius.circular(8),
     showProgressBar: true,
@@ -27,9 +27,9 @@ void showSnackBarMessage(
     closeOnClick: true,
     dragToClose: true,
     style: ToastificationStyle.flat,
-    type: backgroundColor == Colors.red
-        ? ToastificationType.error
-        : ToastificationType.success,
+    type: type == ToastType.success
+        ? ToastificationType.success
+        : ToastificationType.error,
     applyBlurEffect: false,
   );
 }

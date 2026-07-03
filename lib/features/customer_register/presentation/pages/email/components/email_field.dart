@@ -34,10 +34,9 @@ class _EmailFieldState extends ConsumerState<EmailField> {
 
     if (currentEmails?.any((e) => e == emailController.text) ?? false) {
       if (!mounted) return;
-      showSnackBarMessage(
-        context,
+      showToastMessage(
         'Esse e-mail já foi adicionado'.hardcoded,
-        backgroundColor: Colors.red,
+        type: ToastType.error,
       );
       return;
     }

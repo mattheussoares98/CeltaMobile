@@ -120,11 +120,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
               );
 
               if (errorMessage?.isNotEmpty == true) {
-                showSnackBarMessage(
-                  context,
-                  errorMessage!,
-                  backgroundColor: Colors.red,
-                );
+                showToastMessage(errorMessage!, type: ToastType.error);
                 return;
               }
 

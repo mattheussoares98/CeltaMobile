@@ -36,11 +36,7 @@ class QuantityControlButton extends ConsumerWidget {
         );
 
         if (errorMessage?.isNotEmpty == true) {
-          showSnackBarMessage(
-            context,
-            errorMessage!,
-            backgroundColor: Colors.red,
-          );
+          showToastMessage(errorMessage!, type: ToastType.error);
           return;
         } else if (actions.isNotEmpty) {
           final confirmed = await showAlertDialog(

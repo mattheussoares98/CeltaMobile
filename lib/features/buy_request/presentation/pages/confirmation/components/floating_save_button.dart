@@ -51,10 +51,7 @@ class FloatingSaveButton extends ConsumerWidget {
                         .insert(observationsController.text);
 
                     if (succeeds && context.mounted) {
-                      showSnackBarMessage(
-                        context,
-                        'Pedido salvo com sucesso'.hardcoded,
-                      );
+                      showToastMessage('Pedido salvo com sucesso'.hardcoded);
                       observationsController.clear();
                     }
                   },
