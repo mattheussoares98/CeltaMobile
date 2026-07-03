@@ -14,6 +14,7 @@ class IdentificationPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
+      safeAreaTop: false,
       body: Column(
         children: [
           Column(

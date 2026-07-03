@@ -55,6 +55,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      safeAreaTop: false,
       body: Column(
         children: [
           Consumer(
@@ -71,7 +72,6 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
               slivers: [
                 gapSliverH8,
                 ProductsItems(enterpriseCode: widget.enterpriseCode),
-                gapSliverH48,
               ],
             ),
           ),
