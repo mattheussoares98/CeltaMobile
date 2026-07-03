@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/insert_products/components/product_item.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsItems extends ConsumerStatefulWidget {
   final DraftKey draftKey;
@@ -140,6 +139,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       data: (products) {
         return ResponsiveListFlow(
           isSliver: true,
+          padding: EdgeInsets.zero,
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];

@@ -74,7 +74,6 @@ class _InsertProductsPageState extends ConsumerState<InsertProductsPage> {
                 draftKey: widget.draftKey,
                 searchProductKey: searchProductKey,
               ),
-              gapSliverH48,
             ],
           ),
         ),
