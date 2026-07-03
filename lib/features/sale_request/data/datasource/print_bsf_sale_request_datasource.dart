@@ -256,20 +256,15 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
           in saleRequest.products ?? <BSFProductItemModel>[]) {
         final itemGrossValue =
             (cartProduct.value ?? 0) * (cartProduct.quantity ?? 0);
-        final ean = cartProduct.eanCode;
-        final eanOrPlu = ean?.isNotEmpty == true
-            ? ean
-            : cartProduct.product?.productPackingPriceLookUpString;
+        final ean = cartProduct.product?.productPackingEanString;
+        final plu = cartProduct.product?.productPackingPriceLookUpString;
         final productDiscount = cartProduct.toEntity().totalDiscountValue;
         final productIncrement = cartProduct.toEntity().totalIncrement;
         final productFreight = cartProduct.toEntity().totalDeliveryTax;
         final productTotalLiquid = cartProduct.toEntity().totalLiquid;
-
         bytes += generator.row([
           PosColumn(
-            textEncoded: latin1.encode(
-              "($eanOrPlu) ${cartProduct.product?.name}",
-            ),
+            textEncoded: latin1.encode("($plu) ${cartProduct.product?.name}"),
             width: 12,
             styles: const PosStyles(bold: true),
           ),
@@ -277,13 +272,17 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
         bytes += generator.row([
           PosColumn(
-            text: "",
-            width: 2,
-            styles: const PosStyles(align: PosAlign.right),
+            text: (ean?.isNotEmpty ?? false) ? ean! : "",
+            width: 3,
+            styles: PosStyles(
+              align: (ean?.isNotEmpty ?? false)
+                  ? PosAlign.left
+                  : PosAlign.right,
+            ),
           ),
           PosColumn(
             text: cartProduct.quantity.toString().toBrazilianNumber(3, true),
-            width: 3,
+            width: 2,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
