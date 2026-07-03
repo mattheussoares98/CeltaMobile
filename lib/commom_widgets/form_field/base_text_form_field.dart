@@ -28,6 +28,7 @@ class BaseTextFormField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final VoidCallback? onEditingComplete;
   final Iterable<String>? autofillHints;
+  final EdgeInsets scrollPadding;
   const BaseTextFormField({
     super.key,
     this.maxLength = 50,
@@ -52,6 +53,7 @@ class BaseTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.autofocus = false,
     this.autofillHints,
+    this.scrollPadding = const EdgeInsets.all(Sizes.p20),
   });
 
   @override
@@ -81,6 +83,7 @@ class BaseTextFormField extends StatelessWidget {
         onTap: onTap,
         autofocus: autofocus == true,
         autofillHints: autofillHints,
+        scrollPadding: scrollPadding,
         buildCounter:
             (
               context, {

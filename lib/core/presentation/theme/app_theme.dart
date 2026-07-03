@@ -103,6 +103,19 @@ class AppTheme {
         ),
         elevation: 2,
       ),
+      expansionTileTheme: ExpansionTileThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Sizes.p12),
+        ),
+        collapsedShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Sizes.p12),
+        ),
+        backgroundColor: primaryColorDark.withAlpha(30),
+        collapsedBackgroundColor: primaryColorDark.withAlpha(50),
+        childrenPadding: const EdgeInsets.all(Sizes.p8),
+        iconColor: primaryColorDark,
+        collapsedIconColor: primaryColor,
+      ),
     );
   }
 }

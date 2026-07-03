@@ -10,11 +10,16 @@ class EcProcessAuthorizationRepositoryImpl
   EcProcessAuthorizationRepositoryImpl(this.datasource);
 
   @override
-  Future<dynamic> getJudgments(EcRequestParams params) async {
-    final response = await datasource.getJudgments(params);
+  Future<List<BSFProcessAuthorizationJudgmentEntity>> getJudgments(
+    EcRequestParams params, {
+    int? processCode,
+  }) async {
+    final response = await datasource.getJudgments(
+      params,
+      processCode: processCode,
+    );
 
-    //TODO convert to entity and create tests
-    return response;
+    return response.map((e) => e.toEntity()).toList();
   }
 
   @override
@@ -24,5 +29,24 @@ class EcProcessAuthorizationRepositoryImpl
     final response = await datasource.getStatistics(params);
 
     return response.toEntity();
+  }
+
+  @override
+  Future<dynamic> getSaleRequestErrors(
+    //TODO create entity
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int saleRequestCode,
+    required int customerCode,
+  }) async {
+    final response = await datasource.getSaleRequestErrors(
+      params,
+      enterpriseCode: enterpriseCode,
+      saleRequestCode: saleRequestCode,
+      customerCode: customerCode,
+    );
+
+    //TODO create tests
+    return response;
   }
 }

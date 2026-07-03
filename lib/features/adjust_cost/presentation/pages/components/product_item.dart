@@ -94,6 +94,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
       isSelected: isSelected,
       onTap: () {
         costController.clear();
+        final isCurrentlySelected = isSelected;
         ref
             .read(
               selectedProductIndexStateControllerProvider(
@@ -101,6 +102,17 @@ class _ProductItemState extends ConsumerState<ProductItem> {
               ).notifier,
             )
             .updateIndex(widget.index, annulWhenIsSame: true);
+
+        if (!isCurrentlySelected) {
+          if (costFocusNode.hasFocus) {
+            costFocusNode.unfocus();
+          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              costFocusNode.requestFocus();
+            }
+          });
+        }
       },
       notClickableBottom: isSelected
           ? Row(

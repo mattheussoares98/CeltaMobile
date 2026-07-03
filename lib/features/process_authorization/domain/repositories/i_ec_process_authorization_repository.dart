@@ -2,8 +2,19 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 abstract class IEcProcessAuthorizationRepository {
-  Future<dynamic> getJudgments(EcRequestParams params);
+  Future<List<BSFProcessAuthorizationJudgmentEntity>> getJudgments(
+    EcRequestParams params, {
+    int? processCode,
+  });
   Future<BsfProcessAuthorizationStatisticEntity> getStatistics(
     EcRequestParams params,
   );
+
+  Future<dynamic> getSaleRequestErrors(
+    //TODO create entity
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int saleRequestCode,
+    required int customerCode,
+  });
 }

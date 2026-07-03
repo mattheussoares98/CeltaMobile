@@ -103,12 +103,15 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       }
 
       if (module == Modules.adjustPrice) {
-        final canAccess = await ref.read(
-          canAccessResourceStateControllerProvider(
-            BsRoutine.adjustSalePrice,
-            BsResource.adjustSalePrice,
-          ).future,
+        final provider = canAccessResourceStateControllerProvider(
+          BsRoutine.adjustSalePrice,
+          BsResource.adjustSalePrice,
         );
+
+        if (ref.read(provider) is AsyncError) {
+          ref.invalidate(provider);
+        }
+        final canAccess = await ref.read(provider.future);
         if (!canAccess && context.mounted) {
           _showUserWithoutPermissionMessage(context);
           return;

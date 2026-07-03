@@ -36,6 +36,9 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       _onControllerChanged,
     );
     overlayManager.hide();
+    ref
+        .read(activeNumericFocusNodeProvider.notifier)
+        .clearIfActive(widget.defaultTextFormField.focusNode);
     super.dispose();
   }
 
@@ -59,9 +62,12 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
       if (hasFocus && isKeyboardOpen && isNumeric) {
         debugPrint('show');
         _showOverlay();
-      } else if (!hasFocus) {
+      } else {
         debugPrint('Hide');
         overlayManager.hide();
+        ref
+            .read(activeNumericFocusNodeProvider.notifier)
+            .clearIfActive(dtf.focusNode);
       }
     });
   }
@@ -81,6 +87,9 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
         }
       },
     );
+    ref
+        .read(activeNumericFocusNodeProvider.notifier)
+        .setActiveNode(dtf.focusNode);
   }
 
   bool get isNumeric =>

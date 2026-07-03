@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 
@@ -74,7 +75,7 @@ class BaseScaffold extends StatelessWidget {
   }
 }
 
-class _BaseScaffold extends StatelessWidget {
+class _BaseScaffold extends ConsumerWidget {
   const _BaseScaffold(this.params);
   final BaseScaffold params;
 
@@ -89,7 +90,7 @@ class _BaseScaffold extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     Widget newChild = params.body;
 
     Widget? finalAppBar = params.appBar;
@@ -262,6 +263,23 @@ class _BaseScaffold extends StatelessWidget {
         drawer: params.drawer,
         floatingActionButton: params.floatingActionButton,
         floatingActionButtonLocation: params.floatingActionButtonLocation,
+      );
+    }
+
+    final systemBottomInset = MediaQuery.viewInsetsOf(context).bottom;
+    final showDoneBar = context.isCupertino &&
+        systemBottomInset > 0 &&
+        ref.watch(activeNumericFocusNodeProvider) != null;
+
+    if (showDoneBar) {
+      final mediaQuery = MediaQuery.of(context);
+      scaffold = MediaQuery(
+        data: mediaQuery.copyWith(
+          viewInsets: mediaQuery.viewInsets.copyWith(
+            bottom: systemBottomInset + OverlayManager.accessoryBarHeight,
+          ),
+        ),
+        child: scaffold,
       );
     }
 

@@ -1,0 +1,475 @@
+// lib/core/data/models/enterprise/bsf_enterprise_model.dart
+import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+
+class BSFEnterpriseModel extends BSFEnterpriseEntity {
+  const BSFEnterpriseModel({
+    required super.code,
+    super.isInternal,
+    required super.fiscalType,
+    required super.federalSimpleType,
+    required super.personalizedCode,
+    super.federalSimpleWithExcessSublimit,
+    super.saleTypeRetail,
+    super.saleTypeWholeSale,
+    super.saleTypeECommerce,
+    super.regimeType,
+    super.enterpriseActivity,
+    super.telephoneOne,
+    super.telephoneTwo,
+    super.telephoneThree,
+    required super.cnpjNumber,
+    super.formatedCnpjCpfNumber,
+    super.inscriptionNumber,
+    required super.suframaCode,
+    super.formatedInscriptionRgNumber,
+    super.ccmNumber,
+    required super.name,
+    required super.fantasizesName,
+    required super.contactName,
+    super.passwordMonth,
+    super.passwordMonthErrorMessage,
+    super.email,
+    super.eletronicAddress,
+    super.haveAuthorizationProcessSaleRequestProductMinimumPrice,
+    super.accountEmails,
+    super.noSaleType,
+    super.saleTypeString,
+    super.isPisCumulative,
+    super.isCofinsCumulative,
+    super.considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit,
+    super.considerIcmsForCalculateBaseOfPisCofins,
+    super.transferWithICMSCredit,
+    super.simpleAliquot,
+    super.accordingIcmsSpecialRegimeForIcmsAliquot,
+    super.simpleIcmsAliquot,
+    super.telephone,
+    super.cnpjCpfNumber,
+    super.inscriptionRgNumber,
+    super.icmsOnExpenseAccessory,
+    super.usesLiquidValueOnProductTotal,
+    super.ipiOnProductBruteValue,
+    super.ipiOnFreight,
+    super.icmsOnIpi,
+    super.printCreditIcmsSubstituteOnFiscalNote,
+    super.printCreditIcmsSubstituteRetOnFiscalNote,
+    super.ipiOnExpenseAccessory,
+    super.ipiOnAllSale,
+    super.creditIcmsSubstOnFinancialTitle,
+    super.ipiOnFinancialTitle,
+    super.ipiIncludedInPrice,
+    super.icmsSubstIncludedInPrice,
+    super.icmsSubstituteOnExpenseAccessory,
+    super.accordingIcmsSpecialRegimeForWholesale,
+    super.accordingIcmsSpecialRegimeForIcms,
+    super.reduceBuyIcmsCredit,
+    super.icmsOnFreight,
+    super.saleInTransit,
+    super.roundingType,
+    super.defaultFreightType,
+    super.isCentralDeposit,
+    super.isDistributionCenter,
+    super.isSuframa,
+    super.isRetailSaler,
+    super.isWholeSaler,
+    super.isECommerceSaler,
+    super.creditIcmsWithoutDetachOnFiscalNote,
+    super.fiscalAddress,
+    super.dateOfBirth,
+    super.dateOfCadaster,
+    super.customerType,
+    required super.nationalSimple,
+    required super.accountTreasury,
+  });
+
+  factory BSFEnterpriseModel.fromJson(Map json) => BSFEnterpriseModel(
+    code: json['Code'],
+    isInternal: json['IsInternal'],
+    fiscalType: json['FiscalType'],
+    federalSimpleType: json['FederalSimpleType'],
+    personalizedCode: json['PersonalizedCode'],
+    federalSimpleWithExcessSublimit: json['FederalSimpleWithExcessSublimit'],
+    saleTypeRetail: json['SaleTypeRetail'],
+    saleTypeWholeSale: json['SaleTypeWholeSale'],
+    saleTypeECommerce: json['SaleTypeECommerce'],
+    regimeType: json['RegimeType'],
+    enterpriseActivity: json['EnterpriseActivity'] != null
+        ? BSFEnterpriseActivityModel.fromJson(json['EnterpriseActivity'])
+        : null,
+    telephoneOne: json['TelephoneOne'] != null
+        ? BSFTelephoneModel.fromJson(json['TelephoneOne'])
+        : null,
+    telephoneTwo: json['TelephoneTwo'] != null
+        ? BSFTelephoneModel.fromJson(json['TelephoneTwo'])
+        : null,
+    telephoneThree: json['TelephoneThree'] != null
+        ? BSFTelephoneModel.fromJson(json['TelephoneThree'])
+        : null,
+    cnpjNumber: json['CnpjNumber'],
+    formatedCnpjCpfNumber: json['FormatedCnpjCpfNumber'],
+    inscriptionNumber: json['InscriptionNumber'],
+    suframaCode: json['SuframaCode'],
+    formatedInscriptionRgNumber: json['FormatedInscriptionRgNumber'],
+    ccmNumber: json['CcmNumber'],
+    name: json['Name'],
+    fantasizesName: json['FantasizesName'],
+    contactName: json['ContactName'],
+    passwordMonth: json['PasswordMonth'],
+    passwordMonthErrorMessage: json['PasswordMonthErrorMessage'],
+    email: json['Email'],
+    eletronicAddress: json['EletronicAddress'],
+    haveAuthorizationProcessSaleRequestProductMinimumPrice:
+        json['HaveAuthorizationProcessSaleRequestProductMinimumPrice'],
+    accountEmails: json['AccountEmails'] != null
+        ? List<dynamic>.from(json['AccountEmails'])
+        : null,
+    noSaleType: json['NoSaleType'],
+    saleTypeString: json['SaleTypeString'],
+    isPisCumulative: json['IsPisCumulative'],
+    isCofinsCumulative: json['IsCofinsCumulative'],
+    considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit:
+        json['ConsiderIcmsAliquotDiffOnInterstateBuyAsOtherDebit'],
+    considerIcmsForCalculateBaseOfPisCofins:
+        json['ConsiderIcmsForCalculateBaseOfPisCofins'],
+    transferWithICMSCredit: json['TransferWithICMSCredit'],
+    simpleAliquot: (json['SimpleAliquot'] as num?)?.toDouble(),
+    accordingIcmsSpecialRegimeForIcmsAliquot:
+        (json['AccordingIcmsSpecialRegimeForIcmsAliquot'] as num?)?.toDouble(),
+    simpleIcmsAliquot: (json['SimpleIcmsAliquot'] as num?)?.toDouble(),
+    telephone: json['Telephone'] != null
+        ? BSFTelephoneModel.fromJson(json['Telephone'])
+        : null,
+    cnpjCpfNumber: json['CnpjCpfNumber'],
+    inscriptionRgNumber: json['InscriptionRgNumber'],
+    icmsOnExpenseAccessory: json['IcmsOnExpenseAccessory'],
+    usesLiquidValueOnProductTotal: json['UsesLiquidValueOnProductTotal'],
+    ipiOnProductBruteValue: json['IpiOnProductBruteValue'],
+    ipiOnFreight: json['IpiOnFreight'],
+    icmsOnIpi: json['IcmsOnIpi'],
+    printCreditIcmsSubstituteOnFiscalNote:
+        json['PrintCreditIcmsSubstituteOnFiscalNote'],
+    printCreditIcmsSubstituteRetOnFiscalNote:
+        json['PrintCreditIcmsSubstituteRetOnFiscalNote'],
+    ipiOnExpenseAccessory: json['IpiOnExpenseAccessory'],
+    ipiOnAllSale: json['IpiOnAllSale'],
+    creditIcmsSubstOnFinancialTitle: json['CreditIcmsSubstOnFinancialTitle'],
+    ipiOnFinancialTitle: json['IpiOnFinancialTitle'],
+    ipiIncludedInPrice: json['IpiIncludedInPrice'],
+    icmsSubstIncludedInPrice: json['IcmsSubstIncludedInPrice'],
+    icmsSubstituteOnExpenseAccessory: json['IcmsSubstituteOnExpenseAccessory'],
+    accordingIcmsSpecialRegimeForWholesale:
+        json['AccordingIcmsSpecialRegimeForWholesale'],
+    accordingIcmsSpecialRegimeForIcms:
+        json['AccordingIcmsSpecialRegimeForIcms'],
+    reduceBuyIcmsCredit: json['ReduceBuyIcmsCredit'],
+    icmsOnFreight: json['IcmsOnFreight'],
+    saleInTransit: json['SaleInTransit'],
+    roundingType: json['RoundingType'],
+    defaultFreightType: json['DefaultFreightType'],
+    isCentralDeposit: json['IsCentralDeposit'],
+    isDistributionCenter: json['IsDistributionCenter'],
+    isSuframa: json['IsSuframa'],
+    isRetailSaler: json['IsRetailSaler'],
+    isWholeSaler: json['IsWholeSaler'],
+    isECommerceSaler: json['IsECommerceSaler'],
+    creditIcmsWithoutDetachOnFiscalNote:
+        json['CreditIcmsWithoutDetachOnFiscalNote'],
+    fiscalAddress: json['FiscalAddress'] != null
+        ? BSFAddressModel.fromJson(json['FiscalAddress'])
+        : null,
+    dateOfBirth: json['DateOfBirth'] != null
+        ? DateTime.parse(json['DateOfBirth'])
+        : null,
+    dateOfCadaster: json['DateOfCadaster'] != null
+        ? DateTime.parse(json['DateOfCadaster'])
+        : null,
+    customerType: json['CustomerType'],
+    nationalSimple: json['NationalSimple'],
+    accountTreasury: json['AccountTreasury'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'Code': code,
+    'IsInternal': isInternal,
+    'FiscalType': fiscalType,
+    'FederalSimpleType': federalSimpleType,
+    'PersonalizedCode': personalizedCode,
+    'FederalSimpleWithExcessSublimit': federalSimpleWithExcessSublimit,
+    'SaleTypeRetail': saleTypeRetail,
+    'SaleTypeWholeSale': saleTypeWholeSale,
+    'SaleTypeECommerce': saleTypeECommerce,
+    'RegimeType': regimeType,
+    'EnterpriseActivity': enterpriseActivity != null
+        ? BSFEnterpriseActivityModel.fromEntity(enterpriseActivity!).toJson()
+        : null,
+    'TelephoneOne': telephoneOne != null
+        ? BSFTelephoneModel.fromEntity(telephoneOne!).toJson()
+        : null,
+    'TelephoneTwo': telephoneTwo != null
+        ? BSFTelephoneModel.fromEntity(telephoneTwo!).toJson()
+        : null,
+    'TelephoneThree': telephoneThree != null
+        ? BSFTelephoneModel.fromEntity(telephoneThree!).toJson()
+        : null,
+    'CnpjNumber': cnpjNumber,
+    'FormatedCnpjCpfNumber': formatedCnpjCpfNumber,
+    'InscriptionNumber': inscriptionNumber,
+    'SuframaCode': suframaCode,
+    'FormatedInscriptionRgNumber': formatedInscriptionRgNumber,
+    'CcmNumber': ccmNumber,
+    'Name': name,
+    'FantasizesName': fantasizesName,
+    'ContactName': contactName,
+    'PasswordMonth': passwordMonth,
+    'PasswordMonthErrorMessage': passwordMonthErrorMessage,
+    'Email': email,
+    'EletronicAddress': eletronicAddress,
+    'HaveAuthorizationProcessSaleRequestProductMinimumPrice':
+        haveAuthorizationProcessSaleRequestProductMinimumPrice,
+    'AccountEmails': accountEmails,
+    'NoSaleType': noSaleType,
+    'SaleTypeString': saleTypeString,
+    'IsPisCumulative': isPisCumulative,
+    'IsCofinsCumulative': isCofinsCumulative,
+    'ConsiderIcmsAliquotDiffOnInterstateBuyAsOtherDebit':
+        considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit,
+    'ConsiderIcmsForCalculateBaseOfPisCofins':
+        considerIcmsForCalculateBaseOfPisCofins,
+    'TransferWithICMSCredit': transferWithICMSCredit,
+    'SimpleAliquot': simpleAliquot,
+    'AccordingIcmsSpecialRegimeForIcmsAliquot':
+        accordingIcmsSpecialRegimeForIcmsAliquot,
+    'SimpleIcmsAliquot': simpleIcmsAliquot,
+    'Telephone': telephone != null
+        ? BSFTelephoneModel.fromEntity(telephone!).toJson()
+        : null,
+    'CnpjCpfNumber': cnpjCpfNumber,
+    'InscriptionRgNumber': inscriptionRgNumber,
+    'IcmsOnExpenseAccessory': icmsOnExpenseAccessory,
+    'UsesLiquidValueOnProductTotal': usesLiquidValueOnProductTotal,
+    'IpiOnProductBruteValue': ipiOnProductBruteValue,
+    'IpiOnFreight': ipiOnFreight,
+    'IcmsOnIpi': icmsOnIpi,
+    'PrintCreditIcmsSubstituteOnFiscalNote':
+        printCreditIcmsSubstituteOnFiscalNote,
+    'PrintCreditIcmsSubstituteRetOnFiscalNote':
+        printCreditIcmsSubstituteRetOnFiscalNote,
+    'IpiOnExpenseAccessory': ipiOnExpenseAccessory,
+    'IpiOnAllSale': ipiOnAllSale,
+    'CreditIcmsSubstOnFinancialTitle': creditIcmsSubstOnFinancialTitle,
+    'IpiOnFinancialTitle': ipiOnFinancialTitle,
+    'IpiIncludedInPrice': ipiIncludedInPrice,
+    'IcmsSubstIncludedInPrice': icmsSubstIncludedInPrice,
+    'IcmsSubstituteOnExpenseAccessory': icmsSubstituteOnExpenseAccessory,
+    'AccordingIcmsSpecialRegimeForWholesale':
+        accordingIcmsSpecialRegimeForWholesale,
+    'AccordingIcmsSpecialRegimeForIcms': accordingIcmsSpecialRegimeForIcms,
+    'ReduceBuyIcmsCredit': reduceBuyIcmsCredit,
+    'IcmsOnFreight': icmsOnFreight,
+    'SaleInTransit': saleInTransit,
+    'RoundingType': roundingType,
+    'DefaultFreightType': defaultFreightType,
+    'IsCentralDeposit': isCentralDeposit,
+    'IsDistributionCenter': isDistributionCenter,
+    'IsSuframa': isSuframa,
+    'IsRetailSaler': isRetailSaler,
+    'IsWholeSaler': isWholeSaler,
+    'IsECommerceSaler': isECommerceSaler,
+    'CreditIcmsWithoutDetachOnFiscalNote': creditIcmsWithoutDetachOnFiscalNote,
+    'FiscalAddress': fiscalAddress != null
+        ? BSFAddressModel.fromEntity(fiscalAddress!).toJson()
+        : null,
+    'DateOfBirth': dateOfBirth?.toIso8601String(),
+    'DateOfCadaster': dateOfCadaster?.toIso8601String(),
+    'CustomerType': customerType,
+    'NationalSimple': nationalSimple,
+    'AccountTreasury': accountTreasury,
+  };
+
+  factory BSFEnterpriseModel.fromEntity(
+    BSFEnterpriseEntity entity,
+  ) => BSFEnterpriseModel(
+    code: entity.code,
+    isInternal: entity.isInternal,
+    fiscalType: entity.fiscalType,
+    federalSimpleType: entity.federalSimpleType,
+    personalizedCode: entity.personalizedCode,
+    federalSimpleWithExcessSublimit: entity.federalSimpleWithExcessSublimit,
+    saleTypeRetail: entity.saleTypeRetail,
+    saleTypeWholeSale: entity.saleTypeWholeSale,
+    saleTypeECommerce: entity.saleTypeECommerce,
+    regimeType: entity.regimeType,
+    enterpriseActivity: entity.enterpriseActivity != null
+        ? BSFEnterpriseActivityModel.fromEntity(entity.enterpriseActivity!)
+        : null,
+    telephoneOne: entity.telephoneOne != null
+        ? BSFTelephoneModel.fromEntity(entity.telephoneOne!)
+        : null,
+    telephoneTwo: entity.telephoneTwo != null
+        ? BSFTelephoneModel.fromEntity(entity.telephoneTwo!)
+        : null,
+    telephoneThree: entity.telephoneThree != null
+        ? BSFTelephoneModel.fromEntity(entity.telephoneThree!)
+        : null,
+    cnpjNumber: entity.cnpjNumber,
+    formatedCnpjCpfNumber: entity.formatedCnpjCpfNumber,
+    inscriptionNumber: entity.inscriptionNumber,
+    suframaCode: entity.suframaCode,
+    formatedInscriptionRgNumber: entity.formatedInscriptionRgNumber,
+    ccmNumber: entity.ccmNumber,
+    name: entity.name,
+    fantasizesName: entity.fantasizesName,
+    contactName: entity.contactName,
+    passwordMonth: entity.passwordMonth,
+    passwordMonthErrorMessage: entity.passwordMonthErrorMessage,
+    email: entity.email,
+    eletronicAddress: entity.eletronicAddress,
+    haveAuthorizationProcessSaleRequestProductMinimumPrice:
+        entity.haveAuthorizationProcessSaleRequestProductMinimumPrice,
+    accountEmails: entity.accountEmails,
+    noSaleType: entity.noSaleType,
+    saleTypeString: entity.saleTypeString,
+    isPisCumulative: entity.isPisCumulative,
+    isCofinsCumulative: entity.isCofinsCumulative,
+    considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit:
+        entity.considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit,
+    considerIcmsForCalculateBaseOfPisCofins:
+        entity.considerIcmsForCalculateBaseOfPisCofins,
+    transferWithICMSCredit: entity.transferWithICMSCredit,
+    simpleAliquot: entity.simpleAliquot,
+    accordingIcmsSpecialRegimeForIcmsAliquot:
+        entity.accordingIcmsSpecialRegimeForIcmsAliquot,
+    simpleIcmsAliquot: entity.simpleIcmsAliquot,
+    telephone: entity.telephone != null
+        ? BSFTelephoneModel.fromEntity(entity.telephone!)
+        : null,
+    cnpjCpfNumber: entity.cnpjCpfNumber,
+    inscriptionRgNumber: entity.inscriptionRgNumber,
+    icmsOnExpenseAccessory: entity.icmsOnExpenseAccessory,
+    usesLiquidValueOnProductTotal: entity.usesLiquidValueOnProductTotal,
+    ipiOnProductBruteValue: entity.ipiOnProductBruteValue,
+    ipiOnFreight: entity.ipiOnFreight,
+    icmsOnIpi: entity.icmsOnIpi,
+    printCreditIcmsSubstituteOnFiscalNote:
+        entity.printCreditIcmsSubstituteOnFiscalNote,
+    printCreditIcmsSubstituteRetOnFiscalNote:
+        entity.printCreditIcmsSubstituteRetOnFiscalNote,
+    ipiOnExpenseAccessory: entity.ipiOnExpenseAccessory,
+    ipiOnAllSale: entity.ipiOnAllSale,
+    creditIcmsSubstOnFinancialTitle: entity.creditIcmsSubstOnFinancialTitle,
+    ipiOnFinancialTitle: entity.ipiOnFinancialTitle,
+    ipiIncludedInPrice: entity.ipiIncludedInPrice,
+    icmsSubstIncludedInPrice: entity.icmsSubstIncludedInPrice,
+    icmsSubstituteOnExpenseAccessory: entity.icmsSubstituteOnExpenseAccessory,
+    accordingIcmsSpecialRegimeForWholesale:
+        entity.accordingIcmsSpecialRegimeForWholesale,
+    accordingIcmsSpecialRegimeForIcms: entity.accordingIcmsSpecialRegimeForIcms,
+    reduceBuyIcmsCredit: entity.reduceBuyIcmsCredit,
+    icmsOnFreight: entity.icmsOnFreight,
+    saleInTransit: entity.saleInTransit,
+    roundingType: entity.roundingType,
+    defaultFreightType: entity.defaultFreightType,
+    isCentralDeposit: entity.isCentralDeposit,
+    isDistributionCenter: entity.isDistributionCenter,
+    isSuframa: entity.isSuframa,
+    isRetailSaler: entity.isRetailSaler,
+    isWholeSaler: entity.isWholeSaler,
+    isECommerceSaler: entity.isECommerceSaler,
+    creditIcmsWithoutDetachOnFiscalNote:
+        entity.creditIcmsWithoutDetachOnFiscalNote,
+    fiscalAddress: entity.fiscalAddress != null
+        ? BSFAddressModel.fromEntity(entity.fiscalAddress!)
+        : null,
+    dateOfBirth: entity.dateOfBirth,
+    dateOfCadaster: entity.dateOfCadaster,
+    customerType: entity.customerType,
+    nationalSimple: entity.nationalSimple,
+    accountTreasury: entity.accountTreasury,
+  );
+
+  BSFEnterpriseEntity toEntity() => BSFEnterpriseEntity(
+    code: code,
+    isInternal: isInternal,
+    fiscalType: fiscalType,
+    federalSimpleType: federalSimpleType,
+    personalizedCode: personalizedCode,
+    federalSimpleWithExcessSublimit: federalSimpleWithExcessSublimit,
+    saleTypeRetail: saleTypeRetail,
+    saleTypeWholeSale: saleTypeWholeSale,
+    saleTypeECommerce: saleTypeECommerce,
+    regimeType: regimeType,
+    enterpriseActivity: enterpriseActivity,
+    telephoneOne: telephoneOne,
+    telephoneTwo: telephoneTwo,
+    telephoneThree: telephoneThree,
+    cnpjNumber: cnpjNumber,
+    formatedCnpjCpfNumber: formatedCnpjCpfNumber,
+    inscriptionNumber: inscriptionNumber,
+    suframaCode: suframaCode,
+    formatedInscriptionRgNumber: formatedInscriptionRgNumber,
+    ccmNumber: ccmNumber,
+    name: name,
+    fantasizesName: fantasizesName,
+    contactName: contactName,
+    passwordMonth: passwordMonth,
+    passwordMonthErrorMessage: passwordMonthErrorMessage,
+    email: email,
+    eletronicAddress: eletronicAddress,
+    haveAuthorizationProcessSaleRequestProductMinimumPrice:
+        haveAuthorizationProcessSaleRequestProductMinimumPrice,
+    accountEmails: accountEmails,
+    noSaleType: noSaleType,
+    saleTypeString: saleTypeString,
+    isPisCumulative: isPisCumulative,
+    isCofinsCumulative: isCofinsCumulative,
+    considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit:
+        considerIcmsAliquotDiffOnInterstateBuyAsOtherDebit,
+    considerIcmsForCalculateBaseOfPisCofins:
+        considerIcmsForCalculateBaseOfPisCofins,
+    transferWithICMSCredit: transferWithICMSCredit,
+    simpleAliquot: simpleAliquot,
+    accordingIcmsSpecialRegimeForIcmsAliquot:
+        accordingIcmsSpecialRegimeForIcmsAliquot,
+    simpleIcmsAliquot: simpleIcmsAliquot,
+    telephone: telephone,
+    cnpjCpfNumber: cnpjCpfNumber,
+    inscriptionRgNumber: inscriptionRgNumber,
+    icmsOnExpenseAccessory: icmsOnExpenseAccessory,
+    usesLiquidValueOnProductTotal: usesLiquidValueOnProductTotal,
+    ipiOnProductBruteValue: ipiOnProductBruteValue,
+    ipiOnFreight: ipiOnFreight,
+    icmsOnIpi: icmsOnIpi,
+    printCreditIcmsSubstituteOnFiscalNote:
+        printCreditIcmsSubstituteOnFiscalNote,
+    printCreditIcmsSubstituteRetOnFiscalNote:
+        printCreditIcmsSubstituteRetOnFiscalNote,
+    ipiOnExpenseAccessory: ipiOnExpenseAccessory,
+    ipiOnAllSale: ipiOnAllSale,
+    creditIcmsSubstOnFinancialTitle: creditIcmsSubstOnFinancialTitle,
+    ipiOnFinancialTitle: ipiOnFinancialTitle,
+    ipiIncludedInPrice: ipiIncludedInPrice,
+    icmsSubstIncludedInPrice: icmsSubstIncludedInPrice,
+    icmsSubstituteOnExpenseAccessory: icmsSubstituteOnExpenseAccessory,
+    accordingIcmsSpecialRegimeForWholesale:
+        accordingIcmsSpecialRegimeForWholesale,
+    accordingIcmsSpecialRegimeForIcms: accordingIcmsSpecialRegimeForIcms,
+    reduceBuyIcmsCredit: reduceBuyIcmsCredit,
+    icmsOnFreight: icmsOnFreight,
+    saleInTransit: saleInTransit,
+    roundingType: roundingType,
+    defaultFreightType: defaultFreightType,
+    isCentralDeposit: isCentralDeposit,
+    isDistributionCenter: isDistributionCenter,
+    isSuframa: isSuframa,
+    isRetailSaler: isRetailSaler,
+    isWholeSaler: isWholeSaler,
+    isECommerceSaler: isECommerceSaler,
+    creditIcmsWithoutDetachOnFiscalNote: creditIcmsWithoutDetachOnFiscalNote,
+    fiscalAddress: fiscalAddress,
+    dateOfBirth: dateOfBirth,
+    dateOfCadaster: dateOfCadaster,
+    customerType: customerType,
+    nationalSimple: nationalSimple,
+    accountTreasury: accountTreasury,
+  );
+}
