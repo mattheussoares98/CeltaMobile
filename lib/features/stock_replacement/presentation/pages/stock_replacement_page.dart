@@ -95,7 +95,6 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
                       enterpriseCode: widget.enterpriseCode,
                       quantityController: quantityController,
                     ),
-                    gapSliverH48,
                   ],
                 ),
               ),
