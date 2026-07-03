@@ -30,6 +30,7 @@ class BaseScaffold extends StatelessWidget {
     this.drawer,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
+    this.safeAreaTop,
   });
 
   final bool showAnnotatedRegion;
@@ -51,6 +52,12 @@ class BaseScaffold extends StatelessWidget {
   final Widget? drawer;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
+
+  /// When null (default), the top safe area is applied automatically:
+  /// enabled when there is no [appBar], disabled when one is present.
+  /// Set to [false] explicitly when this scaffold is rendered inside a
+  /// parent scaffold that already handles the status-bar inset.
+  final bool? safeAreaTop;
 
   @override
   Widget build(BuildContext context) {
@@ -180,18 +187,15 @@ class _BaseScaffold extends StatelessWidget {
       const cupertinoTabBarHeight = 49.0;
       var cupertinoBody = bottomNavigationWidget != null
           ? Padding(
-              padding: EdgeInsets.only(
-                bottom:
-                    (cupertinoTabBarHeight +
-                        MediaQuery.paddingOf(context).bottom) +
-                    Sizes.p8,
+              padding: const EdgeInsets.only(
+                bottom: cupertinoTabBarHeight + Sizes.p8,
               ),
               child: newChild,
             )
           : newChild;
 
       cupertinoBody = SafeArea(
-        top: finalAppBar == null,
+        top: params.safeAreaTop ?? finalAppBar == null,
         bottom: bottomNavigationWidget != null,
         child: cupertinoBody,
       );
