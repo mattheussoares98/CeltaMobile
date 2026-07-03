@@ -8,45 +8,23 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddDiscount extends ConsumerStatefulWidget {
-  const AddDiscount({super.key});
+class AddDiscount extends ConsumerWidget {
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final GlobalKey<FormState> formKey;
+  final TextInputAction textInputAction;
+  final void Function(String)? onFieldSubmitted;
 
-  @override
-  ConsumerState<AddDiscount> createState() => _DiscountsSectionState();
-}
+  const AddDiscount({
+    super.key,
+    required this.focusNode,
+    required this.controller,
+    required this.formKey,
+    this.textInputAction = TextInputAction.done,
+    this.onFieldSubmitted,
+  });
 
-class _DiscountsSectionState extends ConsumerState<AddDiscount> {
-  final formKey = GlobalKey<FormState>();
-  final _valueController = TextEditingController();
-  final _focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    _valueController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        final product = ref.read(currentProductItemProvider);
-        final uiProvider = insertProductUIControllerProvider(product);
-        final uiState = ref.read(uiProvider);
-        final item = uiState.applyTo(product);
-        if (item.discounts?.length == 1) {
-          _valueController.text = item.totalDiscountValue
-              .toString()
-              .toBrazilianNumber();
-        }
-      }
-    });
-
-    super.initState();
-  }
-
-  Future<bool> _confirmRemoveAutomaticDiscounts() async {
+  Future<bool> _confirmRemoveAutomaticDiscounts(BuildContext context, WidgetRef ref) async {
     final product = ref.read(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
     final hasNonManual = ref.read(uiProvider.notifier).hasNonManualDiscounts;
@@ -66,10 +44,10 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     return proceed == true;
   }
 
-  void _updateDiscount() async {
+  void _updateDiscount(BuildContext context, WidgetRef ref, [String? value]) async {
     if (formKey.currentState!.validate() != true) return;
 
-    final proceed = await _confirmRemoveAutomaticDiscounts();
+    final proceed = await _confirmRemoveAutomaticDiscounts(context, ref);
     if (!proceed) return;
 
     final product = ref.read(currentProductItemProvider);
@@ -80,16 +58,16 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
     ref
         .read(uiProvider.notifier)
         .updateDiscount(
-          value: _valueController.text.toDouble() ?? 0,
+          value: controller.text.toDouble() ?? 0,
           type: type,
         );
-    if (mounted) {
+    if (context.mounted && onFieldSubmitted == null) {
       FocusScope.of(context).nextFocus();
     }
   }
 
-  void _onTypeChanged(PercentageOrValue type) async {
-    final proceed = await _confirmRemoveAutomaticDiscounts();
+  void _onTypeChanged(BuildContext context, WidgetRef ref, PercentageOrValue type) async {
+    final proceed = await _confirmRemoveAutomaticDiscounts(context, ref);
     if (!proceed) return;
 
     final product = ref.read(currentProductItemProvider);
@@ -99,7 +77,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
     final uiState = ref.watch(uiProvider);
@@ -138,15 +116,18 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                     );
 
                     return BaseTextFormField(
-                      focusNode: _focusNode,
+                      focusNode: focusNode,
                       labelText: 'Desconto ${discountType.symbol}'.hardcoded,
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      textInputAction: TextInputAction.done,
-                      controller: _valueController,
-                      onFieldSubmitted: (_) => _updateDiscount(),
-                      onChanged: (_) => _updateDiscount(),
+                      textInputAction: textInputAction,
+                      controller: controller,
+                      onFieldSubmitted: (v) {
+                        _updateDiscount(context, ref, v);
+                        onFieldSubmitted?.call(v);
+                      },
+                      onChanged: (_) => _updateDiscount(context, ref),
                       validator: FormValidators.compose([
                         NumberValidator(
                           allowDecimal: true,
@@ -173,7 +154,7 @@ class _DiscountsSectionState extends ConsumerState<AddDiscount> {
                     child: BaseSegmentedButtons<PercentageOrValue>(
                       items: PercentageOrValue.values,
                       selectedValue: discountType,
-                      onChanged: _onTypeChanged,
+                      onChanged: (type) => _onTypeChanged(context, ref, type),
                     ),
                   );
                 },

@@ -8,45 +8,22 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DeliveryTaxField extends ConsumerStatefulWidget {
-  const DeliveryTaxField({super.key});
+class DeliveryTaxField extends ConsumerWidget {
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final TextInputAction textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
+  const DeliveryTaxField({
+    super.key,
+    required this.focusNode,
+    required this.controller,
+    this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted,
+  });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DeliveryTaxFieldState();
-}
-
-class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
-  final _deliveryTaxValueController = TextEditingController();
-  final _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        final product = ref.read(currentProductItemProvider);
-        final deliveryTax = product.deliveryTax?.value ?? 0;
-
-        if (deliveryTax <= 0) return;
-
-        _deliveryTaxValueController.text = deliveryTax
-            .toString()
-            .toBrazilianNumber();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _deliveryTaxValueController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
@@ -80,10 +57,9 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
             Expanded(
               flex: 4,
               child: BaseTextFormField(
-                focusNode: _focusNode,
-                controller: _deliveryTaxValueController,
-                onFieldSubmitted: (_) =>
-                    FocusManager.instance.primaryFocus?.nextFocus(),
+                focusNode: focusNode,
+                controller: controller,
+                onFieldSubmitted: onFieldSubmitted,
                 labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
                 hintText: deliveryTaxType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
@@ -94,7 +70,7 @@ class _DeliveryTaxFieldState extends ConsumerState<DeliveryTaxField> {
                       .read(uiProvider.notifier)
                       .updateDeliveryTaxValue(double.tryParse(value) ?? 0);
                 },
-                textInputAction: TextInputAction.next,
+                textInputAction: textInputAction,
                 validator: FormValidators.compose([
                   NumberValidator(allowDecimal: true, allowEmptyValue: true),
                 ]),

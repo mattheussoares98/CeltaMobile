@@ -8,42 +8,22 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IncrementField extends ConsumerStatefulWidget {
-  const IncrementField({super.key});
+class IncrementField extends ConsumerWidget {
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final TextInputAction textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
+  const IncrementField({
+    super.key,
+    required this.focusNode,
+    required this.controller,
+    this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted,
+  });
 
   @override
-  ConsumerState<IncrementField> createState() => _IncrementFieldState();
-}
-
-class _IncrementFieldState extends ConsumerState<IncrementField> {
-  final _incrementValueController = TextEditingController();
-  final _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!mounted) return;
-      final product = ref.read(currentProductItemProvider);
-      final incrementValue = product.increment?.value ?? 0;
-
-      if (incrementValue <= 0) return;
-      _incrementValueController.text = incrementValue
-          .toString()
-          .toBrazilianNumber();
-    });
-  }
-
-  @override
-  void dispose() {
-    _incrementValueController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
 
@@ -77,16 +57,15 @@ class _IncrementFieldState extends ConsumerState<IncrementField> {
             Expanded(
               flex: 4,
               child: BaseTextFormField(
-                focusNode: _focusNode,
-                controller: _incrementValueController,
+                focusNode: focusNode,
+                controller: controller,
                 labelText: 'Valor ${incrementType.symbol}'.hardcoded,
                 hintText: incrementType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                onFieldSubmitted: (_) =>
-                    FocusManager.instance.primaryFocus?.nextFocus(),
-                textInputAction: TextInputAction.next,
+                onFieldSubmitted: onFieldSubmitted,
+                textInputAction: textInputAction,
                 onChanged: (value) {
                   ref
                       .read(uiProvider.notifier)

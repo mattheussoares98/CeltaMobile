@@ -6,53 +6,35 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class QuantityField extends ConsumerStatefulWidget {
-  const QuantityField({super.key});
+class QuantityField extends ConsumerWidget {
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final TextInputAction textInputAction;
+  final void Function(String)? onFieldSubmitted;
+
+  const QuantityField({
+    super.key,
+    required this.focusNode,
+    required this.controller,
+    this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted,
+  });
 
   @override
-  ConsumerState<QuantityField> createState() => _QuantityFieldState();
-}
-
-class _QuantityFieldState extends ConsumerState<QuantityField> {
-  final _quantityController = TextEditingController();
-  final _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (mounted) {
-        final product = ref.read(currentProductItemProvider);
-        _quantityController.text = (product.quantity ?? 1)
-            .toString()
-            .toBrazilianNumber(3, true);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _quantityController.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final product = ref.watch(currentProductItemProvider);
     return BaseTextFormField(
-      focusNode: _focusNode,
-      controller: _quantityController,
+      focusNode: focusNode,
+      controller: controller,
       labelText: 'Quantidade'.hardcoded,
       onChanged: (value) {
         ref
             .read(insertProductUIControllerProvider(product).notifier)
             .updateQuantity(value.toDouble() ?? 1);
       },
-      onFieldSubmitted: (_) => FocusManager.instance.primaryFocus?.nextFocus(),
+      onFieldSubmitted: onFieldSubmitted,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      textInputAction: TextInputAction.next,
+      textInputAction: textInputAction,
       validator: FormValidators.compose([
         NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
