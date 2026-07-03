@@ -106,9 +106,18 @@ class ProductsManagementPage extends ConsumerWidget {
             keyboardVisibilityStateControllerProvider,
           );
 
-          return keyboardIsOpen
-              ? const SizedBox.shrink()
-              : SaveFloatingButton(draftKey: draftKey);
+          if (keyboardIsOpen) return const SizedBox.shrink();
+
+          final isOnInsertPage = ref.watch(
+            uiStateControllerProvider(
+              requestTypeCode,
+              enterpriseOriginCode,
+            ).select((s) => s.value?.pageIndex == 0),
+          );
+
+          if (isOnInsertPage) return const SizedBox.shrink();
+
+          return SaveFloatingButton(draftKey: draftKey);
         },
       ),
       bottomNavigationBar: Consumer(
