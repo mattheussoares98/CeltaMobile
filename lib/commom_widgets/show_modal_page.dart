@@ -1,7 +1,7 @@
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 Future<void> showModalPage(Widget body, BuildContext context) async {
   await showModalBottomSheet(
@@ -21,7 +21,8 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              return SafeArea(child: _Body(body: body));
+              //TODO test it in an android device
+              return _Body(body: body);
             },
           ),
         ],
