@@ -60,7 +60,7 @@ class _ConfirmationPageState extends ConsumerState<ConfirmationPage> {
         SelectedEnterprise(enterpriseCode: widget.enterpriseCode),
         InformedProductsQuantity(enterpriseCode: widget.enterpriseCode),
         InformedProducts(enterpriseCode: widget.enterpriseCode),
-        gapSliverH120,
+        gapSliverH32,
       ],
     );
   }
