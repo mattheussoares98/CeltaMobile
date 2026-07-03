@@ -21,7 +21,6 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              //TODO test it in an android device
               return _Body(body: body);
             },
           ),
