@@ -24,14 +24,24 @@ class ResponsiveListFlow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (PlatformUtil.isMobile) {
-      return isSliver
-          ? SliverList.builder(itemBuilder: itemBuilder, itemCount: itemCount)
-          : ListView.builder(
-              physics: physics,
-              padding: padding ?? EdgeInsets.zero,
-              itemBuilder: itemBuilder,
-              itemCount: itemCount,
-            );
+      final effectivePadding =
+          padding ??
+          EdgeInsets.only(bottom: PlatformUtil.isIOS ? Sizes.p48 : 0);
+      if (isSliver) {
+        return SliverPadding(
+          padding: effectivePadding,
+          sliver: SliverList.builder(
+            itemBuilder: itemBuilder,
+            itemCount: itemCount,
+          ),
+        );
+      }
+      return ListView.builder(
+        physics: physics,
+        padding: effectivePadding,
+        itemBuilder: itemBuilder,
+        itemCount: itemCount,
+      );
     }
 
     final width = MediaQuery.of(context).size.width;
