@@ -22,7 +22,6 @@ class UpdateCostField extends ConsumerWidget {
       focusNode: focusNode,
       hintText: 'Custo de reposição'.hardcoded,
       labelText: 'Custo de reposição'.hardcoded,
-      autofocus: true,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       maxLength: 12,
       onFieldSubmitted: (_) => onSubmit(),
