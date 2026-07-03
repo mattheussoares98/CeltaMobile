@@ -1,6 +1,10 @@
-import 'package:celta_inventario/commom_widgets/text/text.dart';
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 
+// Kept for backward compatibility — no longer used internally.
+// If any call site still references scaffoldMessengerKey for the
+// ScaffoldMessenger, it can safely be removed later.
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -10,44 +14,22 @@ void showSnackBarMessage(
   Color? backgroundColor = Colors.green,
   Duration? duration,
 }) {
-  // Always prefer the global key (attached to MaterialApp root).
-  // This works on iOS where CupertinoPageScaffold is used and
-  // ScaffoldMessenger.maybeOf(context) would return null.
-  final scaffoldMessenger =
-      scaffoldMessengerKey.currentState ??
-      (context != null && context.mounted
-          ? ScaffoldMessenger.maybeOf(context)
-          : null);
-  if (scaffoldMessenger == null) return;
-
-  // Compute the current keyboard height so the snackbar always floats
-  // above it. Prefer the caller's context; fall back to the global key's
-  // context (which is inside MaterialApp and has the same MediaQuery data).
-  final resolvedContext = (context != null && context.mounted)
-      ? context
-      : scaffoldMessengerKey.currentContext;
-  final keyboardHeight = resolvedContext != null && resolvedContext.mounted
-      ? MediaQuery.viewInsetsOf(resolvedContext).bottom
-      : 0.0;
-
-  scaffoldMessenger.clearSnackBars();
-  scaffoldMessenger.showSnackBar(
-    SnackBar(
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        bottom: keyboardHeight > 0 ? keyboardHeight + 8 : 8,
-      ),
-      duration: duration ?? const Duration(seconds: 3),
-      backgroundColor: backgroundColor,
-      content: DefaultText(
-        message,
-        textAlign: TextAlign.center,
-        color: Colors.white,
-      ),
-      dismissDirection: DismissDirection.down,
-      closeIconColor: Colors.black,
-    ),
+  toastification.show(
+    context: context?.mounted == true ? context : null,
+    title: DefaultText.title(message, textAlign: TextAlign.center),
+    alignment: Alignment.bottomCenter,
+    autoCloseDuration: duration ?? const Duration(seconds: 4),
+    backgroundColor: backgroundColor ?? Colors.green,
+    foregroundColor: Colors.white,
+    borderRadius: BorderRadius.circular(8),
+    showProgressBar: true,
+    pauseOnHover: false,
+    closeOnClick: true,
+    dragToClose: true,
+    style: ToastificationStyle.flat,
+    type: backgroundColor == Colors.red
+        ? ToastificationType.error
+        : ToastificationType.success,
+    applyBlurEffect: false,
   );
 }
