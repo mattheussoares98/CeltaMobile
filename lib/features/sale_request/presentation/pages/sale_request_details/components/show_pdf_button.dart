@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -63,7 +62,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
       icon: isLoading
           ? const FittedBox(child: LoadingWidget())
           : PlatformIcon(
-              cupertinoIcon: CupertinoIcons.doc_text_search,
+              cupertinoIcon: Icons.picture_as_pdf_rounded,
               materialIcon: Icons.picture_as_pdf_rounded,
               color: loadedCorrectly ? null : context.theme.disabledColor,
             ),

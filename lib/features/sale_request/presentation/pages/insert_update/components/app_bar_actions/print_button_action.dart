@@ -52,7 +52,7 @@ class PrintAndGeneratePdfActions extends ConsumerWidget {
         IconButton(
           onPressed: onTap,
           icon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.doc_text_search,
+            cupertinoIcon: Icons.picture_as_pdf_rounded,
             materialIcon: Icons.picture_as_pdf_rounded,
           ),
         ),

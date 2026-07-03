@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routes.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,7 +70,7 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
       icon: _isLoading
           ? const LoadingWidget()
           : const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.doc_text_search,
+              cupertinoIcon: Icons.picture_as_pdf_rounded,
               materialIcon: Icons.picture_as_pdf_rounded,
             ),
       onPressed: _isLoading ? null : _buildPdf,
