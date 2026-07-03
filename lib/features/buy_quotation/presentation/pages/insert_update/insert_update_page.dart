@@ -185,7 +185,6 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
               observationsFocusNode: observationsFocusNode,
               filterProductsController: filterProductsController,
             ),
-            gapSliverH32,
           ],
         ),
       ),
