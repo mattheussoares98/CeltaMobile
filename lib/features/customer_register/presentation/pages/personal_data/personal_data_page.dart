@@ -125,60 +125,65 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
 
     final customer = ref.watch(customerStateControllerProvider).value;
 
-    return ResponsiveScrollableWidget(
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            CpfCnpjField(
-              cpfCnpjController: cpfCnpjController,
-              nameFocusNode: nameFocusNode,
-              cpfCnpjFocusNode: cpfCnpjFocusNode,
-            ),
-            if (customer != null) ...[
-              if (cpfCnpjController.text.length == 14) ...[
-                gapH8,
-                InscriptionField(
-                  inscriptionController: inscriptionController,
-                  inscriptionFocusNode: inscriptionFocusNode,
-                  nameFocusNode: nameFocusNode,
-                ),
-              ],
-              gapH8,
-              NameField(
-                nameController: nameController,
+    return BaseScaffold(
+      resizeToAvoidBottomInset: true,
+      safeAreaTop: false,
+      body: ResponsiveScrollableWidget(
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              CpfCnpjField(
+                cpfCnpjController: cpfCnpjController,
                 nameFocusNode: nameFocusNode,
-                reducedNameFocusNode: reducedNameFocusNode,
+                cpfCnpjFocusNode: cpfCnpjFocusNode,
               ),
-              gapH8,
-              ReducedNameField(
-                reducedNameController: reducedNameController,
-                reducedNameFocusNode: reducedNameFocusNode,
-                passwordFocusNode: passwordFocusNode,
-              ),
-              gapH8,
-              BirthDateField(
-                birthDateController: birthDateController,
-                birthDateFocusNode: birthDateFocusNode,
-              ),
-              gapH8,
-              PasswordField(
-                passwordController: passwordController,
-                passwordFocusNode: passwordFocusNode,
-                passwordConfirmationFocusNode: passwordConfirmationFocusNode,
-              ),
-              gapH8,
-              PasswordConfirmationField(
-                passwordController: passwordController,
-                passwordConfirmationController: passwordConfirmationController,
-                passwordConfirmationFocusNode: passwordConfirmationFocusNode,
-              ),
-              if (cpfCnpjController.text.length == 11) ...[
+              if (customer != null) ...[
+                if (cpfCnpjController.text.length == 14) ...[
+                  gapH8,
+                  InscriptionField(
+                    inscriptionController: inscriptionController,
+                    inscriptionFocusNode: inscriptionFocusNode,
+                    nameFocusNode: nameFocusNode,
+                  ),
+                ],
                 gapH8,
-                const SexDropDown(),
+                NameField(
+                  nameController: nameController,
+                  nameFocusNode: nameFocusNode,
+                  reducedNameFocusNode: reducedNameFocusNode,
+                ),
+                gapH8,
+                ReducedNameField(
+                  reducedNameController: reducedNameController,
+                  reducedNameFocusNode: reducedNameFocusNode,
+                  passwordFocusNode: passwordFocusNode,
+                ),
+                gapH8,
+                BirthDateField(
+                  birthDateController: birthDateController,
+                  birthDateFocusNode: birthDateFocusNode,
+                ),
+                gapH8,
+                PasswordField(
+                  passwordController: passwordController,
+                  passwordFocusNode: passwordFocusNode,
+                  passwordConfirmationFocusNode: passwordConfirmationFocusNode,
+                ),
+                gapH8,
+                PasswordConfirmationField(
+                  passwordController: passwordController,
+                  passwordConfirmationController:
+                      passwordConfirmationController,
+                  passwordConfirmationFocusNode: passwordConfirmationFocusNode,
+                ),
+                if (cpfCnpjController.text.length == 11) ...[
+                  gapH8,
+                  const SexDropDown(),
+                ],
               ],
             ],
-          ],
+          ),
         ),
       ),
     );
