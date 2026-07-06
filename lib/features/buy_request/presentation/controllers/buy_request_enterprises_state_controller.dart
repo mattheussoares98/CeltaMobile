@@ -17,6 +17,11 @@ class BuyRequestEnterprisesStateController
     );
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 
+    if (pending.selectedSupplier == null ||
+        pending.selectedRequestType == null) {
+      return [];
+    }
+
     final enterprises = await repository.load(
       workingUrl: userSession!.enterprise!.workingUrl!,
       crossIdentity: userSession.user.CrossIdentity_Usuario!,
