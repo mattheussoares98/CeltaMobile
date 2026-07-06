@@ -10,8 +10,7 @@ abstract class IEcProcessAuthorizationRepository {
     EcRequestParams params,
   );
 
-  Future<dynamic> getSaleRequestErrors(
-    //TODO create entity
+  Future<BSFSaleRequestErrorEntity> getSaleRequestErrors(
     EcRequestParams params, {
     required int enterpriseCode,
     required int saleRequestCode,

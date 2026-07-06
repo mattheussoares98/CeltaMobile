@@ -3,6 +3,8 @@ import 'package:celta_inventario/core/domain/entities/ec/ec.dart';
 import 'package:celta_inventario/features/process_authorization/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/data/repositories/repositorires.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/process_authorization/domain/repositories/repositories.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -13,7 +15,7 @@ class EcProcessAuthorizationDatasourceSpy extends Mock
     implements IEcProcessAuthorizationDatasource {}
 
 void main() {
-  late EcProcessAuthorizationRepositoryImpl sut;
+  late IEcProcessAuthorizationRepository sut;
   late EcProcessAuthorizationDatasourceSpy datasource;
   late EcRequestParams params;
   late int? processCode;
@@ -86,6 +88,48 @@ void main() {
 
       expect(response, model.toEntity());
       verify(() => datasource.getStatistics(params)).called(1);
+    });
+  });
+
+  group('getSaleRequestErrors', () {
+    late BSFSaleRequestErrorEntity entity;
+    late int enterpriseCode;
+    late int saleRequestCode;
+    late int customerCode;
+
+    setUp(() {
+      entity = EntityFactory.makeBSFSaleRequestErrorEntity();
+      enterpriseCode = faker.randomGenerator.integer(100);
+      saleRequestCode = faker.randomGenerator.integer(100);
+      customerCode = faker.randomGenerator.integer(100);
+    });
+
+    test('should return sale request errors on success', () async {
+      when(
+        () => datasource.getSaleRequestErrors(
+          any(),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          saleRequestCode: any(named: 'saleRequestCode'),
+          customerCode: any(named: 'customerCode'),
+        ),
+      ).thenAnswer((_) async => BSFSaleRequestErrorModel.fromEntity(entity));
+
+      final response = await sut.getSaleRequestErrors(
+        params,
+        enterpriseCode: enterpriseCode,
+        saleRequestCode: saleRequestCode,
+        customerCode: customerCode,
+      );
+
+      expect(response, entity);
+      verify(
+        () => datasource.getSaleRequestErrors(
+          params,
+          enterpriseCode: enterpriseCode,
+          saleRequestCode: saleRequestCode,
+          customerCode: customerCode,
+        ),
+      ).called(1);
     });
   });
 }

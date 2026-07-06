@@ -32,8 +32,7 @@ class EcProcessAuthorizationRepositoryImpl
   }
 
   @override
-  Future<dynamic> getSaleRequestErrors(
-    //TODO create entity
+  Future<BSFSaleRequestErrorEntity> getSaleRequestErrors(
     EcRequestParams params, {
     required int enterpriseCode,
     required int saleRequestCode,
@@ -46,7 +45,6 @@ class EcProcessAuthorizationRepositoryImpl
       customerCode: customerCode,
     );
 
-    //TODO create tests
-    return response;
+    return response.toEntity();
   }
 }
