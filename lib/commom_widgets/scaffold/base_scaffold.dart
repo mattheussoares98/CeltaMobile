@@ -24,9 +24,6 @@ class BaseScaffold extends StatelessWidget {
     required this.body,
     this.bottomNavigationBar,
     this.observeScreenChanges = false,
-    this.bottomNavigationItems,
-    this.bottomNavigationIndex,
-    this.onBottomNavigationTap,
     this.drawer,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
@@ -46,9 +43,6 @@ class BaseScaffold extends StatelessWidget {
   final Widget body;
   final Widget? bottomNavigationBar;
   final bool observeScreenChanges;
-  final List<BaseBottomNavigationBarItem>? bottomNavigationItems;
-  final int? bottomNavigationIndex;
-  final ValueChanged<int>? onBottomNavigationTap;
   final Widget? drawer;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
@@ -170,16 +164,6 @@ class _BaseScaffold extends ConsumerWidget {
     }
 
     Widget? bottomNavigationWidget = params.bottomNavigationBar;
-    if (bottomNavigationWidget == null &&
-        params.bottomNavigationItems != null &&
-        params.bottomNavigationIndex != null &&
-        params.onBottomNavigationTap != null) {
-      bottomNavigationWidget = BaseBottomNavigationBar(
-        items: params.bottomNavigationItems!,
-        currentIndex: params.bottomNavigationIndex!,
-        onTap: params.onBottomNavigationTap!,
-      );
-    }
 
     Widget scaffold;
 
