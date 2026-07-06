@@ -34,12 +34,14 @@ class ModuleIcon extends StatelessWidget {
               ),
             );
 
-            return QuantityBadge(
-              quantity: quantity,
-              platformIcon: platformIcon,
-              isSelected: true,
-              animateInfinite: true,
-            );
+            if (quantity != null) {
+              return QuantityBadge(
+                quantity: quantity,
+                platformIcon: platformIcon,
+                isSelected: true,
+                animateInfinite: true,
+              );
+            }
           }
 
           return platformIcon;
