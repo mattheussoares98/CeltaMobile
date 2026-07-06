@@ -1936,4 +1936,80 @@ class EntityFactory {
         authorizationProcessItem: makeBSFProcessAuthorizationItemEntity(),
         authorizators: [makeBSFUserEntity(), makeBSFUserEntity()],
       );
+
+  static BSFSaleRequestErrorEntity makeBSFSaleRequestErrorEntity() =>
+      BSFSaleRequestErrorEntity(
+        discount: makeBSFSaleRequestDiscountEntity(),
+        lucrativity: makeBSFSaleRequestLucrativityEntity(),
+      );
+
+  static BSFSaleRequestDiscountEntity makeBSFSaleRequestDiscountEntity() =>
+      BSFSaleRequestDiscountEntity(
+        items: [makeBSFSaleRequestDiscountItemEntity()],
+        totals: makeBSFSaleRequestDiscountTotalsEntity(),
+      );
+
+  static BSFSaleRequestDiscountItemEntity
+  makeBSFSaleRequestDiscountItemEntity() => BSFSaleRequestDiscountItemEntity(
+    product: faker.lorem.word(),
+    quantity: faker.randomGenerator.decimal(),
+    bruteValue: faker.randomGenerator.decimal(),
+    discountValue: faker.randomGenerator.decimal(),
+    discountPercentage: faker.randomGenerator.decimal(),
+    liquidValue: faker.randomGenerator.decimal(),
+    discountConcessionLimitPercentage: faker.randomGenerator.decimal(),
+    totalDifference: faker.randomGenerator.decimal(),
+    hasPositiveDifference: faker.randomGenerator.boolean(),
+  );
+
+  static BSFSaleRequestDiscountTotalsEntity
+  makeBSFSaleRequestDiscountTotalsEntity() =>
+      BSFSaleRequestDiscountTotalsEntity(
+        quantity: faker.randomGenerator.decimal(),
+        bruteValue: faker.randomGenerator.decimal(),
+        discountValue: faker.randomGenerator.decimal(),
+        discountPercentage: faker.randomGenerator.decimal(),
+        liquidValue: faker.randomGenerator.decimal(),
+        discountConcessionLimitPercentage: faker.randomGenerator.decimal(),
+        totalDifference: faker.randomGenerator.decimal(),
+      );
+
+  static BSFSaleRequestLucrativityEntity
+  makeBSFSaleRequestLucrativityEntity() => BSFSaleRequestLucrativityEntity(
+    items: [makeBSFSaleRequestLucrativityItemEntity()],
+    totals: makeBSFSaleRequestLucrativityTotalsEntity(),
+  );
+
+  static BSFSaleRequestLucrativityItemEntity
+  makeBSFSaleRequestLucrativityItemEntity() =>
+      BSFSaleRequestLucrativityItemEntity(
+        product: faker.company.name(),
+        quantity: faker.randomGenerator.decimal(),
+        replacementCost: faker.randomGenerator.decimal(),
+        liquidCost: faker.randomGenerator.decimal(),
+        operationalExpense: faker.randomGenerator.decimal(),
+        taxValue: faker.randomGenerator.decimal(),
+        billingValue: faker.randomGenerator.decimal(),
+        profitValue: faker.randomGenerator.decimal(),
+        praticedMargin: faker.randomGenerator.decimal(),
+        unitMinimumSalePrice: faker.randomGenerator.decimal(),
+        unitAppliedPrice: faker.randomGenerator.decimal(),
+        unitDifference: faker.randomGenerator.decimal(),
+        totalDifference: faker.randomGenerator.decimal(),
+        hasNegativeDifference: faker.randomGenerator.boolean(),
+      );
+
+  static BSFSaleRequestLucrativityTotalsEntity
+  makeBSFSaleRequestLucrativityTotalsEntity() =>
+      BSFSaleRequestLucrativityTotalsEntity(
+        quantity: faker.randomGenerator.decimal(),
+        replacementCost: faker.randomGenerator.decimal(),
+        liquidCost: faker.randomGenerator.decimal(),
+        operationalExpense: faker.randomGenerator.decimal(),
+        taxValue: faker.randomGenerator.decimal(),
+        billingValue: faker.randomGenerator.decimal(),
+        profitValue: faker.randomGenerator.decimal(),
+        praticedMargin: faker.randomGenerator.decimal(),
+        totalDifference: faker.randomGenerator.decimal(),
+      );
 }

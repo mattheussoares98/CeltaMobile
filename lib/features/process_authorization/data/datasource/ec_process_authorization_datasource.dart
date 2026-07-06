@@ -48,8 +48,7 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<dynamic> getSaleRequestErrors(
-    //TODO create entity
+  Future<BSFSaleRequestErrorModel> getSaleRequestErrors(
     EcRequestParams params, {
     required int enterpriseCode,
     required int saleRequestCode,
@@ -66,7 +65,6 @@ class EcProcessAuthorizationDatasource
       body: params.toMap(),
     );
 
-    //TODO create model and tests
-    return json.decode(response);
+    return BSFSaleRequestErrorModel.fromJson(json.decode(response));
   }
 }

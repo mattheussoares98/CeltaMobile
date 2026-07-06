@@ -9,7 +9,7 @@ abstract class IEcProcessAuthorizationDatasource {
   Future<BsfProcessAuthorizationStatisticModel> getStatistics(
     EcRequestParams params,
   );
-  Future<dynamic> getSaleRequestErrors(
+  Future<BSFSaleRequestErrorModel> getSaleRequestErrors(
     EcRequestParams params, {
     required int enterpriseCode,
     required int saleRequestCode,

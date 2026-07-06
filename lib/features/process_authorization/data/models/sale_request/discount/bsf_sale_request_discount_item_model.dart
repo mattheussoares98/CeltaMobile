@@ -3,58 +3,56 @@ import 'package:celta_inventario/features/process_authorization/domain/entities/
 
 class BSFSaleRequestDiscountItemModel extends BSFSaleRequestDiscountItemEntity {
   const BSFSaleRequestDiscountItemModel({
-    super.product,
-    super.quantity,
-    super.bruteValue,
-    super.discountValue,
-    super.discountPercentage,
-    super.liquidValue,
-    super.discountConcessionLimitPercentage,
-    super.totalDifference,
-    super.hasPositiveDifference,
+    required super.product,
+    required super.quantity,
+    required super.bruteValue,
+    required super.discountValue,
+    required super.discountPercentage,
+    required super.liquidValue,
+    required super.discountConcessionLimitPercentage,
+    required super.totalDifference,
+    required super.hasPositiveDifference,
   });
 
   factory BSFSaleRequestDiscountItemModel.fromJson(Map json) =>
       BSFSaleRequestDiscountItemModel(
-        product: json['Product']?.toString(),
-        quantity: (json['Quantity'] as num?)?.toDouble(),
-        bruteValue: (json['BruteValue'] as num?)?.toDouble(),
-        discountValue: (json['DiscountValue'] as num?)?.toDouble(),
-        discountPercentage: (json['DiscountPercentage'] as num?)?.toDouble(),
-        liquidValue: (json['LiquidValue'] as num?)?.toDouble(),
+        product: json['Product'],
+        quantity: json['Quantity'],
+        bruteValue: json['BruteValue'],
+        discountValue: json['DiscountValue'],
+        discountPercentage: json['DiscountPercentage'],
+        liquidValue: json['LiquidValue'],
         discountConcessionLimitPercentage:
-            (json['DiscountConcessionLimitPercentage'] as num?)?.toDouble(),
-        totalDifference: (json['TotalDifference'] as num?)?.toDouble(),
-        hasPositiveDifference: json['HasPositiveDifference'] as bool?,
+            json['DiscountConcessionLimitPercentage'],
+        totalDifference: json['TotalDifference'],
+        hasPositiveDifference: json['HasPositiveDifference'] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
-        'Product': product,
-        'Quantity': quantity,
-        'BruteValue': bruteValue,
-        'DiscountValue': discountValue,
-        'DiscountPercentage': discountPercentage,
-        'LiquidValue': liquidValue,
-        'DiscountConcessionLimitPercentage':
-            discountConcessionLimitPercentage,
-        'TotalDifference': totalDifference,
-        'HasPositiveDifference': hasPositiveDifference,
-      };
+    'Product': product,
+    'Quantity': quantity,
+    'BruteValue': bruteValue,
+    'DiscountValue': discountValue,
+    'DiscountPercentage': discountPercentage,
+    'LiquidValue': liquidValue,
+    'DiscountConcessionLimitPercentage': discountConcessionLimitPercentage,
+    'TotalDifference': totalDifference,
+    'HasPositiveDifference': hasPositiveDifference,
+  };
 
   factory BSFSaleRequestDiscountItemModel.fromEntity(
-          BSFSaleRequestDiscountItemEntity entity) =>
-      BSFSaleRequestDiscountItemModel(
-        product: entity.product,
-        quantity: entity.quantity,
-        bruteValue: entity.bruteValue,
-        discountValue: entity.discountValue,
-        discountPercentage: entity.discountPercentage,
-        liquidValue: entity.liquidValue,
-        discountConcessionLimitPercentage:
-            entity.discountConcessionLimitPercentage,
-        totalDifference: entity.totalDifference,
-        hasPositiveDifference: entity.hasPositiveDifference,
-      );
+    BSFSaleRequestDiscountItemEntity entity,
+  ) => BSFSaleRequestDiscountItemModel(
+    product: entity.product,
+    quantity: entity.quantity,
+    bruteValue: entity.bruteValue,
+    discountValue: entity.discountValue,
+    discountPercentage: entity.discountPercentage,
+    liquidValue: entity.liquidValue,
+    discountConcessionLimitPercentage: entity.discountConcessionLimitPercentage,
+    totalDifference: entity.totalDifference,
+    hasPositiveDifference: entity.hasPositiveDifference,
+  );
 
   BSFSaleRequestDiscountItemEntity toEntity() =>
       BSFSaleRequestDiscountItemEntity(
@@ -64,8 +62,7 @@ class BSFSaleRequestDiscountItemModel extends BSFSaleRequestDiscountItemEntity {
         discountValue: discountValue,
         discountPercentage: discountPercentage,
         liquidValue: liquidValue,
-        discountConcessionLimitPercentage:
-            discountConcessionLimitPercentage,
+        discountConcessionLimitPercentage: discountConcessionLimitPercentage,
         totalDifference: totalDifference,
         hasPositiveDifference: hasPositiveDifference,
       );

@@ -104,4 +104,51 @@ void main() {
       },
     );
   });
+
+  group('getSaleRequestErrors', () {
+    late BSFSaleRequestErrorEntity entity;
+    late int enterpriseCode;
+    late int saleRequestCode;
+    late int customerCode;
+
+    setUp(() {
+      entity = EntityFactory.makeBSFSaleRequestErrorEntity();
+      enterpriseCode = faker.randomGenerator.integer(100);
+      saleRequestCode = faker.randomGenerator.integer(100);
+      customerCode = faker.randomGenerator.integer(100);
+    });
+
+    test(
+      'should call http with correct parameters and return sale request errors on success',
+      () async {
+        final model = BSFSaleRequestErrorModel.fromJson(
+          BSFSaleRequestErrorModel.fromEntity(entity).toJson(),
+        );
+        final jsonResponse = json.encode(model.toJson());
+
+        httpClient.mockRequest(jsonResponse);
+
+        final response = await sut.getSaleRequestErrors(
+          params,
+          enterpriseCode: enterpriseCode,
+          saleRequestCode: saleRequestCode,
+          customerCode: customerCode,
+        );
+
+        expect(response, model);
+        verify(
+          () => httpClient.request(
+            url:
+                '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors'
+                '?enterpriseCode=$enterpriseCode'
+                '&saleRequestCode=$saleRequestCode'
+                '&customerCode=$customerCode',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: params.toMap(),
+          ),
+        ).called(1);
+      },
+    );
+  });
 }
