@@ -116,6 +116,7 @@ class _LoadingOverlayController extends Notifier<void> {
       if (_route!.isActive) {
         _route!.unregisterPopEntry(_popEntry!);
       }
+      _popEntry!.dispose();
       _route = null;
       _popEntry = null;
     }
@@ -128,10 +129,13 @@ class _LoadingPopEntry implements PopEntry<Object?> {
   @override
   final ValueNotifier<bool> canPopNotifier = ValueNotifier<bool>(false);
 
+  void dispose() {
+    canPopNotifier.dispose();
+  }
+
   @override
   void onPopInvoked(bool didPop) {}
 
   @override
   void onPopInvokedWithResult(bool didPop, Object? result) {}
 }
-
