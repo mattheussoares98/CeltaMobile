@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
@@ -25,6 +26,10 @@ class ProcessAuthorizationPage extends ConsumerWidget {
         value: ref.watch(judgmentsStateControllerProvider),
         tryAgain: () => ref.invalidate(judgmentsStateControllerProvider),
         data: (data) {
+          data.removeWhere(
+            (e) =>
+                e.status == BSFProcessAuthorizationJudgementStatus.authorized,
+          );
           final groupedData = groupBy(data, (e) => e.status);
 
           return ResponsiveListFlow(
