@@ -41,35 +41,63 @@ class _ProcessAuthorizationPageState
       refreshProvider: judgmentsStateControllerProvider,
       appBar: BaseAppBar(title: appBarTitles[index]),
       body: IndexedStack(index: index, children: pages),
-      bottomNavigationBar: BaseBottomNavigationBar(
-        items: [
-          BaseBottomNavigationBarItem(
-            platformIcon: index == 0
-                ? const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.hand_raised_fill,
-                    materialIcon: Icons.back_hand_sharp,
+      bottomNavigationBar: Consumer(
+        builder: (_, ref, _) {
+          final awaitingQuantity = ref.watch(
+            judgmentsStateControllerProvider.select(
+              (s) => s.value
+                  ?.where(
+                    (e) =>
+                        e.status ==
+                        BSFProcessAuthorizationJudgementStatus.awaiting,
                   )
-                : const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.hand_raised,
-                    materialIcon: Icons.back_hand_outlined,
-                  ),
-            label: 'Aguardando autorização'.hardcoded,
-          ),
-          BaseBottomNavigationBarItem(
-            platformIcon: index == 1
-                ? const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.padlock_solid,
-                    materialIcon: Icons.lock,
+                  .length,
+            ),
+          );
+          final notAuthorizedQuantity = ref.watch(
+            judgmentsStateControllerProvider.select(
+              (s) => s.value
+                  ?.where(
+                    (e) =>
+                        e.status ==
+                        BSFProcessAuthorizationJudgementStatus.notAuthorized,
                   )
-                : const PlatformIcon(
-                    cupertinoIcon: CupertinoIcons.padlock,
-                    materialIcon: Icons.lock_outline,
-                  ),
-            label: 'Não autorizados'.hardcoded,
-          ),
-        ],
-        currentIndex: index,
-        onTap: (value) => setState(() => index = value),
+                  .length,
+            ),
+          );
+          return BaseBottomNavigationBar(
+            items: [
+              BaseBottomNavigationBarItem(
+                badgeLabel: awaitingQuantity?.toString(),
+                platformIcon: index == 0
+                    ? const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.hand_raised_fill,
+                        materialIcon: Icons.back_hand_sharp,
+                      )
+                    : const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.hand_raised,
+                        materialIcon: Icons.back_hand_outlined,
+                      ),
+                label: 'Aguardando autorização'.hardcoded,
+              ),
+              BaseBottomNavigationBarItem(
+                badgeLabel: notAuthorizedQuantity?.toString(),
+                platformIcon: index == 1
+                    ? const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.padlock_solid,
+                        materialIcon: Icons.lock,
+                      )
+                    : const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.padlock,
+                        materialIcon: Icons.lock_outline,
+                      ),
+                label: 'Não autorizados'.hardcoded,
+              ),
+            ],
+            currentIndex: index,
+            onTap: (value) => setState(() => index = value),
+          );
+        },
       ),
     );
   }
