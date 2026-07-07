@@ -63,9 +63,14 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
     );
 
     final discountValue = product.totalDiscountValue;
+    final discount = widget.product.discounts?.firstOrNull;
+    final discountDisplayValue =
+        discount?.discount?.type == PercentageOrValue.percentage
+        ? discountValue * 100
+        : discountValue;
     _discountController = TextEditingController(
       text: widget.product.discounts?.length == 1
-          ? discountValue.toString().toBrazilianNumber()
+          ? discountDisplayValue.toString().toBrazilianNumber()
           : '',
     );
 
