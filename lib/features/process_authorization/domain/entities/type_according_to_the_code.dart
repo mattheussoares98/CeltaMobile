@@ -1,12 +1,13 @@
 import 'dart:developer' as console;
 
 enum TypeAccordingToTheCode {
-  receiptLiberateDocument(3),
-  saleRequestLucrativity(4),
-  saleRequestDiscount(7);
+  receiptLiberateDocument(3, 'Liberação de documento no ecebimento'),
+  saleRequestLucrativity(4, 'Pedido de venda com preço abaixo do mínimo'),
+  saleRequestDiscount(7, 'Pedido de venda com desconto acima do permitido');
 
   final int code;
-  const TypeAccordingToTheCode(this.code);
+  final String label;
+  const TypeAccordingToTheCode(this.code, this.label);
 
   static TypeAccordingToTheCode? fromCode(int code) {
     try {
