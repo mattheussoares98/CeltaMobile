@@ -15,6 +15,33 @@ class ProcessesItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void onTap(BSFProcessAuthorizationJudgmentEntity process) {
+      final type = process.authorizationProcessItem?.typeAccordingToTheCode;
+      final Routes? nextRoute = switch (type) {
+        TypeAccordingToTheCode.saleRequestDiscount =>
+          Routes.processAuthorizationSaleRequestDiscounts,
+        TypeAccordingToTheCode.saleRequestLucrativity =>
+          Routes.processAuthorizationSaleRequestLucrativity,
+        TypeAccordingToTheCode.receiptLiberateDocument => null,
+        null => null,
+      };
+      if (nextRoute == null) {
+        showToastMessage(
+          'O processo de autorização de tipo "${type?.label}" ainda não foi implementado para ser julgado através do aplicativo',
+          type: ToastType.error,
+        );
+        return;
+      }
+      context.pushNamed(
+        //TODO test it in web page. Shouldn't create a new route
+        nextRoute.name,
+        pathParameters: {
+          'enterpriseCode': process.enterprise!.code.toString(),
+          'processCode': process.code.toString(),
+        },
+      );
+    }
+
     return AsyncValueWidget(
       value: ref.watch(judgmentsStateControllerProvider),
       tryAgain: () => ref.invalidate(judgmentsStateControllerProvider),
@@ -28,22 +55,7 @@ class ProcessesItems extends ConsumerWidget {
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                onTap: () {
-                  //TODO in the future will need to call different methods according to the error type being passed in the extra
-                  context.pushNamed(
-                    //TODO test it in web page. Shouldn't create a new route
-                    Routes.processAuthorizationDetails.name,
-                    pathParameters: {
-                      'enterpriseCode': process.enterprise!.code.toString(),
-                      'processCode': process.code.toString(),
-                    },
-                    extra: process
-                        .authorizationProcessItem
-                        ?.typeAccordingToTheCode
-                        ?.code
-                        .toString(),
-                  );
-                },
+                onTap: () => onTap(process),
                 child: Stack(
                   children: [
                     Padding(
