@@ -15,14 +15,14 @@ class BSFSaleRequestDiscountTotalsModel
 
   factory BSFSaleRequestDiscountTotalsModel.fromJson(Map json) =>
       BSFSaleRequestDiscountTotalsModel(
-        quantity: json['Quantity'],
-        bruteValue: json['BruteValue'],
-        discountValue: json['DiscountValue'],
-        discountPercentage: json['DiscountPercentage'],
-        liquidValue: json['LiquidValue'],
+        quantity: (json['Quantity'] as num).toDouble(),
+        bruteValue: (json['BruteValue'] as num).toDouble(),
+        discountValue: (json['DiscountValue'] as num).toDouble(),
+        discountPercentage: (json['DiscountPercentage'] as num).toDouble(),
+        liquidValue: (json['LiquidValue'] as num).toDouble(),
         discountConcessionLimitPercentage:
-            json['DiscountConcessionLimitPercentage'],
-        totalDifference: json['TotalDifference'],
+            (json['DiscountConcessionLimitPercentage'] as num).toDouble(),
+        totalDifference: (json['TotalDifference'] as num).toDouble(),
       );
 
   Map<String, dynamic> toJson() => {

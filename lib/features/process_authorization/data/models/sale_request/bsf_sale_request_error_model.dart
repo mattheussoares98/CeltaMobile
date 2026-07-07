@@ -3,10 +3,7 @@ import 'package:celta_inventario/features/process_authorization/data/models/sale
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 class BSFSaleRequestErrorModel extends BSFSaleRequestErrorEntity {
-  const BSFSaleRequestErrorModel({
-    super.discount,
-    super.lucrativity,
-  });
+  const BSFSaleRequestErrorModel({super.discount, super.lucrativity});
 
   factory BSFSaleRequestErrorModel.fromJson(Map json) =>
       BSFSaleRequestErrorModel(
@@ -15,38 +12,37 @@ class BSFSaleRequestErrorModel extends BSFSaleRequestErrorEntity {
             : null,
         lucrativity: json['Lucrativity'] != null
             ? BSFSaleRequestLucrativityModel.fromJson(
-                json['Lucrativity'] as Map)
+                json['Lucrativity'] as Map,
+              )
             : null,
       );
 
   Map<String, dynamic> toJson() => {
-        'Discount': discount != null
-            ? BSFSaleRequestDiscountModel.fromEntity(discount!).toJson()
-            : null,
-        'Lucrativity': lucrativity != null
-            ? BSFSaleRequestLucrativityModel.fromEntity(lucrativity!).toJson()
-            : null,
-      };
+    'Discount': discount != null
+        ? BSFSaleRequestDiscountModel.fromEntity(discount!).toJson()
+        : null,
+    'Lucrativity': lucrativity != null
+        ? BSFSaleRequestLucrativityModel.fromEntity(lucrativity!).toJson()
+        : null,
+  };
 
   factory BSFSaleRequestErrorModel.fromEntity(
-          BSFSaleRequestErrorEntity entity) =>
-      BSFSaleRequestErrorModel(
-        discount: entity.discount != null
-            ? BSFSaleRequestDiscountEntity(
-                items: entity.discount!.items,
-                totals: entity.discount!.totals,
-              )
-            : null,
-        lucrativity: entity.lucrativity != null
-            ? BSFSaleRequestLucrativityEntity(
-                items: entity.lucrativity!.items,
-                totals: entity.lucrativity!.totals,
-              )
-            : null,
-      );
+    BSFSaleRequestErrorEntity entity,
+  ) => BSFSaleRequestErrorModel(
+    discount: entity.discount != null
+        ? BSFSaleRequestDiscountEntity(
+            items: entity.discount!.items,
+            totals: entity.discount!.totals,
+          )
+        : null,
+    lucrativity: entity.lucrativity != null
+        ? BSFSaleRequestLucrativityEntity(
+            items: entity.lucrativity!.items,
+            totals: entity.lucrativity!.totals,
+          )
+        : null,
+  );
 
-  BSFSaleRequestErrorEntity toEntity() => BSFSaleRequestErrorEntity(
-        discount: discount,
-        lucrativity: lucrativity,
-      );
+  BSFSaleRequestErrorEntity toEntity() =>
+      BSFSaleRequestErrorEntity(discount: discount, lucrativity: lucrativity);
 }
