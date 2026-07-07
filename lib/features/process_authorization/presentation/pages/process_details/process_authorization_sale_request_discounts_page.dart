@@ -41,11 +41,11 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                   final saleRequest = defendants!.first.saleRequest;
 
                   final controller =
-                      processAuthorizationErrorsStateControllerProvider(
+                      processAuthorizationSaleRequestErrorsStateControllerProvider(
                         customerCode: saleRequest.customer!.code!,
                         enterpriseCode: saleRequest.enterprise!.code!,
                         saleRequestCode: saleRequest.code!,
-                        errorType: TypeAccordingToTheCode.saleRequestDiscount,
+                        errorType: SaleRequestErrorType.discount,
                       );
                   return Column(
                     children: [

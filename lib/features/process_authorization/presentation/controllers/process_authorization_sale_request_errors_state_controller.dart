@@ -4,19 +4,19 @@ import 'package:celta_inventario/features/process_authorization/domain/entities/
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'process_authorization_errors_state_controller.g.dart';
+part 'process_authorization_sale_request_errors_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class ProcessAuthorizationErrorsStateController
-    extends _$ProcessAuthorizationErrorsStateController {
+class ProcessAuthorizationSaleRequestErrorsStateController
+    extends _$ProcessAuthorizationSaleRequestErrorsStateController {
   @override
   FutureOr<dynamic> build({
     required int enterpriseCode,
     required int customerCode,
     required int saleRequestCode,
-    required TypeAccordingToTheCode errorType,
+    required SaleRequestErrorType errorType,
   }) async {
-    //TODO create a Category that will call the respective repository and use the respective state
+    //TODO create tests
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
@@ -31,9 +31,7 @@ class ProcessAuthorizationErrorsStateController
       enterpriseCode: enterpriseCode,
       saleRequestCode: saleRequestCode,
       customerCode: customerCode,
-      errorType: errorType == TypeAccordingToTheCode.saleRequestDiscount
-          ? SaleRequestErrorType.discount
-          : SaleRequestErrorType.lucrativity,
+      errorType: errorType,
     );
   }
 }
