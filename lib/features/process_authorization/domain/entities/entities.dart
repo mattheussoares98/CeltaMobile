@@ -11,3 +11,4 @@ export 'bsf_process_authorization_statistic_entity.dart';
 export 'bsf_user_bond_type.dart';
 export 'bsf_user_entity.dart';
 export 'sale_request/sale_request.dart';
+export 'type_according_to_the_code.dart';

@@ -8,6 +8,7 @@ class BSFProcessAuthorizationItemEntity extends Equatable {
   final String? description;
   final BSFProcessAuthorizationItemType? type;
   final BSFProcessAuthorizationCategoryType? category;
+  final TypeAccordingToTheCode? typeAccordingToTheCode;
 
   const BSFProcessAuthorizationItemEntity({
     this.code,
@@ -15,8 +16,16 @@ class BSFProcessAuthorizationItemEntity extends Equatable {
     this.description,
     this.type,
     this.category,
+    this.typeAccordingToTheCode,
   });
 
   @override
-  List<Object?> get props => [code, name, description, type, category];
+  List<Object?> get props => [
+    code,
+    name,
+    description,
+    type,
+    category,
+    typeAccordingToTheCode,
+  ];
 }

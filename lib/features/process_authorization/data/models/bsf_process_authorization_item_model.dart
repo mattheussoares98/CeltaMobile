@@ -9,11 +9,13 @@ class BSFProcessAuthorizationItemModel
     super.description,
     super.type,
     super.category,
+    super.typeAccordingToTheCode,
   });
 
   factory BSFProcessAuthorizationItemModel.fromJson(Map json) =>
       BSFProcessAuthorizationItemModel(
         code: json['Code'],
+        typeAccordingToTheCode: TypeAccordingToTheCode.fromCode(json['Code']),
         name: json['Name']?.toString(),
         description: json['Description']?.toString(),
         type: BSFProcessAuthorizationItemType.fromValue(json['Type']),
@@ -40,6 +42,7 @@ class BSFProcessAuthorizationItemModel
     description: entity.description,
     type: entity.type,
     category: entity.category,
+    typeAccordingToTheCode: entity.typeAccordingToTheCode,
   );
 
   BSFProcessAuthorizationItemEntity toEntity() =>
@@ -49,5 +52,6 @@ class BSFProcessAuthorizationItemModel
         description: description,
         type: type,
         category: category,
+        typeAccordingToTheCode: typeAccordingToTheCode,
       );
 }
