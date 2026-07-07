@@ -10,6 +10,7 @@ export './primary_text_button.dart';
 export './responsive_center.dart';
 export './responsive_list_flow.dart';
 export './responsive_scrollable_widget.dart';
+export './scrollable_table.dart';
 export './show_modal_page.dart';
 export './summary_table.dart';
 export './title_and_subtitle.dart';
