@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/process_authorization/presentation/pages/process_authorization_page.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/process_authorization/process_authorization_page.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
