@@ -13,8 +13,8 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = judgmentDetailsStateControllerProvider(processCode);
     return BaseScaffold(
-      isScrollable: true,
       refreshProvider: provider,
+      isScrollable: true,
       appBar: BaseAppBar(
         title: 'Detalhes do processo'.hardcoded,
         showSelectedEnterprise: true,
@@ -24,6 +24,7 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
         tryAgain: () => ref.invalidate(provider),
         data: (data) {
           return Column(
+            crossAxisAlignment: .stretch,
             children: [
               Consumer(
                 builder: (_, ref, _) {
@@ -31,6 +32,9 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
                       ?.cast<BSFSaleRequestDefendantEntity>();
                   //TODO convert it correctly
 
+                  if (defendants?.isEmpty ?? true) {
+                    return const SizedBox.shrink();
+                  }
                   final saleRequest = defendants!.first.saleRequest;
 
                   final controller =
