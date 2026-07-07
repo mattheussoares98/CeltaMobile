@@ -105,7 +105,8 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                   item.totalDifference.toString().toBrazilianNumber(2),
                   color: item.hasPositiveDifference ? Colors.red : Colors.green,
                 ),
-                sortValueMapper: (item) => item.totalDifference,
+                sortValueMapper: (item) => item
+                    .totalDifference, //TODO check whether can return PercentageOrValue to treat it correctly when receiving a percentage value
               ),
             ],
           );
