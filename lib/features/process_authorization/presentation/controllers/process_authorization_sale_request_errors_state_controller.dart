@@ -16,7 +16,6 @@ class ProcessAuthorizationSaleRequestErrorsStateController
     required int saleRequestCode,
     required SaleRequestErrorType errorType,
   }) async {
-    //TODO create tests
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
