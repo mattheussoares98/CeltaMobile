@@ -104,7 +104,7 @@ class _SaleTypeItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(child: DefaultText(saleType.name)),
+            Flexible(child: BaseText(saleType.name)),
             Radio(value: saleType),
           ],
         ),

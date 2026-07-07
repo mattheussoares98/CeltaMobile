@@ -56,7 +56,7 @@ class _EmailItem extends StatelessWidget {
         padding: const EdgeInsets.only(left: Sizes.p8),
         child: Row(
           children: [
-            Expanded(child: DefaultText(email)),
+            Expanded(child: BaseText(email)),
             IconButton(
               onPressed: () {
                 showAlertDialog(

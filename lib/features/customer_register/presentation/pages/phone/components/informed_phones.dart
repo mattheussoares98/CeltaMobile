@@ -1,13 +1,12 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InformedPhones extends ConsumerWidget {
   const InformedPhones({super.key});
@@ -64,7 +63,9 @@ class _TelephoneItem extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                child: DefaultText('(${telephone.AreaCode}) ${telephone.PhoneNumber}'),
+                child: BaseText(
+                  '(${telephone.AreaCode}) ${telephone.PhoneNumber}',
+                ),
               ),
               IconButton(
                 onPressed: () {

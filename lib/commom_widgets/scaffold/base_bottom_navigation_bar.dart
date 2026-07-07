@@ -57,7 +57,7 @@ class BaseBottomNavigationBar extends StatelessWidget {
 
       if (e.badgeLabel != null) {
         icon = Badge(
-          label: DefaultText(e.badgeLabel!),
+          label: BaseText(e.badgeLabel!),
           offset: const Offset(10, -2),
           alignment: Alignment.topRight,
           child: icon,
@@ -74,13 +74,13 @@ class BaseBottomNavigationBar extends StatelessWidget {
               Flexible(child: icon),
               if (isSelected)
                 FittedBox(
-                  child: DefaultText.title(
+                  child: BaseText.title(
                     e.label!,
                     color: theme.selectedItemColor,
                   ),
                 )
               else
-                DefaultText.bodySmall(
+                BaseText.bodySmall(
                   e.label!,
                   color: theme.unselectedItemColor ?? const Color(0xFF64748B),
                   overflow: TextOverflow.ellipsis,

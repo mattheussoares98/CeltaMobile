@@ -18,7 +18,7 @@ class SettingsPage extends StatelessWidget {
       isScrollable: true,
       body: Column(
         children: [
-          DefaultText.headline('Configurações'.hardcoded),
+          BaseText.headline('Configurações'.hardcoded),
           gapH16,
           Consumer(
             builder: (_, ref, _) {

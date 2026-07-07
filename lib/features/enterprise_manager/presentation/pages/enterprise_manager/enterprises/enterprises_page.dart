@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EnterprisesPage extends ConsumerWidget {
   final TextEditingController filterEnterpriseNameController;
@@ -20,7 +19,9 @@ class EnterprisesPage extends ConsumerWidget {
       tryAgain: () => ref.invalidate(enterpriseManagerControllerProvider),
       data: (enterprises) {
         if (enterprises.isEmpty) {
-          return Center(child: DefaultText('Nenhuma empresa encontrada.'.hardcoded));
+          return Center(
+            child: BaseText('Nenhuma empresa encontrada.'.hardcoded),
+          );
         }
         return EnterpriseItems(
           enterprises: enterprises,

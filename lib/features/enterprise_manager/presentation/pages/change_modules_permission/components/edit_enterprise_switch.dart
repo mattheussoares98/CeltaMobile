@@ -1,9 +1,8 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EditEnterpriseSwitch extends ConsumerWidget {
   final void Function(int moduleId, bool? newValue) onChange;
@@ -68,7 +67,7 @@ class _ModuleItem extends StatelessWidget {
             inactiveThumbColor: Colors.redAccent,
             inactiveTrackColor: Colors.red.shade100,
             dense: true,
-            title: DefaultText(module.name),
+            title: BaseText(module.name),
             value: value ?? false, // Default global to false
             onChanged: onChanged,
           ),

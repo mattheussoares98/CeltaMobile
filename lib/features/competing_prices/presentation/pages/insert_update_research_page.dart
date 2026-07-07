@@ -91,7 +91,7 @@ class _InsertUpdateResearchPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              DefaultText.headline(
+              BaseText.headline(
                 widget.research == null
                     ? 'Inserindo pesquisa'.hardcoded
                     : 'Editando pesquisa'.hardcoded,

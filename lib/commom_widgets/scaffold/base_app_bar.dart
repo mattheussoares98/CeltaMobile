@@ -107,7 +107,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           if (titleWidget != null)
             titleWidget!
           else if (title.isNotEmpty) ...[
-            FittedBox(child: DefaultText.titleLarge(title)),
+            FittedBox(child: BaseText.titleLarge(title)),
           ],
           if (showSelectedEnterprise)
             const CorrespondentEnterpriseByEnterpriseCode(),

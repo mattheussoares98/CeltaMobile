@@ -45,7 +45,7 @@ class PrimaryTextButton extends StatelessWidget {
         ? Colors.transparent
         : color ?? context.theme.primaryColor;
 
-    final textWidget = DefaultText(
+    final textWidget = BaseText(
       text,
       textAlign: textAlign,
       textType: isSmall == true ? TextType.titleSmall : TextType.titleMedium,

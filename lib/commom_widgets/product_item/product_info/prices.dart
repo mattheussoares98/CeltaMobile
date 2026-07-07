@@ -32,9 +32,7 @@ class Prices extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: DefaultText.headline('Preços praticados'.hardcoded),
-              ),
+              Flexible(child: BaseText.headline('Preços praticados'.hardcoded)),
               gapW12,
               IconButton(
                 onPressed: () {
@@ -100,7 +98,7 @@ class Prices extends ConsumerWidget {
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[
             gapH32,
-            DefaultText.headline('Preços sugeridos'.hardcoded),
+            BaseText.headline('Preços sugeridos'.hardcoded),
             gapH8,
             if (retailSuggestion > 0)
               TitleAndSubTitle(
@@ -125,7 +123,7 @@ class Prices extends ConsumerWidget {
               retailMinimum > 0 ||
               ecommerceMinimum > 0) ...[
             gapH32,
-            DefaultText.headline('Preços mínimos'.hardcoded),
+            BaseText.headline('Preços mínimos'.hardcoded),
             gapH8,
             if (retailMinimum > 0)
               TitleAndSubTitle(

@@ -20,7 +20,7 @@ class ConferedProductsPage extends ConsumerWidget {
 
     if (scannedProducts == null || scannedProducts.isEmpty) {
       return Center(
-        child: DefaultText('Nenhum produto conferido até o momento'.hardcoded),
+        child: BaseText('Nenhum produto conferido até o momento'.hardcoded),
       );
     }
 

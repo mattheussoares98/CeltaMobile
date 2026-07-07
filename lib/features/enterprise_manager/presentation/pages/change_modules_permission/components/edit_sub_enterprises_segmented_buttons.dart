@@ -107,7 +107,7 @@ class _Module extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DefaultText.titleMedium(module.name, textAlign: TextAlign.center),
+            BaseText.titleMedium(module.name, textAlign: TextAlign.center),
             gapH8,
             CupertinoSlidingSegmentedControl<ModulePermissionValue>(
               groupValue: groupValue,
@@ -147,7 +147,7 @@ class _Item extends StatelessWidget {
         horizontal: Sizes.p4,
         vertical: Sizes.p8,
       ),
-      child: DefaultText(
+      child: BaseText(
         message,
         color: selected == true ? Colors.white : CupertinoColors.black,
       ),

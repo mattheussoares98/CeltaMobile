@@ -30,7 +30,7 @@ class SexDropDown extends ConsumerWidget {
         return null;
       },
       items: CustomerSexType.values
-          .map((e) => DropdownMenuItem(value: e, child: DefaultText(e.name)))
+          .map((e) => DropdownMenuItem(value: e, child: BaseText(e.name)))
           .toList(),
     );
   }

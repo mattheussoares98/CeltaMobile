@@ -77,7 +77,7 @@ class BasePaginationButtons<T> extends ConsumerWidget {
                         : null,
                   ),
 
-                  const _DefaultVerticalDivider(),
+                  const _BaseVerticalDivider(),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: Sizes.p12),
@@ -89,7 +89,7 @@ class BasePaginationButtons<T> extends ConsumerWidget {
                             final isLoading = ref.watch(
                               provider.select((s) => s.isLoading),
                             );
-                            return DefaultText(
+                            return BaseText(
                               '${results.actualPage} / ${results.totalPages}',
                               fontWeight: FontWeight.bold,
                               color: isLoading
@@ -98,7 +98,7 @@ class BasePaginationButtons<T> extends ConsumerWidget {
                             );
                           },
                         ),
-                        DefaultText.caption(
+                        BaseText.caption(
                           '$startItem-$endItem de ${results.totalRecords}'
                               .hardcoded,
                           color: context.theme.hintColor,
@@ -107,7 +107,7 @@ class BasePaginationButtons<T> extends ConsumerWidget {
                     ),
                   ),
 
-                  const _DefaultVerticalDivider(),
+                  const _BaseVerticalDivider(),
 
                   _PageActionIcon(
                     provider: provider,
@@ -129,8 +129,8 @@ class BasePaginationButtons<T> extends ConsumerWidget {
   }
 }
 
-class _DefaultVerticalDivider extends StatelessWidget {
-  const _DefaultVerticalDivider();
+class _BaseVerticalDivider extends StatelessWidget {
+  const _BaseVerticalDivider();
 
   @override
   Widget build(BuildContext context) {

@@ -2,10 +2,10 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/products.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class AppBarTitle extends ConsumerWidget {
   final ProductsPage widget;
@@ -21,22 +21,22 @@ class AppBarTitle extends ConsumerWidget {
         if (widget.researchName == null || widget.concurrentName == null) ...[
           if (screenWidth < Breakpoint.tablet)
             FittedBox(
-              child: DefaultText(
+              child: BaseText(
                 'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
               ),
             )
           else
-            DefaultText(
+            BaseText(
               'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
             ),
         ] else
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DefaultText.title(
+              BaseText.title(
                 "${widget.researchName!} (${widget.researchCode})",
               ),
-              DefaultText.title(
+              BaseText.title(
                 "${widget.concurrentName!} (${widget.concurrentCode})",
               ),
             ],
@@ -53,7 +53,7 @@ class AppBarTitle extends ConsumerWidget {
               ),
             );
 
-            return DefaultText.bodySmall(
+            return BaseText.bodySmall(
               restrictProducts == true
                   ? 'Produtos restringidos'
                   : 'Produtos não restringidos',

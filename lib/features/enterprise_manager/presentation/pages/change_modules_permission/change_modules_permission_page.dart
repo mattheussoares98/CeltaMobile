@@ -140,7 +140,7 @@ class _ChangeModulesPermissionPageState
             data: (enterprise) {
               if (enterprise == null) {
                 return Center(
-                  child: DefaultText('Empresa não encontrada.'.hardcoded),
+                  child: BaseText('Empresa não encontrada.'.hardcoded),
                 );
               }
               final modulesToDisplay = _getModulesForScope(enterprise);
@@ -153,7 +153,7 @@ class _ChangeModulesPermissionPageState
                 physics: const ClampingScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: DefaultText.titleMedium(
+                    child: BaseText.titleMedium(
                       scopeName,
                       textAlign: TextAlign.center,
                     ),

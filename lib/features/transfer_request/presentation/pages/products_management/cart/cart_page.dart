@@ -21,7 +21,7 @@ class CartPage extends ConsumerWidget {
 
     return productsInCartLength == 0
         ? Center(
-            child: DefaultText.titleMedium(
+            child: BaseText.titleMedium(
               'Nenhum produto adicionado ao carrinho'.hardcoded,
               textAlign: TextAlign.center,
               color: Colors.red,

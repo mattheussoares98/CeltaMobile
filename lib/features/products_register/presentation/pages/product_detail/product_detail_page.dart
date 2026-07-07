@@ -94,8 +94,8 @@ class _SearchResultList extends StatelessWidget {
       itemBuilder: (_, index) {
         final property = results[index];
         return ListTile(
-          title: DefaultText.bodySmall(property.labelPt),
-          subtitle: DefaultText.bodyMedium(property.displayValue),
+          title: BaseText.bodySmall(property.labelPt),
+          subtitle: BaseText.bodyMedium(property.displayValue),
         );
       },
     );

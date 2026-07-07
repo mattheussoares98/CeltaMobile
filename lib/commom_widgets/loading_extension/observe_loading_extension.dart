@@ -91,7 +91,7 @@ class _LoadingOverlayController extends Notifier<void> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        DefaultText.titleMedium('Aguarde'.hardcoded),
+                        BaseText.titleMedium('Aguarde'.hardcoded),
                         const AnimatedEllipsis(),
                       ],
                     ),

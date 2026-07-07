@@ -14,10 +14,7 @@ class Margins extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DefaultText.headline(
-            'Margens'.hardcoded,
-            textAlign: TextAlign.center,
-          ),
+          BaseText.headline('Margens'.hardcoded, textAlign: TextAlign.center),
           gapH8,
           TitleAndSubTitle(
             title: 'Varejo ',

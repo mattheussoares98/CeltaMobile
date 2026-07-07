@@ -26,7 +26,7 @@ class SelectProductModalPage extends ConsumerWidget {
         physics: const ClampingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
-            child: DefaultText.titleMedium(
+            child: BaseText.titleMedium(
               'Selecione o produto que deseja confirmar'.hardcoded,
               textAlign: TextAlign.center,
             ),

@@ -21,7 +21,7 @@ class ItemsPage extends ConsumerWidget {
     );
     if (productsCount == 0) {
       final child = Center(
-        child: DefaultText.titleMedium(
+        child: BaseText.titleMedium(
           'Adicione produtos no pedido!'.hardcoded,
           color: Colors.red,
         ),

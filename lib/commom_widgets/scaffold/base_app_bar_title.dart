@@ -19,7 +19,7 @@ class BaseAppBarTitle extends StatelessWidget {
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
       children: [
-        if (title != null) FittedBox(child: DefaultText.title(title!)),
+        if (title != null) FittedBox(child: BaseText.title(title!)),
         const CorrespondentEnterpriseByEnterpriseCode(),
       ],
     );
@@ -63,7 +63,7 @@ class CorrespondentEnterpriseByEnterpriseCode extends ConsumerWidget {
 
     return Align(
       alignment: Alignment.centerLeft,
-      child: DefaultText.bodySmall(
+      child: BaseText.bodySmall(
         '$personalizedCode - $enterpriseName',
         textAlign: centerTitle ? TextAlign.center : null,
         maxLines: 1,

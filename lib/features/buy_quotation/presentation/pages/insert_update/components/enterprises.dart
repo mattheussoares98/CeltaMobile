@@ -99,7 +99,7 @@ class Enterprises extends ConsumerWidget {
               itemCount: filteredEnterprises.length + 1,
               itemBuilder: (_, index) {
                 if (index == 0) {
-                  return DefaultText.title(
+                  return BaseText.title(
                     'Empresas'.hardcoded,
                     color: context.theme.primaryColor,
                     fontStyle: FontStyle.italic,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'text.dart';
 
-class DefaultText extends StatelessWidget {
-  const DefaultText(
+class BaseText extends StatelessWidget {
+  const BaseText(
     this.text, {
     super.key,
     this.textAlign,
@@ -17,7 +17,7 @@ class DefaultText extends StatelessWidget {
     this.fontStyle,
   });
 
-  factory DefaultText.caption(
+  factory BaseText.caption(
     String text, {
     TextAlign? textAlign,
     TextOverflow? overflow,
@@ -27,7 +27,7 @@ class DefaultText extends StatelessWidget {
     Color? decorationColor,
     FontStyle? fontStyle,
     int? maxLines,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     maxLines: maxLines,
@@ -40,7 +40,7 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.bodySmall(
+  factory BaseText.bodySmall(
     String text, {
     TextAlign? textAlign,
     TextOverflow? overflow,
@@ -50,7 +50,7 @@ class DefaultText extends StatelessWidget {
     TextDecoration? decoration,
     Color? decorationColor,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     overflow: overflow,
@@ -63,13 +63,13 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.bodyLarge(
+  factory BaseText.bodyLarge(
     String text, {
     TextAlign? textAlign,
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     color: color,
@@ -78,12 +78,12 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.title(
+  factory BaseText.title(
     String text, {
     TextAlign? textAlign,
     Color? color,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     color: color,
@@ -92,13 +92,13 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.titleMedium(
+  factory BaseText.titleMedium(
     String text, {
     TextAlign? textAlign,
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     color: color,
@@ -106,13 +106,13 @@ class DefaultText extends StatelessWidget {
     fontWeight: fontWeight ?? FontWeight.w600,
     fontStyle: fontStyle,
   );
-  factory DefaultText.titleLarge(
+  factory BaseText.titleLarge(
     String text, {
     TextAlign? textAlign,
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     color: color,
@@ -121,14 +121,14 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.bodyMedium(
+  factory BaseText.bodyMedium(
     String text, {
     TextAlign? textAlign,
     TextOverflow? overflow,
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign,
     overflow: overflow,
@@ -137,13 +137,13 @@ class DefaultText extends StatelessWidget {
     fontStyle: fontStyle,
   );
 
-  factory DefaultText.headline(
+  factory BaseText.headline(
     String text, {
     Color? color,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
     TextAlign? textAlign,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     color: color,
     textType: TextType.headline,
@@ -152,23 +152,23 @@ class DefaultText extends StatelessWidget {
     textAlign: textAlign,
   );
 
-  factory DefaultText.headlineLarge(
+  factory BaseText.headlineLarge(
     String text, {
     Color? color,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     color: color,
     textType: TextType.headlineLarge,
     fontWeight: FontWeight.w600,
     fontStyle: fontStyle,
   );
-  factory DefaultText.error(
+  factory BaseText.error(
     String text, {
     TextAlign? textAlign,
     FontWeight? fontWeight,
     FontStyle? fontStyle,
-  }) => DefaultText(
+  }) => BaseText(
     text,
     textAlign: textAlign ?? TextAlign.center,
     color: Colors.red,

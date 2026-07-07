@@ -148,7 +148,7 @@ class _ProductItem extends ConsumerWidget {
           showInfoButton: false,
           onTap: isIOS ? null : toggleSelection,
           clickableBottom: alreadyInBuyQuotation
-              ? DefaultText.title(
+              ? BaseText.title(
                   'Esse produto já foi inserido!'.hardcoded,
                   color: context.theme.primaryColor,
                   fontStyle: FontStyle.italic,

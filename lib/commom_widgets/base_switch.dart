@@ -18,7 +18,7 @@ class BaseSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     if (PlatformUtil.isCupertino) {
       return CupertinoListTile(
-        title: DefaultText.title(title),
+        title: BaseText.title(title),
         padding: EdgeInsets.zero,
         trailing: CupertinoSwitch(value: value, onChanged: onChanged),
       );
@@ -26,7 +26,7 @@ class BaseSwitch extends StatelessWidget {
       return SwitchListTile.adaptive(
         dense: true,
         contentPadding: EdgeInsetsGeometry.zero,
-        title: DefaultText.title(title),
+        title: BaseText.title(title),
         value: value,
         onChanged: onChanged,
       );

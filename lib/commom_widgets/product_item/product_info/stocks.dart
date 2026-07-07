@@ -28,7 +28,7 @@ class Stocks extends ConsumerWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultText.headline(
+            child: BaseText.headline(
               'Estoques'.hardcoded,
               textAlign: TextAlign.center,
             ),
@@ -49,7 +49,7 @@ class Stocks extends ConsumerWidget {
                 title: Row(
                   children: [
                     Expanded(
-                      child: DefaultText(
+                      child: BaseText(
                         enterpriseName,
                         fontWeight: FontWeight.bold,
                       ),

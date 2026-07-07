@@ -17,7 +17,7 @@ class EmptyProductsMessage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          DefaultText.error(
+          BaseText.error(
             'Nenhum produto foi encontrado'.hardcoded,
             textAlign: TextAlign.center,
           ),

@@ -44,7 +44,7 @@ class _AnimatedEllipsisState extends State<AnimatedEllipsis>
           // PERFORMANCE: Using a fixed width prevents the text from shifting
           // adjacent widgets when the dot count changes (Layout Jitters).
           width: 24,
-          child: DefaultText.titleMedium(dots),
+          child: BaseText.titleMedium(dots),
         );
       },
     );

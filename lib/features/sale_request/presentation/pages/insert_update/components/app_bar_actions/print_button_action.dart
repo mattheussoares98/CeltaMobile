@@ -94,7 +94,7 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
             mainAxisAlignment: .center,
             children: [
               Flexible(
-                child: DefaultText.headline(
+                child: BaseText.headline(
                   'Pedidos de hoje'.hardcoded,
                   textAlign: TextAlign.center,
                 ),
@@ -129,7 +129,7 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
                           return SliverToBoxAdapter(
                             child: Column(
                               children: [
-                                DefaultText.error(
+                                BaseText.error(
                                   'Nenhum pedido encontrado'.hardcoded,
                                 ),
                                 PrimaryButton(

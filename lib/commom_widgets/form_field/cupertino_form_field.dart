@@ -8,9 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CupertinoFormField extends ConsumerStatefulWidget {
-  final BaseTextFormField defaultTextFormField;
+  final BaseTextFormField baseTextFormField;
 
-  const CupertinoFormField({super.key, required this.defaultTextFormField});
+  const CupertinoFormField({super.key, required this.baseTextFormField});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -25,21 +25,19 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   void initState() {
     super.initState();
 
-    widget.defaultTextFormField.focusNode?.addListener(_updateOverlayState);
-    widget.defaultTextFormField.controller?.addListener(_onControllerChanged);
+    widget.baseTextFormField.focusNode?.addListener(_updateOverlayState);
+    widget.baseTextFormField.controller?.addListener(_onControllerChanged);
   }
 
   @override
   void dispose() {
-    widget.defaultTextFormField.focusNode?.removeListener(_updateOverlayState);
-    widget.defaultTextFormField.controller?.removeListener(
-      _onControllerChanged,
-    );
+    widget.baseTextFormField.focusNode?.removeListener(_updateOverlayState);
+    widget.baseTextFormField.controller?.removeListener(_onControllerChanged);
     overlayManager.hide();
     try {
       ref
           .read(activeNumericFocusNodeProvider.notifier)
-          .clearIfActive(widget.defaultTextFormField.focusNode);
+          .clearIfActive(widget.baseTextFormField.focusNode);
     } catch (_) {
       // Safely ignore if the ref or provider container is already inactive/disposed.
     }
@@ -47,9 +45,8 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   }
 
   void _onControllerChanged() {
-    if (_formFieldState?.value !=
-        widget.defaultTextFormField.controller?.text) {
-      _formFieldState?.didChange(widget.defaultTextFormField.controller?.text);
+    if (_formFieldState?.value != widget.baseTextFormField.controller?.text) {
+      _formFieldState?.didChange(widget.baseTextFormField.controller?.text);
     }
   }
 
@@ -57,7 +54,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 100));
       if (!mounted) return;
-      final dtf = widget.defaultTextFormField;
+      final dtf = widget.baseTextFormField;
       final hasFocus = dtf.focusNode?.hasFocus ?? false;
       final isKeyboardOpen = ref.read(
         keyboardVisibilityStateControllerProvider,
@@ -77,7 +74,7 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   }
 
   void _showOverlay() {
-    final dtf = widget.defaultTextFormField;
+    final dtf = widget.baseTextFormField;
     overlayManager.showDoneBar(
       context: context,
       focusNode: dtf.focusNode,
@@ -97,16 +94,16 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
   }
 
   bool get isNumeric =>
-      widget.defaultTextFormField.keyboardType == TextInputType.number ||
-      widget.defaultTextFormField.keyboardType ==
+      widget.baseTextFormField.keyboardType == TextInputType.number ||
+      widget.baseTextFormField.keyboardType ==
           const TextInputType.numberWithOptions(decimal: true) ||
-      widget.defaultTextFormField.keyboardType ==
+      widget.baseTextFormField.keyboardType ==
           const TextInputType.numberWithOptions();
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = context.theme.colorScheme;
-    final dtf = widget.defaultTextFormField;
+    final dtf = widget.baseTextFormField;
     final isEnabled = dtf.enabled ?? true;
 
     if (dtf.focusNode == null &&

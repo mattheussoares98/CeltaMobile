@@ -64,7 +64,7 @@ class _LotPageState extends ConsumerState<LotPage> {
     );
 
     if (productsAreEmpty) {
-      return Center(child: DefaultText.error('Lote vazio'.hardcoded));
+      return Center(child: BaseText.error('Lote vazio'.hardcoded));
     }
 
     return Column(

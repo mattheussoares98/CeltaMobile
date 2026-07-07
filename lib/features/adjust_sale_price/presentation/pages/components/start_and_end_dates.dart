@@ -143,7 +143,7 @@ class _GetDateItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
-                  child: DefaultText.bodyMedium(
+                  child: BaseText.bodyMedium(
                     currentSelectedDate == null && isEndDate
                         ? "Não definido".hardcoded
                         : DateFormat(

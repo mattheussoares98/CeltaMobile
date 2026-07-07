@@ -15,9 +15,7 @@ class SelectedCustomer extends ConsumerWidget {
     );
 
     if (customer == null) {
-      return Center(
-        child: DefaultText.error('Selecione um cliente!'.hardcoded),
-      );
+      return Center(child: BaseText.error('Selecione um cliente!'.hardcoded));
     }
 
     return CustomerItem(customer: customer, toggleable: false);

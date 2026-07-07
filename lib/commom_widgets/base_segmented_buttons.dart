@@ -50,7 +50,7 @@ class BaseSegmentedButtons<T extends SelectableItem<T>>
                   vertical: Sizes.p8,
                 ),
                 child: FittedBox(
-                  child: DefaultText(
+                  child: BaseText(
                     item.name,
                     overflow: TextOverflow.ellipsis,
                     color: selectedValue == item.value

@@ -27,7 +27,7 @@ class BaseRadio<T> extends StatelessWidget {
     final isIOS = PlatformUtil.isCupertino;
     final selected = value == groupValue;
 
-    final title = DefaultText(name);
+    final title = BaseText(name);
     final radio = isIOS
         ? CupertinoListTile(
             padding: const EdgeInsets.symmetric(

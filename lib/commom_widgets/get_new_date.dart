@@ -139,7 +139,7 @@ class GetNewDate {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(Sizes.p8),
-                      child: DefaultText.titleMedium(
+                      child: BaseText.titleMedium(
                         mode == CupertinoDatePickerMode.date
                             ? 'Data'
                             : 'Horário',
@@ -160,7 +160,7 @@ class GetNewDate {
                       ),
                     ),
                     CupertinoButton(
-                      child: const DefaultText('OK'),
+                      child: const BaseText('OK'),
                       onPressed: () => context.pop(tempPickedDate),
                     ),
                   ],

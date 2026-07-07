@@ -26,7 +26,7 @@ class EmptyPlaceholderWidget extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DefaultText.headline(message),
+            BaseText.headline(message),
             gapH32,
             PrimaryButton(
               onPressed: () => context.goNamed(

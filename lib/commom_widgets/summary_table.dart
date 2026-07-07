@@ -91,7 +91,7 @@ class SummaryTable extends StatelessWidget {
                     crossAxisAlignment: .start,
                     children: [
                       Flexible(
-                        child: DefaultText.caption(
+                        child: BaseText.caption(
                           item.title,
                           fontWeight: FontWeight.bold,
                           color: context.theme.hintColor,
@@ -116,7 +116,7 @@ class SummaryTable extends StatelessWidget {
                 else
                   Align(
                     alignment: alignment,
-                    child: DefaultText.bodyMedium(
+                    child: BaseText.bodyMedium(
                       formattedValue,
                       fontWeight: FontWeight.bold,
                       color: item.color,

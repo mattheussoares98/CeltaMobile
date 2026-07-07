@@ -25,7 +25,7 @@ class PrimaryButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isIOS = PlatformUtil.isCupertino;
 
-    final textWidget = DefaultText.titleMedium(
+    final textWidget = BaseText.titleMedium(
       text,
       textAlign: TextAlign.center,
       color: isLoading ? Colors.transparent : Colors.white,

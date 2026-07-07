@@ -54,7 +54,7 @@ class StocksDropdown extends ConsumerWidget {
             items: stocks.map((e) {
               return DropdownMenuItem(
                 value: e,
-                child: DefaultText(e.Nome_TipoEstoque),
+                child: BaseText(e.Nome_TipoEstoque),
               );
             }).toList(),
             selectedItem: selectedStockType,

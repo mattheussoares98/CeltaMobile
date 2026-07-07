@@ -17,7 +17,7 @@ class EmptyDocumentsMessage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DefaultText.error(
+          BaseText.error(
             'Nenhum documento está no processo de conferência de produtos'
                 .hardcoded,
             textAlign: TextAlign.center,

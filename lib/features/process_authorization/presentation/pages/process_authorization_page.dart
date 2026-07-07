@@ -82,7 +82,7 @@ class ProcessAuthorizationPage extends ConsumerWidget {
                                             ?.name ??
                                         '',
                                   ),
-                                  DefaultText.titleMedium(
+                                  BaseText.titleMedium(
                                     e.authorizationProcessItem?.name ?? '',
                                   ),
                                   if (e.dateTimeOfCreation != null)

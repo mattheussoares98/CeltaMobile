@@ -37,7 +37,7 @@ class CreateProductPage extends StatelessWidget {
                 if (data == null) {
                   return const SizedBox.shrink();
                 }
-                return DefaultText(data.toString());
+                return BaseText(data.toString());
               },
             ),
           );

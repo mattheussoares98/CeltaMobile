@@ -32,7 +32,7 @@ class BaseChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
           final isSelected = item.value == selectedValue;
           return ChoiceChip(
             key: ValueKey(item),
-            label: DefaultText(item.name),
+            label: BaseText(item.name),
             selected: isSelected,
             onSelected: (selected) {
               if (allowNullSelection) {

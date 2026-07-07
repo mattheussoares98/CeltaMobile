@@ -59,7 +59,7 @@ class BaseTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (PlatformUtil.isCupertino) {
-      return CupertinoFormField(defaultTextFormField: this, key: key);
+      return CupertinoFormField(baseTextFormField: this, key: key);
     }
     return Padding(
       padding: const EdgeInsets.only(top: Sizes.p4),

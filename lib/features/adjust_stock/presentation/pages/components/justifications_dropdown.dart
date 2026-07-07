@@ -53,7 +53,7 @@ class JustificationsDropdown extends ConsumerWidget {
             items: justifications.map((e) {
               return DropdownMenuItem(
                 value: e,
-                child: DefaultText(e.Descricao_JustMov),
+                child: BaseText(e.Descricao_JustMov),
               );
             }).toList(),
             selectedItem: selectedJustification,

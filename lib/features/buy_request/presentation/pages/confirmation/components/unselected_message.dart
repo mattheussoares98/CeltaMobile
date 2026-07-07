@@ -13,7 +13,7 @@ class UnselectedMessage extends StatelessWidget {
       child: Row(
         children: [
           Flexible(
-            child: DefaultText.titleMedium(
+            child: BaseText.titleMedium(
               title,
               color: Colors.red,
               fontStyle: FontStyle.italic,

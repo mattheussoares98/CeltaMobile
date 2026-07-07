@@ -57,7 +57,7 @@ class ProductsManagementPage extends ConsumerWidget {
             if (screenWidth > 250) ...[
               Row(
                 children: [
-                  DefaultText.bodySmall('De '.hardcoded),
+                  BaseText.bodySmall('De '.hardcoded),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseOriginCode,
@@ -67,7 +67,7 @@ class ProductsManagementPage extends ConsumerWidget {
               ),
               Row(
                 children: [
-                  DefaultText.bodySmall('Para '.hardcoded),
+                  BaseText.bodySmall('Para '.hardcoded),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseDestinyCode,

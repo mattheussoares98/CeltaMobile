@@ -96,7 +96,7 @@ class _LoadSchedules extends StatelessWidget {
           ),
           if (schedules?.isEmpty == true) ...[
             gapH8,
-            DefaultText.title(
+            BaseText.title(
               'Nenhum agendamento foi encontrado'.hardcoded,
               color: Colors.red,
             ),

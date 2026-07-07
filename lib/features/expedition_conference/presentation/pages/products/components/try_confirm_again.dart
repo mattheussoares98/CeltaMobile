@@ -23,7 +23,7 @@ class TryConfirmAgain extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          DefaultText.error(
+          BaseText.error(
             'Houve um erro ao tentar confirmar a conferência: $error'.hardcoded,
             textAlign: TextAlign.center,
           ),

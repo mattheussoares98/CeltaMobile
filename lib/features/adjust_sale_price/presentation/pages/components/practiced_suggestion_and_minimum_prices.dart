@@ -122,7 +122,7 @@ class _SuggestionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (value == null || value == 0) {
-      return DefaultText.title(
+      return BaseText.title(
         emptyMessage,
         color: Colors.red,
         textAlign: TextAlign.start,

@@ -64,9 +64,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
       data: (usageReports) {
         if (usageReports?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(
-              child: DefaultText('Nenhum uso encontrado'.hardcoded),
-            ),
+            child: Center(child: BaseText('Nenhum uso encontrado'.hardcoded)),
           );
         }
 
@@ -115,7 +113,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
         if (filteredEnterprises.isEmpty) {
           return SliverToBoxAdapter(
             child: Center(
-              child: DefaultText('Nenhum resultado encontrado'.hardcoded),
+              child: BaseText('Nenhum resultado encontrado'.hardcoded),
             ),
           );
         }
@@ -134,16 +132,14 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
-                      child: DefaultText(
+                      child: BaseText(
                         '${filteredEnterprises.length} clientes'.hardcoded,
                       ),
                     ),
                     gapW8,
                     Flexible(
                       flex: 2,
-                      child: DefaultText(
-                        '$totalRequests requisições'.hardcoded,
-                      ),
+                      child: BaseText('$totalRequests requisições'.hardcoded),
                     ),
                   ],
                 ),
@@ -159,7 +155,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
               margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
               child: ExpansionTile(
                 initiallyExpanded: false,
-                title: DefaultText.titleMedium(
+                title: BaseText.titleMedium(
                   '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
                 ),
                 children: [
@@ -214,7 +210,7 @@ class _RequestsByTypeOrUser extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DefaultText.title(
+        BaseText.title(
           groupingByType
               ? 'Requisições por tipo'.hardcoded
               : 'Requisições por usuário'.hardcoded,
@@ -229,7 +225,7 @@ class _RequestsByTypeOrUser extends StatelessWidget {
                   right: Sizes.p4,
                   bottom: Sizes.p4,
                 ),
-                child: Chip(label: DefaultText('${t.name}-${t.total}')),
+                child: Chip(label: BaseText('${t.name}-${t.total}')),
               );
             }),
           ],

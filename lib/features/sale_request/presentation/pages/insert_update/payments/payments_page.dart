@@ -23,7 +23,7 @@ class PaymentsPage extends ConsumerWidget {
 
     if (errorMessage != null) {
       return Center(
-        child: DefaultText.error(errorMessage, fontStyle: FontStyle.italic),
+        child: BaseText.error(errorMessage, fontStyle: FontStyle.italic),
       );
     }
 

@@ -53,7 +53,7 @@ class BaseCheckBox extends StatelessWidget {
                     horizontal: Sizes.p12,
                     vertical: Sizes.p4,
                   ),
-                  title: DefaultText(name),
+                  title: BaseText(name),
                   subtitle: subtitle,
                   trailing: CupertinoSwitch(
                     value: enabled,
@@ -66,7 +66,7 @@ class BaseCheckBox extends StatelessWidget {
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: Sizes.p12,
                     ),
-                    title: DefaultText(name),
+                    title: BaseText(name),
                     subtitle: subtitle,
                     value: enabled,
                     onChanged: onChanged,

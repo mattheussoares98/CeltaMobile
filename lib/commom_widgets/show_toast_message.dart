@@ -16,7 +16,7 @@ void showToastMessage(
   Duration? duration,
 }) {
   toastification.show(
-    title: DefaultText.title(message, textAlign: TextAlign.center),
+    title: BaseText.title(message, textAlign: TextAlign.center),
     alignment: Alignment.bottomCenter,
     autoCloseDuration: duration ?? const Duration(seconds: 4),
     backgroundColor: type == ToastType.success ? Colors.green : Colors.red,

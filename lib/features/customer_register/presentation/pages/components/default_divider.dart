@@ -12,7 +12,7 @@ class DefaultDivider extends StatelessWidget {
       children: [
         gapH16,
         const Divider(thickness: 0.5),
-        DefaultText.headline(title, textAlign: TextAlign.center),
+        BaseText.headline(title, textAlign: TextAlign.center),
         gapH8,
       ],
     );

@@ -49,7 +49,7 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
                       Consumer(
                         builder: (_, ref, _) {
                           final data = ref.watch(controller);
-                          return DefaultText(data.toString());
+                          return BaseText(data.toString());
                         },
                       ),
                       const Divider(),
@@ -57,7 +57,7 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
                   );
                 },
               ),
-              DefaultText(data.toString()),
+              BaseText(data.toString()),
             ],
           );
         },

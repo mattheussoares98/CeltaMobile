@@ -14,7 +14,7 @@ class Addresses extends StatelessWidget {
     if (widget.product.StorageAreaAddress == null &&
         (widget.product.StockByEnterpriseAssociateds?.length ?? 0) == 0) {
       return Center(
-        child: DefaultText.titleMedium(
+        child: BaseText.titleMedium(
           'Não há endereços cadastrados para esse produto'.hardcoded,
         ),
       );
@@ -26,7 +26,7 @@ class Addresses extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultText.headline(
+            child: BaseText.headline(
               'Endereços'.hardcoded,
               textAlign: TextAlign.center,
             ),

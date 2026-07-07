@@ -52,7 +52,7 @@ class BaseDropDown<T> extends StatelessWidget {
             (label?.isNotEmpty ?? false)
         ? Positioned(
             left: Sizes.p4,
-            child: DefaultText(
+            child: BaseText(
               label!,
               textType: TextType.caption,
               fontWeight: FontWeight.w300,
@@ -107,7 +107,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                       context: context,
                                       builder: (sheetContext) =>
                                           CupertinoActionSheet(
-                                            title: DefaultText(
+                                            title: BaseText(
                                               'Selecionar'.hardcoded,
                                             ),
                                             actions: centeredItems!.map((item) {
@@ -128,13 +128,12 @@ class BaseDropDown<T> extends StatelessWidget {
                                                   onPressed: () => Navigator.of(
                                                     sheetContext,
                                                   ).pop(),
-                                                  child:
-                                                      DefaultText.titleMedium(
-                                                        'Cancelar'.hardcoded,
+                                                  child: BaseText.titleMedium(
+                                                    'Cancelar'.hardcoded,
 
-                                                        color: CupertinoColors
-                                                            .destructiveRed,
-                                                      ),
+                                                    color: CupertinoColors
+                                                        .destructiveRed,
+                                                  ),
                                                 ),
                                           ),
                                     );
@@ -161,7 +160,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                 : Center(
                                     child:
                                         hint ??
-                                        DefaultText(
+                                        BaseText(
                                           label ?? 'Selecionar'.hardcoded,
                                           textType: TextType.bodyLarge,
                                           maxLines: 1,
@@ -186,7 +185,7 @@ class BaseDropDown<T> extends StatelessWidget {
               if (state.hasError)
                 Padding(
                   padding: const EdgeInsets.only(top: 5, left: 15),
-                  child: DefaultText.bodySmall(
+                  child: BaseText.bodySmall(
                     state.errorText!,
                     color: CupertinoColors.systemRed,
                   ),
@@ -246,9 +245,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                   content: adviceMessage,
                                 );
                               },
-                        hint:
-                            hint ??
-                            (label != null ? DefaultText(label!) : null),
+                        hint: hint ?? (label != null ? BaseText(label!) : null),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: theme.textTheme.titleMedium?.fontSize,
@@ -276,7 +273,7 @@ class BaseDropDown<T> extends StatelessWidget {
             if (state.hasError)
               Padding(
                 padding: const EdgeInsets.only(top: Sizes.p4),
-                child: DefaultText.bodySmall(
+                child: BaseText.bodySmall(
                   state.errorText!,
                   color: theme.colorScheme.error,
                 ),

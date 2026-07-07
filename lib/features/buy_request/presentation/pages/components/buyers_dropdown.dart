@@ -77,7 +77,7 @@ class _BuyersDropdown extends StatelessWidget {
                     (e) => DropdownMenuItem(
                       key: ValueKey(e.Code),
                       value: e,
-                      child: DefaultText(e.Name),
+                      child: BaseText(e.Name),
                     ),
                   )
                   .toList(),

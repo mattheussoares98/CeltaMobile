@@ -23,11 +23,11 @@ class QuantityByEnterprises extends ConsumerWidget {
           return Row(
             children: [
               Expanded(
-                child: DefaultText.title(
+                child: BaseText.title(
                   "(${correspondentEnterprise?.PersonalizedCode}) - ${correspondentEnterprise?.name}",
                 ),
               ),
-              DefaultText((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),
+              BaseText((e.Quantity ?? 0).toString().toBrazilianNumber(3, true)),
             ],
           );
         }),

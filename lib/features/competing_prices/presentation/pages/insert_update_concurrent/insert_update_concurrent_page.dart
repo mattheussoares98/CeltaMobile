@@ -91,7 +91,7 @@ class _UpdateConcurrentPageState
         child: SingleChildScrollView(
           child: Column(
             children: [
-              DefaultText.headline(
+              BaseText.headline(
                 widget.concurrentUpdating == null
                     ? 'Inserindo concorrente'.hardcoded
                     : 'Alterando concorrente'.hardcoded,
@@ -116,7 +116,7 @@ class _UpdateConcurrentPageState
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: Column(
                     children: [
-                      DefaultText.headline(
+                      BaseText.headline(
                         'Inserir/alterar endereço'.hardcoded,
                         textAlign: TextAlign.center,
                       ),

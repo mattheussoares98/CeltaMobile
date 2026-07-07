@@ -9,7 +9,7 @@ class TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultText.titleMedium(
+    return BaseText.titleMedium(
       title,
       color: enabled == true ? null : context.theme.disabledColor,
     );

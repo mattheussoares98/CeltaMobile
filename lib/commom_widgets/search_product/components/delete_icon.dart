@@ -1,8 +1,8 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class DeleteIcon extends StatelessWidget {
   final bool isLoading;

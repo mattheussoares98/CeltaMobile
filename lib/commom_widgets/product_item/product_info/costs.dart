@@ -22,7 +22,7 @@ class Costs extends ConsumerWidget {
             mainAxisAlignment: .center,
             children: [
               Flexible(
-                child: DefaultText.headline(
+                child: BaseText.headline(
                   'Custos'.hardcoded,
                   textAlign: TextAlign.center,
                 ),

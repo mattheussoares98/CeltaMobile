@@ -82,7 +82,7 @@ class _FilteredEnterprisesState extends State<FilteredEnterprises> {
                 children: enterprise.globalModules
                     .where((e) => e.isEnabled == true)
                     .map((e) {
-                      return DefaultText.bodySmall(
+                      return BaseText.bodySmall(
                         "${e.name}; ",
                         color: Colors.green,
                       );

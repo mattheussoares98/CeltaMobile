@@ -34,7 +34,7 @@ class CountingsPage extends ConsumerWidget {
         showSelectedEnterprise: true,
       ),
       body: (countings == null || countings.isEmpty)
-          ? DefaultText(
+          ? BaseText(
               'Não foram encontradas contagens para esse processe de inventário. Crie pelo menos uma contagem'
                   .hardcoded,
             )

@@ -15,9 +15,7 @@ class Shopping extends StatelessWidget {
     if (widget.product.LastBuyEntrances == null ||
         widget.product.LastBuyEntrances!.isEmpty) {
       return Center(
-        child: DefaultText.titleMedium(
-          'Nenhuma compra foi encontrada'.hardcoded,
-        ),
+        child: BaseText.titleMedium('Nenhuma compra foi encontrada'.hardcoded),
       );
     }
     return CustomScrollView(
@@ -26,7 +24,7 @@ class Shopping extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
-            child: DefaultText.headline(
+            child: BaseText.headline(
               'Últimas compras'.hardcoded,
               textAlign: TextAlign.center,
             ),
