@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:celta_inventario/app.dart';
 import 'package:celta_inventario/exceptions/async_error_logger.dart';
 import 'package:celta_inventario/exceptions/error_logger.dart';
@@ -37,23 +35,27 @@ void registerErrorHandlers(ErrorLogger errorLogger) {
   // * Show some error UI if any uncaught exception happens
   FlutterError.onError = (FlutterErrorDetails details) {
     if (details.context != null) {
-      developer.log(
-        '🔴 Flutter Error Context (Widget/Position): ${details.context}',
+      errorLogger.logError(
+        details.context!,
+        null,
+        reason: '🔴 Flutter Error Context (Widget/Position)',
       );
     }
     FlutterError.presentError(details);
-    developer.log(
-      'Starting the LOG exception from ErrorLogger - FlutterError.onError',
-      error: details.exception,
-      stackTrace: details.stack,
+    errorLogger.logError(
+      details.exception,
+      details.stack,
+      reason:
+          'Starting the LOG exception from ErrorLogger - FlutterError.onError',
     );
   };
   // * Handle errors from the underlying platform/OS
   PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-    developer.log(
-      'Starting the LOG exception from ErrorLogger - PlatformDispatcher.instance.onError',
-      error: error,
-      stackTrace: stack,
+    errorLogger.logError(
+      error,
+      stack,
+      reason:
+          'Starting the LOG exception from ErrorLogger - PlatformDispatcher.instance.onError',
     );
     return true;
   };
