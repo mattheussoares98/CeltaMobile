@@ -3,9 +3,9 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class FrozenItem extends StatelessWidget {
   final FrozenProcessEntity frozenProcess;
@@ -20,8 +20,6 @@ class FrozenItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = DateFormat('dd/MM/yyyy HH:mm');
-
     return RepaintBoundary(
       child: Card(
         clipBehavior: Clip.antiAlias,
@@ -56,14 +54,14 @@ class FrozenItem extends StatelessWidget {
                 ),
                 TitleAndSubTitle(
                   title: 'Criado em'.hardcoded,
-                  subTitle: dateFormatter.format(
-                    frozenProcess.CataCriacaoInventario,
+                  subTitle: frozenProcess.CataCriacaoInventario.formatDate(
+                    DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
                 TitleAndSubTitle(
                   title: 'Congelado em'.hardcoded,
-                  subTitle: dateFormatter.format(
-                    frozenProcess.DataCongelamentoInventario,
+                  subTitle: frozenProcess.DataCongelamentoInventario.formatDate(
+                    DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
 

@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Shopping extends StatelessWidget {
   const Shopping({super.key, required this.widget});
@@ -45,9 +44,9 @@ class Shopping extends StatelessWidget {
                 ),
                 TitleAndSubTitle(
                   title: 'Data'.hardcoded,
-                  subTitle: DateFormat(
-                    'dd/MM/yyyy HH:mm',
-                  ).format(DateTime.parse(buy.EntranceDate)),
+                  subTitle: DateTime.parse(
+                    buy.EntranceDate,
+                  ).formatDate(DateFormatType.ddMMyyyyHHmm),
                 ),
                 TitleAndSubTitle(
                   title: 'CFOP'.hardcoded,

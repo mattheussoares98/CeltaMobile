@@ -5,7 +5,6 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class ExecuteButton extends ConsumerWidget {
   final ReportScheduleEntity report;
@@ -36,9 +35,9 @@ class ExecuteButton extends ConsumerWidget {
               children: [
                 Text('Última geração'.hardcoded),
                 Text(
-                  DateFormat(
-                    'dd/MM/yyyy HH:mm',
-                  ).format(report.LastExecutionDate!),
+                  report.LastExecutionDate!.formatDate(
+                    DateFormatType.ddMMyyyyHHmm,
+                  ),
                   style: context.theme.textTheme.titleSmall,
                 ),
               ],

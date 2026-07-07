@@ -8,7 +8,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../components.dart';
 
@@ -29,8 +28,6 @@ class RequestSummaryWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-
     final saleRequest = ref.watch(
       saleRequestsStateControllerProvider(args.enterpriseCode).select(
         (s) => s.value?.collection.firstWhereOrNull(
@@ -91,8 +88,8 @@ class RequestSummaryWidget extends ConsumerWidget {
                     if (saleRequest.DateHourOfCreation != null)
                       TitleAndSubTitle(
                         title: 'Data'.hardcoded,
-                        subTitle: dateFormat.format(
-                          saleRequest.DateHourOfCreation!,
+                        subTitle: saleRequest.DateHourOfCreation!.formatDate(
+                          DateFormatType.ddMMyyyyHHmm,
                         ),
                       ),
                     if (showCustomer && saleRequest.customer != null)

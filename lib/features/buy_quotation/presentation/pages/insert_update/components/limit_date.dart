@@ -1,11 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class LimitDate extends ConsumerWidget {
   final int enterpriseCode;
@@ -32,9 +31,7 @@ class LimitDate extends ConsumerWidget {
             Expanded(
               child: TitleAndSubTitle(
                 title: 'Limite'.hardcoded,
-                subTitle: dateOfLimit == null
-                    ? null
-                    : DateFormat('dd/MM/yyyy HH:mm').format(dateOfLimit),
+                subTitle: dateOfLimit?.formatDate(DateFormatType.ddMMyyyyHHmm),
                 emptyMessage: 'Sem data de limite'.hardcoded,
               ),
             ),

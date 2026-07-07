@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 
 class CreationDate extends ConsumerWidget {
   final int enterpriseCode;
@@ -31,7 +30,7 @@ class CreationDate extends ConsumerWidget {
     return SliverToBoxAdapter(
       child: TitleAndSubTitle(
         title: 'Data de criação'.hardcoded,
-        subTitle: DateFormat('dd/MM/yyyy HH:mm').format(dateOfCreation),
+        subTitle: dateOfCreation.formatDate(DateFormatType.ddMMyyyyHHmm),
       ),
     );
   }

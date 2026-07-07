@@ -7,7 +7,6 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class ProductsItems extends ConsumerWidget {
   final SearchProductKey searchProductKey;
@@ -114,11 +113,9 @@ class _ProductItem extends ConsumerWidget {
           children: [
             TitleAndSubTitle(
               title: 'Validade'.hardcoded,
-              subTitle: product.DataValidade_ProcRecebDocProEmb == null
-                  ? null
-                  : DateFormat(
-                      'dd/MM/yyyy',
-                    ).format(product.DataValidade_ProcRecebDocProEmb!),
+              subTitle: product.DataValidade_ProcRecebDocProEmb?.formatDate(
+                DateFormatType.ddMMyyyy,
+              ),
               emptyMessage: 'Sem validade'.hardcoded,
             ),
             TitleAndSubTitle(

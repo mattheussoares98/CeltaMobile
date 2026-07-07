@@ -7,7 +7,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class StartAndEndDates extends ConsumerWidget {
   final String plu;
@@ -146,9 +145,9 @@ class _GetDateItem extends StatelessWidget {
                   child: BaseText.bodyMedium(
                     currentSelectedDate == null && isEndDate
                         ? "Não definido".hardcoded
-                        : DateFormat(
-                            'dd/MM/yyyy HH:mm',
-                          ).format(currentSelectedDate ?? now),
+                        : (currentSelectedDate ?? now).formatDate(
+                            DateFormatType.ddMMyyyyHHmm,
+                          ),
                     textAlign: TextAlign.center,
                     color: enabled ? null : context.theme.disabledColor,
                   ),

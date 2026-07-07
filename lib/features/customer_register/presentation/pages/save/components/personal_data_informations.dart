@@ -1,11 +1,10 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PersonalDataInformations extends ConsumerWidget {
   const PersonalDataInformations({super.key});
@@ -43,9 +42,9 @@ class PersonalDataInformations extends ConsumerWidget {
                 customer!.DateOfBirth != DateTime(0001, 01, 01))
               TitleAndSubTitle(
                 title: 'Nascimento '.hardcoded,
-                subTitle: DateFormat(
-                  'dd/MM/yyyy',
-                ).format(customer.DateOfBirth!),
+                subTitle: customer.DateOfBirth?.formatDate(
+                  DateFormatType.ddMMyyyy,
+                ),
               ),
             if (customer?.Password != null && customer!.Password!.isNotEmpty)
               TitleAndSubTitle(

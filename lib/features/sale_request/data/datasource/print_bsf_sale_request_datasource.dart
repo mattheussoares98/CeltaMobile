@@ -7,7 +7,6 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
-import 'package:intl/intl.dart';
 
 class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
   CapabilityProfile? _cachedProfile;
@@ -79,7 +78,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     );
 
     bytes += generator.text(
-      "Impresso em ${DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now())}"
+      "Impresso em ${DateTime.now().formatDate(DateFormatType.ddMMyyyy)}"
           .hardcoded,
       styles: const PosStyles(align: PosAlign.center),
     );

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class SelectDateIconButton extends StatelessWidget {
   final TextEditingController controller;
@@ -26,7 +24,7 @@ class SelectDateIconButton extends StatelessWidget {
           currentSelectedDate: controller.text.toDateTime(),
         );
         if (date != null) {
-          controller.text = DateFormat('dd/MM/yyyy').format(date);
+          controller.text = date.formatDate(DateFormatType.ddMMyyyy);
         }
       },
       icon: const PlatformIcon(

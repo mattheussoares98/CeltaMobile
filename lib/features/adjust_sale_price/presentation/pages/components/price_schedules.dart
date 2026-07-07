@@ -8,7 +8,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 class PriceSchedules extends ConsumerWidget {
   final int enterpriseCode;
@@ -113,8 +112,6 @@ class _ScheduleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = DateFormat('dd/MM/yyyy HH:mm');
-
     return ResponsiveScrollableWidget(
       child: Card(
         margin: const EdgeInsets.only(bottom: Sizes.p8),
@@ -137,11 +134,13 @@ class _ScheduleItem extends StatelessWidget {
               ),
               TitleAndSubTitle(
                 title: 'Alterado em '.hardcoded,
-                subTitle: dateFormat.format(schedule.Date),
+                subTitle: schedule.Date.formatDate(DateFormatType.ddMMyyyyHHmm),
               ),
               TitleAndSubTitle(
                 title: 'Será executado em '.hardcoded,
-                subTitle: dateFormat.format(schedule.ExecutionDate),
+                subTitle: schedule.ExecutionDate.formatDate(
+                  DateFormatType.ddMMyyyyHHmm,
+                ),
               ),
               TitleAndSubTitle(
                 title: 'Novo preço '.hardcoded,

@@ -4,12 +4,11 @@ import 'package:celta_inventario/features/competing_prices/domain/entities/entit
 import 'package:celta_inventario/features/competing_prices/presentation/pages/pages.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class ResearchItem extends ConsumerWidget {
   final ResearchEntity research;
@@ -58,9 +57,9 @@ class ResearchItem extends ConsumerWidget {
               ),
               TitleAndSubTitle(
                 title: 'Data de criação',
-                subTitle: DateFormat(
-                  'dd/MM/yyyy HH:mm',
-                ).format(research.CreationDate),
+                subTitle: research.CreationDate.formatDate(
+                  DateFormatType.ddMMyyyyHHmm,
+                ),
               ),
               if (research.Observation != null &&
                   research.Observation!.isNotEmpty)

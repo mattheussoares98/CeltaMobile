@@ -4,10 +4,10 @@ import 'package:celta_inventario/features/buy_quotation/domain/entities/entities
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class QuotationsItems extends ConsumerWidget {
   final int enterpriseCode;
@@ -75,16 +75,16 @@ class _QuotationItem extends StatelessWidget {
               if (quotation.DateOfCreation != null)
                 TitleAndSubTitle(
                   title: 'Data de criação'.hardcoded,
-                  subTitle: DateFormat(
-                    'dd/MM/yyyy HH:mm',
-                  ).format(quotation.DateOfCreation!),
+                  subTitle: quotation.DateOfCreation?.formatDate(
+                    DateFormatType.ddMMyyyyHHmm,
+                  ),
                 ),
               TitleAndSubTitle(
                 title: 'Data limite'.hardcoded,
                 emptyMessage: 'Nenhuma data de limite'.hardcoded,
-                subTitle: quotation.DateOfLimit == null
-                    ? null
-                    : DateFormat('dd/MM/yyyy').format(quotation.DateOfLimit!),
+                subTitle: quotation.DateOfLimit?.formatDate(
+                  DateFormatType.ddMMyyyy,
+                ),
               ),
               TitleAndSubTitle(
                 title: 'Observações'.hardcoded,
