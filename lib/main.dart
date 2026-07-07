@@ -1,5 +1,4 @@
 import 'package:celta_inventario/app.dart';
-import 'package:celta_inventario/exceptions/async_error_logger.dart';
 import 'package:celta_inventario/exceptions/error_logger.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -20,13 +19,13 @@ void main() async {
   final container = ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [],
-    observers: [AsyncErrorLogger()],
+    observers: [/* AsyncErrorLogger() */],
   );
   // * Initialize CartSyncService to start the listener
-  final errorLogger = container.read(errorLoggerProvider);
+  // final errorLogger = container.read(errorLoggerProvider);
   // * Register error handlers. For more info, see:
   // * https://docs.flutter.dev/testing/errors
-  registerErrorHandlers(errorLogger);
+  // registerErrorHandlers(errorLogger);
   // * Entry point of the app
   runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
