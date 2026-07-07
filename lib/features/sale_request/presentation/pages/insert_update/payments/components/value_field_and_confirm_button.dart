@@ -118,9 +118,14 @@ class _ValueFieldAndConfirmButtonState
         Flexible(
           child: Consumer(
             builder: (_, ref, _) {
-              valueController.text = getCurrentDifference()
-                  .toString()
-                  .toBrazilianNumber();
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                if (mounted) {
+                  valueController.text = getCurrentDifference()
+                      .toString()
+                      .toBrazilianNumber();
+                }
+              });
+
               return BaseTextFormField(
                 focusNode: valueFocusNode,
                 controller: valueController,
