@@ -1,4 +1,6 @@
 // test/features/process_authorization/presentation/controllers/process_authorization_sale_request_errors_state_controller_test.dart
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -17,11 +19,27 @@ import '../../../../mocks/mocks.dart';
 class MockEcProcessAuthorizationRepository extends Mock
     implements IEcProcessAuthorizationRepository {}
 
+class FakeJudgmentDetailsStateControllerProvider
+    extends JudgmentDetailsStateController {
+  final BSFProcessAuthorizationJudgmentEntity judgmentDetailsToReturn;
+  FakeJudgmentDetailsStateControllerProvider({
+    required this.judgmentDetailsToReturn,
+  });
+
+  @override
+  FutureOr<BSFProcessAuthorizationJudgmentEntity> build(int processCode) async {
+    return judgmentDetailsToReturn;
+  }
+}
+
 void main() {
   late MockEcProcessAuthorizationRepository mockRepository;
   late UserSessionModel fakeSession;
   late BSFSaleRequestErrorEntity fakeError;
   late SaleRequestErrorType errorType;
+  late BSFProcessAuthorizationJudgmentEntity fakeJudgmentDetails;
+  late int processCode;
+
   setUp(() {
     mockRepository = MockEcProcessAuthorizationRepository();
     fakeSession = UserSessionModel.fromEntity(
@@ -32,6 +50,9 @@ void main() {
         SaleRequestErrorType.values[faker.randomGenerator.integer(
           SaleRequestErrorType.values.length,
         )];
+    fakeJudgmentDetails =
+        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity();
+    processCode = faker.randomGenerator.integer(100);
 
     for (var errorType in SaleRequestErrorType.values) {
       registerFallbackValue(errorType);
@@ -41,7 +62,10 @@ void main() {
     );
   });
 
-  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
+  ProviderContainer makeProviderContainer({
+    UserSessionModel? session,
+    List<BSFDefendantEntity>? defendants,
+  }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
@@ -51,12 +75,19 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        judgmentDetailsStateControllerProvider(processCode).overrideWith(
+          () => FakeJudgmentDetailsStateControllerProvider(
+            judgmentDetailsToReturn: defendants == null
+                ? fakeJudgmentDetails.copyWith(annulDefendants: true)
+                : fakeJudgmentDetails.copyWith(defendants: defendants),
+          ),
+        ),
       ],
     );
   }
 
   group('ProcessAuthorizationSaleRequestErrorsStateController', () {
-    test('should return sale request errors on success', () async {
+    test('should throw when there is no defendants', () async {
       // ARRANGE
       when(
         () => mockRepository.getSaleRequestErrors(
@@ -71,12 +102,42 @@ void main() {
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
+      // ACT & ASSERT
+      await expectLater(
+        container.read(
+          processAuthorizationSaleRequestErrorsStateControllerProvider(
+            processCode: processCode,
+            errorType: errorType,
+          ).future,
+        ),
+        throwsA(isA<AppException>()),
+      );
+    });
+    test('should return sale request errors on success', () async {
+      // ARRANGE
+      when(
+        () => mockRepository.getSaleRequestErrors(
+          any(),
+          enterpriseCode: any(named: 'enterpriseCode'),
+          customerCode: any(named: 'customerCode'),
+          saleRequestCode: any(named: 'saleRequestCode'),
+          errorType: any(named: 'errorType'),
+        ),
+      ).thenAnswer((_) async => fakeError);
+
+      final fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+      final container = makeProviderContainer(
+        session: fakeSession,
+        defendants: [
+          BSFSaleRequestDefendantEntity(saleRequest: fakeSaleRequest),
+        ],
+      );
+      addTearDown(container.dispose);
+
       // ACT
       final result = await container.read(
         processAuthorizationSaleRequestErrorsStateControllerProvider(
-          enterpriseCode: 1,
-          customerCode: 2,
-          saleRequestCode: 3,
+          processCode: processCode,
           errorType: errorType,
         ).future,
       );
@@ -90,9 +151,9 @@ void main() {
             user: fakeSession.user.name!,
             accessKey: fakeSession.user.AccessKey!,
           ),
-          enterpriseCode: 1,
-          customerCode: 2,
-          saleRequestCode: 3,
+          enterpriseCode: fakeSaleRequest.enterprise!.code!,
+          customerCode: fakeSaleRequest.customer!.code!,
+          saleRequestCode: fakeSaleRequest.code!,
           errorType: errorType,
         ),
       ).called(1);
@@ -107,9 +168,7 @@ void main() {
       await expectLater(
         container.read(
           processAuthorizationSaleRequestErrorsStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 2,
-            saleRequestCode: 3,
+            processCode: processCode,
             errorType: errorType,
           ).future,
         ),
@@ -140,16 +199,20 @@ void main() {
         ),
       ).thenThrow(exception);
 
-      final container = makeProviderContainer(session: fakeSession);
+      final fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
+      final container = makeProviderContainer(
+        session: fakeSession,
+        defendants: [
+          BSFSaleRequestDefendantEntity(saleRequest: fakeSaleRequest),
+        ],
+      );
       addTearDown(container.dispose);
 
       // ACT & ASSERT
       await expectLater(
         container.read(
           processAuthorizationSaleRequestErrorsStateControllerProvider(
-            enterpriseCode: 1,
-            customerCode: 2,
-            saleRequestCode: 3,
+            processCode: processCode,
             errorType: errorType,
           ).future,
         ),

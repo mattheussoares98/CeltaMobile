@@ -46,4 +46,40 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     authorizators,
     defendants,
   ];
+
+  BSFProcessAuthorizationJudgmentEntity copyWith({
+    int? code,
+    BSFProcessAuthorizationJudgementStatus? status,
+    String? statusString,
+    String? observationsVotes,
+    DateTime? dateTimeOfCreation,
+    bool? wasSawByOwner,
+    int? authorizationProcessConfigItemType,
+    BSFUserEntity? user,
+    BSFEnterpriseEntity? enterprise,
+    BSFProcessAuthorizationItemEntity? authorizationProcessItem,
+    List<BSFUserEntity>? authorizators,
+    List<BSFDefendantEntity>? defendants,
+    bool? annulDefendants,
+  }) {
+    return BSFProcessAuthorizationJudgmentEntity(
+      code: code ?? this.code,
+      status: status ?? this.status,
+      statusString: statusString ?? this.statusString,
+      observationsVotes: observationsVotes ?? this.observationsVotes,
+      dateTimeOfCreation: dateTimeOfCreation ?? this.dateTimeOfCreation,
+      wasSawByOwner: wasSawByOwner ?? this.wasSawByOwner,
+      authorizationProcessConfigItemType:
+          authorizationProcessConfigItemType ??
+          this.authorizationProcessConfigItemType,
+      user: user ?? this.user,
+      enterprise: enterprise ?? this.enterprise,
+      authorizationProcessItem:
+          authorizationProcessItem ?? this.authorizationProcessItem,
+      authorizators: authorizators ?? this.authorizators,
+      defendants: annulDefendants == true
+          ? null
+          : defendants ?? this.defendants,
+    );
+  }
 }

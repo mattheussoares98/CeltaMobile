@@ -31,20 +31,9 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
             children: [
               Consumer(
                 builder: (_, ref, _) {
-                  final defendants = data.defendants
-                      ?.cast<BSFSaleRequestDefendantEntity>();
-                  //TODO convert it correctly
-
-                  if (defendants?.isEmpty ?? true) {
-                    return const SizedBox.shrink();
-                  }
-                  final saleRequest = defendants!.first.saleRequest;
-
                   final controller =
                       processAuthorizationSaleRequestErrorsStateControllerProvider(
-                        customerCode: saleRequest.customer!.code!,
-                        enterpriseCode: saleRequest.enterprise!.code!,
-                        saleRequestCode: saleRequest.code!,
+                        processCode: processCode,
                         errorType: SaleRequestErrorType.discount,
                       );
                   return Column(
