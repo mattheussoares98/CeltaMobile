@@ -1,7 +1,5 @@
 import 'dart:developer' as console;
 
-import 'package:celta_inventario/utils/extensions/extensions.dart';
-
 enum BSFProcessAuthorizationCategoryType {
   receipt(1),
   saleRequest(2),
@@ -26,7 +24,4 @@ enum BSFProcessAuthorizationCategoryType {
       return null;
     }
   }
-
-  @override
-  String toString() => name.addBrazilianCoin();
 }
