@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,6 +14,7 @@ class ProcessAuthorizationErrorsStateController
     required int enterpriseCode,
     required int customerCode,
     required int saleRequestCode,
+    required TypeAccordingToTheCode errorType,
   }) async {
     //TODO create a Category that will call the respective repository and use the respective state
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
@@ -29,6 +31,9 @@ class ProcessAuthorizationErrorsStateController
       enterpriseCode: enterpriseCode,
       saleRequestCode: saleRequestCode,
       customerCode: customerCode,
+      errorType: errorType == TypeAccordingToTheCode.saleRequestDiscount
+          ? SaleRequestErrorType.discount
+          : SaleRequestErrorType.lucrativity,
     );
   }
 }

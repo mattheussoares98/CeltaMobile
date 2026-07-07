@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 import 'datasource.dart';
 
@@ -19,7 +20,7 @@ class EcProcessAuthorizationDatasource
   }) async {
     final response = await httpClient.request(
       url:
-          'http://localhost:58915/ProcessAuthorization/Judgment'
+          '${params.workingUrl}/api/ProcessAuthorization/Judgment'
           '?processCode=${processCode ?? -1}', //!-1 search the summary
       method: 'post',
       headers: params.toHeaders(),
@@ -36,7 +37,7 @@ class EcProcessAuthorizationDatasource
     EcRequestParams params,
   ) async {
     final response = await httpClient.request(
-      url: 'http://localhost:58915/ProcessAuthorization/Statistics',
+      url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
       method: 'post',
       headers: params.toHeaders(),
       body: params.toMap(),
@@ -53,16 +54,19 @@ class EcProcessAuthorizationDatasource
     required int enterpriseCode,
     required int saleRequestCode,
     required int customerCode,
+    required SaleRequestErrorType errorType,
   }) async {
     final response = await httpClient.request(
-      url:
-          'http://localhost:58915/ProcessAuthorization/SaleRequestErrors'
-          '?enterpriseCode=$enterpriseCode'
-          '&saleRequestCode=$saleRequestCode'
-          '&customerCode=$customerCode',
+      url: '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors',
       method: 'post',
       headers: params.toHeaders(),
-      body: params.toMap(),
+      body: {
+        ...params.toMap(),
+        'EnterpriseCode': enterpriseCode,
+        'SaleRequestCode': saleRequestCode,
+        'CustomerCode': customerCode,
+        'ErrorType': errorType.code,
+      },
     );
 
     return BSFSaleRequestErrorModel.fromJson(json.decode(response));

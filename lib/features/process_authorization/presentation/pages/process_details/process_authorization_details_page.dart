@@ -7,7 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProcessAuthorizationDetailsPage extends ConsumerWidget {
   final int processCode;
-  const ProcessAuthorizationDetailsPage({super.key, required this.processCode});
+  final TypeAccordingToTheCode? errorType;
+  const ProcessAuthorizationDetailsPage({
+    super.key,
+    required this.processCode,
+    required this.errorType,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,53 +24,61 @@ class ProcessAuthorizationDetailsPage extends ConsumerWidget {
         title: 'Detalhes do processo'.hardcoded,
         showSelectedEnterprise: true,
       ),
-      body: AsyncValueWidget(
-        value: ref.watch(provider),
-        tryAgain: () => ref.invalidate(provider),
-        data: (data) {
-          return Column(
-            crossAxisAlignment: .stretch,
-            children: [
-              Consumer(
-                builder: (_, ref, _) {
-                  final defendants = data.defendants
-                      ?.cast<BSFSaleRequestDefendantEntity>();
-                  //TODO convert it correctly
-
-                  if (defendants?.isEmpty ?? true) {
-                    return const SizedBox.shrink();
-                  }
-                  final saleRequest = defendants!.first.saleRequest;
-
-                  final controller =
-                      processAuthorizationErrorsStateControllerProvider(
-                        customerCode: saleRequest.customer!.code!,
-                        enterpriseCode: saleRequest.enterprise!.code!,
-                        saleRequestCode: saleRequest.code!,
-                      );
-                  return Column(
-                    children: [
-                      PrimaryButton(
-                        isLoading: ref.watch(controller).isLoading,
-                        onPressed: () => ref.invalidate(controller),
-                        text: 'tenta aqui poxa'.hardcoded,
-                      ),
-                      Consumer(
-                        builder: (_, ref, _) {
-                          final data = ref.watch(controller);
-                          return BaseText(data.toString());
-                        },
-                      ),
-                      const Divider(),
-                    ],
-                  );
-                },
+      body: errorType == null
+          ? Center(
+              child: BaseText.error(
+                'Ocorreu um erro não esperado. Entre em contato com o suporte técnico'
+                    .hardcoded,
               ),
-              BaseText(data.toString()),
-            ],
-          );
-        },
-      ),
+            )
+          : AsyncValueWidget(
+              value: ref.watch(provider),
+              tryAgain: () => ref.invalidate(provider),
+              data: (data) {
+                return Column(
+                  crossAxisAlignment: .stretch,
+                  children: [
+                    Consumer(
+                      builder: (_, ref, _) {
+                        final defendants = data.defendants
+                            ?.cast<BSFSaleRequestDefendantEntity>();
+                        //TODO convert it correctly
+
+                        if (defendants?.isEmpty ?? true) {
+                          return const SizedBox.shrink();
+                        }
+                        final saleRequest = defendants!.first.saleRequest;
+
+                        final controller =
+                            processAuthorizationErrorsStateControllerProvider(
+                              customerCode: saleRequest.customer!.code!,
+                              enterpriseCode: saleRequest.enterprise!.code!,
+                              saleRequestCode: saleRequest.code!,
+                              errorType: errorType!,
+                            );
+                        return Column(
+                          children: [
+                            PrimaryButton(
+                              isLoading: ref.watch(controller).isLoading,
+                              onPressed: () => ref.invalidate(controller),
+                              text: 'tenta aqui poxa'.hardcoded,
+                            ),
+                            Consumer(
+                              builder: (_, ref, _) {
+                                final data = ref.watch(controller);
+                                return BaseText(data.toString());
+                              },
+                            ),
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    ),
+                    BaseText(data.toString()),
+                  ],
+                );
+              },
+            ),
     );
   }
 }

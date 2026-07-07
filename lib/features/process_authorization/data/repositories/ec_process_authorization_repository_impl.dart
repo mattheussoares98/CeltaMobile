@@ -37,12 +37,14 @@ class EcProcessAuthorizationRepositoryImpl
     required int enterpriseCode,
     required int saleRequestCode,
     required int customerCode,
+    required SaleRequestErrorType errorType,
   }) async {
     final response = await datasource.getSaleRequestErrors(
       params,
       enterpriseCode: enterpriseCode,
       saleRequestCode: saleRequestCode,
       customerCode: customerCode,
+      errorType: errorType,
     );
 
     return response.toEntity();

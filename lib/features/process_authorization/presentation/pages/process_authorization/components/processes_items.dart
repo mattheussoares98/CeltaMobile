@@ -24,17 +24,24 @@ class ProcessesItems extends ConsumerWidget {
         return ResponsiveListFlow(
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
-            final e = filteredData[index];
+            final process = filteredData[index];
             return Card(
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () {
-                  context.goNamed(
+                  //TODO in the future will need to call different methods according to the error type being passed in the extra
+                  context.pushNamed(
+                    //TODO test it in web page. Shouldn't create a new route
                     Routes.processAuthorizationDetails.name,
                     pathParameters: {
-                      'enterpriseCode': e.enterprise!.code.toString(),
-                      'processCode': e.code.toString(),
+                      'enterpriseCode': process.enterprise!.code.toString(),
+                      'processCode': process.code.toString(),
                     },
+                    extra: process
+                        .authorizationProcessItem
+                        ?.typeAccordingToTheCode
+                        ?.code
+                        .toString(),
                   );
                 },
                 child: Stack(
@@ -46,27 +53,30 @@ class ProcessesItems extends ConsumerWidget {
                         children: [
                           TitleAndSubTitle(
                             title: null,
-                            subTitle: e.enterprise?.name ?? '',
+                            subTitle: process.enterprise?.name ?? '',
                           ),
                           TitleAndSubTitle(
                             title: null,
                             subTitle:
-                                e.authorizationProcessItem?.category?.name ??
+                                process
+                                    .authorizationProcessItem
+                                    ?.category
+                                    ?.name ??
                                 '',
                           ),
                           BaseText.titleMedium(
-                            e.authorizationProcessItem?.name ?? '',
+                            process.authorizationProcessItem?.name ?? '',
                           ),
-                          if (e.dateTimeOfCreation != null)
+                          if (process.dateTimeOfCreation != null)
                             TitleAndSubTitle(
                               title: 'Data',
-                              subTitle: e.dateTimeOfCreation!.formatDate(
+                              subTitle: process.dateTimeOfCreation!.formatDate(
                                 DateFormatType.ddMMyyyyHHmmss,
                               ),
                             ),
                           TitleAndSubTitle(
                             title: 'Processo iniciado por',
-                            subTitle: e.user?.identification,
+                            subTitle: process.user?.identification,
                           ),
                         ],
                       ),

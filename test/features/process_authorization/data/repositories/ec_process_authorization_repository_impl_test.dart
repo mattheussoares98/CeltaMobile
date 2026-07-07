@@ -19,6 +19,7 @@ void main() {
   late EcProcessAuthorizationDatasourceSpy datasource;
   late EcRequestParams params;
   late int? processCode;
+  late SaleRequestErrorType errorType;
 
   setUp(() {
     datasource = EcProcessAuthorizationDatasourceSpy();
@@ -31,9 +32,16 @@ void main() {
       user: faker.guid.guid(),
       accessKey: faker.guid.guid(),
     );
+    errorType =
+        SaleRequestErrorType.values[faker.randomGenerator.integer(
+          SaleRequestErrorType.values.length,
+        )];
   });
 
   setUpAll(() {
+    for (var errorType in SaleRequestErrorType.values) {
+      registerFallbackValue(errorType);
+    }
     registerFallbackValue(
       const EcRequestParams(workingUrl: '', user: '', accessKey: ''),
     );
@@ -111,6 +119,7 @@ void main() {
           enterpriseCode: any(named: 'enterpriseCode'),
           saleRequestCode: any(named: 'saleRequestCode'),
           customerCode: any(named: 'customerCode'),
+          errorType: any(named: 'errorType'),
         ),
       ).thenAnswer((_) async => BSFSaleRequestErrorModel.fromEntity(entity));
 
@@ -119,6 +128,7 @@ void main() {
         enterpriseCode: enterpriseCode,
         saleRequestCode: saleRequestCode,
         customerCode: customerCode,
+        errorType: errorType,
       );
 
       expect(response, entity);
@@ -128,6 +138,7 @@ void main() {
           enterpriseCode: enterpriseCode,
           saleRequestCode: saleRequestCode,
           customerCode: customerCode,
+          errorType: errorType,
         ),
       ).called(1);
     });

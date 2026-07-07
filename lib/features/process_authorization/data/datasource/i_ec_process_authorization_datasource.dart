@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 abstract class IEcProcessAuthorizationDatasource {
   Future<List<BSFProcessAuthorizationJudgmentModel>> getJudgments(
@@ -14,5 +15,6 @@ abstract class IEcProcessAuthorizationDatasource {
     required int enterpriseCode,
     required int saleRequestCode,
     required int customerCode,
+    required SaleRequestErrorType errorType,
   });
 }

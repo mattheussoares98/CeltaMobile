@@ -15,5 +15,6 @@ abstract class IEcProcessAuthorizationRepository {
     required int enterpriseCode,
     required int saleRequestCode,
     required int customerCode,
+    required SaleRequestErrorType errorType,
   });
 }

@@ -16,6 +16,7 @@ void main() {
   late HttpClientSpy httpClient;
   late EcRequestParams params;
   late int? processCode;
+  late SaleRequestErrorType errorType;
 
   setUp(() {
     httpClient = HttpClientSpy();
@@ -28,6 +29,16 @@ void main() {
       user: faker.guid.guid(),
       accessKey: faker.guid.guid(),
     );
+    errorType =
+        SaleRequestErrorType.values[faker.randomGenerator.integer(
+          SaleRequestErrorType.values.length,
+        )];
+  });
+
+  setUpAll(() {
+    for (var errorType in SaleRequestErrorType.values) {
+      registerFallbackValue(errorType);
+    }
   });
 
   group('getJudgments', () {
@@ -133,19 +144,24 @@ void main() {
           enterpriseCode: enterpriseCode,
           saleRequestCode: saleRequestCode,
           customerCode: customerCode,
+          errorType: errorType,
         );
 
         expect(response, model);
         verify(
           () => httpClient.request(
             url:
-                '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors'
-                '?enterpriseCode=$enterpriseCode'
-                '&saleRequestCode=$saleRequestCode'
-                '&customerCode=$customerCode',
+                '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors',
+
             method: 'post',
             headers: params.toHeaders(),
-            body: params.toMap(),
+            body: {
+              ...params.toMap(),
+              'EnterpriseCode': enterpriseCode,
+              'SaleRequestCode': saleRequestCode,
+              'CustomerCode': customerCode,
+              'ErrorType': errorType.code,
+            },
           ),
         ).called(1);
       },

@@ -1,3 +1,4 @@
+export './sale_request_error_type.dart';
 export 'bsf_cross_identity_entity.dart';
 export 'bsf_defendant_entity.dart';
 export 'bsf_process_authorization_category_entity.dart';
