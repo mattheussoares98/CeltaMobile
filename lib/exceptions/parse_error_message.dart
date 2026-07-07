@@ -47,7 +47,7 @@ String parseErrorMessage(Object? error) {
   } else if (lowerMessage.contains(
     "Closure: ([String?]) => HttpError from Function".toLowerCase(),
   )) {
-    return 'O método não foi encontrado. Informe o suporte técnico que a API deve ser atualizada'
+    return 'O método não foi encontrado. Informe o suporte técnico que a API não está funcionando ou deve ser atualizada'
         .hardcoded;
   }
   return message.formatBreakLines();
