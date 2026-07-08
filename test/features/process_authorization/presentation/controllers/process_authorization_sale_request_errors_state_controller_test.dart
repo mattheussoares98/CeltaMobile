@@ -22,12 +22,15 @@ class MockEcProcessAuthorizationRepository extends Mock
 class FakeJudgmentDetailsStateControllerProvider
     extends JudgmentDetailsStateController {
   final BSFProcessAuthorizationJudgmentEntity judgmentDetailsToReturn;
+  final void Function()? onBuild;
   FakeJudgmentDetailsStateControllerProvider({
     required this.judgmentDetailsToReturn,
+    this.onBuild,
   });
 
   @override
   FutureOr<BSFProcessAuthorizationJudgmentEntity> build(int processCode) async {
+    onBuild?.call();
     return judgmentDetailsToReturn;
   }
 }
@@ -65,6 +68,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     List<BSFDefendantEntity>? defendants,
+    void Function()? onJudgmentDetailsBuild,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
@@ -80,6 +84,7 @@ void main() {
             judgmentDetailsToReturn: defendants == null
                 ? fakeJudgmentDetails.copyWith(annulDefendants: true)
                 : fakeJudgmentDetails.copyWith(defendants: defendants),
+            onBuild: onJudgmentDetailsBuild,
           ),
         ),
       ],
@@ -125,14 +130,22 @@ void main() {
         ),
       ).thenAnswer((_) async => fakeError);
 
+      int buildCount = 0;
       final fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity();
       final container = makeProviderContainer(
         session: fakeSession,
         defendants: [
           BSFSaleRequestDefendantEntity(saleRequest: fakeSaleRequest),
         ],
+        onJudgmentDetailsBuild: () => buildCount++,
       );
       addTearDown(container.dispose);
+
+      // Pre-initialize provider to verify that the controller triggers a rebuild via invalidation.
+      await container.read(
+        judgmentDetailsStateControllerProvider(processCode).future,
+      );
+      expect(buildCount, 1);
 
       // ACT
       final result = await container.read(
@@ -144,6 +157,7 @@ void main() {
 
       // ASSERT
       expect(result, fakeError);
+      expect(buildCount, 2);
       verify(
         () => mockRepository.getSaleRequestErrors(
           EcRequestParams(

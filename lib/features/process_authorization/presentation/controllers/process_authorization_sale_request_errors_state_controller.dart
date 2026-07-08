@@ -26,6 +26,7 @@ class ProcessAuthorizationSaleRequestErrorsStateController
       accessKey: validatedUser.user.AccessKey!,
     );
 
+    ref.invalidate(judgmentDetailsStateControllerProvider(processCode));
     final details = await ref.read(
       judgmentDetailsStateControllerProvider(processCode).future,
     );
