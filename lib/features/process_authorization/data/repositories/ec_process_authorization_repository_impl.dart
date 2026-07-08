@@ -49,4 +49,19 @@ class EcProcessAuthorizationRepositoryImpl
 
     return response.toEntity();
   }
+
+  @override
+  Future<void> vote(
+    EcRequestParams params, {
+    required int processCode,
+    required bool authorized,
+    String? observations,
+  }) async {
+    await datasource.vote(
+      params,
+      processCode: processCode,
+      authorized: authorized,
+      observations: observations,
+    );
+  }
 }

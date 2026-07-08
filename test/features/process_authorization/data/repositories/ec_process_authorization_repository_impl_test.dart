@@ -143,4 +143,36 @@ void main() {
       ).called(1);
     });
   });
+  group('Vote', () {
+    test('should vote on success', () async {
+      final authorized = faker.randomGenerator.boolean();
+      final observations = faker.lorem.sentence();
+      final processCode = faker.randomGenerator.integer(100);
+
+      when(
+        () => datasource.vote(
+          any(),
+          processCode: any(named: 'processCode'),
+          authorized: any(named: 'authorized'),
+          observations: any(named: 'observations'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.vote(
+        params,
+        processCode: processCode,
+        authorized: authorized,
+        observations: observations,
+      );
+
+      verify(
+        () => datasource.vote(
+          params,
+          processCode: processCode,
+          authorized: authorized,
+          observations: observations,
+        ),
+      ).called(1);
+    });
+  });
 }
