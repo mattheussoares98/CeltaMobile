@@ -9,15 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class VoteBody extends ConsumerStatefulWidget {
+class VotePage extends ConsumerStatefulWidget {
   final int processCode;
-  const VoteBody({super.key, required this.processCode});
+  const VotePage({super.key, required this.processCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _VotePageState();
 }
 
-class _VotePageState extends ConsumerState<VoteBody> {
+class _VotePageState extends ConsumerState<VotePage> {
   final voteController = TextEditingController();
   bool authorized = false;
 
@@ -50,6 +50,8 @@ class _VotePageState extends ConsumerState<VoteBody> {
               if (saleRequest == null) {
                 return const SizedBox.shrink();
               }
+              //TODO Show this Card according to the process type
+
               return Card(
                 child: Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
