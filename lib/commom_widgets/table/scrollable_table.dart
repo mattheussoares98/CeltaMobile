@@ -14,6 +14,8 @@ part 'scrollable_table_cell.dart';
 part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
+final Set<String> _playedRouteNames = {};
+
 class ScrollableTable<T> extends StatefulWidget {
   final List<T> items;
   final List<ScrollableTableColumnSpec<T>> columns;
@@ -195,8 +197,18 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
 
   void _checkAndPlayScrollHint(double totalMinWidth, double available) {
     if (_hasPlayedAnimation) return;
+
+    final routeName = ModalRoute.of(context)?.settings.name;
+    if (routeName != null && _playedRouteNames.contains(routeName)) {
+      _hasPlayedAnimation = true;
+      return;
+    }
+
     if (totalMinWidth > available) {
       _hasPlayedAnimation = true;
+      if (routeName != null) {
+        _playedRouteNames.add(routeName);
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _playScrollHint();
       });
