@@ -68,16 +68,21 @@ class _FixedLayout<T> extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  controller: fixedVerticalController,
-                  itemCount: sortedItems.length,
-                  itemExtent: rowHeight,
-                  itemBuilder: (_, index) => _ScrollableTableCell(
-                    width: firstColWidth,
-                    height: rowHeight,
-                    spec: firstCol,
-                    backgroundColor: rowBackgroundColor,
-                    child: firstCol.cellBuilder(sortedItems[index]),
+                child: ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(
+                    context,
+                  ).copyWith(scrollbars: false),
+                  child: ListView.builder(
+                    controller: fixedVerticalController,
+                    itemCount: sortedItems.length,
+                    itemExtent: rowHeight,
+                    itemBuilder: (_, index) => _ScrollableTableCell(
+                      width: firstColWidth,
+                      height: rowHeight,
+                      spec: firstCol,
+                      backgroundColor: rowBackgroundColor,
+                      child: firstCol.cellBuilder(sortedItems[index]),
+                    ),
                   ),
                 ),
               ),
