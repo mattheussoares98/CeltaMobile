@@ -1,8 +1,13 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class VoteBody extends ConsumerStatefulWidget {
   final int processCode;
@@ -29,6 +34,76 @@ class _VotePageState extends ConsumerState<VoteBody> {
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
+          Consumer(
+            builder: (_, ref, _) {
+              final judgmentDetails = ref
+                  .watch(
+                    judgmentDetailsStateControllerProvider(widget.processCode),
+                  )
+                  .value;
+
+              final saleRequest = judgmentDetails?.defendants
+                  ?.cast<BSFSaleRequestDefendantEntity>()
+                  .firstOrNull
+                  ?.saleRequest;
+
+              if (saleRequest == null) {
+                return const SizedBox.shrink();
+              }
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  child: Column(
+                    crossAxisAlignment: .stretch,
+                    children: [
+                      if (judgmentDetails
+                              ?.user
+                              ?.crossIdentity
+                              ?.identification !=
+                          null)
+                        TitleAndSubTitle(
+                          title: 'Iniciado por'.hardcoded,
+                          subTitle: judgmentDetails
+                              ?.user
+                              ?.crossIdentity
+                              ?.identification,
+                        ),
+                      if (saleRequest.personalizedCode != null)
+                        TitleAndSubTitle(
+                          title: 'Núm do pedido'.hardcoded,
+                          subTitle: saleRequest.personalizedCode?.toString(),
+                        ),
+                      if (saleRequest.dateOfEmission != null)
+                        TitleAndSubTitle(
+                          title: 'Data'.hardcoded,
+                          subTitle: saleRequest.dateOfEmission?.formatDate(
+                            DateFormatType.ddMMyyyyHHmm,
+                          ),
+                        ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: PrimaryTextButton(
+                          text: 'Visualizar pedido'.hardcoded,
+                          onPressed: () {
+                            context.pushNamed(
+                              Routes.saleRequestDetails.name,
+                              pathParameters: {
+                                'saleRequestId': saleRequest.code.toString(),
+                                'enterpriseCode': saleRequest.enterprise!.code
+                                    .toString(),
+                                'customerCode': saleRequest.customer!.code
+                                    .toString(),
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
           BaseRadio(
             name: 'Autorizado'.hardcoded,
             value: true,
