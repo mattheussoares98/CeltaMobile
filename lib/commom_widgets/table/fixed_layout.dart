@@ -17,6 +17,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final bool sortAscending;
   final void Function(int) onHeaderTap;
   final bool hasFooter;
+  final ScrollPhysics? physics;
 
   const _FixedLayout({
     required this.columns,
@@ -35,6 +36,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.hasFooter,
+    this.physics,
   });
 
   @override
@@ -74,6 +76,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   ).copyWith(scrollbars: false),
                   child: ListView.builder(
                     controller: fixedVerticalController,
+                    physics: physics,
                     itemCount: sortedItems.length,
                     itemExtent: rowHeight,
                     itemBuilder: (_, index) => _ScrollableTableCell(
@@ -130,6 +133,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       controller: scrollableVerticalController,
+                      physics: physics,
                       itemCount: sortedItems.length,
                       itemExtent: rowHeight,
                       itemBuilder: (_, index) => _ScrollableRow<T>(

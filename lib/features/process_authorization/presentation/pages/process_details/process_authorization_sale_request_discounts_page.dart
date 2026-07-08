@@ -45,6 +45,7 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
             items: items,
             fixFirstColumn: true,
             rowHeight: 45,
+            refreshProvider: provider,
             columns: [
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Produto'.hardcoded,

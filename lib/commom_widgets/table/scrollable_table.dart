@@ -3,6 +3,8 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 
 part 'fixed_layout.dart';
 part 'scrollable_header_cell_wrapper.dart';
@@ -23,6 +25,7 @@ class ScrollableTable<T> extends StatefulWidget {
   final Color? headerBackgroundColor;
   final Color? rowBackgroundColor;
   final Color? footerBackgroundColor;
+  final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
 
   const ScrollableTable({
     super.key,
@@ -34,6 +37,7 @@ class ScrollableTable<T> extends StatefulWidget {
     this.headerBackgroundColor,
     this.rowBackgroundColor,
     this.footerBackgroundColor,
+    this.refreshProvider,
   });
 
   @override
@@ -155,7 +159,11 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
   Widget build(BuildContext context) {
     if (widget.columns.isEmpty) return const SizedBox.shrink();
 
-    return LayoutBuilder(
+    final physics = widget.refreshProvider != null
+        ? const AlwaysScrollableScrollPhysics()
+        : null;
+
+    Widget table = LayoutBuilder(
       builder: (context, constraints) {
         final double totalMinWidth = widget.columns.fold(
           0.0,
@@ -191,6 +199,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
             sortAscending: _sortAscending,
             onHeaderTap: _handleHeaderTap,
             hasFooter: _hasFooter,
+            physics: physics,
           );
         }
 
@@ -209,8 +218,33 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
           sortAscending: _sortAscending,
           onHeaderTap: _handleHeaderTap,
           hasFooter: _hasFooter,
+          physics: physics,
         );
       },
     );
+
+    if (widget.refreshProvider != null) {
+      table = Consumer(
+        builder: (context, ref, child) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(widget.refreshProvider!);
+              try {
+                await ref.read((widget.refreshProvider! as dynamic).future);
+              } catch (_) {}
+            },
+            notificationPredicate: (notification) {
+              return notification.depth <= 1;
+            },
+            backgroundColor: context.theme.colorScheme.surface,
+            strokeWidth: 2,
+            child: child!,
+          );
+        },
+        child: table,
+      );
+    }
+
+    return table;
   }
 }

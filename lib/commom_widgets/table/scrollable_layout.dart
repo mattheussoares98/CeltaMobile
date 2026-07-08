@@ -15,6 +15,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final bool sortAscending;
   final void Function(int) onHeaderTap;
   final bool hasFooter;
+  final ScrollPhysics? physics;
 
   const _ScrollableLayout({
     required this.columns,
@@ -31,6 +32,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.hasFooter,
+    this.physics,
   });
 
   @override
@@ -64,6 +66,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
+                physics: physics,
                 itemCount: sortedItems.length,
                 itemExtent: rowHeight,
                 itemBuilder: (_, index) => _ScrollableRow<T>(
