@@ -56,7 +56,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
   bool get _hasFooter =>
       widget.columns.any((col) => col.footerCellBuilder != null);
 
-  static const double footerH = 35;
+  static const double footerH = 40;
 
   @override
   void initState() {
