@@ -54,6 +54,12 @@ class _ProcessAuthorizationPageState
                   .length,
             ),
           );
+          final openedJudgements = ref.watch(
+            statisticsStateControllerProvider.select(
+              (s) => s.value?.openedJudgements,
+            ),
+          );
+
           final notAuthorizedQuantity = ref.watch(
             judgmentsStateControllerProvider.select(
               (s) => s.value
@@ -68,7 +74,7 @@ class _ProcessAuthorizationPageState
           return BaseBottomNavigationBar(
             items: [
               BaseBottomNavigationBarItem(
-                badgeLabel: awaitingQuantity?.toString(),
+                badgeLabel: (awaitingQuantity ?? openedJudgements)?.toString(),
                 platformIcon: index == 0
                     ? const PlatformIcon(
                         cupertinoIcon: CupertinoIcons.hand_raised_fill,
