@@ -117,7 +117,7 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                 isPercentage: true,
                 minWidth: 60.0,
                 cellBuilder: (item) => BaseText(
-                  '${item.discountPercentage.toString().toBrazilianNumber(2, true)} %',
+                  item.discountPercentage.toString().toBrazilianNumber(2, true),
                 ),
                 sortValueMapper: (item) => item.discountPercentage,
               ),
@@ -141,7 +141,7 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                 isPercentage: true,
                 minWidth: 55.0,
                 cellBuilder: (item) => BaseText(
-                  '${item.discountConcessionLimitPercentage.toString().toBrazilianNumber(2, true)}%',
+                  item.discountConcessionLimitPercentage.toString().toBrazilianNumber(2, true),
                 ),
                 sortValueMapper: (item) =>
                     item.discountConcessionLimitPercentage,

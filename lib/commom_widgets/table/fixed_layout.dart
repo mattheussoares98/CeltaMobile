@@ -58,6 +58,7 @@ class _FixedLayout<T> extends StatelessWidget {
               _ScrollableTableCell(
                 width: firstColWidth,
                 height: headerHeight,
+                spec: firstCol,
                 backgroundColor: headerBg,
                 child: _ScrollableTableHeaderCell<T>(
                   spec: firstCol,
@@ -74,6 +75,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   itemBuilder: (_, index) => _ScrollableTableCell(
                     width: firstColWidth,
                     height: rowHeight,
+                    spec: firstCol,
                     backgroundColor: rowBackgroundColor,
                     child: firstCol.cellBuilder(sortedItems[index]),
                   ),
@@ -84,6 +86,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   showTopBorder: true,
                   width: firstColWidth,
                   height: footerHeight,
+                  spec: firstCol,
                   backgroundColor: footerBackgroundColor ?? headerBg,
                   child:
                       firstCol.footerCellBuilder?.call(sortedItems) ??
@@ -144,6 +147,7 @@ class _FixedLayout<T> extends StatelessWidget {
                                   scrollableColumns[i].minWidth +
                                   extraPerColumn,
                               height: footerHeight,
+                              spec: scrollableColumns[i],
                               backgroundColor:
                                   footerBackgroundColor ?? headerBg,
                               showTopBorder: true,

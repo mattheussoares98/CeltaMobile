@@ -85,6 +85,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                         showTopBorder: true,
                         width: columns[i].minWidth + extraPerColumn,
                         height: footerHeight,
+                        spec: columns[i],
                         backgroundColor: footerBackgroundColor ?? headerBg,
                         child:
                             columns[i].footerCellBuilder?.call(sortedItems) ??
