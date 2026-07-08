@@ -24,7 +24,15 @@ class _ScrollableTableHeaderCell<T> extends StatelessWidget {
       onTap: canSort ? onTap : null,
       child: Stack(
         children: [
-          Center(child: BaseText.title(spec.headerTitle)),
+          Center(
+            child: BaseRichText(
+              texts: [
+                BaseText.title(spec.headerTitle),
+                if (spec.isMoney == true) BaseText.caption(' R\$'),
+                if (spec.isPercentage == true) BaseText.caption(' %'),
+              ],
+            ),
+          ),
           if (canSort) ...[
             Positioned(
               bottom: Sizes.p4,

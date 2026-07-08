@@ -69,27 +69,52 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                 headerTitle: 'Qtd'.hardcoded,
                 minWidth: 40.0,
                 cellBuilder: (item) => BaseText(
-                  item.quantity.toString().toBrazilianNumber(2, true),
+                  item.quantity.toString().toBrazilianNumber(3, true),
                 ),
                 sortValueMapper: (item) => item.quantity,
+                footerCellBuilder: (items) => BaseText(
+                  items
+                      .fold<double>(0, (sum, item) => sum + item.quantity)
+                      .toString()
+                      .toBrazilianNumber(2, true),
+
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Vl. bruto'.hardcoded,
+                headerTitle: 'Bruto'.hardcoded,
+                isMoney: true,
                 minWidth: 65.0,
                 cellBuilder: (item) =>
                     BaseText(item.bruteValue.toString().toBrazilianNumber(2)),
                 sortValueMapper: (item) => item.bruteValue,
+                footerCellBuilder: (items) => BaseText(
+                  items
+                      .fold<double>(0, (sum, item) => sum + item.bruteValue)
+                      .toString()
+                      .toBrazilianNumber(2),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Desc R\$'.hardcoded,
+                headerTitle: 'Desc'.hardcoded,
+                isMoney: true,
                 minWidth: 65.0,
                 cellBuilder: (item) => BaseText(
                   item.discountValue.toString().toBrazilianNumber(2),
                 ),
                 sortValueMapper: (item) => item.discountValue,
+                footerCellBuilder: (items) => BaseText(
+                  items
+                      .fold<double>(0, (sum, item) => sum + item.discountValue)
+                      .toString()
+                      .toBrazilianNumber(2),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Desc %'.hardcoded,
+                headerTitle: 'Desc'.hardcoded,
+                isPercentage: true,
                 minWidth: 60.0,
                 cellBuilder: (item) => BaseText(
                   '${item.discountPercentage.toString().toBrazilianNumber(2, true)} %',
@@ -97,23 +122,33 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                 sortValueMapper: (item) => item.discountPercentage,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Vl. líquido'.hardcoded,
+                headerTitle: 'Líquido'.hardcoded,
+                isMoney: true,
                 minWidth: 75.0,
                 cellBuilder: (item) =>
                     BaseText(item.liquidValue.toString().toBrazilianNumber(2)),
                 sortValueMapper: (item) => item.liquidValue,
+                footerCellBuilder: (items) => BaseText(
+                  items
+                      .fold<double>(0, (sum, item) => sum + item.liquidValue)
+                      .toString()
+                      .toBrazilianNumber(2),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Limite %'.hardcoded,
-                minWidth: 65.0,
+                headerTitle: 'Máx'.hardcoded,
+                isPercentage: true,
+                minWidth: 55.0,
                 cellBuilder: (item) => BaseText(
-                  '${item.discountConcessionLimitPercentage.toString().toBrazilianNumber(2)} %',
+                  '${item.discountConcessionLimitPercentage.toString().toBrazilianNumber(2, true)}%',
                 ),
                 sortValueMapper: (item) =>
                     item.discountConcessionLimitPercentage,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Diferença %'.hardcoded,
+                headerTitle: 'Diferença'.hardcoded,
+                isPercentage: true,
                 minWidth: 80.0,
                 cellBuilder: (item) => BaseText(
                   item.totalDifference.toString().toBrazilianNumber(2, true),

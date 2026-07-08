@@ -7,13 +7,16 @@ class _FixedLayout<T> extends StatelessWidget {
   final double extraPerColumn;
   final double headerHeight;
   final double rowHeight;
+  final double footerHeight;
   final Color? headerBackgroundColor;
   final Color? rowBackgroundColor;
+  final Color? footerBackgroundColor;
   final ScrollController fixedVerticalController;
   final ScrollController scrollableVerticalController;
   final int? sortColumnIndex;
   final bool sortAscending;
   final void Function(int) onHeaderTap;
+  final bool hasFooter;
 
   const _FixedLayout({
     required this.columns,
@@ -22,13 +25,16 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.extraPerColumn,
     required this.headerHeight,
     required this.rowHeight,
+    required this.footerHeight,
     required this.headerBackgroundColor,
     required this.rowBackgroundColor,
+    required this.footerBackgroundColor,
     required this.fixedVerticalController,
     required this.scrollableVerticalController,
     required this.sortColumnIndex,
     required this.sortAscending,
     required this.onHeaderTap,
+    required this.hasFooter,
   });
 
   @override
@@ -73,6 +79,16 @@ class _FixedLayout<T> extends StatelessWidget {
                   ),
                 ),
               ),
+              if (hasFooter)
+                _ScrollableTableCell(
+                  showTopBorder: true,
+                  width: firstColWidth,
+                  height: footerHeight,
+                  backgroundColor: footerBackgroundColor ?? headerBg,
+                  child:
+                      firstCol.footerCellBuilder?.call(sortedItems) ??
+                      const SizedBox.shrink(),
+                ),
             ],
           ),
         ),
@@ -117,6 +133,29 @@ class _FixedLayout<T> extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if (hasFooter)
+                    SizedBox(
+                      height: footerHeight,
+                      child: Row(
+                        children: [
+                          for (int i = 0; i < scrollableColumns.length; i++)
+                            _ScrollableTableCell(
+                              width:
+                                  scrollableColumns[i].minWidth +
+                                  extraPerColumn,
+                              height: footerHeight,
+                              backgroundColor:
+                                  footerBackgroundColor ?? headerBg,
+                              showTopBorder: true,
+                              child:
+                                  scrollableColumns[i].footerCellBuilder?.call(
+                                    sortedItems,
+                                  ) ??
+                                  const SizedBox.shrink(),
+                            ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),

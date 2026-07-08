@@ -5,12 +5,14 @@ class _ScrollableTableCell extends StatelessWidget {
   final double width;
   final double height;
   final Color? backgroundColor;
+  final bool? showTopBorder;
 
   const _ScrollableTableCell({
     required this.child,
     required this.width,
     required this.height,
     this.backgroundColor,
+    this.showTopBorder,
   });
 
   @override
@@ -21,6 +23,9 @@ class _ScrollableTableCell extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border(
+          top: showTopBorder == true
+              ? BorderSide(color: context.theme.dividerColor, width: 0.5)
+              : BorderSide.none,
           bottom: BorderSide(color: context.theme.dividerColor, width: 0.5),
           right: BorderSide(color: context.theme.dividerColor, width: 0.07),
         ),

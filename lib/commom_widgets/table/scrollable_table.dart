@@ -22,6 +22,7 @@ class ScrollableTable<T> extends StatefulWidget {
   final double rowHeight;
   final Color? headerBackgroundColor;
   final Color? rowBackgroundColor;
+  final Color? footerBackgroundColor;
 
   const ScrollableTable({
     super.key,
@@ -32,6 +33,7 @@ class ScrollableTable<T> extends StatefulWidget {
     this.rowHeight = 48.0,
     this.headerBackgroundColor,
     this.rowBackgroundColor,
+    this.footerBackgroundColor,
   });
 
   @override
@@ -50,6 +52,11 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
   late List<T> _sortedItems;
 
   late List<ScrollableTableColumnSpec<T>> _scrollableColumns;
+
+  bool get _hasFooter =>
+      widget.columns.any((col) => col.footerCellBuilder != null);
+
+  static const double footerH = 35;
 
   @override
   void initState() {
@@ -167,13 +174,16 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
             extraPerColumn: extraPerColumn,
             headerHeight: widget.headerHeight,
             rowHeight: widget.rowHeight,
+            footerHeight: footerH,
             headerBackgroundColor: widget.headerBackgroundColor,
             rowBackgroundColor: widget.rowBackgroundColor,
+            footerBackgroundColor: widget.footerBackgroundColor,
             fixedVerticalController: _fixedVerticalController,
             scrollableVerticalController: _scrollableVerticalController,
             sortColumnIndex: _sortColumnIndex,
             sortAscending: _sortAscending,
             onHeaderTap: _handleHeaderTap,
+            hasFooter: _hasFooter,
           );
         }
 
@@ -184,11 +194,14 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
           extraPerColumn: extraPerColumn,
           headerHeight: widget.headerHeight,
           rowHeight: widget.rowHeight,
+          footerHeight: footerH,
           headerBackgroundColor: widget.headerBackgroundColor,
           rowBackgroundColor: widget.rowBackgroundColor,
+          footerBackgroundColor: widget.footerBackgroundColor,
           sortColumnIndex: _sortColumnIndex,
           sortAscending: _sortAscending,
           onHeaderTap: _handleHeaderTap,
+          hasFooter: _hasFooter,
         );
       },
     );
