@@ -11,6 +11,7 @@ class BaseRadio<T> extends StatelessWidget {
   final T groupValue;
   final void Function(T?)? onChanged;
   final bool toggleable;
+  final Color? activeColor;
 
   const BaseRadio({
     super.key,
@@ -20,6 +21,7 @@ class BaseRadio<T> extends StatelessWidget {
     required this.groupValue,
     required this.onChanged,
     this.toggleable = false,
+    this.activeColor,
   });
 
   @override
@@ -28,6 +30,7 @@ class BaseRadio<T> extends StatelessWidget {
     final selected = value == groupValue;
 
     final title = BaseText(name);
+    final appliedActiveColor = activeColor ?? context.theme.primaryColor;
     final radio = isIOS
         ? CupertinoListTile(
             padding: const EdgeInsets.symmetric(
@@ -39,7 +42,7 @@ class BaseRadio<T> extends StatelessWidget {
             trailing: CupertinoRadio<T>(
               value: value,
               toggleable: toggleable,
-              activeColor: context.theme.primaryColor,
+              activeColor: appliedActiveColor,
             ),
             onTap: onChanged != null
                 ? () => onChanged!(selected ? null : value)
@@ -54,6 +57,7 @@ class BaseRadio<T> extends StatelessWidget {
               value: value,
               toggleable: toggleable,
               dense: true,
+              activeColor: appliedActiveColor,
             ),
           );
 
@@ -67,12 +71,12 @@ class BaseRadio<T> extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: selected
-              ? context.theme.primaryColor.withAlpha(20)
+              ? appliedActiveColor.withAlpha(20)
               : context.theme.cardColor,
           borderRadius: BorderRadius.circular(Sizes.p12),
           border: Border.all(
             color: selected
-                ? context.theme.primaryColor
+                ? appliedActiveColor
                 : context.theme.dividerColor.withAlpha(40),
           ),
           boxShadow: [
