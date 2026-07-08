@@ -27,6 +27,8 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
     super.initState();
 
     SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
