@@ -73,7 +73,7 @@ class ProcessesItems extends ConsumerWidget {
                                 process
                                     .authorizationProcessItem
                                     ?.category
-                                    ?.name ??
+                                    ?.label ??
                                 '',
                           ),
                           BaseText.titleMedium(

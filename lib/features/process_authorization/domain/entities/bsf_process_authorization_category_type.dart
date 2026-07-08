@@ -1,14 +1,14 @@
 import 'dart:developer' as console;
 
 enum BSFProcessAuthorizationCategoryType {
-  receipt(1),
-  saleRequest(2),
-  expedition(5),
-  delivery(6);
+  receipt(1, 'Recebimento'),
+  saleRequest(2, 'Pedido de Venda'),
+  expedition(5, 'Expedição'),
+  delivery(6, 'Entrega');
 
   final int code;
-
-  const BSFProcessAuthorizationCategoryType(this.code);
+  final String label;
+  const BSFProcessAuthorizationCategoryType(this.code, this.label);
 
   static BSFProcessAuthorizationCategoryType? fromCode(int code) {
     try {
