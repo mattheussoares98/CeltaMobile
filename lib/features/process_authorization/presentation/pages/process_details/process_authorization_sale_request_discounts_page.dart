@@ -23,6 +23,7 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
     return BaseScaffold(
       refreshProvider: provider,
       isScrollable: false,
+      usePadding: false,
       appBar: BaseAppBar(
         title: 'Análise de descontos no pedido'.hardcoded,
         showSelectedEnterprise: true,
@@ -43,31 +44,45 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
           return ScrollableTable<BSFSaleRequestDiscountItemEntity>(
             items: items,
             fixFirstColumn: true,
+            rowHeight: 65,
             columns: [
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Produto'.hardcoded,
-                minWidth: 150.0,
-                cellBuilder: (item) => BaseText(item.product.name, maxLines: 2),
+                minWidth: 170.0,
+                cellBuilder: (item) => BaseRichText(
+                  texts: [
+                    BaseText.title(
+                      item.product.packingPriceLookUp,
+                      color: context.theme.primaryColor,
+                    ),
+                    BaseText.title(
+                      ' (${item.product.packingName})',
+                      color: Colors.blue,
+                    ),
+                    BaseText.title(' ${item.product.name}'),
+                  ],
+                  maxLines: 3,
+                ),
                 sortValueMapper: (item) => item.product.name,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Qtd'.hardcoded,
-                minWidth: 60.0,
+                minWidth: 40.0,
                 cellBuilder: (item) => BaseText(
                   item.quantity.toString().toBrazilianNumber(2, true),
                 ),
                 sortValueMapper: (item) => item.quantity,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Vl. Bruto'.hardcoded,
-                minWidth: 90.0,
+                headerTitle: 'Vl. bruto'.hardcoded,
+                minWidth: 65.0,
                 cellBuilder: (item) =>
                     BaseText(item.bruteValue.toString().toBrazilianNumber(2)),
                 sortValueMapper: (item) => item.bruteValue,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Desc R\$'.hardcoded,
-                minWidth: 90.0,
+                minWidth: 65.0,
                 cellBuilder: (item) => BaseText(
                   item.discountValue.toString().toBrazilianNumber(2),
                 ),
@@ -75,22 +90,22 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Desc %'.hardcoded,
-                minWidth: 70.0,
+                minWidth: 60.0,
                 cellBuilder: (item) => BaseText(
-                  '${item.discountPercentage.toString().toBrazilianNumber(2)} %',
+                  '${item.discountPercentage.toString().toBrazilianNumber(2, true)} %',
                 ),
                 sortValueMapper: (item) => item.discountPercentage,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Vl. Líquido'.hardcoded,
-                minWidth: 90.0,
+                headerTitle: 'Vl. líquido'.hardcoded,
+                minWidth: 75.0,
                 cellBuilder: (item) =>
                     BaseText(item.liquidValue.toString().toBrazilianNumber(2)),
                 sortValueMapper: (item) => item.liquidValue,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Limite %'.hardcoded,
-                minWidth: 70.0,
+                minWidth: 65.0,
                 cellBuilder: (item) => BaseText(
                   '${item.discountConcessionLimitPercentage.toString().toBrazilianNumber(2)} %',
                 ),
@@ -98,14 +113,13 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
                     item.discountConcessionLimitPercentage,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-                headerTitle: 'Diferença'.hardcoded,
-                minWidth: 90.0,
+                headerTitle: 'Diferença %'.hardcoded,
+                minWidth: 80.0,
                 cellBuilder: (item) => BaseText(
-                  item.totalDifference.toString().toBrazilianNumber(2),
+                  item.totalDifference.toString().toBrazilianNumber(2, true),
                   color: item.hasPositiveDifference ? Colors.red : Colors.green,
                 ),
-                sortValueMapper: (item) => item
-                    .totalDifference, //TODO check whether can return PercentageOrValue to treat it correctly when receiving a percentage value
+                sortValueMapper: (item) => item.totalDifference,
               ),
             ],
           );
