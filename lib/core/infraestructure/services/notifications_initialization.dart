@@ -5,13 +5,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:celta_inventario/core/infraestructure/services/i_notifications_service.dart';
 
 /// PERFORMANCE: Using a dedicated service for notifications ensures
 /// that Firebase listeners are registered exactly once and do not
 /// create memory leaks during hot restarts.
-class NotificationsService {
+class NotificationsService implements INotificationsService {
   NotificationsService._();
   static final instance = NotificationsService._();
+
 
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
@@ -31,6 +33,7 @@ class NotificationsService {
   }
 
   /// Sets up the notification channels and listeners.
+  @override
   Future<void> initialize() async {
     if (_isInitialized) return;
 
@@ -130,6 +133,7 @@ class NotificationsService {
   }
 
   /// Manually shows a local notification with the given [title] and [body].
+  @override
   Future<void> showNotification({
     required String title,
     required String body,
