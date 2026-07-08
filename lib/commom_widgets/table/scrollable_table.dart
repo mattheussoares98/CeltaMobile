@@ -166,7 +166,14 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
             ? (available - totalMinWidth) / widget.columns.length
             : 0.0;
 
-        if (widget.fixFirstColumn) {
+        final double firstColWidth = widget.columns.isNotEmpty
+            ? widget.columns.first.minWidth + extraPerColumn
+            : 0.0;
+
+        final bool shouldFix =
+            widget.fixFirstColumn && firstColWidth < available;
+
+        if (shouldFix) {
           return _FixedLayout<T>(
             columns: widget.columns,
             scrollableColumns: _scrollableColumns,
