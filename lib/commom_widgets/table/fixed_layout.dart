@@ -13,6 +13,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final Color? footerBackgroundColor;
   final ScrollController fixedVerticalController;
   final ScrollController scrollableVerticalController;
+  final ScrollController? horizontalScrollController;
   final int? sortColumnIndex;
   final bool sortAscending;
   final void Function(int) onHeaderTap;
@@ -36,6 +37,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.hasFooter,
+    this.horizontalScrollController,
     this.physics,
   });
 
@@ -107,6 +109,7 @@ class _FixedLayout<T> extends StatelessWidget {
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            controller: horizontalScrollController,
             child: SizedBox(
               width: scrollableWidth,
               child: Column(

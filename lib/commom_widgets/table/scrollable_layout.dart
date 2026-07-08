@@ -15,6 +15,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final bool sortAscending;
   final void Function(int) onHeaderTap;
   final bool hasFooter;
+  final ScrollController? horizontalScrollController;
   final ScrollPhysics? physics;
 
   const _ScrollableLayout({
@@ -32,6 +33,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.hasFooter,
+    this.horizontalScrollController,
     this.physics,
   });
 
@@ -42,6 +44,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      controller: horizontalScrollController,
       child: SizedBox(
         width: totalWidth,
         child: Column(

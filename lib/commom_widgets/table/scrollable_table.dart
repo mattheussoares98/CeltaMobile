@@ -14,8 +14,6 @@ part 'scrollable_table_cell.dart';
 part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
-//TODO add a parameter "onRefresh" and understand better how this entire widget works
-
 class ScrollableTable<T> extends StatefulWidget {
   final List<T> items;
   final List<ScrollableTableColumnSpec<T>> columns;
@@ -44,9 +42,17 @@ class ScrollableTable<T> extends StatefulWidget {
   State<ScrollableTable<T>> createState() => _ScrollableTableState<T>();
 }
 
-class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
+class _ScrollableTableState<T> extends State<ScrollableTable<T>>
+    with SingleTickerProviderStateMixin {
   final _fixedVerticalController = ScrollController();
   final _scrollableVerticalController = ScrollController();
+  final _horizontalScrollController = ScrollController();
+
+  late final AnimationController _handAnimationController;
+  late final Animation<double> _handPositionAnimation;
+  late final Animation<double> _handOpacityAnimation;
+  bool _showHand = false;
+  bool _hasPlayedAnimation = false;
 
   bool _isSyncing = false;
 
@@ -70,6 +76,36 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
     _scrollableVerticalController.addListener(_syncScrollableToFixed);
 
     _rebuildCache();
+
+    _handAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 3500),
+    );
+
+    _handOpacityAnimation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 10),
+      TweenSequenceItem(tween: ConstantTween(1.0), weight: 80),
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 10),
+    ]).animate(_handAnimationController);
+
+    _handPositionAnimation = TweenSequence<double>([
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 0.8,
+          end: 0.2,
+        ).chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 35,
+      ),
+      TweenSequenceItem(tween: ConstantTween(0.2), weight: 10),
+      TweenSequenceItem(
+        tween: Tween(
+          begin: 0.2,
+          end: 0.8,
+        ).chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 35,
+      ),
+      TweenSequenceItem(tween: ConstantTween(0.8), weight: 20),
+    ]).animate(_handAnimationController);
   }
 
   @override
@@ -138,6 +174,8 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
     _scrollableVerticalController.removeListener(_syncScrollableToFixed);
     _fixedVerticalController.dispose();
     _scrollableVerticalController.dispose();
+    _horizontalScrollController.dispose();
+    _handAnimationController.dispose();
     super.dispose();
   }
 
@@ -152,6 +190,50 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
         _sortAscending = true;
       }
       _applySort();
+    });
+  }
+
+  void _checkAndPlayScrollHint(double totalMinWidth, double available) {
+    if (_hasPlayedAnimation) return;
+    if (totalMinWidth > available) {
+      _hasPlayedAnimation = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _playScrollHint();
+      });
+    }
+  }
+
+  Future<void> _playScrollHint() async {
+    if (!mounted || !_horizontalScrollController.hasClients) return;
+    final maxScroll = _horizontalScrollController.position.maxScrollExtent;
+    if (maxScroll <= 0) return;
+
+    setState(() {
+      _showHand = true;
+    });
+
+    _handAnimationController.reset();
+    _handAnimationController.forward();
+
+    await _horizontalScrollController.animateTo(
+      maxScroll,
+      duration: const Duration(milliseconds: 1500),
+      curve: Curves.easeInOut,
+    );
+
+    if (!mounted) return;
+    await Future.delayed(const Duration(milliseconds: 500));
+    if (!mounted) return;
+
+    await _horizontalScrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 1500),
+      curve: Curves.easeInOut,
+    );
+
+    if (!mounted) return;
+    setState(() {
+      _showHand = false;
     });
   }
 
@@ -181,8 +263,9 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
         final bool shouldFix =
             widget.fixFirstColumn && firstColWidth < available;
 
+        Widget mainLayout;
         if (shouldFix) {
-          return _FixedLayout<T>(
+          mainLayout = _FixedLayout<T>(
             columns: widget.columns,
             scrollableColumns: _scrollableColumns,
             sortedItems: _sortedItems,
@@ -195,6 +278,26 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
             footerBackgroundColor: widget.footerBackgroundColor,
             fixedVerticalController: _fixedVerticalController,
             scrollableVerticalController: _scrollableVerticalController,
+            horizontalScrollController: _horizontalScrollController,
+            sortColumnIndex: _sortColumnIndex,
+            sortAscending: _sortAscending,
+            onHeaderTap: _handleHeaderTap,
+            hasFooter: _hasFooter,
+            physics: physics,
+          );
+        } else {
+          mainLayout = _ScrollableLayout<T>(
+            columns: widget.columns,
+            sortedItems: _sortedItems,
+            totalMinWidth: totalMinWidth,
+            extraPerColumn: extraPerColumn,
+            headerHeight: widget.headerHeight,
+            rowHeight: widget.rowHeight,
+            footerHeight: footerH,
+            headerBackgroundColor: widget.headerBackgroundColor,
+            rowBackgroundColor: widget.rowBackgroundColor,
+            footerBackgroundColor: widget.footerBackgroundColor,
+            horizontalScrollController: _horizontalScrollController,
             sortColumnIndex: _sortColumnIndex,
             sortAscending: _sortAscending,
             onHeaderTap: _handleHeaderTap,
@@ -203,22 +306,41 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
           );
         }
 
-        return _ScrollableLayout<T>(
-          columns: widget.columns,
-          sortedItems: _sortedItems,
-          totalMinWidth: totalMinWidth,
-          extraPerColumn: extraPerColumn,
-          headerHeight: widget.headerHeight,
-          rowHeight: widget.rowHeight,
-          footerHeight: footerH,
-          headerBackgroundColor: widget.headerBackgroundColor,
-          rowBackgroundColor: widget.rowBackgroundColor,
-          footerBackgroundColor: widget.footerBackgroundColor,
-          sortColumnIndex: _sortColumnIndex,
-          sortAscending: _sortAscending,
-          onHeaderTap: _handleHeaderTap,
-          hasFooter: _hasFooter,
-          physics: physics,
+        _checkAndPlayScrollHint(totalMinWidth, available);
+
+        return Stack(
+          children: [
+            mainLayout,
+            if (_showHand)
+              AnimatedBuilder(
+                animation: _handAnimationController,
+                builder: (context, child) {
+                  return Positioned(
+                    left: available * _handPositionAnimation.value - 24,
+                    top: (widget.headerHeight + widget.rowHeight) / 2 + 10,
+                    child: IgnorePointer(
+                      child: Opacity(
+                        opacity: _handOpacityAnimation.value,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: context.theme.colorScheme.primary.withValues(
+                              alpha: 0.15,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.touch_app,
+                            size: 32,
+                            color: context.theme.colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+          ],
         );
       },
     );
