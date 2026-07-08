@@ -4,9 +4,11 @@ import 'package:celta_inventario/features/process_authorization/presentation/con
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
+class ProcessAuthorizationSaleRequestDiscountsPage
+    extends ConsumerStatefulWidget {
   final int processCode;
   const ProcessAuthorizationSaleRequestDiscountsPage({
     super.key,
@@ -14,10 +16,37 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProcessAuthorizationSaleRequestDiscountsPage> createState() =>
+      _ProcessAuthorizationSaleRequestDiscountsPageState();
+}
+
+class _ProcessAuthorizationSaleRequestDiscountsPageState
+    extends ConsumerState<ProcessAuthorizationSaleRequestDiscountsPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final provider =
         processAuthorizationSaleRequestErrorsStateControllerProvider(
-          processCode: processCode,
+          processCode: widget.processCode,
           errorType: SaleRequestErrorType.discount,
         );
     return BaseScaffold(
