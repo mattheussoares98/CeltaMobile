@@ -39,8 +39,8 @@ class ScrollableTable<T> extends StatefulWidget {
 }
 
 class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
-  late final ScrollController _fixedVerticalController;
-  late final ScrollController _scrollableVerticalController;
+  final _fixedVerticalController = ScrollController();
+  final _scrollableVerticalController = ScrollController();
 
   bool _isSyncing = false;
 
@@ -54,9 +54,6 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>> {
   @override
   void initState() {
     super.initState();
-
-    _fixedVerticalController = ScrollController();
-    _scrollableVerticalController = ScrollController();
 
     _fixedVerticalController.addListener(_syncFixedToScrollable);
     _scrollableVerticalController.addListener(_syncScrollableToFixed);
