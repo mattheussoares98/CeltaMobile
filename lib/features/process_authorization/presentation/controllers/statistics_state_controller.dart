@@ -2,15 +2,11 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/core/providers/services/services.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'statistics_state_controller.g.dart';
-
-bool alreadyLoaded = false;
 
 @Riverpod(keepAlive: true)
 class StatisticsStateController extends _$StatisticsStateController {
@@ -37,19 +33,6 @@ class StatisticsStateController extends _$StatisticsStateController {
 
     ref.onDispose(timer.cancel);
 
-    final statistics = await repository.getStatistics(ecParams);
-    final openedJudgments = statistics.openedJudgements ?? 0;
-    if (openedJudgments > 0 && !alreadyLoaded) {
-      ref
-          .read(notificationsServiceProvider)
-          .showNotification(
-            title: 'Processos de autorização pendentes'.hardcoded,
-            body:
-                'Existem $openedJudgments processos de autorização pendentes para serem analisados.'
-                    .hardcoded,
-          );
-      alreadyLoaded = true;
-    }
-    return statistics;
+    return await repository.getStatistics(ecParams);
   }
 }
