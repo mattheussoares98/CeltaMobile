@@ -1,4 +1,5 @@
 // lib/features/process_authorization/data/models/sale_request/lucrativity/bsf_sale_request_lucrativity_item_model.dart
+import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 class BSFSaleRequestLucrativityItemModel
@@ -22,7 +23,9 @@ class BSFSaleRequestLucrativityItemModel
 
   factory BSFSaleRequestLucrativityItemModel.fromJson(Map json) =>
       BSFSaleRequestLucrativityItemModel(
-        product: json['Product'],
+        product: ProcessAuthorizationSaleRequestProductModel.fromJson(
+          json['Product'],
+        ),
         quantity: (json['Quantity'] as num).toDouble(),
         replacementCost: (json['ReplacementCost'] as num).toDouble(),
         liquidCost: (json['LiquidCost'] as num).toDouble(),

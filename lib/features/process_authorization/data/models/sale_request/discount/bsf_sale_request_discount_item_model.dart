@@ -1,4 +1,5 @@
 // lib/features/process_authorization/data/models/sale_request/discount/bsf_sale_request_discount_item_model.dart
+import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 
 class BSFSaleRequestDiscountItemModel extends BSFSaleRequestDiscountItemEntity {
@@ -16,7 +17,9 @@ class BSFSaleRequestDiscountItemModel extends BSFSaleRequestDiscountItemEntity {
 
   factory BSFSaleRequestDiscountItemModel.fromJson(Map json) =>
       BSFSaleRequestDiscountItemModel(
-        product: json['Product'],
+        product: ProcessAuthorizationSaleRequestProductModel.fromJson(
+          json['Product'],
+        ),
         quantity: json['Quantity'],
         bruteValue: json['BruteValue'],
         discountValue: json['DiscountValue'],

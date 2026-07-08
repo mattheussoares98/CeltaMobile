@@ -1,8 +1,9 @@
 // lib/features/process_authorization/domain/entities/sale_request/bsf_sale_request_discount_item_entity.dart
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestDiscountItemEntity extends Equatable {
-  final String product;
+  final ProcessAuthorizationSaleRequestProductEntity product;
   final double quantity;
   final double bruteValue;
   final double discountValue;

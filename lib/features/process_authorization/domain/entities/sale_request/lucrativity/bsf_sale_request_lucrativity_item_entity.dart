@@ -1,8 +1,8 @@
-// lib/features/process_authorization/domain/entities/sale_request/bsf_sale_request_lucrativity_item_entity.dart
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFSaleRequestLucrativityItemEntity extends Equatable {
-  final String product;
+  final ProcessAuthorizationSaleRequestProductEntity product;
   final double quantity;
   final double replacementCost;
   final double liquidCost;

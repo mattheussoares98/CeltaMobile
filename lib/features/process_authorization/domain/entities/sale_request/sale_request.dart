@@ -6,3 +6,4 @@ export 'discount/bsf_sale_request_discount_totals_entity.dart';
 export 'lucrativity/bsf_sale_request_lucrativity_entity.dart';
 export 'lucrativity/bsf_sale_request_lucrativity_item_entity.dart';
 export 'lucrativity/bsf_sale_request_lucrativity_totals_entity.dart';
+export 'process_authorization_sale_request_product_entity.dart';

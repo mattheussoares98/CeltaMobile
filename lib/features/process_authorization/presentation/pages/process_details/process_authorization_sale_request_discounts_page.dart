@@ -47,9 +47,8 @@ class ProcessAuthorizationSaleRequestDiscountsPage extends ConsumerWidget {
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Produto'.hardcoded,
                 minWidth: 150.0,
-                cellBuilder: (item) =>
-                    BaseText(item.product, overflow: TextOverflow.ellipsis),
-                sortValueMapper: (item) => item.product,
+                cellBuilder: (item) => BaseText(item.product.name, maxLines: 2),
+                sortValueMapper: (item) => item.product.name,
               ),
               ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
                 headerTitle: 'Qtd'.hardcoded,

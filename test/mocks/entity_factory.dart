@@ -1949,9 +1949,18 @@ class EntityFactory {
         totals: makeBSFSaleRequestDiscountTotalsEntity(),
       );
 
+  static ProcessAuthorizationSaleRequestProductEntity
+  makeProcessAuthorizationSaleRequestProductEntity() =>
+      ProcessAuthorizationSaleRequestProductEntity(
+        name: faker.food.dish(),
+        packingPriceLookUp: faker.guid.guid(),
+        packingName: faker.randomGenerator.string(2),
+        packingQuantity: faker.randomGenerator.decimal(),
+      );
+
   static BSFSaleRequestDiscountItemEntity
   makeBSFSaleRequestDiscountItemEntity() => BSFSaleRequestDiscountItemEntity(
-    product: faker.lorem.word(),
+    product: makeProcessAuthorizationSaleRequestProductEntity(),
     quantity: faker.randomGenerator.decimal(),
     bruteValue: faker.randomGenerator.decimal(),
     discountValue: faker.randomGenerator.decimal(),
@@ -1983,7 +1992,7 @@ class EntityFactory {
   static BSFSaleRequestLucrativityItemEntity
   makeBSFSaleRequestLucrativityItemEntity() =>
       BSFSaleRequestLucrativityItemEntity(
-        product: faker.company.name(),
+        product: makeProcessAuthorizationSaleRequestProductEntity(),
         quantity: faker.randomGenerator.decimal(),
         replacementCost: faker.randomGenerator.decimal(),
         liquidCost: faker.randomGenerator.decimal(),
