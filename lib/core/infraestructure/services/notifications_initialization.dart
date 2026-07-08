@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:celta_inventario/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-import 'package:celta_inventario/firebase_options.dart';
 
 /// PERFORMANCE: Using a dedicated service for notifications ensures
 /// that Firebase listeners are registered exactly once and do not
@@ -128,5 +127,33 @@ class NotificationsService {
         'Notifications: App opened from background via: ${message.messageId}',
       );
     });
+  }
+
+  /// Manually shows a local notification with the given [title] and [body].
+  Future<void> showNotification({
+    required String title,
+    required String body,
+    String? payload,
+    int? id,
+  }) async {
+    await _localNotifications.show(
+      id: id ?? DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title: title,
+      body: body,
+      payload: payload,
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'high_importance_channel',
+          'Celta Mobile Notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+        iOS: DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      ),
+    );
   }
 }

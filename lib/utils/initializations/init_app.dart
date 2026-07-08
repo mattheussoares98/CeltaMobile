@@ -1,8 +1,8 @@
 import 'package:celta_inventario/core/config/secrets.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart'
     show DatabaseConstants;
+import 'package:celta_inventario/core/infraestructure/services/services.dart';
 import 'package:celta_inventario/firebase_options.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
