@@ -17,4 +17,10 @@ abstract class IEcProcessAuthorizationDatasource {
     required int customerCode,
     required SaleRequestErrorType errorType,
   });
+  Future<void> vote(
+    EcRequestParams params, {
+    required int processCode,
+    required bool authorized,
+    String? observations,
+  });
 }

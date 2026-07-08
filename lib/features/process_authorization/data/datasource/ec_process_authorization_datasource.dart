@@ -71,4 +71,24 @@ class EcProcessAuthorizationDatasource
 
     return BSFSaleRequestErrorModel.fromJson(json.decode(response));
   }
+
+  @override
+  Future<void> vote(
+    EcRequestParams params, {
+    required int processCode,
+    required bool authorized,
+    String? observations,
+  }) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/ProcessAuthorization/Vote',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'ProcessCode': processCode,
+        'Authorized': authorized,
+        'Observations': observations,
+      },
+    );
+  }
 }

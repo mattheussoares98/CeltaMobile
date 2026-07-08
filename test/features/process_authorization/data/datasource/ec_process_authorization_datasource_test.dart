@@ -17,6 +17,12 @@ void main() {
   late EcRequestParams params;
   late int? processCode;
   late SaleRequestErrorType errorType;
+  late BSFSaleRequestErrorEntity saleRequestErrorEntity;
+  late BsfProcessAuthorizationStatisticEntity
+  processAuthorizationStatisticEntity;
+  late int enterpriseCode;
+  late int saleRequestCode;
+  late int customerCode;
 
   setUp(() {
     httpClient = HttpClientSpy();
@@ -29,10 +35,16 @@ void main() {
       user: faker.guid.guid(),
       accessKey: faker.guid.guid(),
     );
+    saleRequestErrorEntity = EntityFactory.makeBSFSaleRequestErrorEntity();
+    enterpriseCode = faker.randomGenerator.integer(100);
+    saleRequestCode = faker.randomGenerator.integer(100);
+    customerCode = faker.randomGenerator.integer(100);
     errorType =
         SaleRequestErrorType.values[faker.randomGenerator.integer(
           SaleRequestErrorType.values.length,
         )];
+    processAuthorizationStatisticEntity =
+        EntityFactory.makeBsfProcessAuthorizationStatisticEntity();
   });
 
   setUpAll(() {
@@ -87,16 +99,12 @@ void main() {
   });
 
   group('getStatistics', () {
-    late BsfProcessAuthorizationStatisticEntity entity;
-
-    setUp(() {
-      entity = EntityFactory.makeBsfProcessAuthorizationStatisticEntity();
-    });
-
     test(
       'should call http with correct parameters and return statistics on success',
       () async {
-        final model = BsfProcessAuthorizationStatisticModel.fromEntity(entity);
+        final model = BsfProcessAuthorizationStatisticModel.fromEntity(
+          processAuthorizationStatisticEntity,
+        );
         final jsonResponse = json.encode(model.toJson());
 
         httpClient.mockRequest(jsonResponse);
@@ -117,23 +125,11 @@ void main() {
   });
 
   group('getSaleRequestErrors', () {
-    late BSFSaleRequestErrorEntity entity;
-    late int enterpriseCode;
-    late int saleRequestCode;
-    late int customerCode;
-
-    setUp(() {
-      entity = EntityFactory.makeBSFSaleRequestErrorEntity();
-      enterpriseCode = faker.randomGenerator.integer(100);
-      saleRequestCode = faker.randomGenerator.integer(100);
-      customerCode = faker.randomGenerator.integer(100);
-    });
-
     test(
       'should call http with correct parameters and return sale request errors on success',
       () async {
         final model = BSFSaleRequestErrorModel.fromJson(
-          BSFSaleRequestErrorModel.fromEntity(entity).toJson(),
+          BSFSaleRequestErrorModel.fromEntity(saleRequestErrorEntity).toJson(),
         );
         final jsonResponse = json.encode(model.toJson());
 
@@ -166,5 +162,34 @@ void main() {
         ).called(1);
       },
     );
+  });
+  group('Vote', () {
+    test('should call http with correct parameters', () async {
+      httpClient.mockRequest(null);
+      final processCode = faker.randomGenerator.integer(100);
+      final authorized = faker.randomGenerator.boolean();
+      final observations = faker.lorem.sentence();
+
+      await sut.vote(
+        params,
+        processCode: processCode,
+        authorized: authorized,
+        observations: observations,
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/ProcessAuthorization/Vote',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'ProcessCode': processCode,
+            'Authorized': authorized,
+            'Observations': observations,
+          },
+        ),
+      ).called(1);
+    });
   });
 }
