@@ -52,12 +52,28 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
           processCode: widget.processCode,
           errorType: SaleRequestErrorType.discount,
         );
+
+    final personalizedCode = ref.watch(
+      judgmentDetailsStateControllerProvider(widget.processCode).select(
+        (s) => s.value?.defendants
+            ?.cast<BSFSaleRequestDefendantEntity>()
+            .firstOrNull
+            ?.saleRequest
+            .personalizedCode,
+      ),
+    );
+
+    String title = 'Análise de descontos'.hardcoded;
+    if (personalizedCode != null) {
+      title = "$title ($personalizedCode)";
+    }
+
     return BaseScaffold(
       refreshProvider: provider,
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Análise de descontos no pedido'.hardcoded,
+        title: title,
         showSelectedEnterprise: true,
         actions: [
           PrimaryTextButton(
