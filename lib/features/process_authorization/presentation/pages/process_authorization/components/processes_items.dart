@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,13 +82,13 @@ class ProcessesItems extends ConsumerWidget {
                           ),
                           if (process.dateTimeOfCreation != null)
                             TitleAndSubTitle(
-                              title: 'Data',
+                              title: 'Data'.hardcoded,
                               subTitle: process.dateTimeOfCreation!.formatDate(
                                 DateFormatType.ddMMyyyyHHmmss,
                               ),
                             ),
                           TitleAndSubTitle(
-                            title: 'Processo iniciado por',
+                            title: 'Processo iniciado por'.hardcoded,
                             subTitle: process.user?.identification,
                           ),
                         ],
