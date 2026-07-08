@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/process_details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,14 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
       appBar: BaseAppBar(
         title: 'Análise de descontos no pedido'.hardcoded,
         showSelectedEnterprise: true,
+        actions: [
+          PrimaryTextButton(
+            text: 'Votar'.hardcoded,
+            onPressed: () {
+              showModalPage(VoteBody(processCode: widget.processCode), context);
+            },
+          ),
+        ],
       ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
