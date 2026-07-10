@@ -6,14 +6,12 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 sealed class BSFDefendantModel extends BSFDefendantEntity {
   const BSFDefendantModel();
 
-  static BSFDefendantModel? fromJson(
-    Map json,
-    BSFProcessAuthorizationCategoryType? category,
-  ) {
-    switch (category) {
-      case BSFProcessAuthorizationCategoryType.saleRequest:
+  static BSFDefendantModel? fromJson(Map json, TypeAccordingToTheCode? type) {
+    switch (type) {
+      case TypeAccordingToTheCode.saleRequestDiscount ||
+          TypeAccordingToTheCode.saleRequestLucrativity:
         return BSFSaleRequestDefendantModel.fromJson(json);
-      case BSFProcessAuthorizationCategoryType.expedition:
+      case TypeAccordingToTheCode.receiptLiberateDocument:
         return BSFExpeditionDefendantModel.fromJson(json);
       default:
         return null;

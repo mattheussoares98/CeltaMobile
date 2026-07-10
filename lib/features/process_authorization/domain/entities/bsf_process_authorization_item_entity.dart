@@ -7,7 +7,6 @@ class BSFProcessAuthorizationItemEntity extends Equatable {
   final String? name;
   final String? description;
   final BSFProcessAuthorizationItemType? type;
-  final BSFProcessAuthorizationCategoryType? category;
   final TypeAccordingToTheCode? typeAccordingToTheCode;
 
   const BSFProcessAuthorizationItemEntity({
@@ -15,7 +14,6 @@ class BSFProcessAuthorizationItemEntity extends Equatable {
     this.name,
     this.description,
     this.type,
-    this.category,
     this.typeAccordingToTheCode,
   });
 
@@ -25,7 +23,6 @@ class BSFProcessAuthorizationItemEntity extends Equatable {
     name,
     description,
     type,
-    category,
     typeAccordingToTheCode,
   ];
 }

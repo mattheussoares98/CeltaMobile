@@ -50,7 +50,12 @@ class BSFProcessAuthorizationJudgmentModel
             )
           : null,
       defendants: (json['Defendants'] as List?)
-          ?.map((x) => BSFDefendantModel.fromJson(x, processItem?.category))
+          ?.map(
+            (x) => BSFDefendantModel.fromJson(
+              x,
+              processItem?.typeAccordingToTheCode,
+            ),
+          )
           .whereType<BSFDefendantModel>()
           .toList(),
     );

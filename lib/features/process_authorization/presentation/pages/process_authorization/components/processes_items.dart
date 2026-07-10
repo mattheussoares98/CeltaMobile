@@ -95,7 +95,7 @@ class ProcessesItems extends ConsumerWidget {
                             subTitle:
                                 process
                                     .authorizationProcessItem
-                                    ?.category
+                                    ?.typeAccordingToTheCode
                                     ?.label ??
                                 '',
                           ),
