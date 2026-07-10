@@ -52,7 +52,7 @@ void main() {
   }
 
   group('VoteController', () {
-    test('should behave correctly on success', () async {
+    test('should behave correctly on success and invalidate judgmentsStateControllerProvider', () async {
       // ARRANGE
       when(
         () => mockRepository.vote(
@@ -62,9 +62,27 @@ void main() {
           observations: any(named: 'observations'),
         ),
       ).thenAnswer((_) async {});
+      when(
+        () => mockRepository.getJudgments(any()),
+      ).thenAnswer((_) async => []);
 
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
+
+      int judgmentsBuildCount = 0;
+      container.listen(
+        judgmentsStateControllerProvider,
+        (previous, next) {
+          if (next is AsyncData && !next.isLoading) {
+            judgmentsBuildCount++;
+          }
+        },
+        fireImmediately: true,
+      );
+
+      // Warm up the provider
+      await container.read(judgmentsStateControllerProvider.future);
+      expect(judgmentsBuildCount, 1);
 
       // ACT
       await container
@@ -84,6 +102,10 @@ void main() {
           observations: observations,
         ),
       ).called(1);
+
+      // After invalidation and reading, the provider rebuilt and emitted a new AsyncData.
+      await container.read(judgmentsStateControllerProvider.future);
+      expect(judgmentsBuildCount, 2);
     });
 
     test('should throw AppException when session is invalid', () async {
@@ -112,7 +134,7 @@ void main() {
       );
     });
 
-    test('should propagate errors when repository fails', () async {
+    test('should propagate errors when repository fails and NOT invalidate judgmentsStateControllerProvider', () async {
       // ARRANGE
       final exception = Exception('Repository error');
       when(
@@ -123,9 +145,27 @@ void main() {
           observations: any(named: 'observations'),
         ),
       ).thenThrow(exception);
+      when(
+        () => mockRepository.getJudgments(any()),
+      ).thenAnswer((_) async => []);
 
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
+
+      int judgmentsBuildCount = 0;
+      container.listen(
+        judgmentsStateControllerProvider,
+        (previous, next) {
+          if (next is AsyncData && !next.isLoading) {
+            judgmentsBuildCount++;
+          }
+        },
+        fireImmediately: true,
+      );
+
+      // Warm up the provider
+      await container.read(judgmentsStateControllerProvider.future);
+      expect(judgmentsBuildCount, 1);
 
       await container
           .read(voteControllerProvider(processCode).notifier)
@@ -136,6 +176,10 @@ void main() {
         container.read(voteControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
+
+      // It shouldn't have rebuilt (still count = 1)
+      await container.read(judgmentsStateControllerProvider.future);
+      expect(judgmentsBuildCount, 1);
     });
   });
 }
