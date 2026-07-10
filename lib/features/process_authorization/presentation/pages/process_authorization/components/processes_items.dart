@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -16,7 +17,25 @@ class ProcessesItems extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onTap(BSFProcessAuthorizationJudgmentEntity process) {
+    void onTap(BSFProcessAuthorizationJudgmentEntity process) async {
+      final loggedUser = await ref.read(validatedUserSessionProvider.future);
+      final isAuthorizator =
+          process.authorizators?.any(
+            (e) =>
+                (e.identification?.isNotEmpty ?? false) &&
+                e.identification?.toLowerCase() ==
+                    loggedUser?.user.name?.toLowerCase(),
+          ) ??
+          false;
+
+      if (!isAuthorizator) {
+        showToastMessage(
+          'Você não é um autorizador. Por isso não pode visualizar este processo',
+          type: ToastType.error,
+        );
+        return;
+      }
+
       final type = process.authorizationProcessItem?.typeAccordingToTheCode;
       final Routes? nextRoute = switch (type) {
         TypeAccordingToTheCode.saleRequestDiscount =>
@@ -33,14 +52,16 @@ class ProcessesItems extends ConsumerWidget {
         );
         return;
       }
-      context.pushNamed(
-        //TODO test it in web page. Shouldn't create a new route
-        nextRoute.name,
-        pathParameters: {
-          'enterpriseCode': process.enterprise!.code.toString(),
-          'processCode': process.code.toString(),
-        },
-      );
+      if (context.mounted) {
+        context.pushNamed(
+          //TODO test it in web page. Shouldn't create a new route
+          nextRoute.name,
+          pathParameters: {
+            'enterpriseCode': process.enterprise!.code.toString(),
+            'processCode': process.code.toString(),
+          },
+        );
+      }
     }
 
     return AsyncValueWidget(
@@ -90,6 +111,12 @@ class ProcessesItems extends ConsumerWidget {
                           TitleAndSubTitle(
                             title: 'Processo iniciado por'.hardcoded,
                             subTitle: process.user?.identification,
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Autorizadores'.hardcoded,
+                            subTitle: process.authorizators
+                                ?.map((e) => e.identification)
+                                .join('; '),
                           ),
                         ],
                       ),
