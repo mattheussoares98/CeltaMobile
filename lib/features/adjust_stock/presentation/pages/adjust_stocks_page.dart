@@ -94,7 +94,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         title: 'Ajuste de estoque'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Form(
         key: formKey,

@@ -41,7 +41,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
       refreshProvider: receiptsStateControllerProvider(widget.enterpriseCode),
       appBar: BaseAppBar(
         title: 'Recebimentos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Consumer(
         builder: (context, ref, child) {

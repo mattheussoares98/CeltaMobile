@@ -16,7 +16,7 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
       usePadding: true,
       appBar: BaseAppBar(
         title: 'Produtos (ajuste de preços)'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: const Column(
         children: [

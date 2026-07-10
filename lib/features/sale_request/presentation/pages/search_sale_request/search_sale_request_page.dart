@@ -49,7 +49,7 @@ class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
       isScrollable: false,
       appBar: BaseAppBar(
         title: 'Busca de pedidos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Column(
         children: [

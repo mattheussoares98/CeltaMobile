@@ -21,10 +21,7 @@ class OriginEnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: enterprisesStateControllerProvider(),
-      appBar: BaseAppBar(
-        title: 'Empresa de origem'.hardcoded,
-        showSelectedEnterprise: false,
-      ),
+      appBar: BaseAppBar(title: 'Empresa de origem'.hardcoded),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(

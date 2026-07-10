@@ -19,10 +19,7 @@ class ReportsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: reportsStateControllerProvider,
-      appBar: BaseAppBar(
-        title: 'Relatórios'.hardcoded,
-        showSelectedEnterprise: false,
-      ),
+      appBar: BaseAppBar(title: 'Relatórios'.hardcoded),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(

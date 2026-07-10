@@ -110,7 +110,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
       usePadding: false,
       appBar: BaseAppBar(
         title: 'Gerenciar módulos'.hardcoded,
-        showSelectedEnterprise: false,
+
         actions: const [LogoutButton()],
       ),
       floatingActionButton: ValueListenableBuilder<bool>(

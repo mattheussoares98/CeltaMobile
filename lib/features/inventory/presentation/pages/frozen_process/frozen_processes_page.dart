@@ -20,7 +20,7 @@ class FrozenProcessesPage extends ConsumerWidget {
       refreshProvider: inventoryStateControllerProvider(enterpriseCode),
       appBar: BaseAppBar(
         title: 'Processos congelados'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: Consumer(
         builder: (context, ref, child) {

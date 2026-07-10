@@ -45,7 +45,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
         isScrollable: false,
         appBar: BaseAppBar(
           title: 'Detalhes do pedido'.hardcoded,
-          showSelectedEnterprise: true,
+          selectedEnterpriseCode: enterpriseCode,
           actions: [
             const EditButton(),
             const ShowPdfButton(),

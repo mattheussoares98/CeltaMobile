@@ -171,7 +171,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         title: 'Produtos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Column(
         children: [

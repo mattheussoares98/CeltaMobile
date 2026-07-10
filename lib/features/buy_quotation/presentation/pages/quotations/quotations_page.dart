@@ -19,7 +19,7 @@ class QuotationsPage extends ConsumerWidget {
       refreshProvider: buyQuotationsStateControllerProvider(enterpriseCode),
       appBar: BaseAppBar(
         title: 'Cotações'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),
       floatingActionButton: FloatingActionButton(

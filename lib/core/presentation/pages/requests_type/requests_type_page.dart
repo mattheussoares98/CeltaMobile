@@ -29,7 +29,7 @@ class RequestsTypePage extends ConsumerWidget {
       refreshProvider: provider,
       appBar: BaseAppBar(
         title: 'Modelos de pedido'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: Consumer(
         builder: (context, ref, child) {

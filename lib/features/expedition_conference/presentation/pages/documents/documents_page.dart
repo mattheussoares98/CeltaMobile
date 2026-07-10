@@ -26,7 +26,7 @@ class DocumentsPage extends ConsumerWidget {
       ),
       appBar: BaseAppBar(
         title: 'Documentos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),

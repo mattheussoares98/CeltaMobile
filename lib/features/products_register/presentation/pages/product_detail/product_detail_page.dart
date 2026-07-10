@@ -41,7 +41,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       usePadding: false,
       appBar: BaseAppBar(
         title: 'Detalhes do produto'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Consumer(
         builder: (_, ref, _) {

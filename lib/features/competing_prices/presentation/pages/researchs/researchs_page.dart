@@ -19,7 +19,7 @@ class ResearchsPage extends ConsumerWidget {
       refreshProvider: provider,
       appBar: BaseAppBar(
         title: 'Pesquisas cadastradas'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
         actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],
       ),
       body: Consumer(

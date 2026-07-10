@@ -49,7 +49,6 @@ class ProductsManagementPage extends ConsumerWidget {
       isScrollable: false,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
-        showSelectedEnterprise: false,
         titleWidget: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,

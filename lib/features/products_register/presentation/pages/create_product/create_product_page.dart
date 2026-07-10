@@ -25,7 +25,7 @@ class CreateProductPage extends StatelessWidget {
       usePadding: true,
       appBar: BaseAppBar(
         title: 'Cadastro de produtos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: Consumer(
         builder: (_, ref, _) {

@@ -18,10 +18,7 @@ class EnterprisesPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       refreshProvider: enterprisesStateControllerProvider(),
-      appBar: BaseAppBar(
-        title: 'Empresas'.hardcoded,
-        showSelectedEnterprise: false,
-      ),
+      appBar: BaseAppBar(title: 'Empresas'.hardcoded),
       body: AsyncValueWidget(
         value: ref.watch((enterprisesStateControllerProvider())),
         tryAgain: () => ref.invalidate(enterprisesStateControllerProvider),

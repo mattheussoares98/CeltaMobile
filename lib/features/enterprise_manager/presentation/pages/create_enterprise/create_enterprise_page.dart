@@ -87,10 +87,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
     return BaseScaffold(
       isScrollable: false,
       usePadding: true,
-      appBar: BaseAppBar(
-        title: 'Criar empresa'.hardcoded,
-        showSelectedEnterprise: false,
-      ),
+      appBar: BaseAppBar(title: 'Criar empresa'.hardcoded),
       body: ResponsiveScrollableWidget(
         child: Form(
           key: formKey,

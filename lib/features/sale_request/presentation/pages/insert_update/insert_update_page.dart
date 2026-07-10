@@ -81,7 +81,7 @@ class _InsertUpdateContent extends ConsumerWidget {
           return BaseScaffold(
             isScrollable: false,
             appBar: BaseAppBar(
-              showSelectedEnterprise: true,
+              selectedEnterpriseCode: enterpriseCode,
               title: saleRequestId == 0
                   ? 'Inserindo pedido'.hardcoded
                   : 'Alterando ($personalizedCode)'.hardcoded,

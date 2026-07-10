@@ -75,7 +75,6 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         builder: (context, ref, _) {
           return BaseAppBar(
             title: appBarsTitles[ref.watch(pageIndexStateControllerProvider)],
-            showSelectedEnterprise: false,
           );
         },
       ),

@@ -116,7 +116,7 @@ class _ChangeModulesPermissionPageState
         title: isGlobalChange
             ? 'Permissões globais'.hardcoded
             : 'Permissões específicas'.hardcoded,
-        showSelectedEnterprise: false,
+
         actions: [
           if (enterpriseAsync.hasValue)
             SaveButton(

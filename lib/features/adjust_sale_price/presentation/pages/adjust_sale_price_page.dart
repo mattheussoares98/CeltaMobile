@@ -68,7 +68,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
       usePadding: true,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
         title: selectedProduct == null
             ? ""
             : "(${selectedProduct.PLU}) ${selectedProduct.Name}",

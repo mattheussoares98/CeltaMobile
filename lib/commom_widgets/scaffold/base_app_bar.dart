@@ -14,7 +14,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.titleStyle,
     this.centerTitle = false,
     this.actions,
-    this.showSelectedEnterprise = false,
+    this.selectedEnterpriseCode,
     this.subtitle,
     this.actionsPadding,
   });
@@ -26,7 +26,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextStyle? titleStyle;
   final bool centerTitle;
   final List<Widget>? actions;
-  final bool showSelectedEnterprise;
+  final int? selectedEnterpriseCode;
   final Widget? subtitle;
   final EdgeInsetsGeometry? actionsPadding;
 
@@ -39,7 +39,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     TextStyle? titleStyle,
     bool? centerTitle,
     List<Widget>? actions,
-    bool? showSelectedEnterprise,
+    int? selectedEnterpriseCode,
     Widget? subtitle,
   }) {
     return BaseAppBar(
@@ -52,8 +52,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleStyle: titleStyle ?? this.titleStyle,
       centerTitle: centerTitle ?? this.centerTitle,
       actions: actions ?? this.actions,
-      showSelectedEnterprise:
-          showSelectedEnterprise ?? this.showSelectedEnterprise,
+      selectedEnterpriseCode:
+          selectedEnterpriseCode ?? this.selectedEnterpriseCode,
       subtitle: subtitle ?? this.subtitle,
     );
   }
@@ -93,7 +93,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (title.isNotEmpty ||
         titleWidget != null ||
-        showSelectedEnterprise ||
+        selectedEnterpriseCode != null ||
         subtitle != null) {
       final centerTitle = !PlatformUtil.isAndroid;
       final crossAxisAlignment = centerTitle
@@ -109,9 +109,10 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
           else if (title.isNotEmpty) ...[
             FittedBox(child: BaseText.titleLarge(title)),
           ],
-          if (showSelectedEnterprise)
-            //TODO change parameter to "enterpriseCode" instead. Because sometimes has a selected enterprise, but the showing information is from another enterprise
-            const CorrespondentEnterpriseByEnterpriseCode(),
+          if (selectedEnterpriseCode != null)
+            CorrespondentEnterpriseByEnterpriseCode(
+              enterpriseCode: selectedEnterpriseCode!,
+            ),
           if (subtitle != null)
             Align(alignment: Alignment.centerLeft, child: subtitle),
         ],

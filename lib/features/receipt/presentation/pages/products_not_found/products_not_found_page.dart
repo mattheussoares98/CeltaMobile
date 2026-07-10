@@ -12,7 +12,12 @@ import 'package:go_router/go_router.dart';
 
 class ProductsNotFoundPage extends ConsumerStatefulWidget {
   final int receiptCode;
-  const ProductsNotFoundPage({super.key, required this.receiptCode});
+  final int enterpriseCode;
+  const ProductsNotFoundPage({
+    super.key,
+    required this.receiptCode,
+    required this.enterpriseCode,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -107,7 +112,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
       ),
       appBar: BaseAppBar(
         title: 'Produtos não encontrados'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       floatingActionButton: FloatingActionButton(
         child: const PlatformIcon(

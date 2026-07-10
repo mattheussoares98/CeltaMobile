@@ -118,7 +118,6 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         title:
             '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
                 .hardcoded,
-        showSelectedEnterprise: false,
       ),
       body: Consumer(
         builder: (_, ref, _) {

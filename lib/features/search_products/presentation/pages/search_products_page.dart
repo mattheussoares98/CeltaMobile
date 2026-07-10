@@ -52,7 +52,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       isScrollable: false,
       appBar: BaseAppBar(
         title: 'Pesquisar produtos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Column(
         children: [

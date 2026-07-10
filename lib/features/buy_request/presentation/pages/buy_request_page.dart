@@ -60,7 +60,7 @@ class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         title: appBarTitles[currentPageIndex],
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: widget.enterpriseCode,
         actionsPadding: const EdgeInsets.fromLTRB(0, Sizes.p8, Sizes.p12, 0),
         subtitle: LastSavedRequestsNumbers(
           enterpriseCode: widget.enterpriseCode,

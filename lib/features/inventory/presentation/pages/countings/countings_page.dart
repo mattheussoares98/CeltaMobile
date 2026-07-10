@@ -31,7 +31,7 @@ class CountingsPage extends ConsumerWidget {
       usePadding: true,
       appBar: BaseAppBar(
         title: 'Contagens'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: (countings == null || countings.isEmpty)
           ? BaseText(

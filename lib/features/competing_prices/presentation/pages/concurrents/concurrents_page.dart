@@ -29,7 +29,7 @@ class ConcurrentsPage extends ConsumerWidget {
       refreshProvider: researchsStateControllerProvider(enterpriseCode),
       appBar: BaseAppBar(
         title: 'Concorrentes (pesquisa $researchCode)'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
         actions: const [InsertConcurrentButton()],
       ),
       body: Consumer(

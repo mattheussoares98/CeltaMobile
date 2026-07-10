@@ -234,7 +234,6 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
               usePadding: false,
               resizeToAvoidBottomInset: true,
               appBar: BaseAppBar(
-                showSelectedEnterprise: false,
                 title:
                     widget.product.product?.name ??
                     'Detalhe do Produto'.hardcoded,

@@ -44,10 +44,7 @@ class ProductsPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: true,
       resizeToAvoidBottomInset: true,
-      appBar: BaseAppBar(
-        showSelectedEnterprise: false,
-        subtitle: AppBarTitle(widget: this),
-      ),
+      appBar: BaseAppBar(subtitle: AppBarTitle(widget: this)),
       body: ResponsiveScrollableWidget(
         isSliverPage: true,
         child: CustomScrollView(

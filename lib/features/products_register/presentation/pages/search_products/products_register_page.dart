@@ -16,7 +16,7 @@ class SearchProductsPage extends ConsumerWidget {
       usePadding: false,
       appBar: BaseAppBar(
         title: 'Cadastro de produtos'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
       ),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p8),

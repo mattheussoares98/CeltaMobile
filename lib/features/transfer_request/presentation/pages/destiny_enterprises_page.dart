@@ -34,7 +34,7 @@ class DestinyEnterprisesPage extends ConsumerWidget {
       refreshProvider: provider,
       appBar: BaseAppBar(
         title: 'Empresa de destino'.hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseOriginCode,
       ),
       body: Consumer(
         builder: (context, ref, child) {

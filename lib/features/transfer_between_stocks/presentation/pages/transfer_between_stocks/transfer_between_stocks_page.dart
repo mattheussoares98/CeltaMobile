@@ -46,7 +46,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         title: "Transferência entre estoques".hardcoded,
-        showSelectedEnterprise: true,
+        selectedEnterpriseCode: enterpriseCode,
         actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
       ),
       body: Consumer(
