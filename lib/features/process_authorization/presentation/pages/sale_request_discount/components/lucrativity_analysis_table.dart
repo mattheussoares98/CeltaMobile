@@ -197,6 +197,17 @@ class LucrativityAnalysisTable extends StatelessWidget {
             color: item.totalDifference < 0 ? Colors.red : Colors.green,
           ),
           sortValueMapper: (item) => item.totalDifference,
+          footerCellBuilder: (items) {
+            final totalDifference = items.fold<double>(
+              0,
+              (p, e) => p + e.totalDifference,
+            );
+            return BaseText(
+              totalDifference.toString().toBrazilianNumber(2),
+              fontWeight: FontWeight.bold,
+              color: totalDifference < 0 ? Colors.red : null,
+            );
+          },
         ),
       ],
     );
