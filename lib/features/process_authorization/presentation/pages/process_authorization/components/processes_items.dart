@@ -113,12 +113,13 @@ class ProcessesItems extends ConsumerWidget {
                             title: 'Processo iniciado por'.hardcoded,
                             subTitle: process.user?.identification,
                           ),
-                          TitleAndSubTitle(
-                            title: 'Autorizadores'.hardcoded,
-                            subTitle: process.authorizators
-                                ?.map((e) => e.identification)
-                                .join('; '),
-                          ),
+                          if (process.authorizators?.isNotEmpty ?? false)
+                            TitleAndSubTitle(
+                              title: 'Autorizadores'.hardcoded,
+                              subTitle: process.authorizators
+                                  ?.map((e) => e.identification)
+                                  .join('; '),
+                            ),
                         ],
                       ),
                     ),
