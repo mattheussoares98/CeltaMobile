@@ -1,7 +1,10 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,6 +28,15 @@ class _VotePageState extends ConsumerState<VotePage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.observeLoading([voteControllerProvider(widget.processCode)]);
+    ref.listen(voteControllerProvider(widget.processCode), (p, n) {
+      n.showToastOnError(context, p);
+      n.doOnSuccess(p, () {
+        Navigator.of(context).popUntil(
+          (route) => route.settings.name == Routes.processAuthorization.name,
+        );
+      });
+    });
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
@@ -68,7 +80,16 @@ class _VotePageState extends ConsumerState<VotePage> {
                 child: PrimaryButton(
                   text: 'Confirmar'.hardcoded,
                   onPressed: () {
-                    //TODO call the vote controller method
+                    ref
+                        .read(
+                          voteControllerProvider(widget.processCode).notifier,
+                        )
+                        .vote(
+                          authorized,
+                          observationsController.text.isEmpty
+                              ? null
+                              : observationsController.text,
+                        );
                   },
                 ),
               ),
