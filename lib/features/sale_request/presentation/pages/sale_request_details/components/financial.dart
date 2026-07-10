@@ -13,13 +13,13 @@ class Financial extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (loading, financials) = ref.watch(
+    final (loading, financials, hasValue) = ref.watch(
       saleRequestDetailsStateControllerProvider(
         ref.read(saleRequestArgsProvider),
-      ).select((s) => (s.isLoading, s.value?.financials)),
+      ).select((s) => (s.isLoading, s.value?.financials, s.hasValue)),
     );
 
-    if (loading) {
+    if (!hasValue || loading) {
       return const SizedBox.shrink();
     }
     final bool isFinancialEmpty = financials?.isEmpty ?? true;
