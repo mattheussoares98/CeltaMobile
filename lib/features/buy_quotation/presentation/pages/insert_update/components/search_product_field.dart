@@ -127,7 +127,7 @@ class SearchProductField extends ConsumerWidget {
           );
         }
       });
-      n.showSnackbarOnError(context, p);
+      n.showToastOnError(context, p);
     });
 
     return SliverToBoxAdapter(

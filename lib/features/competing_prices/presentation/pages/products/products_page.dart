@@ -31,7 +31,7 @@ class ProductsPage extends ConsumerWidget {
             .updateSelectedIndex(null);
       });
       n.showAlertDialogOnError(context);
-      n.showSnackbarOnSuccess(
+      n.showToastOnSuccess(
         context,
         previous: p,
         message: 'Preços alterados com sucesso'.hardcoded,

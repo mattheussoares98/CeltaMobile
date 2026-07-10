@@ -84,7 +84,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
   @override
   Widget build(BuildContext context) {
     ref.listen(supplierStateControllerProvider(widget.enterpriseCode), (p, n) {
-      n.showSnackbarOnError(context, p);
+      n.showToastOnError(context, p);
       n.doOnSuccess(p, () {
         supplierController.clear();
       });

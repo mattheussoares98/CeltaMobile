@@ -25,7 +25,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
 
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
-      n.showSnackbarOnSuccess(
+      n.showToastOnSuccess(
         context,
         previous: p,
         message: 'Lote enviado com sucesso'.hardcoded,

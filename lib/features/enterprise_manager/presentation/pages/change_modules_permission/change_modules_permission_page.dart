@@ -96,7 +96,7 @@ class _ChangeModulesPermissionPageState
     // Listen to the action provider to show feedback and pop the page
     ref.listen(updatePermissionsControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
-      next.showSnackbarOnSuccess(
+      next.showToastOnSuccess(
         context,
         previous: previous,
         message: 'Permissões alteradas com sucesso'.hardcoded,

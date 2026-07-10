@@ -75,7 +75,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
     );
     ref.listen(createEnterpriseControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
-      next.showSnackbarOnSuccess(
+      next.showToastOnSuccess(
         context,
         previous: previous,
         message: "Empresa cadastrada com sucesso".hardcoded,

@@ -141,7 +141,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
         if (!context.mounted) return;
         n.showAlertDialogOnError(context);
         if (n.value != null) {
-          n.showSnackbarOnSuccess(
+          n.showToastOnSuccess(
             context,
             previous: p,
             message: 'Quantidade alterada com sucesso'.hardcoded,

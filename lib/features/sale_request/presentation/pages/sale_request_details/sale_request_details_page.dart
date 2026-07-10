@@ -25,7 +25,7 @@ class SaleRequestDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(printSaleRequestControllerProvider, (p, n) {
-      n.showSnackbarOnSuccess(
+      n.showToastOnSuccess(
         context,
         previous: p,
         message: 'Impressão enviada com sucesso'.hardcoded,

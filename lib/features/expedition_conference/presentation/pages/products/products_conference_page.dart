@@ -53,7 +53,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
     );
 
     ref.listen(scanProductControllerProvider, (p, n) {
-      n.showSnackbarOnError(context, p);
+      n.showToastOnError(context, p);
     });
 
     ref.listen(confirmConferenceControllerProvider, (p, n) {

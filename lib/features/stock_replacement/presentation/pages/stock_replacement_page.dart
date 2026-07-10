@@ -43,7 +43,7 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
   Widget build(BuildContext context) {
     ref.listen(confirmAdjustStockControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
-      n.showSnackbarOnSuccess(
+      n.showToastOnSuccess(
         context,
         previous: p,
         message: 'Ajuste efetuado com sucesso'.hardcoded,

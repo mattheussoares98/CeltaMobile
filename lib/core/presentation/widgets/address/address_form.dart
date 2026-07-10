@@ -1,14 +1,13 @@
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/address/address.dart';
 import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddressForm extends ConsumerStatefulWidget {
   final Modules module;
@@ -152,7 +151,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
       if (n.hasError) {
         clearFields(clearZip: false);
       }
-      n.showSnackbarOnError(context, p);
+      n.showToastOnError(context, p);
       n.doOnSuccess(p, () {
         if (n.value == null) {
           return;

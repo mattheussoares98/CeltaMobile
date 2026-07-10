@@ -231,7 +231,7 @@ class _BaseScaffold extends ConsumerWidget {
 
       // Wrap in a transparent Material Scaffold so that ScaffoldMessenger
       // can find an anchor to render SnackBars on iOS (CupertinoPageScaffold
-      // has no Material Scaffold, so showSnackBar is otherwise silently ignored).
+      // has no Material Scaffold, so ShowToast is otherwise silently ignored).
       scaffold = Scaffold(
         backgroundColor: Colors.transparent,
         resizeToAvoidBottomInset: false,

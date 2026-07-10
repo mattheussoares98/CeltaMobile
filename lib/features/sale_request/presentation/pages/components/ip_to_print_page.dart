@@ -99,7 +99,7 @@ class _IpToPrintForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(printSaleRequestControllerProvider, (p, n) {
-      n.showSnackbarOnError(context, p);
+      n.showToastOnError(context, p);
     });
 
     final isLoading = ref.watch(

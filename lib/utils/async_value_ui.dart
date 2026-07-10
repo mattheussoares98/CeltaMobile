@@ -38,7 +38,7 @@ extension AsyncValueUI on AsyncValue {
     }
   }
 
-  void showSnackbarOnSuccess(
+  void showToastOnSuccess(
     BuildContext context, {
     required AsyncValue? previous,
     required String message,
@@ -48,7 +48,7 @@ extension AsyncValueUI on AsyncValue {
     }
   }
 
-  void showSnackbarOnError(BuildContext context, AsyncValue? previous) {
+  void showToastOnError(BuildContext context, AsyncValue? previous) {
     if (previous != null && previous.isLoading && !isLoading && hasError) {
       showToastMessage(parseErrorMessage(error!), type: ToastType.error);
     }

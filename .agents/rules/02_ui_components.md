@@ -13,7 +13,7 @@ description: Activate this rule whenever the user asks to create, modify, style,
 - **Layout**: `ResponsiveCenter`, `ResponsiveListFlow`, `ResponsiveScrollableWidget`
 - **Label+Value rows**: always use `TitleAndSubtitle` — never create custom `SummaryRow` or `KeyValueRow` widgets.
 - **Feedback**: `LoadingWidget`, `LoadingExtension`, `EmptyPlaceholderWidget`, `AsyncValueWidget`
-- **Overlays**: `AlertDialogs`, `ShowSnackBarMessage`, `ShowModalPage`
+- **Overlays**: `AlertDialogs`, `ShowToastMessage`, `ShowModalPage`
 - **Icons**: `PlatformIcon`
 
 Never use `faker` or mock data in UI widgets. Always pass real entities or UI state models.
