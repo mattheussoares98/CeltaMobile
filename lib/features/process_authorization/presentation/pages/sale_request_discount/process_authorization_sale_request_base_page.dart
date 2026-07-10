@@ -126,9 +126,9 @@ class _ProcessAuthorizationSaleRequestBasePageState
                 message: 'Nenhuma lucratividade encontrada'.hardcoded,
               );
             }
-            // TODO: Return lucrativity table here
-            return EmptyPlaceholderWidget(
-              message: 'Tabela de lucratividade não implementada'.hardcoded,
+            return LucrativityAnalysisTable(
+              refreshProvider: provider,
+              items: items,
             );
           }
         },
