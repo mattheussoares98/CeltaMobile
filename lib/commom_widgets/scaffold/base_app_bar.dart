@@ -110,6 +110,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
             FittedBox(child: BaseText.titleLarge(title)),
           ],
           if (showSelectedEnterprise)
+            //TODO change parameter to "enterpriseCode" instead. Because sometimes has a selected enterprise, but the showing information is from another enterprise
             const CorrespondentEnterpriseByEnterpriseCode(),
           if (subtitle != null)
             Align(alignment: Alignment.centerLeft, child: subtitle),
