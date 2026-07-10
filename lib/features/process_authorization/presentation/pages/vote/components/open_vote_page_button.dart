@@ -21,58 +21,60 @@ class OpenVotePageButton extends ConsumerWidget {
         (s) => s.value?.firstWhereOrNull((e) => e.code == processCode),
       ),
     );
-    return Column(
-      children: [
-        if (PlatformUtil.isMobile)
-          PlatformIcon(
-            materialIcon: Icons.screen_rotation,
-            cupertinoIcon: CupertinoIcons.rotate_right,
-            color: context.theme.disabledColor,
-            size: 14,
-          ),
-        Expanded(
-          child: PrimaryTextButton(
-            text: 'Votar'.hardcoded,
-            onPressed: process == null
-                ? null
-                : () async {
-                    if (process.status !=
-                        BSFProcessAuthorizationJudgementStatus.awaiting) {
-                      showToastMessage(
-                        'Esse processo já foi julgado'.hardcoded,
-                        type: .error,
-                      );
-                      return;
-                    }
-                    final loggedUser = await ref.read(
-                      validatedUserSessionProvider.future,
-                    );
-                    final isAuthorizator =
-                        process.authorizators?.any(
-                          (e) =>
-                              (e.identification?.isNotEmpty ?? false) &&
-                              e.identification?.toLowerCase() ==
-                                  loggedUser?.user.name?.toLowerCase(),
-                        ) ??
-                        false;
+    final voteButton = PrimaryTextButton(
+      text: 'Votar'.hardcoded,
+      onPressed: process == null
+          ? null
+          : () async {
+              if (process.status !=
+                  BSFProcessAuthorizationJudgementStatus.awaiting) {
+                showToastMessage(
+                  'Esse processo já foi julgado'.hardcoded,
+                  type: .error,
+                );
+                return;
+              }
+              final loggedUser = await ref.read(
+                validatedUserSessionProvider.future,
+              );
+              final isAuthorizator =
+                  process.authorizators?.any(
+                    (e) =>
+                        (e.identification?.isNotEmpty ?? false) &&
+                        e.identification?.toLowerCase() ==
+                            loggedUser?.user.name?.toLowerCase(),
+                  ) ??
+                  false;
 
-                    if (!isAuthorizator) {
-                      showToastMessage(
-                        'Você não é um autorizador. Por isso não pode votar nesse processo',
-                        type: ToastType.error,
-                      );
-                      return;
-                    }
-                    if (context.mounted) {
-                      showModalPage(
-                        VotePage(processCode: processCode),
-                        context,
-                      );
-                    }
-                  },
-          ),
-        ),
-      ],
+              if (!isAuthorizator) {
+                showToastMessage(
+                  'Você não é um autorizador. Por isso não pode votar nesse processo',
+                  type: ToastType.error,
+                );
+                return;
+              }
+              if (context.mounted) {
+                showModalPage(VotePage(processCode: processCode), context);
+              }
+            },
     );
+
+    if (PlatformUtil.isMobile) {
+      return Column(
+        mainAxisSize: .min,
+        crossAxisAlignment: .end,
+        children: [
+          if (PlatformUtil.isMobile)
+            PlatformIcon(
+              materialIcon: Icons.screen_rotation,
+              cupertinoIcon: CupertinoIcons.rotate_right,
+              color: context.theme.disabledColor,
+              size: 14,
+            ),
+          Expanded(child: voteButton),
+        ],
+      );
+    }
+    return voteButton;
   }
 }
