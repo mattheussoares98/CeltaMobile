@@ -1898,13 +1898,6 @@ class EntityFactory {
     contactName: faker.person.name(),
   );
 
-  static BSFProcessAuthorizationCategoryEntity
-  makeBSFProcessAuthorizationCategoryEntity() =>
-      BSFProcessAuthorizationCategoryEntity(
-        code: faker.randomGenerator.integer(100),
-        name: faker.lorem.word(),
-      );
-
   static BSFProcessAuthorizationItemEntity
   makeBSFProcessAuthorizationItemEntity() => BSFProcessAuthorizationItemEntity(
     code: faker.randomGenerator.integer(100),
