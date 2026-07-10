@@ -9,21 +9,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProcessAuthorizationSaleRequestDiscountsPage
-    extends ConsumerStatefulWidget {
+enum PageType {
+  discount,
+  lucrativity;
+
+  factory PageType.fromName(String value) {
+    switch (value.toLowerCase()) {
+      case 'discount':
+        return PageType.discount;
+      case 'lucrativity':
+        return PageType.lucrativity;
+      default:
+        throw Exception('Invalid page type: $value');
+    }
+  }
+}
+
+class ProcessAuthorizationSaleRequestBasePage extends ConsumerStatefulWidget {
   final int processCode;
-  const ProcessAuthorizationSaleRequestDiscountsPage({
+  final PageType pageType;
+  const ProcessAuthorizationSaleRequestBasePage({
     super.key,
     required this.processCode,
+    required this.pageType,
   });
 
   @override
-  ConsumerState<ProcessAuthorizationSaleRequestDiscountsPage> createState() =>
-      _ProcessAuthorizationSaleRequestDiscountsPageState();
+  ConsumerState<ProcessAuthorizationSaleRequestBasePage> createState() =>
+      _ProcessAuthorizationSaleRequestBasePageState();
 }
 
-class _ProcessAuthorizationSaleRequestDiscountsPageState
-    extends ConsumerState<ProcessAuthorizationSaleRequestDiscountsPage> {
+class _ProcessAuthorizationSaleRequestBasePageState
+    extends ConsumerState<ProcessAuthorizationSaleRequestBasePage> {
   @override
   void initState() {
     super.initState();
@@ -51,7 +68,9 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
     final provider =
         processAuthorizationSaleRequestErrorsStateControllerProvider(
           processCode: widget.processCode,
-          errorType: SaleRequestErrorType.discount,
+          errorType: widget.pageType == PageType.discount
+              ? SaleRequestErrorType.discount
+              : SaleRequestErrorType.lucrativity,
         );
 
     final personalizedCode = ref.watch(
@@ -64,7 +83,9 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
       ),
     );
 
-    String title = 'Análise de descontos'.hardcoded;
+    String title = widget.pageType == PageType.discount
+        ? 'Análise de descontos'.hardcoded
+        : 'Análise de lucratividade'.hardcoded;
     if (personalizedCode != null) {
       title = "$title ($personalizedCode)";
     }
@@ -74,7 +95,9 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Análise de descontos'.hardcoded,
+        title: widget.pageType == PageType.discount
+            ? 'Análise de descontos'.hardcoded
+            : 'Análise de lucratividade'.hardcoded,
         subtitle: OpenSaleRequestDetailsPageButton(
           processCode: widget.processCode,
           title: 'Detalhes do pedido'.hardcoded,
@@ -85,16 +108,29 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
         data: (data) {
-          final discount = data.discount;
-          final items = discount?.items ?? [];
-
-          if (items.isEmpty) {
+          if (widget.pageType == PageType.discount) {
+            final items = data.discount?.items ?? const [];
+            if (items.isEmpty) {
+              return EmptyPlaceholderWidget(
+                message: 'Nenhum desconto encontrado'.hardcoded,
+              );
+            }
+            return DiscountAnalysisTable(
+              refreshProvider: provider,
+              items: items,
+            );
+          } else {
+            final items = data.lucrativity?.items ?? const [];
+            if (items.isEmpty) {
+              return EmptyPlaceholderWidget(
+                message: 'Nenhuma lucratividade encontrada'.hardcoded,
+              );
+            }
+            // TODO: Return lucrativity table here
             return EmptyPlaceholderWidget(
-              message: 'Nenhum desconto encontrado'.hardcoded,
+              message: 'Tabela de lucratividade não implementada'.hardcoded,
             );
           }
-
-          return DiscountAnalysisTable(refreshProvider: provider, items: items);
         },
       ),
     );

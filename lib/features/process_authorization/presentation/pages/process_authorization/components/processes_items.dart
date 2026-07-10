@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/pages.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -19,10 +20,9 @@ class ProcessesItems extends ConsumerWidget {
     void onTap(BSFProcessAuthorizationJudgmentEntity process) async {
       final type = process.authorizationProcessItem?.typeAccordingToTheCode;
       final Routes? nextRoute = switch (type) {
-        TypeAccordingToTheCode.saleRequestDiscount =>
-          Routes.processAuthorizationSaleRequestDiscounts,
+        TypeAccordingToTheCode.saleRequestDiscount ||
         TypeAccordingToTheCode.saleRequestLucrativity =>
-          Routes.processAuthorizationSaleRequestLucrativity,
+          Routes.processAuthorizationSaleRequest,
         TypeAccordingToTheCode.receiptLiberateDocument => null,
         null => null,
       };
@@ -33,15 +33,23 @@ class ProcessesItems extends ConsumerWidget {
         );
         return;
       }
+
+      final pathParams = {
+        'enterpriseCode': process.enterprise!.code.toString(),
+        'processCode': process.code.toString(),
+      };
+
+      if (nextRoute == Routes.processAuthorizationSaleRequest) {
+        pathParams['pageType'] =
+            process.authorizationProcessItem?.typeAccordingToTheCode ==
+                TypeAccordingToTheCode.saleRequestDiscount
+            ? PageType.discount.name
+            : PageType.lucrativity.name;
+      }
+
       if (context.mounted) {
-        context.pushNamed(
-          //TODO test it in web page. Shouldn't create a new route
-          nextRoute.name,
-          pathParameters: {
-            'enterpriseCode': process.enterprise!.code.toString(),
-            'processCode': process.code.toString(),
-          },
-        );
+        //TODO test it in web page. Shouldn't create a new route
+        context.pushNamed(nextRoute.name, pathParameters: pathParams);
       }
     }
 
