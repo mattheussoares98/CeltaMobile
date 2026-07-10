@@ -173,14 +173,6 @@ class LucrativityAnalysisTable extends StatelessWidget {
           sortValueMapper: (item) => item.praticedMargin,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
-          headerTitle: 'Venda'.hardcoded,
-          isMoney: true,
-          minWidth: 80.0,
-          cellBuilder: (item) =>
-              BaseText(item.unitAppliedPrice.toString().toBrazilianNumber(2)),
-          sortValueMapper: (item) => item.unitAppliedPrice,
-        ),
-        ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Dif unit'.hardcoded,
           isMoney: true,
           minWidth: 80.0,
