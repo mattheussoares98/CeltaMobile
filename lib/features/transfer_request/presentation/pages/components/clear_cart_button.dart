@@ -3,10 +3,10 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class ClearCartButton extends ConsumerWidget {
   final DraftKey draftKey;
@@ -23,7 +23,7 @@ class ClearCartButton extends ConsumerWidget {
 
     return PrimaryTextButton(
       text: isDesktop ? 'Limpar carrinho'.hardcoded : '',
-      icon: PlatformIcon(
+      platformIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
         color: cartIsEmpty ? context.theme.disabledColor : Colors.red,

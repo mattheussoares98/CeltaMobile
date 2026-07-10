@@ -1,13 +1,12 @@
 import 'dart:typed_data';
 
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
 
 class VisualizePdfButton extends ConsumerWidget {
   final Uint8List bytes;
@@ -29,7 +28,7 @@ class VisualizePdfButton extends ConsumerWidget {
           extra: <String, dynamic>{'bytes': bytes, 'fileName': modelName},
         );
       },
-      icon: const PlatformIcon(
+      platformIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.eye,
         materialIcon: Icons.remove_red_eye,
       ),

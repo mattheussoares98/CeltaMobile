@@ -133,7 +133,7 @@ class _FinishOffer extends ConsumerWidget {
                     product.EnterpriseCode!,
                   ).select((s) => s.isLoading),
                 ),
-                icon: mediaSize.width < 300
+                platformIcon: mediaSize.width < 300
                     ? null
                     : const PlatformIcon(
                         cupertinoIcon: CupertinoIcons.clear,

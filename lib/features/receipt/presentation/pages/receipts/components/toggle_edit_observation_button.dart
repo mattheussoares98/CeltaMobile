@@ -1,11 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
-import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 
 class ToggleUpdateObservationButton extends ConsumerWidget {
   final ReceiptEntity receipt;
@@ -49,7 +48,7 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
                 .replaceAll(RegExp(r'\\n'), '\n')
                 .replaceAll(RegExp(r'\\'), '');
       },
-      icon: const PlatformIcon(
+      platformIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.pencil,
         materialIcon: Icons.edit,
       ),

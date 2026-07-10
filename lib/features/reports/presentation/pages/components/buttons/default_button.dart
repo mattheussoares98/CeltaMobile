@@ -108,7 +108,7 @@ class DefaultButton extends ConsumerWidget {
                       ? 'Baixar planilha'.hardcoded
                       : 'Baixar PDF'.hardcoded),
             isLoading: isLoading,
-            icon: const PlatformIcon(
+            platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.cloud_download,
               materialIcon: Icons.download,
             ),

@@ -2,10 +2,10 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:celta_inventario/utils/utils.dart';
 
 class ClearRequestButton extends ConsumerWidget {
   final TextEditingController observationsController;
@@ -56,7 +56,7 @@ class ClearRequestButton extends ConsumerWidget {
                 );
               }
             : null,
-        icon: PlatformIcon(
+        platformIcon: PlatformIcon(
           cupertinoIcon: CupertinoIcons.delete,
           materialIcon: Icons.delete,
           color: hasSelectedValues ? Colors.red : context.theme.disabledColor,

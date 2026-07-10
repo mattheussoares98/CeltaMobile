@@ -81,7 +81,7 @@ class ResearchItem extends ConsumerWidget {
                         context,
                       );
                     },
-                    icon: mediaSize.width > 300
+                    platformIcon: mediaSize.width > 300
                         ? const PlatformIcon(
                             cupertinoIcon: CupertinoIcons.pencil,
                             materialIcon: Icons.edit_outlined,

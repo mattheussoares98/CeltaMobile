@@ -79,7 +79,7 @@ class InfoButton extends StatelessWidget {
     return FittedBox(
       child: PrimaryTextButton(
         text: 'Info'.hardcoded,
-        icon: PlatformIcon(
+        platformIcon: PlatformIcon(
           cupertinoIcon: CupertinoIcons.info_circle_fill,
           materialIcon: Icons.info,
           color: context.theme.primaryColor,

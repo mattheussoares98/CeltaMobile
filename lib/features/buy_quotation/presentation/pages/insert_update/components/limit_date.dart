@@ -42,7 +42,7 @@ class LimitDate extends ConsumerWidget {
                   text: dateOfLimit == null
                       ? 'Inserir'.hardcoded
                       : 'Alterar'.hardcoded,
-                  icon: const PlatformIcon(
+                  platformIcon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.calendar,
                     materialIcon: Icons.date_range,
                   ),

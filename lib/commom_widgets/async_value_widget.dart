@@ -144,7 +144,7 @@ class _Error extends StatelessWidget {
               PrimaryTextButton(
                 text: 'Tentar novamente'.hardcoded,
                 onPressed: tryAgain,
-                icon: const PlatformIcon(
+                platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.refresh,
                   materialIcon: Icons.refresh,
                 ),

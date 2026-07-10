@@ -16,7 +16,7 @@ class PrimaryTextButton extends StatelessWidget {
     required this.text,
     this.isLoading = false,
     this.onPressed,
-    this.icon,
+    this.platformIcon,
     this.iconAlignment = IconAlignment.end,
     this.color,
     this.isSmall,
@@ -25,7 +25,7 @@ class PrimaryTextButton extends StatelessWidget {
   final String text;
   final bool isLoading;
   final VoidCallback? onPressed;
-  final Widget? icon;
+  final PlatformIcon? platformIcon;
   final IconAlignment? iconAlignment;
   final Color? color;
   final TextAlign? textAlign;
@@ -51,14 +51,14 @@ class PrimaryTextButton extends StatelessWidget {
       textType: isSmall == true ? TextType.titleSmall : TextType.titleMedium,
       color: textColor,
     );
-    final iconWidget = icon == null
+    final iconWidget = platformIcon == null
         ? null
         : IconTheme(
             data: IconThemeData(
               color: iconColor,
               size: isSmall == true ? 16 : 24,
             ),
-            child: icon!,
+            child: platformIcon!,
           );
 
     final minimumSizeToShowIcon = isSmall == true ? 60 : 150;
@@ -82,7 +82,10 @@ class PrimaryTextButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     textWidget,
-                    if (icon != null && canShowIcon) ...[gapW8, iconWidget!],
+                    if (platformIcon != null && canShowIcon) ...[
+                      gapW8,
+                      iconWidget!,
+                    ],
                   ],
                 ),
                 if (isLoading)

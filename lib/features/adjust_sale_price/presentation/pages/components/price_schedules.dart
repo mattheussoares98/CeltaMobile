@@ -87,7 +87,7 @@ class _LoadSchedules extends StatelessWidget {
             text: schedules == null
                 ? 'Obter agendamentos'.hardcoded
                 : 'Atualizar agendamentos'.hardcoded,
-            icon: const PlatformIcon(
+            platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.timer,
               materialIcon: Icons.timer_outlined,
             ),

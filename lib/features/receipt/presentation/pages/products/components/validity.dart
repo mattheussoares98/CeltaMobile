@@ -50,7 +50,7 @@ class _ValidityState extends State<Validity> {
               alignment: Alignment.centerLeft,
               child: PrimaryTextButton(
                 text: 'Nova validade'.hardcoded,
-                icon: const PlatformIcon(
+                platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.calendar,
                   materialIcon: Icons.calendar_month,
                 ),

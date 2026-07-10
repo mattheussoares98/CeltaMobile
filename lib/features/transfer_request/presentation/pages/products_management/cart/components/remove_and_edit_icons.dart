@@ -47,7 +47,7 @@ class RemoveAndEditIcons extends ConsumerWidget {
         PrimaryTextButton(
           text: PlatformUtil.isCupertino ? 'Editar'.hardcoded : '',
           onPressed: changeSelectedIndex,
-          icon: const PlatformIcon(
+          platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.pencil,
             materialIcon: Icons.edit,
           ),

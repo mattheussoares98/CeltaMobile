@@ -24,7 +24,7 @@ class EmptyProductsMessage extends ConsumerWidget {
           gapH8,
           PrimaryTextButton(
             text: 'Pesquisar novamente'.hardcoded,
-            icon: const PlatformIcon(
+            platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.refresh,
               materialIcon: Icons.refresh_rounded,
             ),

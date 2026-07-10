@@ -81,8 +81,11 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                         widget.filterProductsFocusNode.requestFocus();
                       });
                     },
-                    icon: Icon(
-                      expandedFilter
+                    platformIcon: PlatformIcon(
+                      cupertinoIcon: expandedFilter
+                          ? Icons.filter_alt
+                          : Icons.filter_alt_outlined,
+                      materialIcon: expandedFilter
                           ? Icons.filter_alt
                           : Icons.filter_alt_outlined,
                     ),

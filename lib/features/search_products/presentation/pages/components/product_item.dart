@@ -37,7 +37,7 @@ class ProductItem extends ConsumerWidget {
                 text: product.PendantPrintLabel!
                     ? 'Desmarcar para impressão'.hardcoded
                     : 'Marcar para impressão'.hardcoded,
-                icon: PlatformIcon(
+                platformIcon: PlatformIcon(
                   cupertinoIcon: product.PendantPrintLabel!
                       ? CupertinoIcons.printer_fill
                       : CupertinoIcons.printer,

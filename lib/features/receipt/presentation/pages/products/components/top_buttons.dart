@@ -118,7 +118,7 @@ class _DefaultSearchProduct extends ConsumerWidget {
       child: PrimaryTextButton(
         text: title,
         isSmall: true,
-        icon: const PlatformIcon(
+        platformIcon: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.search,
           materialIcon: Icons.search,
         ),

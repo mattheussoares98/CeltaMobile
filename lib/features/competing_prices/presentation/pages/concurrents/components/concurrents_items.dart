@@ -160,7 +160,7 @@ class ConcurrentItem extends StatelessWidget {
                         context,
                       );
                     },
-                    icon: mediaSize.width < 300
+                    platformIcon: mediaSize.width < 300
                         ? null
                         : const PlatformIcon(
                             cupertinoIcon: CupertinoIcons.pencil,

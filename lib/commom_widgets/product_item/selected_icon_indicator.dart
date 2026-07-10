@@ -39,7 +39,7 @@ class SelectedIconIndicator extends StatelessWidget {
       return FittedBox(
         child: PrimaryTextButton(
           text: 'Editar'.hardcoded,
-          icon: selected ? selectedIcon : notSelectedIcon,
+          platformIcon: selected ? selectedIcon : notSelectedIcon,
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();
             onTap?.call();

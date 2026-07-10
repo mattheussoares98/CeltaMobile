@@ -1,11 +1,10 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
 
 class VisualizeFilePathButton extends ConsumerWidget {
   final DefaultButton widget;
@@ -16,7 +15,7 @@ class VisualizeFilePathButton extends ConsumerWidget {
     return PrimaryTextButton(
       isSmall: true,
       text: 'Visualizar caminho'.hardcoded,
-      icon: const PlatformIcon(
+      platformIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.eye,
         materialIcon: Icons.remove_red_eye,
       ),

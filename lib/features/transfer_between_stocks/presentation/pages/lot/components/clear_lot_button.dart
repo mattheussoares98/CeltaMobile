@@ -24,7 +24,7 @@ class ClearLotButton extends ConsumerWidget {
     return PrimaryTextButton(
       text: isDesktop ? 'Limpar lote'.hardcoded : '',
       color: Colors.red,
-      icon: PlatformIcon(
+      platformIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
         color: hasProductsInCart ? Colors.red : context.theme.disabledColor,
