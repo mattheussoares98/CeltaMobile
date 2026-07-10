@@ -1,0 +1,51 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/vote.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class OpenVotePageButton extends ConsumerWidget {
+  final int processCode;
+  const OpenVotePageButton({super.key, required this.processCode});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final process = ref.watch(
+      judgmentsStateControllerProvider.select(
+        (s) => s.value?.firstWhereOrNull((e) => e.code == processCode),
+      ),
+    );
+    return PrimaryTextButton(
+      text: 'Votar'.hardcoded,
+      onPressed: process == null
+          ? null
+          : () async {
+              final loggedUser = await ref.read(
+                validatedUserSessionProvider.future,
+              );
+              final isAuthorizator =
+                  process.authorizators?.any(
+                    (e) =>
+                        (e.identification?.isNotEmpty ?? false) &&
+                        e.identification?.toLowerCase() ==
+                            loggedUser?.user.name?.toLowerCase(),
+                  ) ??
+                  false;
+
+              if (!isAuthorizator) {
+                showToastMessage(
+                  'Você não é um autorizador. Por isso não pode votar nesse processo',
+                  type: ToastType.error,
+                );
+                return;
+              }
+              if (context.mounted) {
+                showModalPage(VotePage(processCode: processCode), context);
+              }
+            },
+    );
+  }
+}
