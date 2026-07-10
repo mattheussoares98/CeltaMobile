@@ -24,14 +24,13 @@ class UserDateAndLinkAccess extends ConsumerWidget {
             switch (judgmentDetails
                 .authorizationProcessItem
                 ?.typeAccordingToTheCode) {
-              TypeAccordingToTheCode.saleRequestDiscount =>
+              TypeAccordingToTheCode.saleRequestDiscount ||
+              TypeAccordingToTheCode.saleRequestLucrativity =>
                 OpenSaleRequestDetailsPageButton(
                   title: 'Visualizar pedido'.hardcoded,
                   processCode: processCode,
                 ),
               TypeAccordingToTheCode.receiptLiberateDocument =>
-                const SizedBox.shrink(), //TODO implement
-              TypeAccordingToTheCode.saleRequestLucrativity =>
                 const SizedBox.shrink(), //TODO implement
               null => const SizedBox.shrink(),
             },
