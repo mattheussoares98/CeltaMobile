@@ -125,7 +125,7 @@ class _BaseScaffold extends ConsumerWidget {
     if (params.refreshProvider != null) {
       newChild = Consumer(
         builder: (context, ref, child) {
-          return RefreshIndicator(
+          return RefreshIndicator.adaptive(
             onRefresh: () async {
               ref.invalidate(params.refreshProvider!);
               // try {

@@ -360,7 +360,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
     if (widget.refreshProvider != null) {
       table = Consumer(
         builder: (context, ref, child) {
-          return RefreshIndicator(
+          return RefreshIndicator.adaptive(
             onRefresh: () async {
               ref.invalidate(widget.refreshProvider!);
               try {
