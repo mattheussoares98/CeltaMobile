@@ -119,6 +119,11 @@ class ProcessesItems extends ConsumerWidget {
                                   ?.map((e) => e.identification)
                                   .join('; '),
                             ),
+                          if (process.observationsVotes?.isNotEmpty ?? false)
+                            TitleAndSubTitle(
+                              title: 'Observações'.hardcoded,
+                              subTitle: process.observationsVotes,
+                            ),
                         ],
                       ),
                     ),
