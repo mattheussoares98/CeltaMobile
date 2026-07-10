@@ -31,18 +31,19 @@ class SaleRequestDetailsPage extends ConsumerWidget {
         message: 'Impressão enviada com sucesso'.hardcoded,
       );
     });
+
+    final saleRequestArgs = SaleRequestArgs(
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
+    );
     return ProviderScope(
-      overrides: [
-        saleRequestArgsProvider.overrideWithValue(
-          SaleRequestArgs(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ),
-        ),
-      ],
+      overrides: [saleRequestArgsProvider.overrideWithValue(saleRequestArgs)],
       child: BaseScaffold(
         isScrollable: false,
+        refreshProvider: saleRequestDetailsStateControllerProvider(
+          saleRequestArgs,
+        ),
         appBar: BaseAppBar(
           title: 'Detalhes do pedido'.hardcoded,
           selectedEnterpriseCode: enterpriseCode,

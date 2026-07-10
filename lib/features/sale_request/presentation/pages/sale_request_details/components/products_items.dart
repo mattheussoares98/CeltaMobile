@@ -19,7 +19,11 @@ class ProductsItems extends ConsumerWidget {
           ref.read(saleRequestArgsProvider),
         ),
       ),
-      tryAgain: () => ref.invalidate(saleRequestDetailsStateControllerProvider),
+      tryAgain: () => ref.invalidate(
+        saleRequestDetailsStateControllerProvider(
+          ref.read(saleRequestArgsProvider),
+        ),
+      ),
       data: (requestDetails) {
         final products = requestDetails.products;
 
