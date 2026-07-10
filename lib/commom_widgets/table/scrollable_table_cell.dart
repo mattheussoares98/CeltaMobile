@@ -6,6 +6,7 @@ class _ScrollableTableCell extends StatelessWidget {
   final double height;
   final Color? backgroundColor;
   final bool? showTopBorder;
+  final bool? showBottomBorder;
   final ScrollableTableColumnSpec<dynamic> spec;
 
   const _ScrollableTableCell({
@@ -15,6 +16,7 @@ class _ScrollableTableCell extends StatelessWidget {
     required this.spec,
     this.backgroundColor,
     this.showTopBorder,
+    this.showBottomBorder,
   });
 
   @override
@@ -53,7 +55,9 @@ class _ScrollableTableCell extends StatelessWidget {
           top: showTopBorder == true
               ? BorderSide(color: context.theme.dividerColor, width: 0.5)
               : BorderSide.none,
-          bottom: BorderSide(color: context.theme.dividerColor, width: 0.5),
+          bottom: showBottomBorder == true
+              ? BorderSide(color: context.theme.dividerColor, width: 0.5)
+              : BorderSide.none,
           right: BorderSide(color: context.theme.dividerColor, width: 0.07),
         ),
       ),

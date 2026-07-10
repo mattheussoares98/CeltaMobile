@@ -72,13 +72,19 @@ class _ScrollableLayout<T> extends StatelessWidget {
                 physics: physics,
                 itemCount: sortedItems.length,
                 itemExtent: rowHeight,
-                itemBuilder: (_, index) => _ScrollableRow<T>(
-                  item: sortedItems[index],
-                  columns: columns,
-                  rowHeight: rowHeight,
-                  rowBackgroundColor: rowBackgroundColor,
-                  extraPerColumn: extraPerColumn,
-                ),
+                itemBuilder: (_, index) {
+                  final isOdd = index.isOdd;
+                  final rowBg = isOdd
+                      ? (rowBackgroundColor ?? context.theme.cardColor)
+                      : context.theme.scaffoldBackgroundColor;
+                  return _ScrollableRow<T>(
+                    item: sortedItems[index],
+                    columns: columns,
+                    rowHeight: rowHeight,
+                    backgroundColor: rowBg,
+                    extraPerColumn: extraPerColumn,
+                  );
+                },
               ),
             ),
             if (hasFooter)

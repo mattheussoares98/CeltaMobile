@@ -4,14 +4,14 @@ class _ScrollableRow<T> extends StatelessWidget {
   final T item;
   final List<ScrollableTableColumnSpec<T>> columns;
   final double rowHeight;
-  final Color? rowBackgroundColor;
+  final Color? backgroundColor;
   final double extraPerColumn;
 
   const _ScrollableRow({
     required this.item,
     required this.columns,
     required this.rowHeight,
-    required this.rowBackgroundColor,
+    required this.backgroundColor,
     required this.extraPerColumn,
   });
 
@@ -26,7 +26,7 @@ class _ScrollableRow<T> extends StatelessWidget {
               width: col.minWidth + extraPerColumn,
               height: rowHeight,
               spec: col,
-              backgroundColor: rowBackgroundColor,
+              backgroundColor: backgroundColor,
               child: col.cellBuilder(item),
             ),
         ],

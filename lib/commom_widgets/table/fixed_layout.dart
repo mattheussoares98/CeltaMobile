@@ -64,6 +64,7 @@ class _FixedLayout<T> extends StatelessWidget {
                 height: headerHeight,
                 spec: firstCol,
                 backgroundColor: headerBg,
+                showBottomBorder: true,
                 child: _ScrollableTableHeaderCell<T>(
                   spec: firstCol,
                   isSorted: sortColumnIndex == 0,
@@ -81,13 +82,19 @@ class _FixedLayout<T> extends StatelessWidget {
                     physics: physics,
                     itemCount: sortedItems.length,
                     itemExtent: rowHeight,
-                    itemBuilder: (_, index) => _ScrollableTableCell(
-                      width: firstColWidth,
-                      height: rowHeight,
-                      spec: firstCol,
-                      backgroundColor: rowBackgroundColor,
-                      child: firstCol.cellBuilder(sortedItems[index]),
-                    ),
+                    itemBuilder: (_, index) {
+                      final isOdd = index.isOdd;
+                      final rowBg = isOdd
+                          ? (rowBackgroundColor ?? context.theme.cardColor)
+                          : context.theme.scaffoldBackgroundColor;
+                      return _ScrollableTableCell(
+                        width: firstColWidth,
+                        height: rowHeight,
+                        spec: firstCol,
+                        backgroundColor: rowBg,
+                        child: firstCol.cellBuilder(sortedItems[index]),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -139,13 +146,19 @@ class _FixedLayout<T> extends StatelessWidget {
                       physics: physics,
                       itemCount: sortedItems.length,
                       itemExtent: rowHeight,
-                      itemBuilder: (_, index) => _ScrollableRow<T>(
-                        item: sortedItems[index],
-                        columns: scrollableColumns,
-                        rowHeight: rowHeight,
-                        rowBackgroundColor: rowBackgroundColor,
-                        extraPerColumn: extraPerColumn,
-                      ),
+                      itemBuilder: (_, index) {
+                        final isOdd = index.isOdd;
+                        final rowBg = isOdd
+                            ? (rowBackgroundColor ?? context.theme.cardColor)
+                            : context.theme.scaffoldBackgroundColor;
+                        return _ScrollableRow<T>(
+                          item: sortedItems[index],
+                          columns: scrollableColumns,
+                          rowHeight: rowHeight,
+                          backgroundColor: rowBg,
+                          extraPerColumn: extraPerColumn,
+                        );
+                      },
                     ),
                   ),
                   if (hasFooter)

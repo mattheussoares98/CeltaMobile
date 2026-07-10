@@ -28,6 +28,7 @@ class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
       height: headerHeight,
       spec: col,
       backgroundColor: headerBg,
+      showBottomBorder: true,
       child: _ScrollableTableHeaderCell<T>(
         spec: col,
         isSorted: isSorted,
