@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/sale_request_discount/components/components.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/vote.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -73,8 +74,11 @@ class _ProcessAuthorizationSaleRequestDiscountsPageState
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: title,
-        showSelectedEnterprise: true,
+        title: 'Análise de descontos'.hardcoded,
+        subtitle: OpenSaleRequestDetailsPageButton(
+          processCode: widget.processCode,
+          title: 'Detalhes do pedido'.hardcoded,
+        ),
         actions: [
           PrimaryTextButton(
             text: 'Votar'.hardcoded,
