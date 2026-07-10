@@ -69,6 +69,12 @@ void main() {
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        voteControllerProvider(processCode),
+        (_, next) => states.add(next),
+      );
+
       int judgmentsBuildCount = 0;
       container.listen(
         judgmentsStateControllerProvider,
@@ -90,6 +96,7 @@ void main() {
           .vote(authorized, observations);
 
       // ASSERT
+      expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
       verify(
         () => mockRepository.vote(
           EcRequestParams(
@@ -113,12 +120,19 @@ void main() {
       final container = makeProviderContainer(session: null);
       addTearDown(container.dispose);
 
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        voteControllerProvider(processCode),
+        (_, next) => states.add(next),
+      );
+
       // ACT & ASSERT
       await container
           .read(voteControllerProvider(processCode).notifier)
           .vote(authorized, observations);
 
       // ACT & ASSERT
+      expect(states, [isA<AsyncLoading<void>>(), isA<AsyncError<void>>()]);
       expect(
         container.read(voteControllerProvider(processCode)),
         isA<AsyncError<void>>(),
@@ -152,6 +166,12 @@ void main() {
       final container = makeProviderContainer(session: fakeSession);
       addTearDown(container.dispose);
 
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        voteControllerProvider(processCode),
+        (_, next) => states.add(next),
+      );
+
       int judgmentsBuildCount = 0;
       container.listen(
         judgmentsStateControllerProvider,
@@ -172,6 +192,7 @@ void main() {
           .vote(authorized, observations);
 
       // ACT & ASSERT
+      expect(states, [isA<AsyncLoading<void>>(), isA<AsyncError<void>>()]);
       expect(
         container.read(voteControllerProvider(processCode)),
         isA<AsyncError<void>>(),

@@ -12,6 +12,8 @@ class VoteController extends _$VoteController {
   FutureOr<void> build(int processCode) {}
 
   Future<void> vote(bool authorized, String? observations) async {
+    state = const AsyncLoading<void>();
+
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
 
