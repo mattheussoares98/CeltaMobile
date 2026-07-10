@@ -51,6 +51,26 @@ class ProcessesItems extends ConsumerWidget {
       data: (data) {
         final filteredData = data.where((e) => e.status == status).toList();
 
+        if (filteredData.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: .center,
+              crossAxisAlignment: .center,
+              children: [
+                BaseRichText(
+                  textAlign: .center,
+                  texts: [
+                    BaseText.title(
+                      'Não foram encontrados processos com o status '.hardcoded,
+                    ),
+                    BaseText.error('${status.label.toLowerCase()} '),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }
+
         return ResponsiveListFlow(
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
