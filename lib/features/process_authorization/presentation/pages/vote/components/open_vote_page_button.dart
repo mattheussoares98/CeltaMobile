@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/vote.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -23,6 +24,14 @@ class OpenVotePageButton extends ConsumerWidget {
       onPressed: process == null
           ? null
           : () async {
+              if (process.status !=
+                  BSFProcessAuthorizationJudgementStatus.awaiting) {
+                showToastMessage(
+                  'Esse processo já foi julgado'.hardcoded,
+                  type: .error,
+                );
+                return;
+              }
               final loggedUser = await ref.read(
                 validatedUserSessionProvider.future,
               );
