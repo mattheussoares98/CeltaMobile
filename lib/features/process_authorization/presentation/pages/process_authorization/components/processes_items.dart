@@ -90,15 +90,6 @@ class ProcessesItems extends ConsumerWidget {
                             title: null,
                             subTitle: process.enterprise?.name ?? '',
                           ),
-                          TitleAndSubTitle(
-                            title: null,
-                            subTitle:
-                                process
-                                    .authorizationProcessItem
-                                    ?.typeAccordingToTheCode
-                                    ?.label ??
-                                '',
-                          ),
                           BaseText.titleMedium(
                             process.authorizationProcessItem?.name ?? '',
                           ),
