@@ -60,7 +60,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Reposição'.hardcoded,
           isMoney: true,
-          minWidth: 80.0,
+          minWidth: 90,
           cellBuilder: (item) =>
               BaseText(item.replacementCost.toString().toBrazilianNumber(2)),
           sortValueMapper: (item) => item.replacementCost,
@@ -89,12 +89,19 @@ class LucrativityAnalysisTable extends StatelessWidget {
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Desp op'.hardcoded,
-          isPercentage: true,
+          isMoney: true,
           minWidth: 80,
           cellBuilder: (item) => BaseText(
             item.operationalExpense.toString().toBrazilianNumber(2, true),
           ),
           sortValueMapper: (item) => item.operationalExpense,
+          footerCellBuilder: (items) => BaseText(
+            items
+                .fold<double>(0, (p, e) => p + e.operationalExpense)
+                .toString()
+                .toBrazilianNumber(2),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Imposto'.hardcoded,
@@ -114,10 +121,17 @@ class LucrativityAnalysisTable extends StatelessWidget {
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Faturamento'.hardcoded,
           isMoney: true,
-          minWidth: 80,
+          minWidth: 105,
           cellBuilder: (item) =>
               BaseText(item.billingValue.toString().toBrazilianNumber(2)),
           sortValueMapper: (item) => item.billingValue,
+          footerCellBuilder: (items) => BaseText(
+            items
+                .fold<double>(0, (p, e) => p + e.billingValue)
+                .toString()
+                .toBrazilianNumber(2),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Lucro'.hardcoded,
@@ -126,6 +140,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           cellBuilder: (item) =>
               BaseText(item.profitValue.toString().toBrazilianNumber(2)),
           sortValueMapper: (item) => item.profitValue,
+          footerCellBuilder: (items) => BaseText(
+            items
+                .fold<double>(0, (p, e) => p + e.profitValue)
+                .toString()
+                .toBrazilianNumber(2),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Margem'.hardcoded,
@@ -134,6 +155,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           cellBuilder: (item) =>
               BaseText(item.praticedMargin.toString().toBrazilianNumber(2)),
           sortValueMapper: (item) => item.praticedMargin,
+          footerCellBuilder: (items) => BaseText(
+            (items.fold<double>(0, (p, e) => p + e.praticedMargin) /
+                    items.length)
+                .toString()
+                .toBrazilianNumber(2),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Mín'.hardcoded,
@@ -161,7 +189,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
           sortValueMapper: (item) => item.unitDifference,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
-          headerTitle: 'Total dif'.hardcoded,
+          headerTitle: 'Dif total'.hardcoded,
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(
