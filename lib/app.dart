@@ -17,6 +17,7 @@ class MyApp extends ConsumerWidget {
 
     final goRouter = ref.watch(goRouterProvider);
     return ToastificationWrapper(
+      config: const ToastificationConfig(maxTitleLines: 10),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: FocusScope.of(context).unfocus,
