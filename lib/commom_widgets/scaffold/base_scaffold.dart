@@ -128,9 +128,9 @@ class _BaseScaffold extends ConsumerWidget {
           return RefreshIndicator(
             onRefresh: () async {
               ref.invalidate(params.refreshProvider!);
-              try {
-                await ref.read((params.refreshProvider! as dynamic).future);
-              } catch (_) {}
+              // try {
+              //   await ref.read((params.refreshProvider! as dynamic).future);
+              // } catch (_) {}
             },
             backgroundColor: context.theme.colorScheme.surface,
             strokeWidth: 2,
