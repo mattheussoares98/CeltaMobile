@@ -60,6 +60,13 @@ class ProcessAuthorizationGoodsReceivingPage extends ConsumerWidget {
                           title: 'Empresa'.hardcoded,
                           subTitle: goodsReceiving.enterpriseString,
                         ),
+                        if (goodsReceiving.detail?.enterpriseOrigin != null)
+                          TitleAndSubTitle(
+                            title: 'Empresa origem'.hardcoded,
+                            subTitle:
+                                '${goodsReceiving.detail!.enterpriseOrigin!.personalizedCode}'
+                                '-${goodsReceiving.detail!.enterpriseOrigin!.fantasizesName}',
+                          ),
                         if (goodsReceiving.type?.name != null)
                           TitleAndSubTitle(
                             title: 'Tipo de documento'.hardcoded,
