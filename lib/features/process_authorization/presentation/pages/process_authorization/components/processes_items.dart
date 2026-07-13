@@ -82,6 +82,17 @@ class ProcessesItems extends ConsumerWidget {
           );
         }
 
+        filteredData.sort((a, b) {
+          final timeA = a.dateTimeOfCreation;
+          final timeB = b.dateTimeOfCreation;
+
+          if (timeA == null && timeB == null) return 0;
+          if (timeA == null) return -1;
+          if (timeB == null) return 1;
+
+          return timeB.compareTo(timeA);
+        });
+
         return ResponsiveListFlow(
           itemCount: filteredData.length,
           itemBuilder: (context, index) {
