@@ -12,7 +12,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class OpenVotePageButton extends ConsumerWidget {
   final int processCode;
-  const OpenVotePageButton({super.key, required this.processCode});
+  final bool showDeviceRotationIcon;
+  final bool usePrimaryButton;
+  const OpenVotePageButton({
+    super.key,
+    required this.processCode,
+    this.showDeviceRotationIcon = true,
+    this.usePrimaryButton = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,43 +28,46 @@ class OpenVotePageButton extends ConsumerWidget {
         (s) => s.value?.firstWhereOrNull((e) => e.code == processCode),
       ),
     );
-    final voteButton = PrimaryTextButton(
-      text: 'Votar'.hardcoded,
-      onPressed: process == null
-          ? null
-          : () async {
-              if (process.status !=
-                  BSFProcessAuthorizationJudgementStatus.awaiting) {
-                showToastMessage(
-                  'Esse processo já foi julgado'.hardcoded,
-                  type: .error,
-                );
-                return;
-              }
-              final loggedUser = await ref.read(
-                validatedUserSessionProvider.future,
-              );
-              final isAuthorizator =
-                  process.authorizators?.any(
-                    (e) =>
-                        (e.identification?.isNotEmpty ?? false) &&
-                        e.identification?.toLowerCase().trim() ==
-                            loggedUser?.user.name?.toLowerCase().trim(),
-                  ) ??
-                  false;
 
-              if (!isAuthorizator) {
-                showToastMessage(
-                  'Você não é um autorizador. Por isso não pode votar nesse processo',
-                  type: ToastType.error,
-                );
-                return;
-              }
-              if (context.mounted) {
-                showModalPage(VotePage(processCode: processCode), context);
-              }
-            },
-    );
+    Future<void> onTap() async {
+      if (process?.status != BSFProcessAuthorizationJudgementStatus.awaiting) {
+        showToastMessage(
+          'Esse processo já foi julgado'.hardcoded,
+          type: .error,
+        );
+        return;
+      }
+      final loggedUser = await ref.read(validatedUserSessionProvider.future);
+      final isAuthorizator =
+          process?.authorizators?.any(
+            (e) =>
+                (e.identification?.isNotEmpty ?? false) &&
+                e.identification?.toLowerCase().trim() ==
+                    loggedUser?.user.name?.toLowerCase().trim(),
+          ) ??
+          false;
+
+      if (!isAuthorizator) {
+        showToastMessage(
+          'Você não é um autorizador. Por isso não pode votar nesse processo',
+          type: ToastType.error,
+        );
+        return;
+      }
+      if (context.mounted) {
+        showModalPage(VotePage(processCode: processCode), context);
+      }
+    }
+
+    Widget voteButton = usePrimaryButton
+        ? PrimaryButton(
+            text: 'Votar'.hardcoded,
+            onPressed: process == null ? null : onTap,
+          )
+        : PrimaryTextButton(
+            text: 'Votar'.hardcoded,
+            onPressed: process == null ? null : onTap,
+          );
 
     if (PlatformUtil.isMobile) {
       return Column(

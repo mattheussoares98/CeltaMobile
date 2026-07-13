@@ -14,10 +14,10 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
       case TypeAccordingToTheCode.saleRequestDiscount ||
           TypeAccordingToTheCode.saleRequestLucrativity:
         return BSFSaleRequestDefendantModel.fromJson(json);
-      case TypeAccordingToTheCode.goodsReceivingLiberateDocument:
+      case TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
+          TypeAccordingToTheCode.goodsReceivingCancelDocument:
         return BSFGoodsReceivingDefendantModel.fromJson(json);
       case TypeAccordingToTheCode.goodsReceivingValueDocument:
-      case TypeAccordingToTheCode.goodsReceivingCancelDocument:
       case TypeAccordingToTheCode.goodsReceivingValidateDocumentXml:
       case TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition:
         return throw AppException('Process type not implemented');
