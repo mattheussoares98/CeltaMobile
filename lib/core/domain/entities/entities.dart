@@ -22,3 +22,5 @@ export 'stock/stock.dart';
 export 'supplier/supplier.dart';
 export 'telephone/telephone.dart';
 export 'transfer_justification/transfer_justification.dart';
+export 'eletronic_access_key/eletronic_access_key.dart';
+

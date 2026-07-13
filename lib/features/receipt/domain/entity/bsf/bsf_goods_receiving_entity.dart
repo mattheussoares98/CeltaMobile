@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
@@ -36,8 +37,9 @@ class BSFGoodsReceivingEntity extends Equatable {
   final double? totalDivergencyLiquidValue;
   final bool? containProductsToDoDevolution;
   final BSFGoodsReceivingDetailEntity? detail;
-  final Map<String, dynamic>? eletronicAccessKey;
+  final BSFEletronicAccessKeyEntity? eletronicAccessKey;
   final String? xmlFileData;
+
 
   const BSFGoodsReceivingEntity({
     this.expeditionControlCode,
