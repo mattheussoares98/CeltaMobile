@@ -131,6 +131,16 @@ class DiscountAnalysisTable extends StatelessWidget {
             item.totalDifference.toString().toBrazilianNumber(2, true),
             color: item.hasPositiveDifference ? Colors.red : Colors.green,
           ),
+          footerCellBuilder: (items) {
+            final avg =
+                (items.fold<double>(0, (p, e) => p + e.totalDifference) /
+                items.length);
+            return BaseText(
+              avg.toString().toBrazilianNumber(2, true),
+              fontWeight: FontWeight.bold,
+              color: avg > 0 ? Colors.red : Colors.green,
+            );
+          },
           sortValueMapper: (item) => item.totalDifference,
         ),
       ],
