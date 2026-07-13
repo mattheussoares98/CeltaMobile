@@ -14,6 +14,11 @@ part 'scrollable_table_cell.dart';
 part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
+//!All TODOs are for iOS devices
+//TODO is adding a blank space before the first item
+//TODO is not respecting the RefreshIndicator
+//TODO when scrolling the table, it is doing a very slow animation to finish and can't interact with it until the animation finishes
+//TODO when on landscape mode, it is adding SafeArea on both sides
 final Set<String> _playedRouteNames = {};
 
 class ScrollableTable<T> extends StatefulWidget {
