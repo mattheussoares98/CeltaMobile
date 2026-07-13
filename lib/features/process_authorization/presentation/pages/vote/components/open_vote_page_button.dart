@@ -41,8 +41,8 @@ class OpenVotePageButton extends ConsumerWidget {
                   process.authorizators?.any(
                     (e) =>
                         (e.identification?.isNotEmpty ?? false) &&
-                        e.identification?.toLowerCase() ==
-                            loggedUser?.user.name?.toLowerCase(),
+                        e.identification?.toLowerCase().trim() ==
+                            loggedUser?.user.name?.toLowerCase().trim(),
                   ) ??
                   false;
 
