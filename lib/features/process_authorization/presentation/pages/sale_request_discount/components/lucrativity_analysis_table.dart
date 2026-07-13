@@ -137,31 +137,39 @@ class LucrativityAnalysisTable extends StatelessWidget {
           headerTitle: 'Lucro'.hardcoded,
           isMoney: true,
           minWidth: 80.0,
-          cellBuilder: (item) =>
-              BaseText(item.profitValue.toString().toBrazilianNumber(2)),
-          sortValueMapper: (item) => item.profitValue,
-          footerCellBuilder: (items) => BaseText(
-            items
-                .fold<double>(0, (p, e) => p + e.profitValue)
-                .toString()
-                .toBrazilianNumber(2),
-            fontWeight: FontWeight.bold,
+          cellBuilder: (item) => BaseText(
+            item.profitValue.toString().toBrazilianNumber(2),
+            color: item.profitValue > 0 ? Colors.green : Colors.red,
           ),
+          sortValueMapper: (item) => item.profitValue,
+          footerCellBuilder: (items) {
+            final total = items.fold<double>(0, (p, e) => p + e.profitValue);
+            return BaseText(
+              total.toString().toBrazilianNumber(2),
+              fontWeight: FontWeight.bold,
+              color: total > 0 ? Colors.green : Colors.red,
+            );
+          },
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Margem'.hardcoded,
           isPercentage: true,
           minWidth: 80.0,
-          cellBuilder: (item) =>
-              BaseText(item.praticedMargin.toString().toBrazilianNumber(2)),
-          sortValueMapper: (item) => item.praticedMargin,
-          footerCellBuilder: (items) => BaseText(
-            (items.fold<double>(0, (p, e) => p + e.praticedMargin) /
-                    items.length)
-                .toString()
-                .toBrazilianNumber(2),
-            fontWeight: FontWeight.bold,
+          cellBuilder: (item) => BaseText(
+            item.praticedMargin.toString().toBrazilianNumber(2),
+            color: item.praticedMargin > 0 ? Colors.green : Colors.red,
           ),
+          sortValueMapper: (item) => item.praticedMargin,
+          footerCellBuilder: (items) {
+            final avg =
+                items.fold<double>(0, (p, e) => p + e.praticedMargin) /
+                items.length;
+            return BaseText(
+              avg.toString().toBrazilianNumber(2),
+              fontWeight: FontWeight.bold,
+              color: avg > 0 ? Colors.green : Colors.red,
+            );
+          },
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Mín'.hardcoded,
