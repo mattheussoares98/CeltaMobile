@@ -18,6 +18,7 @@ enum UsageType {
   liberateReceiptDocument('Liberou recebimento'),
   notDefined('Não definido'),
   updateSaleRequest('Alterou pedido de vendas'),
+  processAuthorizationVote('Votou (processo de autorização)'),
   searchProducts('Pesquisou produtos'),
   sendToPrint('Marcou p/ impressão'),
   shallowSearchProduct('Consulta produtos (superficial)'),

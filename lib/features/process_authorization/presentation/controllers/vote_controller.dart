@@ -1,4 +1,5 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
@@ -23,6 +24,10 @@ class VoteController extends _$VoteController {
         user: validatedUser.user.name!,
         accessKey: validatedUser.user.AccessKey!,
       );
+
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.processAuthorizationVote);
 
       await repository.vote(
         ecParams,
