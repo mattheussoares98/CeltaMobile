@@ -42,6 +42,14 @@ class ProcessAuthorizationGoodsReceivingPage extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: .stretch,
               children: [
+                if (data.authorizationProcessItem?.typeAccordingToTheCode !=
+                    null)
+                  BaseText.error(
+                    data
+                        .authorizationProcessItem!
+                        .typeAccordingToTheCode!
+                        .label,
+                  ),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(Sizes.p8),
