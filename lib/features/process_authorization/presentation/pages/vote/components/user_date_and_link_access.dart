@@ -30,7 +30,11 @@ class UserDateAndLinkAccess extends ConsumerWidget {
                   title: 'Visualizar pedido'.hardcoded,
                   processCode: processCode,
                 ),
-              TypeAccordingToTheCode.receiptLiberateDocument =>
+              TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
+              TypeAccordingToTheCode.goodsReceivingCancelDocument ||
+              TypeAccordingToTheCode.goodsReceivingValueDocument ||
+              TypeAccordingToTheCode.goodsReceivingValidateDocumentXml ||
+              TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition =>
                 const SizedBox.shrink(), //TODO implement
               null => const SizedBox.shrink(),
             },

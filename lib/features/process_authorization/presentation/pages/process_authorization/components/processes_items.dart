@@ -23,7 +23,11 @@ class ProcessesItems extends ConsumerWidget {
         TypeAccordingToTheCode.saleRequestDiscount ||
         TypeAccordingToTheCode.saleRequestLucrativity =>
           Routes.processAuthorizationSaleRequest,
-        TypeAccordingToTheCode.receiptLiberateDocument => null,
+        TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
+        TypeAccordingToTheCode.goodsReceivingCancelDocument ||
+        TypeAccordingToTheCode.goodsReceivingValueDocument ||
+        TypeAccordingToTheCode.goodsReceivingValidateDocumentXml ||
+        TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition => null,
         null => null,
       };
       if (nextRoute == null) {

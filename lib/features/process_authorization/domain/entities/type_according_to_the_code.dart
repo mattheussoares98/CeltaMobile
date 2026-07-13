@@ -1,7 +1,17 @@
 import 'dart:developer' as console;
 
 enum TypeAccordingToTheCode {
-  receiptLiberateDocument(3, 'Liberação de documento no recebimento'),
+  goodsReceivingValueDocument(1, 'Valor do documento no recebimento'),
+  goodsReceivingCancelDocument(2, 'Cancelamento de documento no recebimento'),
+  goodsReceivingLiberateDocument(3, 'Liberação de documento no recebimento'),
+  goodsReceivingValidateDocumentXml(
+    5,
+    'Validação de documento XML no recebimento',
+  ),
+  goodsReceivingValidatePaymentCondition(
+    8,
+    'Validação de condição de pagamento no recebimento',
+  ),
   saleRequestLucrativity(4, 'Pedido de venda com preço abaixo do mínimo'),
   saleRequestDiscount(7, 'Pedido de venda com desconto acima do permitido');
 

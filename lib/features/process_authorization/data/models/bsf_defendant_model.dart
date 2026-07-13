@@ -1,4 +1,5 @@
 // lib/features/process_authorization/data/models/bsf_defendant_model.dart
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf_sale_request_model.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
@@ -11,9 +12,14 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
       case TypeAccordingToTheCode.saleRequestDiscount ||
           TypeAccordingToTheCode.saleRequestLucrativity:
         return BSFSaleRequestDefendantModel.fromJson(json);
-      case TypeAccordingToTheCode.receiptLiberateDocument:
+      case TypeAccordingToTheCode.goodsReceivingLiberateDocument:
         return BSFExpeditionDefendantModel.fromJson(json);
-      default:
+      case TypeAccordingToTheCode.goodsReceivingValueDocument:
+      case TypeAccordingToTheCode.goodsReceivingCancelDocument:
+      case TypeAccordingToTheCode.goodsReceivingValidateDocumentXml:
+      case TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition:
+        return throw AppException('Process type not implemented');
+      case null:
         return null;
     }
   }
