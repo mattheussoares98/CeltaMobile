@@ -3,6 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/login_controller.dart';
 import 'package:celta_inventario/features/auth/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -70,6 +71,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     ref.listen<AsyncValue<void>>(loginControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
+        // Invalidate the keepAlive provider so it re-runs with the new
+        // session, then pre-warm it before navigating to avoid a
+        // markNeedsBuild crash when HomePage first builds.
+        ref.invalidate(homeInitializationControllerProvider);
+        ref.read(homeInitializationControllerProvider);
         context.goNamed(Routes.home.name);
       });
     });

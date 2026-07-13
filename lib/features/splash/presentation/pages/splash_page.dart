@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,6 +48,10 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         _userSession?.user.CrossIdentity_Usuario == null) {
       context.goNamed(Routes.auth.name);
     } else {
+      // Pre-warm the initialization provider outside of any widget build
+      // phase so Riverpod's first flush does not collide with Flutter's
+      // rendering pipeline, preventing the markNeedsBuild crash.
+      ref.read(homeInitializationControllerProvider);
       context.goNamed(Routes.home.name);
     }
   }

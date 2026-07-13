@@ -1,10 +1,8 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_initialization_controller.g.dart';
 
@@ -12,9 +10,9 @@ part 'home_initialization_controller.g.dart';
 class HomeInitializationController extends _$HomeInitializationController {
   @override
   FutureOr<void> build() async {
-    final enterpriseName = ref.watch(
-      userSessionProvider.select((s) => s.value?.enterprise?.name),
-    );
+    final validatedUser = await ref.read(validatedUserSessionProvider.future);
+
+    final enterpriseName = validatedUser?.enterprise?.name;
 
     if (enterpriseName == null) {
       throw Exception(
@@ -23,9 +21,9 @@ class HomeInitializationController extends _$HomeInitializationController {
     }
 
     await Future.wait([
-      ref.watch(enterprisesStateControllerProvider().future),
-      ref.watch(bsVersionStateControllerProvider.future),
-      ref.watch(
+      ref.read(enterprisesStateControllerProvider().future),
+      ref.read(bsVersionStateControllerProvider.future),
+      ref.read(
         enabledModulesByEnterpriseNameStateControllerProvider(
           enterpriseName,
         ).future,
