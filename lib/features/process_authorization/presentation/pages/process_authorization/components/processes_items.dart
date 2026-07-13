@@ -7,6 +7,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,11 +24,14 @@ class ProcessesItems extends ConsumerWidget {
         TypeAccordingToTheCode.saleRequestDiscount ||
         TypeAccordingToTheCode.saleRequestLucrativity =>
           Routes.processAuthorizationSaleRequest,
-        TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
-        TypeAccordingToTheCode.goodsReceivingCancelDocument ||
         TypeAccordingToTheCode.goodsReceivingValueDocument ||
         TypeAccordingToTheCode.goodsReceivingValidateDocumentXml ||
         TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition => null,
+        TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
+        TypeAccordingToTheCode.goodsReceivingCancelDocument =>
+          kDebugMode
+              ? Routes.processAuthorizationGoodsReceiving
+              : null, //TODO remove this debugMode before release
         null => null,
       };
       if (nextRoute == null) {
