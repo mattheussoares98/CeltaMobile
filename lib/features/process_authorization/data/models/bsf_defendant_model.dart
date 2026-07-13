@@ -1,6 +1,8 @@
 // lib/features/process_authorization/data/models/bsf_defendant_model.dart
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf_sale_request_model.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
@@ -13,7 +15,7 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
           TypeAccordingToTheCode.saleRequestLucrativity:
         return BSFSaleRequestDefendantModel.fromJson(json);
       case TypeAccordingToTheCode.goodsReceivingLiberateDocument:
-        return BSFExpeditionDefendantModel.fromJson(json);
+        return BSFGoodsReceivingDefendantModel.fromJson(json);
       case TypeAccordingToTheCode.goodsReceivingValueDocument:
       case TypeAccordingToTheCode.goodsReceivingCancelDocument:
       case TypeAccordingToTheCode.goodsReceivingValidateDocumentXml:
@@ -30,8 +32,8 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
     return switch (entity) {
       BSFSaleRequestDefendantEntity sale =>
         BSFSaleRequestDefendantModel.fromEntity(sale),
-      BSFExpeditionDefendantEntity expedition =>
-        BSFExpeditionDefendantModel.fromEntity(expedition),
+      BSFGoodsReceivingDefendantEntity expedition =>
+        BSFGoodsReceivingDefendantModel.fromEntity(expedition),
       _ => throw UnimplementedError('Unknown defendant entity type: $entity'),
     };
   }
@@ -68,50 +70,27 @@ class BSFSaleRequestDefendantModel extends BSFDefendantModel
       BSFSaleRequestDefendantEntity(saleRequest: saleRequest);
 }
 
-class BSFExpeditionDefendantModel extends BSFDefendantModel
-    implements BSFExpeditionDefendantEntity {
+class BSFGoodsReceivingDefendantModel extends BSFDefendantModel
+    implements BSFGoodsReceivingDefendantEntity {
   @override
-  final int? expeditionControlCode;
-  @override
-  final bool? isOnExpedition;
-  @override
-  final bool? shouldHaveExpeditionControl;
+  final BSFGoodsReceivingEntity goodsReceiving;
 
-  const BSFExpeditionDefendantModel({
-    this.expeditionControlCode,
-    this.isOnExpedition,
-    this.shouldHaveExpeditionControl,
-  });
+  const BSFGoodsReceivingDefendantModel({required this.goodsReceiving});
 
-  factory BSFExpeditionDefendantModel.fromJson(Map json) {
-    return BSFExpeditionDefendantModel(
-      expeditionControlCode: json['ExpeditionControlCode'],
-      isOnExpedition: json['IsOnExpedition'],
-      shouldHaveExpeditionControl: json['ShouldHaveExpeditionControl'],
+  factory BSFGoodsReceivingDefendantModel.fromJson(Map json) {
+    return BSFGoodsReceivingDefendantModel(
+      goodsReceiving: BSFGoodsReceivingModel.fromJson(json).toEntity(),
     );
   }
 
   @override
-  Map toJson() => {
-    'ExpeditionControlCode': expeditionControlCode,
-    'IsOnExpedition': isOnExpedition,
-    'ShouldHaveExpeditionControl': shouldHaveExpeditionControl,
-  };
+  Map toJson() => BSFGoodsReceivingModel.fromEntity(goodsReceiving).toJson();
 
-  factory BSFExpeditionDefendantModel.fromEntity(
-    BSFExpeditionDefendantEntity entity,
-  ) {
-    return BSFExpeditionDefendantModel(
-      expeditionControlCode: entity.expeditionControlCode,
-      isOnExpedition: entity.isOnExpedition,
-      shouldHaveExpeditionControl: entity.shouldHaveExpeditionControl,
-    );
-  }
+  factory BSFGoodsReceivingDefendantModel.fromEntity(
+    BSFGoodsReceivingDefendantEntity entity,
+  ) => BSFGoodsReceivingDefendantModel(goodsReceiving: entity.goodsReceiving);
 
   @override
-  BSFExpeditionDefendantEntity toEntity() => BSFExpeditionDefendantEntity(
-    expeditionControlCode: expeditionControlCode,
-    isOnExpedition: isOnExpedition,
-    shouldHaveExpeditionControl: shouldHaveExpeditionControl,
-  );
+  BSFGoodsReceivingDefendantEntity toEntity() =>
+      BSFGoodsReceivingDefendantEntity(goodsReceiving: goodsReceiving);
 }

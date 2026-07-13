@@ -20,7 +20,7 @@ class EcProcessAuthorizationDatasource
   }) async {
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/ProcessAuthorization/Judgment'
+          'http://localhost:58915/ProcessAuthorization/Judgment'
           '?processCode=${processCode ?? -1}', //!-1 search the summary
       method: 'post',
       headers: params.toHeaders(),
@@ -37,7 +37,7 @@ class EcProcessAuthorizationDatasource
     EcRequestParams params,
   ) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/ProcessAuthorization/Statistics',
+      url: 'http://localhost:58915/ProcessAuthorization/Statistics',
       method: 'post',
       headers: params.toHeaders(),
       body: params.toMap(),
@@ -57,7 +57,7 @@ class EcProcessAuthorizationDatasource
     required SaleRequestErrorType errorType,
   }) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/ProcessAuthorization/SaleRequestErrors',
+      url: 'http://localhost:58915/ProcessAuthorization/SaleRequestErrors',
       method: 'post',
       headers: params.toHeaders(),
       body: {
@@ -80,7 +80,7 @@ class EcProcessAuthorizationDatasource
     String? observations,
   }) async {
     await httpClient.request(
-      url: '${params.workingUrl}/api/ProcessAuthorization/Vote',
+      url: 'http://localhost:58915/ProcessAuthorization/Vote',
       method: 'post',
       headers: params.toHeaders(),
       body: {

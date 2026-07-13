@@ -1,4 +1,5 @@
 // lib/features/process_authorization/domain/entities/bsf_defendant_entity.dart
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
@@ -22,21 +23,11 @@ class BSFSaleRequestDefendantEntity extends BSFDefendantEntity {
   List<Object?> get props => [saleRequest];
 }
 
-class BSFExpeditionDefendantEntity extends BSFDefendantEntity {
-  final int? expeditionControlCode;
-  final bool? isOnExpedition;
-  final bool? shouldHaveExpeditionControl;
+class BSFGoodsReceivingDefendantEntity extends BSFDefendantEntity {
+  final BSFGoodsReceivingEntity goodsReceiving;
 
-  const BSFExpeditionDefendantEntity({
-    this.expeditionControlCode,
-    this.isOnExpedition,
-    this.shouldHaveExpeditionControl,
-  });
+  const BSFGoodsReceivingDefendantEntity({required this.goodsReceiving});
 
   @override
-  List<Object?> get props => [
-    expeditionControlCode,
-    isOnExpedition,
-    shouldHaveExpeditionControl,
-  ];
+  List<Object?> get props => [goodsReceiving];
 }

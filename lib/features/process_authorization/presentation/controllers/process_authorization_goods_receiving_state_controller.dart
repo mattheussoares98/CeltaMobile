@@ -26,7 +26,7 @@ class ProcessAuthorizationGoodsReceivingStateController
       judgmentDetailsStateControllerProvider(processCode).future,
     );
     final defendant = details.defendants
-        ?.cast<BSFSaleRequestDefendantEntity?>()
+        ?.cast<BSFGoodsReceivingDefendantEntity?>()
         .firstOrNull;
 
     if (defendant == null) {
