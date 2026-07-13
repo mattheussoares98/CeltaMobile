@@ -3,7 +3,7 @@ import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
 RouteBase processAuthorizationSaleRequestDiscountsRoute() => GoRoute(
-  path: ':processCode/:pageType/details',
+  path: ':processCode/:pageType',
   name: Routes.processAuthorizationSaleRequest.name,
   builder: (context, state) {
     return ProcessAuthorizationSaleRequestBasePage(

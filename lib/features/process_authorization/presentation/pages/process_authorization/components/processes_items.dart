@@ -52,8 +52,7 @@ class ProcessesItems extends ConsumerWidget {
       }
 
       if (context.mounted) {
-        //TODO test it in web page. Shouldn't create a new route
-        context.pushNamed(nextRoute.name, pathParameters: pathParams);
+        context.goNamed(nextRoute.name, pathParameters: pathParams);
       }
     }
 
