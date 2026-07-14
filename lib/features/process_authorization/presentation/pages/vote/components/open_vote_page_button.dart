@@ -74,14 +74,14 @@ class OpenVotePageButton extends ConsumerWidget {
         mainAxisSize: .min,
         crossAxisAlignment: .end,
         children: [
-          if (PlatformUtil.isMobile)
+          if (PlatformUtil.isMobile && showDeviceRotationIcon)
             PlatformIcon(
               materialIcon: Icons.screen_rotation,
               cupertinoIcon: CupertinoIcons.rotate_right,
               color: context.theme.disabledColor,
               size: 14,
             ),
-          Expanded(child: voteButton),
+          Flexible(child: voteButton),
         ],
       );
     }
