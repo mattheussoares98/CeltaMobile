@@ -164,7 +164,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
   double get _appBarHeight {
     double value = 50.0;
     if (subtitle != null) {
-      return value += 14;
+      return value += 18;
     } else if (actionsPadding != null) {
       return value += (actionsPadding?.vertical ?? 0);
     }
