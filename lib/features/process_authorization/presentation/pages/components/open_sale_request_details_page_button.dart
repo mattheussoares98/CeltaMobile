@@ -34,29 +34,46 @@ class OpenSaleRequestDetailsPageButton extends ConsumerWidget {
             ? title
             : '$title (${saleRequest.personalizedCode})';
 
-        return InkWell(
-          onTap: saleRequest == null
-              ? null
-              : () {
-                  context.pushNamed(
-                    Routes.saleRequestDetails.name,
-                    pathParameters: {
-                      'saleRequestId': saleRequest.code.toString(),
-                      'enterpriseCode': saleRequest.enterprise!.code.toString(),
-                      'customerCode': saleRequest.customer!.code.toString(),
-                    },
-                  );
-                },
-          child: Row(
-            children: [
-              BaseText(applyedTitle, color: context.colorScheme.primary),
-              gapW4,
-              const PlatformIcon(
-                cupertinoIcon: CupertinoIcons.arrow_up_right,
-                materialIcon: Icons.arrow_outward,
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return InkWell(
+              onTap: saleRequest == null
+                  ? null
+                  : () {
+                      context.pushNamed(
+                        Routes.saleRequestDetails.name,
+                        pathParameters: {
+                          'saleRequestId': saleRequest.code.toString(),
+                          'enterpriseCode': saleRequest.enterprise!.code
+                              .toString(),
+                          'customerCode': saleRequest.customer!.code.toString(),
+                        },
+                      );
+                    }, //TODO test this page on iOS device
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+                child: Row(
+                  mainAxisSize: .min,
+                  children: [
+                    Flexible(
+                      child: BaseText(
+                        applyedTitle,
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                    if (constraints.maxWidth > 200) ...[
+                      gapW4,
+                      PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.arrow_up_right,
+                        materialIcon: Icons.arrow_outward,
+                        color: context.colorScheme.primary,
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
