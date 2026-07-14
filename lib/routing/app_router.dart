@@ -111,6 +111,7 @@ GoRouter goRouter(Ref ref) {
         ]),
         processesAuthorizationRoute([
           processAuthorizationGoodsReceivingRoute(),
+          processAuthorizationGoodsReceivingValidateDocXmlRoute(),
           processAuthorizationSaleRequestDiscountsRoute(),
         ]),
         productsRegisterSearchProductsRoute([
