@@ -26,8 +26,9 @@ class ProcessesItems extends ConsumerWidget {
         TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
         TypeAccordingToTheCode.goodsReceivingCancelDocument =>
           Routes.processAuthorizationGoodsReceiving,
+        TypeAccordingToTheCode.goodsReceivingValidateDocumentXml =>
+          Routes.processAuthorizationGoodsReceivingValidateDocumentXml,
         TypeAccordingToTheCode.goodsReceivingValueDocument ||
-        TypeAccordingToTheCode.goodsReceivingValidateDocumentXml ||
         TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition => null,
         null => null,
       };

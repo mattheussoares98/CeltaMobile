@@ -29,6 +29,7 @@ enum Routes {
   pdfViewer,
   processAuthorization,
   processAuthorizationGoodsReceiving,
+  processAuthorizationGoodsReceivingValidateDocumentXml,
   processAuthorizationSaleRequest,
   productsRegisterSearchProduct,
   productsRegisterCreateProduct,
