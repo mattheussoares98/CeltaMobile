@@ -64,4 +64,12 @@ class EcProcessAuthorizationRepositoryImpl
       observations: observations,
     );
   }
+
+  @override
+  Future<dynamic> getGRDocErrors(
+    EcRequestParams params,
+    int documentCode,
+  ) async {
+    return await datasource.getGRDocErrors(params, documentCode);
+  }
 }
