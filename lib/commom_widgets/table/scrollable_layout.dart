@@ -49,27 +49,25 @@ class _ScrollableLayout<T> extends StatelessWidget {
         width: totalWidth,
         child: Column(
           children: [
-            SizedBox(
-              height: headerHeight,
-              child: Row(
-                children: [
-                  for (int i = 0; i < columns.length; i++)
-                    _ScrollableHeaderCellWrapper<T>(
-                      col: columns[i],
-                      colIndex: i,
-                      colWidth: columns[i].minWidth + extraPerColumn,
-                      headerHeight: headerHeight,
-                      headerBg: headerBg,
-                      isSorted: sortColumnIndex == i,
-                      sortAscending: sortAscending,
-                      onTap: () => onHeaderTap(i),
-                    ),
-                ],
-              ),
+            Row(
+              children: [
+                for (int i = 0; i < columns.length; i++)
+                  _ScrollableHeaderCellWrapper<T>(
+                    col: columns[i],
+                    colIndex: i,
+                    colWidth: columns[i].minWidth + extraPerColumn,
+                    headerHeight: headerHeight,
+                    headerBg: headerBg,
+                    isSorted: sortColumnIndex == i,
+                    sortAscending: sortAscending,
+                    onTap: () => onHeaderTap(i),
+                  ),
+              ],
             ),
             Expanded(
               child: ListView.builder(
                 physics: physics,
+                padding: EdgeInsets.zero,
                 itemCount: sortedItems.length,
                 itemExtent: rowHeight,
                 itemBuilder: (_, index) {

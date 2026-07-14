@@ -80,6 +80,7 @@ class _FixedLayout<T> extends StatelessWidget {
                   child: ListView.builder(
                     controller: fixedVerticalController,
                     physics: physics,
+                    padding: EdgeInsets.zero,
                     itemCount: sortedItems.length,
                     itemExtent: rowHeight,
                     itemBuilder: (_, index) {
@@ -144,6 +145,7 @@ class _FixedLayout<T> extends StatelessWidget {
                     child: ListView.builder(
                       controller: scrollableVerticalController,
                       physics: physics,
+                      padding: EdgeInsets.zero,
                       itemCount: sortedItems.length,
                       itemExtent: rowHeight,
                       itemBuilder: (_, index) {
