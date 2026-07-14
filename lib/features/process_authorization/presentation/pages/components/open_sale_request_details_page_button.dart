@@ -1,7 +1,9 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,13 +34,8 @@ class OpenSaleRequestDetailsPageButton extends ConsumerWidget {
             ? title
             : '$title (${saleRequest.personalizedCode})';
 
-        return PrimaryTextButton(
-          text: applyedTitle,
-          platformIcon: const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.arrow_up_right,
-            materialIcon: Icons.arrow_outward,
-          ),
-          onPressed: saleRequest == null
+        return InkWell(
+          onTap: saleRequest == null
               ? null
               : () {
                   context.pushNamed(
@@ -50,6 +47,16 @@ class OpenSaleRequestDetailsPageButton extends ConsumerWidget {
                     },
                   );
                 },
+          child: Row(
+            children: [
+              BaseText(applyedTitle, color: context.colorScheme.primary),
+              gapW4,
+              const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.arrow_up_right,
+                materialIcon: Icons.arrow_outward,
+              ),
+            ],
+          ),
         );
       },
     );
