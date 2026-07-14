@@ -144,6 +144,7 @@ class _FixedLayout<T> extends StatelessWidget {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             controller: horizontalScrollController,
+            physics: const ClampingScrollPhysics(),
             child: SizedBox(
               width: scrollableWidth,
               child: Column(

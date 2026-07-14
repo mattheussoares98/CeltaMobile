@@ -45,6 +45,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: horizontalScrollController,
+      physics: const ClampingScrollPhysics(),
       child: SizedBox(
         width: totalWidth,
         child: Column(
