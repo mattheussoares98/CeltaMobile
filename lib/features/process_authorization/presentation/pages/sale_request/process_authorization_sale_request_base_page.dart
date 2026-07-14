@@ -100,9 +100,8 @@ class _ProcessAuthorizationSaleRequestBasePageState
             : 'Análise de lucratividade'.hardcoded,
         subtitle: OpenSaleRequestDetailsPageButton(
           processCode: widget.processCode,
-          title: 'Detalhes do pedido'.hardcoded,
+          title: 'Detalhes'.hardcoded,
         ),
-        //TODO on iOS this button is appearing on top of the action button
         actions: [OpenVotePageButton(processCode: widget.processCode)],
       ),
       body: AsyncValueWidget(
