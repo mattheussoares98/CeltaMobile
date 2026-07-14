@@ -86,6 +86,18 @@ class _FixedLayout<T> extends StatelessWidget {
                       } else if (notification is ScrollEndNotification) {
                         onScrollNotification(fixedVerticalController, false);
                       }
+
+                      // Stop scroll events from the jumped list bubbling to the RefreshIndicator
+                      final activeController =
+                          (context
+                                  .findAncestorStateOfType<
+                                    _ScrollableTableState
+                                  >())
+                              ?._activeScrollController;
+                      if (activeController != null &&
+                          activeController != fixedVerticalController) {
+                        return true;
+                      }
                       return false;
                     },
                     child: ListView.builder(
@@ -157,9 +169,27 @@ class _FixedLayout<T> extends StatelessWidget {
                     child: NotificationListener<ScrollNotification>(
                       onNotification: (notification) {
                         if (notification is ScrollStartNotification) {
-                          onScrollNotification(scrollableVerticalController, true);
+                          onScrollNotification(
+                            scrollableVerticalController,
+                            true,
+                          );
                         } else if (notification is ScrollEndNotification) {
-                          onScrollNotification(scrollableVerticalController, false);
+                          onScrollNotification(
+                            scrollableVerticalController,
+                            false,
+                          );
+                        }
+
+                        // Stop scroll events from the jumped list bubbling to the RefreshIndicator
+                        final activeController =
+                            (context
+                                    .findAncestorStateOfType<
+                                      _ScrollableTableState
+                                    >())
+                                ?._activeScrollController;
+                        if (activeController != null &&
+                            activeController != scrollableVerticalController) {
+                          return true;
                         }
                         return false;
                       },

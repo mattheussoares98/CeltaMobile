@@ -15,7 +15,6 @@ part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
 //!All TODOs are for iOS devices
-//TODO is not respecting the RefreshIndicator
 //TODO when on landscape mode, it is adding SafeArea on both sides
 final Set<String> _playedRouteNames = {};
 
@@ -391,7 +390,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
               } catch (_) {}
             },
             notificationPredicate: (notification) {
-              return notification.depth <= 1;
+              return notification.depth <= 2;
             },
             backgroundColor: context.theme.colorScheme.surface,
             strokeWidth: 2,
