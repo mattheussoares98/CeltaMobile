@@ -66,10 +66,10 @@ class EcProcessAuthorizationRepositoryImpl
   }
 
   @override
-  Future<dynamic> getGRDocErrors(
+  Future<dynamic> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   ) async {
-    return await datasource.getGRDocErrors(params, documentCode);
+    return await datasource.getGRDocFiscalNoteDifferences(params, documentCode);
   }
 }

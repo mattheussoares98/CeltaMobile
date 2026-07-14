@@ -93,13 +93,14 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<dynamic> getGRDocErrors(
+  Future<dynamic> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   ) async {
     //TODO create tests
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/ProcessAuthorization/GetGRDocErrors',
+      url:
+          '${params.workingUrl}/api/ProcessAuthorization/GetGRDocFiscalNoteDifferences',
       method: 'post',
       headers: params.toHeaders(),
       body: {...params.toMap(), 'documentCode': documentCode},

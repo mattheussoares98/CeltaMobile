@@ -24,5 +24,8 @@ abstract class IEcProcessAuthorizationRepository {
     String? observations,
   });
 
-  Future<dynamic> getGRDocErrors(EcRequestParams params, int documentCode);
+  Future<dynamic> getGRDocFiscalNoteDifferences(
+    EcRequestParams params,
+    int documentCode,
+  );
 }
