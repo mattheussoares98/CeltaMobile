@@ -147,6 +147,15 @@ class ButtonsByModuleItems {
         cupertinoIcon: CupertinoIcons.lock_fill,
       ),
     ),
+    Modules.synchronizer: DefaultModuleButton(
+      route: Routes.synchronizer,
+      module: Modules.synchronizer,
+      platformIcon: PlatformIcon(
+        materialIcon: Icons.sync_outlined,
+        cupertinoIcon: CupertinoIcons.repeat,
+      ),
+      passEnterpriseToNextRoute: false,
+    ),
     // if (kDebugMode)
     //   Modules.productsRegister: DefaultModuleButton(
     //     route: Routes.productsRegisterSearchProduct,

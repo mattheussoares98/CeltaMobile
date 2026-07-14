@@ -98,6 +98,8 @@ class DefaultModuleButton extends ConsumerWidget {
                 if ((module == Modules.processAuthorization) &&
                     DateTime.now().isBefore(DateTime(2026, 8, 13)))
                   MessageBadge(message: 'Novo'.hardcoded),
+                if (module == Modules.synchronizer)
+                  MessageBadge(message: 'Em breve'.hardcoded),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),
