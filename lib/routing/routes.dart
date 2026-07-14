@@ -45,6 +45,7 @@ enum Routes {
   shallowSearchProducts,
   splash,
   stockReplacement,
+  synchronizer,
   transferRequestDestinyEnterprises,
   transferRequestOriginEnterprises,
   transferRequestProductsManagement,
