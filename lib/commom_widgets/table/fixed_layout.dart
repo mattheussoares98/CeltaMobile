@@ -17,6 +17,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final int? sortColumnIndex;
   final bool sortAscending;
   final void Function(int) onHeaderTap;
+  final void Function(ScrollController, bool) onScrollNotification;
   final bool hasFooter;
   final ScrollPhysics? physics;
 
@@ -36,6 +37,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.sortColumnIndex,
     required this.sortAscending,
     required this.onHeaderTap,
+    required this.onScrollNotification,
     required this.hasFooter,
     this.horizontalScrollController,
     this.physics,
@@ -77,25 +79,35 @@ class _FixedLayout<T> extends StatelessWidget {
                   behavior: ScrollConfiguration.of(
                     context,
                   ).copyWith(scrollbars: false),
-                  child: ListView.builder(
-                    controller: fixedVerticalController,
-                    physics: physics,
-                    padding: EdgeInsets.zero,
-                    itemCount: sortedItems.length,
-                    itemExtent: rowHeight,
-                    itemBuilder: (_, index) {
-                      final isOdd = index.isOdd;
-                      final rowBg = isOdd
-                          ? (rowBackgroundColor ?? context.theme.cardColor)
-                          : context.theme.scaffoldBackgroundColor;
-                      return _ScrollableTableCell(
-                        width: firstColWidth,
-                        height: rowHeight,
-                        spec: firstCol,
-                        backgroundColor: rowBg,
-                        child: firstCol.cellBuilder(sortedItems[index]),
-                      );
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification is ScrollStartNotification) {
+                        onScrollNotification(fixedVerticalController, true);
+                      } else if (notification is ScrollEndNotification) {
+                        onScrollNotification(fixedVerticalController, false);
+                      }
+                      return false;
                     },
+                    child: ListView.builder(
+                      controller: fixedVerticalController,
+                      physics: physics,
+                      padding: EdgeInsets.zero,
+                      itemCount: sortedItems.length,
+                      itemExtent: rowHeight,
+                      itemBuilder: (_, index) {
+                        final isOdd = index.isOdd;
+                        final rowBg = isOdd
+                            ? (rowBackgroundColor ?? context.theme.cardColor)
+                            : context.theme.scaffoldBackgroundColor;
+                        return _ScrollableTableCell(
+                          width: firstColWidth,
+                          height: rowHeight,
+                          spec: firstCol,
+                          backgroundColor: rowBg,
+                          child: firstCol.cellBuilder(sortedItems[index]),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -142,25 +154,35 @@ class _FixedLayout<T> extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
-                      controller: scrollableVerticalController,
-                      physics: physics,
-                      padding: EdgeInsets.zero,
-                      itemCount: sortedItems.length,
-                      itemExtent: rowHeight,
-                      itemBuilder: (_, index) {
-                        final isOdd = index.isOdd;
-                        final rowBg = isOdd
-                            ? (rowBackgroundColor ?? context.theme.cardColor)
-                            : context.theme.scaffoldBackgroundColor;
-                        return _ScrollableRow<T>(
-                          item: sortedItems[index],
-                          columns: scrollableColumns,
-                          rowHeight: rowHeight,
-                          backgroundColor: rowBg,
-                          extraPerColumn: extraPerColumn,
-                        );
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        if (notification is ScrollStartNotification) {
+                          onScrollNotification(scrollableVerticalController, true);
+                        } else if (notification is ScrollEndNotification) {
+                          onScrollNotification(scrollableVerticalController, false);
+                        }
+                        return false;
                       },
+                      child: ListView.builder(
+                        controller: scrollableVerticalController,
+                        physics: physics,
+                        padding: EdgeInsets.zero,
+                        itemCount: sortedItems.length,
+                        itemExtent: rowHeight,
+                        itemBuilder: (_, index) {
+                          final isOdd = index.isOdd;
+                          final rowBg = isOdd
+                              ? (rowBackgroundColor ?? context.theme.cardColor)
+                              : context.theme.scaffoldBackgroundColor;
+                          return _ScrollableRow<T>(
+                            item: sortedItems[index],
+                            columns: scrollableColumns,
+                            rowHeight: rowHeight,
+                            backgroundColor: rowBg,
+                            extraPerColumn: extraPerColumn,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   if (hasFooter)

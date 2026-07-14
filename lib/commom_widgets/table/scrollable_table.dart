@@ -16,7 +16,6 @@ part 'scrollable_table_header.dart';
 
 //!All TODOs are for iOS devices
 //TODO is not respecting the RefreshIndicator
-//TODO when scrolling the table, it is doing a very slow animation to finish and can't interact with it until the animation finishes
 //TODO when on landscape mode, it is adding SafeArea on both sides
 final Set<String> _playedRouteNames = {};
 
@@ -61,6 +60,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
   bool _hasPlayedAnimation = false;
 
   bool _isSyncing = false;
+  ScrollController? _activeScrollController;
 
   int? _sortColumnIndex;
   bool _sortAscending = true;
@@ -150,9 +150,23 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
     _sortedItems = items;
   }
 
+  void _handleScrollNotification(ScrollController controller, bool isStart) {
+    if (isStart) {
+      _activeScrollController ??= controller;
+    } else {
+      if (_activeScrollController == controller) {
+        _activeScrollController = null;
+      }
+    }
+  }
+
   void _syncFixedToScrollable() {
     if (_isSyncing) return;
     if (!_scrollableVerticalController.hasClients) return;
+    if (_activeScrollController != null &&
+        _activeScrollController != _fixedVerticalController) {
+      return;
+    }
 
     final offset = _fixedVerticalController.offset;
     if (_scrollableVerticalController.offset == offset) return;
@@ -165,6 +179,10 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
   void _syncScrollableToFixed() {
     if (_isSyncing) return;
     if (!_fixedVerticalController.hasClients) return;
+    if (_activeScrollController != null &&
+        _activeScrollController != _scrollableVerticalController) {
+      return;
+    }
 
     final offset = _scrollableVerticalController.offset;
     if (_fixedVerticalController.offset == offset) return;
@@ -298,6 +316,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             sortColumnIndex: _sortColumnIndex,
             sortAscending: _sortAscending,
             onHeaderTap: _handleHeaderTap,
+            onScrollNotification: _handleScrollNotification,
             hasFooter: _hasFooter,
             physics: physics,
           );
