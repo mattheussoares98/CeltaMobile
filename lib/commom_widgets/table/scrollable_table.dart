@@ -150,13 +150,16 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
   }
 
   void _handleScrollNotification(ScrollController controller, bool isStart) {
-    if (isStart) {
-      _activeScrollController ??= controller;
-    } else {
-      if (_activeScrollController == controller) {
-        _activeScrollController = null;
+    if (!mounted) return;
+    setState(() {
+      if (isStart) {
+        _activeScrollController ??= controller;
+      } else {
+        if (_activeScrollController == controller) {
+          _activeScrollController = null;
+        }
       }
-    }
+    });
   }
 
   void _syncFixedToScrollable() {
@@ -278,6 +281,16 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
         ? const AlwaysScrollableScrollPhysics()
         : null;
 
+    final fixedPhysics =
+        _activeScrollController == _scrollableVerticalController
+        ? _PassiveScrollPhysics(parent: physics)
+        : physics;
+
+    final scrollablePhysics =
+        _activeScrollController == _fixedVerticalController
+        ? _PassiveScrollPhysics(parent: physics)
+        : physics;
+
     Widget table = LayoutBuilder(
       builder: (context, constraints) {
         final double totalMinWidth = widget.columns.fold(
@@ -317,7 +330,8 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             onHeaderTap: _handleHeaderTap,
             onScrollNotification: _handleScrollNotification,
             hasFooter: _hasFooter,
-            physics: physics,
+            fixedPhysics: fixedPhysics,
+            scrollablePhysics: scrollablePhysics,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -402,5 +416,23 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
     }
 
     return table;
+  }
+}
+
+class _PassiveScrollPhysics extends ScrollPhysics {
+  const _PassiveScrollPhysics({super.parent});
+
+  @override
+  _PassiveScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return _PassiveScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  @override
+  Simulation? createBallisticSimulation(
+    ScrollMetrics position,
+    double velocity,
+  ) {
+    // Prevents automatic bounce-back or deceleration animation on the passive list
+    return null;
   }
 }

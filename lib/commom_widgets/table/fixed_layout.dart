@@ -19,7 +19,8 @@ class _FixedLayout<T> extends StatelessWidget {
   final void Function(int) onHeaderTap;
   final void Function(ScrollController, bool) onScrollNotification;
   final bool hasFooter;
-  final ScrollPhysics? physics;
+  final ScrollPhysics? fixedPhysics;
+  final ScrollPhysics? scrollablePhysics;
 
   const _FixedLayout({
     required this.columns,
@@ -39,8 +40,9 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.onHeaderTap,
     required this.onScrollNotification,
     required this.hasFooter,
+    required this.fixedPhysics,
+    required this.scrollablePhysics,
     this.horizontalScrollController,
-    this.physics,
   });
 
   @override
@@ -102,7 +104,7 @@ class _FixedLayout<T> extends StatelessWidget {
                     },
                     child: ListView.builder(
                       controller: fixedVerticalController,
-                      physics: physics,
+                      physics: fixedPhysics,
                       padding: EdgeInsets.zero,
                       itemCount: sortedItems.length,
                       itemExtent: rowHeight,
@@ -195,7 +197,7 @@ class _FixedLayout<T> extends StatelessWidget {
                       },
                       child: ListView.builder(
                         controller: scrollableVerticalController,
-                        physics: physics,
+                        physics: scrollablePhysics,
                         padding: EdgeInsets.zero,
                         itemCount: sortedItems.length,
                         itemExtent: rowHeight,
