@@ -15,7 +15,6 @@ part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
 //!All TODOs are for iOS devices
-//TODO when on landscape mode, it is adding SafeArea on both sides
 final Set<String> _playedRouteNames = {};
 
 class ScrollableTable<T> extends StatefulWidget {

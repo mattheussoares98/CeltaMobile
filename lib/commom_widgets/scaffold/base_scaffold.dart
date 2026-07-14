@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
 
 import '../commom_widgets.dart';
 
@@ -59,12 +60,18 @@ class BaseScaffold extends StatelessWidget {
       return Consumer(
         builder: (context, ref, child) {
           ref.watch(screenObserverProvider);
-          return _BaseScaffold(this);
+          return NativeDeviceOrientationReader(
+            useSensor: true,
+            builder: (context) => _BaseScaffold(this),
+          );
         },
       );
     }
 
-    return _BaseScaffold(this);
+    return NativeDeviceOrientationReader(
+      useSensor: true,
+      builder: (context) => _BaseScaffold(this),
+    );
   }
 }
 
@@ -178,9 +185,17 @@ class _BaseScaffold extends ConsumerWidget {
             )
           : newChild;
 
+      final orientation = NativeDeviceOrientationReader.orientation(context);
+      final isRotatedLeft =
+          orientation == NativeDeviceOrientation.landscapeLeft;
+      final isRotatedRight =
+          orientation == NativeDeviceOrientation.landscapeRight;
+
       cupertinoBody = SafeArea(
         top: params.safeAreaTop ?? finalAppBar == null,
         bottom: bottomNavigationWidget != null,
+        left: isRotatedLeft,
+        right: isRotatedRight,
         child: cupertinoBody,
       );
 
