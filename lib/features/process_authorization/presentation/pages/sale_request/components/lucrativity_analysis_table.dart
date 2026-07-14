@@ -60,7 +60,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Reposição'.hardcoded,
           isMoney: true,
-          minWidth: 90,
+          minWidth: 95,
           cellBuilder: (item) =>
               BaseText(item.replacementCost.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.replacementCost,
@@ -121,7 +121,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
           headerTitle: 'Faturamento'.hardcoded,
           isMoney: true,
-          minWidth: 105,
+          minWidth: 115,
           cellBuilder: (item) =>
               BaseText(item.billingValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.billingValue,
