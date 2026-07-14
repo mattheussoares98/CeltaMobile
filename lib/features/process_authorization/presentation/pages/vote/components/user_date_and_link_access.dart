@@ -29,14 +29,8 @@ class UserDateAndLinkAccess extends ConsumerWidget {
                 OpenSaleRequestDetailsPageButton(
                   title: 'Visualizar pedido'.hardcoded,
                   processCode: processCode,
-                ),
-              TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
-              TypeAccordingToTheCode.goodsReceivingCancelDocument ||
-              TypeAccordingToTheCode.goodsReceivingValueDocument ||
-              TypeAccordingToTheCode.goodsReceivingValidateDocumentXml ||
-              TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition =>
-                const SizedBox.shrink(), //TODO implement
-              null => const SizedBox.shrink(),
+                ), //*only sale request should have link to access the details
+              _ => const SizedBox.shrink(),
             },
 
             Card(
