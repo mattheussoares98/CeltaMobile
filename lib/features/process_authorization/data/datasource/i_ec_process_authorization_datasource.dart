@@ -23,4 +23,6 @@ abstract class IEcProcessAuthorizationDatasource {
     required bool authorized,
     String? observations,
   });
+
+  Future<dynamic> getGRDocErrors(EcRequestParams params, int documentCode);
 }

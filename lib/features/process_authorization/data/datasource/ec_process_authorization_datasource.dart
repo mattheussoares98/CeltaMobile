@@ -91,4 +91,20 @@ class EcProcessAuthorizationDatasource
       },
     );
   }
+
+  @override
+  Future<dynamic> getGRDocErrors(
+    EcRequestParams params,
+    int documentCode,
+  ) async {
+    //TODO create tests
+    final response = await httpClient.request(
+      url: '${params.workingUrl}/api/ProcessAuthorization/GetGRDocErrors',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'documentCode': documentCode},
+    );
+
+    return json.decode(response);
+  }
 }
