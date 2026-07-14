@@ -24,7 +24,7 @@ class TopButtons extends ConsumerWidget {
       if (searchType == SearchType.allCountedProductsFromGoodsReceiving) {
         final bsDate = await ref.read(bsVersionStateControllerProvider.future);
 
-        if (bsDate?.isBefore(DateTime(2026, 02, 01)) ?? false) {
+        if (bsDate?.isBefore(DateTime(2026, 02)) ?? false) {
           if (!context.mounted) return;
           showAlertDialog(
             context: context,

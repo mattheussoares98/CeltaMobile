@@ -42,7 +42,6 @@ class ProductsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(subtitle: AppBarTitle(widget: this)),
       body: ResponsiveScrollableWidget(

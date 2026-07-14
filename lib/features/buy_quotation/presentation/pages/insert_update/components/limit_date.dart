@@ -52,7 +52,6 @@ class LimitDate extends ConsumerWidget {
                       minimumDate: now,
                       maximumDate: now.add(const Duration(days: 365)),
                       currentSelectedDate: dateOfLimit,
-                      insertHoursAndMinutes: true,
                       context: context,
                     );
 

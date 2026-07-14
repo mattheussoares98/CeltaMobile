@@ -89,7 +89,7 @@ void main() {
     test('should emit [error] when session is invalid', () async {
       // ARRANGE
       // THE FIX 2: Pass NULL for the session to simulate the failure case.
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       // ACT & ASSERT

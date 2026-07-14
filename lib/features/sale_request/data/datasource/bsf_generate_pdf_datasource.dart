@@ -83,7 +83,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
 
   static String _formatValueType(BSFValueTypeModel? valueType) {
     if (valueType?.value == null || valueType!.value == 0) return '';
-    final formatted = valueType.value.toString().toBrazilianNumber(2);
+    final formatted = valueType.value.toString().toBrazilianNumber();
     if (valueType.type == PercentageOrValue.percentage) {
       return '$formatted%';
     }
@@ -114,7 +114,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     final deliveryTaxStr = _formatValueType(deliveryTax);
 
     final totalLiquidStr = saleRequest.totalLiquid.toString().toBrazilianNumber(
-      2,
+      
     );
 
     final items = <pw.Widget>[
@@ -166,7 +166,6 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     return pw.Padding(
       padding: const pw.EdgeInsets.symmetric(vertical: 1),
       child: pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.start,
         children: [
           pw.SizedBox(
             width: 140,
@@ -299,7 +298,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                       (payment.financialDiscount ?? 0) > 0
                           ? (payment.financialDiscount ?? 0)
                                 .toString()
-                                .toBrazilianNumber(2)
+                                .toBrazilianNumber()
                           : '-',
                       isPrice: (payment.financialDiscount ?? 0) > 0,
                       color: PdfColors.red,
@@ -309,7 +308,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                       (payment.financialIncrement ?? 0) > 0
                           ? (payment.financialIncrement ?? 0)
                                 .toString()
-                                .toBrazilianNumber(2)
+                                .toBrazilianNumber()
                           : '-',
                       isPrice: (payment.financialIncrement ?? 0) > 0,
                       color: PdfColors.orange,
@@ -321,7 +320,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                   ),
 
                   _tableDataCell(
-                    (payment.value ?? 0).toString().toBrazilianNumber(2),
+                    (payment.value ?? 0).toString().toBrazilianNumber(),
                     isPrice: true,
                   ),
                 ],
@@ -451,7 +450,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                 item.quantity.toString().toBrazilianNumber(3, true),
               ),
               _tableDataCell(
-                item.value.toString().toBrazilianNumber(2),
+                item.value.toString().toBrazilianNumber(),
                 isPrice: true,
               ),
               if (hasDiscount)
@@ -462,7 +461,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                             .toEntity()
                             .totalDiscountValue
                             .toString()
-                            .toBrazilianNumber(2),
+                            .toBrazilianNumber(),
                   isPrice: true,
                   color: PdfColors.red,
                 ),
@@ -474,7 +473,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                             .toEntity()
                             .totalIncrement
                             .toString()
-                            .toBrazilianNumber(2),
+                            .toBrazilianNumber(),
                   isPrice: true,
                   color: PdfColors.orange,
                 ),
@@ -486,18 +485,17 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                             .toEntity()
                             .totalDeliveryTax
                             .toString()
-                            .toBrazilianNumber(2),
+                            .toBrazilianNumber(),
                   isPrice: true,
                   color: PdfColors.blue,
                 ),
               _tableDataCell(
-                item.toEntity().totalLiquid.toString().toBrazilianNumber(2),
+                item.toEntity().totalLiquid.toString().toBrazilianNumber(),
                 isPrice: true,
                 align: pw.Alignment.centerRight,
                 bold: true,
               ),
             ],
-            repeat: false,
             verticalAlignment: pw.TableCellVerticalAlignment.middle,
           ),
         ],
@@ -520,7 +518,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
             if (hasIncrement) _tableDataCell(''),
             if (hasFreight) _tableDataCell(''),
             _tableDataCell(
-              totalLiquid.toString().toBrazilianNumber(2),
+              totalLiquid.toString().toBrazilianNumber(),
               isPrice: true,
               align: pw.Alignment.centerRight,
               bold: true,

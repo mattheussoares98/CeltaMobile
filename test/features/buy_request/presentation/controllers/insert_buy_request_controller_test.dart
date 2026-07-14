@@ -190,7 +190,6 @@ void main() {
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE: Pass null for the session
       final container = makeProviderContainer(
-        session: null,
         pendingRequest: fakePendingRequest,
       );
       addTearDown(container.dispose);
@@ -220,7 +219,6 @@ void main() {
         // ARRANGE: Pass null for the pending request
         final container = makeProviderContainer(
           session: fakeSession,
-          pendingRequest: null,
         );
         addTearDown(container.dispose);
         await container.read(

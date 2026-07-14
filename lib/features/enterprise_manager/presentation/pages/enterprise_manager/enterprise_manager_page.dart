@@ -35,7 +35,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier(false);
 
   static final now = DateTime.now();
-  static final start = DateTime(now.year, now.month, 1);
+  static final start = DateTime(now.year, now.month);
 
   @override
   void initState() {

@@ -210,7 +210,7 @@ void main() {
           clearPriceCost: true,
         ).copyWith(WholePracticedPrice: 8.0);
 
-        final price = product.getPracticedPrice(quantity: 5, manualPrice: null);
+        final price = product.getPracticedPrice(quantity: 5);
         expect(price, 10.0);
       },
     );
@@ -227,7 +227,6 @@ void main() {
 
         final price = product.getPracticedPrice(
           quantity: 12,
-          manualPrice: null,
         );
         expect(price, 8.0);
       },

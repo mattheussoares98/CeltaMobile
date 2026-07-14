@@ -175,7 +175,7 @@ void main() {
 
     test('should throw AppException when session is invalid', () async {
       // ARRANGE
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       // ACT & ASSERT

@@ -62,13 +62,13 @@ class DiscountAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.bruteValue.toString().toBrazilianNumber(2)),
+              BaseText(item.bruteValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.bruteValue,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.bruteValue)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -77,13 +77,13 @@ class DiscountAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.discountValue.toString().toBrazilianNumber(2)),
+              BaseText(item.discountValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.discountValue,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.discountValue)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -101,13 +101,13 @@ class DiscountAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.liquidValue.toString().toBrazilianNumber(2)),
+              BaseText(item.liquidValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.liquidValue,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.liquidValue)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),

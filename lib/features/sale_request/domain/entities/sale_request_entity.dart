@@ -67,22 +67,6 @@ class SaleRequestEntity extends Equatable {
 
   factory SaleRequestEntity.empty() => const SaleRequestEntity(
     cart: {},
-    customer: null,
-    covenant: null,
-    observations: null,
-    instructions: null,
-    needProcessCart: null,
-    Id: null,
-    SaleRequestNumber: null,
-    RequestType: null,
-    EnterpriseId: null,
-    DateHourOfCreation: null,
-    TotalLiquid: null,
-    DiscountValue: null,
-    Seller: null,
-    Delivery: null,
-    Payments: null,
-    Address: null,
   );
 
   SaleRequestEntity copyWith({

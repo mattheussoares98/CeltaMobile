@@ -57,7 +57,6 @@ class DefaultModuleButton extends ConsumerWidget {
         borderRadius: BorderRadius.circular(Sizes.p12),
         side: BorderSide(color: context.theme.primaryColor, width: 0.4),
       ),
-      clipBehavior: Clip.none,
       child: Consumer(
         builder: (context, ref, child) {
           final isLoading =
@@ -81,7 +80,6 @@ class DefaultModuleButton extends ConsumerWidget {
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       // Using a circular container with a subtle background instead of a full image card
                       if (isLoading)

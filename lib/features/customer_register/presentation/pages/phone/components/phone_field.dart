@@ -24,7 +24,7 @@ class PhoneField extends ConsumerWidget {
       maxLength: 10,
       inputFormatters: [PhoneInputFormatter()],
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: const TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(),
       labelText: 'Telefone'.hardcoded,
       hintText: 'Telefone'.hardcoded,
       onFieldSubmitted: (_) => addPhone(),

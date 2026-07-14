@@ -256,7 +256,6 @@ void main() {
         // Act
         await notifier.updateValues(
           selectedStartDate: startDate,
-          selectedEndDate: null,
           isChangingEndDate: true,
         );
         // Assert

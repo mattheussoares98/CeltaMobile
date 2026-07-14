@@ -68,7 +68,6 @@ class BaseBottomNavigationBar extends StatelessWidget {
         icon = GestureDetector(
           onTap: () => onTap(items.indexOf(e)),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Flexible(child: icon),

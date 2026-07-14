@@ -19,25 +19,23 @@ class AppDecorations {
       borderRadius: BorderRadius.circular(Sizes.p12),
       borderSide: BorderSide(
         color: colorScheme.onSurface.withAlpha(75),
-        width: 1,
       ),
     );
 
     final focusedBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),
-      borderSide: BorderSide(color: colorScheme.primary, width: 1),
+      borderSide: BorderSide(color: colorScheme.primary),
     );
 
     final errorBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),
-      borderSide: BorderSide(color: colorScheme.error, width: 1),
+      borderSide: BorderSide(color: colorScheme.error),
     );
 
     final disabledBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),
       borderSide: BorderSide(
         color: colorScheme.onSurface.withAlpha(50),
-        width: 1,
       ),
     );
 

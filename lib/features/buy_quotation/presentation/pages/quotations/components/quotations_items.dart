@@ -83,7 +83,7 @@ class _QuotationItem extends StatelessWidget {
                 title: 'Data limite'.hardcoded,
                 emptyMessage: 'Nenhuma data de limite'.hardcoded,
                 subTitle: quotation.DateOfLimit?.formatDate(
-                  DateFormatType.ddMMyyyy,
+                  
                 ),
               ),
               TitleAndSubTitle(

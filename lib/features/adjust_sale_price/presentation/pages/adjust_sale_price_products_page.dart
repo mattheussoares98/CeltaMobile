@@ -13,7 +13,6 @@ class AdjustSalePriceProductsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       appBar: BaseAppBar(
         title: 'Produtos (ajuste de preços)'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,

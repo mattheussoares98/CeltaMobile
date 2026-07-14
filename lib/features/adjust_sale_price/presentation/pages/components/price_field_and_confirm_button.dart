@@ -77,7 +77,6 @@ class _PriceFieldAndConfirmButtonState
             Expanded(
               flex: 65,
               child: BaseTextFormField(
-                autofocus: false,
                 controller: priceController,
                 focusNode: priceFocusNode,
                 maxLength: 10,

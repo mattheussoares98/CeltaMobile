@@ -15,7 +15,6 @@ class ResearchsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       refreshProvider: provider,
       appBar: BaseAppBar(
         title: 'Pesquisas cadastradas'.hardcoded,

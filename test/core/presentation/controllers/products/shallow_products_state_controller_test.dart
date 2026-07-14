@@ -160,7 +160,7 @@ void main() {
           .load(searchTerm);
       await container
           .read(shallowProductsStateControllerProvider.notifier)
-          .load(searchTerm.padRight(3, ' '));
+          .load(searchTerm.padRight(3));
 
       expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchProduct);
 

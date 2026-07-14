@@ -73,7 +73,7 @@ class _ValidityState extends State<Validity> {
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                newValidity?.formatDate(DateFormatType.ddMMyyyy) ??
+                newValidity?.formatDate() ??
                     'Nenhuma'.hardcoded,
                 style: context.theme.textTheme.titleSmall?.copyWith(
                   fontStyle: FontStyle.italic,

@@ -180,7 +180,7 @@ void main() {
 
     test('confirm should emit error if session is null', () async {
       // ARRANGE
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       // ACT

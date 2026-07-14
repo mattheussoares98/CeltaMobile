@@ -67,7 +67,6 @@ class ProcessesItems extends ConsumerWidget {
           return Center(
             child: Column(
               mainAxisAlignment: .center,
-              crossAxisAlignment: .center,
               children: [
                 BaseRichText(
                   textAlign: .center,

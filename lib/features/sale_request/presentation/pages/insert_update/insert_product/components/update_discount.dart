@@ -131,7 +131,6 @@ class AddDiscount extends ConsumerWidget {
                       validator: FormValidators.compose([
                         NumberValidator(
                           allowDecimal: true,
-                          maxDecimalHouses: 2,
                           allowEmptyValue: true,
                           needsBeGreaterThanZero: false,
                         ),

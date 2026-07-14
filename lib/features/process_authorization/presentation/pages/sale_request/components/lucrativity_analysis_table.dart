@@ -62,13 +62,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 90,
           cellBuilder: (item) =>
-              BaseText(item.replacementCost.toString().toBrazilianNumber(2)),
+              BaseText(item.replacementCost.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.replacementCost,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.replacementCost)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -77,13 +77,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.liquidCost.toString().toBrazilianNumber(2)),
+              BaseText(item.liquidCost.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.liquidCost,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.liquidCost)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -99,7 +99,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
             items
                 .fold<double>(0, (p, e) => p + e.operationalExpense)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -108,13 +108,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.taxValue.toString().toBrazilianNumber(2)),
+              BaseText(item.taxValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.taxValue,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (sum, item) => sum + item.taxValue)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -123,13 +123,13 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 105,
           cellBuilder: (item) =>
-              BaseText(item.billingValue.toString().toBrazilianNumber(2)),
+              BaseText(item.billingValue.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.billingValue,
           footerCellBuilder: (items) => BaseText(
             items
                 .fold<double>(0, (p, e) => p + e.billingValue)
                 .toString()
-                .toBrazilianNumber(2),
+                .toBrazilianNumber(),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -138,14 +138,14 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(
-            item.profitValue.toString().toBrazilianNumber(2),
+            item.profitValue.toString().toBrazilianNumber(),
             color: item.profitValue > 0 ? Colors.green : Colors.red,
           ),
           sortValueMapper: (item) => item.profitValue,
           footerCellBuilder: (items) {
             final total = items.fold<double>(0, (p, e) => p + e.profitValue);
             return BaseText(
-              total.toString().toBrazilianNumber(2),
+              total.toString().toBrazilianNumber(),
               fontWeight: FontWeight.bold,
               color: total > 0 ? Colors.green : Colors.red,
             );
@@ -156,7 +156,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isPercentage: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(
-            item.praticedMargin.toString().toBrazilianNumber(2),
+            item.praticedMargin.toString().toBrazilianNumber(),
             color: item.praticedMargin > 0 ? Colors.green : Colors.red,
           ),
           sortValueMapper: (item) => item.praticedMargin,
@@ -165,7 +165,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
                 items.fold<double>(0, (p, e) => p + e.praticedMargin) /
                 items.length;
             return BaseText(
-              avg.toString().toBrazilianNumber(2),
+              avg.toString().toBrazilianNumber(),
               fontWeight: FontWeight.bold,
               color: avg > 0 ? Colors.green : Colors.red,
             );
@@ -176,7 +176,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(
-            item.unitMinimumSalePrice.toString().toBrazilianNumber(2),
+            item.unitMinimumSalePrice.toString().toBrazilianNumber(),
           ),
           sortValueMapper: (item) => item.praticedMargin,
         ),
@@ -185,7 +185,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
-              BaseText(item.unitDifference.toString().toBrazilianNumber(2)),
+              BaseText(item.unitDifference.toString().toBrazilianNumber()),
           sortValueMapper: (item) => item.unitDifference,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestLucrativityItemEntity>(
@@ -193,7 +193,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(
-            item.totalDifference.toString().toBrazilianNumber(2),
+            item.totalDifference.toString().toBrazilianNumber(),
             color: item.totalDifference < 0 ? Colors.red : Colors.green,
           ),
           sortValueMapper: (item) => item.totalDifference,
@@ -203,7 +203,7 @@ class LucrativityAnalysisTable extends StatelessWidget {
               (p, e) => p + e.totalDifference,
             );
             return BaseText(
-              totalDifference.toString().toBrazilianNumber(2),
+              totalDifference.toString().toBrazilianNumber(),
               fontWeight: FontWeight.bold,
               color: totalDifference < 0 ? Colors.red : null,
             );

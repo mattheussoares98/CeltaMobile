@@ -22,7 +22,7 @@ class InscriptionField extends StatelessWidget {
       maxLength: 9,
       hintText: 'Inscrição estadual'.hardcoded,
       labelText: 'Inscrição estadual'.hardcoded,
-      keyboardType: const TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {
         nameFocusNode.requestFocus();

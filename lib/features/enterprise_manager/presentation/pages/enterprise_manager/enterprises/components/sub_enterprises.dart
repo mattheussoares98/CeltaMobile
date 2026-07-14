@@ -63,7 +63,6 @@ class SubEnterprises extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RichText(
-                            textAlign: TextAlign.start,
                             text: TextSpan(
                               style: context.theme.textTheme.bodyMedium,
                               children: [
@@ -79,7 +78,6 @@ class SubEnterprises extends ConsumerWidget {
                             ),
                           ),
                           RichText(
-                            textAlign: TextAlign.start,
                             text: TextSpan(
                               children: [
                                 for (var module in subEnterprise.modules.where(

@@ -121,7 +121,6 @@ void main() {
     test('should throw AppException when session is invalid', () async {
       // ARRANGE: Pass null for the session
       final container = makeProviderContainer(
-        session: null,
         enterprise: fakeEnterprise,
       );
       addTearDown(container.dispose);
@@ -139,7 +138,6 @@ void main() {
       // ARRANGE: Pass null for the enterprise
       final container = makeProviderContainer(
         session: fakeSession,
-        enterprise: null,
       );
       addTearDown(container.dispose);
 

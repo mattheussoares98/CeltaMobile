@@ -33,7 +33,7 @@ class NumberField extends StatelessWidget {
       onFieldSubmitted: (_) {
         complementFocusNode.requestFocus();
       },
-      keyboardType: const TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(),
     );
   }
 }

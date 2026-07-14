@@ -37,7 +37,7 @@ class ProductTableItem extends StatelessWidget {
               ),
               _Cell(
                 label: 'Preço'.hardcoded,
-                value: cartProduct.value.toString().toBrazilianNumber(2),
+                value: cartProduct.value.toString().toBrazilianNumber(),
                 labelStyle: labelStyle,
                 subtitleStyle: valueStyle,
               ),
@@ -46,7 +46,7 @@ class ProductTableItem extends StatelessWidget {
                   label: 'Desc'.hardcoded,
                   value: cartProduct.totalDiscountValue
                       .toString()
-                      .toBrazilianNumber(2),
+                      .toBrazilianNumber(),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(color: Colors.red),
                 ),
@@ -55,7 +55,7 @@ class ProductTableItem extends StatelessWidget {
                   label: 'Acrésc'.hardcoded,
                   value: cartProduct.totalIncrement
                       .toString()
-                      .toBrazilianNumber(2),
+                      .toBrazilianNumber(),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(color: Colors.orange),
                 ),
@@ -64,7 +64,7 @@ class ProductTableItem extends StatelessWidget {
                   label: 'Frete'.hardcoded,
                   value: cartProduct.totalDeliveryTax
                       .toString()
-                      .toBrazilianNumber(2),
+                      .toBrazilianNumber(),
                   labelStyle: labelStyle,
                   subtitleStyle: valueStyle?.copyWith(
                     color: context.theme.colorScheme.secondary,
@@ -72,7 +72,7 @@ class ProductTableItem extends StatelessWidget {
                 ),
               _Cell(
                 label: 'Total'.hardcoded,
-                value: cartProduct.totalLiquid.toString().toBrazilianNumber(2),
+                value: cartProduct.totalLiquid.toString().toBrazilianNumber(),
                 labelStyle: labelStyle,
                 subtitleStyle: valueStyle?.copyWith(
                   color: context.theme.primaryColor,

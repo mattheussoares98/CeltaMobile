@@ -18,7 +18,7 @@ class SearchSaleRequestPage extends ConsumerStatefulWidget {
 class _SearchSaleRequestPageState extends ConsumerState<SearchSaleRequestPage> {
   static final now = DateTime.now();
   final _startController = TextEditingController(
-    text: now.formatDate(DateFormatType.ddMMyyyy),
+    text: now.formatDate(),
   );
   final filtersFormKey = GlobalKey<FormState>();
 

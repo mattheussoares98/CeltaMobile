@@ -82,7 +82,6 @@ class SummaryTable extends StatelessWidget {
           return Flexible(
             child: Column(
               mainAxisAlignment: .spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Align(
                   alignment: alignment,

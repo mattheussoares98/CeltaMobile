@@ -121,7 +121,6 @@ void main() {
     test('should throw AppException when session is invalid', () async {
       // ARRANGE: Pass null for the session
       final container = makeProviderContainer(
-        session: null,
         permissions: fakePermissionsList,
       );
       addTearDown(container.dispose);

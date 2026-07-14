@@ -25,7 +25,6 @@ class SelectEnterpriseDropDown extends ConsumerWidget {
 
               return DropdownMenuItem<EnterpriseEntity>(
                 value: e,
-                enabled: true,
                 child: Text(
                   text,
                   maxLines: 1,

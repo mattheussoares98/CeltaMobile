@@ -72,9 +72,9 @@ class DateValidator implements StringValidator {
     } else {
       // For MM/YYYY, we only care about Year and Month.
       // To allow the current month to be valid, we compare based on the 1st day of the month.
-      normalizedParsedDate = DateTime(parsedDate.year, parsedDate.month, 1);
-      normalizedStartDate = DateTime(minimumDate.year, minimumDate.month, 1);
-      normalizedEndDate = DateTime(maximumDate.year, maximumDate.month, 1);
+      normalizedParsedDate = DateTime(parsedDate.year, parsedDate.month);
+      normalizedStartDate = DateTime(minimumDate.year, minimumDate.month);
+      normalizedEndDate = DateTime(maximumDate.year, maximumDate.month);
     }
 
     if (normalizedParsedDate.isBefore(normalizedStartDate) ||

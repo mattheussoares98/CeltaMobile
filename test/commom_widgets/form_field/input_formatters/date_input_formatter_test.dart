@@ -8,7 +8,7 @@ void main() {
     late DateInputFormatter formatterWithoutDay;
 
     setUp(() {
-      formatterWithDay = DateInputFormatter(includeDay: true);
+      formatterWithDay = DateInputFormatter();
       formatterWithoutDay = DateInputFormatter(includeDay: false);
     });
 

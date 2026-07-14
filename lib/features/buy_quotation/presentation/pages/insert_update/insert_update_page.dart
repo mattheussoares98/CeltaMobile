@@ -103,7 +103,6 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       resizeToAvoidBottomInset: true,
       onPopInvokedWithResult: () async {
         bool? confirmed = await showAlertDialog(

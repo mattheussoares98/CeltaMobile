@@ -64,7 +64,6 @@ class Stocks extends ConsumerWidget {
                               route: Routes.adjustStocks,
                               enterpriseCode:
                                   stocksForEnterprise.first.EnterpriseCode,
-                              replace: false,
                               extra: widget.product,
                               pathParameters: {
                                 'enterpriseCode': stocksForEnterprise
@@ -84,7 +83,6 @@ class Stocks extends ConsumerWidget {
                 initiallyExpanded: true,
                 children: stocksForEnterprise.map((stock) {
                   return Row(
-                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(

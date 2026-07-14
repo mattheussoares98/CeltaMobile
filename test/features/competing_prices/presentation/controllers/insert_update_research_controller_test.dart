@@ -142,7 +142,6 @@ void main() {
         // ARRANGE
         final spyResearchs = SpyResearchsStateController();
         final container = makeProviderContainer(
-          session: null, // Invalid session
           spyResearchs: spyResearchs,
         );
         addTearDown(container.dispose);
@@ -221,7 +220,6 @@ void main() {
           workingUrl: any(named: 'workingUrl'),
           enterpriseCode: any(named: 'enterpriseCode'),
           name: fakeName,
-          observations: null, // Verify null was passed
           researchCode: fakeResearchCode,
         ),
       ).called(1);

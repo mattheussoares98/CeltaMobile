@@ -22,7 +22,6 @@ class CreateProductPage extends StatelessWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       appBar: BaseAppBar(
         title: 'Cadastro de produtos'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,

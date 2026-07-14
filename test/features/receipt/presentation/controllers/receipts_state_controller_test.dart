@@ -106,7 +106,7 @@ void main() {
       'should throw AppException when validatedUserSession is invalid',
       () async {
         // ARRANGE
-        final container = makeProviderContainer(session: null);
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
 
         // ACT & ASSERT

@@ -62,7 +62,6 @@ class BaseScaffold extends StatelessWidget {
         builder: (context, ref, child) {
           ref.watch(screenObserverProvider);
           return buildOrientationReader(
-            useSensor: true,
             builder: (context) => _BaseScaffold(this),
           );
         },
@@ -70,7 +69,6 @@ class BaseScaffold extends StatelessWidget {
     }
 
     return buildOrientationReader(
-      useSensor: true,
       builder: (context) => _BaseScaffold(this),
     );
   }

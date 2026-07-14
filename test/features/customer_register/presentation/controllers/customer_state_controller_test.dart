@@ -161,7 +161,6 @@ void main() {
     );
     test('should return entity with empty values when throws', () async {
       final container = makeProviderContainer(
-        session: null, //throws
         enterprise: fakeEnterprise,
       );
       addTearDown(container.dispose);

@@ -43,7 +43,6 @@ class RequestsTypePage extends ConsumerWidget {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Nenhum modelo de pedido foi encontrado\n\nLembre-se que somente modelos que estão com o parâmetro "Permitir a utilização em pedidos feitos por aplicativos" aparecerão aqui'

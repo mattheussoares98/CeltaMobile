@@ -5,7 +5,6 @@ void main() {
   test('Allow decimal', () {
     final sut = NumberValidator(
       allowDecimal: true,
-      needsBeGreaterThanZero: true,
     );
     //true result
     expect(sut.isValid("1,00"), isTrue);
@@ -23,7 +22,6 @@ void main() {
     final sut = NumberValidator(
       allowDecimal: true,
       maxDecimalHouses: 3,
-      needsBeGreaterThanZero: true,
     );
     //true result
     expect(sut.isValid("1,001"), isTrue);
@@ -37,7 +35,6 @@ void main() {
   test('Dont allow decimal', () {
     final sut = NumberValidator(
       allowDecimal: false,
-      needsBeGreaterThanZero: true,
     );
     //true result
     expect(sut.isValid("1001"), isTrue);
@@ -54,7 +51,6 @@ void main() {
   test('Needs be greater than zero', () {
     final sut = NumberValidator(
       allowDecimal: false,
-      needsBeGreaterThanZero: true,
     );
     expect(sut.isValid("0"), isFalse);
   });

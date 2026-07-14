@@ -8,8 +8,6 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
     context: context,
     isScrollControlled: true, // Allows the modal to be full-screen
     backgroundColor: Colors.transparent,
-    isDismissible: true,
-    enableDrag: true,
     useSafeArea: true,
     builder: (context) {
       return Stack(

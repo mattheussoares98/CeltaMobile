@@ -116,7 +116,6 @@ class CustomerItem extends ConsumerWidget {
                     notifier.updateCustomerOrCovenant(
                       customer,
                       covenant: covenant,
-                      onlyValidating: false,
                       isChangingCovenant: true,
                     );
                   },
@@ -178,7 +177,6 @@ class CustomerItem extends ConsumerWidget {
 
               notifier.updateCustomerOrCovenant(
                 customer,
-                onlyValidating: false,
               );
             }
           : null,

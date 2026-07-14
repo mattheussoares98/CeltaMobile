@@ -103,7 +103,7 @@ void main() {
       'should emit [loading, error] and return false when session is invalid',
       () async {
         // ARRANGE: Pass null for the session to trigger the error path
-        final container = makeProviderContainer(session: null);
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
 
         final states = <AsyncValue<void>>[];

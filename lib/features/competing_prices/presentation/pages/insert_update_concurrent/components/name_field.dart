@@ -20,7 +20,6 @@ class NameField extends StatelessWidget {
       hintText: 'Nome'.hardcoded,
       onFieldSubmitted: (_) => observationFocusNode.requestFocus(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      maxLength: 50,
       validator: FormValidators.compose([NonEmptyValidator()]),
     );
   }

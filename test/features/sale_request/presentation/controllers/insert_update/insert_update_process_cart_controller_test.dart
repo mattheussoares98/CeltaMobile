@@ -89,7 +89,6 @@ void main() {
       final customer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 1);
       insertUpdateStateNotifier.updateCustomerOrCovenant(
         customer,
-        onlyValidating: false,
       );
 
       final processedRequest = EntityFactory.makeBSFSaleRequestEntity();
@@ -168,7 +167,6 @@ void main() {
         );
         insertUpdateStateNotifier.updateCustomerOrCovenant(
           customer,
-          onlyValidating: false,
         );
 
         final draftValue = container

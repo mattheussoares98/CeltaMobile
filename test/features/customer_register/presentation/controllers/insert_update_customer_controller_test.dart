@@ -103,7 +103,6 @@ void main() {
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE: Pass null for the session to trigger the error path
       final container = makeProviderContainer(
-        session: null,
         customer: fakeCustomer,
       );
       addTearDown(container.dispose);

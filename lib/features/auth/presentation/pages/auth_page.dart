@@ -82,7 +82,6 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       resizeToAvoidBottomInset: true,
       body: Center(
         child: ResponsiveScrollableWidget(

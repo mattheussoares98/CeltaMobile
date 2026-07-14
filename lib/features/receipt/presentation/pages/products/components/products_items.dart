@@ -114,7 +114,7 @@ class _ProductItem extends ConsumerWidget {
             TitleAndSubTitle(
               title: 'Validade'.hardcoded,
               subTitle: product.DataValidade_ProcRecebDocProEmb?.formatDate(
-                DateFormatType.ddMMyyyy,
+                
               ),
               emptyMessage: 'Sem validade'.hardcoded,
             ),

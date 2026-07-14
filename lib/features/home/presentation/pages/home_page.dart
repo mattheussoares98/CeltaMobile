@@ -12,10 +12,8 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       drawer: const CompleteDrawer(),
       appBar: BaseAppBar(
-        showLeading: true,
         leading: Builder(
           builder: (context) => IconButton(
             onPressed: () => Scaffold.of(context).openDrawer(),

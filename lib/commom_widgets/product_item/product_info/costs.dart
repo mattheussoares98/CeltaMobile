@@ -37,7 +37,6 @@ class Costs extends ConsumerWidget {
                         module: Modules.adjustCost,
                         route: Routes.adjustCost,
                         enterpriseCode: widget.product.EnterpriseCode,
-                        replace: false,
                         extra: widget.product,
                         pathParameters: {
                           'enterpriseCode': widget.product.EnterpriseCode

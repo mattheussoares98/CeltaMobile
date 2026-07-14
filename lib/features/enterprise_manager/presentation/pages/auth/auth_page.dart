@@ -57,7 +57,6 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       appBar: BaseAppBar(title: 'Login'.hardcoded),
       body: ResponsiveScrollableWidget(
         centralize: true,

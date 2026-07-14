@@ -27,7 +27,7 @@ class CpfCnpjField extends ConsumerWidget {
       hintText: 'CPF/CNPJ'.hardcoded,
       labelText: 'CPF/CNPJ'.hardcoded,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: const TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(),
       onFieldSubmitted: (_) {
         nameFocusNode.requestFocus();
       },

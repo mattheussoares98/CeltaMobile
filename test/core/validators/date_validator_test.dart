@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   // Define a fixed period to use for all tests
-  final startDate = DateTime(2025, 1, 1);
+  final startDate = DateTime(2025);
   final endDate = DateTime(2025, 1, 31);
 
   late DateValidator sut;
@@ -41,7 +41,7 @@ void main() {
     group('Valid Dates without day (MM/YYYY)', () {
       late DateValidator monthOnlySut;
       final rangeStart = DateTime(2025, 5, 15); // Mid-month start
-      final rangeEnd = DateTime(2026, 12, 1);
+      final rangeEnd = DateTime(2026, 12);
 
       setUp(() {
         monthOnlySut = DateValidator(
@@ -69,7 +69,7 @@ void main() {
 
     group('Invalid Dates without day (MM/YYYY)', () {
       late DateValidator monthOnlySut;
-      final rangeStart = DateTime(2025, 5, 1);
+      final rangeStart = DateTime(2025, 5);
       final rangeEnd = DateTime(2026, 12, 31);
 
       setUp(() {

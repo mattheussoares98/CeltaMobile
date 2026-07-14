@@ -61,7 +61,6 @@ class SaleRequestDetailsPage extends ConsumerWidget {
           slivers: [
             SliverToBoxAdapter(
               child: Align(
-                alignment: Alignment.center,
                 child: SizedBox(
                   width: Breakpoint.desktop,
                   child: Column(

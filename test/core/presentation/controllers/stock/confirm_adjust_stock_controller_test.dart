@@ -94,7 +94,7 @@ void main() {
 
     test('should emit [loading, error] when session is null', () async {
       // ARRANGE: Pass null for the session to simulate a failure condition.
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       final states = <AsyncValue<void>>[];

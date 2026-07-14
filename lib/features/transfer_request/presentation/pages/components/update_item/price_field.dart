@@ -55,7 +55,6 @@ class PriceField extends ConsumerWidget {
           validator: FormValidators.compose([
             NumberValidator(
               allowDecimal: true,
-              maxDecimalHouses: 2,
               allowEmptyValue: !requestTypeAllowChangePrice,
             ),
           ]),

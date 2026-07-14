@@ -19,7 +19,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
   }) async {
     final printer = PrinterNetworkManager(
       ip,
-      port: 9100,
       timeout: const Duration(seconds: 30),
     );
 
@@ -78,13 +77,12 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     );
 
     bytes += generator.text(
-      "Impresso em ${DateTime.now().formatDate(DateFormatType.ddMMyyyy)}"
+      "Impresso em ${DateTime.now().formatDate()}"
           .hardcoded,
       styles: const PosStyles(align: PosAlign.center),
     );
     bytes += generator.text(
       'Pedido: $saleRequestNumber'.hardcoded,
-      styles: const PosStyles(align: PosAlign.left),
     );
 
     // Request type
@@ -98,47 +96,41 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     };
     bytes += generator.text(
       'Modelo de Pedido: $requestTypeStr'.hardcoded,
-      styles: const PosStyles(align: PosAlign.left),
     );
 
     // Date of emission
     bytes += generator.text(
       'Data de Emissao: ${_formatDate(saleRequest.dateOfEmission)}'.hardcoded,
-      styles: const PosStyles(align: PosAlign.left),
     );
 
     bytes += generator.text(
       'Cliente: ${saleRequest.customer?.name ?? "N/A"}'.hardcoded,
-      styles: const PosStyles(align: PosAlign.left),
     );
     bytes += generator.text(
       'Usuario: $userName'.hardcoded,
-      styles: const PosStyles(align: PosAlign.left),
     );
 
     // Sale-level increment
     final increment = saleRequest.increment;
     if (increment?.value != null && increment!.value! > 0) {
-      final formatted = increment.value.toString().toBrazilianNumber(2);
+      final formatted = increment.value.toString().toBrazilianNumber();
       final incrementStr = increment.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
       bytes += generator.text(
         'Acrescimo: $incrementStr'.hardcoded,
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 
     // Sale-level financial discount
     final financialDiscount = saleRequest.financialDiscount;
     if (financialDiscount?.value != null && financialDiscount!.value! > 0) {
-      final formatted = financialDiscount.value.toString().toBrazilianNumber(2);
+      final formatted = financialDiscount.value.toString().toBrazilianNumber();
       final discStr = financialDiscount.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
       bytes += generator.text(
         'Desconto Financeiro: $discStr'.hardcoded,
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 
@@ -146,27 +138,25 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     final financialIncrement = saleRequest.financialIncrement;
     if (financialIncrement?.value != null && financialIncrement!.value! > 0) {
       final formatted = financialIncrement.value.toString().toBrazilianNumber(
-        2,
+        
       );
       final incStr = financialIncrement.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
       bytes += generator.text(
         'Acrescimo Financeiro: $incStr'.hardcoded,
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 
     // Delivery tax
     final deliveryTax = saleRequest.deliveryTax?.deliveryTax;
     if (deliveryTax?.value != null && deliveryTax!.value! > 0) {
-      final formatted = deliveryTax.value.toString().toBrazilianNumber(2);
+      final formatted = deliveryTax.value.toString().toBrazilianNumber();
       final freightStr = deliveryTax.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
       bytes += generator.text(
         'Frete: $freightStr'.hardcoded,
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 
@@ -177,7 +167,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     if (totalLiquidStr != null) {
       bytes += generator.text(
         'Total Liquido: R\$ $totalLiquidStr'.hardcoded,
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 
@@ -219,27 +208,18 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
             bytes += generator.text(
               buffer.toString().removeAccents(),
-              styles: const PosStyles(align: PosAlign.left),
             );
 
             if (disc > 0) {
               bytes += generator.text(
                 "  (-) Desconto: R\$ ${disc.toString().toBrazilianNumber()}"
                     .hardcoded,
-                styles: const PosStyles(
-                  align: PosAlign.left,
-                  height: PosTextSize.size1,
-                ),
               );
             }
             if (inc > 0) {
               bytes += generator.text(
                 "  (+) Acrescimo: R\$ ${inc.toString().toBrazilianNumber()}"
                     .hardcoded,
-                styles: const PosStyles(
-                  align: PosAlign.left,
-                  height: PosTextSize.size1,
-                ),
               );
             }
           }
@@ -281,7 +261,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
           ),
           PosColumn(
             text: cartProduct.quantity.toString().toBrazilianNumber(3, true),
-            width: 2,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
@@ -291,7 +270,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
           ),
           PosColumn(
             text: cartProduct.toEntity().value.toString().toBrazilianNumber(),
-            width: 2,
             styles: const PosStyles(align: PosAlign.center),
           ),
           PosColumn(
@@ -361,7 +339,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
           width: 6,
         ),
         PosColumn(
-          text: totalDiscount.toString().toBrazilianNumber(2),
+          text: totalDiscount.toString().toBrazilianNumber(),
           width: 6,
           styles: const PosStyles(align: PosAlign.right),
         ),
@@ -432,7 +410,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       );
       bytes += generator.text(
         observations.removeAccents(),
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
     if (instructions.isNotEmpty) {
@@ -442,7 +419,6 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       );
       bytes += generator.text(
         instructions.removeAccents(),
-        styles: const PosStyles(align: PosAlign.left),
       );
     }
 

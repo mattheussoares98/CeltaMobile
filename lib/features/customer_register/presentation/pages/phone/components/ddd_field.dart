@@ -24,7 +24,7 @@ class DddField extends StatelessWidget {
       hintText: 'DDD',
       maxLength: 2,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: const TextInputType.numberWithOptions(decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(),
       validator: FormValidators.compose([NonEmptyValidator(), DddValidator()]),
       onChanged: (value) {
         if ([

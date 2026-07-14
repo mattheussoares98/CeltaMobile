@@ -216,7 +216,6 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
               if (_isEditing) ...[
                 gapH8,
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       flex: 65,

@@ -258,7 +258,7 @@ void main() {
 
       test('should emit [loading, error] when session is invalid', () async {
         // ARRANGE
-        final container = makeProviderContainer(session: null);
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
 
         await container.read(

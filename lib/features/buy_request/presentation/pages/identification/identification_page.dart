@@ -13,7 +13,6 @@ class IdentificationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       safeAreaTop: false,
       body: Column(
         children: [

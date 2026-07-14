@@ -54,7 +54,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
     );
 
     _priceController = TextEditingController(
-      text: (product.value ?? 0).toString().toBrazilianNumber(2),
+      text: (product.value ?? 0).toString().toBrazilianNumber(),
     );
 
     final deliveryTax = product.deliveryTax?.value ?? 0;
@@ -146,7 +146,6 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
               notifier.updateItem(
                 widget.product,
                 updatedItem,
-                onlyValidating: false,
               );
 
               if (context.mounted) {
@@ -178,7 +177,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
 
             ref.listen(uiProvider.select((s) => s.price), (p, n) {
               if (!_priceFocusNode.hasPrimaryFocus) {
-                final nextPriceStr = n.toString().toBrazilianNumber(2);
+                final nextPriceStr = n.toString().toBrazilianNumber();
                 if (_priceController.text != nextPriceStr) {
                   _priceController.text = nextPriceStr;
                 }

@@ -39,9 +39,7 @@ class NotificationsService implements INotificationsService {
 
     // 1. Request permissions (especially important for iOS and Android 13+)
     await FirebaseMessaging.instance.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
+      
     );
 
     // 2. Setup Background Handler

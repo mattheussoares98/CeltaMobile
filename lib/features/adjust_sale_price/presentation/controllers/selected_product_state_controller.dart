@@ -62,9 +62,6 @@ class SelectedProductStateController extends _$SelectedProductStateController {
                 searchValue: plu,
                 routine: BsRoutine.adjustSalePrice,
                 enterpriseCodes: [enterpriseCode],
-                lastBuyEntranceQuantity: null,
-                buyRequestParams: null,
-                competingPricesParams: null,
               ),
             );
 

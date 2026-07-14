@@ -40,7 +40,6 @@ GoRouter goRouter(Ref ref) {
 
   return GoRouter(
     initialLocation: '/splash',
-    debugLogDiagnostics: false,
     observers: [
       CrashlyticsRouteObserver(ref.watch(crashlyticsServiceProvider)),
     ],

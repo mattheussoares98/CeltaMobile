@@ -165,7 +165,7 @@ void main() {
         'load should emit [loading, error] when session is invalid',
         () async {
           // ARRANGE: Pass null for the session to trigger the error path
-          final container = makeProviderContainer(session: null);
+          final container = makeProviderContainer();
           addTearDown(container.dispose);
 
           // Wait for the initial build

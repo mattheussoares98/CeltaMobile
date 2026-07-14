@@ -24,7 +24,7 @@ class SelectDateIconButton extends StatelessWidget {
           currentSelectedDate: controller.text.toDateTime(),
         );
         if (date != null) {
-          controller.text = date.formatDate(DateFormatType.ddMMyyyy);
+          controller.text = date.formatDate();
         }
       },
       icon: const PlatformIcon(

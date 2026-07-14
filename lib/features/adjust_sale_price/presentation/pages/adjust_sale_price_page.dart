@@ -65,7 +65,6 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         selectedEnterpriseCode: widget.enterpriseCode,

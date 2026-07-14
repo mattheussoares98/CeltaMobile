@@ -91,7 +91,6 @@ class EnterprisesPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       safeAreaTop: false,
       body: Consumer(
         builder: (context, ref, child) {

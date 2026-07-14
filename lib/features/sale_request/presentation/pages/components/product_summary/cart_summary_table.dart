@@ -19,7 +19,6 @@ class CartSummaryTable extends StatelessWidget {
         SummaryTableItem(
           title: 'Preço'.hardcoded,
           value: item.value,
-          decimalHouses: 2,
           isPrice: true,
           trailing: SummaryTooltip(
             message:

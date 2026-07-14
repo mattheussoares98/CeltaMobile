@@ -45,7 +45,7 @@ void main() {
     supplierCode = faker.randomGenerator.integer(100);
     observations = faker.lorem.word();
     enterpriseCodes = [
-      faker.randomGenerator.integer(100, min: 0),
+      faker.randomGenerator.integer(100),
       faker.randomGenerator.integer(200, min: 101),
       faker.randomGenerator.integer(300, min: 201),
     ];

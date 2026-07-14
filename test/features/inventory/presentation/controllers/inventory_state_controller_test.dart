@@ -89,7 +89,7 @@ void main() {
 
     test('should throw AppException when session is invalid', () async {
       // ARRANGE: Pass null for the session to trigger the failure path in the Fake.
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       // ACT & ASSERT: Expect the future to throw an AppException.

@@ -96,7 +96,6 @@ void main() {
           crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
           workingUrl: fakeSession.enterprise!.workingUrl!,
           enterpriseCode: fakeEnterprise.Code!,
-          searchValue: null,
         ),
       ).called(1);
     });
@@ -159,7 +158,6 @@ void main() {
       test('should emit [loading, error] when session is invalid', () async {
         // ARRANGE: Pass a null enterprise
         final container = makeProviderContainer(
-          session: null,
           enterprise: fakeEnterprise,
         );
 
@@ -184,7 +182,6 @@ void main() {
           // ARRANGE: Pass a null enterprise
           final container = makeProviderContainer(
             session: fakeSession,
-            enterprise: null,
           );
 
           expect(

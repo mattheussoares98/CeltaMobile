@@ -20,7 +20,6 @@ class ConcurrentsStateController extends _$ConcurrentsStateController {
         .load(
           crossIdentity: validatedUser!.user.CrossIdentity_Usuario!,
           workingUrl: validatedUser.enterprise!.workingUrl!,
-          searchValue: null,
         );
   }
 

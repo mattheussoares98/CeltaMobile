@@ -72,7 +72,7 @@ class _CovenantItem extends ConsumerWidget {
                   TitleAndSubTitle(
                     title: 'Limite '.hardcoded,
                     subTitle:
-                        'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber(2, false)}',
+                        'R\$ ${covenant.LimitOfPurchase.toString().toBrazilianNumber()}',
                   ),
                 ],
               ),

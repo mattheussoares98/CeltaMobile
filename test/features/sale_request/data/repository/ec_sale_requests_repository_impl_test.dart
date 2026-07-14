@@ -176,7 +176,6 @@ void main() {
       final response = await sut.get(
         params: params,
         enterpriseIds: enterpriseIds,
-        endDateHourOfCreation: null,
         startDateHourOfCreation: startDateHourOfCreation,
       );
 
@@ -224,14 +223,6 @@ void main() {
             endDateHourOfCreation: any(
               named: 'endDateHourOfCreation',
             ), //DateTime.now(),
-            enterpriseIds: null,
-            startDateHourOfCreation: null,
-            mountCustomer: null,
-            mountProducts: null,
-            mountRequestType: null,
-            mountSeller: null,
-            personalizedCodes: null,
-            id: null,
           ),
         ).called(1);
       },

@@ -30,7 +30,6 @@ class ShallowResultsItems extends ConsumerWidget {
         elevation: 5,
         shadowColor: Colors.black,
         borderRadius: BorderRadius.circular(Sizes.p8),
-        clipBehavior: Clip.none, // PERFORMANCE: Clip.none is faster on GPU
         child: Container(
           constraints: BoxConstraints(
             maxHeight: maxAllowedHeight > 120 ? maxAllowedHeight : 120,

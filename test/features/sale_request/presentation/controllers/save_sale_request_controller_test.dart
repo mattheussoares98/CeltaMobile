@@ -104,7 +104,6 @@ void main() {
               SaleRequestArgs(
                 enterpriseCode: fakeEnterprise.Code!,
                 saleRequestId: 0,
-                customerCode: 0,
                 requestTypeCode: 0,
               ),
         ),
@@ -394,7 +393,6 @@ void main() {
           final container = makeProviderContainer(
             insertUpdateSaleRequestEntity: invalidBsfEntity,
             mockNeedsProcessing: true,
-            canChangePrice: true,
           );
 
           final states = <AsyncValue<void>>[];
@@ -626,7 +624,6 @@ void main() {
         final defaultArgs = SaleRequestArgs(
           enterpriseCode: fakeEnterprise.Code!,
           saleRequestId: 0,
-          customerCode: 0,
           requestTypeCode: 45,
         );
 
@@ -710,7 +707,6 @@ void main() {
           final defaultArgs = SaleRequestArgs(
             enterpriseCode: fakeEnterprise.Code!,
             saleRequestId: 0,
-            customerCode: 0,
             requestTypeCode: 45,
           );
 
@@ -774,7 +770,6 @@ void main() {
           final defaultArgs = SaleRequestArgs(
             enterpriseCode: fakeEnterprise.Code!,
             saleRequestId: 0,
-            customerCode: 0,
             requestTypeCode: 45,
           );
 

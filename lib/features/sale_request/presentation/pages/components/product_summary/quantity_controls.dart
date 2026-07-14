@@ -51,7 +51,7 @@ class QuantityControlButton extends ConsumerWidget {
           }
         }
 
-        notifier.increaseOrDecreaseUnit(item, isAdding, onlyValidating: false);
+        notifier.increaseOrDecreaseUnit(item, isAdding);
       },
       icon: PlatformIcon(
         cupertinoIcon: isAdding

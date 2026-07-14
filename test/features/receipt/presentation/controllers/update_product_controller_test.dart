@@ -66,7 +66,7 @@ void main() {
     fakeProduct = EntityFactory.makeProductEntity(
       productCode: fakeProductCode,
       Quantidade_ProcRecebDocProEmb: 50.0,
-      DataValidade_ProcRecebDocProEmb: DateTime(2026, 1, 1),
+      DataValidade_ProcRecebDocProEmb: DateTime(2026),
     );
 
     // Create the search key for the family provider
@@ -178,7 +178,6 @@ void main() {
         fakeProduct,
       ]);
       final container = makeProviderContainer(
-        session: null,
         spySearchProducts: spySearchProducts,
       );
       addTearDown(container.dispose);

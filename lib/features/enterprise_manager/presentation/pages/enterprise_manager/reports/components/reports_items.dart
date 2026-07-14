@@ -154,7 +154,6 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
             return Card(
               margin: const EdgeInsets.symmetric(vertical: Sizes.p4),
               child: ExpansionTile(
-                initiallyExpanded: false,
                 title: BaseText.titleMedium(
                   '${enterpriseName?.toUpperCase()} (${total.toString().toBrazilianNumber(0)})',
                 ),

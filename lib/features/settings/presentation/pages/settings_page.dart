@@ -15,7 +15,6 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseScaffold(
-      isScrollable: true,
       body: Column(
         children: [
           BaseText.headline('Configurações'.hardcoded),

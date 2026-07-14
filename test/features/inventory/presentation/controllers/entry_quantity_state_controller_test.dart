@@ -144,7 +144,7 @@ void main() {
 
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE: Pass null for the session to trigger the error path in the Fake
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
 
       await container.read(
@@ -378,7 +378,7 @@ void main() {
 
     test('should emit [loading, error] when session is invalid', () async {
       // ARRANGE: Pass null for the session to trigger the failure path
-      final container = makeProviderContainer(session: null);
+      final container = makeProviderContainer();
       addTearDown(container.dispose);
       await container.read(
         entryQuantityStateControllerProvider(codigoInternoInvCont).future,

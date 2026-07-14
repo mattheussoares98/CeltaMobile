@@ -139,7 +139,7 @@ void main() {
       () async {
         // ARRANGE
         final container = makeProviderContainer(
-          session: null,
+          
         ); // Invalid session
         addTearDown(container.dispose);
 

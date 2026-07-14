@@ -105,7 +105,6 @@ void main() {
     test('should throw AppException when session is invalid', () async {
       // ARRANGE: Pass null for the session to trigger the error
       final container = makeProviderContainer(
-        session: null,
         pendingRequest: fakePendingRequest,
       );
       addTearDown(container.dispose);
@@ -133,7 +132,6 @@ void main() {
       // ARRANGE: Pass null for the pending request
       final container = makeProviderContainer(
         session: fakeSession,
-        pendingRequest: null,
       );
       addTearDown(container.dispose);
 

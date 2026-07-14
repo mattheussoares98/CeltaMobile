@@ -28,7 +28,6 @@ class CountingsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       appBar: BaseAppBar(
         title: 'Contagens'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,

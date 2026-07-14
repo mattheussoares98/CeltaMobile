@@ -43,7 +43,6 @@ class Prices extends ConsumerWidget {
                         module: Modules.adjustPrice,
                         route: Routes.adjustSalePrice,
                         enterpriseCode: widget.product.EnterpriseCode,
-                        replace: false,
                         extra: widget.product,
                         pathParameters: {
                           'enterpriseCode': widget.product.EnterpriseCode

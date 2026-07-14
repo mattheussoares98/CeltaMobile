@@ -148,7 +148,6 @@ void main() {
       () async {
         // ARRANGE
         final container = makeProviderContainer(
-          session: null,
           enterprise: fakeEnterprise,
         );
         addTearDown(container.dispose);

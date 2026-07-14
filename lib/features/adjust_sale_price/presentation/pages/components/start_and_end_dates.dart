@@ -107,7 +107,6 @@ class _GetDateItem extends StatelessWidget {
       final selectedDate = await GetNewDate.get(
         context: context,
         currentSelectedDate: currentSelectedDate,
-        insertHoursAndMinutes: true,
         minimumDate: now,
         maximumDate: now.add(Duration(days: isEndDate ? (365 * 5) : 365)),
       );

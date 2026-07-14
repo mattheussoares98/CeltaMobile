@@ -21,7 +21,6 @@ class CeltawareLetters extends StatelessWidget {
       return IntrinsicHeight(
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text('Celta'.hardcoded, style: celtaStyle),
             CustomWAndAtWidget(style: textStyle),
@@ -34,7 +33,6 @@ class CeltawareLetters extends StatelessWidget {
     return IntrinsicHeight(
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Staggered letters fade & slide-in sequence
           AnimatedLetterWidget(

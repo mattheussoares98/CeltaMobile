@@ -62,7 +62,6 @@ class _EmailFieldState extends ConsumerState<EmailField> {
             hintText: 'E-mail'.hardcoded,
             labelText: 'E-mail'.hardcoded,
             keyboardType: TextInputType.emailAddress,
-            maxLength: 50,
             onFieldSubmitted: (_) => insertEmail(),
             suffixIcon: IconButton(
               onPressed: emailController.clear,

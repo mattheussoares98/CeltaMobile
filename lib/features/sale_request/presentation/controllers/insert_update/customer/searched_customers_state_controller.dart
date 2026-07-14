@@ -22,8 +22,6 @@ class SearchedCustomersStateController
 
     return SearchedCustomersState(
       customers: [?customer],
-      errorMessage: null,
-      searchByPersonalizedCode: false,
     );
   }
 

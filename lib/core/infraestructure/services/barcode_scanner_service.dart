@@ -45,9 +45,7 @@ class _BarcodeScannerWidgetState extends State<_BarcodeScannerWidget> {
   void initState() {
     super.initState();
     _controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.normal,
-      facing: CameraFacing.back,
-      torchEnabled: false,
+      
     );
   }
 

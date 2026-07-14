@@ -42,7 +42,7 @@ class BuyQuotationModel extends Equatable {
     return BuyQuotationModel(
       Code: json["Code"],
       DateOfCreation: DateTime.parse(json["DateOfCreation"]),
-      DateOfLimit: dateOfLimit == DateTime(1, 1, 1) ? null : dateOfLimit,
+      DateOfLimit: dateOfLimit == DateTime(1) ? null : dateOfLimit,
       PersonalizedCode: json["PersonalizedCode"],
       Observations: json["Observations"],
       Buyer: json["Buyer"] != null ? BuyerModel.fromJson(json["Buyer"]) : null,

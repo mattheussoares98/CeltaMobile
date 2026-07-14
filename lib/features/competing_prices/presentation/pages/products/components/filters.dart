@@ -36,7 +36,6 @@ class Filters extends ConsumerWidget {
     );
 
     return ExpansionTile(
-      initiallyExpanded: false,
       title: RichText(
         text: TextSpan(
           children: [

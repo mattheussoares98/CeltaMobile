@@ -18,7 +18,6 @@ class PaymentMethodDropdown extends ConsumerWidget {
       data: (paymentFinalizations) {
         if (paymentFinalizations.isEmpty) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 'Nenhuma forma de pagamento está disponível para este pedido.'

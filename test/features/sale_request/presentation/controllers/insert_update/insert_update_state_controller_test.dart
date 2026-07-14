@@ -168,7 +168,6 @@ void main() {
           EntityFactory.makeBSFCustomerEntity(),
           EntityFactory.makeBSFCustomerEntity(),
         ],
-        errorMessage: null,
       ),
     );
     fakeArgs = SaleRequestArgs(
@@ -837,7 +836,6 @@ void main() {
         final result = controller.increaseOrDecreaseUnit(
           item,
           true,
-          onlyValidating: false,
         );
 
         expect(result.$1, isNull);
@@ -1580,7 +1578,6 @@ void main() {
             customer,
             covenant: covenant,
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           // Create a payment finalization of type covenant
@@ -2092,7 +2089,7 @@ void main() {
           final customer1 = EntityFactory.makeBSFCustomerEntity().copyWith(
             code: 1,
           );
-          controller.updateCustomerOrCovenant(customer1, onlyValidating: false);
+          controller.updateCustomerOrCovenant(customer1);
           final state = container.read(insertUpdateStateControllerProvider);
           expect(
             state.value!.customer,
@@ -2102,7 +2099,7 @@ void main() {
           final customer2 = EntityFactory.makeBSFCustomerEntity().copyWith(
             code: 2,
           );
-          controller.updateCustomerOrCovenant(customer2, onlyValidating: false);
+          controller.updateCustomerOrCovenant(customer2);
           final state2 = container.read(insertUpdateStateControllerProvider);
           expect(
             state2.value!.customer,
@@ -2113,7 +2110,7 @@ void main() {
             code: 2,
           );
           //annul when is the same customer code from the previous
-          controller.updateCustomerOrCovenant(customer3, onlyValidating: false);
+          controller.updateCustomerOrCovenant(customer3);
           final state3 = container.read(insertUpdateStateControllerProvider);
           expect(state3.value!.customer, null);
         });
@@ -2145,7 +2142,6 @@ void main() {
             // Second call with onlyValidating: false should update customer successfully
             final actionsForce = controller.updateCustomerOrCovenant(
               customer,
-              onlyValidating: false,
             );
             expect(actionsForce, isEmpty);
 
@@ -2185,7 +2181,6 @@ void main() {
             //update customer
             controller.updateCustomerOrCovenant(
               EntityFactory.makeBSFCustomerEntity(),
-              onlyValidating: false,
             );
 
             //confirm is updated to null value
@@ -2225,8 +2220,6 @@ void main() {
               ),
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: [
                 BSFFinancialEntity(
                   paymentFinalizations: [
@@ -2264,7 +2257,6 @@ void main() {
 
             controller.updateCustomerOrCovenant(
               newCustomer,
-              onlyValidating: false,
             );
 
             final state = container.read(insertUpdateStateControllerProvider);
@@ -2295,8 +2287,6 @@ void main() {
               ),
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: [
                 BSFFinancialEntity(
                   paymentFinalizations: [
@@ -2364,8 +2354,6 @@ void main() {
               ),
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: [
                 BSFFinancialEntity(
                   paymentFinalizations: [
@@ -2394,7 +2382,6 @@ void main() {
 
             controller.updateCustomerOrCovenant(
               newCustomer,
-              onlyValidating: false,
             );
 
             final state = container.read(insertUpdateStateControllerProvider);
@@ -2432,8 +2419,6 @@ void main() {
               ),
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: [
                 BSFFinancialEntity(
                   paymentFinalizations: [
@@ -2464,7 +2449,6 @@ void main() {
               newCustomer,
               covenant: covenant,
               isChangingCovenant: true,
-              onlyValidating: false,
             );
 
             final state = container.read(insertUpdateStateControllerProvider);
@@ -2493,8 +2477,6 @@ void main() {
             fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: const [],
             );
 
@@ -2558,8 +2540,6 @@ void main() {
             fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: const [],
             );
 
@@ -2598,7 +2578,6 @@ void main() {
 
             final actions = controller.updateCustomerOrCovenant(
               blockedCustomer,
-              onlyValidating: false,
             );
 
             expect(actions, isNotEmpty);
@@ -2619,8 +2598,6 @@ void main() {
             fakeSaleRequest = EntityFactory.makeBSFSaleRequestEntity().copyWith(
               products: const [],
               discounts: const [],
-              increment: null,
-              deliveryTax: null,
               financials: const [],
             );
 
@@ -2664,7 +2641,6 @@ void main() {
 
             controller.updateCustomerOrCovenant(
               blockedCustomer,
-              onlyValidating: false,
             );
 
             // State should be updated successfully because the blockade is ignored
@@ -2692,7 +2668,6 @@ void main() {
             customer,
             covenant: customer.covenants![0],
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           final state = container
@@ -2704,7 +2679,6 @@ void main() {
             state.customer!,
             covenant: customer.covenants![0],
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           final state2 = container
@@ -2729,7 +2703,6 @@ void main() {
             );
             controller.updateCustomerOrCovenant(
               customer,
-              onlyValidating: false,
             );
 
             final covenant = EntityFactory.makeBsfCovenantEntity();
@@ -2751,7 +2724,6 @@ void main() {
               customer,
               covenant: covenant,
               isChangingCovenant: true,
-              onlyValidating: false,
             );
             expect(actionsForce, isEmpty);
 
@@ -2776,7 +2748,6 @@ void main() {
             );
             controller.updateCustomerOrCovenant(
               customer,
-              onlyValidating: false,
             );
             expect(
               container
@@ -2806,7 +2777,6 @@ void main() {
               customer,
               covenant: covenant,
               isChangingCovenant: true,
-              onlyValidating: false,
             );
 
             // Covenant code should be set to covenant.code (not null)
@@ -2866,7 +2836,6 @@ void main() {
                 );
             controller.updateCustomerOrCovenant(
               initialCustomer,
-              onlyValidating: false,
             );
 
             // Create new customer with payment restrictions to trigger actions
@@ -2927,7 +2896,6 @@ void main() {
             customer,
             covenant: covenant,
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           final state = container.read(insertUpdateStateControllerProvider);
@@ -3037,7 +3005,6 @@ void main() {
 
           controller.updateCustomerOrCovenant(
             originalCustomer,
-            onlyValidating: false,
           );
 
           final updatedCustomer = EntityFactory.makeBSFCustomerEntity()
@@ -3083,7 +3050,6 @@ void main() {
             originalCustomer,
             covenant: covenant,
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           final stateBefore = container.read(
@@ -3126,7 +3092,6 @@ void main() {
 
           controller.updateCustomerOrCovenant(
             originalCustomer,
-            onlyValidating: false,
           );
 
           // Updated customer has different/no covenants now
@@ -3211,7 +3176,6 @@ void main() {
             customer,
             covenant: covenant,
             isChangingCovenant: true,
-            onlyValidating: false,
           );
 
           final state = container

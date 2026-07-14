@@ -146,7 +146,7 @@ void main() {
     getProductsJsonParams = GetProductsJsonParams(
       searchValue: faker.randomGenerator.string(13),
       enterpriseCodes: [
-        faker.randomGenerator.integer(100, min: 0),
+        faker.randomGenerator.integer(100),
         faker.randomGenerator.integer(200, min: 101),
         faker.randomGenerator.integer(300, min: 201),
       ],

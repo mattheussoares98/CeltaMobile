@@ -109,7 +109,6 @@ void main() {
           () => mockRepository.load(
             crossIdentity: fakeSession.user.CrossIdentity_Usuario!,
             workingUrl: fakeSession.enterprise!.workingUrl!,
-            searchValue: null, // Verify the default is passed
           ),
         ).called(1);
       },
@@ -119,7 +118,7 @@ void main() {
       'should throw AppException when validatedUserSession is invalid',
       () async {
         // ARRANGE
-        final container = makeProviderContainer(session: null);
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
 
         // ACT & ASSERT

@@ -166,7 +166,7 @@ void main() {
       'should throw error and not call side-effects when session is invalid',
       () async {
         // ARRANGE: Pass null for the session
-        final container = makeProviderContainer(session: null);
+        final container = makeProviderContainer();
         addTearDown(container.dispose);
 
         await container.read(

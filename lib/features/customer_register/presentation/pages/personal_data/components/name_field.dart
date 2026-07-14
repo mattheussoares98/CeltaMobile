@@ -19,7 +19,6 @@ class NameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseTextFormField(
       controller: nameController,
-      maxLength: 50,
       hintText: 'Nome'.hardcoded,
       labelText: 'Nome'.hardcoded,
       focusNode: nameFocusNode,

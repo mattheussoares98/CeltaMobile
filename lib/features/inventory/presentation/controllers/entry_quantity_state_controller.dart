@@ -140,7 +140,6 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
               codigoInternoProEmb: product.codigoInternoProEmb,
               PLU: product.PLU,
               codigoProEmb: product.codigoProEmb,
-              quantidadeInvContProEmb: null,
             ),
           );
 

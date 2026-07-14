@@ -59,7 +59,6 @@ void main() {
               CodigoInterno_Usuario: null,
             ),
             enterprise: null,
-            selectedEnterprise: null,
           ).toJson(),
         ),
       ).called(1);

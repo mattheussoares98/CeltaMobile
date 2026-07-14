@@ -145,7 +145,7 @@ class _ValueFieldAndConfirmButtonState
                 autovalidateMode: AutovalidateMode.onUserInteractionIfError,
                 validator: FormValidators.compose([
                   NonEmptyValidator(),
-                  NumberValidator(allowDecimal: true, maxDecimalHouses: 2),
+                  NumberValidator(allowDecimal: true),
                 ]),
               );
             },

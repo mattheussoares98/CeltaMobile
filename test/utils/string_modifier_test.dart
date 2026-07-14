@@ -12,30 +12,30 @@ void main() {
     );
 
     test('should handle standard English inputs correctly', () {
-      expect("1234.567".toBrazilianNumber(2, false), "1.234,57");
+      expect("1234.567".toBrazilianNumber(), "1.234,57");
       expect("1000".toBrazilianNumber(2, true), "1.000");
       expect("1000.5".toBrazilianNumber(2, true), "1.000,5");
-      expect("1000.5".toBrazilianNumber(2, false), "1.000,50");
+      expect("1000.5".toBrazilianNumber(), "1.000,50");
     });
 
     test('should handle standard Portuguese inputs correctly', () {
-      expect("1234,567".toBrazilianNumber(2, false), "1.234,57");
+      expect("1234,567".toBrazilianNumber(), "1.234,57");
       expect("1000,5".toBrazilianNumber(2, true), "1.000,5");
     });
     test(
       'Should convert the value 0.395 to 0,39 when 2 decimals are requested',
       () {
-        expect("0.395".toBrazilianNumber(2, false), "0,39");
+        expect("0.395".toBrazilianNumber(), "0,39");
       },
     );
 
     test('should handle large numbers correctly', () {
-      expect("1000000.123".toBrazilianNumber(2, false), "1.000.000,12");
+      expect("1000000.123".toBrazilianNumber(), "1.000.000,12");
     });
 
     test('should handle edge cases and invalid inputs correctly', () {
-      expect("invalid".toBrazilianNumber(2, false), "invalid");
-      expect("1.234.567,89".toBrazilianNumber(2, false), "1.234.567,89");
+      expect("invalid".toBrazilianNumber(), "invalid");
+      expect("1.234.567,89".toBrazilianNumber(), "1.234.567,89");
     });
   });
 

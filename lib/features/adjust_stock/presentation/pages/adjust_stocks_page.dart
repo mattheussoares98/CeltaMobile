@@ -90,7 +90,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
         title: 'Ajuste de estoque'.hardcoded,

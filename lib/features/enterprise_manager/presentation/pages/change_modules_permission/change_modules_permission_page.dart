@@ -111,7 +111,6 @@ class _ChangeModulesPermissionPageState
 
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       appBar: BaseAppBar(
         title: isGlobalChange
             ? 'Permissões globais'.hardcoded

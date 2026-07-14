@@ -156,7 +156,6 @@ class _CovenantItem extends StatelessWidget {
                         NonEmptyValidator(),
                         NumberValidator(
                           allowDecimal: true,
-                          maxDecimalHouses: 2,
                         ),
                       ]),
                       onFieldSubmitted: (_) {

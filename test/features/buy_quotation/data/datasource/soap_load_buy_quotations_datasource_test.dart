@@ -115,7 +115,7 @@ void main() {
       json.encode([
         BuyQuotationModel.fromEntity(
           EntityFactory.makeBuyQuotationEntity(
-            dateOfLimit: DateTime(0001, 01, 01),
+            dateOfLimit: DateTime(0001),
           ),
         ),
       ]),

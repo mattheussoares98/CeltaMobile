@@ -24,7 +24,6 @@ class EmptyPlaceholderWidget extends ConsumerWidget {
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             BaseText.headline(message),
             gapH32,

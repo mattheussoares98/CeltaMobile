@@ -29,7 +29,6 @@ class LocalUserSessionDatasource implements ILocalUserSessionDatasource {
             CodigoInterno_Usuario: null,
           ),
           enterprise: null,
-          selectedEnterprise: null,
         ).toJson(),
       );
     }

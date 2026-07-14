@@ -353,7 +353,6 @@ void main() {
         final validQuotation = createValidBuyQuotation();
         final container = makeProviderContainer(
           buyQuotationInput: validQuotation,
-          session: null, // Invalid session
         );
         addTearDown(container.dispose);
 

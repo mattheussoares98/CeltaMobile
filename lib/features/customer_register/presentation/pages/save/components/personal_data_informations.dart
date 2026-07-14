@@ -39,11 +39,11 @@ class PersonalDataInformations extends ConsumerWidget {
               ),
 
             if (customer?.DateOfBirth != null &&
-                customer!.DateOfBirth != DateTime(0001, 01, 01))
+                customer!.DateOfBirth != DateTime(0001))
               TitleAndSubTitle(
                 title: 'Nascimento '.hardcoded,
                 subTitle: customer.DateOfBirth?.formatDate(
-                  DateFormatType.ddMMyyyy,
+                  
                 ),
               ),
             if (customer?.Password != null && customer!.Password!.isNotEmpty)

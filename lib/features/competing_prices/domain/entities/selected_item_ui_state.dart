@@ -18,9 +18,7 @@ class SelectedItemUIState extends Equatable {
 
   factory SelectedItemUIState.empty() {
     return const SelectedItemUIState(
-      selectedIndex: null,
-      searchType: SearchProductCompetingPriceType.all,
-      onlyAssociateds: true,
+      
     );
   }
 

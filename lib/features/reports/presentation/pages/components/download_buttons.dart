@@ -18,7 +18,6 @@ class DownloadButtons extends ConsumerWidget {
     }
 
     return Column(
-      crossAxisAlignment: .center,
       children: [
         DefaultButton(DownloadType.pdf, report),
         gapH8,

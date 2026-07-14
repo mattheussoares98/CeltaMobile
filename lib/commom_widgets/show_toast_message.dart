@@ -32,7 +32,6 @@ void showToastMessage(
     showIcon: false,
     style: ToastificationStyle.flat,
     closeButton: ToastCloseButton(
-      showType: CloseButtonShowType.always,
       buttonBuilder: (context, onClose) {
         return IconButton(
           icon: type == ToastType.success

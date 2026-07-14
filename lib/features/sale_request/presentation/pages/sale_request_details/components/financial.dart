@@ -30,7 +30,6 @@ class Financial extends ConsumerWidget {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 PlatformIcon(
                   cupertinoIcon: CupertinoIcons.creditcard,

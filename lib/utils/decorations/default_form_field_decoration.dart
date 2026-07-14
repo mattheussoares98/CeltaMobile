@@ -18,8 +18,6 @@ class DefaultFormFieldDecoration extends InputDecoration {
          errorBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: const BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: Color.fromARGB(255, 171, 35, 35),
            ),
          ),
@@ -39,40 +37,30 @@ class DefaultFormFieldDecoration extends InputDecoration {
          disabledBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: const BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: Colors.grey,
            ),
          ),
          enabledBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: const BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: Colors.grey,
            ),
          ),
          focusedErrorBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: const BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: Color.fromARGB(255, 171, 35, 35),
            ),
          ),
          focusedBorder: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: context.theme.colorScheme.primary,
            ),
          ),
          border: OutlineInputBorder(
            borderRadius: BorderRadius.circular(10),
            borderSide: BorderSide(
-             style: BorderStyle.solid,
-             width: 1,
              color: context.theme.colorScheme.primary,
            ),
          ),

@@ -101,7 +101,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 widget.enterpriseCode,
               ).notifier,
             )
-            .updateIndex(widget.index, annulWhenIsSame: true);
+            .updateIndex(widget.index);
 
         if (!isCurrentlySelected) {
           if (costFocusNode.hasFocus) {

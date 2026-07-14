@@ -16,7 +16,6 @@ class EnterprisesPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
       isScrollable: false,
-      usePadding: true,
       refreshProvider: enterprisesStateControllerProvider(),
       appBar: BaseAppBar(title: 'Empresas'.hardcoded),
       body: AsyncValueWidget(

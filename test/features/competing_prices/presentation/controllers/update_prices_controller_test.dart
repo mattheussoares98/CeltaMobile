@@ -195,7 +195,6 @@ void main() {
       // ARRANGE
       final spySearchProducts = SpySearchProductsStateController();
       final container = makeProviderContainer(
-        session: null,
         spySearchProducts: spySearchProducts,
       ); // Invalid session
       addTearDown(container.dispose);
