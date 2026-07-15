@@ -32,7 +32,9 @@ class BSFSaleRequestDiscountItemModel extends BSFSaleRequestDiscountItemEntity {
       );
 
   Map<String, dynamic> toJson() => {
-    'Product': product,
+    'Product': ProcessAuthorizationSaleRequestProductModel.fromEntity(
+      product,
+    ).toJson(),
     'Quantity': quantity,
     'BruteValue': bruteValue,
     'DiscountValue': discountValue,

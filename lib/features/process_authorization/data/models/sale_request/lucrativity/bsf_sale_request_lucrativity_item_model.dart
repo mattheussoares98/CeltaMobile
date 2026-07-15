@@ -42,7 +42,9 @@ class BSFSaleRequestLucrativityItemModel
       );
 
   Map<String, dynamic> toJson() => {
-    'Product': product,
+    'Product': ProcessAuthorizationSaleRequestProductModel.fromEntity(
+      product,
+    ).toJson(),
     'Quantity': quantity,
     'ReplacementCost': replacementCost,
     'LiquidCost': liquidCost,
