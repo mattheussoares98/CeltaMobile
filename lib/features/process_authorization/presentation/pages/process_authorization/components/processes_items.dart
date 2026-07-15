@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/process_authorization/presentation/pag
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,65 +95,87 @@ class ProcessesItems extends ConsumerWidget {
           return timeB.compareTo(timeA);
         });
 
+        final groupedByType = groupBy(
+          filteredData,
+          (process) => process.authorizationProcessItem?.typeAccordingToTheCode,
+        );
+
         return ResponsiveListFlow(
-          itemCount: filteredData.length,
+          itemCount: groupedByType.keys.length,
           itemBuilder: (context, index) {
-            final process = filteredData[index];
-            return Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                onTap: () => onTap(process),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(Sizes.p8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TitleAndSubTitle(
-                            title: null,
-                            subTitle: process.enterprise?.name ?? '',
-                          ),
-                          BaseText.titleMedium(
-                            process.authorizationProcessItem?.name ?? '',
-                          ),
-                          if (process.dateTimeOfCreation != null)
-                            TitleAndSubTitle(
-                              title: 'Data'.hardcoded,
-                              subTitle: process.dateTimeOfCreation!.formatDate(
-                                DateFormatType.ddMMyyyyHHmmss,
+            final type = groupedByType.keys.elementAt(index);
+            final processes = groupedByType[type];
+            return ExpansionTile(
+              title: BaseRichText(
+                texts: [
+                  BaseText.title('${type?.label} '),
+                  BaseText("(${processes?.length})", color: Colors.red),
+                ],
+              ),
+              children: processes!
+                  .map(
+                    (process) => Card(
+                      clipBehavior: Clip.hardEdge,
+                      child: InkWell(
+                        onTap: () => onTap(process),
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(Sizes.p8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  TitleAndSubTitle(
+                                    title: null,
+                                    subTitle: process.enterprise?.name ?? '',
+                                  ),
+                                  BaseText.titleMedium(
+                                    process.authorizationProcessItem?.name ??
+                                        '',
+                                  ),
+                                  if (process.dateTimeOfCreation != null)
+                                    TitleAndSubTitle(
+                                      title: 'Data'.hardcoded,
+                                      subTitle: process.dateTimeOfCreation!
+                                          .formatDate(
+                                            DateFormatType.ddMMyyyyHHmmss,
+                                          ),
+                                    ),
+                                  TitleAndSubTitle(
+                                    title: 'Processo iniciado por'.hardcoded,
+                                    subTitle: process.user?.identification,
+                                  ),
+                                  if (process.authorizators?.isNotEmpty ??
+                                      false)
+                                    TitleAndSubTitle(
+                                      title: 'Autorizadores'.hardcoded,
+                                      subTitle: process.authorizators
+                                          ?.map((e) => e.identification)
+                                          .join('; '),
+                                    ),
+                                  if (process.observationsVotes?.isNotEmpty ??
+                                      false)
+                                    TitleAndSubTitle(
+                                      title: 'Observações'.hardcoded,
+                                      subTitle: process.observationsVotes,
+                                    ),
+                                ],
                               ),
                             ),
-                          TitleAndSubTitle(
-                            title: 'Processo iniciado por'.hardcoded,
-                            subTitle: process.user?.identification,
-                          ),
-                          if (process.authorizators?.isNotEmpty ?? false)
-                            TitleAndSubTitle(
-                              title: 'Autorizadores'.hardcoded,
-                              subTitle: process.authorizators
-                                  ?.map((e) => e.identification)
-                                  .join('; '),
+                            const Positioned(
+                              bottom: Sizes.p8,
+                              right: Sizes.p8,
+                              child: PlatformIcon(
+                                materialIcon: Icons.arrow_outward_rounded,
+                                cupertinoIcon: CupertinoIcons.arrow_up_right,
+                              ),
                             ),
-                          if (process.observationsVotes?.isNotEmpty ?? false)
-                            TitleAndSubTitle(
-                              title: 'Observações'.hardcoded,
-                              subTitle: process.observationsVotes,
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                    const Positioned(
-                      bottom: Sizes.p8,
-                      right: Sizes.p8,
-                      child: PlatformIcon(
-                        materialIcon: Icons.arrow_outward_rounded,
-                        cupertinoIcon: CupertinoIcons.arrow_up_right,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  )
+                  .toList(),
             );
           },
         );
