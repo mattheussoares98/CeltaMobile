@@ -39,6 +39,7 @@ class BSFGoodsReceivingEntity extends Equatable {
   final BSFGoodsReceivingDetailEntity? detail;
   final BSFEletronicAccessKeyEntity? eletronicAccessKey;
   final String? xmlFileData;
+  final List<BSFGoodsReceivingProductEntity>? products;
 
 
   const BSFGoodsReceivingEntity({
@@ -77,6 +78,7 @@ class BSFGoodsReceivingEntity extends Equatable {
     this.detail,
     this.eletronicAccessKey,
     this.xmlFileData,
+    this.products,
   });
 
   @override
@@ -116,5 +118,6 @@ class BSFGoodsReceivingEntity extends Equatable {
     detail,
     eletronicAccessKey,
     xmlFileData,
+    products,
   ];
 }
