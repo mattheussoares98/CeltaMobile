@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class BSFProductDetailsEntity extends Equatable {
+  //TODO delete and use BSFProductEntity from core path
   final bool? isScheduledToUnify;
   final int? code;
   final String? name;
