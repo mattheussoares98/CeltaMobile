@@ -18,6 +18,8 @@ part 'try_access_module_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class TryAccessModuleController extends _$TryAccessModuleController {
+  bool _isProcessing = false;
+
   @override
   FutureOr<void> build() {}
 
@@ -30,6 +32,9 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     Map<String, String>? pathParameters,
     Object? extra,
   }) async {
+    if (_isProcessing || state.isLoading) return;
+    _isProcessing = true;
+
     final minimumDateLoadRequestType = DateTime(2026, 5, 7);
     final minimumBsVersionDate = switch (route) {
       Routes.searchSaleRequests => DateTime(2026, 3, 26),
@@ -43,97 +48,103 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     };
 
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      if (minimumBsVersionDate != null) {
-        final bsVersionDate = await ref.read(
-          bsVersionStateControllerProvider.future,
-        );
-
-        if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
-          if (!context.mounted) return;
-          showAlertDialog(
-            context: context,
-            title: 'Atualize o BS'.hardcoded,
-            content:
-                'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
-                    .hardcoded,
+    try {
+      state = await AsyncValue.guard(() async {
+        if (minimumBsVersionDate != null) {
+          final bsVersionDate = await ref.read(
+            bsVersionStateControllerProvider.future,
           );
-          return;
+
+          if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
+            if (!context.mounted) return;
+            showAlertDialog(
+              context: context,
+              title: 'Atualize o BS'.hardcoded,
+              content:
+                  'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
+                      .hardcoded,
+            );
+            return;
+          }
         }
-      }
 
-      if (!context.mounted) return;
-      final router = GoRouter.of(context);
-      final String? currentRouteName =
-          router.routerDelegate.currentConfiguration.last.route.name;
-
-      if (currentRouteName == route.name) {
-        throw AppException('Você já está no módulo desejado');
-      }
-
-      final enterpriseName = ref.read(
-        validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
-      );
-      final enabledModulesByEnterprise = await ref.read(
-        enabledModulesByEnterpriseNameStateControllerProvider(
-          enterpriseName,
-        ).future,
-      );
-
-      final enabledModulesBySelectedEnterprise = enabledModulesByEnterprise
-          .firstWhereOrNull((e) {
-            if (enterpriseCode == null) {
-              return e.idFromErp ==
-                  ref.read(
-                    selectedEnterpriseStateControllerProvider.select(
-                      (s) => s?.Code,
-                    ),
-                  );
-            }
-
-            return e.idFromErp == enterpriseCode;
-          });
-
-      if ((enabledModulesBySelectedEnterprise == null ||
-          !enabledModulesBySelectedEnterprise.enabledModules.contains(
-            module,
-          ))) {
         if (!context.mounted) return;
-        _showDisabledModuleMessage(context, module);
-        return;
-      }
+        final router = GoRouter.of(context);
+        final String? currentRouteName =
+            router.routerDelegate.currentConfiguration.last.route.name;
 
-      if (module == Modules.adjustPrice) {
-        final provider = canAccessResourceStateControllerProvider(
-          BsRoutine.adjustSalePrice,
-          BsResource.adjustSalePrice,
+        if (currentRouteName == route.name) {
+          throw AppException('Você já está no módulo desejado');
+        }
+
+        final enterpriseName = ref.read(
+          validatedUserSessionProvider.select((s) => s.value!.enterprise!.name),
+        );
+        final enabledModulesByEnterprise = await ref.read(
+          enabledModulesByEnterpriseNameStateControllerProvider(
+            enterpriseName,
+          ).future,
         );
 
-        if (ref.read(provider) is AsyncError) {
-          ref.invalidate(provider);
-        }
-        final canAccess = await ref.read(provider.future);
-        if (!canAccess && context.mounted) {
-          _showUserWithoutPermissionMessage(context);
+        final enabledModulesBySelectedEnterprise = enabledModulesByEnterprise
+            .firstWhereOrNull((e) {
+              if (enterpriseCode == null) {
+                return e.idFromErp ==
+                    ref.read(
+                      selectedEnterpriseStateControllerProvider.select(
+                        (s) => s?.Code,
+                      ),
+                    );
+              }
+
+              return e.idFromErp == enterpriseCode;
+            });
+
+        if ((enabledModulesBySelectedEnterprise == null ||
+            !enabledModulesBySelectedEnterprise.enabledModules.contains(
+              module,
+            ))) {
+          if (!context.mounted) return;
+          _showDisabledModuleMessage(context, module);
           return;
         }
-      }
 
-      if (!context.mounted) return;
-      if (replace == true) {
-        context.goNamed(
-          route.name,
-          pathParameters: pathParameters ?? {},
-          extra: extra,
-        );
-      } else {
-        context.pushNamed(
-          route.name,
-          pathParameters: pathParameters ?? {},
-          extra: extra,
-        );
-      }
-    });
+        if (module == Modules.adjustPrice) {
+          final provider = canAccessResourceStateControllerProvider(
+            BsRoutine.adjustSalePrice,
+            BsResource.adjustSalePrice,
+          );
+
+          if (ref.read(provider) is AsyncError) {
+            ref.invalidate(provider);
+          }
+          final canAccess = await ref.read(provider.future);
+          if (!canAccess && context.mounted) {
+            _showUserWithoutPermissionMessage(context);
+            return;
+          }
+        }
+
+        if (!context.mounted) return;
+        if (replace == true) {
+          context.goNamed(
+            route.name,
+            pathParameters: pathParameters ?? {},
+            extra: extra,
+          );
+        } else {
+          context.pushNamed(
+            route.name,
+            pathParameters: pathParameters ?? {},
+            extra: extra,
+          );
+        }
+      });
+    } finally {
+      Future.delayed(const Duration(milliseconds: 800), () {
+        _isProcessing = false;
+      });
+    }
   }
 }
 
