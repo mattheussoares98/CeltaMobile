@@ -2,6 +2,7 @@ import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart'
 import 'package:celta_inventario/features/process_authorization/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
 class EcProcessAuthorizationRepositoryImpl
     implements IEcProcessAuthorizationRepository {
@@ -66,10 +67,16 @@ class EcProcessAuthorizationRepositoryImpl
   }
 
   @override
-  Future<dynamic> getGRDocFiscalNoteDifferences(
+  Future<BSFGoodsReceivingEntity> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   ) async {
-    return await datasource.getGRDocFiscalNoteDifferences(params, documentCode);
+    //TODO create tests
+    final response = await datasource.getGRDocFiscalNoteDifferences(
+      params,
+      documentCode,
+    );
+
+    return response.toEntity();
   }
 }

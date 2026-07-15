@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
 
 abstract class IEcProcessAuthorizationDatasource {
   Future<List<BSFProcessAuthorizationJudgmentModel>> getJudgments(
@@ -24,7 +25,7 @@ abstract class IEcProcessAuthorizationDatasource {
     String? observations,
   });
 
-  Future<dynamic> getGRDocFiscalNoteDifferences(
+  Future<BSFGoodsReceivingModel> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   );

@@ -4,6 +4,7 @@ import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/ec/ec_request_params.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
 
 import 'datasource.dart';
 
@@ -93,19 +94,19 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<dynamic> getGRDocFiscalNoteDifferences(
+  Future<BSFGoodsReceivingModel> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   ) async {
     //TODO create tests
     final response = await httpClient.request(
       url:
-          '${params.workingUrl}/api/ProcessAuthorization/GetGRDocFiscalNoteDifferences',
+          '${params.workingUrl}/api/ProcessAuthorization/GetGRDocFiscalNoteDifferences?documentCode=$documentCode',
       method: 'post',
       headers: params.toHeaders(),
-      body: {...params.toMap(), 'documentCode': documentCode},
+      body: params.toMap(),
     );
 
-    return json.decode(response);
+    return BSFGoodsReceivingModel.fromJson(json.decode(response));
   }
 }
