@@ -18,6 +18,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final ScrollController? horizontalScrollController;
   final ScrollPhysics? physics;
   final void Function(T item)? onTapRow;
+  final Color? Function(T item)? rowColor;
 
   const _ScrollableLayout({
     required this.columns,
@@ -35,6 +36,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.onHeaderTap,
     required this.hasFooter,
     required this.onTapRow,
+    required this.rowColor,
     this.horizontalScrollController,
     this.physics,
   });
@@ -74,12 +76,16 @@ class _ScrollableLayout<T> extends StatelessWidget {
                 itemCount: sortedItems.length,
                 itemExtent: rowHeight,
                 itemBuilder: (_, index) {
-                  final isOdd = index.isOdd;
-                  final rowBg = isOdd
-                      ? (rowBackgroundColor ?? context.theme.cardColor)
-                      : context.theme.scaffoldBackgroundColor;
+                  final item = sortedItems[index];
+                  final rowBg = _getRowBackgroundColor<T>(
+                    context: context,
+                    index: index,
+                    rowColor: rowColor,
+                    item: item,
+                    rowBackgroundColor: rowBackgroundColor,
+                  );
                   return _ScrollableRow<T>(
-                    item: sortedItems[index],
+                    item: item,
                     columns: columns,
                     rowHeight: rowHeight,
                     backgroundColor: rowBg,

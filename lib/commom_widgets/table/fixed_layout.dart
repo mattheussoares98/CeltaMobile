@@ -22,6 +22,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final ScrollPhysics? fixedPhysics;
   final ScrollPhysics? scrollablePhysics;
   final void Function(T item)? onTapRow;
+  final Color? Function(T item)? rowColor;
 
   const _FixedLayout({
     required this.columns,
@@ -44,6 +45,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.fixedPhysics,
     required this.scrollablePhysics,
     required this.onTapRow,
+    required this.rowColor,
     this.horizontalScrollController,
   });
 
@@ -111,16 +113,20 @@ class _FixedLayout<T> extends StatelessWidget {
                       itemCount: sortedItems.length,
                       itemExtent: rowHeight,
                       itemBuilder: (_, index) {
-                        final isOdd = index.isOdd;
-                        final rowBg = isOdd
-                            ? (rowBackgroundColor ?? context.theme.cardColor)
-                            : context.theme.scaffoldBackgroundColor;
+                        final item = sortedItems[index];
+                        final rowBg = _getRowBackgroundColor<T>(
+                          context: context,
+                          index: index,
+                          rowColor: rowColor,
+                          item: item,
+                          rowBackgroundColor: rowBackgroundColor,
+                        );
                         final cell = _ScrollableTableCell(
                           width: firstColWidth,
                           height: rowHeight,
                           spec: firstCol,
                           backgroundColor: rowBg,
-                          child: firstCol.cellBuilder(sortedItems[index]),
+                          child: firstCol.cellBuilder(item),
                         );
                         if (onTapRow != null) {
                           return GestureDetector(
@@ -213,12 +219,16 @@ class _FixedLayout<T> extends StatelessWidget {
                         itemCount: sortedItems.length,
                         itemExtent: rowHeight,
                         itemBuilder: (_, index) {
-                          final isOdd = index.isOdd;
-                          final rowBg = isOdd
-                              ? (rowBackgroundColor ?? context.theme.cardColor)
-                              : context.theme.scaffoldBackgroundColor;
+                          final item = sortedItems[index];
+                          final rowBg = _getRowBackgroundColor<T>(
+                            context: context,
+                            index: index,
+                            rowColor: rowColor,
+                            item: item,
+                            rowBackgroundColor: rowBackgroundColor,
+                          );
                           return _ScrollableRow<T>(
-                            item: sortedItems[index],
+                            item: item,
                             columns: scrollableColumns,
                             rowHeight: rowHeight,
                             backgroundColor: rowBg,

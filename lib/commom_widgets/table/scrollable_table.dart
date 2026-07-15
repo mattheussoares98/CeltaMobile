@@ -28,6 +28,7 @@ class ScrollableTable<T> extends StatefulWidget {
   final Color? footerBackgroundColor;
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
   final void Function(T item)? onTapRow;
+  final Color? Function(T item)? rowColor;
 
   const ScrollableTable({
     super.key,
@@ -41,6 +42,7 @@ class ScrollableTable<T> extends StatefulWidget {
     this.footerBackgroundColor,
     this.refreshProvider,
     this.onTapRow,
+    this.rowColor,
   });
 
   @override
@@ -334,6 +336,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             fixedPhysics: fixedPhysics,
             scrollablePhysics: scrollablePhysics,
             onTapRow: widget.onTapRow,
+            rowColor: widget.rowColor,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -354,6 +357,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             hasFooter: _hasFooter,
             physics: physics,
             onTapRow: widget.onTapRow,
+            rowColor: widget.rowColor,
           );
         }
 
@@ -438,4 +442,21 @@ class _PassiveScrollPhysics extends ScrollPhysics {
     // Prevents automatic bounce-back or deceleration animation on the passive list
     return null;
   }
+}
+
+Color _getRowBackgroundColor<T>({
+  required BuildContext context,
+  required int index,
+  required Color? Function(T item)? rowColor,
+  required T item,
+  required Color? rowBackgroundColor,
+}) {
+  final isOdd = index.isOdd;
+  final customColor = rowColor?.call(item);
+  if (customColor != null) {
+    return isOdd ? customColor.withAlpha(255) : customColor.withAlpha(200);
+  }
+  return isOdd
+      ? (rowBackgroundColor ?? context.theme.cardColor)
+      : context.theme.scaffoldBackgroundColor;
 }
