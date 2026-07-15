@@ -1,3 +1,4 @@
+export './bsf/bsf.dart';
 export './competing_price_product_model.dart';
 export './inventory_product_model.dart';
 export './last_buy_entrance_model.dart';

@@ -1,4 +1,5 @@
 export 'params/params.dart';
+export './bsf/bsf.dart';
 export './last_buy_entrance_entity.dart';
 export './price_cost_entity.dart';
 export './product_entity.dart';
