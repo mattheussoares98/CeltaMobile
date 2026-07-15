@@ -9,19 +9,64 @@ class BaseCheckBox extends StatelessWidget {
   final Widget? subtitle;
   final bool enabled;
   final void Function(bool?)? onChanged;
+  final double? width;
+  final double? height;
   const BaseCheckBox({
     super.key,
     required this.name,
     this.subtitle,
     required this.enabled,
     required this.onChanged,
+    this.width,
+    this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     final isIOS = PlatformUtil.isCupertino;
+    //TODO test on an iOS device
+    if (width != null || height != null) {
+      final size = width ?? height ?? Sizes.p20;
+      return Semantics(
+        label: name,
+        checked: enabled,
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: onChanged == null ? null : () => onChanged!(!enabled),
+          child: SizedBox(
+            width: width,
+            height: height,
+            child: Center(
+              child: AnimatedContainer(
+                width: size,
+                height: size,
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: enabled
+                      ? context.theme.primaryColor
+                      : context.theme.cardColor,
+                  borderRadius: BorderRadius.circular(Sizes.p4),
+                  border: Border.all(
+                    color: enabled
+                        ? context.theme.primaryColor
+                        : context.theme.dividerColor.withAlpha(120),
+                  ),
+                ),
+                child: enabled
+                    ? Icon(
+                        Icons.check,
+                        color: context.theme.colorScheme.onPrimary,
+                        size: size - 6,
+                      )
+                    : null,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
 
-    return RepaintBoundary(
+    final checkBox = RepaintBoundary(
       child: AnimatedContainer(
         margin: const EdgeInsets.only(top: Sizes.p4),
         duration: const Duration(milliseconds: 500),
@@ -76,5 +121,7 @@ class BaseCheckBox extends StatelessWidget {
         ),
       ),
     );
+
+    return checkBox;
   }
 }
