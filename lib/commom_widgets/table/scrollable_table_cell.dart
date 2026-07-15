@@ -46,6 +46,8 @@ class _ScrollableTableCell extends StatelessWidget {
       );
     }
 
+    final dividerColor = context.theme.dividerColor;
+
     return Container(
       width: width,
       height: height,
@@ -53,12 +55,12 @@ class _ScrollableTableCell extends StatelessWidget {
         color: backgroundColor,
         border: Border(
           top: showTopBorder == true
-              ? BorderSide(color: context.theme.dividerColor, width: 0.5)
+              ? BorderSide(color: dividerColor, width: 0.5)
               : BorderSide.none,
           bottom: showBottomBorder == true
-              ? BorderSide(color: context.theme.dividerColor, width: 0.5)
+              ? BorderSide(color: dividerColor, width: 0.5)
               : BorderSide.none,
-          right: BorderSide(color: context.theme.dividerColor, width: 0.07),
+          right: BorderSide(color: dividerColor, width: 0.07),
         ),
       ),
       alignment: Alignment.center,

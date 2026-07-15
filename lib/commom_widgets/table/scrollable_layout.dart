@@ -59,7 +59,6 @@ class _ScrollableLayout<T> extends StatelessWidget {
                 for (int i = 0; i < columns.length; i++)
                   _ScrollableHeaderCellWrapper<T>(
                     col: columns[i],
-                    colIndex: i,
                     colWidth: columns[i].minWidth + extraPerColumn,
                     headerHeight: headerHeight,
                     headerBg: headerBg,

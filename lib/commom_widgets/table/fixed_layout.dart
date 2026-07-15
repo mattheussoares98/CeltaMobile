@@ -18,6 +18,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final bool sortAscending;
   final void Function(int) onHeaderTap;
   final void Function(ScrollController, bool) onScrollNotification;
+  final bool Function(ScrollController) shouldConsumeScrollNotification;
   final bool hasFooter;
   final ScrollPhysics? fixedPhysics;
   final ScrollPhysics? scrollablePhysics;
@@ -41,6 +42,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.onScrollNotification,
+    required this.shouldConsumeScrollNotification,
     required this.hasFooter,
     required this.fixedPhysics,
     required this.scrollablePhysics,
@@ -94,14 +96,9 @@ class _FixedLayout<T> extends StatelessWidget {
                       }
 
                       // Stop scroll events from the jumped list bubbling to the RefreshIndicator
-                      final activeController =
-                          (context
-                                  .findAncestorStateOfType<
-                                    _ScrollableTableState
-                                  >())
-                              ?._activeScrollController;
-                      if (activeController != null &&
-                          activeController != fixedVerticalController) {
+                      if (shouldConsumeScrollNotification(
+                        fixedVerticalController,
+                      )) {
                         return true;
                       }
                       return false;
@@ -172,7 +169,6 @@ class _FixedLayout<T> extends StatelessWidget {
                         for (int i = 0; i < scrollableColumns.length; i++)
                           _ScrollableHeaderCellWrapper<T>(
                             col: scrollableColumns[i],
-                            colIndex: i + 1,
                             colWidth:
                                 scrollableColumns[i].minWidth + extraPerColumn,
                             headerHeight: headerHeight,
@@ -200,14 +196,9 @@ class _FixedLayout<T> extends StatelessWidget {
                         }
 
                         // Stop scroll events from the jumped list bubbling to the RefreshIndicator
-                        final activeController =
-                            (context
-                                    .findAncestorStateOfType<
-                                      _ScrollableTableState
-                                    >())
-                                ?._activeScrollController;
-                        if (activeController != null &&
-                            activeController != scrollableVerticalController) {
+                        if (shouldConsumeScrollNotification(
+                          scrollableVerticalController,
+                        )) {
                           return true;
                         }
                         return false;

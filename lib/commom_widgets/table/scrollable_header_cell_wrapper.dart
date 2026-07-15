@@ -2,7 +2,6 @@ part of 'scrollable_table.dart';
 
 class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
   final ScrollableTableColumnSpec<T> col;
-  final int colIndex;
   final double colWidth;
   final double headerHeight;
   final Color headerBg;
@@ -12,7 +11,6 @@ class _ScrollableHeaderCellWrapper<T> extends StatelessWidget {
 
   const _ScrollableHeaderCellWrapper({
     required this.col,
-    required this.colIndex,
     required this.colWidth,
     required this.headerHeight,
     required this.headerBg,

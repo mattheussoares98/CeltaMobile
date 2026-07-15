@@ -19,6 +19,15 @@ class _ScrollableTableHeaderCell<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canSort = spec.sortValueMapper != null;
+    final sortIconColor = canSort && isSorted
+        ? context.theme.primaryColor
+        : _kUnsortedIconColor;
+    final cupertinoSortIcon = sortAscending
+        ? CupertinoIcons.arrow_up
+        : CupertinoIcons.arrow_down;
+    final materialSortIcon = sortAscending
+        ? Icons.arrow_upward
+        : Icons.arrow_downward;
 
     return InkWell(
       onTap: canSort ? onTap : null,
@@ -39,18 +48,10 @@ class _ScrollableTableHeaderCell<T> extends StatelessWidget {
               right: 0,
               child: PlatformIcon(
                 cupertinoIcon: isSorted
-                    ? (sortAscending
-                          ? CupertinoIcons.arrow_up
-                          : CupertinoIcons.arrow_down)
+                    ? cupertinoSortIcon
                     : CupertinoIcons.arrow_up,
-                materialIcon: isSorted
-                    ? (sortAscending
-                          ? Icons.arrow_upward
-                          : Icons.arrow_downward)
-                    : Icons.arrow_upward,
-                color: isSorted
-                    ? context.theme.primaryColor
-                    : _kUnsortedIconColor,
+                materialIcon: isSorted ? materialSortIcon : Icons.arrow_upward,
+                color: sortIconColor,
                 size: 14,
               ),
             ),

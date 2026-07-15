@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
 
 part 'fixed_layout.dart';
+part 'scrollable_hand_animation.dart';
 part 'scrollable_header_cell_wrapper.dart';
 part 'scrollable_layout.dart';
 part 'scrollable_row.dart';
@@ -14,7 +15,6 @@ part 'scrollable_table_cell.dart';
 part 'scrollable_table_column_spec.dart';
 part 'scrollable_table_header.dart';
 
-//!All TODOs are for iOS devices
 final Set<String> _playedRouteNames = {};
 
 class ScrollableTable<T> extends StatefulWidget {
@@ -154,15 +154,21 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
 
   void _handleScrollNotification(ScrollController controller, bool isStart) {
     if (!mounted) return;
+    if (isStart && _activeScrollController != null) return;
+    if (!isStart && _activeScrollController != controller) return;
+
     setState(() {
       if (isStart) {
-        _activeScrollController ??= controller;
+        _activeScrollController = controller;
       } else {
-        if (_activeScrollController == controller) {
-          _activeScrollController = null;
-        }
+        _activeScrollController = null;
       }
     });
+  }
+
+  bool _shouldConsumeScrollNotification(ScrollController controller) {
+    final activeController = _activeScrollController;
+    return activeController != null && activeController != controller;
   }
 
   void _syncFixedToScrollable() {
@@ -332,6 +338,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             sortAscending: _sortAscending,
             onHeaderTap: _handleHeaderTap,
             onScrollNotification: _handleScrollNotification,
+            shouldConsumeScrollNotification: _shouldConsumeScrollNotification,
             hasFooter: _hasFooter,
             fixedPhysics: fixedPhysics,
             scrollablePhysics: scrollablePhysics,
@@ -367,33 +374,13 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
           children: [
             mainLayout,
             if (_showHand)
-              AnimatedBuilder(
+              _ScrollableHandAnimation(
                 animation: _handAnimationController,
-                builder: (context, child) {
-                  return Positioned(
-                    left: available * _handPositionAnimation.value - 24,
-                    top: (widget.headerHeight + widget.rowHeight) / 2 + 10,
-                    child: IgnorePointer(
-                      child: Opacity(
-                        opacity: _handOpacityAnimation.value,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: context.theme.colorScheme.primary.withValues(
-                              alpha: 0.15,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.touch_app,
-                            size: 32,
-                            color: context.theme.colorScheme.primary,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                handPositionAnimation: _handPositionAnimation,
+                handOpacityAnimation: _handOpacityAnimation,
+                available: available,
+                headerHeight: widget.headerHeight,
+                rowHeight: widget.rowHeight,
               ),
           ],
         );
