@@ -39,8 +39,10 @@ class BSFGoodsReceivingEntity extends Equatable {
   final BSFGoodsReceivingDetailEntity? detail;
   final BSFEletronicAccessKeyEntity? eletronicAccessKey;
   final String? xmlFileData;
-  final List<BSFGoodsReceivingProductEntity>? products;
-
+  final List<BSFGoodsReceivingProductEntity>?
+  productsWithoutJudgementStatusRequestForFiscalNote;
+  final List<BSFGoodsReceivingProductEntity>?
+  productsWithJudgementStatusRequestForFiscalNote;
 
   const BSFGoodsReceivingEntity({
     this.expeditionControlCode,
@@ -78,7 +80,8 @@ class BSFGoodsReceivingEntity extends Equatable {
     this.detail,
     this.eletronicAccessKey,
     this.xmlFileData,
-    this.products,
+    this.productsWithoutJudgementStatusRequestForFiscalNote,
+    this.productsWithJudgementStatusRequestForFiscalNote,
   });
 
   @override
@@ -118,6 +121,7 @@ class BSFGoodsReceivingEntity extends Equatable {
     detail,
     eletronicAccessKey,
     xmlFileData,
-    products,
+    productsWithoutJudgementStatusRequestForFiscalNote,
+    productsWithJudgementStatusRequestForFiscalNote,
   ];
 }

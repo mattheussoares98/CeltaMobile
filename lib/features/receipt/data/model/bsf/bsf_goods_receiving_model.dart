@@ -40,7 +40,8 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     super.detail,
     super.eletronicAccessKey,
     super.xmlFileData,
-    super.products,
+    super.productsWithoutJudgementStatusRequestForFiscalNote,
+    super.productsWithJudgementStatusRequestForFiscalNote,
   });
 
   factory BSFGoodsReceivingModel.fromJson(Map json) => BSFGoodsReceivingModel(
@@ -106,8 +107,15 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
           )
         : null,
     xmlFileData: json['XmlFileData']?.toString(),
-    products: json['Products'] != null
-        ? (json['Products'] as List)
+    productsWithoutJudgementStatusRequestForFiscalNote:
+        json['ProductsWithoutJudgementStatusRequestForFiscalNote'] != null
+        ? (json['ProductsWithoutJudgementStatusRequestForFiscalNote'] as List)
+              .map((e) => BSFGoodsReceivingProductModel.fromJson(Map.from(e)))
+              .toList()
+        : null,
+    productsWithJudgementStatusRequestForFiscalNote:
+        json['ProductsWithJudgementStatusRequestForFiscalNote'] != null
+        ? (json['ProductsWithJudgementStatusRequestForFiscalNote'] as List)
               .map((e) => BSFGoodsReceivingProductModel.fromJson(Map.from(e)))
               .toList()
         : null,
@@ -155,9 +163,14 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
         ? BSFEletronicAccessKeyModel.fromEntity(eletronicAccessKey!).toJson()
         : null,
     'XmlFileData': xmlFileData,
-    'Products': products
-        ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
-        .toList(),
+    'ProductsWithoutJudgementStatusRequestForFiscalNote':
+        productsWithoutJudgementStatusRequestForFiscalNote
+            ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
+            .toList(),
+    'ProductsWithJudgementStatusRequestForFiscalNote':
+        productsWithJudgementStatusRequestForFiscalNote
+            ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
+            .toList(),
   };
 
   factory BSFGoodsReceivingModel.fromEntity(BSFGoodsReceivingEntity entity) =>
@@ -197,7 +210,10 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
         detail: entity.detail,
         eletronicAccessKey: entity.eletronicAccessKey,
         xmlFileData: entity.xmlFileData,
-        products: entity.products,
+        productsWithoutJudgementStatusRequestForFiscalNote:
+            entity.productsWithoutJudgementStatusRequestForFiscalNote,
+        productsWithJudgementStatusRequestForFiscalNote:
+            entity.productsWithJudgementStatusRequestForFiscalNote,
       );
 
   BSFGoodsReceivingEntity toEntity() => BSFGoodsReceivingEntity(
@@ -236,6 +252,9 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     detail: detail,
     eletronicAccessKey: eletronicAccessKey,
     xmlFileData: xmlFileData,
-    products: products,
+    productsWithoutJudgementStatusRequestForFiscalNote:
+        productsWithoutJudgementStatusRequestForFiscalNote,
+    productsWithJudgementStatusRequestForFiscalNote:
+        productsWithJudgementStatusRequestForFiscalNote,
   );
 }

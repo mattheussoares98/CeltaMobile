@@ -51,7 +51,10 @@ class _GoodsReceivingValidateDocXmlPageState
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
         data: (data) {
-          if (data.products?.isEmpty ?? true) {
+          if (data
+                  .productsWithoutJudgementStatusRequestForFiscalNote
+                  ?.isEmpty ??
+              true) {
             return BaseText.error(
               'Houve um erro não esperado para carregar os produtos'.hardcoded,
             );
@@ -59,7 +62,7 @@ class _GoodsReceivingValidateDocXmlPageState
 
           return GoodsReceivingValidateDocXmlProductsTable(
             refreshProvider: provider,
-            items: data.products!,
+            items: data.productsWithoutJudgementStatusRequestForFiscalNote!,
             selectedProductsNotifier: _selectedProductsNotifier,
             onTapProduct: _toggleProductSelection,
           );
