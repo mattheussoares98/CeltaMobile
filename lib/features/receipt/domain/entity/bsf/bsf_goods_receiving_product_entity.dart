@@ -1,4 +1,5 @@
 // lib/features/receipt/domain/entity/bsf/bsf_goods_receiving_product_entity.dart
+import 'package:celta_inventario/core/domain/entities/product/bsf/bsf.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFGoodsReceivingProductEntity extends Equatable {
@@ -29,6 +30,7 @@ class BSFGoodsReceivingProductEntity extends Equatable {
   final String fiscalCode;
   final bool isUpdate;
   final bool hasDivergencyQuantity;
+  final BSFProductEntity product;
 
   const BSFGoodsReceivingProductEntity({
     required this.document,
@@ -58,6 +60,7 @@ class BSFGoodsReceivingProductEntity extends Equatable {
     required this.fiscalCode,
     required this.isUpdate,
     required this.hasDivergencyQuantity,
+    required this.product,
   });
 
   @override
@@ -89,5 +92,6 @@ class BSFGoodsReceivingProductEntity extends Equatable {
     fiscalCode,
     isUpdate,
     hasDivergencyQuantity,
+    product,
   ];
 }

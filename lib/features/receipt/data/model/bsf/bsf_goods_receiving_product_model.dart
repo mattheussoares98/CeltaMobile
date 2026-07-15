@@ -1,4 +1,5 @@
 // lib/features/receipt/data/model/bsf/bsf_goods_receiving_product_model.dart
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
 class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
@@ -30,6 +31,7 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     required super.fiscalCode,
     required super.isUpdate,
     required super.hasDivergencyQuantity,
+    required super.product,
   });
 
   factory BSFGoodsReceivingProductModel.fromJson(
@@ -92,6 +94,7 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     fiscalCode: json['FiscalCode'],
     isUpdate: json['IsUpdate'] ?? false,
     hasDivergencyQuantity: json['HasDivergencyQuantity'] ?? false,
+    product: BSFProductModel.fromJson(json['Product']),
   );
 
   Map<String, dynamic> toJson() => {
@@ -129,6 +132,7 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     'FiscalCode': fiscalCode,
     'IsUpdate': isUpdate,
     'HasDivergencyQuantity': hasDivergencyQuantity,
+    'Product': BSFProductModel.fromEntity(product).toJson(),
   };
 
   factory BSFGoodsReceivingProductModel.fromEntity(
@@ -169,9 +173,11 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     fiscalCode: entity.fiscalCode,
     isUpdate: entity.isUpdate,
     hasDivergencyQuantity: entity.hasDivergencyQuantity,
+    product: BSFProductModel.fromEntity(entity.product),
   );
 
   BSFGoodsReceivingProductEntity toEntity() => BSFGoodsReceivingProductEntity(
+    product: product,
     document: document,
     code: code,
     quantity: quantity,
