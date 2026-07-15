@@ -17,6 +17,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
   final bool hasFooter;
   final ScrollController? horizontalScrollController;
   final ScrollPhysics? physics;
+  final void Function(T item)? onTapRow;
 
   const _ScrollableLayout({
     required this.columns,
@@ -33,6 +34,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
     required this.sortAscending,
     required this.onHeaderTap,
     required this.hasFooter,
+    required this.onTapRow,
     this.horizontalScrollController,
     this.physics,
   });
@@ -82,6 +84,7 @@ class _ScrollableLayout<T> extends StatelessWidget {
                     rowHeight: rowHeight,
                     backgroundColor: rowBg,
                     extraPerColumn: extraPerColumn,
+                    onTapRow: onTapRow,
                   );
                 },
               ),

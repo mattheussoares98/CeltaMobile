@@ -6,6 +6,7 @@ class _ScrollableRow<T> extends StatelessWidget {
   final double rowHeight;
   final Color? backgroundColor;
   final double extraPerColumn;
+  final void Function(T item)? onTapRow;
 
   const _ScrollableRow({
     required this.item,
@@ -13,11 +14,12 @@ class _ScrollableRow<T> extends StatelessWidget {
     required this.rowHeight,
     required this.backgroundColor,
     required this.extraPerColumn,
+    required this.onTapRow,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final row = SizedBox(
       height: rowHeight,
       child: Row(
         children: [
@@ -32,5 +34,14 @@ class _ScrollableRow<T> extends StatelessWidget {
         ],
       ),
     );
+
+    if (onTapRow != null) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => onTapRow!(item),
+        child: row,
+      );
+    }
+    return row;
   }
 }

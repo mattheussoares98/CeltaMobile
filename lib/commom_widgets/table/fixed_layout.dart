@@ -21,6 +21,7 @@ class _FixedLayout<T> extends StatelessWidget {
   final bool hasFooter;
   final ScrollPhysics? fixedPhysics;
   final ScrollPhysics? scrollablePhysics;
+  final void Function(T item)? onTapRow;
 
   const _FixedLayout({
     required this.columns,
@@ -42,6 +43,7 @@ class _FixedLayout<T> extends StatelessWidget {
     required this.hasFooter,
     required this.fixedPhysics,
     required this.scrollablePhysics,
+    required this.onTapRow,
     this.horizontalScrollController,
   });
 
@@ -113,13 +115,21 @@ class _FixedLayout<T> extends StatelessWidget {
                         final rowBg = isOdd
                             ? (rowBackgroundColor ?? context.theme.cardColor)
                             : context.theme.scaffoldBackgroundColor;
-                        return _ScrollableTableCell(
+                        final cell = _ScrollableTableCell(
                           width: firstColWidth,
                           height: rowHeight,
                           spec: firstCol,
                           backgroundColor: rowBg,
                           child: firstCol.cellBuilder(sortedItems[index]),
                         );
+                        if (onTapRow != null) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () => onTapRow!(sortedItems[index]),
+                            child: cell,
+                          );
+                        }
+                        return cell;
                       },
                     ),
                   ),
@@ -213,6 +223,7 @@ class _FixedLayout<T> extends StatelessWidget {
                             rowHeight: rowHeight,
                             backgroundColor: rowBg,
                             extraPerColumn: extraPerColumn,
+                            onTapRow: onTapRow,
                           );
                         },
                       ),

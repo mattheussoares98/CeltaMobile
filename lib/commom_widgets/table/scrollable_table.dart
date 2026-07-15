@@ -27,6 +27,7 @@ class ScrollableTable<T> extends StatefulWidget {
   final Color? rowBackgroundColor;
   final Color? footerBackgroundColor;
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
+  final void Function(T item)? onTapRow;
 
   const ScrollableTable({
     super.key,
@@ -39,6 +40,7 @@ class ScrollableTable<T> extends StatefulWidget {
     this.rowBackgroundColor,
     this.footerBackgroundColor,
     this.refreshProvider,
+    this.onTapRow,
   });
 
   @override
@@ -331,6 +333,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             hasFooter: _hasFooter,
             fixedPhysics: fixedPhysics,
             scrollablePhysics: scrollablePhysics,
+            onTapRow: widget.onTapRow,
           );
         } else {
           mainLayout = _ScrollableLayout<T>(
@@ -350,6 +353,7 @@ class _ScrollableTableState<T> extends State<ScrollableTable<T>>
             onHeaderTap: _handleHeaderTap,
             hasFooter: _hasFooter,
             physics: physics,
+            onTapRow: widget.onTapRow,
           );
         }
 
