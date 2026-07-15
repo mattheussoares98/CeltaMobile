@@ -1,24 +1,20 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart';
 
-class GoodsReceivingValidateDocXmlProductsTable extends StatelessWidget {
-  final ProviderBase<AsyncValue<dynamic>> refreshProvider;
-  final List<BSFGoodsReceivingProductEntity> items;
-  final ValueNotifier<Set<int>> selectedProductsNotifier;
-  final void Function(BSFGoodsReceivingProductEntity item) onTapProduct;
+class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
+  final bool areJudgedItems;
+  final int processCode;
 
   const GoodsReceivingValidateDocXmlProductsTable({
     super.key,
-    required this.refreshProvider,
-    required this.items,
-    required this.selectedProductsNotifier,
-    required this.onTapProduct,
+    required this.areJudgedItems,
+    required this.processCode,
   });
 
   TextSpan _buildTextSpan(BaseText baseText) {
@@ -36,219 +32,247 @@ class GoodsReceivingValidateDocXmlProductsTable extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<Set<int>>(
-      valueListenable: selectedProductsNotifier,
-      builder: (context, selectedProducts, _) {
-        return ScrollableTable<BSFGoodsReceivingProductEntity>(
-          items: items,
-          fixFirstColumn: true,
-          rowHeight: 65,
-          refreshProvider: refreshProvider,
-          rowColor: (item) => selectedProducts.contains(item.code)
-              ? Colors.green.shade100
-              : null,
-          onTapRow: onTapProduct,
-          columns: [
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Produto'.hardcoded,
-              minWidth: 200.0,
-              cellBuilder: (item) {
-                final texts = [
-                  BaseText.title(
-                    item.product.productPackingPriceLookUpString ?? '',
-                    color: context.theme.primaryColor,
-                  ),
-                  BaseText.title(
-                    " (${item.product.productPackingSpecificationString ?? ''})",
-                    color: context.theme.colorScheme.secondary,
-                  ),
-                  BaseText.title(" ${item.product.name ?? ''}"),
-                ];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final provider = gRDocFiscalNoteDifferencesStateControllerProvider(
+      processCode,
+    );
+    final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+    final items = ref.watch(
+      provider.select((s) {
+        return areJudgedItems
+            ? s.value?.productsWithJudgementStatusRequestForFiscalNote
+            : s.value?.productsWithoutJudgementStatusRequestForFiscalNote;
+      }),
+    );
+    final selectedItemsIds = ref.watch(
+      uiController.select(
+        (s) => areJudgedItems
+            ? s.selectedProductsWithJudgmentIds
+            : s.selectedProductsWithoutJudgmentIds,
+      ),
+    );
 
-                return Text.rich(
-                  TextSpan(
-                    children: [
-                      WidgetSpan(
-                        alignment: PlaceholderAlignment.middle,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: Sizes.p4),
-                          child: BaseCheckBox(
-                            name: '',
-                            enabled: selectedProducts.contains(item.code),
-                            onChanged: (_) => onTapProduct(item),
-                            width: Sizes.p16,
-                            height: Sizes.p16,
-                          ),
-                        ),
+    void onTapItem(BSFGoodsReceivingProductEntity item) {
+      if (areJudgedItems) {
+        ref.read(uiController.notifier).toggleProductWithJudgment(item.code);
+      } else {
+        ref.read(uiController.notifier).toggleProductWithoutJudgment(item.code);
+      }
+    }
+
+    if (items?.isEmpty ?? true) {
+      return Center(
+        child: BaseText(
+          areJudgedItems
+              ? 'Não há produtos julgados'.hardcoded
+              : 'Todos produtos já foram julgados'.hardcoded,
+        ),
+      );
+    }
+
+    return ScrollableTable<BSFGoodsReceivingProductEntity>(
+      items: items!,
+      fixFirstColumn: true,
+      rowHeight: 65,
+      refreshProvider: provider,
+      rowColor: (item) =>
+          selectedItemsIds.contains(item.code) ? Colors.green.shade100 : null,
+      onTapRow: onTapItem,
+      columns: [
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Produto'.hardcoded,
+          minWidth: 200.0,
+          cellBuilder: (item) {
+            final texts = [
+              BaseText.title(
+                item.product.productPackingPriceLookUpString ?? '',
+                color: context.theme.primaryColor,
+              ),
+              BaseText.title(
+                " (${item.product.productPackingSpecificationString ?? ''})",
+                color: context.theme.colorScheme.secondary,
+              ),
+              BaseText.title(" ${item.product.name ?? ''}"),
+            ];
+
+            return Text.rich(
+              TextSpan(
+                children: [
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: Sizes.p4),
+                      child: BaseCheckBox(
+                        name: '',
+                        enabled: selectedItemsIds.contains(item.code),
+                        onChanged: (_) => onTapItem(item),
+                        width: Sizes.p16,
+                        height: Sizes.p16,
                       ),
-                      ...texts.map(_buildTextSpan),
-                    ],
+                    ),
                   ),
-                  maxLines: 3,
-                );
-              },
-              sortValueMapper: (item) => item.productString,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'CFOP'.hardcoded,
-              minWidth: 45,
-              cellBuilder: (item) => BaseText(item.fiscalCode),
-              sortValueMapper: (item) => item.fiscalCode,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Qtd NF'.hardcoded,
-              minWidth: 55,
-              cellBuilder: (item) => BaseText(
-                item.quantityOfXml.toString().toBrazilianNumber(3, true),
+                  ...texts.map(_buildTextSpan),
+                ],
               ),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.quantityOfXml)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(3, true),
-              ),
-              sortValueMapper: (item) => item.quantityOfXml,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Qtd ped'.hardcoded,
-              minWidth: 60,
-              cellBuilder: (item) => BaseText(
-                item.availableQuantityInAssociatesBuyRequests
-                    .toString()
-                    .toBrazilianNumber(3, true),
-              ),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.availableQuantityInAssociatesBuyRequests)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(3, true),
-              ),
-              sortValueMapper: (item) =>
-                  item.availableQuantityInAssociatesBuyRequests,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Qtd outr ped'.hardcoded,
-              minWidth: 95,
-              cellBuilder: (item) => BaseText(
-                item.availableQuantityInAnotherBuyRequests
-                    .toString()
-                    .toBrazilianNumber(3, true),
-              ),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.availableQuantityInAnotherBuyRequests)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(3, true),
-              ),
-              sortValueMapper: (item) =>
-                  item.availableQuantityInAnotherBuyRequests,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Dif qtd'.hardcoded,
-              minWidth: 60,
-              cellBuilder: (item) => BaseText(
-                item.divergenceQuantityRequestForFiscalNote
-                    .toString()
-                    .toBrazilianNumber(3, true),
-                color: item.divergenceQuantityRequestForFiscalNote > 0
-                    ? context.theme.colorScheme.secondary
-                    : Colors.red,
-              ),
-              footerCellBuilder: (items) {
-                final difference = items
-                    .map((e) => e.divergenceQuantityRequestForFiscalNote)
-                    .reduce((a, b) => a + b);
-                return BaseText(
-                  difference.toString().toBrazilianNumber(3, true),
-                  color: difference > 0
-                      ? context.theme.colorScheme.secondary
-                      : Colors.red,
-                );
-              },
-              sortValueMapper: (item) =>
-                  item.divergenceQuantityRequestForFiscalNote,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Vl líq NF'.hardcoded,
-              minWidth: 90,
-              isMoney: true,
-              cellBuilder: (item) =>
-                  BaseText(item.unitLiquidValue.toString().toBrazilianNumber()),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.unitLiquidValue)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(),
-              ),
-              sortValueMapper: (item) => item.unitLiquidValue,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Vl líq ped'.hardcoded,
-              minWidth: 90,
-              isMoney: true,
-              cellBuilder: (item) => BaseText(
-                item.unitLiquidValueOnBuyRequests
-                    .toString()
-                    .toBrazilianNumber(),
-              ),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.unitLiquidValueOnBuyRequests)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(),
-              ),
-              sortValueMapper: (item) => item.unitLiquidValueOnBuyRequests,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Dif vl líq'.hardcoded,
-              minWidth: 80,
-              isMoney: true,
-              cellBuilder: (item) => BaseText(
-                item.divergencyUnitLiquidValue.toString().toBrazilianNumber(),
-                color: item.divergencyUnitLiquidValue > 0
-                    ? Colors.red
-                    : context.theme.colorScheme.secondary,
-              ),
-              footerCellBuilder: (items) {
-                final totalDivergence = items
-                    .map((e) => e.divergencyUnitLiquidValue)
-                    .reduce((a, b) => a + b);
-                return BaseText(
-                  totalDivergence.toString().toBrazilianNumber(),
-                  color: totalDivergence > 0
-                      ? Colors.red
-                      : context.theme.colorScheme.secondary,
-                );
-              },
-              sortValueMapper: (item) => item.divergencyUnitLiquidValue,
-            ),
-            ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
-              headerTitle: 'Tot dif vl líq'.hardcoded,
-              minWidth: 100,
-              isMoney: true,
-              cellBuilder: (item) => BaseText(
-                item.totalDivergencyLiquidValue.toString().toBrazilianNumber(),
-                color: Colors.red,
-              ),
-              footerCellBuilder: (items) => BaseText(
-                items
-                    .map((e) => e.totalDivergencyLiquidValue)
-                    .reduce((a, b) => a + b)
-                    .toString()
-                    .toBrazilianNumber(),
-                color: Colors.red,
-              ),
-              sortValueMapper: (item) => item.totalDivergencyLiquidValue,
-            ),
-          ],
-        );
-      },
+              maxLines: 3,
+            );
+          },
+          sortValueMapper: (item) => item.productString,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'CFOP'.hardcoded,
+          minWidth: 45,
+          cellBuilder: (item) => BaseText(item.fiscalCode),
+          sortValueMapper: (item) => item.fiscalCode,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Qtd NF'.hardcoded,
+          minWidth: 55,
+          cellBuilder: (item) => BaseText(
+            item.quantityOfXml.toString().toBrazilianNumber(3, true),
+          ),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.quantityOfXml)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(3, true),
+          ),
+          sortValueMapper: (item) => item.quantityOfXml,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Qtd ped'.hardcoded,
+          minWidth: 60,
+          cellBuilder: (item) => BaseText(
+            item.availableQuantityInAssociatesBuyRequests
+                .toString()
+                .toBrazilianNumber(3, true),
+          ),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.availableQuantityInAssociatesBuyRequests)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(3, true),
+          ),
+          sortValueMapper: (item) =>
+              item.availableQuantityInAssociatesBuyRequests,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Qtd outr ped'.hardcoded,
+          minWidth: 95,
+          cellBuilder: (item) => BaseText(
+            item.availableQuantityInAnotherBuyRequests
+                .toString()
+                .toBrazilianNumber(3, true),
+          ),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.availableQuantityInAnotherBuyRequests)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(3, true),
+          ),
+          sortValueMapper: (item) => item.availableQuantityInAnotherBuyRequests,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Dif qtd'.hardcoded,
+          minWidth: 60,
+          cellBuilder: (item) => BaseText(
+            item.divergenceQuantityRequestForFiscalNote
+                .toString()
+                .toBrazilianNumber(3, true),
+            color: item.divergenceQuantityRequestForFiscalNote > 0
+                ? context.theme.colorScheme.secondary
+                : Colors.red,
+          ),
+          footerCellBuilder: (items) {
+            final difference = items
+                .map((e) => e.divergenceQuantityRequestForFiscalNote)
+                .reduce((a, b) => a + b);
+            return BaseText(
+              difference.toString().toBrazilianNumber(3, true),
+              color: difference > 0
+                  ? context.theme.colorScheme.secondary
+                  : Colors.red,
+            );
+          },
+          sortValueMapper: (item) =>
+              item.divergenceQuantityRequestForFiscalNote,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Vl líq NF'.hardcoded,
+          minWidth: 90,
+          isMoney: true,
+          cellBuilder: (item) =>
+              BaseText(item.unitLiquidValue.toString().toBrazilianNumber()),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.unitLiquidValue)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(),
+          ),
+          sortValueMapper: (item) => item.unitLiquidValue,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Vl líq ped'.hardcoded,
+          minWidth: 90,
+          isMoney: true,
+          cellBuilder: (item) => BaseText(
+            item.unitLiquidValueOnBuyRequests.toString().toBrazilianNumber(),
+          ),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.unitLiquidValueOnBuyRequests)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(),
+          ),
+          sortValueMapper: (item) => item.unitLiquidValueOnBuyRequests,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Dif vl líq'.hardcoded,
+          minWidth: 80,
+          isMoney: true,
+          cellBuilder: (item) => BaseText(
+            item.divergencyUnitLiquidValue.toString().toBrazilianNumber(),
+            color: item.divergencyUnitLiquidValue > 0
+                ? Colors.red
+                : context.theme.colorScheme.secondary,
+          ),
+          footerCellBuilder: (items) {
+            final totalDivergence = items
+                .map((e) => e.divergencyUnitLiquidValue)
+                .reduce((a, b) => a + b);
+            return BaseText(
+              totalDivergence.toString().toBrazilianNumber(),
+              color: totalDivergence > 0
+                  ? Colors.red
+                  : context.theme.colorScheme.secondary,
+            );
+          },
+          sortValueMapper: (item) => item.divergencyUnitLiquidValue,
+        ),
+        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+          headerTitle: 'Tot dif vl líq'.hardcoded,
+          minWidth: 100,
+          isMoney: true,
+          cellBuilder: (item) => BaseText(
+            item.totalDivergencyLiquidValue.toString().toBrazilianNumber(),
+            color: Colors.red,
+          ),
+          footerCellBuilder: (items) => BaseText(
+            items
+                .map((e) => e.totalDivergencyLiquidValue)
+                .reduce((a, b) => a + b)
+                .toString()
+                .toBrazilianNumber(),
+            color: Colors.red,
+          ),
+          sortValueMapper: (item) => item.totalDivergencyLiquidValue,
+        ),
+      ],
     );
   }
 }
