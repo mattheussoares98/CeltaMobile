@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
-
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/errors/errors.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 
 class HttpAdapter implements HttpClient {
   final Client client;
@@ -36,19 +35,35 @@ class HttpAdapter implements HttpClient {
     try {
       if (cancelToken?.isCancelled == true) return null;
 
+      String applyedUrl = url;
+
+      //! replace easily when testing the API
+      if (kDebugMode && 1 == 2) {
+        applyedUrl = url.replaceFirstMapped(
+          RegExp(r'(https?://)[^/]+/api'),
+          (match) => '${match[1]}localhost:58915',
+        );
+      }
+
       if (method == 'post') {
         futureResponse = client.post(
-          Uri.parse(url),
+          Uri.parse(applyedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
       } else if (method == 'get') {
-        futureResponse = client.get(Uri.parse(url), headers: defaultHeaders);
+        futureResponse = client.get(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+        );
       } else if (method == 'delete') {
-        futureResponse = client.delete(Uri.parse(url), headers: defaultHeaders);
+        futureResponse = client.delete(
+          Uri.parse(applyedUrl),
+          headers: defaultHeaders,
+        );
       } else if (method == 'put') {
         futureResponse = client.put(
-          Uri.parse(url),
+          Uri.parse(applyedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
