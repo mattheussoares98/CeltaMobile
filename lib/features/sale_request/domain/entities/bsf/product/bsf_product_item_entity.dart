@@ -3,7 +3,7 @@ import 'package:celta_inventario/features/sale_request/domain/entities/entities.
 import 'package:equatable/equatable.dart';
 
 class BSFProductItemEntity extends Equatable {
-  final BSFProductDetailsEntity? product;
+  final BSFProductEntity? product;
   final BSFFiscalCodeEntity? fiscalCode;
   final dynamic compositionChilds;
   final String? eanCode;
@@ -69,7 +69,7 @@ class BSFProductItemEntity extends Equatable {
   ];
 
   BSFProductItemEntity copyWith({
-    BSFProductDetailsEntity? product,
+    BSFProductEntity? product,
     BSFFiscalCodeEntity? fiscalCode,
     dynamic compositionChilds,
     String? eanCode,

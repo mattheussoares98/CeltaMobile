@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/data/models/bsf/bsf.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 
@@ -40,7 +41,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
           )
         : null,
     product: json['Product'] != null
-        ? BSFProductDetailsModel.fromJson(json['Product'])
+        ? BSFProductModel.fromJson(json['Product'])
         : null,
     fiscalCode: json['FiscalCode'] != null
         ? BSFFiscalCodeModel.fromJson(json['FiscalCode'])
@@ -81,7 +82,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
   Map<String, dynamic> toJson() => {
     'ProductPackingCode': productPackingCode,
     'Product': product != null
-        ? BSFProductDetailsModel.fromEntity(product!).toJson()
+        ? BSFProductModel.fromEntity(product!).toJson()
         : null,
     'FiscalCode': fiscalCode != null
         ? BSFFiscalCodeModel.fromEntity(fiscalCode!).toJson()
@@ -136,7 +137,7 @@ class BSFProductItemModel extends BSFProductItemEntity {
         code: entity.code,
         product: entity.product == null
             ? null
-            : BSFProductDetailsModel.fromEntity(entity.product!),
+            : BSFProductModel.fromEntity(entity.product!),
         fiscalCode: entity.fiscalCode == null
             ? null
             : BSFFiscalCodeModel.fromEntity(entity.fiscalCode!),
@@ -174,8 +175,8 @@ class BSFProductItemModel extends BSFProductItemEntity {
     priceCost: priceCost is BSFPriceCostModel
         ? (priceCost as BSFPriceCostModel?)?.toEntity()
         : priceCost,
-    product: product is BSFProductDetailsModel
-        ? (product as BSFProductDetailsModel?)?.toEntity()
+    product: product is BSFProductModel
+        ? (product as BSFProductModel?)?.toEntity()
         : product,
     fiscalCode: fiscalCode is BSFFiscalCodeModel
         ? (fiscalCode as BSFFiscalCodeModel?)?.toEntity()

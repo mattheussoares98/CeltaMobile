@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/data/models/ec/ec_sale_request_product_product_model.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class EcSaleRequestCartProductModel extends Equatable {
   final int Id;
@@ -81,7 +80,7 @@ class EcSaleRequestCartProductModel extends Equatable {
     Observations: null,
     Product: entity.product == null
         ? null
-        : EcSaleRequestProductProductModel.fromBSFProductDetailsEntity(
+        : EcSaleRequestProductProductModel.fromBSFProductEntity(
             entity.product!,
           ),
   );

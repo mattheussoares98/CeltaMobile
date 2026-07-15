@@ -24,12 +24,11 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
     );
 
     return BSFProductItemEntity(
-      product: BSFProductDetailsEntity(
+      product: BSFProductEntity(
         name: Name,
         isAlcoholicProduct: false,
         isFatherOfGrate: IsFatherOfGrate,
         fatherGrateCode: null,
-        images: null,
         personalizedCode:
             ProductPackingCode?.toString() ?? ProductCode?.toString(),
         productPackingTypeString: PackingAbbreviation,
@@ -55,6 +54,26 @@ extension ProductEntityToBSFProductItemEntity on ProductEntity {
         legacyCode: null,
         practicePriceRoundRules: null,
         productPackingEanString: null,
+        dateOfCadaster: null,
+        dateOfDesativation: null,
+        dateOutOfLine: null,
+        dateLastChange: null,
+        isDesativateString: null,
+        eans: null,
+        productPackingSaleRetailPriceString: null,
+        productPackingWholeSalePriceString: null,
+        productPackingECommercePriceString: null,
+        productPackingSupplierReferenceString: null,
+        productPackingStockBalanceForSaleString: null,
+        productPackingStockBalanceForBuyString: null,
+        productPackingCurrentStockString: null,
+        productEnterpriseCurveString: null,
+        productPackingMininumQuantityForWholeSaleString: null,
+        commercializationPackingDescription: null,
+        commercializationPackingQuantity: null,
+        sizeScale: null,
+        inmetroNumber: null,
+        useShallowSearch: null,
       ),
       saleBlockadeDiscountType: SaleBlockadeDiscountType.none,
       productPackingCode: ProductPackingCode,

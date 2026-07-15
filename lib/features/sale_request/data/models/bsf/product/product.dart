@@ -1,9 +1,8 @@
 export './bsf_fiscal_code_model.dart';
 export './bsf_fiscal_code_value_model.dart';
+export './bsf_icms_model.dart';
+export './bsf_ipi_model.dart';
 export './bsf_price_cost_model.dart';
-export './bsf_product_details_model.dart';
 export './bsf_product_freight_model.dart';
 export './bsf_product_item_model.dart';
-export './bsf_icms_model.dart';
 export './bsf_tributary_situation_model.dart';
-export './bsf_ipi_model.dart';

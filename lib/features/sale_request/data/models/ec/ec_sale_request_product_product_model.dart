@@ -1,8 +1,6 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class EcSaleRequestProductProductModel extends Equatable {
   final int? Id;
@@ -54,8 +52,8 @@ class EcSaleRequestProductProductModel extends Equatable {
         PackingQuantity: entity.PackingQuantity?.toDouble(),
       );
 
-  factory EcSaleRequestProductProductModel.fromBSFProductDetailsEntity(
-    BSFProductDetailsEntity entity,
+  factory EcSaleRequestProductProductModel.fromBSFProductEntity(
+    BSFProductEntity entity,
   ) => EcSaleRequestProductProductModel(
     Id: entity.code,
     Plu: entity.productPackingPriceLookUpString,

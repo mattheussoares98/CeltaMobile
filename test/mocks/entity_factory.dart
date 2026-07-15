@@ -1426,49 +1426,7 @@ class EntityFactory {
         saleBlockadeDiscountType: SaleBlockadeDiscountType.values.elementAt(
           faker.randomGenerator.integer(SaleBlockadeDiscountType.values.length),
         ),
-        product: BSFProductDetailsEntity(
-          name: faker.food.dish(),
-          code: faker.randomGenerator.integer(100),
-          complement: faker.lorem.word(),
-          consolidateGrateChildsInFiscalNote: faker.randomGenerator.boolean(),
-          fatherOfGrateIsLiberatedSale: faker.randomGenerator.boolean(),
-          isBasicBasketItem: faker.randomGenerator.boolean(),
-          isDesativate: faker.randomGenerator.boolean(),
-          isFloatingProduct: faker.randomGenerator.boolean(),
-          isOutOfLine: faker.randomGenerator.boolean(),
-          isPriceControlled: faker.randomGenerator.boolean(),
-          isProductForComplementFiscalNote: faker.randomGenerator.boolean(),
-          isReturnablePacking: faker.randomGenerator.boolean(),
-          isScheduledToUnify: faker.randomGenerator.boolean(),
-          practicePriceRoundRules: faker.randomGenerator.boolean(),
-          legacyCode: faker.guid.guid(),
-          manufacturerString: faker.guid.guid(),
-          productPackingEanString: faker.randomGenerator
-              .integer(100)
-              .toString(),
-          productPackingPersonalizedCodeString: faker.randomGenerator
-              .integer(100)
-              .toString(),
-          productPackingQuantityString: faker.randomGenerator
-              .integer(100)
-              .toString(),
-          productPackingSpecificationString: faker.randomGenerator
-              .integer(100)
-              .toString(),
-          productPackingString: faker.randomGenerator.integer(100).toString(),
-          isAlcoholicProduct: faker.randomGenerator.boolean(),
-          isFatherOfGrate: faker.randomGenerator.boolean(),
-          fatherGrateCode: faker.randomGenerator.integer(100),
-          images: [
-            faker.internet.httpUrl(),
-            faker.internet.httpsUrl(),
-            faker.internet.httpUrl(),
-          ],
-          personalizedCode: faker.randomGenerator.integer(100).toString(),
-          productPackingTypeString: faker.lorem.word(),
-          productPackingQuantity: faker.randomGenerator.decimal(),
-          productPackingPriceLookUpString: faker.lorem.word(),
-        ),
+        product: makeBSFProductEntity(),
         fiscalCode: makeBSFFiscalCodeEntity(),
         compositionChilds: const [],
         eanCode: faker.randomGenerator.numberOfLength(13),
@@ -2011,4 +1969,79 @@ class EntityFactory {
         praticedMargin: faker.randomGenerator.decimal(),
         totalDifference: faker.randomGenerator.decimal(),
       );
+
+  static BSFProductEntity makeBSFProductEntity() => BSFProductEntity(
+    name: faker.food.dish(),
+    code: faker.randomGenerator.integer(100),
+    complement: faker.lorem.word(),
+    consolidateGrateChildsInFiscalNote: faker.randomGenerator.boolean(),
+    fatherOfGrateIsLiberatedSale: faker.randomGenerator.boolean(),
+    isBasicBasketItem: faker.randomGenerator.boolean(),
+    isDesativate: faker.randomGenerator.boolean(),
+    isFloatingProduct: faker.randomGenerator.boolean(),
+    isOutOfLine: faker.randomGenerator.boolean(),
+    isPriceControlled: faker.randomGenerator.boolean(),
+    isProductForComplementFiscalNote: faker.randomGenerator.boolean(),
+    isReturnablePacking: faker.randomGenerator.boolean(),
+    isScheduledToUnify: faker.randomGenerator.boolean(),
+    practicePriceRoundRules: faker.randomGenerator.boolean(),
+    legacyCode: faker.guid.guid(),
+    manufacturerString: faker.guid.guid(),
+    productPackingEanString: faker.randomGenerator.integer(100).toString(),
+    productPackingPersonalizedCodeString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productPackingQuantityString: faker.randomGenerator.integer(100).toString(),
+    productPackingSpecificationString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productPackingString: faker.randomGenerator.integer(100).toString(),
+    isAlcoholicProduct: faker.randomGenerator.boolean(),
+    isFatherOfGrate: faker.randomGenerator.boolean(),
+    fatherGrateCode: faker.randomGenerator.integer(100),
+    personalizedCode: faker.randomGenerator.integer(100).toString(),
+    productPackingTypeString: faker.lorem.word(),
+    productPackingQuantity: faker.randomGenerator.decimal(),
+    productPackingPriceLookUpString: faker.lorem.word(),
+    dateOfCadaster: faker.date.dateTime(),
+    dateOfDesativation: faker.date.dateTime(),
+    dateOutOfLine: faker.date.dateTime(),
+    dateLastChange: faker.date.dateTime(),
+    isDesativateString: faker.randomGenerator.boolean().toString(),
+    eans: [
+      faker.randomGenerator.numberOfLength(13),
+      faker.randomGenerator.numberOfLength(13),
+      faker.randomGenerator.numberOfLength(13),
+    ],
+    productPackingSaleRetailPriceString: faker.randomGenerator
+        .decimal()
+        .toString(),
+    productPackingWholeSalePriceString: faker.randomGenerator
+        .decimal()
+        .toString(),
+    productPackingECommercePriceString: faker.randomGenerator
+        .decimal()
+        .toString(),
+    productPackingSupplierReferenceString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productPackingStockBalanceForSaleString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productPackingStockBalanceForBuyString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productPackingCurrentStockString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    productEnterpriseCurveString: faker.randomGenerator.integer(100).toString(),
+    productPackingMininumQuantityForWholeSaleString: faker.randomGenerator
+        .integer(100)
+        .toString(),
+    commercializationPackingDescription: faker.lorem.word(),
+    commercializationPackingQuantity: faker.randomGenerator.decimal(),
+    sizeScale: faker.randomGenerator.integer(100).toString(),
+    inmetroNumber: faker.randomGenerator.integer(100).toString(),
+    useShallowSearch: faker.randomGenerator.boolean(),
+  );
 }
