@@ -1,5 +1,6 @@
 // lib/features/receipt/domain/entity/bsf/bsf_goods_receiving_product_entity.dart
 import 'package:celta_inventario/core/domain/entities/product/bsf/bsf.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFGoodsReceivingProductEntity extends Equatable {
@@ -13,9 +14,12 @@ class BSFGoodsReceivingProductEntity extends Equatable {
   final double unitLiquidValueOnBuyRequests;
   final double unitValue;
   final double unitValueOnBuyRequests;
-  final int judgementStatusRequestForFiscalNote;
-  final int judgementStatusFiscalNoteForCounting;
-  final int judgementStatusRequestForCounting;
+  final BsfGoodsReceivingProductJudgmentStatus
+  judgementStatusRequestForFiscalNote;
+  final BsfGoodsReceivingProductJudgmentStatus
+  judgementStatusFiscalNoteForCounting;
+  final BsfGoodsReceivingProductJudgmentStatus
+  judgementStatusRequestForCounting;
   final double availableQuantityInAssociatesBuyRequests;
   final double availableQuantityInAnotherBuyRequests;
   final double reservedQuantityByAnotherGRDoc;

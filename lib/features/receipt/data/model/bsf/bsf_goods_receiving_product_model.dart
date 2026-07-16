@@ -50,11 +50,17 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     unitValueOnBuyRequests:
         double.tryParse(json['UnitValueOnBuyRequests'].toString()) ?? 0.0,
     judgementStatusRequestForFiscalNote:
-        json['JudgementStatusRequestForFiscalNote'] ?? 0,
+        BsfGoodsReceivingProductJudgmentStatus.fromValue(
+          json['JudgementStatusRequestForFiscalNote'],
+        ),
     judgementStatusFiscalNoteForCounting:
-        json['JudgementStatusFiscalNoteForCounting'] ?? 0,
+        BsfGoodsReceivingProductJudgmentStatus.fromValue(
+          json['JudgementStatusFiscalNoteForCounting'],
+        ),
     judgementStatusRequestForCounting:
-        json['JudgementStatusRequestForCounting'] ?? 0,
+        BsfGoodsReceivingProductJudgmentStatus.fromValue(
+          json['JudgementStatusRequestForCounting'],
+        ),
     availableQuantityInAssociatesBuyRequests:
         double.tryParse(
           json['AvailableQuantityInAssociatesBuyRequests'].toString(),
@@ -108,10 +114,12 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     'UnitLiquidValueOnBuyRequests': unitLiquidValueOnBuyRequests,
     'UnitValue': unitValue,
     'UnitValueOnBuyRequests': unitValueOnBuyRequests,
-    'JudgementStatusRequestForFiscalNote': judgementStatusRequestForFiscalNote,
+    'JudgementStatusRequestForFiscalNote':
+        judgementStatusRequestForFiscalNote.value,
     'JudgementStatusFiscalNoteForCounting':
-        judgementStatusFiscalNoteForCounting,
-    'JudgementStatusRequestForCounting': judgementStatusRequestForCounting,
+        judgementStatusFiscalNoteForCounting.value,
+    'JudgementStatusRequestForCounting':
+        judgementStatusRequestForCounting.value,
     'AvailableQuantityInAssociatesBuyRequests':
         availableQuantityInAssociatesBuyRequests,
     'AvailableQuantityInAnotherBuyRequests':
