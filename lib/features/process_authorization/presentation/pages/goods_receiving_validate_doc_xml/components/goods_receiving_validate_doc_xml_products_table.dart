@@ -111,6 +111,12 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
                       ),
                     ),
                   ),
+                  if (areJudgedItems)
+                    TextSpan(
+                      text:
+                          "${item.judgementStatusRequestForFiscalNote.label} ",
+                      style: const TextStyle(color: Colors.orange),
+                    ),
                   ...texts.map(_buildTextSpan),
                 ],
               ),
