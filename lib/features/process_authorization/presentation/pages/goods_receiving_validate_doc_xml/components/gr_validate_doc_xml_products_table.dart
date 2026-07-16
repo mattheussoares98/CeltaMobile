@@ -35,7 +35,6 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final judgmentController = markStatusJudgmentControllerProvider(
-      areJudgedItems,
       processCode,
     );
     final provider = gRDocFiscalNoteDifferencesStateControllerProvider(

@@ -20,110 +20,106 @@ class MockEcProcessAuthorizationRepository extends Mock
 class FakeGRDocFiscalNoteDifferencesStateController
     extends GRDocFiscalNoteDifferencesStateController {
   final BSFGREntity entity;
+
   FakeGRDocFiscalNoteDifferencesStateController(this.entity);
 
-  // 2. Override the build method to return your fake data instantly
   @override
-  FutureOr<BSFGREntity> build(int processCode) async {
-    return entity;
-  }
+  FutureOr<BSFGREntity> build(int processCode) async => entity;
 }
 
 void main() {
-  late MockEcProcessAuthorizationRepository mockRepository;
-  late UserSessionModel fakeSession;
+  late MockEcProcessAuthorizationRepository repository;
+  late UserSessionModel session;
+  late BSFGREntity grDoc;
   late int processCode;
-  late List<int> grDocProductCodes;
-  late BSFGREntity bsfGrEntity;
+  late List<int> productCodes;
+  late EcRequestParams params;
 
   setUp(() {
-    mockRepository = MockEcProcessAuthorizationRepository();
-    fakeSession = UserSessionModel.fromEntity(
+    repository = MockEcProcessAuthorizationRepository();
+    session = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    grDoc = EntityFactory.makeBSFGREntity();
     processCode = faker.randomGenerator.integer(100000);
-    grDocProductCodes = [
+    productCodes = [
       faker.randomGenerator.integer(100000),
       faker.randomGenerator.integer(100000),
     ];
-    bsfGrEntity = EntityFactory.makeBSFGREntity();
-    registerFallbackValue(EntityFactory.makeEcRequestParams());
-    registerFallbackValue(BsfGRProductJudgmentStatus.accept);
-    registerFallbackValue(BsfGRProductJudgmentType.requestForFiscalNote);
+    params = EcRequestParams(
+      workingUrl: session.enterprise!.workingUrl!,
+      user: session.user.name!,
+      accessKey: session.user.AccessKey!,
+    );
   });
 
-  ProviderContainer makeProviderContainer({UserSessionModel? session}) {
+  ProviderContainer makeContainer({UserSessionModel? validatedSession}) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        ecProcessAuthorizationRepositoryProvider.overrideWithValue(
-          mockRepository,
-        ),
+        ecProcessAuthorizationRepositoryProvider.overrideWithValue(repository),
         validatedUserSessionProvider.overrideWith(
-          () => FakeValidatedUserSession(session),
+          () => FakeValidatedUserSession(validatedSession),
         ),
         gRDocFiscalNoteDifferencesStateControllerProvider(
           processCode,
         ).overrideWith(
-          () => FakeGRDocFiscalNoteDifferencesStateController(bsfGrEntity),
+          () => FakeGRDocFiscalNoteDifferencesStateController(grDoc),
         ),
       ],
     );
   }
 
+  void selectProducts(ProviderContainer container, {required bool areJudged}) {
+    final controller = container.read(
+      gRValidateDocXmlUiControllerProvider(processCode).notifier,
+    );
+    for (final productCode in productCodes) {
+      areJudged
+          ? controller.toggleProductWithJudgment(productCode)
+          : controller.toggleProductWithoutJudgment(productCode);
+    }
+  }
+
   group('MarkStatusJudgmentController', () {
     for (final areJudgedItems in [false, true]) {
-      for (final judgmentStatus in BsfGRProductJudgmentStatus.values) {
+      for (final status in BsfGRProductJudgmentStatus.values.where(
+        (status) => status != BsfGRProductJudgmentStatus.withoutJudge,
+      )) {
         test(
-          'should mark ${areJudgedItems ? 'judged' : 'unjudged'} products with ${judgmentStatus.name} on success',
+          'should mark selected ${areJudgedItems ? 'judged' : 'unjudged'} products with ${status.name}',
           () async {
             when(
-              () => mockRepository.markStatusJudgment(
-                any(),
-                grDocProductCodes: any(named: 'grDocProductCodes'),
-                grDocGroupCode: any(named: 'grDocGroupCode'),
-                judgmentStatus: any(named: 'judgmentStatus'),
-                judgementType: any(named: 'judgementType'),
+              () => repository.markStatusJudgment(
+                params,
+                grDocProductCodes: productCodes,
+                grDocGroupCode: grDoc.group!.code!,
+                judgmentStatus: status,
+                judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
               ),
             ).thenAnswer((_) async {});
-            final container = makeProviderContainer(session: fakeSession);
+            final container = makeContainer(validatedSession: session);
             addTearDown(container.dispose);
-            final uiController = container.read(
-              gRValidateDocXmlUiControllerProvider(processCode).notifier,
-            );
-            for (final productCode in grDocProductCodes) {
-              if (areJudgedItems) {
-                uiController.toggleProductWithJudgment(productCode);
-              } else {
-                uiController.toggleProductWithoutJudgment(productCode);
-              }
-            }
+            selectProducts(container, areJudged: areJudgedItems);
             final states = <AsyncValue<void>>[];
             container.listen(
-              markStatusJudgmentControllerProvider(areJudgedItems, processCode),
+              markStatusJudgmentControllerProvider(processCode),
               (_, next) => states.add(next),
             );
 
             await container
                 .read(
-                  markStatusJudgmentControllerProvider(
-                    areJudgedItems,
-                    processCode,
-                  ).notifier,
+                  markStatusJudgmentControllerProvider(processCode).notifier,
                 )
-                .judge(judgmentStatus);
+                .judge(status, areJudgedItems: areJudgedItems);
 
             expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
             verify(
-              () => mockRepository.markStatusJudgment(
-                EcRequestParams(
-                  workingUrl: fakeSession.enterprise!.workingUrl!,
-                  user: fakeSession.user.name!,
-                  accessKey: fakeSession.user.AccessKey!,
-                ),
-                grDocProductCodes: grDocProductCodes,
-                grDocGroupCode: bsfGrEntity.group!.code!,
-                judgmentStatus: judgmentStatus,
+              () => repository.markStatusJudgment(
+                params,
+                grDocProductCodes: productCodes,
+                grDocGroupCode: grDoc.group!.code!,
+                judgmentStatus: status,
                 judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
               ),
             ).called(1);
@@ -132,56 +128,95 @@ void main() {
       }
     }
 
+    test('should annul selected judged products', () async {
+      when(
+        () => repository.annulStatusJudgment(
+          params,
+          grDocProductCodes: productCodes,
+          grDocGroupCode: grDoc.group!.code!,
+          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
+        ),
+      ).thenAnswer((_) async {});
+      final container = makeContainer(validatedSession: session);
+      addTearDown(container.dispose);
+      selectProducts(container, areJudged: true);
+      final states = <AsyncValue<void>>[];
+      container.listen(
+        markStatusJudgmentControllerProvider(processCode),
+        (_, next) => states.add(next),
+      );
+
+      await container
+          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .annul();
+
+      expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
+      verify(
+        () => repository.annulStatusJudgment(
+          params,
+          grDocProductCodes: productCodes,
+          grDocGroupCode: grDoc.group!.code!,
+          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
+        ),
+      ).called(1);
+    });
+
     test('should expose an error when session is invalid', () async {
-      final container = makeProviderContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
 
       await container
-          .read(
-            markStatusJudgmentControllerProvider(false, processCode).notifier,
-          )
-          .judge(BsfGRProductJudgmentStatus.accept);
+          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .annul();
 
       expect(
-        container.read(
-          markStatusJudgmentControllerProvider(false, processCode),
-        ),
+        container.read(markStatusJudgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
-      verifyNever(
-        () => mockRepository.markStatusJudgment(
-          any(),
-          grDocProductCodes: any(named: 'grDocProductCodes'),
-          grDocGroupCode: any(named: 'grDocGroupCode'),
-          judgmentStatus: any(named: 'judgmentStatus'),
-          judgementType: any(named: 'judgementType'),
+      verifyZeroInteractions(repository);
+    });
+
+    test('should expose mark repository errors', () async {
+      when(
+        () => repository.markStatusJudgment(
+          params,
+          grDocProductCodes: const [],
+          grDocGroupCode: grDoc.group!.code!,
+          judgmentStatus: BsfGRProductJudgmentStatus.accept,
+          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
         ),
+      ).thenThrow(Exception('Repository error'));
+      final container = makeContainer(validatedSession: session);
+      addTearDown(container.dispose);
+
+      await container
+          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .judge(BsfGRProductJudgmentStatus.accept, areJudgedItems: false);
+
+      expect(
+        container.read(markStatusJudgmentControllerProvider(processCode)),
+        isA<AsyncError<void>>(),
       );
     });
 
-    test('should expose repository errors', () async {
+    test('should expose annul repository errors', () async {
       when(
-        () => mockRepository.markStatusJudgment(
-          any(),
-          grDocProductCodes: any(named: 'grDocProductCodes'),
-          grDocGroupCode: any(named: 'grDocGroupCode'),
-          judgmentStatus: any(named: 'judgmentStatus'),
-          judgementType: any(named: 'judgementType'),
+        () => repository.annulStatusJudgment(
+          params,
+          grDocProductCodes: const [],
+          grDocGroupCode: grDoc.group!.code!,
+          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
         ),
       ).thenThrow(Exception('Repository error'));
-      final container = makeProviderContainer(session: fakeSession);
+      final container = makeContainer(validatedSession: session);
       addTearDown(container.dispose);
 
       await container
-          .read(
-            markStatusJudgmentControllerProvider(false, processCode).notifier,
-          )
-          .judge(BsfGRProductJudgmentStatus.accept);
+          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .annul();
 
       expect(
-        container.read(
-          markStatusJudgmentControllerProvider(false, processCode),
-        ),
+        container.read(markStatusJudgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
     });

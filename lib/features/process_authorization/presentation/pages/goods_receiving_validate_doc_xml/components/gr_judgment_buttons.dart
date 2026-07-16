@@ -19,7 +19,6 @@ class GRJudgmentButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controllerProvider = markStatusJudgmentControllerProvider(
-      areJudgedItems,
       processCode,
     );
     final uiControllerProvider = gRValidateDocXmlUiControllerProvider(
@@ -56,7 +55,13 @@ class GRJudgmentButtons extends ConsumerWidget {
         defaultActionText: 'Sim'.hardcoded,
         cancelActionText: 'Cancelar'.hardcoded,
         onOkPressed: () {
-          ref.read(controllerProvider.notifier).judge(judgmentStatus);
+          final controller = ref.read(controllerProvider.notifier);
+          judgmentStatus == BsfGRProductJudgmentStatus.withoutJudge
+              ? controller.annul()
+              : controller.judge(
+                  judgmentStatus,
+                  areJudgedItems: areJudgedItems,
+                );
         },
       );
     }
