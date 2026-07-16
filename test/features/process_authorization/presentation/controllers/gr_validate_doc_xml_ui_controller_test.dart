@@ -99,6 +99,33 @@ void main() {
       });
     });
 
+    for (final areJudgedItems in [false, true]) {
+      test(
+        'clearSelectedProducts should clear only the ${areJudgedItems ? 'judged' : 'unjudged'} selection',
+        () {
+          final notifier = container.read(
+            gRValidateDocXmlUiControllerProvider(processCode).notifier,
+          );
+          notifier.toggleProductWithJudgment(10);
+          notifier.toggleProductWithoutJudgment(20);
+
+          notifier.clearSelectedProducts(areJudgedItems: areJudgedItems);
+
+          final state = container.read(
+            gRValidateDocXmlUiControllerProvider(processCode),
+          );
+          expect(
+            state.selectedProductsWithJudgmentIds,
+            areJudgedItems ? isEmpty : {10},
+          );
+          expect(
+            state.selectedProductsWithoutJudgmentIds,
+            areJudgedItems ? {20} : isEmpty,
+          );
+        },
+      );
+    }
+
     test('updatePageIndex should update selectedPageIndex', () {
       final pageIndex = faker.randomGenerator.integer(2);
       final notifier = container.read(

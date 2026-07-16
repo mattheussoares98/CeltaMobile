@@ -34,6 +34,12 @@ class GRValidateDocXmlUiController extends _$GRValidateDocXmlUiController {
     );
   }
 
+  void clearSelectedProducts({required bool areJudgedItems}) {
+    state = areJudgedItems
+        ? state.copyWith(selectedProductsWithJudgmentIds: const {})
+        : state.copyWith(selectedProductsWithoutJudgmentIds: const {});
+  }
+
   void updatePageIndex(int index) {
     state = state.copyWith(selectedPageIndex: index);
   }
