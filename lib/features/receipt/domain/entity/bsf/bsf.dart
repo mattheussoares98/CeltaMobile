@@ -5,3 +5,4 @@ export './bsf_gr_product_entity.dart';
 export './bsf_gr_product_judgment_status.dart';
 export './bsf_gr_product_judgment_type.dart';
 export './bsf_gr_type_entity.dart';
+export './gr_products_without_cadaster_entity.dart';

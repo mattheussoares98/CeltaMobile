@@ -44,6 +44,7 @@ class BSFGREntity extends Equatable {
   final List<BSFGRProductEntity>?
   productsWithJudgementStatusRequestForFiscalNote;
   final BSFGRGroupEntity? group;
+  final List<GRProductsWithoutCadasterEntity>? productsWithoutCadaster;
 
   const BSFGREntity({
     required this.expeditionControlCode,
@@ -84,6 +85,7 @@ class BSFGREntity extends Equatable {
     required this.productsWithoutJudgementStatusRequestForFiscalNote,
     required this.productsWithJudgementStatusRequestForFiscalNote,
     required this.group,
+    required this.productsWithoutCadaster,
   });
 
   @override
@@ -126,5 +128,7 @@ class BSFGREntity extends Equatable {
     productsWithoutJudgementStatusRequestForFiscalNote,
     productsWithJudgementStatusRequestForFiscalNote,
     group,
+    productsWithoutCadaster,
   ];
+
 }

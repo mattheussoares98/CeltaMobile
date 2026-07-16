@@ -43,6 +43,7 @@ class BSFGRModel extends BSFGREntity {
     required super.productsWithoutJudgementStatusRequestForFiscalNote,
     required super.productsWithJudgementStatusRequestForFiscalNote,
     required super.group,
+    required super.productsWithoutCadaster,
   });
 
   factory BSFGRModel.fromJson(Map json) => BSFGRModel(
@@ -119,6 +120,11 @@ class BSFGRModel extends BSFGREntity {
     group: json['Group'] != null
         ? BSFGRGroupModel.fromJson(json['Group'])
         : null,
+    productsWithoutCadaster: json['ProductsWithoutCadaster'] != null
+        ? (json['ProductsWithoutCadaster'] as List)
+            .map((e) => GRProductsWithoutCadasterModel.fromJson(Map.from(e)))
+            .toList()
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -170,6 +176,9 @@ class BSFGRModel extends BSFGREntity {
             ?.map((e) => BSFGRProductModel.fromEntity(e).toJson())
             .toList(),
     'Group': group != null ? BSFGRGroupModel.fromEntity(group!).toJson() : null,
+    'ProductsWithoutCadaster': productsWithoutCadaster
+        ?.map((e) => GRProductsWithoutCadasterModel.fromEntity(e).toJson())
+        .toList(),
   };
 
   factory BSFGRModel.fromEntity(BSFGREntity entity) => BSFGRModel(
@@ -213,6 +222,7 @@ class BSFGRModel extends BSFGREntity {
     productsWithJudgementStatusRequestForFiscalNote:
         entity.productsWithJudgementStatusRequestForFiscalNote,
     group: entity.group,
+    productsWithoutCadaster: entity.productsWithoutCadaster,
   );
 
   BSFGREntity toEntity() => BSFGREntity(
@@ -256,5 +266,6 @@ class BSFGRModel extends BSFGREntity {
     productsWithJudgementStatusRequestForFiscalNote:
         productsWithJudgementStatusRequestForFiscalNote,
     group: group,
+    productsWithoutCadaster: productsWithoutCadaster,
   );
 }
