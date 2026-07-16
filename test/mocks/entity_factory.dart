@@ -2044,4 +2044,129 @@ class EntityFactory {
     inmetroNumber: faker.randomGenerator.integer(100).toString(),
     useShallowSearch: faker.randomGenerator.boolean(),
   );
+
+  static BSFGoodsReceivingEntity makeBSFGoodsReceivingEntity() =>
+      BSFGoodsReceivingEntity(
+        expeditionControlCode: faker.randomGenerator.integer(100),
+        isOnExpedition: faker.randomGenerator.boolean(),
+        shouldHaveExpeditionControl: faker.randomGenerator.boolean(),
+        code: faker.randomGenerator.integer(100),
+        dateTimeOfCreation: faker.date.dateTime(),
+        dateOfEmission: faker.date.dateTime(),
+        dateTimeOfEntrance: faker.date.dateTime(),
+        number: faker.randomGenerator.integer(100),
+        numberComplement: faker.lorem.word(),
+        value: faker.randomGenerator.decimal(),
+        observations: faker.lorem.sentence(),
+        isCanceled: faker.randomGenerator.boolean(),
+        isCanceledString: faker.lorem.word(),
+        dateOfCanceled: faker.date.dateTime(),
+        isLiberated: faker.randomGenerator.boolean(),
+        isReceiveEntrance: faker.randomGenerator.boolean(),
+        hasCounting: faker.randomGenerator.boolean(),
+        hasXmlFile: faker.randomGenerator.boolean(),
+        printConferenceList: faker.randomGenerator.boolean(),
+        isLiberatedString: faker.randomGenerator.boolean().toString(),
+        dateOfLiberated: faker.date.dateTime(),
+        statusForRequests: faker.randomGenerator.integer(100),
+        isFromManifestation: faker.randomGenerator.boolean(),
+        hasDelivery: faker.randomGenerator.boolean(),
+        fiscalNotePaymentCondition: faker.lorem.word(),
+        buyRequestsPaymentCondition: faker.lorem.word(),
+        hasDivergencyOnPaymentCondition: faker.randomGenerator.boolean(),
+        judgePaymentCondition: faker.randomGenerator.integer(100),
+        enterpriseString: faker.lorem.word(),
+        type: makeBSFGoodsReceivingTypeEntity(),
+        totalDivergencyLiquidValue: faker.randomGenerator.decimal(),
+        containProductsToDoDevolution: faker.randomGenerator.boolean(),
+        detail: makeBSFGoodsReceivingDetailEntity(),
+        eletronicAccessKey: makeBSFEletronicAccessKeyEntity(),
+        xmlFileData: faker.lorem.word(),
+        productsWithoutJudgementStatusRequestForFiscalNote: [
+          makeBSFGoodsReceivingProductEntity(),
+          makeBSFGoodsReceivingProductEntity(),
+          makeBSFGoodsReceivingProductEntity(),
+        ],
+        productsWithJudgementStatusRequestForFiscalNote: [
+          makeBSFGoodsReceivingProductEntity(),
+          makeBSFGoodsReceivingProductEntity(),
+          makeBSFGoodsReceivingProductEntity(),
+        ],
+      );
+
+  static BSFGoodsReceivingTypeEntity makeBSFGoodsReceivingTypeEntity() =>
+      BSFGoodsReceivingTypeEntity(
+        code: faker.randomGenerator.integer(100),
+        name: faker.lorem.word(),
+      );
+
+  static BSFGoodsReceivingDetailEntity makeBSFGoodsReceivingDetailEntity() =>
+      BSFGoodsReceivingDetailEntity(
+        containRequests: faker.randomGenerator.boolean(),
+        document: faker.randomGenerator.integer(100).toString(),
+        emitter: makeBSFEnterpriseEntity(),
+        enterpriseOrigin: makeBSFEnterpriseEntity(),
+      );
+
+  static BSFEletronicAccessKeyEntity makeBSFEletronicAccessKeyEntity() =>
+      BSFEletronicAccessKeyEntity(
+        stateCode: faker.randomGenerator.integer(100),
+        stateDescription: faker.lorem.word(),
+        emission: faker.date.dateTime().toString(),
+        year: faker.randomGenerator.integer(100),
+        month: faker.randomGenerator.integer(100),
+        cnpjEmitter: faker.randomGenerator.integer(100).toString(),
+        fiscalNoteNumber: faker.randomGenerator.integer(100),
+        documentType: faker.randomGenerator.integer(100),
+        documentTypeCode: faker.randomGenerator.integer(100).toString(),
+        fiscalNoteSerial: faker.randomGenerator.integer(100),
+        fiscalNoteSerialString: faker.randomGenerator.integer(100).toString(),
+        emissionType: faker.randomGenerator.integer(100),
+        emissionTypeCode: faker.randomGenerator.integer(100).toString(),
+        codeRandomToNfeV2: faker.randomGenerator.integer(100).toString(),
+        codeRandomComplete: faker.randomGenerator.integer(100).toString(),
+        digit: faker.randomGenerator.integer(100),
+      );
+
+  static BSFGoodsReceivingProductEntity makeBSFGoodsReceivingProductEntity() =>
+      BSFGoodsReceivingProductEntity(
+        document: faker.randomGenerator.integer(100).toString(),
+        code: faker.randomGenerator.integer(100),
+        quantity: faker.randomGenerator.decimal(),
+        quantityString: faker.randomGenerator.decimal().toString(),
+        quantityOfXml: faker.randomGenerator.decimal(),
+        quantityWithoutRequest: faker.randomGenerator.integer(100),
+        unitLiquidValue: faker.randomGenerator.decimal(),
+        unitLiquidValueOnBuyRequests: faker.randomGenerator.decimal(),
+        unitValue: faker.randomGenerator.decimal(),
+        unitValueOnBuyRequests: faker.randomGenerator.decimal(),
+        judgementStatusRequestForFiscalNote:
+            BsfGoodsReceivingProductJudgmentStatus.values[faker.randomGenerator
+                .integer(BsfGoodsReceivingProductJudgmentStatus.values.length)],
+        judgementStatusFiscalNoteForCounting:
+            BsfGoodsReceivingProductJudgmentStatus.values[faker.randomGenerator
+                .integer(BsfGoodsReceivingProductJudgmentStatus.values.length)],
+        judgementStatusRequestForCounting:
+            BsfGoodsReceivingProductJudgmentStatus.values[faker.randomGenerator
+                .integer(BsfGoodsReceivingProductJudgmentStatus.values.length)],
+        availableQuantityInAssociatesBuyRequests: faker.randomGenerator
+            .decimal(),
+        availableQuantityInAnotherBuyRequests: faker.randomGenerator.decimal(),
+        reservedQuantityByAnotherGRDoc: faker.randomGenerator.decimal(),
+        referenceOfXml: faker.randomGenerator.integer(100).toString(),
+        divergencyUnitLiquidValue: faker.randomGenerator.decimal(),
+        totalDivergencyLiquidValue: faker.randomGenerator.decimal(),
+        divergenceQuantityRequestForCounting: faker.randomGenerator.decimal(),
+        divergenceQuantityRequestForFiscalNote: faker.randomGenerator.decimal(),
+        divergenceQuantityFiscalNoteForCounting: faker.randomGenerator
+            .decimal(),
+        productString: faker.randomGenerator.integer(100).toString(),
+        productPackingPersonalizedCodeString: faker.randomGenerator
+            .integer(100)
+            .toString(),
+        fiscalCode: faker.randomGenerator.integer(100).toString(),
+        isUpdate: faker.randomGenerator.boolean(),
+        hasDivergencyQuantity: faker.randomGenerator.boolean(),
+        product: makeBSFProductEntity(),
+      );
 }

@@ -5,6 +5,8 @@ import 'package:celta_inventario/core/domain/entities/ec/ec.dart';
 import 'package:celta_inventario/features/process_authorization/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/process_authorization/data/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
+import 'package:celta_inventario/features/receipt/data/model/model.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -187,6 +189,70 @@ void main() {
             'ProcessCode': processCode,
             'Authorized': authorized,
             'Observations': observations,
+          },
+        ),
+      ).called(1);
+    });
+  });
+
+  group('getGRDocFiscalNoteDifferences', () {
+    test('should call http with correct parameters and return model', () async {
+      final documentCode = faker.randomGenerator.integer(100);
+      final model = BSFGoodsReceivingModel.fromEntity(
+        EntityFactory.makeBSFGoodsReceivingEntity(),
+      );
+      httpClient.mockRequest(json.encode(model.toJson()));
+
+      final response = await sut.getGRDocFiscalNoteDifferences(
+        params,
+        documentCode,
+      );
+
+      expect(response.toJson(), model.toJson());
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/ProcessAuthorization/GetGRDocFiscalNoteDifferences?documentCode=$documentCode',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: params.toMap(),
+        ),
+      ).called(1);
+    });
+  });
+
+  group('markStatusJudgment', () {
+    test('should call http with correct parameters', () async {
+      httpClient.mockRequest(null);
+      final grDocProductCodes = [
+        faker.randomGenerator.integer(100),
+        faker.randomGenerator.integer(100),
+      ];
+      final grDocGroupCode = faker.randomGenerator.integer(100);
+      const judgmentStatus = BsfGoodsReceivingProductJudgmentStatus.accept;
+      const judgementType =
+          BsfGoodsReceivingProductJudgmentType.requestForCounting;
+
+      await sut.markStatusJudgment(
+        params,
+        grDocProductCodes: grDocProductCodes,
+        grDocGroupCode: grDocGroupCode,
+        judgmentStatus: judgmentStatus,
+        judgementType: judgementType,
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/ProcessAuthorization/MarkStatusJudgement',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'GrDocProductCodes': grDocProductCodes,
+            'GrDocGroupCode': grDocGroupCode,
+            'JudgmentStatus': judgmentStatus.value,
+            'JudgementType': judgementType.value,
           },
         ),
       ).called(1);

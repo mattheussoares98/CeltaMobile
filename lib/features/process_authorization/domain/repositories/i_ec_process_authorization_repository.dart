@@ -29,4 +29,12 @@ abstract class IEcProcessAuthorizationRepository {
     EcRequestParams params,
     int documentCode,
   );
+
+  Future<void> markStatusJudgment(
+    EcRequestParams params, {
+    required List<int> grDocProductCodes,
+    required int grDocGroupCode,
+    required BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
+    required BsfGoodsReceivingProductJudgmentType judgementType,
+  });
 }

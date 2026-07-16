@@ -5,6 +5,7 @@ import 'package:celta_inventario/features/process_authorization/data/models/mode
 import 'package:celta_inventario/features/process_authorization/data/repositories/repositorires.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -45,6 +46,13 @@ void main() {
     registerFallbackValue(
       const EcRequestParams(workingUrl: '', user: '', accessKey: ''),
     );
+    for (final judgmentStatus
+        in BsfGoodsReceivingProductJudgmentStatus.values) {
+      registerFallbackValue(judgmentStatus);
+    }
+    for (final judgementType in BsfGoodsReceivingProductJudgmentType.values) {
+      registerFallbackValue(judgementType);
+    }
   });
 
   group('getJudgments', () {
@@ -171,6 +179,87 @@ void main() {
           processCode: processCode,
           authorized: authorized,
           observations: observations,
+        ),
+      ).called(1);
+    });
+  });
+
+  group('getGRDocFiscalNoteDifferences', () {
+    test('should get GRDocFiscalNoteDifferences on success', () async {
+      final List<int> grDocProductCodes = [faker.randomGenerator.integer(100)];
+      final int grDocGroupCode = faker.randomGenerator.integer(100);
+      final BsfGoodsReceivingProductJudgmentStatus judgmentStatus =
+          BsfGoodsReceivingProductJudgmentStatus.values[faker.randomGenerator
+              .integer(BsfGoodsReceivingProductJudgmentStatus.values.length)];
+      final BsfGoodsReceivingProductJudgmentType judgementType =
+          BsfGoodsReceivingProductJudgmentType.values[faker.randomGenerator
+              .integer(BsfGoodsReceivingProductJudgmentType.values.length)];
+
+      when(
+        () => datasource.markStatusJudgment(
+          any(),
+          grDocProductCodes: any(named: 'grDocProductCodes'),
+          grDocGroupCode: any(named: 'grDocGroupCode'),
+          judgmentStatus: any(named: 'judgmentStatus'),
+          judgementType: any(named: 'judgementType'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.markStatusJudgment(
+        params,
+        grDocProductCodes: grDocProductCodes,
+        grDocGroupCode: grDocGroupCode,
+        judgmentStatus: judgmentStatus,
+        judgementType: judgementType,
+      );
+
+      verify(
+        () => datasource.markStatusJudgment(
+          params,
+          grDocProductCodes: grDocProductCodes,
+          grDocGroupCode: grDocGroupCode,
+          judgmentStatus: judgmentStatus,
+          judgementType: judgementType,
+        ),
+      ).called(1);
+    });
+  });
+  group('markStatusJudgment', () {
+    test('should mark status judgment on success', () async {
+      final grDocProductCodes = [
+        faker.randomGenerator.integer(100),
+        faker.randomGenerator.integer(100),
+      ];
+      final grDocGroupCode = faker.randomGenerator.integer(100);
+      const judgmentStatus = BsfGoodsReceivingProductJudgmentStatus.accept;
+      const judgementType =
+          BsfGoodsReceivingProductJudgmentType.requestForCounting;
+
+      when(
+        () => datasource.markStatusJudgment(
+          any(),
+          grDocProductCodes: any(named: 'grDocProductCodes'),
+          grDocGroupCode: any(named: 'grDocGroupCode'),
+          judgmentStatus: any(named: 'judgmentStatus'),
+          judgementType: any(named: 'judgementType'),
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.markStatusJudgment(
+        params,
+        grDocProductCodes: grDocProductCodes,
+        grDocGroupCode: grDocGroupCode,
+        judgmentStatus: judgmentStatus,
+        judgementType: judgementType,
+      );
+
+      verify(
+        () => datasource.markStatusJudgment(
+          params,
+          grDocProductCodes: grDocProductCodes,
+          grDocGroupCode: grDocGroupCode,
+          judgmentStatus: judgmentStatus,
+          judgementType: judgementType,
         ),
       ).called(1);
     });

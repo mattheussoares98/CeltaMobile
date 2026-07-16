@@ -71,12 +71,28 @@ class EcProcessAuthorizationRepositoryImpl
     EcRequestParams params,
     int documentCode,
   ) async {
-    //TODO create tests
     final response = await datasource.getGRDocFiscalNoteDifferences(
       params,
       documentCode,
     );
 
     return response.toEntity();
+  }
+
+  @override
+  Future<void> markStatusJudgment(
+    EcRequestParams params, {
+    required List<int> grDocProductCodes,
+    required int grDocGroupCode,
+    required BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
+    required BsfGoodsReceivingProductJudgmentType judgementType,
+  }) async {
+    await datasource.markStatusJudgment(
+      params,
+      grDocProductCodes: grDocProductCodes,
+      grDocGroupCode: grDocGroupCode,
+      judgmentStatus: judgmentStatus,
+      judgementType: judgementType,
+    );
   }
 }
