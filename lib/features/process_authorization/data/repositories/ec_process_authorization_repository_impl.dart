@@ -95,4 +95,19 @@ class EcProcessAuthorizationRepositoryImpl
       judgementType: judgementType,
     );
   }
+
+  @override
+  Future<void> annulStatusJudgment(
+    EcRequestParams params, {
+    required List<int> grDocProductCodes,
+    required int grDocGroupCode,
+    required BsfGRProductJudgmentType judgementType,
+  }) async {
+    await datasource.annulStatusJudgment(
+      params,
+      grDocProductCodes: grDocProductCodes,
+      grDocGroupCode: grDocGroupCode,
+      judgementType: judgementType,
+    );
+  }
 }

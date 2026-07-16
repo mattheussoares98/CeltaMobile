@@ -264,4 +264,40 @@ void main() {
       ).called(1);
     });
   });
+
+  group('annulStatusJudgment', () {
+    test('should annul status judgment on success', () async {
+      final grDocProductCodes = [
+        faker.randomGenerator.integer(100),
+        faker.randomGenerator.integer(100),
+      ];
+      final grDocGroupCode = faker.randomGenerator.integer(100);
+      const judgementType = BsfGRProductJudgmentType.requestForCounting;
+
+      when(
+        () => datasource.annulStatusJudgment(
+          params,
+          grDocProductCodes: grDocProductCodes,
+          grDocGroupCode: grDocGroupCode,
+          judgementType: judgementType,
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.annulStatusJudgment(
+        params,
+        grDocProductCodes: grDocProductCodes,
+        grDocGroupCode: grDocGroupCode,
+        judgementType: judgementType,
+      );
+
+      verify(
+        () => datasource.annulStatusJudgment(
+          params,
+          grDocProductCodes: grDocProductCodes,
+          grDocGroupCode: grDocGroupCode,
+          judgementType: judgementType,
+        ),
+      ).called(1);
+    });
+  });
 }

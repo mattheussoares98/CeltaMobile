@@ -37,4 +37,11 @@ abstract class IEcProcessAuthorizationRepository {
     required BsfGRProductJudgmentStatus judgmentStatus,
     required BsfGRProductJudgmentType judgementType,
   });
+
+  Future<void> annulStatusJudgment(
+    EcRequestParams params, {
+    required List<int> grDocProductCodes,
+    required int grDocGroupCode,
+    required BsfGRProductJudgmentType judgementType,
+  });
 }
