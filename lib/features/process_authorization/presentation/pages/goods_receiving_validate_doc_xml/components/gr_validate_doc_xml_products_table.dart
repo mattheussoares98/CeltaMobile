@@ -99,7 +99,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
       onTapRow: onTapItem,
       columns: [
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Produto'.hardcoded,
+          headerTitle: areJudgedItems ? 'Status/Produto' : 'Produto'.hardcoded,
           minWidth: 200.0,
           cellBuilder: (item) {
             final texts = [
