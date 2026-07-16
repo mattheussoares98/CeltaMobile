@@ -2092,6 +2092,10 @@ class EntityFactory {
           makeBSFGoodsReceivingProductEntity(),
           makeBSFGoodsReceivingProductEntity(),
         ],
+        group: BSFGoodsReceivingGroupEntity(
+          code: faker.randomGenerator.integer(100),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+        ),
       );
 
   static BSFGoodsReceivingTypeEntity makeBSFGoodsReceivingTypeEntity() =>

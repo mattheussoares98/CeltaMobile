@@ -5,43 +5,44 @@ import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
 class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
   const BSFGoodsReceivingModel({
-    super.expeditionControlCode,
-    super.isOnExpedition,
-    super.shouldHaveExpeditionControl,
-    super.code,
-    super.dateTimeOfCreation,
-    super.dateOfEmission,
-    super.dateTimeOfEntrance,
-    super.number,
-    super.numberComplement,
-    super.value,
-    super.observations,
-    super.isCanceled,
-    super.isCanceledString,
-    super.dateOfCanceled,
-    super.isLiberated,
-    super.isReceiveEntrance,
-    super.hasCounting,
-    super.hasXmlFile,
-    super.printConferenceList,
-    super.isLiberatedString,
-    super.dateOfLiberated,
-    super.statusForRequests,
-    super.isFromManifestation,
-    super.hasDelivery,
-    super.fiscalNotePaymentCondition,
-    super.buyRequestsPaymentCondition,
-    super.hasDivergencyOnPaymentCondition,
-    super.judgePaymentCondition,
-    super.enterpriseString,
-    super.type,
-    super.totalDivergencyLiquidValue,
-    super.containProductsToDoDevolution,
-    super.detail,
-    super.eletronicAccessKey,
-    super.xmlFileData,
-    super.productsWithoutJudgementStatusRequestForFiscalNote,
-    super.productsWithJudgementStatusRequestForFiscalNote,
+    required super.expeditionControlCode,
+    required super.isOnExpedition,
+    required super.shouldHaveExpeditionControl,
+    required super.code,
+    required super.dateTimeOfCreation,
+    required super.dateOfEmission,
+    required super.dateTimeOfEntrance,
+    required super.number,
+    required super.numberComplement,
+    required super.value,
+    required super.observations,
+    required super.isCanceled,
+    required super.isCanceledString,
+    required super.dateOfCanceled,
+    required super.isLiberated,
+    required super.isReceiveEntrance,
+    required super.hasCounting,
+    required super.hasXmlFile,
+    required super.printConferenceList,
+    required super.isLiberatedString,
+    required super.dateOfLiberated,
+    required super.statusForRequests,
+    required super.isFromManifestation,
+    required super.hasDelivery,
+    required super.fiscalNotePaymentCondition,
+    required super.buyRequestsPaymentCondition,
+    required super.hasDivergencyOnPaymentCondition,
+    required super.judgePaymentCondition,
+    required super.enterpriseString,
+    required super.type,
+    required super.totalDivergencyLiquidValue,
+    required super.containProductsToDoDevolution,
+    required super.detail,
+    required super.eletronicAccessKey,
+    required super.xmlFileData,
+    required super.productsWithoutJudgementStatusRequestForFiscalNote,
+    required super.productsWithJudgementStatusRequestForFiscalNote,
+    required super.group,
   });
 
   factory BSFGoodsReceivingModel.fromJson(Map json) => BSFGoodsReceivingModel(
@@ -119,6 +120,9 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
               .map((e) => BSFGoodsReceivingProductModel.fromJson(Map.from(e)))
               .toList()
         : null,
+    group: json['Group'] != null
+        ? BSFGoodsReceivingGroupModel.fromJson(json['Group'])
+        : null,
   );
 
   Map<String, dynamic> toJson() => {
@@ -171,6 +175,9 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
         productsWithJudgementStatusRequestForFiscalNote
             ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
             .toList(),
+    'Group': group != null
+        ? BSFGoodsReceivingGroupModel.fromEntity(group!).toJson()
+        : null,
   };
 
   factory BSFGoodsReceivingModel.fromEntity(BSFGoodsReceivingEntity entity) =>
@@ -214,6 +221,7 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
             entity.productsWithoutJudgementStatusRequestForFiscalNote,
         productsWithJudgementStatusRequestForFiscalNote:
             entity.productsWithJudgementStatusRequestForFiscalNote,
+        group: entity.group,
       );
 
   BSFGoodsReceivingEntity toEntity() => BSFGoodsReceivingEntity(
@@ -256,5 +264,6 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
         productsWithoutJudgementStatusRequestForFiscalNote,
     productsWithJudgementStatusRequestForFiscalNote:
         productsWithJudgementStatusRequestForFiscalNote,
+    group: group,
   );
 }
