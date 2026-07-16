@@ -35,10 +35,6 @@ class GRDocFiscalNoteDifferencesStateController
       throw AppException('Processo não encontrado'.hardcoded);
     }
 
-    //TODO create tests
-
-    //TODO probably should load the gr and get the code here. Or, check whether
-    //receive this code or not on the previous page (item) when mounting the defendants
     return await repository.getGRDocFiscalNoteDifferences(
       ecParams,
       defendant.goodsReceiving.code!,
