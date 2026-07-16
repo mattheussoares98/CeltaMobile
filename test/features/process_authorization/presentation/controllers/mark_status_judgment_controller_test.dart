@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -15,24 +17,36 @@ import '../../../../mocks/mocks.dart';
 class MockEcProcessAuthorizationRepository extends Mock
     implements IEcProcessAuthorizationRepository {}
 
+class FakeGRDocFiscalNoteDifferencesStateController
+    extends GRDocFiscalNoteDifferencesStateController {
+  final BSFGREntity entity;
+  FakeGRDocFiscalNoteDifferencesStateController(this.entity);
+
+  // 2. Override the build method to return your fake data instantly
+  @override
+  FutureOr<BSFGREntity> build(int processCode) async {
+    return entity;
+  }
+}
+
 void main() {
   late MockEcProcessAuthorizationRepository mockRepository;
   late UserSessionModel fakeSession;
-  late int grDocGroupCode;
   late int processCode;
   late List<int> grDocProductCodes;
+  late BSFGREntity bsfGrEntity;
 
   setUp(() {
     mockRepository = MockEcProcessAuthorizationRepository();
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
-    grDocGroupCode = faker.randomGenerator.integer(100000);
     processCode = faker.randomGenerator.integer(100000);
     grDocProductCodes = [
       faker.randomGenerator.integer(100000),
       faker.randomGenerator.integer(100000),
     ];
+    bsfGrEntity = EntityFactory.makeBSFGREntity();
     registerFallbackValue(EntityFactory.makeEcRequestParams());
     registerFallbackValue(BsfGRProductJudgmentStatus.accept);
     registerFallbackValue(BsfGRProductJudgmentType.requestForFiscalNote);
@@ -47,6 +61,11 @@ void main() {
         ),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
+        ),
+        gRDocFiscalNoteDifferencesStateControllerProvider(
+          processCode,
+        ).overrideWith(
+          () => FakeGRDocFiscalNoteDifferencesStateController(bsfGrEntity),
         ),
       ],
     );
@@ -103,7 +122,7 @@ void main() {
                   accessKey: fakeSession.user.AccessKey!,
                 ),
                 grDocProductCodes: grDocProductCodes,
-                grDocGroupCode: grDocGroupCode,
+                grDocGroupCode: bsfGrEntity.group!.code!,
                 judgmentStatus: judgmentStatus,
                 judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
               ),

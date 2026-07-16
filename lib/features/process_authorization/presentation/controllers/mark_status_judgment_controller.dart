@@ -14,7 +14,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
 
   Future<void> judge(BsfGRProductJudgmentStatus judgmentStatus) async {
     state = const AsyncLoading<void>();
-
+    //TODO create tests
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
@@ -30,10 +30,14 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
         accessKey: validatedUser.user.AccessKey!,
       );
 
+      final details = await ref.read(
+        gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
+      );
+
       await repository.markStatusJudgment(
         ecParams,
         grDocProductCodes: grDocProductCodes,
-        grDocGroupCode: 0,
+        grDocGroupCode: details.group?.code ?? 0,
         judgmentStatus: judgmentStatus,
         judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
       );
