@@ -131,4 +131,24 @@ class EcProcessAuthorizationDatasource
       },
     );
   }
+
+  @override
+  Future<void> annulStatusJudgment(
+    EcRequestParams params, {
+    required List<int> grDocProductCodes,
+    required int grDocGroupCode,
+    required BsfGRProductJudgmentType judgementType,
+  }) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/ProcessAuthorization/AnnulStatusJudgement',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'GrDocProductCodes': grDocProductCodes,
+        'GrDocGroupCode': grDocGroupCode,
+        'JudgementType': judgementType.value,
+      },
+    );
+  }
 }

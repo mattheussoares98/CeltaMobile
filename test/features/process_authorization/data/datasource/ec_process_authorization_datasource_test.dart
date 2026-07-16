@@ -255,4 +255,38 @@ void main() {
       ).called(1);
     });
   });
+
+  group('annulStatusJudgment', () {
+    test('should call http with correct parameters', () async {
+      httpClient.mockRequest(null);
+      final grDocProductCodes = [
+        faker.randomGenerator.integer(100),
+        faker.randomGenerator.integer(100),
+      ];
+      final grDocGroupCode = faker.randomGenerator.integer(100);
+      const judgementType = BsfGRProductJudgmentType.requestForCounting;
+
+      await sut.annulStatusJudgment(
+        params,
+        grDocProductCodes: grDocProductCodes,
+        grDocGroupCode: grDocGroupCode,
+        judgementType: judgementType,
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/ProcessAuthorization/AnnulStatusJudgement',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'GrDocProductCodes': grDocProductCodes,
+            'GrDocGroupCode': grDocGroupCode,
+            'JudgementType': judgementType.value,
+          },
+        ),
+      ).called(1);
+    });
+  });
 }
