@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/components/components.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -33,10 +34,26 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final judgmentController = markStatusJudgmentControllerProvider(
+      areJudgedItems,
+      processCode,
+    );
     final provider = gRDocFiscalNoteDifferencesStateControllerProvider(
       processCode,
     );
     final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+
+    ref.observeLoading([judgmentController]);
+    ref.listen(judgmentController, (previous, next) {
+      next.showAlertDialogOnError(context);
+      next.doOnSuccess(previous, () {
+        ref
+            .read(uiController.notifier)
+            .clearSelectedProducts(areJudgedItems: areJudgedItems);
+        ref.invalidate(provider);
+      });
+    });
+
     final items = ref.watch(
       provider.select((s) {
         return areJudgedItems
@@ -50,6 +67,9 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
             ? s.selectedProductsWithJudgmentIds
             : s.selectedProductsWithoutJudgmentIds,
       ),
+    );
+    final grDocGroupCode = ref.watch(
+      provider.select((state) => state.value?.code),
     );
 
     void onTapItem(BSFGoodsReceivingProductEntity item) {
@@ -70,7 +90,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
       );
     }
 
-    return ScrollableTable<BSFGoodsReceivingProductEntity>(
+    final table = ScrollableTable<BSFGoodsReceivingProductEntity>(
       items: items!,
       fixFirstColumn: true,
       rowHeight: 65,
@@ -277,6 +297,20 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
             color: Colors.red,
           ),
           sortValueMapper: (item) => item.totalDivergencyLiquidValue,
+        ),
+      ],
+    );
+
+    if (grDocGroupCode == null) {
+      return table;
+    }
+
+    return Column(
+      children: [
+        Expanded(child: table),
+        GoodsReceivingJudgmentButtons(
+          processCode: processCode,
+          areJudgedItems: areJudgedItems,
         ),
       ],
     );

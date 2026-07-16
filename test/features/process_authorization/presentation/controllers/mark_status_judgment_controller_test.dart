@@ -84,21 +84,18 @@ void main() {
             }
             final states = <AsyncValue<void>>[];
             container.listen(
-              markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
+              markStatusJudgmentControllerProvider(areJudgedItems, processCode),
               (_, next) => states.add(next),
             );
 
             await container
                 .read(
                   markStatusJudgmentControllerProvider(
-                    grDocGroupCode,
+                    areJudgedItems,
                     processCode,
                   ).notifier,
                 )
-                .judge(
-                  areJudgedItems: areJudgedItems,
-                  judgmentStatus: judgmentStatus,
-                );
+                .judge(judgmentStatus);
 
             expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
             verify(
@@ -126,19 +123,13 @@ void main() {
 
       await container
           .read(
-            markStatusJudgmentControllerProvider(
-              grDocGroupCode,
-              processCode,
-            ).notifier,
+            markStatusJudgmentControllerProvider(false, processCode).notifier,
           )
-          .judge(
-            areJudgedItems: false,
-            judgmentStatus: BsfGoodsReceivingProductJudgmentStatus.accept,
-          );
+          .judge(BsfGoodsReceivingProductJudgmentStatus.accept);
 
       expect(
         container.read(
-          markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
+          markStatusJudgmentControllerProvider(false, processCode),
         ),
         isA<AsyncError<void>>(),
       );
@@ -168,19 +159,13 @@ void main() {
 
       await container
           .read(
-            markStatusJudgmentControllerProvider(
-              grDocGroupCode,
-              processCode,
-            ).notifier,
+            markStatusJudgmentControllerProvider(false, processCode).notifier,
           )
-          .judge(
-            areJudgedItems: false,
-            judgmentStatus: BsfGoodsReceivingProductJudgmentStatus.accept,
-          );
+          .judge(BsfGoodsReceivingProductJudgmentStatus.accept);
 
       expect(
         container.read(
-          markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
+          markStatusJudgmentControllerProvider(false, processCode),
         ),
         isA<AsyncError<void>>(),
       );

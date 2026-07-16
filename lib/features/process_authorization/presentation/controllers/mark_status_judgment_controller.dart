@@ -10,12 +10,11 @@ part 'mark_status_judgment_controller.g.dart';
 @riverpod
 class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
   @override
-  FutureOr<void> build(int grDocGroupCode, int processCode) {}
+  FutureOr<void> build(bool areJudgedItems, int processCode) {}
 
-  Future<void> judge({
-    required bool areJudgedItems,
-    required BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
-  }) async {
+  Future<void> judge(
+    BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
+  ) async {
     state = const AsyncLoading<void>();
 
     state = await AsyncValue.guard(() async {
@@ -36,7 +35,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
       await repository.markStatusJudgment(
         ecParams,
         grDocProductCodes: grDocProductCodes,
-        grDocGroupCode: grDocGroupCode,
+        grDocGroupCode: 0,
         judgmentStatus: judgmentStatus,
         judgementType:
             BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,
