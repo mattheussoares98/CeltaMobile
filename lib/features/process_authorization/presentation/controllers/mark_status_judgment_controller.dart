@@ -14,7 +14,6 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
 
   Future<void> judge(BsfGRProductJudgmentStatus judgmentStatus) async {
     state = const AsyncLoading<void>();
-    //TODO create tests
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
