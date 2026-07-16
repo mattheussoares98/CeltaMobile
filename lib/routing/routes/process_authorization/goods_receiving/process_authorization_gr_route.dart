@@ -2,12 +2,12 @@ import 'package:celta_inventario/features/process_authorization/presentation/pag
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase processAuthorizationGoodsReceivingRoute() => GoRoute(
+RouteBase processAuthorizationGRRoute() => GoRoute(
   path: ':processCode/goods-receiving',
-  name: Routes.processAuthorizationGoodsReceiving.name,
+  name: Routes.processAuthorizationGR.name,
   builder: (context, state) {
     //TODO test how build the URL on web platform
-    return ProcessAuthorizationGoodsReceivingPage(
+    return ProcessAuthorizationGRPage(
       processCode: int.parse(state.pathParameters['processCode'].toString()),
     );
   },

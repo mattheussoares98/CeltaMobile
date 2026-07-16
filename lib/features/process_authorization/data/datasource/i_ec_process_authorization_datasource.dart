@@ -26,7 +26,7 @@ abstract class IEcProcessAuthorizationDatasource {
     String? observations,
   });
 
-  Future<BSFGoodsReceivingModel> getGRDocFiscalNoteDifferences(
+  Future<BSFGRModel> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   );
@@ -35,7 +35,7 @@ abstract class IEcProcessAuthorizationDatasource {
     EcRequestParams params, {
     required List<int> grDocProductCodes,
     required int grDocGroupCode,
-    required BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
-    required BsfGoodsReceivingProductJudgmentType judgementType,
+    required BsfGRProductJudgmentStatus judgmentStatus,
+    required BsfGRProductJudgmentType judgementType,
   });
 }

@@ -23,10 +23,10 @@ class BSFSaleRequestDefendantEntity extends BSFDefendantEntity {
   List<Object?> get props => [saleRequest];
 }
 
-class BSFGoodsReceivingDefendantEntity extends BSFDefendantEntity {
-  final BSFGoodsReceivingEntity goodsReceiving;
+class BSFGRDefendantEntity extends BSFDefendantEntity {
+  final BSFGREntity goodsReceiving;
 
-  const BSFGoodsReceivingDefendantEntity({required this.goodsReceiving});
+  const BSFGRDefendantEntity({required this.goodsReceiving});
 
   @override
   List<Object?> get props => [goodsReceiving];

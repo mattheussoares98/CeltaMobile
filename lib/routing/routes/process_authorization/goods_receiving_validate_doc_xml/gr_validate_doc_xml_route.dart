@@ -2,11 +2,11 @@ import 'package:celta_inventario/features/process_authorization/presentation/pag
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase processAuthorizationGoodsReceivingValidateDocXmlRoute() => GoRoute(
+RouteBase processAuthorizationGRValidateDocXmlRoute() => GoRoute(
   path: ':processCode/gr-validate-xml',
-  name: Routes.processAuthorizationGoodsReceivingValidateDocumentXml.name,
+  name: Routes.processAuthorizationGRValidateDocumentXml.name,
   builder: (context, state) {
-    return GoodsReceivingValidateDocXmlPage(
+    return GRValidateDocXmlPage(
       processCode: int.parse(state.pathParameters['processCode']!),
     );
   },

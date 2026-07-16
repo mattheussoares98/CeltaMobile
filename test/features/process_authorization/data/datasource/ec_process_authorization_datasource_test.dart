@@ -198,9 +198,7 @@ void main() {
   group('getGRDocFiscalNoteDifferences', () {
     test('should call http with correct parameters and return model', () async {
       final documentCode = faker.randomGenerator.integer(100);
-      final model = BSFGoodsReceivingModel.fromEntity(
-        EntityFactory.makeBSFGoodsReceivingEntity(),
-      );
+      final model = BSFGRModel.fromEntity(EntityFactory.makeBSFGREntity());
       httpClient.mockRequest(json.encode(model.toJson()));
 
       final response = await sut.getGRDocFiscalNoteDifferences(
@@ -229,9 +227,8 @@ void main() {
         faker.randomGenerator.integer(100),
       ];
       final grDocGroupCode = faker.randomGenerator.integer(100);
-      const judgmentStatus = BsfGoodsReceivingProductJudgmentStatus.accept;
-      const judgementType =
-          BsfGoodsReceivingProductJudgmentType.requestForCounting;
+      const judgmentStatus = BsfGRProductJudgmentStatus.accept;
+      const judgementType = BsfGRProductJudgmentType.requestForCounting;
 
       await sut.markStatusJudgment(
         params,

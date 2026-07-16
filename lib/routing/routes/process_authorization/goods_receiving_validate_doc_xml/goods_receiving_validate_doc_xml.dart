@@ -1,1 +1,1 @@
-export './goods_receiving_validate_doc_xml_route.dart';
+export './gr_validate_doc_xml_route.dart';

@@ -1,9 +1,9 @@
-// lib/features/receipt/domain/entity/bsf/bsf_goods_receiving_product_entity.dart
+// lib/features/receipt/domain/entity/bsf/bsf_gr_product_entity.dart
 import 'package:celta_inventario/core/domain/entities/product/bsf/bsf.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
-class BSFGoodsReceivingProductEntity extends Equatable {
+class BSFGRProductEntity extends Equatable {
   final dynamic document;
   final int code;
   final double quantity;
@@ -14,12 +14,9 @@ class BSFGoodsReceivingProductEntity extends Equatable {
   final double unitLiquidValueOnBuyRequests;
   final double unitValue;
   final double unitValueOnBuyRequests;
-  final BsfGoodsReceivingProductJudgmentStatus
-  judgementStatusRequestForFiscalNote;
-  final BsfGoodsReceivingProductJudgmentStatus
-  judgementStatusFiscalNoteForCounting;
-  final BsfGoodsReceivingProductJudgmentStatus
-  judgementStatusRequestForCounting;
+  final BsfGRProductJudgmentStatus judgementStatusRequestForFiscalNote;
+  final BsfGRProductJudgmentStatus judgementStatusFiscalNoteForCounting;
+  final BsfGRProductJudgmentStatus judgementStatusRequestForCounting;
   final double availableQuantityInAssociatesBuyRequests;
   final double availableQuantityInAnotherBuyRequests;
   final double reservedQuantityByAnotherGRDoc;
@@ -36,7 +33,7 @@ class BSFGoodsReceivingProductEntity extends Equatable {
   final bool hasDivergencyQuantity;
   final BSFProductEntity product;
 
-  const BSFGoodsReceivingProductEntity({
+  const BSFGRProductEntity({
     required this.document,
     required this.code,
     required this.quantity,

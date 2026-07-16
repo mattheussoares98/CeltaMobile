@@ -1,2 +1,2 @@
-export 'goods_receiving_judgment_buttons.dart';
-export 'goods_receiving_validate_doc_xml_products_table.dart';
+export 'gr_judgment_buttons.dart';
+export 'gr_validate_doc_xml_products_table.dart';

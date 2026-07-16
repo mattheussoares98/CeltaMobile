@@ -1,9 +1,9 @@
-// lib/features/receipt/data/model/bsf/bsf_goods_receiving_product_model.dart
+// lib/features/receipt/data/model/bsf/bsf_gr_product_model.dart
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
-class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
-  const BSFGoodsReceivingProductModel({
+class BSFGRProductModel extends BSFGRProductEntity {
+  const BSFGRProductModel({
     required super.document,
     required super.code,
     required super.quantity,
@@ -34,9 +34,7 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     required super.product,
   });
 
-  factory BSFGoodsReceivingProductModel.fromJson(
-    Map json,
-  ) => BSFGoodsReceivingProductModel(
+  factory BSFGRProductModel.fromJson(Map json) => BSFGRProductModel(
     document: json['Document'],
     code: json['Code'] ?? 0,
     quantity: double.tryParse(json['Quantity'].toString()) ?? 0.0,
@@ -49,18 +47,15 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     unitValue: double.tryParse(json['UnitValue'].toString()) ?? 0.0,
     unitValueOnBuyRequests:
         double.tryParse(json['UnitValueOnBuyRequests'].toString()) ?? 0.0,
-    judgementStatusRequestForFiscalNote:
-        BsfGoodsReceivingProductJudgmentStatus.fromValue(
-          json['JudgementStatusRequestForFiscalNote'],
-        ),
-    judgementStatusFiscalNoteForCounting:
-        BsfGoodsReceivingProductJudgmentStatus.fromValue(
-          json['JudgementStatusFiscalNoteForCounting'],
-        ),
-    judgementStatusRequestForCounting:
-        BsfGoodsReceivingProductJudgmentStatus.fromValue(
-          json['JudgementStatusRequestForCounting'],
-        ),
+    judgementStatusRequestForFiscalNote: BsfGRProductJudgmentStatus.fromValue(
+      json['JudgementStatusRequestForFiscalNote'],
+    ),
+    judgementStatusFiscalNoteForCounting: BsfGRProductJudgmentStatus.fromValue(
+      json['JudgementStatusFiscalNoteForCounting'],
+    ),
+    judgementStatusRequestForCounting: BsfGRProductJudgmentStatus.fromValue(
+      json['JudgementStatusRequestForCounting'],
+    ),
     availableQuantityInAssociatesBuyRequests:
         double.tryParse(
           json['AvailableQuantityInAssociatesBuyRequests'].toString(),
@@ -143,48 +138,48 @@ class BSFGoodsReceivingProductModel extends BSFGoodsReceivingProductEntity {
     'Product': BSFProductModel.fromEntity(product).toJson(),
   };
 
-  factory BSFGoodsReceivingProductModel.fromEntity(
-    BSFGoodsReceivingProductEntity entity,
-  ) => BSFGoodsReceivingProductModel(
-    document: entity.document,
-    code: entity.code,
-    quantity: entity.quantity,
-    quantityString: entity.quantityString,
-    quantityOfXml: entity.quantityOfXml,
-    quantityWithoutRequest: entity.quantityWithoutRequest,
-    unitLiquidValue: entity.unitLiquidValue,
-    unitLiquidValueOnBuyRequests: entity.unitLiquidValueOnBuyRequests,
-    unitValue: entity.unitValue,
-    unitValueOnBuyRequests: entity.unitValueOnBuyRequests,
-    judgementStatusRequestForFiscalNote:
-        entity.judgementStatusRequestForFiscalNote,
-    judgementStatusFiscalNoteForCounting:
-        entity.judgementStatusFiscalNoteForCounting,
-    judgementStatusRequestForCounting: entity.judgementStatusRequestForCounting,
-    availableQuantityInAssociatesBuyRequests:
-        entity.availableQuantityInAssociatesBuyRequests,
-    availableQuantityInAnotherBuyRequests:
-        entity.availableQuantityInAnotherBuyRequests,
-    reservedQuantityByAnotherGRDoc: entity.reservedQuantityByAnotherGRDoc,
-    referenceOfXml: entity.referenceOfXml,
-    divergencyUnitLiquidValue: entity.divergencyUnitLiquidValue,
-    totalDivergencyLiquidValue: entity.totalDivergencyLiquidValue,
-    divergenceQuantityRequestForCounting:
-        entity.divergenceQuantityRequestForCounting,
-    divergenceQuantityRequestForFiscalNote:
-        entity.divergenceQuantityRequestForFiscalNote,
-    divergenceQuantityFiscalNoteForCounting:
-        entity.divergenceQuantityFiscalNoteForCounting,
-    productString: entity.productString,
-    productPackingPersonalizedCodeString:
-        entity.productPackingPersonalizedCodeString,
-    fiscalCode: entity.fiscalCode,
-    isUpdate: entity.isUpdate,
-    hasDivergencyQuantity: entity.hasDivergencyQuantity,
-    product: BSFProductModel.fromEntity(entity.product),
-  );
+  factory BSFGRProductModel.fromEntity(BSFGRProductEntity entity) =>
+      BSFGRProductModel(
+        document: entity.document,
+        code: entity.code,
+        quantity: entity.quantity,
+        quantityString: entity.quantityString,
+        quantityOfXml: entity.quantityOfXml,
+        quantityWithoutRequest: entity.quantityWithoutRequest,
+        unitLiquidValue: entity.unitLiquidValue,
+        unitLiquidValueOnBuyRequests: entity.unitLiquidValueOnBuyRequests,
+        unitValue: entity.unitValue,
+        unitValueOnBuyRequests: entity.unitValueOnBuyRequests,
+        judgementStatusRequestForFiscalNote:
+            entity.judgementStatusRequestForFiscalNote,
+        judgementStatusFiscalNoteForCounting:
+            entity.judgementStatusFiscalNoteForCounting,
+        judgementStatusRequestForCounting:
+            entity.judgementStatusRequestForCounting,
+        availableQuantityInAssociatesBuyRequests:
+            entity.availableQuantityInAssociatesBuyRequests,
+        availableQuantityInAnotherBuyRequests:
+            entity.availableQuantityInAnotherBuyRequests,
+        reservedQuantityByAnotherGRDoc: entity.reservedQuantityByAnotherGRDoc,
+        referenceOfXml: entity.referenceOfXml,
+        divergencyUnitLiquidValue: entity.divergencyUnitLiquidValue,
+        totalDivergencyLiquidValue: entity.totalDivergencyLiquidValue,
+        divergenceQuantityRequestForCounting:
+            entity.divergenceQuantityRequestForCounting,
+        divergenceQuantityRequestForFiscalNote:
+            entity.divergenceQuantityRequestForFiscalNote,
+        divergenceQuantityFiscalNoteForCounting:
+            entity.divergenceQuantityFiscalNoteForCounting,
+        productString: entity.productString,
+        productPackingPersonalizedCodeString:
+            entity.productPackingPersonalizedCodeString,
+        fiscalCode: entity.fiscalCode,
+        isUpdate: entity.isUpdate,
+        hasDivergencyQuantity: entity.hasDivergencyQuantity,
+        product: BSFProductModel.fromEntity(entity.product),
+      );
 
-  BSFGoodsReceivingProductEntity toEntity() => BSFGoodsReceivingProductEntity(
+  BSFGRProductEntity toEntity() => BSFGRProductEntity(
     product: product,
     document: document,
     code: code,

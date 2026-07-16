@@ -20,9 +20,9 @@ enum SearchType {
   exactProductFatherGrateCode(18),
 
   //* Buy quotation
-  allProductsFromGoodsReceiving(19),
-  allProductsFromGoodsReceivingGoesForBalance(20),
-  allCountedProductsFromGoodsReceiving(21);
+  allProductsFromGR(19),
+  allProductsFromGRGoesForBalance(20),
+  allCountedProductsFromGR(21);
 
   final int code;
   const SearchType(this.code);

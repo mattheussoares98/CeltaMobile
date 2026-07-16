@@ -34,10 +34,8 @@ void main() {
       faker.randomGenerator.integer(100000),
     ];
     registerFallbackValue(EntityFactory.makeEcRequestParams());
-    registerFallbackValue(BsfGoodsReceivingProductJudgmentStatus.accept);
-    registerFallbackValue(
-      BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,
-    );
+    registerFallbackValue(BsfGRProductJudgmentStatus.accept);
+    registerFallbackValue(BsfGRProductJudgmentType.requestForFiscalNote);
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -56,8 +54,7 @@ void main() {
 
   group('MarkStatusJudgmentController', () {
     for (final areJudgedItems in [false, true]) {
-      for (final judgmentStatus
-          in BsfGoodsReceivingProductJudgmentStatus.values) {
+      for (final judgmentStatus in BsfGRProductJudgmentStatus.values) {
         test(
           'should mark ${areJudgedItems ? 'judged' : 'unjudged'} products with ${judgmentStatus.name} on success',
           () async {
@@ -108,8 +105,7 @@ void main() {
                 grDocProductCodes: grDocProductCodes,
                 grDocGroupCode: grDocGroupCode,
                 judgmentStatus: judgmentStatus,
-                judgementType:
-                    BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,
+                judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
               ),
             ).called(1);
           },
@@ -125,7 +121,7 @@ void main() {
           .read(
             markStatusJudgmentControllerProvider(false, processCode).notifier,
           )
-          .judge(BsfGoodsReceivingProductJudgmentStatus.accept);
+          .judge(BsfGRProductJudgmentStatus.accept);
 
       expect(
         container.read(
@@ -161,7 +157,7 @@ void main() {
           .read(
             markStatusJudgmentControllerProvider(false, processCode).notifier,
           )
-          .judge(BsfGoodsReceivingProductJudgmentStatus.accept);
+          .judge(BsfGRProductJudgmentStatus.accept);
 
       expect(
         container.read(

@@ -6,11 +6,11 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoodsReceivingJudgmentButtons extends ConsumerWidget {
+class GRJudgmentButtons extends ConsumerWidget {
   final int processCode;
   final bool areJudgedItems;
 
-  const GoodsReceivingJudgmentButtons({
+  const GRJudgmentButtons({
     super.key,
     required this.processCode,
     required this.areJudgedItems,
@@ -36,17 +36,17 @@ class GoodsReceivingJudgmentButtons extends ConsumerWidget {
       controllerProvider.select((state) => state.isLoading),
     );
 
-    void judge(BsfGoodsReceivingProductJudgmentStatus judgmentStatus) {
+    void judge(BsfGRProductJudgmentStatus judgmentStatus) {
       final content = switch (judgmentStatus) {
-        BsfGoodsReceivingProductJudgmentStatus.devolveAll =>
+        BsfGRProductJudgmentStatus.devolveAll =>
           "Deseja devolver todas as quantidades dos produtos selecionados?"
               .hardcoded,
-        BsfGoodsReceivingProductJudgmentStatus.devolveExcess =>
+        BsfGRProductJudgmentStatus.devolveExcess =>
           "Deseja devolver somente a quantidade excedente dos produtos selecionados?"
               .hardcoded,
-        BsfGoodsReceivingProductJudgmentStatus.accept =>
+        BsfGRProductJudgmentStatus.accept =>
           "Deseja aceitar as divergências dos produtos selecionados?".hardcoded,
-        BsfGoodsReceivingProductJudgmentStatus.withoutJudge =>
+        BsfGRProductJudgmentStatus.withoutJudge =>
           "Deseja anular os julgamentos dos produtos selecionados?".hardcoded,
       };
       showAlertDialog(
@@ -71,9 +71,7 @@ class GoodsReceivingJudgmentButtons extends ConsumerWidget {
           isLoading: isLoading,
           onPressed: onPressed == null
               ? null
-              : () => onPressed(
-                  BsfGoodsReceivingProductJudgmentStatus.withoutJudge,
-                ),
+              : () => onPressed(BsfGRProductJudgmentStatus.withoutJudge),
         ),
       );
     }
@@ -89,9 +87,7 @@ class GoodsReceivingJudgmentButtons extends ConsumerWidget {
               isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
-                  : () => onPressed(
-                      BsfGoodsReceivingProductJudgmentStatus.accept,
-                    ),
+                  : () => onPressed(BsfGRProductJudgmentStatus.accept),
             ),
           ),
           gapW8,
@@ -102,9 +98,7 @@ class GoodsReceivingJudgmentButtons extends ConsumerWidget {
               isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
-                  : () => onPressed(
-                      BsfGoodsReceivingProductJudgmentStatus.devolveAll,
-                    ),
+                  : () => onPressed(BsfGRProductJudgmentStatus.devolveAll),
             ),
           ),
           gapW8,
@@ -115,9 +109,7 @@ class GoodsReceivingJudgmentButtons extends ConsumerWidget {
               isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
-                  : () => onPressed(
-                      BsfGoodsReceivingProductJudgmentStatus.devolveExcess,
-                    ),
+                  : () => onPressed(BsfGRProductJudgmentStatus.devolveExcess),
             ),
           ),
         ],

@@ -95,7 +95,7 @@ class EcProcessAuthorizationDatasource
   }
 
   @override
-  Future<BSFGoodsReceivingModel> getGRDocFiscalNoteDifferences(
+  Future<BSFGRModel> getGRDocFiscalNoteDifferences(
     EcRequestParams params,
     int documentCode,
   ) async {
@@ -107,7 +107,7 @@ class EcProcessAuthorizationDatasource
       body: params.toMap(),
     );
 
-    return BSFGoodsReceivingModel.fromJson(json.decode(response));
+    return BSFGRModel.fromJson(json.decode(response));
   }
 
   @override
@@ -115,8 +115,8 @@ class EcProcessAuthorizationDatasource
     EcRequestParams params, {
     required List<int> grDocProductCodes,
     required int grDocGroupCode,
-    required BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
-    required BsfGoodsReceivingProductJudgmentType judgementType,
+    required BsfGRProductJudgmentStatus judgmentStatus,
+    required BsfGRProductJudgmentType judgementType,
   }) async {
     await httpClient.request(
       url: '${params.workingUrl}/api/ProcessAuthorization/MarkStatusJudgement',

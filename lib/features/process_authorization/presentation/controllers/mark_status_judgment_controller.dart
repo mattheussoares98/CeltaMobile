@@ -12,9 +12,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
   @override
   FutureOr<void> build(bool areJudgedItems, int processCode) {}
 
-  Future<void> judge(
-    BsfGoodsReceivingProductJudgmentStatus judgmentStatus,
-  ) async {
+  Future<void> judge(BsfGRProductJudgmentStatus judgmentStatus) async {
     state = const AsyncLoading<void>();
 
     state = await AsyncValue.guard(() async {
@@ -37,8 +35,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
         grDocProductCodes: grDocProductCodes,
         grDocGroupCode: 0,
         judgmentStatus: judgmentStatus,
-        judgementType:
-            BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,
+        judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
       );
     });
   }

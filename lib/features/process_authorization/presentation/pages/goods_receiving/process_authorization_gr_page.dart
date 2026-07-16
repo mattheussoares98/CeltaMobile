@@ -8,12 +8,9 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProcessAuthorizationGoodsReceivingPage extends ConsumerWidget {
+class ProcessAuthorizationGRPage extends ConsumerWidget {
   final int processCode;
-  const ProcessAuthorizationGoodsReceivingPage({
-    super.key,
-    required this.processCode,
-  });
+  const ProcessAuthorizationGRPage({super.key, required this.processCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +24,7 @@ class ProcessAuthorizationGoodsReceivingPage extends ConsumerWidget {
         tryAgain: () => ref.invalidate(provider),
         data: (data) {
           final goodsReceiving = data.defendants
-              ?.cast<BSFGoodsReceivingDefendantEntity>()
+              ?.cast<BSFGRDefendantEntity>()
               .firstOrNull
               ?.goodsReceiving;
           if (goodsReceiving == null) {

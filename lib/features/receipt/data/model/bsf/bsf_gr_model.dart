@@ -1,10 +1,10 @@
-// lib/features/receipt/data/model/bsf/bsf_goods_receiving_model.dart
+// lib/features/receipt/data/model/bsf/bsf_gr_model.dart
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/receipt/data/model/model.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
-class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
-  const BSFGoodsReceivingModel({
+class BSFGRModel extends BSFGREntity {
+  const BSFGRModel({
     required super.expeditionControlCode,
     required super.isOnExpedition,
     required super.shouldHaveExpeditionControl,
@@ -45,7 +45,7 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     required super.group,
   });
 
-  factory BSFGoodsReceivingModel.fromJson(Map json) => BSFGoodsReceivingModel(
+  factory BSFGRModel.fromJson(Map json) => BSFGRModel(
     expeditionControlCode: json['ExpeditionControlCode'],
     isOnExpedition: json['IsOnExpedition'],
     shouldHaveExpeditionControl: json['ShouldHaveExpeditionControl'],
@@ -89,18 +89,14 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     judgePaymentCondition: json['JudgePaymentCondition'],
     enterpriseString: json['EnterpriseString']?.toString(),
     type: json['Type'] != null
-        ? BSFGoodsReceivingTypeModel.fromJson(
-            Map<String, dynamic>.from(json['Type']),
-          )
+        ? BSFGRTypeModel.fromJson(Map<String, dynamic>.from(json['Type']))
         : null,
     totalDivergencyLiquidValue: json['TotalDivergencyLiquidValue'] != null
         ? double.tryParse(json['TotalDivergencyLiquidValue'].toString())
         : null,
     containProductsToDoDevolution: json['ContainProductsToDoDevolution'],
     detail: json['Detail'] != null
-        ? BSFGoodsReceivingDetailModel.fromJson(
-            Map<String, dynamic>.from(json['Detail']),
-          )
+        ? BSFGRDetailModel.fromJson(Map<String, dynamic>.from(json['Detail']))
         : null,
     eletronicAccessKey: json['EletronicAccessKey'] != null
         ? BSFEletronicAccessKeyModel.fromJson(
@@ -111,17 +107,17 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     productsWithoutJudgementStatusRequestForFiscalNote:
         json['ProductsWithoutJudgementStatusRequestForFiscalNote'] != null
         ? (json['ProductsWithoutJudgementStatusRequestForFiscalNote'] as List)
-              .map((e) => BSFGoodsReceivingProductModel.fromJson(Map.from(e)))
+              .map((e) => BSFGRProductModel.fromJson(Map.from(e)))
               .toList()
         : null,
     productsWithJudgementStatusRequestForFiscalNote:
         json['ProductsWithJudgementStatusRequestForFiscalNote'] != null
         ? (json['ProductsWithJudgementStatusRequestForFiscalNote'] as List)
-              .map((e) => BSFGoodsReceivingProductModel.fromJson(Map.from(e)))
+              .map((e) => BSFGRProductModel.fromJson(Map.from(e)))
               .toList()
         : null,
     group: json['Group'] != null
-        ? BSFGoodsReceivingGroupModel.fromJson(json['Group'])
+        ? BSFGRGroupModel.fromJson(json['Group'])
         : null,
   );
 
@@ -155,13 +151,11 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     'HasDivergencyOnPaymentCondition': hasDivergencyOnPaymentCondition,
     'JudgePaymentCondition': judgePaymentCondition,
     'EnterpriseString': enterpriseString,
-    'Type': type != null
-        ? BSFGoodsReceivingTypeModel.fromEntity(type!).toJson()
-        : null,
+    'Type': type != null ? BSFGRTypeModel.fromEntity(type!).toJson() : null,
     'TotalDivergencyLiquidValue': totalDivergencyLiquidValue,
     'ContainProductsToDoDevolution': containProductsToDoDevolution,
     'Detail': detail != null
-        ? BSFGoodsReceivingDetailModel.fromEntity(detail!).toJson()
+        ? BSFGRDetailModel.fromEntity(detail!).toJson()
         : null,
     'EletronicAccessKey': eletronicAccessKey != null
         ? BSFEletronicAccessKeyModel.fromEntity(eletronicAccessKey!).toJson()
@@ -169,62 +163,59 @@ class BSFGoodsReceivingModel extends BSFGoodsReceivingEntity {
     'XmlFileData': xmlFileData,
     'ProductsWithoutJudgementStatusRequestForFiscalNote':
         productsWithoutJudgementStatusRequestForFiscalNote
-            ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
+            ?.map((e) => BSFGRProductModel.fromEntity(e).toJson())
             .toList(),
     'ProductsWithJudgementStatusRequestForFiscalNote':
         productsWithJudgementStatusRequestForFiscalNote
-            ?.map((e) => BSFGoodsReceivingProductModel.fromEntity(e).toJson())
+            ?.map((e) => BSFGRProductModel.fromEntity(e).toJson())
             .toList(),
-    'Group': group != null
-        ? BSFGoodsReceivingGroupModel.fromEntity(group!).toJson()
-        : null,
+    'Group': group != null ? BSFGRGroupModel.fromEntity(group!).toJson() : null,
   };
 
-  factory BSFGoodsReceivingModel.fromEntity(BSFGoodsReceivingEntity entity) =>
-      BSFGoodsReceivingModel(
-        expeditionControlCode: entity.expeditionControlCode,
-        isOnExpedition: entity.isOnExpedition,
-        shouldHaveExpeditionControl: entity.shouldHaveExpeditionControl,
-        code: entity.code,
-        dateTimeOfCreation: entity.dateTimeOfCreation,
-        dateOfEmission: entity.dateOfEmission,
-        dateTimeOfEntrance: entity.dateTimeOfEntrance,
-        number: entity.number,
-        numberComplement: entity.numberComplement,
-        value: entity.value,
-        observations: entity.observations,
-        isCanceled: entity.isCanceled,
-        isCanceledString: entity.isCanceledString,
-        dateOfCanceled: entity.dateOfCanceled,
-        isLiberated: entity.isLiberated,
-        isReceiveEntrance: entity.isReceiveEntrance,
-        hasCounting: entity.hasCounting,
-        hasXmlFile: entity.hasXmlFile,
-        printConferenceList: entity.printConferenceList,
-        isLiberatedString: entity.isLiberatedString,
-        dateOfLiberated: entity.dateOfLiberated,
-        statusForRequests: entity.statusForRequests,
-        isFromManifestation: entity.isFromManifestation,
-        hasDelivery: entity.hasDelivery,
-        fiscalNotePaymentCondition: entity.fiscalNotePaymentCondition,
-        buyRequestsPaymentCondition: entity.buyRequestsPaymentCondition,
-        hasDivergencyOnPaymentCondition: entity.hasDivergencyOnPaymentCondition,
-        judgePaymentCondition: entity.judgePaymentCondition,
-        enterpriseString: entity.enterpriseString,
-        type: entity.type,
-        totalDivergencyLiquidValue: entity.totalDivergencyLiquidValue,
-        containProductsToDoDevolution: entity.containProductsToDoDevolution,
-        detail: entity.detail,
-        eletronicAccessKey: entity.eletronicAccessKey,
-        xmlFileData: entity.xmlFileData,
-        productsWithoutJudgementStatusRequestForFiscalNote:
-            entity.productsWithoutJudgementStatusRequestForFiscalNote,
-        productsWithJudgementStatusRequestForFiscalNote:
-            entity.productsWithJudgementStatusRequestForFiscalNote,
-        group: entity.group,
-      );
+  factory BSFGRModel.fromEntity(BSFGREntity entity) => BSFGRModel(
+    expeditionControlCode: entity.expeditionControlCode,
+    isOnExpedition: entity.isOnExpedition,
+    shouldHaveExpeditionControl: entity.shouldHaveExpeditionControl,
+    code: entity.code,
+    dateTimeOfCreation: entity.dateTimeOfCreation,
+    dateOfEmission: entity.dateOfEmission,
+    dateTimeOfEntrance: entity.dateTimeOfEntrance,
+    number: entity.number,
+    numberComplement: entity.numberComplement,
+    value: entity.value,
+    observations: entity.observations,
+    isCanceled: entity.isCanceled,
+    isCanceledString: entity.isCanceledString,
+    dateOfCanceled: entity.dateOfCanceled,
+    isLiberated: entity.isLiberated,
+    isReceiveEntrance: entity.isReceiveEntrance,
+    hasCounting: entity.hasCounting,
+    hasXmlFile: entity.hasXmlFile,
+    printConferenceList: entity.printConferenceList,
+    isLiberatedString: entity.isLiberatedString,
+    dateOfLiberated: entity.dateOfLiberated,
+    statusForRequests: entity.statusForRequests,
+    isFromManifestation: entity.isFromManifestation,
+    hasDelivery: entity.hasDelivery,
+    fiscalNotePaymentCondition: entity.fiscalNotePaymentCondition,
+    buyRequestsPaymentCondition: entity.buyRequestsPaymentCondition,
+    hasDivergencyOnPaymentCondition: entity.hasDivergencyOnPaymentCondition,
+    judgePaymentCondition: entity.judgePaymentCondition,
+    enterpriseString: entity.enterpriseString,
+    type: entity.type,
+    totalDivergencyLiquidValue: entity.totalDivergencyLiquidValue,
+    containProductsToDoDevolution: entity.containProductsToDoDevolution,
+    detail: entity.detail,
+    eletronicAccessKey: entity.eletronicAccessKey,
+    xmlFileData: entity.xmlFileData,
+    productsWithoutJudgementStatusRequestForFiscalNote:
+        entity.productsWithoutJudgementStatusRequestForFiscalNote,
+    productsWithJudgementStatusRequestForFiscalNote:
+        entity.productsWithJudgementStatusRequestForFiscalNote,
+    group: entity.group,
+  );
 
-  BSFGoodsReceivingEntity toEntity() => BSFGoodsReceivingEntity(
+  BSFGREntity toEntity() => BSFGREntity(
     expeditionControlCode: expeditionControlCode,
     isOnExpedition: isOnExpedition,
     shouldHaveExpeditionControl: shouldHaveExpeditionControl,

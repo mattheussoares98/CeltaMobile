@@ -21,7 +21,7 @@ class TopButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void searchProduct(SearchType searchType) async {
-      if (searchType == SearchType.allCountedProductsFromGoodsReceiving) {
+      if (searchType == SearchType.allCountedProductsFromGR) {
         final bsDate = await ref.read(bsVersionStateControllerProvider.future);
 
         if (bsDate?.isBefore(DateTime(2026, 02)) ?? false) {
@@ -54,7 +54,7 @@ class TopButtons extends ConsumerWidget {
           flex: 30,
           child: _DefaultSearchProduct(
             widget: this,
-            searchType: SearchType.allProductsFromGoodsReceivingGoesForBalance,
+            searchType: SearchType.allProductsFromGRGoesForBalance,
             searchProduct: searchProduct,
           ),
         ),
@@ -62,7 +62,7 @@ class TopButtons extends ConsumerWidget {
           flex: 30,
           child: _DefaultSearchProduct(
             widget: this,
-            searchType: SearchType.allProductsFromGoodsReceiving,
+            searchType: SearchType.allProductsFromGR,
             searchProduct: searchProduct,
           ),
         ),
@@ -73,7 +73,7 @@ class TopButtons extends ConsumerWidget {
             tryAgain: () => ref.invalidate(bsVersionStateControllerProvider),
             child: _DefaultSearchProduct(
               widget: this,
-              searchType: SearchType.allCountedProductsFromGoodsReceiving,
+              searchType: SearchType.allCountedProductsFromGR,
               searchProduct: searchProduct,
             ),
           ),
@@ -95,11 +95,11 @@ class _DefaultSearchProduct extends ConsumerWidget {
 
   String get title {
     switch (searchType) {
-      case SearchType.allProductsFromGoodsReceivingGoesForBalance:
+      case SearchType.allProductsFromGRGoesForBalance:
         return 'Pesáveis'.hardcoded;
-      case SearchType.allProductsFromGoodsReceiving:
+      case SearchType.allProductsFromGR:
         return 'Sem EAN'.hardcoded;
-      case SearchType.allCountedProductsFromGoodsReceiving:
+      case SearchType.allCountedProductsFromGR:
         return 'Já contados'.hardcoded;
       default:
         return '';

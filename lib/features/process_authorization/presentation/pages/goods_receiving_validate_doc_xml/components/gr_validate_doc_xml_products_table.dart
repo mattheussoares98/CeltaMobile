@@ -8,11 +8,11 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
+class GRValidateDocXmlProductsTable extends ConsumerWidget {
   final bool areJudgedItems;
   final int processCode;
 
-  const GoodsReceivingValidateDocXmlProductsTable({
+  const GRValidateDocXmlProductsTable({
     super.key,
     required this.areJudgedItems,
     required this.processCode,
@@ -72,7 +72,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
       provider.select((state) => state.value?.code),
     );
 
-    void onTapItem(BSFGoodsReceivingProductEntity item) {
+    void onTapItem(BSFGRProductEntity item) {
       if (areJudgedItems) {
         ref.read(uiController.notifier).toggleProductWithJudgment(item.code);
       } else {
@@ -90,7 +90,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
       );
     }
 
-    final table = ScrollableTable<BSFGoodsReceivingProductEntity>(
+    final table = ScrollableTable<BSFGRProductEntity>(
       items: items!,
       fixFirstColumn: true,
       rowHeight: 65,
@@ -99,7 +99,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           selectedItemsIds.contains(item.code) ? Colors.green.shade100 : null,
       onTapRow: onTapItem,
       columns: [
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Produto'.hardcoded,
           minWidth: 200.0,
           cellBuilder: (item) {
@@ -145,13 +145,13 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           },
           sortValueMapper: (item) => item.productString,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'CFOP'.hardcoded,
           minWidth: 45,
           cellBuilder: (item) => BaseText(item.fiscalCode),
           sortValueMapper: (item) => item.fiscalCode,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Qtd NF'.hardcoded,
           minWidth: 55,
           cellBuilder: (item) => BaseText(
@@ -166,7 +166,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           ),
           sortValueMapper: (item) => item.quantityOfXml,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Qtd ped'.hardcoded,
           minWidth: 60,
           cellBuilder: (item) => BaseText(
@@ -184,7 +184,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) =>
               item.availableQuantityInAssociatesBuyRequests,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Qtd outr ped'.hardcoded,
           minWidth: 95,
           cellBuilder: (item) => BaseText(
@@ -201,7 +201,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           ),
           sortValueMapper: (item) => item.availableQuantityInAnotherBuyRequests,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Dif qtd'.hardcoded,
           minWidth: 60,
           cellBuilder: (item) => BaseText(
@@ -226,7 +226,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) =>
               item.divergenceQuantityRequestForFiscalNote,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Vl líq NF'.hardcoded,
           minWidth: 90,
           isMoney: true,
@@ -241,7 +241,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           ),
           sortValueMapper: (item) => item.unitLiquidValue,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Vl líq ped'.hardcoded,
           minWidth: 90,
           isMoney: true,
@@ -257,7 +257,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           ),
           sortValueMapper: (item) => item.unitLiquidValueOnBuyRequests,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Dif vl líq'.hardcoded,
           minWidth: 80,
           isMoney: true,
@@ -280,7 +280,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
           },
           sortValueMapper: (item) => item.divergencyUnitLiquidValue,
         ),
-        ScrollableTableColumnSpec<BSFGoodsReceivingProductEntity>(
+        ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: 'Tot dif vl líq'.hardcoded,
           minWidth: 100,
           isMoney: true,
@@ -308,7 +308,7 @@ class GoodsReceivingValidateDocXmlProductsTable extends ConsumerWidget {
     return Column(
       children: [
         Expanded(child: table),
-        GoodsReceivingJudgmentButtons(
+        GRJudgmentButtons(
           processCode: processCode,
           areJudgedItems: areJudgedItems,
         ),

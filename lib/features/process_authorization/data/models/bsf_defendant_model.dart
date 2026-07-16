@@ -17,7 +17,7 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
       case TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
           TypeAccordingToTheCode.goodsReceivingCancelDocument ||
           TypeAccordingToTheCode.goodsReceivingValidateDocumentXml:
-        return BSFGoodsReceivingDefendantModel.fromJson(json);
+        return BSFGRDefendantModel.fromJson(json);
       case TypeAccordingToTheCode.goodsReceivingValueDocument:
       case TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition:
         return throw AppException('Process type not implemented');
@@ -32,8 +32,9 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
     return switch (entity) {
       BSFSaleRequestDefendantEntity sale =>
         BSFSaleRequestDefendantModel.fromEntity(sale),
-      BSFGoodsReceivingDefendantEntity expedition =>
-        BSFGoodsReceivingDefendantModel.fromEntity(expedition),
+      BSFGRDefendantEntity expedition => BSFGRDefendantModel.fromEntity(
+        expedition,
+      ),
       _ => throw UnimplementedError('Unknown defendant entity type: $entity'),
     };
   }
@@ -70,27 +71,26 @@ class BSFSaleRequestDefendantModel extends BSFDefendantModel
       BSFSaleRequestDefendantEntity(saleRequest: saleRequest);
 }
 
-class BSFGoodsReceivingDefendantModel extends BSFDefendantModel
-    implements BSFGoodsReceivingDefendantEntity {
+class BSFGRDefendantModel extends BSFDefendantModel
+    implements BSFGRDefendantEntity {
   @override
-  final BSFGoodsReceivingEntity goodsReceiving;
+  final BSFGREntity goodsReceiving;
 
-  const BSFGoodsReceivingDefendantModel({required this.goodsReceiving});
+  const BSFGRDefendantModel({required this.goodsReceiving});
 
-  factory BSFGoodsReceivingDefendantModel.fromJson(Map json) {
-    return BSFGoodsReceivingDefendantModel(
-      goodsReceiving: BSFGoodsReceivingModel.fromJson(json).toEntity(),
+  factory BSFGRDefendantModel.fromJson(Map json) {
+    return BSFGRDefendantModel(
+      goodsReceiving: BSFGRModel.fromJson(json).toEntity(),
     );
   }
 
   @override
-  Map toJson() => BSFGoodsReceivingModel.fromEntity(goodsReceiving).toJson();
+  Map toJson() => BSFGRModel.fromEntity(goodsReceiving).toJson();
 
-  factory BSFGoodsReceivingDefendantModel.fromEntity(
-    BSFGoodsReceivingDefendantEntity entity,
-  ) => BSFGoodsReceivingDefendantModel(goodsReceiving: entity.goodsReceiving);
+  factory BSFGRDefendantModel.fromEntity(BSFGRDefendantEntity entity) =>
+      BSFGRDefendantModel(goodsReceiving: entity.goodsReceiving);
 
   @override
-  BSFGoodsReceivingDefendantEntity toEntity() =>
-      BSFGoodsReceivingDefendantEntity(goodsReceiving: goodsReceiving);
+  BSFGRDefendantEntity toEntity() =>
+      BSFGRDefendantEntity(goodsReceiving: goodsReceiving);
 }

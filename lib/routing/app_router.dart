@@ -110,8 +110,8 @@ GoRouter goRouter(Ref ref) {
           inventoryProductsRoute(),
         ]),
         processesAuthorizationRoute([
-          processAuthorizationGoodsReceivingRoute(),
-          processAuthorizationGoodsReceivingValidateDocXmlRoute(),
+          processAuthorizationGRRoute(),
+          processAuthorizationGRValidateDocXmlRoute(),
           processAuthorizationSaleRequestDiscountsRoute(),
         ]),
         productsRegisterSearchProductsRoute([

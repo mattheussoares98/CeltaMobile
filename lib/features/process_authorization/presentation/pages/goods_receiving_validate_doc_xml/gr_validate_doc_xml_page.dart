@@ -6,12 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GoodsReceivingValidateDocXmlPage extends ConsumerWidget {
+class GRValidateDocXmlPage extends ConsumerWidget {
   final int processCode;
-  const GoodsReceivingValidateDocXmlPage({
-    super.key,
-    required this.processCode,
-  });
+  const GRValidateDocXmlPage({super.key, required this.processCode});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = gRDocFiscalNoteDifferencesStateControllerProvider(
@@ -58,11 +55,11 @@ class GoodsReceivingValidateDocXmlPage extends ConsumerWidget {
           return IndexedStack(
             index: ref.watch(uiController.select((s) => s.selectedPageIndex)),
             children: [
-              GoodsReceivingValidateDocXmlProductsTable(
+              GRValidateDocXmlProductsTable(
                 areJudgedItems: false,
                 processCode: processCode,
               ),
-              GoodsReceivingValidateDocXmlProductsTable(
+              GRValidateDocXmlProductsTable(
                 areJudgedItems: true,
                 processCode: processCode,
               ),

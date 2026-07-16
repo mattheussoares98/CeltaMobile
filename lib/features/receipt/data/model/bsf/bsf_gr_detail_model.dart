@@ -1,16 +1,16 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 
-class BSFGoodsReceivingDetailModel extends BSFGoodsReceivingDetailEntity {
-  const BSFGoodsReceivingDetailModel({
+class BSFGRDetailModel extends BSFGRDetailEntity {
+  const BSFGRDetailModel({
     super.document,
     super.enterpriseOrigin,
     super.containRequests,
     super.emitter,
   });
 
-  factory BSFGoodsReceivingDetailModel.fromJson(Map<String, dynamic> json) =>
-      BSFGoodsReceivingDetailModel(
+  factory BSFGRDetailModel.fromJson(Map<String, dynamic> json) =>
+      BSFGRDetailModel(
         document: json['Document'],
         enterpriseOrigin: json['EnterpriseOrigin'] != null
             ? BSFEnterpriseModel.fromJson(
@@ -36,12 +36,11 @@ class BSFGoodsReceivingDetailModel extends BSFGoodsReceivingDetailEntity {
         : null,
   };
 
-  factory BSFGoodsReceivingDetailModel.fromEntity(
-    BSFGoodsReceivingDetailEntity entity,
-  ) => BSFGoodsReceivingDetailModel(
-    document: entity.document,
-    enterpriseOrigin: entity.enterpriseOrigin,
-    containRequests: entity.containRequests,
-    emitter: entity.emitter,
-  );
+  factory BSFGRDetailModel.fromEntity(BSFGRDetailEntity entity) =>
+      BSFGRDetailModel(
+        document: entity.document,
+        enterpriseOrigin: entity.enterpriseOrigin,
+        containRequests: entity.containRequests,
+        emitter: entity.emitter,
+      );
 }

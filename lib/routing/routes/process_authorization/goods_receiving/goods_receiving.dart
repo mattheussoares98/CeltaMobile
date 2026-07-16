@@ -1,1 +1,1 @@
-export './process_authorization_goods_receiving_route.dart';
+export './process_authorization_gr_route.dart';

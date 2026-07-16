@@ -14,7 +14,7 @@ part 'gr_doc_fiscal_note_differences_state_controller.g.dart';
 class GRDocFiscalNoteDifferencesStateController
     extends _$GRDocFiscalNoteDifferencesStateController {
   @override
-  FutureOr<BSFGoodsReceivingEntity> build(int processCode) async {
+  FutureOr<BSFGREntity> build(int processCode) async {
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
@@ -28,7 +28,7 @@ class GRDocFiscalNoteDifferencesStateController
       judgmentDetailsStateControllerProvider(processCode).future,
     );
     final defendant = details.defendants
-        ?.cast<BSFGoodsReceivingDefendantEntity>()
+        ?.cast<BSFGRDefendantEntity>()
         .firstOrNull;
 
     if (defendant == null) {

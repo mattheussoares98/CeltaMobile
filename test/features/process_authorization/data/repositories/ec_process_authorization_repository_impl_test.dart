@@ -46,11 +46,10 @@ void main() {
     registerFallbackValue(
       const EcRequestParams(workingUrl: '', user: '', accessKey: ''),
     );
-    for (final judgmentStatus
-        in BsfGoodsReceivingProductJudgmentStatus.values) {
+    for (final judgmentStatus in BsfGRProductJudgmentStatus.values) {
       registerFallbackValue(judgmentStatus);
     }
-    for (final judgementType in BsfGoodsReceivingProductJudgmentType.values) {
+    for (final judgementType in BsfGRProductJudgmentType.values) {
       registerFallbackValue(judgementType);
     }
   });
@@ -188,12 +187,14 @@ void main() {
     test('should get GRDocFiscalNoteDifferences on success', () async {
       final List<int> grDocProductCodes = [faker.randomGenerator.integer(100)];
       final int grDocGroupCode = faker.randomGenerator.integer(100);
-      final BsfGoodsReceivingProductJudgmentStatus judgmentStatus =
-          BsfGoodsReceivingProductJudgmentStatus.values[faker.randomGenerator
-              .integer(BsfGoodsReceivingProductJudgmentStatus.values.length)];
-      final BsfGoodsReceivingProductJudgmentType judgementType =
-          BsfGoodsReceivingProductJudgmentType.values[faker.randomGenerator
-              .integer(BsfGoodsReceivingProductJudgmentType.values.length)];
+      final BsfGRProductJudgmentStatus judgmentStatus =
+          BsfGRProductJudgmentStatus.values[faker.randomGenerator.integer(
+            BsfGRProductJudgmentStatus.values.length,
+          )];
+      final BsfGRProductJudgmentType judgementType =
+          BsfGRProductJudgmentType.values[faker.randomGenerator.integer(
+            BsfGRProductJudgmentType.values.length,
+          )];
 
       when(
         () => datasource.markStatusJudgment(
@@ -231,9 +232,8 @@ void main() {
         faker.randomGenerator.integer(100),
       ];
       final grDocGroupCode = faker.randomGenerator.integer(100);
-      const judgmentStatus = BsfGoodsReceivingProductJudgmentStatus.accept;
-      const judgementType =
-          BsfGoodsReceivingProductJudgmentType.requestForCounting;
+      const judgmentStatus = BsfGRProductJudgmentStatus.accept;
+      const judgementType = BsfGRProductJudgmentType.requestForCounting;
 
       when(
         () => datasource.markStatusJudgment(

@@ -2,7 +2,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:equatable/equatable.dart';
 
-class BSFGoodsReceivingEntity extends Equatable {
+class BSFGREntity extends Equatable {
   final int? expeditionControlCode;
   final bool? isOnExpedition;
   final bool? shouldHaveExpeditionControl;
@@ -33,19 +33,19 @@ class BSFGoodsReceivingEntity extends Equatable {
   final bool? hasDivergencyOnPaymentCondition;
   final int? judgePaymentCondition;
   final String? enterpriseString;
-  final BSFGoodsReceivingTypeEntity? type;
+  final BSFGRTypeEntity? type;
   final double? totalDivergencyLiquidValue;
   final bool? containProductsToDoDevolution;
-  final BSFGoodsReceivingDetailEntity? detail;
+  final BSFGRDetailEntity? detail;
   final BSFEletronicAccessKeyEntity? eletronicAccessKey;
   final String? xmlFileData;
-  final List<BSFGoodsReceivingProductEntity>?
+  final List<BSFGRProductEntity>?
   productsWithoutJudgementStatusRequestForFiscalNote;
-  final List<BSFGoodsReceivingProductEntity>?
+  final List<BSFGRProductEntity>?
   productsWithJudgementStatusRequestForFiscalNote;
-  final BSFGoodsReceivingGroupEntity? group;
+  final BSFGRGroupEntity? group;
 
-  const BSFGoodsReceivingEntity({
+  const BSFGREntity({
     required this.expeditionControlCode,
     required this.isOnExpedition,
     required this.shouldHaveExpeditionControl,
