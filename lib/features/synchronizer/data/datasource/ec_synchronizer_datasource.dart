@@ -17,7 +17,6 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       body: params.toMap(),
     );
 
-    //TODO create tests
     return response;
   }
 }
