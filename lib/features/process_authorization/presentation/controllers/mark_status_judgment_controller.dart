@@ -10,7 +10,7 @@ part 'mark_status_judgment_controller.g.dart';
 @riverpod
 class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
   @override
-  FutureOr<void> build(int processCode) {}
+  FutureOr<void> build(int grDocGroupCode, int processCode) {}
 
   Future<void> judge({
     required bool areJudgedItems,
@@ -36,7 +36,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
       await repository.markStatusJudgment(
         ecParams,
         grDocProductCodes: grDocProductCodes,
-        grDocGroupCode: 0,
+        grDocGroupCode: grDocGroupCode,
         judgmentStatus: judgmentStatus,
         judgementType:
             BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,

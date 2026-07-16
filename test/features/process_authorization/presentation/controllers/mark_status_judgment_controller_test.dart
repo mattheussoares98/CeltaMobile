@@ -18,6 +18,7 @@ class MockEcProcessAuthorizationRepository extends Mock
 void main() {
   late MockEcProcessAuthorizationRepository mockRepository;
   late UserSessionModel fakeSession;
+  late int grDocGroupCode;
   late int processCode;
   late List<int> grDocProductCodes;
 
@@ -26,6 +27,7 @@ void main() {
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
+    grDocGroupCode = faker.randomGenerator.integer(100000);
     processCode = faker.randomGenerator.integer(100000);
     grDocProductCodes = [
       faker.randomGenerator.integer(100000),
@@ -82,13 +84,16 @@ void main() {
             }
             final states = <AsyncValue<void>>[];
             container.listen(
-              markStatusJudgmentControllerProvider(processCode),
+              markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
               (_, next) => states.add(next),
             );
 
             await container
                 .read(
-                  markStatusJudgmentControllerProvider(processCode).notifier,
+                  markStatusJudgmentControllerProvider(
+                    grDocGroupCode,
+                    processCode,
+                  ).notifier,
                 )
                 .judge(
                   areJudgedItems: areJudgedItems,
@@ -104,7 +109,7 @@ void main() {
                   accessKey: fakeSession.user.AccessKey!,
                 ),
                 grDocProductCodes: grDocProductCodes,
-                grDocGroupCode: 0,
+                grDocGroupCode: grDocGroupCode,
                 judgmentStatus: judgmentStatus,
                 judgementType:
                     BsfGoodsReceivingProductJudgmentType.requestForFiscalNote,
@@ -120,14 +125,21 @@ void main() {
       addTearDown(container.dispose);
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .read(
+            markStatusJudgmentControllerProvider(
+              grDocGroupCode,
+              processCode,
+            ).notifier,
+          )
           .judge(
             areJudgedItems: false,
             judgmentStatus: BsfGoodsReceivingProductJudgmentStatus.accept,
           );
 
       expect(
-        container.read(markStatusJudgmentControllerProvider(processCode)),
+        container.read(
+          markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
+        ),
         isA<AsyncError<void>>(),
       );
       verifyNever(
@@ -155,14 +167,21 @@ void main() {
       addTearDown(container.dispose);
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
+          .read(
+            markStatusJudgmentControllerProvider(
+              grDocGroupCode,
+              processCode,
+            ).notifier,
+          )
           .judge(
             areJudgedItems: false,
             judgmentStatus: BsfGoodsReceivingProductJudgmentStatus.accept,
           );
 
       expect(
-        container.read(markStatusJudgmentControllerProvider(processCode)),
+        container.read(
+          markStatusJudgmentControllerProvider(grDocGroupCode, processCode),
+        ),
         isA<AsyncError<void>>(),
       );
     });
