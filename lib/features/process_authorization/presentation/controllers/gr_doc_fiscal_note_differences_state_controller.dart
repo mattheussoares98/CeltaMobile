@@ -24,9 +24,11 @@ class GRDocFiscalNoteDifferencesStateController
       accessKey: validatedUser.user.AccessKey!,
     );
 
-    final details = await ref.read(
-      judgmentDetailsStateControllerProvider(processCode).future,
-    );
+    final detailsProvider = judgmentDetailsStateControllerProvider(processCode);
+    if (ref.read(detailsProvider).hasError) {
+      ref.invalidate(detailsProvider);
+    }
+    final details = await ref.read(detailsProvider.future);
     final defendant = details.defendants
         ?.cast<BSFGRDefendantEntity>()
         .firstOrNull;
