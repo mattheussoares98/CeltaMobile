@@ -1,6 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/components/components.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/goods_receiving_validate_doc_xml.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,9 @@ class GRValidateDocXmlPage extends ConsumerWidget {
       processCode,
     );
     final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+    final productsWithtoutRegister = ref.watch(
+      provider.select((s) => s.value?.productsWithoutCadaster ?? []),
+    );
 
     return BaseScaffold(
       isScrollable: false,
@@ -42,6 +45,14 @@ class GRValidateDocXmlPage extends ConsumerWidget {
                 ),
                 label: 'Julgados'.hardcoded,
               ),
+              if (productsWithtoutRegister.isNotEmpty)
+                BaseBottomNavigationBarItem(
+                  platformIcon: const PlatformIcon(
+                    cupertinoIcon: CupertinoIcons.question,
+                    materialIcon: Icons.question_mark_rounded,
+                  ),
+                  label: 'Sem cadastro'.hardcoded,
+                ),
             ],
             currentIndex: currentIndex,
             onTap: ref.read(uiController.notifier).updatePageIndex,
@@ -63,6 +74,8 @@ class GRValidateDocXmlPage extends ConsumerWidget {
                 areJudgedItems: true,
                 processCode: processCode,
               ),
+              if (productsWithtoutRegister.isNotEmpty)
+                ProductsWithoutRegisterPage(processCode: processCode),
             ],
           );
         },
