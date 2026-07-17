@@ -17,6 +17,8 @@ import '../../../../mocks/mocks.dart';
 class MockEcProcessAuthorizationRepository extends Mock
     implements IEcProcessAuthorizationRepository {}
 
+class MockBSFGREntity extends Mock implements BSFGREntity {}
+
 class FakeGRDocFiscalNoteDifferencesStateController
     extends GRDocFiscalNoteDifferencesStateController {
   final BSFGREntity entity;
@@ -327,6 +329,94 @@ void main() {
           container.read(judgmentControllerProvider(processCode)),
           isA<AsyncError<void>>(),
         );
+      });
+
+      test('should update page index to 0 when products without cadaster length is 1', () async {
+        final mockGrDoc = MockBSFGREntity();
+        when(() => mockGrDoc.code).thenReturn(grDoc.code);
+        when(() => mockGrDoc.productsWithoutCadaster).thenReturn(
+          [const GRProductsWithoutCadasterEntity()],
+        );
+
+        when(
+          () => repository.linkProductWithoutCadaster(
+            params,
+            documentCode: grDoc.code!,
+            productCode: productCode,
+            productWithoutCadasterCode: productWithoutCadasterCode,
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = ProviderContainer(
+          overrides: [
+            ecProcessAuthorizationRepositoryProvider.overrideWithValue(repository),
+            validatedUserSessionProvider.overrideWith(
+              () => FakeValidatedUserSession(session),
+            ),
+            gRDocFiscalNoteDifferencesStateControllerProvider(
+              processCode,
+            ).overrideWith(
+              () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+        container.read(uiControllerProvider.notifier).updatePageIndex(2);
+
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .linkProductWithoutCadaster(
+              productCode: productCode,
+              productWithoutCadasterCode: productWithoutCadasterCode,
+            );
+
+        expect(container.read(uiControllerProvider).selectedPageIndex, 0);
+      });
+
+      test('should not update page index when products without cadaster length is not 1', () async {
+        final mockGrDoc = MockBSFGREntity();
+        when(() => mockGrDoc.code).thenReturn(grDoc.code);
+        when(() => mockGrDoc.productsWithoutCadaster).thenReturn(
+          [const GRProductsWithoutCadasterEntity(), const GRProductsWithoutCadasterEntity()],
+        );
+
+        when(
+          () => repository.linkProductWithoutCadaster(
+            params,
+            documentCode: grDoc.code!,
+            productCode: productCode,
+            productWithoutCadasterCode: productWithoutCadasterCode,
+          ),
+        ).thenAnswer((_) async {});
+
+        final container = ProviderContainer(
+          overrides: [
+            ecProcessAuthorizationRepositoryProvider.overrideWithValue(repository),
+            validatedUserSessionProvider.overrideWith(
+              () => FakeValidatedUserSession(session),
+            ),
+            gRDocFiscalNoteDifferencesStateControllerProvider(
+              processCode,
+            ).overrideWith(
+              () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+        container.read(uiControllerProvider.notifier).updatePageIndex(2);
+
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .linkProductWithoutCadaster(
+              productCode: productCode,
+              productWithoutCadasterCode: productWithoutCadasterCode,
+            );
+
+        expect(container.read(uiControllerProvider).selectedPageIndex, 2);
       });
     });
   });

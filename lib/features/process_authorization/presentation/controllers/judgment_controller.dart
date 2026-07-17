@@ -103,6 +103,14 @@ class JudgmentController extends _$JudgmentController {
         productCode: productCode,
         productWithoutCadasterCode: productWithoutCadasterCode,
       );
+
+      final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+      if (details.productsWithoutCadaster?.length == 1) {
+        ref.read(uiController.notifier).updatePageIndex(0);
+        //the third bottom navigation bar only appears when there are products without register.
+        //if the link succeeds, will reload the products and this bottom bar should disappear.
+        //updating the page index fix the BUG trying to show a empty page 2
+      }
     });
   }
 }
