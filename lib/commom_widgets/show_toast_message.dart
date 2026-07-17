@@ -30,6 +30,7 @@ void showToastMessage(
     closeOnClick: true,
     dragToClose: true,
     showIcon: false,
+    dismissDirection: DismissDirection.vertical,
     style: ToastificationStyle.flat,
     closeButton: ToastCloseButton(
       buttonBuilder: (context, onClose) {
