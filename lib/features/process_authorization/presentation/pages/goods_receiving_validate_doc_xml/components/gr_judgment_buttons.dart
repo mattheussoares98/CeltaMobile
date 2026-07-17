@@ -29,9 +29,6 @@ class GRJudgmentButtons extends ConsumerWidget {
             : state.selectedProductsWithoutJudgmentIds.isNotEmpty,
       ),
     );
-    final isLoading = ref.watch(
-      controllerProvider.select((state) => state.isLoading),
-    );
 
     void judge(BsfGRProductJudgmentStatus judgmentStatus) {
       final content = switch (judgmentStatus) {
@@ -64,14 +61,13 @@ class GRJudgmentButtons extends ConsumerWidget {
       );
     }
 
-    final onPressed = hasSelectedProducts && !isLoading ? judge : null;
+    final onPressed = hasSelectedProducts ? judge : null;
 
     if (areJudgedItems) {
       return Padding(
         padding: const EdgeInsets.all(Sizes.p8),
         child: PrimaryButton(
           text: 'Anular julgamentos'.hardcoded,
-          isLoading: isLoading,
           onPressed: onPressed == null
               ? null
               : () => onPressed(BsfGRProductJudgmentStatus.withoutJudge),
@@ -87,7 +83,6 @@ class GRJudgmentButtons extends ConsumerWidget {
             flex: 7,
             child: PrimaryButton(
               text: 'Aceitar'.hardcoded,
-              isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.accept),
@@ -98,7 +93,6 @@ class GRJudgmentButtons extends ConsumerWidget {
             flex: 8,
             child: PrimaryButton(
               text: 'Devolver'.hardcoded,
-              isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.devolveAll),
@@ -109,7 +103,6 @@ class GRJudgmentButtons extends ConsumerWidget {
             flex: 16,
             child: PrimaryButton(
               text: 'Devolver excesso'.hardcoded,
-              isLoading: isLoading,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.devolveExcess),
