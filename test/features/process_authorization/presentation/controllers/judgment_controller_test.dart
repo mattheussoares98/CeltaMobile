@@ -221,5 +221,75 @@ void main() {
         isA<AsyncError<void>>(),
       );
     });
+
+    group('linkProductWithoutCadaster', () {
+      late int productCode;
+      late int productWithoutCadasterCode;
+
+      setUp(() {
+        productCode = faker.randomGenerator.integer(100000);
+        productWithoutCadasterCode = faker.randomGenerator.integer(100000);
+      });
+
+      test('should link product without cadaster', () async {
+        when(
+          () => repository.linkProductWithoutCadaster(
+            params,
+            documentCode: grDoc.code!,
+            productCode: productCode,
+            productWithoutCadasterCode: productWithoutCadasterCode,
+          ),
+        ).thenAnswer((_) async {});
+        final container = makeContainer(validatedSession: session);
+        addTearDown(container.dispose);
+        final states = <AsyncValue<void>>[];
+        container.listen(
+          judgmentControllerProvider(processCode),
+          (_, next) => states.add(next),
+        );
+
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .linkProductWithoutCadaster(
+              productCode: productCode,
+              productWithoutCadasterCode: productWithoutCadasterCode,
+            );
+
+        expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
+        verify(
+          () => repository.linkProductWithoutCadaster(
+            params,
+            documentCode: grDoc.code!,
+            productCode: productCode,
+            productWithoutCadasterCode: productWithoutCadasterCode,
+          ),
+        ).called(1);
+      });
+
+      test('should expose link repository errors', () async {
+        when(
+          () => repository.linkProductWithoutCadaster(
+            params,
+            documentCode: grDoc.code!,
+            productCode: productCode,
+            productWithoutCadasterCode: productWithoutCadasterCode,
+          ),
+        ).thenThrow(Exception('Repository error'));
+        final container = makeContainer(validatedSession: session);
+        addTearDown(container.dispose);
+
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .linkProductWithoutCadaster(
+              productCode: productCode,
+              productWithoutCadasterCode: productWithoutCadasterCode,
+            );
+
+        expect(
+          container.read(judgmentControllerProvider(processCode)),
+          isA<AsyncError<void>>(),
+        );
+      });
+    });
   });
 }

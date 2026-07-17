@@ -70,4 +70,30 @@ class JudgmentController extends _$JudgmentController {
       );
     });
   }
+
+  Future<void> linkProductWithoutCadaster({
+    required int productCode,
+    required int productWithoutCadasterCode,
+  }) async {
+    state = const AsyncLoading<void>();
+    state = await AsyncValue.guard(() async {
+      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
+      final ecParams = EcRequestParams(
+        workingUrl: validatedUser!.enterprise!.workingUrl!,
+        user: validatedUser.user.name!,
+        accessKey: validatedUser.user.AccessKey!,
+      );
+      final details = await ref.read(
+        gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
+      );
+
+      await repository.linkProductWithoutCadaster(
+        ecParams,
+        documentCode: details.code ?? 0,
+        productCode: productCode,
+        productWithoutCadasterCode: productWithoutCadasterCode,
+      );
+    });
+  }
 }
