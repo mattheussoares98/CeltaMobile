@@ -69,11 +69,12 @@ class JudgmentController extends _$JudgmentController {
     });
   }
 
-  Future<void> linkProductWithoutCadaster({
+  Future<bool> linkProductWithoutCadaster({
     required int productCode,
     required int productWithoutCadasterCode,
   }) async {
     state = const AsyncLoading<void>();
+    bool succeeds = false;
     state = await AsyncValue.guard(() async {
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
       final ecParams = await ref.read(ecRequestParamsProvider().future);
@@ -95,6 +96,8 @@ class JudgmentController extends _$JudgmentController {
         //if the link succeeds, will reload the products and this bottom bar should disappear.
         //updating the page index fix the BUG trying to show a empty page 2
       }
+      succeeds = true;
     });
+    return succeeds;
   }
 }

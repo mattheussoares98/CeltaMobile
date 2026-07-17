@@ -104,11 +104,17 @@ void main() {
             addTearDown(container.dispose);
             selectProducts(container, areJudged: areJudgedItems);
 
-            final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+            final uiControllerProvider = gRValidateDocXmlUiControllerProvider(
+              processCode,
+            );
             expect(
               areJudgedItems
-                  ? container.read(uiControllerProvider).selectedProductsWithJudgmentIds
-                  : container.read(uiControllerProvider).selectedProductsWithoutJudgmentIds,
+                  ? container
+                        .read(uiControllerProvider)
+                        .selectedProductsWithJudgmentIds
+                  : container
+                        .read(uiControllerProvider)
+                        .selectedProductsWithoutJudgmentIds,
               isNotEmpty,
             );
 
@@ -135,8 +141,12 @@ void main() {
 
             expect(
               areJudgedItems
-                  ? container.read(uiControllerProvider).selectedProductsWithJudgmentIds
-                  : container.read(uiControllerProvider).selectedProductsWithoutJudgmentIds,
+                  ? container
+                        .read(uiControllerProvider)
+                        .selectedProductsWithJudgmentIds
+                  : container
+                        .read(uiControllerProvider)
+                        .selectedProductsWithoutJudgmentIds,
               isEmpty,
             );
           },
@@ -157,7 +167,9 @@ void main() {
       addTearDown(container.dispose);
       selectProducts(container, areJudged: true);
 
-      final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+      final uiControllerProvider = gRValidateDocXmlUiControllerProvider(
+        processCode,
+      );
       expect(
         container.read(uiControllerProvider).selectedProductsWithJudgmentIds,
         isNotEmpty,
@@ -204,63 +216,73 @@ void main() {
       verifyZeroInteractions(repository);
     });
 
-    test('should expose mark repository errors and not clear selection', () async {
-      when(
-        () => repository.markStatusJudgment(
-          params,
-          grDocProductCodes: productCodes,
-          grDocGroupCode: grDoc.group!.code!,
-          judgmentStatus: BsfGRProductJudgmentStatus.accept,
-          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
-        ),
-      ).thenThrow(Exception('Repository error'));
-      final container = makeContainer(validatedSession: session);
-      addTearDown(container.dispose);
-      selectProducts(container, areJudged: false);
+    test(
+      'should expose mark repository errors and not clear selection',
+      () async {
+        when(
+          () => repository.markStatusJudgment(
+            params,
+            grDocProductCodes: productCodes,
+            grDocGroupCode: grDoc.group!.code!,
+            judgmentStatus: BsfGRProductJudgmentStatus.accept,
+            judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
+          ),
+        ).thenThrow(Exception('Repository error'));
+        final container = makeContainer(validatedSession: session);
+        addTearDown(container.dispose);
+        selectProducts(container, areJudged: false);
 
-      await container
-          .read(judgmentControllerProvider(processCode).notifier)
-          .judgeStatus(
-            BsfGRProductJudgmentStatus.accept,
-            areJudgedItems: false,
-          );
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .judgeStatus(
+              BsfGRProductJudgmentStatus.accept,
+              areJudgedItems: false,
+            );
 
-      expect(
-        container.read(judgmentControllerProvider(processCode)),
-        isA<AsyncError<void>>(),
-      );
-      expect(
-        container.read(gRValidateDocXmlUiControllerProvider(processCode)).selectedProductsWithoutJudgmentIds,
-        isNotEmpty,
-      );
-    });
+        expect(
+          container.read(judgmentControllerProvider(processCode)),
+          isA<AsyncError<void>>(),
+        );
+        expect(
+          container
+              .read(gRValidateDocXmlUiControllerProvider(processCode))
+              .selectedProductsWithoutJudgmentIds,
+          isNotEmpty,
+        );
+      },
+    );
 
-    test('should expose annul repository errors and not clear selection', () async {
-      when(
-        () => repository.annulStatusJudgment(
-          params,
-          grDocProductCodes: productCodes,
-          grDocGroupCode: grDoc.group!.code!,
-          judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
-        ),
-      ).thenThrow(Exception('Repository error'));
-      final container = makeContainer(validatedSession: session);
-      addTearDown(container.dispose);
-      selectProducts(container, areJudged: true);
+    test(
+      'should expose annul repository errors and not clear selection',
+      () async {
+        when(
+          () => repository.annulStatusJudgment(
+            params,
+            grDocProductCodes: productCodes,
+            grDocGroupCode: grDoc.group!.code!,
+            judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
+          ),
+        ).thenThrow(Exception('Repository error'));
+        final container = makeContainer(validatedSession: session);
+        addTearDown(container.dispose);
+        selectProducts(container, areJudged: true);
 
-      await container
-          .read(judgmentControllerProvider(processCode).notifier)
-          .annulStatus();
+        await container
+            .read(judgmentControllerProvider(processCode).notifier)
+            .annulStatus();
 
-      expect(
-        container.read(judgmentControllerProvider(processCode)),
-        isA<AsyncError<void>>(),
-      );
-      expect(
-        container.read(gRValidateDocXmlUiControllerProvider(processCode)).selectedProductsWithJudgmentIds,
-        isNotEmpty,
-      );
-    });
+        expect(
+          container.read(judgmentControllerProvider(processCode)),
+          isA<AsyncError<void>>(),
+        );
+        expect(
+          container
+              .read(gRValidateDocXmlUiControllerProvider(processCode))
+              .selectedProductsWithJudgmentIds,
+          isNotEmpty,
+        );
+      },
+    );
 
     group('linkProductWithoutCadaster', () {
       late int productCode;
@@ -288,12 +310,14 @@ void main() {
           (_, next) => states.add(next),
         );
 
-        await container
+        final result = await container
             .read(judgmentControllerProvider(processCode).notifier)
             .linkProductWithoutCadaster(
               productCode: productCode,
               productWithoutCadasterCode: productWithoutCadasterCode,
             );
+
+        expect(result, isTrue);
 
         expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
         verify(
@@ -318,12 +342,14 @@ void main() {
         final container = makeContainer(validatedSession: session);
         addTearDown(container.dispose);
 
-        await container
+        final result = await container
             .read(judgmentControllerProvider(processCode).notifier)
             .linkProductWithoutCadaster(
               productCode: productCode,
               productWithoutCadasterCode: productWithoutCadasterCode,
             );
+
+        expect(result, isFalse);
 
         expect(
           container.read(judgmentControllerProvider(processCode)),
@@ -331,93 +357,108 @@ void main() {
         );
       });
 
-      test('should update page index to 0 when products without cadaster length is 1', () async {
-        final mockGrDoc = MockBSFGREntity();
-        when(() => mockGrDoc.code).thenReturn(grDoc.code);
-        when(() => mockGrDoc.productsWithoutCadaster).thenReturn(
-          [const GRProductsWithoutCadasterEntity()],
-        );
+      test(
+        'should update page index to 0 when products without cadaster length is 1',
+        () async {
+          final mockGrDoc = MockBSFGREntity();
+          when(() => mockGrDoc.code).thenReturn(grDoc.code);
+          when(
+            () => mockGrDoc.productsWithoutCadaster,
+          ).thenReturn([const GRProductsWithoutCadasterEntity()]);
 
-        when(
-          () => repository.linkProductWithoutCadaster(
-            params,
-            documentCode: grDoc.code!,
-            productCode: productCode,
-            productWithoutCadasterCode: productWithoutCadasterCode,
-          ),
-        ).thenAnswer((_) async {});
-
-        final container = ProviderContainer(
-          overrides: [
-            ecProcessAuthorizationRepositoryProvider.overrideWithValue(repository),
-            validatedUserSessionProvider.overrideWith(
-              () => FakeValidatedUserSession(session),
-            ),
-            gRDocFiscalNoteDifferencesStateControllerProvider(
-              processCode,
-            ).overrideWith(
-              () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
-            ),
-          ],
-        );
-        addTearDown(container.dispose);
-
-        final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
-        container.read(uiControllerProvider.notifier).updatePageIndex(2);
-
-        await container
-            .read(judgmentControllerProvider(processCode).notifier)
-            .linkProductWithoutCadaster(
+          when(
+            () => repository.linkProductWithoutCadaster(
+              params,
+              documentCode: grDoc.code!,
               productCode: productCode,
               productWithoutCadasterCode: productWithoutCadasterCode,
-            );
-
-        expect(container.read(uiControllerProvider).selectedPageIndex, 0);
-      });
-
-      test('should not update page index when products without cadaster length is not 1', () async {
-        final mockGrDoc = MockBSFGREntity();
-        when(() => mockGrDoc.code).thenReturn(grDoc.code);
-        when(() => mockGrDoc.productsWithoutCadaster).thenReturn(
-          [const GRProductsWithoutCadasterEntity(), const GRProductsWithoutCadasterEntity()],
-        );
-
-        when(
-          () => repository.linkProductWithoutCadaster(
-            params,
-            documentCode: grDoc.code!,
-            productCode: productCode,
-            productWithoutCadasterCode: productWithoutCadasterCode,
-          ),
-        ).thenAnswer((_) async {});
-
-        final container = ProviderContainer(
-          overrides: [
-            ecProcessAuthorizationRepositoryProvider.overrideWithValue(repository),
-            validatedUserSessionProvider.overrideWith(
-              () => FakeValidatedUserSession(session),
             ),
-            gRDocFiscalNoteDifferencesStateControllerProvider(
-              processCode,
-            ).overrideWith(
-              () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
-            ),
-          ],
-        );
-        addTearDown(container.dispose);
+          ).thenAnswer((_) async {});
 
-        final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
-        container.read(uiControllerProvider.notifier).updatePageIndex(2);
+          final container = ProviderContainer(
+            overrides: [
+              ecProcessAuthorizationRepositoryProvider.overrideWithValue(
+                repository,
+              ),
+              validatedUserSessionProvider.overrideWith(
+                () => FakeValidatedUserSession(session),
+              ),
+              gRDocFiscalNoteDifferencesStateControllerProvider(
+                processCode,
+              ).overrideWith(
+                () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
+              ),
+            ],
+          );
+          addTearDown(container.dispose);
 
-        await container
-            .read(judgmentControllerProvider(processCode).notifier)
-            .linkProductWithoutCadaster(
+          final uiControllerProvider = gRValidateDocXmlUiControllerProvider(
+            processCode,
+          );
+          container.read(uiControllerProvider.notifier).updatePageIndex(2);
+
+          await container
+              .read(judgmentControllerProvider(processCode).notifier)
+              .linkProductWithoutCadaster(
+                productCode: productCode,
+                productWithoutCadasterCode: productWithoutCadasterCode,
+              );
+
+          expect(container.read(uiControllerProvider).selectedPageIndex, 0);
+        },
+      );
+
+      test(
+        'should not update page index when products without cadaster length is not 1',
+        () async {
+          final mockGrDoc = MockBSFGREntity();
+          when(() => mockGrDoc.code).thenReturn(grDoc.code);
+          when(() => mockGrDoc.productsWithoutCadaster).thenReturn([
+            const GRProductsWithoutCadasterEntity(),
+            const GRProductsWithoutCadasterEntity(),
+          ]);
+
+          when(
+            () => repository.linkProductWithoutCadaster(
+              params,
+              documentCode: grDoc.code!,
               productCode: productCode,
               productWithoutCadasterCode: productWithoutCadasterCode,
-            );
+            ),
+          ).thenAnswer((_) async {});
 
-        expect(container.read(uiControllerProvider).selectedPageIndex, 2);
-      });
+          final container = ProviderContainer(
+            overrides: [
+              ecProcessAuthorizationRepositoryProvider.overrideWithValue(
+                repository,
+              ),
+              validatedUserSessionProvider.overrideWith(
+                () => FakeValidatedUserSession(session),
+              ),
+              gRDocFiscalNoteDifferencesStateControllerProvider(
+                processCode,
+              ).overrideWith(
+                () => FakeGRDocFiscalNoteDifferencesStateController(mockGrDoc),
+              ),
+            ],
+          );
+          addTearDown(container.dispose);
+
+          final uiControllerProvider = gRValidateDocXmlUiControllerProvider(
+            processCode,
+          );
+          container.read(uiControllerProvider.notifier).updatePageIndex(2);
+
+          await container
+              .read(judgmentControllerProvider(processCode).notifier)
+              .linkProductWithoutCadaster(
+                productCode: productCode,
+                productWithoutCadasterCode: productWithoutCadasterCode,
+              );
+
+          expect(container.read(uiControllerProvider).selectedPageIndex, 2);
+        },
+      );
     });
   });
 }
