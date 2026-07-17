@@ -109,18 +109,22 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           return;
         }
 
-        if (module == Modules.adjustPrice) {
-          final provider = canAccessResourceStateControllerProvider(
-            BsRoutine.adjustSalePrice,
-            BsResource.adjustSalePrice,
-          );
-
-          if (ref.read(provider) is AsyncError) {
-            ref.invalidate(provider);
+        if (module == Modules.adjustPrice ||
+            module == Modules.processAuthorization) {
+          final BsRoutine routine;
+          final BsResource resource;
+          if (module == Modules.adjustPrice) {
+            routine = BsRoutine.adjustSalePrice;
+            resource = BsResource.adjustSalePrice;
+          } else {
+            routine = BsRoutine.generic;
+            resource = BsResource.processAuthorizationRules;
           }
-          final canAccess = await ref.read(provider.future);
+
+          final canAccess = await _canAccessModule(routine, resource);
+
           if (!canAccess && context.mounted) {
-            _showUserWithoutPermissionMessage(context);
+            _showUserWithoutPermissionMessage(context, resource);
             return;
           }
         }
@@ -146,6 +150,18 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       });
     }
   }
+
+  Future<bool> _canAccessModule(BsRoutine routine, BsResource resource) async {
+    final provider = canAccessResourceStateControllerProvider(
+      routine,
+      resource,
+    );
+
+    if (ref.read(provider) is AsyncError) {
+      ref.invalidate(provider);
+    }
+    return await ref.read(provider.future);
+  }
 }
 
 void _showDisabledModuleMessage(BuildContext context, Modules module) {
@@ -158,10 +174,14 @@ void _showDisabledModuleMessage(BuildContext context, Modules module) {
   );
 }
 
-void _showUserWithoutPermissionMessage(BuildContext context) {
+void _showUserWithoutPermissionMessage(
+  BuildContext context,
+  BsResource resource,
+) {
   showAlertDialog(
     context: context,
     title: 'Usuário sem permissão'.hardcoded,
-    content: 'Seu usuário não possui permissão para alterar preços'.hardcoded,
+    content:
+        'Seu usuário não possui permissão para: ${resource.name}'.hardcoded,
   );
 }
