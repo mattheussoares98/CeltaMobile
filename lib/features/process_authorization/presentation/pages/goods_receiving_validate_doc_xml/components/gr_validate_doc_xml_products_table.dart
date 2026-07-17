@@ -271,16 +271,21 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           isMoney: true,
           cellBuilder: (item) => BaseText(
             item.totalDivergencyLiquidValue.toString().toBrazilianNumber(),
-            color: Colors.red,
+            color: item.totalDivergencyLiquidValue > 0
+                ? Colors.red
+                : context.theme.colorScheme.secondary,
           ),
-          footerCellBuilder: (items) => BaseText(
-            items
+          footerCellBuilder: (items) {
+            final totalDivergence = items
                 .map((e) => e.totalDivergencyLiquidValue)
-                .reduce((a, b) => a + b)
-                .toString()
-                .toBrazilianNumber(),
-            color: Colors.red,
-          ),
+                .reduce((a, b) => a + b);
+            return BaseText(
+              totalDivergence.toString().toBrazilianNumber(),
+              color: totalDivergence > 0
+                  ? Colors.red
+                  : context.theme.colorScheme.secondary,
+            );
+          },
           sortValueMapper: (item) => item.totalDivergencyLiquidValue,
         ),
       ],
