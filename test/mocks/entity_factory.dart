@@ -2171,4 +2171,17 @@ class EntityFactory {
     hasDivergencyQuantity: faker.randomGenerator.boolean(),
     product: makeBSFProductEntity(),
   );
+
+  static GRProductsWithoutCadasterEntity makeGRProductsWithoutCadasterEntity() =>
+      GRProductsWithoutCadasterEntity(
+        document: faker.randomGenerator.integer(100).toString(),
+        code: faker.randomGenerator.integer(100),
+        quantity: faker.randomGenerator.decimal(),
+        quantityOfXml: faker.randomGenerator.decimal(),
+        unitLiquidValue: faker.randomGenerator.decimal(),
+        unitValue: faker.randomGenerator.decimal(),
+        reference: faker.lorem.word(),
+        ean: faker.randomGenerator.integer(1000000).toString(),
+        observations: faker.lorem.sentence(),
+      );
 }
