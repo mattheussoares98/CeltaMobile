@@ -2095,6 +2095,7 @@ class EntityFactory {
       code: faker.randomGenerator.integer(100),
       personalizedCode: faker.randomGenerator.integer(100).toString(),
     ),
+    productsWithoutCadaster: const [],
   );
 
   static BSFGRTypeEntity makeBSFGRTypeEntity() => BSFGRTypeEntity(
