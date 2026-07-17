@@ -1,5 +1,4 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
@@ -18,13 +17,8 @@ class JudgmentController extends _$JudgmentController {
   }) async {
     state = const AsyncLoading<void>();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-      final ecParams = EcRequestParams(
-        workingUrl: validatedUser!.enterprise!.workingUrl!,
-        user: validatedUser.user.name!,
-        accessKey: validatedUser.user.AccessKey!,
-      );
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
 
       final details = await ref.read(
         gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
@@ -53,13 +47,8 @@ class JudgmentController extends _$JudgmentController {
   Future<void> annulStatus() async {
     state = const AsyncLoading<void>();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-      final ecParams = EcRequestParams(
-        workingUrl: validatedUser!.enterprise!.workingUrl!,
-        user: validatedUser.user.name!,
-        accessKey: validatedUser.user.AccessKey!,
-      );
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
       final details = await ref.read(
         gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
       );
@@ -86,13 +75,8 @@ class JudgmentController extends _$JudgmentController {
   }) async {
     state = const AsyncLoading<void>();
     state = await AsyncValue.guard(() async {
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-      final ecParams = EcRequestParams(
-        workingUrl: validatedUser!.enterprise!.workingUrl!,
-        user: validatedUser.user.name!,
-        accessKey: validatedUser.user.AccessKey!,
-      );
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
       final details = await ref.read(
         gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
       );

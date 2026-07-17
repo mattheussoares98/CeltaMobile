@@ -1,5 +1,5 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,16 +11,10 @@ class AllPaymentConditionsController extends _$AllPaymentConditionsController {
   FutureOr<List<BSFPaymentConditionEntity>> build({
     required int enterpriseCode,
   }) async {
-    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
+    final params = await ref.watch(ecRequestParamsProvider().future);
 
     return ref
         .read(ecPaymentFinalizationRepositoryProvider)
-        .getPaymentConditions(
-          params: EcRequestParams(
-            workingUrl: validatedUser!.enterprise!.workingUrl!,
-            user: validatedUser.user.name!,
-            accessKey: validatedUser.user.AccessKey!,
-          ),
-        );
+        .getPaymentConditions(params: params);
   }
 }

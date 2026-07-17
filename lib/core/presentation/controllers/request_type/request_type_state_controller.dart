@@ -3,8 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/core/providers/request_type/request_type.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 
 part 'request_type_state_controller.g.dart';
 
@@ -15,7 +15,7 @@ class RequestTypeStateController extends _$RequestTypeStateController {
     Modules module,
     int enterpriseCode,
   ) async {
-    final userSession = await ref.watch(validatedUserSessionProvider.future);
+    final ecParams = await ref.watch(ecRequestParamsProvider().future);
     final enterpriseCode = ref.read(
       selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
     );
@@ -29,11 +29,7 @@ class RequestTypeStateController extends _$RequestTypeStateController {
             inclusiveBuy: module == Modules.buyRequest,
             inclusiveTransfer: module == Modules.transferRequest,
           ),
-          params: EcRequestParams(
-            workingUrl: userSession!.enterprise!.workingUrl!,
-            user: userSession.user.name!,
-            accessKey: userSession.user.AccessKey!,
-          ),
+          params: ecParams,
         );
   }
 }

@@ -1,6 +1,5 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -20,9 +19,7 @@ class SearchedCustomersStateController
     );
     final customer = insertUpdateState.customer;
 
-    return SearchedCustomersState(
-      customers: [?customer],
-    );
+    return SearchedCustomersState(customers: [?customer]);
   }
 
   void toggleSearchByPersonalizedCode() {
@@ -53,18 +50,12 @@ class SearchedCustomersStateController
       try {
         final args = ref.read(saleRequestArgsProvider);
 
-        final validatedUserSession = await ref.read(
-          validatedUserSessionProvider.future,
-        );
+        final params = await ref.read(ecRequestParamsProvider().future);
 
         final customers = await ref
             .read(ecCustomersRepositoryProvider)
             .searchForMobileApp(
-              params: EcRequestParams(
-                workingUrl: validatedUserSession!.enterprise!.workingUrl!,
-                user: validatedUserSession.user.name!,
-                accessKey: validatedUserSession.user.AccessKey!,
-              ),
+              params: params,
               searchValue: value,
               enterpriseCode: args.enterpriseCode,
               searchByPersonalizedCode: searchByPersonalizedCode,

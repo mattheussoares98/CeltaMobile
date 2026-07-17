@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
@@ -29,14 +28,8 @@ class StatisticsStateController extends _$StatisticsStateController {
       );
     }
 
-    final validatedUser = await ref.watch(validatedUserSessionProvider.future);
-
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-    final ecParams = EcRequestParams(
-      workingUrl: validatedUser!.enterprise!.workingUrl!,
-      user: validatedUser.user.name!,
-      accessKey: validatedUser.user.AccessKey!,
-    );
+    final ecParams = await ref.watch(ecRequestParamsProvider().future);
 
     // Setup periodic timer to refresh the statistics silently every 2 minutes
     final timer = Timer.periodic(const Duration(minutes: 1), (_) async {

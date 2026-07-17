@@ -1,5 +1,4 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,13 +9,7 @@ class SearchCountStateController extends _$SearchCountStateController {
   @override
   FutureOr<dynamic> build() async {
     final repository = ref.read(ecSynchronizerRepositoryProvider);
-    final userSession = await ref.watch(validatedUserSessionProvider.future);
-
-    final ecParams = EcRequestParams(
-      workingUrl: userSession!.enterprise!.workingUrl!,
-      user: userSession.user.name!,
-      accessKey: userSession.user.AccessKey!,
-    );
+    final ecParams = await ref.watch(ecRequestParamsProvider().future);
     //TODO create tests
     return repository.searchCount(ecParams);
   }
@@ -25,13 +18,7 @@ class SearchCountStateController extends _$SearchCountStateController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(ecSynchronizerRepositoryProvider);
-      final userSession = await ref.read(validatedUserSessionProvider.future);
-
-      final ecParams = EcRequestParams(
-        workingUrl: userSession!.enterprise!.workingUrl!,
-        user: userSession.user.name!,
-        accessKey: userSession.user.AccessKey!,
-      );
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
       return await repository.searchCount(ecParams);
     });
   }

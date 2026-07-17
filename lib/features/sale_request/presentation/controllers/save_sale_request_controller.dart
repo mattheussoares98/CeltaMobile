@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
@@ -24,7 +24,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
     bool canSaveAndNeedProcessCart = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userSession = await ref.read(validatedUserSessionProvider.future);
+      final params = await ref.read(ecRequestParamsProvider().future);
       final saleRequest = await ref.read(
         insertUpdateStateControllerProvider.future,
       );
@@ -88,12 +88,6 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       } else if (isOnlyValidating) {
         return;
       }
-
-      final params = EcRequestParams(
-        workingUrl: userSession!.enterprise!.workingUrl!,
-        user: userSession.user.name!,
-        accessKey: userSession.user.AccessKey!,
-      );
 
       if (saleRequestId == 0) {
         ref

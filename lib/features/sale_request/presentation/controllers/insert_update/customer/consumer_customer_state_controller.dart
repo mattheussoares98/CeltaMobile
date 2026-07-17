@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 
@@ -15,9 +15,7 @@ class ConsumerCustomerStateController
   @override
   FutureOr<BSFCustomerEntity?> build() async {
     try {
-      final validatedUserSession = await ref.watch(
-        validatedUserSessionProvider.future,
-      );
+      final params = await ref.watch(ecRequestParamsProvider().future);
       final enterpriseCode = ref.watch(
         selectedEnterpriseStateControllerProvider.select((s) => s!.Code!),
       );
@@ -25,11 +23,7 @@ class ConsumerCustomerStateController
       final customer = await ref
           .read(ecCustomersRepositoryProvider)
           .searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: validatedUserSession!.enterprise!.workingUrl!,
-              user: validatedUserSession.user.name!,
-              accessKey: validatedUserSession.user.AccessKey!,
-            ),
+            params: params,
             searchValue: "-1",
             enterpriseCode: enterpriseCode,
             searchByPersonalizedCode: false,

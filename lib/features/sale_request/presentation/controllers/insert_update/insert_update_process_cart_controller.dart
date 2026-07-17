@@ -2,8 +2,7 @@
 
 import 'dart:async';
 
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -43,7 +42,7 @@ class InsertUpdateProcessCartController
 
       final saleRequestCode = current.code ?? 0;
 
-      final validatedUser = await ref.read(validatedUserSessionProvider.future);
+      final params = await ref.read(ecRequestParamsProvider().future);
       final args = ref.read(saleRequestArgsProvider);
 
       final processedValue = await ref
@@ -54,11 +53,7 @@ class InsertUpdateProcessCartController
             requestTypeCode: requestTypeCode,
             customerCode: customerCode,
             saleRequestCode: saleRequestCode,
-            params: EcRequestParams(
-              workingUrl: validatedUser!.enterprise!.workingUrl!,
-              user: validatedUser.user.name!,
-              accessKey: validatedUser.user.AccessKey!,
-            ),
+            params: params,
           );
 
       ref
