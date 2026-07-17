@@ -87,7 +87,7 @@ void main() {
         (status) => status != BsfGRProductJudgmentStatus.withoutJudge,
       )) {
         test(
-          'should mark selected ${areJudgedItems ? 'judged' : 'unjudged'} products with ${status.name}',
+          'should mark selected ${areJudgedItems ? 'judged' : 'unjudged'} products with ${status.name} and clear selection',
           () async {
             when(
               () => repository.markStatusJudgment(
@@ -101,6 +101,15 @@ void main() {
             final container = makeContainer(validatedSession: session);
             addTearDown(container.dispose);
             selectProducts(container, areJudged: areJudgedItems);
+
+            final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+            expect(
+              areJudgedItems
+                  ? container.read(uiControllerProvider).selectedProductsWithJudgmentIds
+                  : container.read(uiControllerProvider).selectedProductsWithoutJudgmentIds,
+              isNotEmpty,
+            );
+
             final states = <AsyncValue<void>>[];
             container.listen(
               judgmentControllerProvider(processCode),
@@ -121,12 +130,19 @@ void main() {
                 judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
               ),
             ).called(1);
+
+            expect(
+              areJudgedItems
+                  ? container.read(uiControllerProvider).selectedProductsWithJudgmentIds
+                  : container.read(uiControllerProvider).selectedProductsWithoutJudgmentIds,
+              isEmpty,
+            );
           },
         );
       }
     }
 
-    test('should annul selected judged products', () async {
+    test('should annul selected judged products and clear selection', () async {
       when(
         () => repository.annulStatusJudgment(
           params,
@@ -138,6 +154,13 @@ void main() {
       final container = makeContainer(validatedSession: session);
       addTearDown(container.dispose);
       selectProducts(container, areJudged: true);
+
+      final uiControllerProvider = gRValidateDocXmlUiControllerProvider(processCode);
+      expect(
+        container.read(uiControllerProvider).selectedProductsWithJudgmentIds,
+        isNotEmpty,
+      );
+
       final states = <AsyncValue<void>>[];
       container.listen(
         judgmentControllerProvider(processCode),
@@ -157,6 +180,11 @@ void main() {
           judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
         ),
       ).called(1);
+
+      expect(
+        container.read(uiControllerProvider).selectedProductsWithJudgmentIds,
+        isEmpty,
+      );
     });
 
     test('should expose an error when session is invalid', () async {
@@ -174,11 +202,11 @@ void main() {
       verifyZeroInteractions(repository);
     });
 
-    test('should expose mark repository errors', () async {
+    test('should expose mark repository errors and not clear selection', () async {
       when(
         () => repository.markStatusJudgment(
           params,
-          grDocProductCodes: const [],
+          grDocProductCodes: productCodes,
           grDocGroupCode: grDoc.group!.code!,
           judgmentStatus: BsfGRProductJudgmentStatus.accept,
           judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
@@ -186,6 +214,7 @@ void main() {
       ).thenThrow(Exception('Repository error'));
       final container = makeContainer(validatedSession: session);
       addTearDown(container.dispose);
+      selectProducts(container, areJudged: false);
 
       await container
           .read(judgmentControllerProvider(processCode).notifier)
@@ -198,19 +227,24 @@ void main() {
         container.read(judgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
+      expect(
+        container.read(gRValidateDocXmlUiControllerProvider(processCode)).selectedProductsWithoutJudgmentIds,
+        isNotEmpty,
+      );
     });
 
-    test('should expose annul repository errors', () async {
+    test('should expose annul repository errors and not clear selection', () async {
       when(
         () => repository.annulStatusJudgment(
           params,
-          grDocProductCodes: const [],
+          grDocProductCodes: productCodes,
           grDocGroupCode: grDoc.group!.code!,
           judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
         ),
       ).thenThrow(Exception('Repository error'));
       final container = makeContainer(validatedSession: session);
       addTearDown(container.dispose);
+      selectProducts(container, areJudged: true);
 
       await container
           .read(judgmentControllerProvider(processCode).notifier)
@@ -219,6 +253,10 @@ void main() {
       expect(
         container.read(judgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
+      );
+      expect(
+        container.read(gRValidateDocXmlUiControllerProvider(processCode)).selectedProductsWithJudgmentIds,
+        isNotEmpty,
       );
     });
 

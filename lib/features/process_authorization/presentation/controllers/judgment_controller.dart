@@ -20,9 +20,6 @@ class JudgmentController extends _$JudgmentController {
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-      final uiState = ref.read(
-        gRValidateDocXmlUiControllerProvider(processCode),
-      );
       final ecParams = EcRequestParams(
         workingUrl: validatedUser!.enterprise!.workingUrl!,
         user: validatedUser.user.name!,
@@ -33,6 +30,9 @@ class JudgmentController extends _$JudgmentController {
         gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
       );
 
+      final uiState = ref.read(
+        gRValidateDocXmlUiControllerProvider(processCode),
+      );
       await repository.markStatusJudgment(
         ecParams,
         grDocProductCodes: areJudgedItems
@@ -42,6 +42,11 @@ class JudgmentController extends _$JudgmentController {
         judgmentStatus: judgmentStatus,
         judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
       );
+
+      final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+      ref
+          .read(uiController.notifier)
+          .clearSelectedProducts(areJudgedItems: areJudgedItems);
     });
   }
 
@@ -50,9 +55,6 @@ class JudgmentController extends _$JudgmentController {
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
       final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
-      final uiState = ref.read(
-        gRValidateDocXmlUiControllerProvider(processCode),
-      );
       final ecParams = EcRequestParams(
         workingUrl: validatedUser!.enterprise!.workingUrl!,
         user: validatedUser.user.name!,
@@ -62,12 +64,19 @@ class JudgmentController extends _$JudgmentController {
         gRDocFiscalNoteDifferencesStateControllerProvider(processCode).future,
       );
 
+      final uiState = ref.read(
+        gRValidateDocXmlUiControllerProvider(processCode),
+      );
       await repository.annulStatusJudgment(
         ecParams,
         grDocProductCodes: uiState.selectedProductsWithJudgmentIds.toList(),
         grDocGroupCode: details.group?.code ?? 0,
         judgementType: BsfGRProductJudgmentType.requestForFiscalNote,
       );
+      final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+      ref
+          .read(uiController.notifier)
+          .clearSelectedProducts(areJudgedItems: true);
     });
   }
 
