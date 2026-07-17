@@ -40,6 +40,21 @@ class GRValidateDocXmlPage extends ConsumerWidget {
           final currentIndex = ref.watch(
             uiController.select((s) => s.selectedPageIndex),
           );
+          final (notJudgedQuantity, judgedQuantity) = ref.watch(
+            provider.select((s) {
+              final value = s.value;
+              return (
+                value
+                        ?.productsWithoutJudgementStatusRequestForFiscalNote
+                        ?.length ??
+                    0,
+                value
+                        ?.productsWithJudgementStatusRequestForFiscalNote
+                        ?.length ??
+                    0,
+              );
+            }),
+          );
           return BaseBottomNavigationBar(
             items: [
               BaseBottomNavigationBarItem(
@@ -48,6 +63,7 @@ class GRValidateDocXmlPage extends ConsumerWidget {
                   materialIcon: Icons.list,
                 ),
                 label: 'Não julgados'.hardcoded,
+                badgeLabel: notJudgedQuantity.toString(),
               ),
               BaseBottomNavigationBarItem(
                 platformIcon: const PlatformIcon(
@@ -55,6 +71,7 @@ class GRValidateDocXmlPage extends ConsumerWidget {
                   materialIcon: Icons.check_box,
                 ),
                 label: 'Julgados'.hardcoded,
+                badgeLabel: judgedQuantity.toString(),
               ),
               if (productsWithtoutRegister.isNotEmpty)
                 BaseBottomNavigationBarItem(
