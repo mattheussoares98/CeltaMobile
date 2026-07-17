@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -83,17 +84,29 @@ class _ProductsWithoutRegisterPageState
                     return Card(
                       clipBehavior: .hardEdge,
                       child: InkWell(
-                        onTap: () {
-                          showAlertDialog(
+                        onTap: () async {
+                          final ok = await showAlertDialog(
                             context: context,
                             title: 'Atenção'.hardcoded,
                             content:
                                 'Deseja associar a esse produto?'.hardcoded,
                             defaultActionText: 'Sim'.hardcoded,
                             cancelActionText: 'Não'.hardcoded,
-                          ).then((value) {
-                            if (value != true) return;
-                          });
+                          );
+
+                          if (ok == true) {
+                            ref
+                                .read(
+                                  judgmentControllerProvider(
+                                    widget.processCode,
+                                  ).notifier,
+                                )
+                                .linkProductWithoutCadaster(
+                                  productCode: product.ProductCode!,
+                                  productWithoutCadasterCode:
+                                      widget.productCode,
+                                );
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(Sizes.p8),
