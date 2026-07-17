@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/goods_receiving_validate_doc_xml.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,7 +35,10 @@ class GRValidateDocXmlPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       usePadding: false,
-      appBar: BaseAppBar(title: 'Diferenças de XML'.hardcoded),
+      appBar: BaseAppBar(
+        title: 'Diferenças de XML'.hardcoded,
+        actions: [OpenVotePageButton(processCode: processCode)],
+      ),
       bottomNavigationBar: Consumer(
         builder: (_, ref, _) {
           final currentIndex = ref.watch(
