@@ -95,7 +95,7 @@ class _ProductsWithoutRegisterPageState
                           );
 
                           if (ok == true) {
-                            ref
+                            final succeeds = await ref
                                 .read(
                                   judgmentControllerProvider(
                                     widget.processCode,
@@ -106,6 +106,9 @@ class _ProductsWithoutRegisterPageState
                                   productWithoutCadasterCode:
                                       widget.productCode,
                                 );
+                            if (succeeds && context.mounted) {
+                              Navigator.of(context).pop();
+                            }
                           }
                         },
                         child: Padding(
