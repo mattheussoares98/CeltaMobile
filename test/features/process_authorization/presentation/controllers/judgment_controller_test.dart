@@ -81,7 +81,7 @@ void main() {
     }
   }
 
-  group('MarkStatusJudgmentController', () {
+  group('JudgmentController', () {
     for (final areJudgedItems in [false, true]) {
       for (final status in BsfGRProductJudgmentStatus.values.where(
         (status) => status != BsfGRProductJudgmentStatus.withoutJudge,
@@ -103,15 +103,13 @@ void main() {
             selectProducts(container, areJudged: areJudgedItems);
             final states = <AsyncValue<void>>[];
             container.listen(
-              markStatusJudgmentControllerProvider(processCode),
+              judgmentControllerProvider(processCode),
               (_, next) => states.add(next),
             );
 
             await container
-                .read(
-                  markStatusJudgmentControllerProvider(processCode).notifier,
-                )
-                .judge(status, areJudgedItems: areJudgedItems);
+                .read(judgmentControllerProvider(processCode).notifier)
+                .judgeStatus(status, areJudgedItems: areJudgedItems);
 
             expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
             verify(
@@ -142,13 +140,13 @@ void main() {
       selectProducts(container, areJudged: true);
       final states = <AsyncValue<void>>[];
       container.listen(
-        markStatusJudgmentControllerProvider(processCode),
+        judgmentControllerProvider(processCode),
         (_, next) => states.add(next),
       );
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
-          .annul();
+          .read(judgmentControllerProvider(processCode).notifier)
+          .annulStatus();
 
       expect(states, [isA<AsyncLoading<void>>(), isA<AsyncData<void>>()]);
       verify(
@@ -166,11 +164,11 @@ void main() {
       addTearDown(container.dispose);
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
-          .annul();
+          .read(judgmentControllerProvider(processCode).notifier)
+          .annulStatus();
 
       expect(
-        container.read(markStatusJudgmentControllerProvider(processCode)),
+        container.read(judgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
       verifyZeroInteractions(repository);
@@ -190,11 +188,14 @@ void main() {
       addTearDown(container.dispose);
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
-          .judge(BsfGRProductJudgmentStatus.accept, areJudgedItems: false);
+          .read(judgmentControllerProvider(processCode).notifier)
+          .judgeStatus(
+            BsfGRProductJudgmentStatus.accept,
+            areJudgedItems: false,
+          );
 
       expect(
-        container.read(markStatusJudgmentControllerProvider(processCode)),
+        container.read(judgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
     });
@@ -212,11 +213,11 @@ void main() {
       addTearDown(container.dispose);
 
       await container
-          .read(markStatusJudgmentControllerProvider(processCode).notifier)
-          .annul();
+          .read(judgmentControllerProvider(processCode).notifier)
+          .annulStatus();
 
       expect(
-        container.read(markStatusJudgmentControllerProvider(processCode)),
+        container.read(judgmentControllerProvider(processCode)),
         isA<AsyncError<void>>(),
       );
     });

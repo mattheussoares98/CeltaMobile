@@ -5,14 +5,14 @@ import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'mark_status_judgment_controller.g.dart';
+part 'judgment_controller.g.dart';
 
 @riverpod
-class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
+class JudgmentController extends _$JudgmentController {
   @override
   FutureOr<void> build(int processCode) {}
 
-  Future<void> judge(
+  Future<void> judgeStatus(
     BsfGRProductJudgmentStatus judgmentStatus, {
     required bool areJudgedItems,
   }) async {
@@ -45,7 +45,7 @@ class MarkStatusJudgmentController extends _$MarkStatusJudgmentController {
     });
   }
 
-  Future<void> annul() async {
+  Future<void> annulStatus() async {
     state = const AsyncLoading<void>();
     state = await AsyncValue.guard(() async {
       final validatedUser = await ref.read(validatedUserSessionProvider.future);
