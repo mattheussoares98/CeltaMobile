@@ -59,6 +59,7 @@ class GRValidateDocXmlPage extends ConsumerWidget {
               );
             }),
           );
+
           return BaseBottomNavigationBar(
             items: [
               BaseBottomNavigationBarItem(
@@ -83,11 +84,17 @@ class GRValidateDocXmlPage extends ConsumerWidget {
                     cupertinoIcon: CupertinoIcons.question,
                     materialIcon: Icons.question_mark_rounded,
                   ),
+                  badgeLabel: productsWithtoutRegister.length.toString(),
                   label: 'Sem cadastro'.hardcoded,
                 ),
             ],
             currentIndex: currentIndex,
-            onTap: ref.read(uiController.notifier).updatePageIndex,
+            onTap:
+                productsWithtoutRegister.length == 1 &&
+                    ref.watch(provider.select((s) => s.isLoading)) == true
+                //!when link the lat product, hide the not found products bottom navigation bar
+                ? (_) {}
+                : ref.read(uiController.notifier).updatePageIndex,
           );
         },
       ),
