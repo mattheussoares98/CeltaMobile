@@ -41,7 +41,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       Routes.createSaleRequest => minimumDateLoadRequestType,
       Routes.saleRequestRequestsTypes => minimumDateLoadRequestType,
       Routes.transferRequestRequestsTypes => minimumDateLoadRequestType,
-      Routes.processAuthorization => DateTime(2026, 7, 10),
+      Routes.processAuthorization => DateTime(2026, 7, 17),
       Routes.insertUpdateSaleRequest => DateTime(2026, 6, 22),
       Routes.adjustCost => DateTime(2026, 3, 31),
       _ => null,
