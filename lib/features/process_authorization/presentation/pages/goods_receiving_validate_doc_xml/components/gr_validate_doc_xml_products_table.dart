@@ -34,22 +34,10 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final judgmentController = judgmentControllerProvider(processCode);
     final provider = gRDocFiscalNoteDifferencesStateControllerProvider(
       processCode,
     );
     final uiController = gRValidateDocXmlUiControllerProvider(processCode);
-
-    ref.observeLoading([judgmentController]);
-    ref.listen(judgmentController, (previous, next) {
-      next.showAlertDialogOnError(context);
-      next.doOnSuccess(previous, () {
-        ref
-            .read(uiController.notifier)
-            .clearSelectedProducts(areJudgedItems: areJudgedItems);
-        ref.invalidate(provider);
-      });
-    });
 
     final items = ref.watch(
       provider.select((s) {

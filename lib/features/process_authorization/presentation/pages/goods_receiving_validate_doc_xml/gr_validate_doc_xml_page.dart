@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/goods_receiving_validate_doc_xml.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +19,16 @@ class GRValidateDocXmlPage extends ConsumerWidget {
     final productsWithtoutRegister = ref.watch(
       provider.select((s) => s.value?.productsWithoutCadaster ?? []),
     );
+
+    final judgmentController = judgmentControllerProvider(processCode);
+
+    ref.observeLoading([judgmentController]);
+    ref.listen(judgmentController, (previous, next) {
+      next.showAlertDialogOnError(context);
+      next.doOnSuccess(previous, () {
+        ref.invalidate(provider);
+      });
+    });
 
     return BaseScaffold(
       isScrollable: false,
