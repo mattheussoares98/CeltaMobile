@@ -151,4 +151,25 @@ class EcProcessAuthorizationDatasource
       },
     );
   }
+
+  @override
+  Future<void> linkProductWithoutCadaster(
+    EcRequestParams params, {
+    required int documentCode,
+    required int productCode,
+    required int productWithoutCadasterCode,
+  }) async {
+    await httpClient.request(
+      url:
+          '${params.workingUrl}/api/ProcessAuthorization/LinkProductWithoutCadaster',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'DocumentCode': documentCode,
+        'ProductCode': productCode,
+        'ProductWithoutCadasterCode': productWithoutCadasterCode,
+      },
+    );
+  }
 }

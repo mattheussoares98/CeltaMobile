@@ -289,4 +289,69 @@ void main() {
       ).called(1);
     });
   });
+
+  group('linkProductWithoutCadaster', () {
+    late int documentCode;
+    late int productCode;
+    late int productWithoutCadasterCode;
+
+    setUp(() {
+      documentCode = faker.randomGenerator.integer(100);
+      productCode = faker.randomGenerator.integer(100);
+      productWithoutCadasterCode = faker.randomGenerator.integer(100);
+    });
+
+    test('should call http with correct parameters', () async {
+      httpClient.mockRequest(null);
+
+      await sut.linkProductWithoutCadaster(
+        params,
+        documentCode: documentCode,
+        productCode: productCode,
+        productWithoutCadasterCode: productWithoutCadasterCode,
+      );
+
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/ProcessAuthorization/LinkProductWithoutCadaster',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'DocumentCode': documentCode,
+            'ProductCode': productCode,
+            'ProductWithoutCadasterCode': productWithoutCadasterCode,
+          },
+        ),
+      ).called(1);
+    });
+
+    test('should rethrow when http request fails', () async {
+      final exception = Exception('Failed to link product without cadaster');
+      when(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/ProcessAuthorization/LinkProductWithoutCadaster',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: {
+            ...params.toMap(),
+            'DocumentCode': documentCode,
+            'ProductCode': productCode,
+            'ProductWithoutCadasterCode': productWithoutCadasterCode,
+          },
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.linkProductWithoutCadaster(
+        params,
+        documentCode: documentCode,
+        productCode: productCode,
+        productWithoutCadasterCode: productWithoutCadasterCode,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+    });
+  });
 }

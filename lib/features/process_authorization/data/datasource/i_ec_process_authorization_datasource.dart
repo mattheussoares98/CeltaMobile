@@ -45,4 +45,11 @@ abstract class IEcProcessAuthorizationDatasource {
     required int grDocGroupCode,
     required BsfGRProductJudgmentType judgementType,
   });
+
+  Future<void> linkProductWithoutCadaster(
+    EcRequestParams params, {
+    required int documentCode,
+    required int productCode,
+    required int productWithoutCadasterCode,
+  });
 }

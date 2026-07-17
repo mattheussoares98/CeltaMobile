@@ -300,4 +300,64 @@ void main() {
       ).called(1);
     });
   });
+
+  group('linkProductWithoutCadaster', () {
+    late int documentCode;
+    late int productCode;
+    late int productWithoutCadasterCode;
+
+    setUp(() {
+      documentCode = faker.randomGenerator.integer(100);
+      productCode = faker.randomGenerator.integer(100);
+      productWithoutCadasterCode = faker.randomGenerator.integer(100);
+    });
+
+    test('should call datasource with correct parameters', () async {
+      when(
+        () => datasource.linkProductWithoutCadaster(
+          params,
+          documentCode: documentCode,
+          productCode: productCode,
+          productWithoutCadasterCode: productWithoutCadasterCode,
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.linkProductWithoutCadaster(
+        params,
+        documentCode: documentCode,
+        productCode: productCode,
+        productWithoutCadasterCode: productWithoutCadasterCode,
+      );
+
+      verify(
+        () => datasource.linkProductWithoutCadaster(
+          params,
+          documentCode: documentCode,
+          productCode: productCode,
+          productWithoutCadasterCode: productWithoutCadasterCode,
+        ),
+      ).called(1);
+    });
+
+    test('should rethrow when datasource fails', () async {
+      final exception = Exception('Failed to link product without cadaster');
+      when(
+        () => datasource.linkProductWithoutCadaster(
+          params,
+          documentCode: documentCode,
+          productCode: productCode,
+          productWithoutCadasterCode: productWithoutCadasterCode,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.linkProductWithoutCadaster(
+        params,
+        documentCode: documentCode,
+        productCode: productCode,
+        productWithoutCadasterCode: productWithoutCadasterCode,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+    });
+  });
 }

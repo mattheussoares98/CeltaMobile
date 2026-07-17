@@ -110,4 +110,19 @@ class EcProcessAuthorizationRepositoryImpl
       judgementType: judgementType,
     );
   }
+
+  @override
+  Future<void> linkProductWithoutCadaster(
+    EcRequestParams params, {
+    required int documentCode,
+    required int productCode,
+    required int productWithoutCadasterCode,
+  }) async {
+    await datasource.linkProductWithoutCadaster(
+      params,
+      documentCode: documentCode,
+      productCode: productCode,
+      productWithoutCadasterCode: productWithoutCadasterCode,
+    );
+  }
 }
