@@ -10,6 +10,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
   final String PackingAbbreviation;
   final double PackingQuantity;
   final int codigoInternoProEmb;
+  final int ProductCode;
 
   const ShallowProductModel({
     required this.Name,
@@ -17,6 +18,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
     required this.PackingAbbreviation,
     required this.PackingQuantity,
     required this.codigoInternoProEmb,
+    required this.ProductCode,
   });
 
   @override
@@ -26,6 +28,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
     PackingAbbreviation,
     PackingQuantity,
     codigoInternoProEmb,
+    ProductCode,
   ];
 
   factory ShallowProductModel.fromJson(Map json) => ShallowProductModel(
@@ -34,6 +37,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
     PackingAbbreviation: json['packingAbbreviation'],
     PackingQuantity: json['packingQuantity'],
     codigoInternoProEmb: json['id'],
+    ProductCode: json['productCode'],
   );
 
   @override
@@ -43,6 +47,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
     'packingAbbreviation': PackingAbbreviation,
     'packingQuantity': PackingQuantity,
     'id': codigoInternoProEmb,
+    'productCode': ProductCode,
   };
 
   factory ShallowProductModel.fromEntity(ProductEntity entity) =>
@@ -51,6 +56,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
         PriceLookupCode: entity.PLU!,
         PackingAbbreviation: entity.PackingAbbreviation!,
         codigoInternoProEmb: entity.codigoInternoProEmb!,
+        ProductCode: entity.ProductCode!,
         PackingQuantity: entity.PackingQuantity!.toDouble()!,
       );
 
@@ -60,6 +66,7 @@ class ShallowProductModel extends Equatable implements ProductModelType {
     PLU: PriceLookupCode,
     PackingAbbreviation: PackingAbbreviation,
     codigoInternoProEmb: codigoInternoProEmb,
+    ProductCode: ProductCode,
     PackingQuantity: PackingQuantity.toString(),
   );
 }
