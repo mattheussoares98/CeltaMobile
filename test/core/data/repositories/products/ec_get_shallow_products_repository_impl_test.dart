@@ -1,9 +1,9 @@
 import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/data/repositories/products/products.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
-import 'package:celta_inventario/core/data/repositories/products/products.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -21,6 +21,7 @@ class EcGetShallowProductsDatasourceSpy extends Mock
         user: any(named: 'user'),
         accessKey: any(named: 'accessKey'),
         cancelToken: any(named: 'cancelToken'),
+        recordsByPage: any(named: 'recordsByPage'),
       ),
     ).thenAnswer((_) async => response);
   }
@@ -38,6 +39,7 @@ void main() {
   late String name;
   late int enterpriseId;
   late CancelToken cancelToken;
+  late int? recordsByPage;
 
   void initSut() {
     sut = EcGetShallowProductsRepositoryImpl(datasource);
@@ -65,6 +67,9 @@ void main() {
     accessKey = faker.randomGenerator.string(13);
     name = faker.randomGenerator.string(13);
     enterpriseId = faker.randomGenerator.integer(1000);
+    recordsByPage = faker.randomGenerator.boolean()
+        ? faker.randomGenerator.integer(100)
+        : null;
   }
 
   setUp(() {
@@ -82,6 +87,7 @@ void main() {
       name: name,
       enterpriseId: enterpriseId,
       cancelToken: cancelToken,
+      recordsByPage: recordsByPage,
     );
 
     expect(
@@ -99,6 +105,7 @@ void main() {
         user: user,
         accessKey: accessKey,
         cancelToken: cancelToken,
+        recordsByPage: recordsByPage,
       ),
     ).called(1);
   });

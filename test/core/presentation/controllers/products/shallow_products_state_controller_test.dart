@@ -24,6 +24,7 @@ void main() {
   late List<ProductEntity> fakeProducts;
   final fakerInstance = Faker();
   late FakeAppUsageStateController fakeAppUsage;
+  late int? recordsByPage;
 
   setUpAll(() {
     registerFallbackValue(CancelToken('x'));
@@ -40,6 +41,9 @@ void main() {
         selectedEnterprise: fakeEnterprise,
       ),
     );
+    recordsByPage = faker.randomGenerator.boolean()
+        ? faker.randomGenerator.integer(100)
+        : null;
 
     fakeProducts = List.generate(
       fakerInstance.randomGenerator.integer(5, min: 1),
@@ -93,6 +97,7 @@ void main() {
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: any(named: 'recordsByPage'),
         ),
       ).thenAnswer((_) async => fakeProducts);
 
@@ -113,7 +118,7 @@ void main() {
       // ACT
       await container
           .read(shallowProductsStateControllerProvider.notifier)
-          .load(searchTerm);
+          .load(searchTerm, recordsByPage: recordsByPage);
 
       // ASSERT
       expect(states, [isA<AsyncLoading>(), isA<AsyncData>()]);
@@ -128,6 +133,7 @@ void main() {
           name: searchTerm,
           enterpriseId: fakeEnterprise.Code!,
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: recordsByPage,
         ),
       ).called(1);
     });
@@ -143,6 +149,7 @@ void main() {
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: any(named: 'recordsByPage'),
         ),
       ).thenAnswer((_) async => fakeProducts);
 
@@ -157,10 +164,10 @@ void main() {
       // ACT
       await container
           .read(shallowProductsStateControllerProvider.notifier)
-          .load(searchTerm);
+          .load(searchTerm, recordsByPage: recordsByPage);
       await container
           .read(shallowProductsStateControllerProvider.notifier)
-          .load(searchTerm.padRight(3));
+          .load(searchTerm.padRight(3), recordsByPage: recordsByPage);
 
       expect(fakeAppUsage.lastUsageType, UsageType.shallowSearchProduct);
 
@@ -172,6 +179,7 @@ void main() {
           name: searchTerm,
           enterpriseId: fakeEnterprise.Code!,
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: recordsByPage,
         ),
       ).called(1);
     });
@@ -202,6 +210,7 @@ void main() {
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: any(named: 'recordsByPage'),
         ),
       );
     });
@@ -231,6 +240,7 @@ void main() {
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: any(named: 'recordsByPage'),
         ),
       );
     });
@@ -246,6 +256,7 @@ void main() {
           name: any(named: 'name'),
           enterpriseId: any(named: 'enterpriseId'),
           cancelToken: any(named: 'cancelToken'),
+          recordsByPage: any(named: 'recordsByPage'),
         ),
       ).thenThrow(exception);
 
@@ -297,6 +308,7 @@ void main() {
             name: any(named: 'name'),
             enterpriseId: any(named: 'enterpriseId'),
             cancelToken: any(named: 'cancelToken'),
+            recordsByPage: any(named: 'recordsByPage'),
           ),
         ).thenAnswer((_) async => []);
 
@@ -310,10 +322,10 @@ void main() {
 
         await container
             .read(shallowProductsStateControllerProvider.notifier)
-            .load(searchTerm);
+            .load(searchTerm, recordsByPage: recordsByPage);
         await container
             .read(shallowProductsStateControllerProvider.notifier)
-            .load(searchTerm + faker.lorem.word());
+            .load(searchTerm + faker.lorem.word(), recordsByPage: recordsByPage);
 
         expect(
           container.read(shallowProductsStateControllerProvider).value,
@@ -328,6 +340,7 @@ void main() {
             name: searchTerm,
             enterpriseId: fakeEnterprise.Code!,
             cancelToken: any(named: 'cancelToken'),
+            recordsByPage: recordsByPage,
           ),
         ).called(1);
       },

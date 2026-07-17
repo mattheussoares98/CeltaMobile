@@ -20,6 +20,7 @@ void main() {
   late String name;
   late int enterpriseId;
   late CancelToken cancelToken;
+  late int recordsByPage;
 
   void initSut() {
     sut = EcGetShallowProductsDatasource(httpClient);
@@ -42,6 +43,7 @@ void main() {
     accessKey = faker.guid.guid();
     name = faker.lorem.word();
     enterpriseId = faker.randomGenerator.integer(100);
+    recordsByPage = faker.randomGenerator.integer(100);
     productsEntities = [
       EntityFactory.makeProductEntity(),
       EntityFactory.makeProductEntity(),
@@ -66,6 +68,7 @@ void main() {
       accessKey: accessKey,
       user: user,
       cancelToken: cancelToken,
+      recordsByPage: recordsByPage,
     );
 
     expect(
@@ -78,7 +81,11 @@ void main() {
         url: '$workingUrl/api/products/shallow',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
-        body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
+        body: {
+          'name': name,
+          'enterpriseId': enterpriseId,
+          'recordsByPage': recordsByPage,
+        },
         cancelToken: cancelToken,
       ),
     ).called(1);
@@ -93,6 +100,7 @@ void main() {
       accessKey: accessKey,
       user: user,
       cancelToken: cancelToken,
+      recordsByPage: recordsByPage,
     );
 
     expect(products, isEmpty);
@@ -102,7 +110,11 @@ void main() {
         url: '$workingUrl/api/products/shallow',
         method: 'post',
         headers: {'user': user, 'accessKey': accessKey},
-        body: {'name': name, 'enterpriseId': enterpriseId, 'recordsByPage': 10},
+        body: {
+          'name': name,
+          'enterpriseId': enterpriseId,
+          'recordsByPage': recordsByPage,
+        },
         cancelToken: cancelToken,
       ),
     ).called(1);

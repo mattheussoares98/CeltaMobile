@@ -1,5 +1,5 @@
-import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 
 abstract class IEcGetShallowProductsDatasource {
   Future<List<ShallowProductModel>> get({
@@ -9,5 +9,6 @@ abstract class IEcGetShallowProductsDatasource {
     required String user,
     required String accessKey,
     required CancelToken? cancelToken,
+    int? recordsByPage,
   });
 }

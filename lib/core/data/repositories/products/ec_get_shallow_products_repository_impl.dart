@@ -1,7 +1,6 @@
-import 'package:celta_inventario/core/domain/entities/product/product_entity.dart';
-
 import 'package:celta_inventario/core/data/datasource/products/products.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/entities/product/product_entity.dart';
 import 'package:celta_inventario/core/domain/repositories/products/products.dart';
 
 class EcGetShallowProductsRepositoryImpl
@@ -18,6 +17,7 @@ class EcGetShallowProductsRepositoryImpl
     required String name,
     required int enterpriseId,
     required CancelToken cancelToken,
+    int? recordsByPage,
   }) async {
     final products = await datasource.get(
       workingUrl: workingUrl,
@@ -26,6 +26,7 @@ class EcGetShallowProductsRepositoryImpl
       user: user,
       accessKey: accessKey,
       cancelToken: cancelToken,
+      recordsByPage: recordsByPage ?? 10,
     );
 
     return products.map((e) => e.toEntity()).toList();

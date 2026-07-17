@@ -9,5 +9,6 @@ abstract class IEcGetShallowProductsRepository {
     required String name,
     required int enterpriseId,
     required CancelToken cancelToken,
+    int? recordsByPage,
   });
 }
