@@ -14,6 +14,7 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
   Future<dynamic> loadShallow(
     EcRequestParams params, {
     required DateTime selectedDate,
+    required int enterpriseCode,
   }) async {
     final response = await httpClient.request(
       url: '${params.workingUrl}/api/BuyRequest/Shallow',
@@ -22,6 +23,7 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
       body: {
         ...params.toMap(),
         'InitialCreateDate': selectedDate.toIso8601String(),
+        'EnterpriseCode': enterpriseCode,
       },
     );
 

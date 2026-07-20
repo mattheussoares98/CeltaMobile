@@ -21,7 +21,11 @@ class ShallowBuyRequestStateController
     state = await AsyncValue.guard(() async {
       final result = await ref
           .read(ecBuyRequestRepositoryProvider)
-          .loadShallow(ecParams, selectedDate: date);
+          .loadShallow(
+            ecParams,
+            selectedDate: date,
+            enterpriseCode: enterpriseCode,
+          );
 
       return result;
     });

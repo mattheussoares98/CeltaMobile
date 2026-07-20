@@ -1,51 +1,62 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/search/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ShallowBuyRequestsPage extends ConsumerStatefulWidget {
+class ShallowBuyRequestsPage extends ConsumerWidget {
   final int enterpriseCode;
   const ShallowBuyRequestsPage({super.key, required this.enterpriseCode});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ShallowBuyRequestsPageState();
-}
-
-class _ShallowBuyRequestsPageState
-    extends ConsumerState<ShallowBuyRequestsPage> {
-  static final now = DateTime.now();
-  DateTime selectedDate = now;
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return BaseScaffold(
-      appBar: BaseAppBar(title: 'Consulta de pedidos de compras'.hardcoded),
+      isScrollable: false,
+      appBar: BaseAppBar(
+        title: 'Consulta de pedidos de compras'.hardcoded,
+        selectedEnterpriseCode: enterpriseCode,
+      ),
       body: Column(
         children: [
-          Expanded(
-            child: PrimaryButton(
-              text: selectedDate.formatDate(),
-              onPressed: () async {
-                final newDate = await GetNewDate.get(
-                  minimumDate: now.subtract(const Duration(days: 365 * 5)),
-                  maximumDate: now,
-                  context: context,
-                );
+          SelectDateAndSearchButton(enterpriseCode: enterpriseCode),
+          gapH12,
+          Consumer(
+            builder: (_, ref, _) {
+              final provider = shallowBuyRequestStateControllerProvider(
+                enterpriseCode,
+              );
+              return AsyncValueWidget(
+                value: ref.watch(provider),
+                tryAgain: null,
+                data: (buyRequests) {
+                  if (buyRequests.isEmpty) {
+                    return Center(
+                      child: BaseText.error(
+                        'Nenhum pedido de compra foi encontrado'.hardcoded,
+                      ),
+                    );
+                  }
 
-                if (newDate != null) {
-                  setState(() {
-                    selectedDate = newDate;
-                  });
-                }
-              },
-            ),
-          ),
-          Expanded(
-            child: PrimaryTextButton(
-              text: 'Pesquisar'.hardcoded,
-              onPressed: () {},
-            ),
+                  return Expanded(
+                    child: ResponsiveListFlow(
+                      itemCount: buyRequests.length,
+                      itemBuilder: (context, index) {
+                        final item = buyRequests[index];
+
+                        return Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(Sizes.p8),
+                            child: Text(item.toString()),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),

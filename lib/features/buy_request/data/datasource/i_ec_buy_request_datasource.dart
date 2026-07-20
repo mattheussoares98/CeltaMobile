@@ -4,5 +4,6 @@ abstract class IEcBuyRequestDatasource {
   Future<dynamic> loadShallow(
     EcRequestParams params, {
     required DateTime selectedDate,
+    required int enterpriseCode,
   });
 }

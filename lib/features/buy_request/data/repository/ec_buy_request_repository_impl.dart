@@ -12,7 +12,12 @@ class EcBuyRequestRepositoryImpl implements IEcBuyRequestRepository {
   Future<dynamic> loadShallow(
     EcRequestParams params, {
     required DateTime selectedDate,
+    required int enterpriseCode,
   }) {
-    return datasource.loadShallow(params, selectedDate: selectedDate);
+    return datasource.loadShallow(
+      params,
+      selectedDate: selectedDate,
+      enterpriseCode: enterpriseCode,
+    );
   }
 }
