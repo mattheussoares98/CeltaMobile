@@ -3,6 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/home/presentation/model/model.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
@@ -27,14 +28,27 @@ class DefaultModuleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void accessModule() async {
-      Routes? saleRequestNextRoute;
-      if (route == Routes.saleRequestActionSelector) {
-        saleRequestNextRoute = await BaseActionSelector.show(
+      Routes? selectedActionRoute;
+      if (const {
+        Routes.saleRequestActionSelector,
+        Routes.buyRequestActionSelector,
+      }.contains(route)) {
+        final List<PageActionSelectorModel> actions;
+        String title;
+        if (route == Routes.saleRequestActionSelector) {
+          actions = SaleRequestActions.get(context);
+          title = 'Pedido de vendas'.hardcoded;
+        } else {
+          actions = BuyRequestActions.get(context);
+          title = 'Pedido de compras'.hardcoded;
+        }
+
+        selectedActionRoute = await BaseActionSelector.show(
           context,
-          actions: SaleRequestActions.get(context),
-          title: 'Pedido de vendas'.hardcoded,
+          actions: actions,
+          title: title,
         );
-        if (saleRequestNextRoute == null) return;
+        if (selectedActionRoute == null) return;
       }
       final enterpriseCode = ref.read(
         selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
@@ -46,7 +60,7 @@ class DefaultModuleButton extends ConsumerWidget {
           .tryAccess(
             context: context,
             module: module,
-            route: saleRequestNextRoute ?? route,
+            route: selectedActionRoute ?? route,
             enterpriseCode: enterpriseCode,
             replace: true,
             pathParameters: passEnterpriseToNextRoute
