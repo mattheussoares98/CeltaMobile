@@ -2,7 +2,6 @@ import 'package:celta_inventario/features/buy_request/data/datasource/datasource
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/domain/repository/repository.dart';
 
-// TODO: Create tests for EcBuyRequestRepositoryImpl.
 class EcBuyRequestRepositoryImpl implements IEcBuyRequestRepository {
   final IEcBuyRequestDatasource datasource;
 

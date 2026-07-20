@@ -2172,16 +2172,62 @@ class EntityFactory {
     product: makeBSFProductEntity(),
   );
 
-  static GRProductsWithoutCadasterEntity makeGRProductsWithoutCadasterEntity() =>
-      GRProductsWithoutCadasterEntity(
-        document: faker.randomGenerator.integer(100).toString(),
+  static GRProductsWithoutCadasterEntity
+  makeGRProductsWithoutCadasterEntity() => GRProductsWithoutCadasterEntity(
+    document: faker.randomGenerator.integer(100).toString(),
+    code: faker.randomGenerator.integer(100),
+    quantity: faker.randomGenerator.decimal(),
+    quantityOfXml: faker.randomGenerator.decimal(),
+    unitLiquidValue: faker.randomGenerator.decimal(),
+    unitValue: faker.randomGenerator.decimal(),
+    reference: faker.lorem.word(),
+    ean: faker.randomGenerator.integer(1000000).toString(),
+    observations: faker.lorem.sentence(),
+  );
+
+  static EcBuyRequestDtoEntity makeEcBuyRequestDtoEntity() =>
+      EcBuyRequestDtoEntity(
         code: faker.randomGenerator.integer(100),
-        quantity: faker.randomGenerator.decimal(),
-        quantityOfXml: faker.randomGenerator.decimal(),
-        unitLiquidValue: faker.randomGenerator.decimal(),
-        unitValue: faker.randomGenerator.decimal(),
-        reference: faker.lorem.word(),
-        ean: faker.randomGenerator.integer(1000000).toString(),
-        observations: faker.lorem.sentence(),
+        personalizedCode: faker.randomGenerator.integer(100).toString(),
+        buyer: EcBuyRequestBuyerDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          buyer: faker.randomGenerator.boolean(),
+          seller: faker.randomGenerator.boolean(),
+          pdvOperator: faker.randomGenerator.boolean(),
+          dateOfBirth: faker.date.dateTime(),
+          cpfNumber: faker.randomGenerator.integer(100).toString(),
+          rgNumber: faker.randomGenerator.integer(100).toString(),
+          name: faker.person.name(),
+          nameReduced: faker.person.name(),
+        ),
+        requestType: EcBuyRequestTypeDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          name: faker.lorem.word(),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+        ),
+        supplier: EcBuyRequestSupplierDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          name: faker.person.name(),
+          fantasizesName: faker.person.name(),
+          suframaCode: faker.randomGenerator.integer(100).toString(),
+          cnpjCpfNumber: faker.randomGenerator.integer(100).toString(),
+          formatedCnpjCpfNumber: faker.randomGenerator.integer(100).toString(),
+          inscriptionRgNumber: faker.randomGenerator.integer(100).toString(),
+        ),
+        enterprises: List.generate(
+          faker.randomGenerator.integer(3),
+          (index) => EcBuyRequestEnterpriseItemDtoEntity(
+            buyRequest: const {},
+            isPrincipal: index == 0,
+            enterprise: EcBuyRequestEnterpriseDtoEntity(
+              cnpjNumber: faker.randomGenerator.integer(100).toString(),
+              name: faker.person.name(),
+              personalizedCode: faker.randomGenerator.integer(100).toString(),
+            ),
+            totalLiquidValue: faker.randomGenerator.decimal(),
+          ),
+        ),
+        totalLiquid: faker.randomGenerator.decimal(),
       );
 }

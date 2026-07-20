@@ -13,7 +13,6 @@ class ShallowBuyRequestStateController
   FutureOr<List<EcBuyRequestDtoEntity>> build(int enterpriseCode) {
     return [];
   }
-  //TODO create tests
 
   Future<void> load(DateTime date) async {
     final ecParams = await ref.read(ecRequestParamsProvider().future);

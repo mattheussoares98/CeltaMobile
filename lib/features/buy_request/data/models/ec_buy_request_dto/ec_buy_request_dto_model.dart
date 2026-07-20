@@ -92,7 +92,9 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ? null
           : EcBuyRequestSupplierDtoModel.fromEntity(supplier!).toEntity(),
       enterprises: enterprises
-          ?.map((e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e))
+          ?.map(
+            (e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e).toEntity(),
+          )
           .toList(),
       totalLiquid: totalLiquid,
     );
