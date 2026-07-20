@@ -3,6 +3,7 @@ import 'package:celta_inventario/features/buy_request/domain/entities/entities.d
 
 class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
   const EcBuyRequestDtoModel({
+    required super.code,
     required super.personalizedCode,
     required super.buyer,
     required super.requestType,
@@ -13,6 +14,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
 
   factory EcBuyRequestDtoModel.fromJson(Map json) {
     return EcBuyRequestDtoModel(
+      code: json['code'],
       personalizedCode: json['personalizedCode'],
       buyer: json['buyer'] != null
           ? EcBuyRequestBuyerDtoModel.fromJson(json['buyer'] as Map)
@@ -36,6 +38,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
 
   Map<String, dynamic> toJson() {
     return {
+      'code': code,
       'personalizedCode': personalizedCode,
       'buyer': buyer == null
           ? null
@@ -57,6 +60,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
 
   factory EcBuyRequestDtoModel.fromEntity(EcBuyRequestDtoEntity entity) {
     return EcBuyRequestDtoModel(
+      code: entity.code,
       personalizedCode: entity.personalizedCode,
       buyer: entity.buyer != null
           ? EcBuyRequestBuyerDtoModel.fromEntity(entity.buyer!)
@@ -76,6 +80,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
 
   EcBuyRequestDtoEntity toEntity() {
     return EcBuyRequestDtoEntity(
+      code: code,
       personalizedCode: personalizedCode,
       buyer: buyer == null
           ? null

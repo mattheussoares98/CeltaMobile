@@ -2,6 +2,7 @@ import 'package:celta_inventario/features/buy_request/domain/entities/entities.d
 import 'package:equatable/equatable.dart';
 
 class EcBuyRequestDtoEntity extends Equatable {
+  final int code;
   final String? personalizedCode;
   final EcBuyRequestBuyerDtoEntity? buyer;
   final EcBuyRequestTypeDtoEntity? requestType;
@@ -10,6 +11,7 @@ class EcBuyRequestDtoEntity extends Equatable {
   final double? totalLiquid;
 
   const EcBuyRequestDtoEntity({
+    required this.code,
     required this.personalizedCode,
     required this.buyer,
     required this.requestType,
@@ -20,6 +22,7 @@ class EcBuyRequestDtoEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    code,
     personalizedCode,
     buyer,
     requestType,
