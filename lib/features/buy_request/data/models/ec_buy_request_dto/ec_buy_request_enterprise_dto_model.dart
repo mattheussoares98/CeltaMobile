@@ -5,6 +5,7 @@ class EcBuyRequestEnterpriseDtoModel extends EcBuyRequestEnterpriseDtoEntity {
     required super.personalizedCode,
     required super.cnpjNumber,
     required super.name,
+    required super.code,
   });
 
   factory EcBuyRequestEnterpriseDtoModel.fromJson(Map json) {
@@ -12,6 +13,7 @@ class EcBuyRequestEnterpriseDtoModel extends EcBuyRequestEnterpriseDtoEntity {
       personalizedCode: json['personalizedCode']?.toString(),
       cnpjNumber: json['cnpjNumber']?.toString(),
       name: json['name'] as String?,
+      code: json['code'] as int?,
     );
   }
 
@@ -20,6 +22,7 @@ class EcBuyRequestEnterpriseDtoModel extends EcBuyRequestEnterpriseDtoEntity {
       'personalizedCode': personalizedCode,
       'cnpjNumber': cnpjNumber,
       'name': name,
+      'code': code,
     };
   }
 
@@ -30,6 +33,7 @@ class EcBuyRequestEnterpriseDtoModel extends EcBuyRequestEnterpriseDtoEntity {
       personalizedCode: entity.personalizedCode,
       cnpjNumber: entity.cnpjNumber,
       name: entity.name,
+      code: entity.code,
     );
   }
 
@@ -38,6 +42,7 @@ class EcBuyRequestEnterpriseDtoModel extends EcBuyRequestEnterpriseDtoEntity {
       personalizedCode: personalizedCode,
       cnpjNumber: cnpjNumber,
       name: name,
+      code: code,
     );
   }
 }

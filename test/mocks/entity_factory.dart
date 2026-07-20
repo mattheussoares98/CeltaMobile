@@ -2224,6 +2224,7 @@ class EntityFactory {
               cnpjNumber: faker.randomGenerator.integer(100).toString(),
               name: faker.person.name(),
               personalizedCode: faker.randomGenerator.integer(100).toString(),
+              code: faker.randomGenerator.integer(100),
             ),
             totalLiquidValue: faker.randomGenerator.decimal(),
           ),
