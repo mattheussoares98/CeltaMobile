@@ -97,10 +97,10 @@ GoRouter goRouter(Ref ref) {
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
         buyQuotationsRoute([buyQuotationInsertUpdateRoute()]),
-        createBuyRequestRoute(),
         competingPricesResearchsRoute([
           concurrentsRoute([competingPricesProductsRoute()]),
         ]),
+        createBuyRequestRoute(),
         customerRegisterRoute(),
         expeditionConferenceDocumentsRoute([
           expeditionConferenceProductsRoute(),
@@ -122,6 +122,7 @@ GoRouter goRouter(Ref ref) {
         ]),
         reportsRoute(),
         saleRequestRequestsTypesRoute(),
+        searchBuyRequestRoute(),
         searchSaleRequestsRoute([
           saleRequestDetailsRoute([
             insertUpdateSaleRequestRoute([insertProductRoute()]),

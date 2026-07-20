@@ -76,7 +76,7 @@ class ButtonsByModuleItems {
       ),
     ),
     Modules.buyRequest: DefaultModuleButton(
-      route: Routes.createBuyRequest,
+      route: Routes.buyRequestActionSelector,
       module: Modules.buyRequest,
       platformIcon: PlatformIcon(
         materialIcon: Icons.add_shopping_cart_outlined,
