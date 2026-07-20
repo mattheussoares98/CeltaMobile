@@ -2,11 +2,11 @@ import 'package:celta_inventario/features/buy_request/presentation/pages/pages.d
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase buyRequestRoute() => GoRoute(
-  path: ':enterpriseCode/buy-request',
+RouteBase createBuyRequestRoute() => GoRoute(
+  path: ':enterpriseCode/create-buy-request',
   name: Routes.createBuyRequest.name,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    return BuyRequestPage(enterpriseCode: enterpriseCode);
+    return CreateBuyRequestPage(enterpriseCode: enterpriseCode);
   },
 );

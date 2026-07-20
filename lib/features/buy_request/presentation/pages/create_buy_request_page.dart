@@ -10,15 +10,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'confirmation/components/components.dart';
 
-class BuyRequestPage extends ConsumerStatefulWidget {
+class CreateBuyRequestPage extends ConsumerStatefulWidget {
   final int enterpriseCode;
-  const BuyRequestPage({super.key, required this.enterpriseCode});
+  const CreateBuyRequestPage({super.key, required this.enterpriseCode});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _BuyRequestPageState();
 }
 
-class _BuyRequestPageState extends ConsumerState<BuyRequestPage> {
+class _BuyRequestPageState extends ConsumerState<CreateBuyRequestPage> {
   final supplierController = TextEditingController();
   final observationsController = TextEditingController();
 

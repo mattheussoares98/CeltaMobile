@@ -97,7 +97,7 @@ GoRouter goRouter(Ref ref) {
         adjustSalePriceProducts([adjustSalePrice()]),
         adjustStocksRoute(),
         buyQuotationsRoute([buyQuotationInsertUpdateRoute()]),
-        buyRequestRoute(),
+        createBuyRequestRoute(),
         competingPricesResearchsRoute([
           concurrentsRoute([competingPricesProductsRoute()]),
         ]),

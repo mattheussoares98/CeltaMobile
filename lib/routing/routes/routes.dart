@@ -1,7 +1,6 @@
 export './adjust_cost_route.dart';
 export './adjust_stocks_route.dart';
 export './auth_route.dart';
-export './buy_request_route.dart';
 export './customer_register_route.dart';
 export './download_app_route.dart';
 export './enterprise_manager_route.dart';
@@ -15,6 +14,7 @@ export './transfer_between_stocks_route.dart';
 export 'adjust_sale_price/adjust_sale_price.dart';
 export 'buy_quotation/buy_quotation.dart';
 export 'competing_prices/competing_prices.dart';
+export 'create_buy_request_route.dart';
 export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
 export 'process_authorization/process_authorization.dart';
