@@ -14,6 +14,11 @@ IEcBuyRequestDatasource ecBuyRequestDatasource(Ref ref) {
 }
 
 @riverpod
+IEcBuyRequestRepository ecBuyRequestRepository(Ref ref) {
+  return EcBuyRequestRepositoryImpl(ref.watch(ecBuyRequestDatasourceProvider));
+}
+
+@riverpod
 ISoapLoadEnterpriseByFiltersDatasource soapLoadEnterpriseByFiltersDatasource(
   Ref ref,
 ) {
