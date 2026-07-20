@@ -1,7 +1,7 @@
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_request/data/models/models.dart';
+import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 
 // TODO: Create tests for EcBuyRequest.
 class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
@@ -11,18 +11,16 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
 
   @override
   Future<List<EcBuyRequestDtoModel>> loadShallow(
-    EcRequestParams params, {
-    required DateTime selectedDate,
-    required int enterpriseCode,
-  }) async {
+    LoadShallowBuyRequestParams params,
+  ) async {
     final response = await httpClient.request(
-      url: '${params.workingUrl}/api/BuyRequest/Shallow',
+      url: '${params.requestParams.workingUrl}/api/BuyRequest/Shallow',
       method: 'post',
-      headers: params.toHeaders(),
+      headers: params.requestParams.toHeaders(),
       body: {
-        ...params.toMap(),
-        'InitialCreateDate': selectedDate.toIso8601String(),
-        'EnterpriseCode': enterpriseCode,
+        ...params.requestParams.toMap(),
+        'InitialCreateDate': params.selectedDate.toIso8601String(),
+        'EnterpriseCode': params.enterpriseCode,
       },
     );
 

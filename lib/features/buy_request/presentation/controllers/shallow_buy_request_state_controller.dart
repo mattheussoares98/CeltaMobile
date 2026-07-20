@@ -18,15 +18,17 @@ class ShallowBuyRequestStateController
   Future<void> load(DateTime date) async {
     final ecParams = await ref.read(ecRequestParamsProvider().future);
 
+    LoadShallowBuyRequestParams params = LoadShallowBuyRequestParams(
+      requestParams: ecParams,
+      selectedDate: date,
+      enterpriseCode: enterpriseCode,
+    );
+
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final result = await ref
           .read(ecBuyRequestRepositoryProvider)
-          .loadShallow(
-            ecParams,
-            selectedDate: date,
-            enterpriseCode: enterpriseCode,
-          );
+          .loadShallow(params);
 
       return result;
     });
