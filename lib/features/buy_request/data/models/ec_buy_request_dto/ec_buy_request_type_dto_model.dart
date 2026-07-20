@@ -1,19 +1,11 @@
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
 
-class EcBuyRequestTypeDtoModel extends Equatable {
-  final int? code;
-  final String? name;
-  final String? personalizedCode;
-
+class EcBuyRequestTypeDtoModel extends EcBuyRequestTypeDtoEntity {
   const EcBuyRequestTypeDtoModel({
-    required this.code,
-    required this.name,
-    required this.personalizedCode,
+    required super.code,
+    required super.name,
+    required super.personalizedCode,
   });
-
-  @override
-  List<Object?> get props => [code, name, personalizedCode];
 
   factory EcBuyRequestTypeDtoModel.fromJson(Map json) {
     return EcBuyRequestTypeDtoModel(

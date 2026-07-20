@@ -1,39 +1,19 @@
-// lib/features/buy_request/data/models/ec_buy_request_dto_model.dart
-
 import 'package:celta_inventario/features/buy_request/data/models/ec_buy_request_dto/ec_buy_request_dto.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
 
-class EcBuyRequestDtoModel extends Equatable {
-  final int? personalizedCode;
-  final EcBuyRequestBuyerDtoModel? buyer;
-  final EcBuyRequestTypeDtoModel? requestType;
-  final EcBuyRequestSupplierDtoModel? supplier;
-  final List<EcBuyRequestEnterpriseItemDtoModel>? enterprises;
-  final double? totalLiquid;
-
+class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
   const EcBuyRequestDtoModel({
-    required this.personalizedCode,
-    required this.buyer,
-    required this.requestType,
-    required this.supplier,
-    required this.enterprises,
-    required this.totalLiquid,
+    required super.personalizedCode,
+    required super.buyer,
+    required super.requestType,
+    required super.supplier,
+    required super.enterprises,
+    required super.totalLiquid,
   });
-
-  @override
-  List<Object?> get props => [
-    personalizedCode,
-    buyer,
-    requestType,
-    supplier,
-    enterprises,
-    totalLiquid,
-  ];
 
   factory EcBuyRequestDtoModel.fromJson(Map json) {
     return EcBuyRequestDtoModel(
-      personalizedCode: json['personalizedCode'] as int?,
+      personalizedCode: json['personalizedCode'],
       buyer: json['buyer'] != null
           ? EcBuyRequestBuyerDtoModel.fromJson(json['buyer'] as Map)
           : null,
@@ -57,10 +37,20 @@ class EcBuyRequestDtoModel extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'personalizedCode': personalizedCode,
-      'buyer': buyer?.toJson(),
-      'requestType': requestType?.toJson(),
-      'supplier': supplier?.toJson(),
-      'enterprises': enterprises?.map((e) => e.toJson()).toList(),
+      'buyer': buyer == null
+          ? null
+          : EcBuyRequestBuyerDtoModel.fromEntity(buyer!).toJson(),
+      'requestType': requestType == null
+          ? null
+          : EcBuyRequestTypeDtoModel.fromEntity(requestType!).toJson(),
+      'supplier': supplier == null
+          ? null
+          : EcBuyRequestSupplierDtoModel.fromEntity(supplier!).toJson(),
+      'enterprises': enterprises
+          ?.map(
+            (e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e).toJson(),
+          )
+          .toList(),
       'totalLiquid': totalLiquid,
     };
   }
@@ -87,10 +77,18 @@ class EcBuyRequestDtoModel extends Equatable {
   EcBuyRequestDtoEntity toEntity() {
     return EcBuyRequestDtoEntity(
       personalizedCode: personalizedCode,
-      buyer: buyer?.toEntity(),
-      requestType: requestType?.toEntity(),
-      supplier: supplier?.toEntity(),
-      enterprises: enterprises?.map((e) => e.toEntity()).toList(),
+      buyer: buyer == null
+          ? null
+          : EcBuyRequestBuyerDtoModel.fromEntity(buyer!).toEntity(),
+      requestType: requestType == null
+          ? null
+          : EcBuyRequestTypeDtoModel.fromEntity(requestType!).toEntity(),
+      supplier: supplier == null
+          ? null
+          : EcBuyRequestSupplierDtoModel.fromEntity(supplier!).toEntity(),
+      enterprises: enterprises
+          ?.map((e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e))
+          .toList(),
       totalLiquid: totalLiquid,
     );
   }

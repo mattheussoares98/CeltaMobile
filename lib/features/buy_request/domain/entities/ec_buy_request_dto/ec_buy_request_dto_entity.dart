@@ -2,7 +2,7 @@ import 'package:celta_inventario/features/buy_request/domain/entities/entities.d
 import 'package:equatable/equatable.dart';
 
 class EcBuyRequestDtoEntity extends Equatable {
-  final int? personalizedCode;
+  final String? personalizedCode;
   final EcBuyRequestBuyerDtoEntity? buyer;
   final EcBuyRequestTypeDtoEntity? requestType;
   final EcBuyRequestSupplierDtoEntity? supplier;

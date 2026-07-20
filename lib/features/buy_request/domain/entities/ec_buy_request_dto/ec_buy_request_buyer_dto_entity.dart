@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class EcBuyRequestBuyerDtoEntity extends Equatable {
   final int? code;
-  final int? personalizedCode;
+  final String? personalizedCode;
   final bool? buyer;
   final bool? seller;
   final bool? pdvOperator;

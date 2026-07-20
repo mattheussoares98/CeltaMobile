@@ -1,49 +1,23 @@
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
-import 'package:equatable/equatable.dart';
 
-class EcBuyRequestBuyerDtoModel extends Equatable {
-  final int? code;
-  final int? personalizedCode;
-  final bool? buyer;
-  final bool? seller;
-  final bool? pdvOperator;
-  final DateTime? dateOfBirth;
-  final String? cpfNumber;
-  final String? rgNumber;
-  final String? name;
-  final String? nameReduced;
-
+class EcBuyRequestBuyerDtoModel extends EcBuyRequestBuyerDtoEntity {
   const EcBuyRequestBuyerDtoModel({
-    required this.code,
-    required this.personalizedCode,
-    required this.buyer,
-    required this.seller,
-    required this.pdvOperator,
-    required this.dateOfBirth,
-    required this.cpfNumber,
-    required this.rgNumber,
-    required this.name,
-    required this.nameReduced,
+    required super.code,
+    required super.personalizedCode,
+    required super.buyer,
+    required super.seller,
+    required super.pdvOperator,
+    required super.dateOfBirth,
+    required super.cpfNumber,
+    required super.rgNumber,
+    required super.name,
+    required super.nameReduced,
   });
-
-  @override
-  List<Object?> get props => [
-    code,
-    personalizedCode,
-    buyer,
-    seller,
-    pdvOperator,
-    dateOfBirth,
-    cpfNumber,
-    rgNumber,
-    name,
-    nameReduced,
-  ];
 
   factory EcBuyRequestBuyerDtoModel.fromJson(Map json) {
     return EcBuyRequestBuyerDtoModel(
       code: json['code'] as int?,
-      personalizedCode: json['personalizedCode'] as int?,
+      personalizedCode: json['personalizedCode'],
       buyer: json['buyer'] as bool?,
       seller: json['seller'] as bool?,
       pdvOperator: json['pdvOperator'] as bool?,
