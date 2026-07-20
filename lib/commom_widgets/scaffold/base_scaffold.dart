@@ -1,3 +1,5 @@
+import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
+    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
-    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 
 import '../commom_widgets.dart';
 
@@ -24,6 +24,7 @@ class BaseScaffold extends StatelessWidget {
     this.padding,
     this.usePadding = true,
     required this.body,
+    this.pinnedBody,
     this.bottomNavigationBar,
     this.observeScreenChanges = false,
     this.drawer,
@@ -43,6 +44,7 @@ class BaseScaffold extends StatelessWidget {
 
   final bool usePadding;
   final Widget body;
+  final Widget? pinnedBody;
   final Widget? bottomNavigationBar;
   final bool observeScreenChanges;
   final Widget? drawer;
@@ -68,9 +70,7 @@ class BaseScaffold extends StatelessWidget {
       );
     }
 
-    return buildOrientationReader(
-      builder: (context) => _BaseScaffold(this),
-    );
+    return buildOrientationReader(builder: (context) => _BaseScaffold(this));
   }
 }
 
@@ -118,7 +118,22 @@ class _BaseScaffold extends ConsumerWidget {
                     ))
         : EdgeInsets.zero;
 
-    if (params.isScrollable) {
+    if (params.pinnedBody != null) {
+      newChild = NestedScrollView(
+        floatHeaderSlivers: true,
+        physics: params.scrollPhysics,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverFloatingHeader(
+            child: ColoredBox(
+              color: context.theme.scaffoldBackgroundColor,
+              child: params.pinnedBody!,
+            ),
+          ),
+        ],
+        body: params.body,
+      );
+      newChild = Padding(padding: effectivePadding, child: newChild);
+    } else if (params.isScrollable) {
       newChild = SingleChildScrollView(
         padding: effectivePadding,
         physics: params.scrollPhysics,
@@ -184,7 +199,9 @@ class _BaseScaffold extends ConsumerWidget {
             )
           : newChild;
 
-      final orientation = NativeDeviceOrientationReaderWrapper.orientation(context);
+      final orientation = NativeDeviceOrientationReaderWrapper.orientation(
+        context,
+      );
       final isRotatedLeft =
           orientation == NativeDeviceOrientation.landscapeLeft;
       final isRotatedRight =
