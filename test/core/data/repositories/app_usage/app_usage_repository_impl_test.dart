@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/data/datasource/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/data/repositories/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/domain/repositories/app_usage/app_usage.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,9 +23,7 @@ void main() {
 
   late List<AppUsageModel> usageModels;
   late List<GroupedUsageModel> groupedUsages;
-  late int enterpriseId;
-  late DateTime start;
-  late DateTime end;
+  late LoadAppUsageParams params;
 
   void initSut() {
     sut = AppUsageRepositoryImpl(remoteDs, localDs);
@@ -37,19 +36,9 @@ void main() {
 
   void mockSuccess() {
     when(() => localDs.load()).thenAnswer((_) async => usageModels);
+    when(() => remoteDs.load(any())).thenAnswer((_) async => usageModels);
     when(
-      () => remoteDs.load(
-        enterpriseId: any(named: 'enterpriseId'),
-        startDate: any(named: 'startDate'),
-        endDate: any(named: 'endDate'),
-      ),
-    ).thenAnswer((_) async => usageModels);
-    when(
-      () => remoteDs.loadGroupedByEnterprise(
-        enterpriseId: any(named: 'enterpriseId'),
-        startDate: any(named: 'startDate'),
-        endDate: any(named: 'endDate'),
-      ),
+      () => remoteDs.loadGroupedByEnterprise(any()),
     ).thenAnswer((_) async => groupedUsages);
     when(
       () => localDs.getLastUpdatedDate(),
@@ -69,9 +58,11 @@ void main() {
       EntityFactory.makeAppUsageEntity(),
       EntityFactory.makeAppUsageEntity(),
     ].map((e) => AppUsageModel.fromEntity(e)).toList();
-    enterpriseId = faker.randomGenerator.integer(1000);
-    start = faker.date.dateTime();
-    end = start.add(Duration(days: faker.randomGenerator.integer(100)));
+    params = LoadAppUsageParams(
+      enterpriseId: faker.randomGenerator.integer(1000),
+      startDate: faker.date.dateTime(),
+      endDate: faker.date.dateTime(),
+    );
   }
 
   setUp(() {
@@ -86,42 +77,29 @@ void main() {
     registerFallbackValue(
       UserSessionModel.fromEntity(EntityFactory.makeUserSessionEntity()),
     );
+    registerFallbackValue(
+      LoadAppUsageParams(
+        enterpriseId: faker.randomGenerator.integer(1000),
+        startDate: faker.date.dateTime(),
+        endDate: faker.date.dateTime(),
+      ),
+    );
   });
 
   group('Load remote usage report', () {
     test('should behave correctly', () async {
-      final appUsages = await sut.loadRemoteUsageReport(
-        enterpriseId: enterpriseId,
-        start: start,
-        end: end,
-      );
+      final appUsages = await sut.loadRemoteUsageReport(params);
 
       expect(appUsages, usageModels.map((e) => e.toEntity()).toList());
-      verify(
-        () => remoteDs.load(
-          enterpriseId: enterpriseId,
-          startDate: start,
-          endDate: end,
-        ),
-      ).called(1);
+      verify(() => remoteDs.load(params)).called(1);
     });
   });
   group('Load remote grouped usage report', () {
     test('should behave correctly', () async {
-      final appUsages = await sut.loadGroupedUsageReport(
-        enterpriseId: enterpriseId,
-        start: start,
-        end: end,
-      );
+      final appUsages = await sut.loadGroupedUsageReport(params);
 
       expect(appUsages, groupedUsages.map((e) => e.toEntity()).toList());
-      verify(
-        () => remoteDs.loadGroupedByEnterprise(
-          enterpriseId: enterpriseId,
-          startDate: start,
-          endDate: end,
-        ),
-      ).called(1);
+      verify(() => remoteDs.loadGroupedByEnterprise(params)).called(1);
     });
   });
 

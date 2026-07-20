@@ -18,9 +18,11 @@ class AppUsageStateController extends _$AppUsageStateController {
     state = await AsyncValue.guard(() async {
       final repository = ref.read(appUsageRepositoryProvider);
       return await repository.loadGroupedUsageReport(
-        enterpriseId: null, //load from all enterprises if it is null
-        start: date, //considering only month and year
-        end: date, //considering only month and year
+        LoadAppUsageParams(
+          enterpriseId: null, //load from all enterprises if it is null
+          startDate: date, //considering only month and year
+          endDate: date,
+        ), //considering only month and year
       );
     });
   }

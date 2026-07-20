@@ -11,16 +11,10 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
   AppUsageRepositoryImpl(this.remoteDs, this.localDs);
 
   @override
-  Future<List<AppUsageEntity>> loadRemoteUsageReport({
-    required int? enterpriseId,
-    required DateTime start,
-    required DateTime end,
-  }) async {
-    final data = await remoteDs.load(
-      enterpriseId: enterpriseId,
-      startDate: start,
-      endDate: end,
-    );
+  Future<List<AppUsageEntity>> loadRemoteUsageReport(
+    LoadAppUsageParams params,
+  ) async {
+    final data = await remoteDs.load(params);
 
     return data.map((e) => e.toEntity()).toList();
   }
@@ -67,16 +61,10 @@ class AppUsageRepositoryImpl implements IAppUsageRepository {
   }
 
   @override
-  Future<List<GroupedUsageEntity>> loadGroupedUsageReport({
-    required int? enterpriseId,
-    required DateTime start,
-    required DateTime end,
-  }) async {
-    final data = await remoteDs.loadGroupedByEnterprise(
-      enterpriseId: enterpriseId,
-      startDate: start,
-      endDate: end,
-    );
+  Future<List<GroupedUsageEntity>> loadGroupedUsageReport(
+    LoadAppUsageParams params,
+  ) async {
+    final data = await remoteDs.loadGroupedByEnterprise(params);
 
     return data.map((e) => e.toEntity()).toList();
   }

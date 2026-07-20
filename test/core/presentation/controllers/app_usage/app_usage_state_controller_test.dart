@@ -36,6 +36,13 @@ void main() {
     for (var type in UsageType.values) {
       registerFallbackValue(type);
     }
+    registerFallbackValue(
+      LoadAppUsageParams(
+        enterpriseId: fakerInstance.randomGenerator.integer(1000),
+        startDate: fakerInstance.date.dateTime(),
+        endDate: fakerInstance.date.dateTime(),
+      ),
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? userMock}) {
@@ -72,11 +79,7 @@ void main() {
         );
 
         when(
-          () => mockRepository.loadGroupedUsageReport(
-            enterpriseId: any(named: 'enterpriseId'),
-            start: any(named: 'start'),
-            end: any(named: 'end'),
-          ),
+          () => mockRepository.loadGroupedUsageReport(any()),
         ).thenAnswer((_) async => fakeList);
 
         final container = makeProviderContainer();
@@ -103,9 +106,11 @@ void main() {
 
         verify(
           () => mockRepository.loadGroupedUsageReport(
-            enterpriseId: null,
-            start: start,
-            end: start,
+            LoadAppUsageParams(
+              enterpriseId: null,
+              startDate: start,
+              endDate: start,
+            ),
           ),
         ).called(1);
       });
@@ -114,11 +119,7 @@ void main() {
         final exception = Exception('Remote failure');
 
         when(
-          () => mockRepository.loadGroupedUsageReport(
-            enterpriseId: any(named: 'enterpriseId'),
-            start: any(named: 'start'),
-            end: any(named: 'end'),
-          ),
+          () => mockRepository.loadGroupedUsageReport(any()),
         ).thenThrow(exception);
 
         final container = makeProviderContainer();
