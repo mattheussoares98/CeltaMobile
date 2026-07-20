@@ -1,22 +1,12 @@
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:flutter/material.dart';
+import 'package:celta_inventario/features/home/presentation/model/model.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/material.dart';
 
 class ActionCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final Widget icon;
-  final Color color;
-  final VoidCallback onTap;
+  final PageActionSelectorModel actionModel;
 
-  const ActionCard({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
+  const ActionCard({super.key, required this.actionModel});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +15,7 @@ class ActionCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: () => Navigator.pop(context, actionModel.route),
         borderRadius: BorderRadius.circular(Sizes.p16),
         child: Container(
           padding: const EdgeInsets.all(Sizes.p16),
@@ -39,10 +29,10 @@ class ActionCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(Sizes.p12),
                   decoration: BoxDecoration(
-                    color: color.withAlpha(20),
+                    color: actionModel.color.withAlpha(20),
                     shape: BoxShape.circle,
                   ),
-                  child: icon,
+                  child: actionModel.platformIcon,
                 ),
                 gapW16,
               ],
@@ -51,13 +41,13 @@ class ActionCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      actionModel.title,
                       style: context.theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      subtitle,
+                      actionModel.subtitle,
                       style: context.theme.textTheme.bodySmall?.copyWith(
                         color: context.theme.hintColor,
                       ),

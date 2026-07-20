@@ -29,7 +29,11 @@ class DefaultModuleButton extends ConsumerWidget {
     void accessModule() async {
       Routes? saleRequestNextRoute;
       if (route == Routes.saleRequestActionSelector) {
-        saleRequestNextRoute = await SaleRequestActionSelector.show(context);
+        saleRequestNextRoute = await BaseActionSelector.show(
+          context,
+          actions: SaleRequestActions.get(context),
+          title: 'Pedido de vendas'.hardcoded,
+        );
         if (saleRequestNextRoute == null) return;
       }
       final enterpriseCode = ref.read(
