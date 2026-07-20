@@ -1,3 +1,4 @@
+import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -9,7 +10,7 @@ part 'shallow_buy_request_state_controller.g.dart';
 class ShallowBuyRequestStateController
     extends _$ShallowBuyRequestStateController {
   @override
-  FutureOr<List<dynamic>> build(int enterpriseCode) {
+  FutureOr<List<EcBuyRequestDtoEntity>> build(int enterpriseCode) {
     return [];
   }
   //TODO create tests

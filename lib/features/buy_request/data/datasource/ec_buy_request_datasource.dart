@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 
 // TODO: Create tests for EcBuyRequest.
 class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
@@ -11,7 +10,7 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
   const EcBuyRequestDatasource(this.httpClient);
 
   @override
-  Future<dynamic> loadShallow(
+  Future<List<EcBuyRequestDtoModel>> loadShallow(
     EcRequestParams params, {
     required DateTime selectedDate,
     required int enterpriseCode,
@@ -27,6 +26,8 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
       },
     );
 
-    return json.decode(response);
+    return (response as List)
+        .map((e) => EcBuyRequestDtoModel.fromJson(e as Map))
+        .toList();
   }
 }
