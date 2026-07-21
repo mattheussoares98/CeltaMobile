@@ -13,46 +13,43 @@ class _PinnedBodyKeyboardAnimatorState
     extends State<_PinnedBodyKeyboardAnimator>
     with WidgetsBindingObserver {
   final _focusScopeNode = FocusScopeNode();
-  double _lastBottomInset = 0;
   bool _isClosingOrClosed = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    FocusManager.instance.addListener(_handleFocusChange);
   }
 
   @override
   void dispose() {
+    FocusManager.instance.removeListener(_handleFocusChange);
     WidgetsBinding.instance.removeObserver(this);
     _focusScopeNode.dispose();
     super.dispose();
   }
 
+  void _handleFocusChange() {
+    if (!mounted) return;
+    _updateVisibility();
+  }
+
   @override
   void didChangeMetrics() {
     if (!mounted) return;
+    _updateVisibility();
+  }
+
+  void _updateVisibility() {
     final view = View.of(context);
     final currentBottomInset = view.viewInsets.bottom / view.devicePixelRatio;
-
-    final isClosed = currentBottomInset <= 1.0;
-    final isClosing = currentBottomInset < (_lastBottomInset - 1.0);
-    final isOpening = currentBottomInset > (_lastBottomInset + 1.0);
-
-    bool newIsClosingOrClosed = _isClosingOrClosed;
-
-    // If an input inside pinnedBody (e.g. SearchProductField) is focused, keep pinnedBody visible
-    if (_focusScopeNode.hasFocus || isClosed || isClosing) {
-      newIsClosingOrClosed = true;
-    } else if (isOpening) {
-      newIsClosingOrClosed = false;
-    }
-
-    _lastBottomInset = currentBottomInset;
-
-    if (_isClosingOrClosed != newIsClosingOrClosed) {
+    final isKeyboardOpen = currentBottomInset > 1.0;
+    // Show pinned body if keyboard is closed OR if focus is inside pinned body
+    final shouldShow = !isKeyboardOpen || _focusScopeNode.hasFocus;
+    if (_isClosingOrClosed != shouldShow) {
       setState(() {
-        _isClosingOrClosed = newIsClosingOrClosed;
+        _isClosingOrClosed = shouldShow;
       });
     }
   }
