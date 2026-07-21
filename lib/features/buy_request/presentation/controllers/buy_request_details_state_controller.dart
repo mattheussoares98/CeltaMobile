@@ -12,7 +12,7 @@ part 'buy_request_details_state_controller.g.dart';
 class BuyRequestDetailsStateController
     extends _$BuyRequestDetailsStateController {
   @override
-  FutureOr<EcBuyRequestDtoEntity?> build(int buyRequestCode) async {
+  FutureOr<EcBuyRequestDtoEntity> build(int buyRequestCode) async {
     Timer? timer;
     final link = ref.keepAlive();
     ref.onCancel(() {

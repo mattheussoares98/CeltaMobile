@@ -33,12 +33,9 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
             tryAgain: null,
             data: (buyRequests) {
               if (buyRequests?.isEmpty == true) {
-                return SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Center(
-                    child: BaseText.error(
-                      'Nenhum pedido de compra foi encontrado'.hardcoded,
-                    ),
+                return Center(
+                  child: BaseText.error(
+                    'Nenhum pedido de compra foi encontrado'.hardcoded,
                   ),
                 );
               }
