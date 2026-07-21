@@ -25,6 +25,8 @@ class ProductsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> confirmAdjust(ProductEntity product) async {
+      await Future.delayed(const Duration(milliseconds: 300));
+      //TODO test whether it is working correct or not on iOS devices because it is hiding the pinnedBody automaticaly according to the keyboard
       if (formKey.currentState?.validate() != true) {
         return;
       }
@@ -36,6 +38,8 @@ class ProductsItems extends ConsumerWidget {
           selectedUIState.selectedStockType == null) {
         //*if the user doesn't has permission to load justifications or stocks, the formKey will be valid.
         //*Because of this, should create this validation
+
+        if (!context.mounted) return;
         showAlertDialog(
           context: context,
           title: 'Atenção!'.hardcoded,

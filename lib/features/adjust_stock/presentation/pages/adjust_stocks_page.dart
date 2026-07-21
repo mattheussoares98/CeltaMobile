@@ -51,10 +51,10 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
 
   @override
   void dispose() {
-    super.dispose();
-
     quantityController.dispose();
     quantityFocusNode.dispose();
+
+    super.dispose();
   }
 
   void changeSelectedIndex(int? index) async {
@@ -88,16 +88,16 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     ref.observeLoading([confirmAdjustStockControllerProvider]);
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
-    return BaseScaffold(
-      isScrollable: false,
-      resizeToAvoidBottomInset: true,
-      appBar: BaseAppBar(
-        title: 'Ajuste de estoque'.hardcoded,
-        selectedEnterpriseCode: widget.enterpriseCode,
-      ),
-      body: Form(
-        key: formKey,
-        child: Column(
+    return Form(
+      key: formKey,
+      child: BaseScaffold(
+        isScrollable: false,
+        resizeToAvoidBottomInset: true,
+        appBar: BaseAppBar(
+          title: 'Ajuste de estoque'.hardcoded,
+          selectedEnterpriseCode: widget.enterpriseCode,
+        ),
+        pinnedBody: Column(
           children: [
             SearchProductField(enterpriseCode: widget.enterpriseCode),
             gapH8,
@@ -123,15 +123,13 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
               StocksDropdown(enterpriseCode: widget.enterpriseCode),
             ],
             gapH8,
-            Expanded(
-              child: ProductsItems(
-                quantityFocusNode: quantityFocusNode,
-                formKey: formKey,
-                enterpriseCode: widget.enterpriseCode,
-                quantityController: quantityController,
-              ),
-            ),
           ],
+        ),
+        body: ProductsItems(
+          quantityFocusNode: quantityFocusNode,
+          formKey: formKey,
+          enterpriseCode: widget.enterpriseCode,
+          quantityController: quantityController,
         ),
       ),
     );
