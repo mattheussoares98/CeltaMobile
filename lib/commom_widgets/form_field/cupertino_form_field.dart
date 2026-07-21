@@ -157,7 +157,10 @@ class _CupertinoFormFieldState extends ConsumerState<CupertinoFormField> {
             ConstrainedBox(
               constraints: const BoxConstraints(minHeight: Sizes.p48),
               child: CupertinoTextField(
-                scrollPadding: const EdgeInsets.all(Sizes.p120),
+                scrollPadding: EdgeInsets.all(
+                  OverlayManager
+                      .totalAccessoryHeight, //TODO test it on iOS device
+                ),
                 onTap: dtf.onTap,
                 onEditingComplete: dtf.onEditingComplete,
                 inputFormatters: dtf.inputFormatters,
