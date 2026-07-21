@@ -10,8 +10,8 @@ part 'shallow_buy_request_state_controller.g.dart';
 class ShallowBuyRequestStateController
     extends _$ShallowBuyRequestStateController {
   @override
-  FutureOr<List<EcBuyRequestDtoEntity>> build(int enterpriseCode) {
-    return [];
+  FutureOr<List<EcBuyRequestDtoEntity>?> build(int enterpriseCode) {
+    return null;
   }
 
   Future<void> load(DateTime date) async {

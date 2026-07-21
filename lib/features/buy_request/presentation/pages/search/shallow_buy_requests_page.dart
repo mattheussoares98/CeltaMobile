@@ -37,7 +37,7 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
                 tryAgain: null,
                 isSliver: true,
                 data: (buyRequests) {
-                  if (buyRequests.isEmpty) {
+                  if (buyRequests?.isEmpty == true) {
                     return SliverFillRemaining(
                       hasScrollBody: false,
                       child: Center(
@@ -50,9 +50,9 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
 
                   return ResponsiveListFlow(
                     isSliver: true,
-                    itemCount: buyRequests.length,
+                    itemCount: buyRequests?.length ?? 0,
                     itemBuilder: (context, index) {
-                      final item = buyRequests[index];
+                      final item = buyRequests![index];
 
                       final principalEnterprise = item.enterprises
                           ?.firstWhereOrNull((e) => e.isPrincipal == true);

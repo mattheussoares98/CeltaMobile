@@ -70,7 +70,7 @@ void main() {
   }
 
   group('ShallowBuyRequestStateController', () {
-    test('should build with empty list initially', () async {
+    test('build should return null', () async {
       final container = makeProviderContainer();
       addTearDown(container.dispose);
 
@@ -78,7 +78,7 @@ void main() {
         shallowBuyRequestStateControllerProvider(enterpriseCode),
       );
 
-      expect(result.value, isEmpty);
+      expect(result.value, isNull);
     });
 
     test('should load shallow buy requests successfully', () async {
@@ -96,7 +96,7 @@ void main() {
       ).thenAnswer((_) async => fakeEntities);
 
       // Listen to the provider to keep it alive and capture states
-      final states = <AsyncValue<List<EcBuyRequestDtoEntity>>>[];
+      final states = <AsyncValue<List<EcBuyRequestDtoEntity>?>>[];
       container.listen(
         shallowBuyRequestStateControllerProvider(enterpriseCode),
         (_, next) => states.add(next),
@@ -104,7 +104,7 @@ void main() {
       );
 
       // Initial state is empty data
-      expect(states.first.value, isEmpty);
+      expect(states.first.value, isNull);
 
       // Trigger the load action
       await container
@@ -115,9 +115,9 @@ void main() {
 
       // Verify states transitions: loading, then data(fakeEntities)
       expect(states, [
-        isA<AsyncData<List<EcBuyRequestDtoEntity>>>(),
-        isA<AsyncLoading<List<EcBuyRequestDtoEntity>>>(),
-        isA<AsyncData<List<EcBuyRequestDtoEntity>>>(),
+        isA<AsyncData<List<EcBuyRequestDtoEntity>?>>(),
+        isA<AsyncLoading<List<EcBuyRequestDtoEntity>?>>(),
+        isA<AsyncData<List<EcBuyRequestDtoEntity>?>>(),
       ]);
 
       expect(states[2].value, equals(fakeEntities));
@@ -138,7 +138,7 @@ void main() {
 
       when(() => mockRepository.loadShallow(any())).thenThrow(exception);
 
-      final states = <AsyncValue<List<EcBuyRequestDtoEntity>>>[];
+      final states = <AsyncValue<List<EcBuyRequestDtoEntity>?>>[];
       container.listen(
         shallowBuyRequestStateControllerProvider(enterpriseCode),
         (_, next) => states.add(next),
@@ -152,9 +152,9 @@ void main() {
           .load(selectedDate);
 
       expect(states, [
-        isA<AsyncData<List<EcBuyRequestDtoEntity>>>(),
-        isA<AsyncLoading<List<EcBuyRequestDtoEntity>>>(),
-        isA<AsyncError<List<EcBuyRequestDtoEntity>>>(),
+        isA<AsyncData<List<EcBuyRequestDtoEntity>?>>(),
+        isA<AsyncLoading<List<EcBuyRequestDtoEntity>?>>(),
+        isA<AsyncError<List<EcBuyRequestDtoEntity>?>>(),
       ]);
     });
   });
