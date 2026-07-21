@@ -42,9 +42,6 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
       },
     );
 
-    return (response as List)
-        .map((e) => EcBuyRequestDtoModel.fromJson(e as Map))
-        .toList()
-        .first;
+    return EcBuyRequestDtoModel.fromJson(response as Map);
   }
 }

@@ -66,7 +66,7 @@ void main() {
     test(
       'should call httpClient with correct parameters and return list of EcBuyRequestDtoModel on success',
       () async {
-        httpClient.mockRequest([models.first.toJson()]);
+        httpClient.mockRequest(models.first.toJson());
 
         final response = await sut.loadDetails(detailsParams);
 
