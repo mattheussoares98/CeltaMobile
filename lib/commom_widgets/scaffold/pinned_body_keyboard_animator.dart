@@ -59,15 +59,17 @@ class _PinnedBodyKeyboardAnimatorState
     return AnimatedSize(
       duration: const Duration(milliseconds: 250),
       curve: Curves.fastOutSlowIn,
-      child: _isClosingOrClosed
-          ? FocusScope(
-              node: _focusScopeNode,
-              child: ColoredBox(
-                color: context.theme.scaffoldBackgroundColor,
-                child: widget.child,
-              ),
-            )
-          : const SizedBox(width: double.infinity, height: 0),
+      child: FocusScope(
+        node: _focusScopeNode,
+        child: ColoredBox(
+          color: context.theme.scaffoldBackgroundColor,
+          child: Visibility(
+            visible: _isClosingOrClosed,
+            maintainState: true,
+            child: widget.child,
+          ),
+        ),
+      ),
     );
   }
 }
