@@ -2189,6 +2189,9 @@ class EntityFactory {
       EcBuyRequestDtoEntity(
         code: faker.randomGenerator.integer(100),
         personalizedCode: faker.randomGenerator.integer(100).toString(),
+        dateOfCreation: DateTime.now(),
+        deliveryDate: DateTime.now(),
+        observations: faker.lorem.sentence(),
         buyer: EcBuyRequestBuyerDtoEntity(
           code: faker.randomGenerator.integer(100),
           personalizedCode: faker.randomGenerator.integer(100).toString(),

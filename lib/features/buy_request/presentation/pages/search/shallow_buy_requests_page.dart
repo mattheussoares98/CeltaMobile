@@ -3,6 +3,8 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/search/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,10 +54,63 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
                     itemBuilder: (context, index) {
                       final item = buyRequests[index];
 
+                      final principalEnterprise = item.enterprises
+                          ?.firstWhereOrNull((e) => e.isPrincipal == true);
                       return Card(
                         child: Padding(
                           padding: const EdgeInsets.all(Sizes.p8),
-                          child: Text(item.toString()),
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              TitleAndSubTitle(
+                                title: 'Empresa'.hardcoded,
+                                subTitle:
+                                    '${principalEnterprise?.enterprise?.personalizedCode ?? ''} - ${principalEnterprise?.enterprise?.name ?? ''}',
+                              ),
+                              TitleAndSubTitle(
+                                title: 'Código'.hardcoded,
+                                subTitle: item.code.toString(),
+                              ),
+                              TitleAndSubTitle(
+                                title: 'Criado em'.hardcoded,
+                                subTitle: item.dateOfCreation?.formatDate(
+                                  .ddMMyyyyHHmm,
+                                ),
+                              ),
+                              if (item.deliveryDate != null)
+                                TitleAndSubTitle(
+                                  title: 'Entregue em'.hardcoded,
+                                  subTitle: item.deliveryDate?.formatDate(
+                                    .ddMMyyyyHHmm,
+                                  ),
+                                ),
+                              if (item.buyer != null)
+                                TitleAndSubTitle(
+                                  title: 'Comprador'.hardcoded,
+                                  subTitle: item.buyer?.name,
+                                ),
+                              if (item.supplier != null)
+                                TitleAndSubTitle(
+                                  title: 'Fornecedor'.hardcoded,
+                                  subTitle: item.supplier?.name,
+                                ),
+                              if (item.requestType != null)
+                                TitleAndSubTitle(
+                                  title: 'Modelo pedido'.hardcoded,
+                                  subTitle: item.requestType?.name,
+                                ),
+                              if (item.observations?.isNotEmpty ?? false)
+                                TitleAndSubTitle(
+                                  title: 'Observações'.hardcoded,
+                                  subTitle: item.observations,
+                                ),
+                              TitleAndSubTitle(
+                                title: 'Valor total'.hardcoded,
+                                subTitle: item.totalLiquid,
+                                subTitleIsPrice: true,
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

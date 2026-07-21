@@ -5,17 +5,21 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
   const EcBuyRequestDtoModel({
     required super.code,
     required super.personalizedCode,
+    required super.observations,
     required super.buyer,
     required super.requestType,
     required super.supplier,
     required super.enterprises,
     required super.totalLiquid,
+    required super.deliveryDate,
+    required super.dateOfCreation,
   });
 
   factory EcBuyRequestDtoModel.fromJson(Map json) {
     return EcBuyRequestDtoModel(
       code: json['code'],
       personalizedCode: json['personalizedCode'],
+      observations: json['observations'],
       buyer: json['buyer'] != null
           ? EcBuyRequestBuyerDtoModel.fromJson(json['buyer'] as Map)
           : null,
@@ -33,6 +37,12 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
                 .toList()
           : null,
       totalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
+      deliveryDate: json['deliveryDate'] != null
+          ? DateTime.parse(json['deliveryDate'] as String)
+          : null,
+      dateOfCreation: json['dateOfCreation'] != null
+          ? DateTime.parse(json['dateOfCreation'] as String)
+          : null,
     );
   }
 
@@ -40,6 +50,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     return {
       'code': code,
       'personalizedCode': personalizedCode,
+      'observations': observations,
       'buyer': buyer == null
           ? null
           : EcBuyRequestBuyerDtoModel.fromEntity(buyer!).toJson(),
@@ -55,6 +66,8 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           )
           .toList(),
       'totalLiquid': totalLiquid,
+      'deliveryDate': deliveryDate?.toIso8601String(),
+      'dateOfCreation': dateOfCreation?.toIso8601String(),
     };
   }
 
@@ -62,6 +75,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     return EcBuyRequestDtoModel(
       code: entity.code,
       personalizedCode: entity.personalizedCode,
+      observations: entity.observations,
       buyer: entity.buyer != null
           ? EcBuyRequestBuyerDtoModel.fromEntity(entity.buyer!)
           : null,
@@ -75,6 +89,8 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ?.map((e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e))
           .toList(),
       totalLiquid: entity.totalLiquid,
+      deliveryDate: entity.deliveryDate,
+      dateOfCreation: entity.dateOfCreation,
     );
   }
 
@@ -82,6 +98,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     return EcBuyRequestDtoEntity(
       code: code,
       personalizedCode: personalizedCode,
+      observations: observations,
       buyer: buyer == null
           ? null
           : EcBuyRequestBuyerDtoModel.fromEntity(buyer!).toEntity(),
@@ -97,6 +114,8 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           )
           .toList(),
       totalLiquid: totalLiquid,
+      deliveryDate: deliveryDate,
+      dateOfCreation: dateOfCreation,
     );
   }
 }
