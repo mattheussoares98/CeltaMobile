@@ -21,40 +21,48 @@ class _SelectDateAndSearchButtonState
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: .spaceEvenly,
-      children: [
-        Flexible(
-          child: PrimaryButton(
-            text: 'Data inicial '.hardcoded + selectedDate.formatDate(),
-            onPressed: () async {
-              final newDate = await GetNewDate.get(
-                currentSelectedDate: selectedDate,
-                minimumDate: now.subtract(const Duration(days: 365 * 5)),
-                maximumDate: now,
-                insertHoursAndMinutes: false,
-                context: context,
-              );
+    bool isLoading = ref.watch(
+      shallowBuyRequestStateControllerProvider(
+        widget.enterpriseCode,
+      ).select((s) => s.isLoading),
+    );
+    return IgnorePointer(
+      ignoring: isLoading,
+      child: Row(
+        mainAxisAlignment: .spaceEvenly,
+        children: [
+          Flexible(
+            child: PrimaryButton(
+              text: 'Data inicial '.hardcoded + selectedDate.formatDate(),
+              onPressed: () async {
+                final newDate = await GetNewDate.get(
+                  currentSelectedDate: selectedDate,
+                  minimumDate: now.subtract(const Duration(days: 365 * 5)),
+                  maximumDate: now,
+                  insertHoursAndMinutes: false,
+                  context: context,
+                );
 
-              if (newDate != null) {
-                setState(() {
-                  selectedDate = newDate;
-                });
-              }
-            },
+                if (newDate != null) {
+                  setState(() {
+                    selectedDate = newDate;
+                  });
+                }
+              },
+            ),
           ),
-        ),
-        PrimaryTextButton(
-          text: 'Pesquisar'.hardcoded,
-          onPressed: () => ref
-              .read(
-                shallowBuyRequestStateControllerProvider(
-                  widget.enterpriseCode,
-                ).notifier,
-              )
-              .load(selectedDate),
-        ),
-      ],
+          PrimaryTextButton(
+            text: 'Pesquisar'.hardcoded,
+            onPressed: () => ref
+                .read(
+                  shallowBuyRequestStateControllerProvider(
+                    widget.enterpriseCode,
+                  ).notifier,
+                )
+                .load(selectedDate),
+          ),
+        ],
+      ),
     );
   }
 }
