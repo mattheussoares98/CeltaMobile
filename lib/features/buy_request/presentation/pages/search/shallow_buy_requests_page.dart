@@ -60,17 +60,33 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(Sizes.p8),
                           child: Column(
-                            crossAxisAlignment: .start,
+                            crossAxisAlignment: .stretch,
                             children: [
                               TitleAndSubTitle(
                                 title: 'Empresa'.hardcoded,
                                 subTitle:
                                     '${principalEnterprise?.enterprise?.personalizedCode ?? ''} - ${principalEnterprise?.enterprise?.name ?? ''}',
                               ),
-                              TitleAndSubTitle(
-                                title: 'Código'.hardcoded,
-                                subTitle: item.code.toString(),
-                              ),
+                              if (item.personalizedCode != null)
+                                BaseRichText(
+                                  texts: [
+                                    BaseText('Cód personalizado: '.hardcoded),
+                                    BaseText.titleMedium(
+                                      item.personalizedCode!
+                                          .substring(0, 8)
+                                          .hardcoded,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    BaseText.titleMedium(
+                                      item.personalizedCode!
+                                          .substring(8, 12)
+                                          .hardcoded,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          context.theme.colorScheme.secondary,
+                                    ),
+                                  ],
+                                ),
                               TitleAndSubTitle(
                                 title: 'Criado em'.hardcoded,
                                 subTitle: item.dateOfCreation?.formatDate(
