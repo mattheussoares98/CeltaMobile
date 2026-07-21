@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/misc.dart';
 
 import '../commom_widgets.dart';
 
+part 'pinned_body_keyboard_animator.dart';
+
 class BaseScaffold extends StatelessWidget {
   const BaseScaffold({
     super.key,
@@ -119,18 +121,11 @@ class _BaseScaffold extends ConsumerWidget {
         : EdgeInsets.zero;
 
     if (params.pinnedBody != null) {
-      newChild = NestedScrollView(
-        floatHeaderSlivers: true,
-        physics: params.scrollPhysics,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverFloatingHeader(
-            child: ColoredBox(
-              color: context.theme.scaffoldBackgroundColor,
-              child: params.pinnedBody!,
-            ),
-          ),
+      newChild = Column(
+        children: [
+          _PinnedBodyKeyboardAnimator(child: params.pinnedBody!),
+          Expanded(child: params.body),
         ],
-        body: params.body,
       );
       newChild = Padding(padding: effectivePadding, child: newChild);
     } else if (params.isScrollable) {
@@ -303,3 +298,4 @@ class _BaseScaffold extends ConsumerWidget {
     return scaffold;
   }
 }
+
