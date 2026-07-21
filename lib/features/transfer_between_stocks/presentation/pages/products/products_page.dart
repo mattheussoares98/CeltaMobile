@@ -47,48 +47,34 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       Modules.transferBetweenStocks,
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              width: Breakpoint.desktop,
-              child: Column(
-                children: [
-                  Consumer(
-                    builder: (_, ref, _) {
-                      return BaseSearchProducts(
-                        searchValueController: searchValueController,
-                        searchProductKey: searchProductKey,
-                        searchProducts: (exactProductCode) =>
-                            _searchProducts(searchProductKey, exactProductCode),
-                      );
-                    },
-                  ),
-                  gapH8,
-                  JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-                  gapH8,
-                  OriginStocksDropdown(enterpriseCode: widget.enterpriseCode),
-                  gapH8,
-                  DestinyStocksDropdown(enterpriseCode: widget.enterpriseCode),
-                  gapH8,
-                ],
+    return Form(
+      key: formKey,
+      child: BaseScaffold(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+        pinnedBody: SizedBox(
+          width: Breakpoint.desktop,
+          child: Column(
+            children: [
+              BaseSearchProducts(
+                searchValueController: searchValueController,
+                searchProductKey: searchProductKey,
+                searchProducts: (exactProductCode) =>
+                    _searchProducts(searchProductKey, exactProductCode),
               ),
-            ),
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  ProductsItems(
-                    searchProductKey: searchProductKey,
-                    enterpriseCode: widget.enterpriseCode,
-                    formKey: formKey,
-                  ),
-                ],
-              ),
-            ),
-          ],
+              gapH8,
+              JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
+              gapH8,
+              OriginStocksDropdown(enterpriseCode: widget.enterpriseCode),
+              gapH8,
+              DestinyStocksDropdown(enterpriseCode: widget.enterpriseCode),
+              gapH8,
+            ],
+          ),
+        ),
+        body: ProductsItems(
+          searchProductKey: searchProductKey,
+          enterpriseCode: widget.enterpriseCode,
+          formKey: formKey,
         ),
       ),
     );

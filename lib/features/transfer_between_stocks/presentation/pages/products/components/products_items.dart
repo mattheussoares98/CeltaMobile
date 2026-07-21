@@ -34,17 +34,52 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
     super.dispose();
   }
 
+  Future<void> addInLot(ProductEntity product) async {
+    if (widget.formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    final uiState = ref.read(
+      selectedProductUIStateControllerProvider(widget.enterpriseCode),
+    );
+
+    if (uiState.selectedDestinyStock == null ||
+        uiState.selectedJustification == null ||
+        uiState.selectedOriginStock == null) {
+      return;
+    }
+
+    ref
+        .read(lotStateControllerProvider(widget.enterpriseCode).notifier)
+        .addItem(
+          product: product,
+          quantity: quantityController.text.toDouble() ?? 0,
+          selectedDestinyStock: uiState.selectedDestinyStock!,
+          selectedJustification: uiState.selectedJustification!,
+          selectedOriginStock: uiState.selectedOriginStock!,
+        );
+
+    quantityController.clear();
+    ref
+        .read(
+          selectedProductUIStateControllerProvider(
+            widget.enterpriseCode,
+          ).notifier,
+        )
+        .updateProductIndex(null);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AsyncValueWidget(
-      isSliver: true,
       value: ref.watch(
         searchProductsStateControllerProvider(widget.searchProductKey),
       ),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
-          isSliver: true,
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];
@@ -56,7 +91,7 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
               index: index,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
-              formKey: widget.formKey,
+              addInLot: () => addInLot(product),
             );
           },
         );
@@ -71,7 +106,7 @@ class _ProductItem extends ConsumerWidget {
   final int index;
   final TextEditingController quantityController;
   final FocusNode quantityFocusNode;
-  final GlobalKey<FormState> formKey;
+  final VoidCallback addInLot;
   const _ProductItem({
     super.key,
     required this.enterpriseCode,
@@ -79,40 +114,11 @@ class _ProductItem extends ConsumerWidget {
     required this.index,
     required this.quantityController,
     required this.quantityFocusNode,
-    required this.formKey,
+    required this.addInLot,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> addInLot(ProductEntity product) async {
-      if (formKey.currentState?.validate() != true) {
-        return;
-      }
-
-      FocusManager.instance.primaryFocus?.unfocus();
-
-      final uiState = ref.read(
-        selectedProductUIStateControllerProvider(enterpriseCode),
-      );
-
-      ref
-          .read(lotStateControllerProvider(enterpriseCode).notifier)
-          .addItem(
-            product: product,
-            quantity: quantityController.text.toDouble() ?? 0,
-            selectedDestinyStock: uiState.selectedDestinyStock!,
-            selectedJustification: uiState.selectedJustification!,
-            selectedOriginStock: uiState.selectedOriginStock!,
-          );
-
-      quantityController.clear();
-      ref
-          .read(
-            selectedProductUIStateControllerProvider(enterpriseCode).notifier,
-          )
-          .updateProductIndex(null);
-    }
-
     final isSelected = ref.watch(
       selectedProductUIStateControllerProvider(
         enterpriseCode,
@@ -163,7 +169,7 @@ class _ProductItem extends ConsumerWidget {
       notClickableBottom: isSelected
           ? AddInLot(
               productIsAlreadyInLot: quantityInLot != null,
-              addInLot: () => addInLot(product),
+              addInLot: addInLot,
               quantityController: quantityController,
               quantityFocusNode: quantityFocusNode,
             )
