@@ -105,77 +105,81 @@ class ProcessesItems extends ConsumerWidget {
           itemBuilder: (context, index) {
             final type = groupedByType.keys.elementAt(index);
             final processes = groupedByType[type];
-            return ExpansionTile(
-              title: BaseRichText(
-                texts: [
-                  BaseText.title('${type?.label} '),
-                  BaseText("(${processes?.length})", color: Colors.red),
-                ],
-              ),
-              children: processes!
-                  .map(
-                    (process) => Card(
-                      clipBehavior: Clip.hardEdge,
-                      child: InkWell(
-                        onTap: () => onTap(process),
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(Sizes.p8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  TitleAndSubTitle(
-                                    title: null,
-                                    subTitle: process.enterprise?.name ?? '',
-                                  ),
-                                  BaseText.titleMedium(
-                                    process.authorizationProcessItem?.name ??
-                                        '',
-                                  ),
-                                  if (process.dateTimeOfCreation != null)
+            return Padding(
+              padding: const EdgeInsets.only(bottom: Sizes.p8),
+              child: ExpansionTile(
+                title: BaseRichText(
+                  texts: [
+                    BaseText.title('${type?.label} '),
+                    BaseText("(${processes?.length})", color: Colors.red),
+                  ],
+                ),
+                children: processes!
+                    .map(
+                      (process) => Card(
+                        clipBehavior: Clip.hardEdge,
+                        child: InkWell(
+                          onTap: () => onTap(process),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(Sizes.p8),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
                                     TitleAndSubTitle(
-                                      title: 'Data'.hardcoded,
-                                      subTitle: process.dateTimeOfCreation!
-                                          .formatDate(
-                                            DateFormatType.ddMMyyyyHHmmss,
-                                          ),
+                                      title: null,
+                                      subTitle: process.enterprise?.name ?? '',
                                     ),
-                                  TitleAndSubTitle(
-                                    title: 'Processo iniciado por'.hardcoded,
-                                    subTitle: process.user?.identification,
-                                  ),
-                                  if (process.authorizators?.isNotEmpty ??
-                                      false)
+                                    BaseText.titleMedium(
+                                      process.authorizationProcessItem?.name ??
+                                          '',
+                                    ),
+                                    if (process.dateTimeOfCreation != null)
+                                      TitleAndSubTitle(
+                                        title: 'Data'.hardcoded,
+                                        subTitle: process.dateTimeOfCreation!
+                                            .formatDate(
+                                              DateFormatType.ddMMyyyyHHmmss,
+                                            ),
+                                      ),
                                     TitleAndSubTitle(
-                                      title: 'Autorizadores'.hardcoded,
-                                      subTitle: process.authorizators
-                                          ?.map((e) => e.identification)
-                                          .join('; '),
+                                      title: 'Processo iniciado por'.hardcoded,
+                                      subTitle: process.user?.identification,
                                     ),
-                                  if (process.observationsVotes?.isNotEmpty ??
-                                      false)
-                                    TitleAndSubTitle(
-                                      title: 'Observações'.hardcoded,
-                                      subTitle: process.observationsVotes,
-                                    ),
-                                ],
+                                    if (process.authorizators?.isNotEmpty ??
+                                        false)
+                                      TitleAndSubTitle(
+                                        title: 'Autorizadores'.hardcoded,
+                                        subTitle: process.authorizators
+                                            ?.map((e) => e.identification)
+                                            .join('; '),
+                                      ),
+                                    if (process.observationsVotes?.isNotEmpty ??
+                                        false)
+                                      TitleAndSubTitle(
+                                        title: 'Observações'.hardcoded,
+                                        subTitle: process.observationsVotes,
+                                      ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            const Positioned(
-                              bottom: Sizes.p8,
-                              right: Sizes.p8,
-                              child: PlatformIcon(
-                                materialIcon: Icons.arrow_outward_rounded,
-                                cupertinoIcon: CupertinoIcons.arrow_up_right,
+                              const Positioned(
+                                bottom: Sizes.p8,
+                                right: Sizes.p8,
+                                child: PlatformIcon(
+                                  materialIcon: Icons.arrow_outward_rounded,
+                                  cupertinoIcon: CupertinoIcons.arrow_up_right,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             );
           },
         );
