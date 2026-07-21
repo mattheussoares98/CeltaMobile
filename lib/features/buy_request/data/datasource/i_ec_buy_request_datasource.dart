@@ -5,4 +5,5 @@ abstract class IEcBuyRequestDatasource {
   Future<List<EcBuyRequestDtoModel>> loadShallow(
     LoadShallowBuyRequestParams params,
   );
+  Future<EcBuyRequestDtoModel> loadDetails(LoadBuyRequestDetailsParams params);
 }

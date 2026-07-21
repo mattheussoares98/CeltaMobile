@@ -1,4 +1,3 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_request/data/models/ec_buy_request_dto/ec_buy_request_dto_model.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
@@ -11,21 +10,23 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late IEcBuyRequestDatasource sut;
   late HttpClientSpy httpClient;
-  late LoadShallowBuyRequestParams params;
+  late LoadShallowBuyRequestParams shallowParams;
+  late LoadBuyRequestDetailsParams detailsParams;
   late List<EcBuyRequestDtoModel> models;
 
   setUp(() {
     httpClient = HttpClientSpy();
     sut = EcBuyRequestDatasource(httpClient);
 
-    params = LoadShallowBuyRequestParams(
-      requestParams: EcRequestParams(
-        workingUrl: faker.internet.httpUrl(),
-        user: faker.guid.guid(),
-        accessKey: faker.guid.guid(),
-      ),
+    shallowParams = LoadShallowBuyRequestParams(
+      requestParams: EntityFactory.makeEcRequestParams(),
       selectedDate: DateTime(2026, 7, 20),
       enterpriseCode: faker.randomGenerator.integer(100),
+    );
+
+    detailsParams = LoadBuyRequestDetailsParams(
+      requestParams: EntityFactory.makeEcRequestParams(),
+      buyRequestCode: faker.randomGenerator.integer(100),
     );
 
     models = [
@@ -41,19 +42,45 @@ void main() {
       () async {
         httpClient.mockRequest(models.map((e) => e.toJson()).toList());
 
-        final response = await sut.loadShallow(params);
+        final response = await sut.loadShallow(shallowParams);
 
         expect(response, models);
 
         verify(
           () => httpClient.request(
-            url: '${params.requestParams.workingUrl}/api/BuyRequest/Shallow',
+            url:
+                '${shallowParams.requestParams.workingUrl}/api/BuyRequest/Shallow',
             method: 'post',
-            headers: params.requestParams.toHeaders(),
+            headers: shallowParams.requestParams.toHeaders(),
             body: {
-              ...params.requestParams.toMap(),
-              'InitialCreateDate': params.selectedDate.toIso8601String(),
-              'EnterpriseCode': params.enterpriseCode,
+              ...shallowParams.requestParams.toMap(),
+              'InitialCreateDate': shallowParams.selectedDate.toIso8601String(),
+              'EnterpriseCode': shallowParams.enterpriseCode,
+            },
+          ),
+        ).called(1);
+      },
+    );
+  });
+  group('loadDetails', () {
+    test(
+      'should call httpClient with correct parameters and return list of EcBuyRequestDtoModel on success',
+      () async {
+        httpClient.mockRequest([models.first.toJson()]);
+
+        final response = await sut.loadDetails(detailsParams);
+
+        expect(response, models.first);
+
+        verify(
+          () => httpClient.request(
+            url:
+                '${detailsParams.requestParams.workingUrl}/api/BuyRequest/Details',
+            method: 'post',
+            headers: detailsParams.requestParams.toHeaders(),
+            body: {
+              ...detailsParams.requestParams.toMap(),
+              'BuyRequestCode': detailsParams.buyRequestCode,
             },
           ),
         ).called(1);

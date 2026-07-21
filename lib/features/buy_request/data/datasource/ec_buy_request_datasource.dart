@@ -27,4 +27,24 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
         .map((e) => EcBuyRequestDtoModel.fromJson(e as Map))
         .toList();
   }
+
+  @override
+  Future<EcBuyRequestDtoModel> loadDetails(
+    LoadBuyRequestDetailsParams params,
+  ) async {
+    final response = await httpClient.request(
+      url: '${params.requestParams.workingUrl}/api/BuyRequest/Details',
+      method: 'post',
+      headers: params.requestParams.toHeaders(),
+      body: {
+        ...params.requestParams.toMap(),
+        'BuyRequestCode': params.buyRequestCode,
+      },
+    );
+
+    return (response as List)
+        .map((e) => EcBuyRequestDtoModel.fromJson(e as Map))
+        .toList()
+        .first;
+  }
 }
