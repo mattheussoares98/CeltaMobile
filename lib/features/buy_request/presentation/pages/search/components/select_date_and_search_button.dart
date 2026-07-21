@@ -26,7 +26,7 @@ class _SelectDateAndSearchButtonState
       children: [
         Flexible(
           child: PrimaryButton(
-            text: selectedDate.formatDate(),
+            text: 'Data inicial '.hardcoded + selectedDate.formatDate(),
             onPressed: () async {
               final newDate = await GetNewDate.get(
                 currentSelectedDate: selectedDate,
