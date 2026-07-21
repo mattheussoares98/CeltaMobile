@@ -25,8 +25,6 @@ class ProductsItems extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Future<void> confirmAdjust(ProductEntity product) async {
-      await Future.delayed(const Duration(milliseconds: 300));
-      //TODO test whether it is working correct or not on iOS devices because it is hiding the pinnedBody automaticaly according to the keyboard
       if (formKey.currentState?.validate() != true) {
         return;
       }
