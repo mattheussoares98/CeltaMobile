@@ -4,4 +4,6 @@ abstract class IEcBuyRequestRepository {
   Future<List<EcBuyRequestDtoEntity>> loadShallow(
     LoadShallowBuyRequestParams params,
   );
+
+  Future<EcBuyRequestDtoEntity> loadDetails(LoadBuyRequestDetailsParams params);
 }

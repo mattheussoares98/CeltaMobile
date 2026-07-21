@@ -1,4 +1,3 @@
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/buy_request/data/models/ec_buy_request_dto/ec_buy_request_dto_model.dart';
 import 'package:celta_inventario/features/buy_request/data/repository/repository.dart';
@@ -16,20 +15,24 @@ class EcBuyRequestDatasourceSpy extends Mock
 void main() {
   late IEcBuyRequestRepository sut;
   late EcBuyRequestDatasourceSpy datasource;
-  late LoadShallowBuyRequestParams params;
+  late LoadShallowBuyRequestParams shallowParams;
+  late LoadBuyRequestDetailsParams detailsParams;
   late List<EcBuyRequestDtoEntity> entities;
   late List<EcBuyRequestDtoModel> models;
 
   setUpAll(() {
     registerFallbackValue(
       LoadShallowBuyRequestParams(
-        requestParams: const EcRequestParams(
-          workingUrl: '',
-          user: '',
-          accessKey: '',
-        ),
+        requestParams: EntityFactory.makeEcRequestParams(),
         selectedDate: DateTime(2026),
         enterpriseCode: 0,
+      ),
+    );
+
+    registerFallbackValue(
+      LoadBuyRequestDetailsParams(
+        requestParams: EntityFactory.makeEcRequestParams(),
+        buyRequestCode: 0,
       ),
     );
   });
@@ -38,14 +41,14 @@ void main() {
     datasource = EcBuyRequestDatasourceSpy();
     sut = EcBuyRequestRepositoryImpl(datasource);
 
-    params = LoadShallowBuyRequestParams(
-      requestParams: EcRequestParams(
-        workingUrl: faker.internet.httpUrl(),
-        user: faker.guid.guid(),
-        accessKey: faker.guid.guid(),
-      ),
+    shallowParams = LoadShallowBuyRequestParams(
+      requestParams: EntityFactory.makeEcRequestParams(),
       selectedDate: DateTime(2026, 7, 20),
       enterpriseCode: faker.randomGenerator.integer(100),
+    );
+    detailsParams = LoadBuyRequestDetailsParams(
+      requestParams: EntityFactory.makeEcRequestParams(),
+      buyRequestCode: faker.randomGenerator.integer(100),
     );
 
     entities = [
@@ -65,10 +68,26 @@ void main() {
           () => datasource.loadShallow(any()),
         ).thenAnswer((_) async => models);
 
-        final response = await sut.loadShallow(params);
+        final response = await sut.loadShallow(shallowParams);
 
         expect(response, entities);
-        verify(() => datasource.loadShallow(params)).called(1);
+        verify(() => datasource.loadShallow(shallowParams)).called(1);
+      },
+    );
+  });
+
+  group('loadDetails', () {
+    test(
+      'should call datasource with correct parameters and return EcBuyRequestDtoEntity on success',
+      () async {
+        when(
+          () => datasource.loadDetails(any()),
+        ).thenAnswer((_) async => models.first);
+
+        final response = await sut.loadDetails(detailsParams);
+
+        expect(response, entities.first);
+        verify(() => datasource.loadDetails(detailsParams)).called(1);
       },
     );
   });

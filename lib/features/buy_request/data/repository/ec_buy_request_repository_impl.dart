@@ -14,4 +14,12 @@ class EcBuyRequestRepositoryImpl implements IEcBuyRequestRepository {
     final result = await datasource.loadShallow(params);
     return result.map((e) => e.toEntity()).toList();
   }
+
+  @override
+  Future<EcBuyRequestDtoEntity> loadDetails(
+    LoadBuyRequestDetailsParams params,
+  ) async {
+    final result = await datasource.loadDetails(params);
+    return result.toEntity();
+  }
 }
