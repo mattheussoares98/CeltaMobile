@@ -7,6 +7,7 @@ enum Routes {
   buyQuotations,
   buyQuotationInsertUpdate,
   buyRequestActionSelector,
+  buyRequestDetails,
   customerRegister,
   competingPricesConcurrents,
   competingPricesProducts,
