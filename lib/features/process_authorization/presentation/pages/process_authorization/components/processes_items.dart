@@ -120,60 +120,83 @@ class ProcessesItems extends ConsumerWidget {
                         clipBehavior: Clip.hardEdge,
                         child: InkWell(
                           onTap: () => onTap(process),
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(Sizes.p8),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    TitleAndSubTitle(
-                                      title: null,
-                                      subTitle: process.enterprise?.name ?? '',
-                                    ),
-                                    BaseText.titleMedium(
-                                      process.authorizationProcessItem?.name ??
-                                          '',
-                                    ),
-                                    if (process.dateTimeOfCreation != null)
-                                      TitleAndSubTitle(
-                                        title: 'Data'.hardcoded,
-                                        subTitle: process.dateTimeOfCreation!
-                                            .formatDate(
-                                              DateFormatType.ddMMyyyyHHmmss,
-                                            ),
-                                      ),
-                                    TitleAndSubTitle(
-                                      title: 'Processo iniciado por'.hardcoded,
-                                      subTitle: process.user?.identification,
-                                    ),
-                                    if (process.authorizators?.isNotEmpty ??
-                                        false)
-                                      TitleAndSubTitle(
-                                        title: 'Autorizadores'.hardcoded,
-                                        subTitle: process.authorizators
-                                            ?.map((e) => e.identification)
-                                            .join('; '),
-                                      ),
-                                    if (process.observationsVotes?.isNotEmpty ??
-                                        false)
-                                      TitleAndSubTitle(
-                                        title: 'Observações'.hardcoded,
-                                        subTitle: process.observationsVotes,
-                                      ),
-                                  ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(Sizes.p8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                TitleAndSubTitle(
+                                  title: null,
+                                  subTitle: process.enterprise?.name ?? '',
                                 ),
-                              ),
-                              const Positioned(
-                                bottom: Sizes.p8,
-                                right: Sizes.p8,
-                                child: PlatformIcon(
-                                  materialIcon: Icons.arrow_outward_rounded,
-                                  cupertinoIcon: CupertinoIcons.arrow_up_right,
+                                BaseText.titleMedium(
+                                  process.authorizationProcessItem?.name ?? '',
                                 ),
-                              ),
-                            ],
+                                if (process.dateTimeOfCreation != null)
+                                  TitleAndSubTitle(
+                                    title: 'Data'.hardcoded,
+                                    subTitle: process.dateTimeOfCreation!
+                                        .formatDate(
+                                          DateFormatType.ddMMyyyyHHmmss,
+                                        ),
+                                  ),
+                                TitleAndSubTitle(
+                                  title: 'Processo iniciado por'.hardcoded,
+                                  subTitle: process.user?.identification,
+                                ),
+                                if (process.authorizators?.isNotEmpty ?? false)
+                                  TitleAndSubTitle(
+                                    title: 'Autorizadores'.hardcoded,
+                                    subTitle: process.authorizators
+                                        ?.map((e) => e.identification)
+                                        .join('; '),
+                                  ),
+                                if (process.observationsVotes?.isNotEmpty ??
+                                    false)
+                                  TitleAndSubTitle(
+                                    title: 'Observações'.hardcoded,
+                                    subTitle: process.observationsVotes,
+                                  ),
+                                if (process.votes?.isNotEmpty ?? false) ...[
+                                  ...List.generate(process.votes!.length, (
+                                    index,
+                                  ) {
+                                    final vote = process.votes![index];
+                                    return Column(
+                                      crossAxisAlignment: .start,
+                                      children: [
+                                        if ((index + 1) <=
+                                            process.votes!.length)
+                                          const Divider(),
+                                        if (index == 0)
+                                          BaseText.titleMedium(
+                                            'Julgamentos'.hardcoded,
+                                            color: Colors.red,
+                                          ),
+                                        TitleAndSubTitle(
+                                          title: 'Usuário'.hardcoded,
+                                          subTitle: vote.user?.identification,
+                                        ),
+                                        if (vote.observations?.isNotEmpty ??
+                                            false)
+                                          TitleAndSubTitle(
+                                            title: 'Observações'.hardcoded,
+                                            subTitle: vote.observations,
+                                          ),
+                                      ],
+                                    );
+                                  }),
+                                  const Align(
+                                    alignment: .centerRight,
+                                    child: PlatformIcon(
+                                      materialIcon: Icons.arrow_outward_rounded,
+                                      cupertinoIcon:
+                                          CupertinoIcons.arrow_up_right,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
