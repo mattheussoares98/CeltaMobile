@@ -31,6 +31,7 @@ class BuyRequestDetailsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      refreshProvider: provider,
       appBar: BaseAppBar(
         title: 'Detalhes'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,
