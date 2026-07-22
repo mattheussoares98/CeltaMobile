@@ -14,6 +14,25 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     required super.totalLiquid,
     required super.deliveryDate,
     required super.dateOfCreation,
+    required super.totalBruteFromProductsAndServices,
+    required super.totalDiscount,
+    required super.totalCompensation,
+    required super.totalIncrement,
+    required super.totalDeliveryTax,
+    required super.icmsAndIssBase,
+    required super.icmsAndIssValue,
+    required super.icmsSubstituteBase,
+    required super.icmsSubstituteValueOnFiscalNote,
+    required super.icmsSubstituteValueOnGnre,
+    required super.fcpSubstituteValue,
+    required super.totalLiquidOfFreight,
+    required super.totalSecurityOfFreight,
+    required super.totalExpenseAccessory,
+    required super.ipiValue,
+    required super.icmsValueAtDestiny,
+    required super.icmsValueAtOrigin,
+    required super.totalFundToCombatPovertyStateDestinyValue,
+    required super.totalCalculatedLiquid,
   });
 
   factory EcBuyRequestDtoModel.fromJson(Map json) {
@@ -43,6 +62,33 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
                 .toList()
           : null,
       totalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
+      totalBruteFromProductsAndServices:
+          (json['totalBruteFromProductsAndServices'] as num?)?.toDouble(),
+      totalDiscount: (json['totalDiscount'] as num?)?.toDouble(),
+      totalCompensation: (json['totalCompensation'] as num?)?.toDouble(),
+      totalIncrement: (json['totalIncrement'] as num?)?.toDouble(),
+      totalDeliveryTax: (json['totalDeliveryTax'] as num?)?.toDouble(),
+      icmsAndIssBase: (json['icmsAndIssBase'] as num?)?.toDouble(),
+      icmsAndIssValue: (json['icmsAndIssValue'] as num?)?.toDouble(),
+      icmsSubstituteBase: (json['icmsSubstituteBase'] as num?)?.toDouble(),
+      icmsSubstituteValueOnFiscalNote:
+          (json['icmsSubstituteValueOnFiscalNote'] as num?)?.toDouble(),
+      icmsSubstituteValueOnGnre: (json['icmsSubstituteValueOnGnre'] as num?)
+          ?.toDouble(),
+      fcpSubstituteValue: (json['fcpSubstituteValue'] as num?)?.toDouble(),
+      totalLiquidOfFreight: (json['totalLiquidOfFreight'] as num?)?.toDouble(),
+      totalSecurityOfFreight: (json['totalSecurityOfFreight'] as num?)
+          ?.toDouble(),
+      totalExpenseAccessory: (json['totalExpenseAccessory'] as num?)
+          ?.toDouble(),
+      ipiValue: (json['ipiValue'] as num?)?.toDouble(),
+      icmsValueAtDestiny: (json['icmsValueAtDestiny'] as num?)?.toDouble(),
+      icmsValueAtOrigin: (json['icmsValueAtOrigin'] as num?)?.toDouble(),
+      totalFundToCombatPovertyStateDestinyValue:
+          (json['totalFundToCombatPovertyStateDestinyValue'] as num?)
+              ?.toDouble(),
+      totalCalculatedLiquid: (json['totalCalculatedLiquid'] as num?)
+          ?.toDouble(),
       deliveryDate: json['deliveryDate'] != null
           ? DateTime.parse(json['deliveryDate'] as String)
           : null,
@@ -52,7 +98,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map toJson() {
     return {
       'code': code,
       'personalizedCode': personalizedCode,
@@ -75,6 +121,26 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e).toJson())
           .toList(),
       'totalLiquid': totalLiquid,
+      'totalBruteFromProductsAndServices': totalBruteFromProductsAndServices,
+      'totalDiscount': totalDiscount,
+      'totalCompensation': totalCompensation,
+      'totalIncrement': totalIncrement,
+      'totalDeliveryTax': totalDeliveryTax,
+      'icmsAndIssBase': icmsAndIssBase,
+      'icmsAndIssValue': icmsAndIssValue,
+      'icmsSubstituteBase': icmsSubstituteBase,
+      'icmsSubstituteValueOnFiscalNote': icmsSubstituteValueOnFiscalNote,
+      'icmsSubstituteValueOnGnre': icmsSubstituteValueOnGnre,
+      'fcpSubstituteValue': fcpSubstituteValue,
+      'totalLiquidOfFreight': totalLiquidOfFreight,
+      'totalSecurityOfFreight': totalSecurityOfFreight,
+      'totalExpenseAccessory': totalExpenseAccessory,
+      'ipiValue': ipiValue,
+      'icmsValueAtDestiny': icmsValueAtDestiny,
+      'icmsValueAtOrigin': icmsValueAtOrigin,
+      'totalFundToCombatPovertyStateDestinyValue':
+          totalFundToCombatPovertyStateDestinyValue,
+      'totalCalculatedLiquid': totalCalculatedLiquid,
       'deliveryDate': deliveryDate?.toIso8601String(),
       'dateOfCreation': dateOfCreation?.toIso8601String(),
     };
@@ -101,6 +167,27 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e))
           .toList(),
       totalLiquid: entity.totalLiquid,
+      totalBruteFromProductsAndServices:
+          entity.totalBruteFromProductsAndServices,
+      totalDiscount: entity.totalDiscount,
+      totalCompensation: entity.totalCompensation,
+      totalIncrement: entity.totalIncrement,
+      totalDeliveryTax: entity.totalDeliveryTax,
+      icmsAndIssBase: entity.icmsAndIssBase,
+      icmsAndIssValue: entity.icmsAndIssValue,
+      icmsSubstituteBase: entity.icmsSubstituteBase,
+      icmsSubstituteValueOnFiscalNote: entity.icmsSubstituteValueOnFiscalNote,
+      icmsSubstituteValueOnGnre: entity.icmsSubstituteValueOnGnre,
+      fcpSubstituteValue: entity.fcpSubstituteValue,
+      totalLiquidOfFreight: entity.totalLiquidOfFreight,
+      totalSecurityOfFreight: entity.totalSecurityOfFreight,
+      totalExpenseAccessory: entity.totalExpenseAccessory,
+      ipiValue: entity.ipiValue,
+      icmsValueAtDestiny: entity.icmsValueAtDestiny,
+      icmsValueAtOrigin: entity.icmsValueAtOrigin,
+      totalFundToCombatPovertyStateDestinyValue:
+          entity.totalFundToCombatPovertyStateDestinyValue,
+      totalCalculatedLiquid: entity.totalCalculatedLiquid,
       deliveryDate: entity.deliveryDate,
       dateOfCreation: entity.dateOfCreation,
     );
@@ -129,6 +216,26 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e).toEntity())
           .toList(),
       totalLiquid: totalLiquid,
+      totalBruteFromProductsAndServices: totalBruteFromProductsAndServices,
+      totalDiscount: totalDiscount,
+      totalCompensation: totalCompensation,
+      totalIncrement: totalIncrement,
+      totalDeliveryTax: totalDeliveryTax,
+      icmsAndIssBase: icmsAndIssBase,
+      icmsAndIssValue: icmsAndIssValue,
+      icmsSubstituteBase: icmsSubstituteBase,
+      icmsSubstituteValueOnFiscalNote: icmsSubstituteValueOnFiscalNote,
+      icmsSubstituteValueOnGnre: icmsSubstituteValueOnGnre,
+      fcpSubstituteValue: fcpSubstituteValue,
+      totalLiquidOfFreight: totalLiquidOfFreight,
+      totalSecurityOfFreight: totalSecurityOfFreight,
+      totalExpenseAccessory: totalExpenseAccessory,
+      ipiValue: ipiValue,
+      icmsValueAtDestiny: icmsValueAtDestiny,
+      icmsValueAtOrigin: icmsValueAtOrigin,
+      totalFundToCombatPovertyStateDestinyValue:
+          totalFundToCombatPovertyStateDestinyValue,
+      totalCalculatedLiquid: totalCalculatedLiquid,
       deliveryDate: deliveryDate,
       dateOfCreation: dateOfCreation,
     );
