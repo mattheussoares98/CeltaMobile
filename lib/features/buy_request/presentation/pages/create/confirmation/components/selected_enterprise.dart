@@ -19,6 +19,7 @@ class SelectedEnterprise extends ConsumerWidget {
     return ResponsiveListFlow(
       isSliver: true,
       itemCount: selectedEnterprises?.length ?? 0,
+      padding: EdgeInsets.zero,
       itemBuilder: (_, index) {
         final enterprise = selectedEnterprises![index];
 
