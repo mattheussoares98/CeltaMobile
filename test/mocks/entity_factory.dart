@@ -2235,6 +2235,7 @@ class EntityFactory {
         products: List.generate(
           faker.randomGenerator.integer(3),
           (_) => EcBuyRequestProductDtoEntity(
+            packingName: faker.lorem.word(),
             enterprisePersonalizedCode: faker.randomGenerator
                 .integer(100)
                 .toString(),
