@@ -1,10 +1,12 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/components/components.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,6 +40,15 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
       processCode,
     );
     final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+    final processIsEntirelyJudged = ref.watch(
+      judgmentsStateControllerProvider.select((s) {
+        final status = s.value
+            ?.firstWhereOrNull((e) => e.code == processCode)
+            ?.status;
+        return status != null &&
+            status != BSFProcessAuthorizationJudgementStatus.awaiting;
+      }),
+    );
 
     final items = ref.watch(
       provider.select((s) {
@@ -82,7 +93,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
       refreshProvider: provider,
       rowColor: (item) =>
           selectedItemsIds.contains(item.code) ? Colors.green.shade100 : null,
-      onTapRow: onTapItem,
+      onTapRow: processIsEntirelyJudged ? null : onTapItem,
       columns: [
         ScrollableTableColumnSpec<BSFGRProductEntity>(
           headerTitle: areJudgedItems ? 'Status/Produto' : 'Produto'.hardcoded,
@@ -103,19 +114,20 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
             return Text.rich(
               TextSpan(
                 children: [
-                  WidgetSpan(
-                    alignment: PlaceholderAlignment.middle,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: Sizes.p4),
-                      child: BaseCheckBox(
-                        name: '',
-                        enabled: selectedItemsIds.contains(item.code),
-                        onChanged: (_) => onTapItem(item),
-                        width: Sizes.p16,
-                        height: Sizes.p16,
+                  if (!processIsEntirelyJudged)
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: Sizes.p4),
+                        child: BaseCheckBox(
+                          name: '',
+                          enabled: selectedItemsIds.contains(item.code),
+                          onChanged: (_) => onTapItem(item),
+                          width: Sizes.p16,
+                          height: Sizes.p16,
+                        ),
                       ),
                     ),
-                  ),
                   if (areJudgedItems)
                     TextSpan(
                       text:
