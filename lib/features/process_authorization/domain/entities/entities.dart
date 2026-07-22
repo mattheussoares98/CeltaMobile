@@ -6,6 +6,7 @@ export 'bsf_process_authorization_item_type.dart';
 export 'bsf_process_authorization_judgement_status.dart';
 export 'bsf_process_authorization_judgement_type.dart';
 export 'bsf_process_authorization_judgment_entity.dart';
+export 'bsf_process_authorization_judgment_vote_entity.dart';
 export 'bsf_process_authorization_statistic_entity.dart';
 export 'bsf_user_bond_type.dart';
 export 'bsf_user_entity.dart';

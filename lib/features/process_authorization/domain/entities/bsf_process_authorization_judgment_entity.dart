@@ -15,6 +15,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
   final BSFProcessAuthorizationItemEntity? authorizationProcessItem;
   final List<BSFUserEntity>? authorizators;
   final List<BSFDefendantEntity>? defendants;
+  final List<BSFProcessAuthorizationJudgmentVoteEntity>? votes;
 
   const BSFProcessAuthorizationJudgmentEntity({
     this.code,
@@ -29,6 +30,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     this.authorizationProcessItem,
     this.authorizators,
     this.defendants,
+    this.votes,
   });
 
   @override
@@ -45,6 +47,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     authorizationProcessItem,
     authorizators,
     defendants,
+    votes,
   ];
 
   BSFProcessAuthorizationJudgmentEntity copyWith({
@@ -60,6 +63,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     BSFProcessAuthorizationItemEntity? authorizationProcessItem,
     List<BSFUserEntity>? authorizators,
     List<BSFDefendantEntity>? defendants,
+    List<BSFProcessAuthorizationJudgmentVoteEntity>? votes,
     bool? annulDefendants,
   }) {
     return BSFProcessAuthorizationJudgmentEntity(
@@ -80,6 +84,7 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
       defendants: annulDefendants == true
           ? null
           : defendants ?? this.defendants,
+      votes: votes ?? this.votes,
     );
   }
 }

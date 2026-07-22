@@ -18,6 +18,7 @@ class BSFProcessAuthorizationJudgmentModel
     super.authorizationProcessItem,
     super.authorizators,
     super.defendants,
+    super.votes,
   });
 
   factory BSFProcessAuthorizationJudgmentModel.fromJson(Map json) {
@@ -58,6 +59,11 @@ class BSFProcessAuthorizationJudgmentModel
           )
           .whereType<BSFDefendantModel>()
           .toList(),
+      votes: (json['Votes'] as List?)
+          ?.map(
+            (x) => BSFProcessAuthorizationJudgmentVoteModel.fromJson(x as Map),
+          )
+          .toList(),
     );
   }
 
@@ -84,6 +90,12 @@ class BSFProcessAuthorizationJudgmentModel
     'Defendants': defendants
         ?.map((x) => BSFDefendantModel.fromEntity(x).toJson())
         .toList(),
+    'Votes': votes
+        ?.map(
+          (x) =>
+              BSFProcessAuthorizationJudgmentVoteModel.fromEntity(x).toJson(),
+        )
+        .toList(),
   };
 
   factory BSFProcessAuthorizationJudgmentModel.fromEntity(
@@ -102,6 +114,7 @@ class BSFProcessAuthorizationJudgmentModel
     authorizationProcessItem: entity.authorizationProcessItem,
     authorizators: entity.authorizators,
     defendants: entity.defendants,
+    votes: entity.votes,
   );
 
   BSFProcessAuthorizationJudgmentEntity toEntity() =>
@@ -119,6 +132,13 @@ class BSFProcessAuthorizationJudgmentModel
         authorizators: authorizators,
         defendants: defendants
             ?.map((e) => BSFDefendantModel.fromEntity(e).toEntity())
+            .toList(),
+        votes: votes
+            ?.map(
+              (e) => BSFProcessAuthorizationJudgmentVoteModel.fromEntity(
+                e,
+              ).toEntity(),
+            )
             .toList(),
       );
 }
