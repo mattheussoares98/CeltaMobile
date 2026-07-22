@@ -10,6 +10,7 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
     required super.requestType,
     required super.supplier,
     required super.enterprises,
+    required super.products,
     required super.totalLiquid,
     required super.deliveryDate,
     required super.dateOfCreation,
@@ -34,6 +35,11 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
                 .map(
                   (e) => EcBuyRequestEnterpriseItemDtoModel.fromJson(e as Map),
                 )
+                .toList()
+          : null,
+      products: json['products'] != null
+          ? (json['products'] as List)
+                .map((e) => EcBuyRequestProductDtoModel.fromJson(e as Map))
                 .toList()
           : null,
       totalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
@@ -65,6 +71,9 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
             (e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e).toJson(),
           )
           .toList(),
+      'products': products
+          ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e).toJson())
+          .toList(),
       'totalLiquid': totalLiquid,
       'deliveryDate': deliveryDate?.toIso8601String(),
       'dateOfCreation': dateOfCreation?.toIso8601String(),
@@ -87,6 +96,9 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           : null,
       enterprises: entity.enterprises
           ?.map((e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e))
+          .toList(),
+      products: entity.products
+          ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e))
           .toList(),
       totalLiquid: entity.totalLiquid,
       deliveryDate: entity.deliveryDate,
@@ -112,6 +124,9 @@ class EcBuyRequestDtoModel extends EcBuyRequestDtoEntity {
           ?.map(
             (e) => EcBuyRequestEnterpriseItemDtoModel.fromEntity(e).toEntity(),
           )
+          .toList(),
+      products: products
+          ?.map((e) => EcBuyRequestProductDtoModel.fromEntity(e).toEntity())
           .toList(),
       totalLiquid: totalLiquid,
       deliveryDate: deliveryDate,

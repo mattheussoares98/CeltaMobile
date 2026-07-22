@@ -2232,6 +2232,22 @@ class EntityFactory {
             totalLiquidValue: faker.randomGenerator.decimal(),
           ),
         ),
+        products: List.generate(
+          faker.randomGenerator.integer(3),
+          (_) => EcBuyRequestProductDtoEntity(
+            enterprisePersonalizedCode: faker.randomGenerator
+                .integer(100)
+                .toString(),
+            enterpriseName: faker.company.name(),
+            name: faker.lorem.word(),
+            packingQuantity: faker.randomGenerator.decimal(),
+            priceLookupCode: faker.randomGenerator.integer(100).toString(),
+            eans: [faker.randomGenerator.integer(1000000).toString()],
+            quantity: faker.randomGenerator.decimal(),
+            value: faker.randomGenerator.decimal(),
+            total: faker.randomGenerator.decimal(),
+          ),
+        ),
         totalLiquid: faker.randomGenerator.decimal(),
       );
 }

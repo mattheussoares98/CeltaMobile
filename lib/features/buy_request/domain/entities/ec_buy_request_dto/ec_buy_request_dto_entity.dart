@@ -9,6 +9,7 @@ class EcBuyRequestDtoEntity extends Equatable {
   final EcBuyRequestTypeDtoEntity? requestType;
   final EcBuyRequestSupplierDtoEntity? supplier;
   final List<EcBuyRequestEnterpriseItemDtoEntity>? enterprises;
+  final List<EcBuyRequestProductDtoEntity>? products;
   final DateTime? dateOfCreation;
   final DateTime? deliveryDate;
   final double? totalLiquid;
@@ -21,6 +22,7 @@ class EcBuyRequestDtoEntity extends Equatable {
     required this.requestType,
     required this.supplier,
     required this.enterprises,
+    required this.products,
     required this.totalLiquid,
     required this.dateOfCreation,
     required this.deliveryDate,
@@ -35,6 +37,7 @@ class EcBuyRequestDtoEntity extends Equatable {
     requestType,
     supplier,
     enterprises,
+    products,
     totalLiquid,
     dateOfCreation,
     deliveryDate,
