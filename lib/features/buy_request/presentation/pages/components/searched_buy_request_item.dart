@@ -71,16 +71,16 @@ class SearchedBuyRequestItem extends StatelessWidget {
                     title: 'Modelo pedido'.hardcoded,
                     subTitle: buyRequest.requestType?.name,
                   ),
-                if (buyRequest.observations?.isNotEmpty ?? false)
-                  TitleAndSubTitle(
-                    title: 'Observações'.hardcoded,
-                    subTitle: buyRequest.observations,
-                  ),
                 TitleAndSubTitle(
                   title: 'Valor total'.hardcoded,
                   subTitle: buyRequest.totalLiquid,
                   subTitleIsPrice: true,
                 ),
+                if (buyRequest.observations?.isNotEmpty ?? false)
+                  TitleAndSubTitle(
+                    title: 'Observações'.hardcoded,
+                    subTitle: buyRequest.observations,
+                  ),
                 if (onTapItem != null && PlatformUtil.isIOS)
                   Align(
                     alignment: .centerRight,
