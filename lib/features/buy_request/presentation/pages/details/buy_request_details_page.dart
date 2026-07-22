@@ -1,5 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +26,9 @@ class BuyRequestDetailsPage extends ConsumerWidget {
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
         data: (buyRequest) {
-          return BaseText(buyRequest.toString());
+          return Column(
+            children: [SearchedBuyRequestItem(buyRequest: buyRequest)],
+          );
         },
       ),
     );
