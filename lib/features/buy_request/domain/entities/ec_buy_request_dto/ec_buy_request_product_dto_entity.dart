@@ -6,6 +6,7 @@ class EcBuyRequestProductDtoEntity extends Equatable {
   final String? name;
   final double? packingQuantity;
   final String? priceLookupCode;
+  final String? packingName;
   final List<String>? eans;
   final double? quantity;
   final double? value;
@@ -17,6 +18,7 @@ class EcBuyRequestProductDtoEntity extends Equatable {
     required this.name,
     required this.packingQuantity,
     required this.priceLookupCode,
+    required this.packingName,
     required this.eans,
     required this.quantity,
     required this.value,
@@ -30,6 +32,7 @@ class EcBuyRequestProductDtoEntity extends Equatable {
     name,
     packingQuantity,
     priceLookupCode,
+    packingName,
     eans,
     quantity,
     value,
