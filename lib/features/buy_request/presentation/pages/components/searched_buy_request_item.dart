@@ -90,8 +90,7 @@ class SearchedBuyRequestItem extends StatelessWidget {
                     subTitle: buyRequest.totalLiquid ?? 0,
                     subTitleIsPrice: true,
                   ),
-                  if ((buyRequest.observations?.isNotEmpty ?? false) &&
-                      onTapItem != null /* shallow results */ )
+                  if (buyRequest.observations?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Observações'.hardcoded,
                       subTitle: buyRequest.observations,
