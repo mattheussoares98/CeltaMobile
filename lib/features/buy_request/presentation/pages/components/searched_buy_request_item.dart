@@ -1,10 +1,14 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+part 'searched_buy_request_summary.dart';
 
 class SearchedBuyRequestItem extends StatelessWidget {
   final VoidCallback? onTapItem; //! is not passed on details page
@@ -77,8 +81,12 @@ class SearchedBuyRequestItem extends StatelessWidget {
                       title: 'Modelo pedido'.hardcoded,
                       subTitle: buyRequest.requestType?.name,
                     ),
+                  if (onTapItem == null)
+                    //! details page
+                    _SearchedBuyRequestSummary(processCode: buyRequest.code),
+
                   TitleAndSubTitle(
-                    title: 'Valor total'.hardcoded,
+                    title: 'Valor líquido'.hardcoded,
                     subTitle: buyRequest.totalLiquid ?? 0,
                     subTitleIsPrice: true,
                   ),
