@@ -29,6 +29,10 @@ class OpenVotePageButton extends ConsumerWidget {
       ),
     );
 
+    if (process?.status != BSFProcessAuthorizationJudgementStatus.awaiting) {
+      return const SizedBox.shrink();
+    }
+
     Future<void> onTap() async {
       if (process?.status != BSFProcessAuthorizationJudgementStatus.awaiting) {
         showToastMessage(
