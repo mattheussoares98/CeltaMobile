@@ -186,53 +186,67 @@ class EcBuyMovementDtoModel extends EcBuyMovementDtoEntity {
         .toList(),
   };
 
-  factory EcBuyMovementDtoModel.fromEntity(EcBuyMovementDtoEntity entity) =>
-      EcBuyMovementDtoModel(
-        code: entity.code,
-        isCancelled: entity.isCancelled,
-        dateOfCancellation: entity.dateOfCancellation,
-        userOfCancellation: entity.userOfCancellation,
-        userOfEntrance: entity.userOfEntrance,
-        fiscalNoteType: entity.fiscalNoteType,
-        enterprise: entity.enterprise,
-        buyers: entity.buyers,
-        supplier: entity.supplier,
-        documentNumber: entity.documentNumber,
-        documentNumberComplement: entity.documentNumberComplement,
-        dateOfCreation: entity.dateOfCreation,
-        dateOfEmission: entity.dateOfEmission,
-        dateOfEntrance: entity.dateOfEntrance,
-        deliveryTax: entity.deliveryTax,
-        increment: entity.increment,
-        compensation: entity.compensation,
-        discounts: entity.discounts,
-        requests: entity.requests,
-        observations: entity.observations,
-        hasGoodsReceivingDocument: entity.hasGoodsReceivingDocument,
-        totalLiquid: entity.totalLiquid,
-        totalBruteFromProductsAndServices:
-            entity.totalBruteFromProductsAndServices,
-        totalDiscount: entity.totalDiscount,
-        totalCompensation: entity.totalCompensation,
-        totalIncrement: entity.totalIncrement,
-        totalDeliveryTax: entity.totalDeliveryTax,
-        icmsAndIssBase: entity.icmsAndIssBase,
-        icmsAndIssValue: entity.icmsAndIssValue,
-        icmsSubstituteBase: entity.icmsSubstituteBase,
-        icmsSubstituteValueOnFiscalNote: entity.icmsSubstituteValueOnFiscalNote,
-        icmsSubstituteValueOnGnre: entity.icmsSubstituteValueOnGnre,
-        fcpSubstituteValue: entity.fcpSubstituteValue,
-        totalLiquidOfFreight: entity.totalLiquidOfFreight,
-        totalSecurityOfFreight: entity.totalSecurityOfFreight,
-        totalExpenseAccessory: entity.totalExpenseAccessory,
-        ipiValue: entity.ipiValue,
-        icmsValueAtDestiny: entity.icmsValueAtDestiny,
-        icmsValueAtOrigin: entity.icmsValueAtOrigin,
-        totalFundToCombatPovertyStateDestinyValue:
-            entity.totalFundToCombatPovertyStateDestinyValue,
-        totalCalculatedLiquid: entity.totalCalculatedLiquid,
-        products: entity.products,
-      );
+  factory EcBuyMovementDtoModel.fromEntity(
+    EcBuyMovementDtoEntity entity,
+  ) => EcBuyMovementDtoModel(
+    code: entity.code,
+    isCancelled: entity.isCancelled,
+    dateOfCancellation: entity.dateOfCancellation,
+    userOfCancellation: entity.userOfCancellation == null
+        ? null
+        : EcBuyMovementUserDtoModel.fromEntity(entity.userOfCancellation!),
+    userOfEntrance: entity.userOfEntrance == null
+        ? null
+        : EcBuyMovementUserDtoModel.fromEntity(entity.userOfEntrance!),
+    fiscalNoteType: entity.fiscalNoteType == null
+        ? null
+        : EcBuyMovementFiscalNoteTypeDtoModel.fromEntity(
+            entity.fiscalNoteType!,
+          ),
+    enterprise: entity.enterprise == null
+        ? null
+        : EcBuyMovementEnterpriseDtoModel.fromEntity(entity.enterprise!),
+    buyers: entity.buyers?.map(EcBuyMovementBuyerDtoModel.fromEntity).toList(),
+    supplier: entity.supplier == null
+        ? null
+        : EcBuyMovementSupplierDtoModel.fromEntity(entity.supplier!),
+    documentNumber: entity.documentNumber,
+    documentNumberComplement: entity.documentNumberComplement,
+    dateOfCreation: entity.dateOfCreation,
+    dateOfEmission: entity.dateOfEmission,
+    dateOfEntrance: entity.dateOfEntrance,
+    deliveryTax: entity.deliveryTax,
+    increment: entity.increment,
+    compensation: entity.compensation,
+    discounts: entity.discounts,
+    requests: entity.requests,
+    observations: entity.observations,
+    hasGoodsReceivingDocument: entity.hasGoodsReceivingDocument,
+    totalLiquid: entity.totalLiquid,
+    totalBruteFromProductsAndServices: entity.totalBruteFromProductsAndServices,
+    totalDiscount: entity.totalDiscount,
+    totalCompensation: entity.totalCompensation,
+    totalIncrement: entity.totalIncrement,
+    totalDeliveryTax: entity.totalDeliveryTax,
+    icmsAndIssBase: entity.icmsAndIssBase,
+    icmsAndIssValue: entity.icmsAndIssValue,
+    icmsSubstituteBase: entity.icmsSubstituteBase,
+    icmsSubstituteValueOnFiscalNote: entity.icmsSubstituteValueOnFiscalNote,
+    icmsSubstituteValueOnGnre: entity.icmsSubstituteValueOnGnre,
+    fcpSubstituteValue: entity.fcpSubstituteValue,
+    totalLiquidOfFreight: entity.totalLiquidOfFreight,
+    totalSecurityOfFreight: entity.totalSecurityOfFreight,
+    totalExpenseAccessory: entity.totalExpenseAccessory,
+    ipiValue: entity.ipiValue,
+    icmsValueAtDestiny: entity.icmsValueAtDestiny,
+    icmsValueAtOrigin: entity.icmsValueAtOrigin,
+    totalFundToCombatPovertyStateDestinyValue:
+        entity.totalFundToCombatPovertyStateDestinyValue,
+    totalCalculatedLiquid: entity.totalCalculatedLiquid,
+    products: entity.products
+        ?.map(EcBuyMovementProductDtoModel.fromEntity)
+        .toList(),
+  );
 
   EcBuyMovementDtoEntity toEntity() => EcBuyMovementDtoEntity(
     code: code,

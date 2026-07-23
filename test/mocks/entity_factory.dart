@@ -9,6 +9,7 @@ import 'package:celta_inventario/features/adjust_sale_price/presentation/models/
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
@@ -2270,5 +2271,100 @@ class EntityFactory {
         totalFundToCombatPovertyStateDestinyValue: faker.randomGenerator
             .decimal(),
         totalCalculatedLiquid: faker.randomGenerator.decimal(),
+      );
+
+  static EcBuyMovementDtoEntity makeEcBuyMovementDtoEntity() =>
+      EcBuyMovementDtoEntity(
+        code: faker.randomGenerator.integer(100),
+        isCancelled: faker.randomGenerator.boolean(),
+        dateOfCancellation: faker.date.dateTime(),
+        userOfCancellation: EcBuyMovementUserDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          name: faker.person.name(),
+        ),
+        userOfEntrance: EcBuyMovementUserDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          name: faker.person.name(),
+        ),
+        fiscalNoteType: EcBuyMovementFiscalNoteTypeDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          name: faker.lorem.word(),
+        ),
+        enterprise: EcBuyMovementEnterpriseDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          personalizedCode: faker.randomGenerator.integer(100).toString(),
+          cnpjNumber: faker.randomGenerator.integer(100000).toString(),
+          name: faker.company.name(),
+        ),
+        buyers: [
+          EcBuyMovementBuyerDtoEntity(
+            code: faker.randomGenerator.integer(100),
+            personalizedCode: faker.randomGenerator.integer(100).toString(),
+            buyer: faker.randomGenerator.boolean(),
+            seller: faker.randomGenerator.boolean(),
+            pdvOperator: faker.randomGenerator.boolean(),
+            dateOfBirth: faker.date.dateTime(),
+            cpfNumber: faker.randomGenerator.integer(100000).toString(),
+            rgNumber: faker.randomGenerator.integer(100000).toString(),
+            name: faker.person.name(),
+            nameReduced: faker.person.name(),
+          ),
+        ],
+        supplier: EcBuyMovementSupplierDtoEntity(
+          code: faker.randomGenerator.integer(100),
+          name: faker.company.name(),
+          fantasizesName: faker.company.name(),
+          suframaCode: faker.randomGenerator.integer(100).toString(),
+          cnpjCpfNumber: faker.randomGenerator.integer(100000).toString(),
+          formatedCnpjCpfNumber: faker.randomGenerator
+              .integer(100000)
+              .toString(),
+          inscriptionRgNumber: faker.randomGenerator.integer(100000).toString(),
+        ),
+        documentNumber: faker.randomGenerator.integer(100),
+        documentNumberComplement: faker.lorem.word(),
+        dateOfCreation: faker.date.dateTime(),
+        dateOfEmission: faker.date.dateTime(),
+        dateOfEntrance: faker.date.dateTime(),
+        deliveryTax: faker.randomGenerator.decimal().toString(),
+        increment: faker.randomGenerator.decimal().toString(),
+        compensation: faker.randomGenerator.decimal().toString(),
+        discounts: faker.randomGenerator.decimal().toString(),
+        requests: [faker.randomGenerator.integer(100).toString()],
+        observations: faker.lorem.sentence(),
+        hasGoodsReceivingDocument: faker.randomGenerator.boolean(),
+        totalLiquid: faker.randomGenerator.decimal(),
+        totalBruteFromProductsAndServices: faker.randomGenerator.decimal(),
+        totalDiscount: faker.randomGenerator.decimal(),
+        totalCompensation: faker.randomGenerator.decimal(),
+        totalIncrement: faker.randomGenerator.decimal(),
+        totalDeliveryTax: faker.randomGenerator.decimal(),
+        icmsAndIssBase: faker.randomGenerator.decimal(),
+        icmsAndIssValue: faker.randomGenerator.decimal(),
+        icmsSubstituteBase: faker.randomGenerator.decimal(),
+        icmsSubstituteValueOnFiscalNote: faker.randomGenerator.decimal(),
+        icmsSubstituteValueOnGnre: faker.randomGenerator.decimal(),
+        fcpSubstituteValue: faker.randomGenerator.decimal(),
+        totalLiquidOfFreight: faker.randomGenerator.decimal(),
+        totalSecurityOfFreight: faker.randomGenerator.decimal(),
+        totalExpenseAccessory: faker.randomGenerator.decimal(),
+        ipiValue: faker.randomGenerator.decimal(),
+        icmsValueAtDestiny: faker.randomGenerator.decimal(),
+        icmsValueAtOrigin: faker.randomGenerator.decimal(),
+        totalFundToCombatPovertyStateDestinyValue: faker.randomGenerator
+            .decimal(),
+        totalCalculatedLiquid: faker.randomGenerator.decimal(),
+        products: [
+          EcBuyMovementProductDtoEntity(
+            name: faker.lorem.word(),
+            priceLookupCode: faker.randomGenerator.integer(100).toString(),
+            fiscalCode: faker.randomGenerator.integer(100).toString(),
+            packingQuantity: faker.randomGenerator.decimal(),
+            packingName: faker.lorem.word(),
+            quantity: faker.randomGenerator.decimal(),
+            totalLiquid: faker.randomGenerator.decimal(),
+          ),
+        ],
       );
 }
