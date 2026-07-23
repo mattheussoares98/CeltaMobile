@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchedBuyRequestItem extends StatelessWidget {
-  final VoidCallback? onTapItem;
+  final VoidCallback? onTapItem; //! is not passed on details page
   final EcBuyRequestDtoEntity buyRequest;
   const SearchedBuyRequestItem({
     super.key,
@@ -29,7 +29,7 @@ class SearchedBuyRequestItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .stretch,
                 children: [
-                  if (buyRequest.personalizedCode != null)
+                  if (buyRequest.personalizedCode != null && onTapItem != null)
                     BaseRichText(
                       texts: [
                         BaseText('Cód personalizado: '.hardcoded),
@@ -48,12 +48,13 @@ class SearchedBuyRequestItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                  TitleAndSubTitle(
-                    title: 'Criado em'.hardcoded,
-                    subTitle: buyRequest.dateOfCreation?.formatDate(
-                      .ddMMyyyyHHmm,
+                  if (buyRequest.dateOfCreation != null)
+                    TitleAndSubTitle(
+                      title: 'Criado em'.hardcoded,
+                      subTitle: buyRequest.dateOfCreation?.formatDate(
+                        .ddMMyyyyHHmm,
+                      ),
                     ),
-                  ),
                   if (buyRequest.deliveryDate != null)
                     TitleAndSubTitle(
                       title: 'Entregue em'.hardcoded,
@@ -61,24 +62,24 @@ class SearchedBuyRequestItem extends StatelessWidget {
                         .ddMMyyyyHHmm,
                       ),
                     ),
-                  if (buyRequest.buyer != null)
+                  if (buyRequest.buyer?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Comprador'.hardcoded,
                       subTitle: buyRequest.buyer?.name,
                     ),
-                  if (buyRequest.supplier != null)
+                  if (buyRequest.supplier?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Fornecedor'.hardcoded,
                       subTitle: buyRequest.supplier?.name,
                     ),
-                  if (buyRequest.requestType != null)
+                  if (buyRequest.requestType?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Modelo pedido'.hardcoded,
                       subTitle: buyRequest.requestType?.name,
                     ),
                   TitleAndSubTitle(
                     title: 'Valor total'.hardcoded,
-                    subTitle: buyRequest.totalLiquid,
+                    subTitle: buyRequest.totalLiquid ?? 0,
                     subTitleIsPrice: true,
                   ),
                   if ((buyRequest.observations?.isNotEmpty ?? false) &&

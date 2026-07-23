@@ -33,7 +33,10 @@ class BuyRequestDetailsPage extends ConsumerWidget {
       usePadding: false,
       refreshProvider: provider,
       appBar: BaseAppBar(
-        title: 'Detalhes'.hardcoded,
+        title: (shallowBuyRequest?.personalizedCode?.isNotEmpty ?? false)
+            ? 'Detalhes pedido (${shallowBuyRequest?.personalizedCode ?? ''})'
+                  .hardcoded
+            : 'Detalhes'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: Column(
@@ -49,9 +52,10 @@ class BuyRequestDetailsPage extends ConsumerWidget {
               return Expanded(
                 child: ScrollableTable<EcBuyRequestProductDtoEntity>(
                   fixFirstColumn: true,
-                  rowHeight: 65,
+                  rowHeight: 45,
                   refreshProvider: provider,
                   items: buyRequest.products ?? [],
+                  headerHeight: 30,
                   columns: [
                     if ((buyRequest.enterprises?.length ?? 1) > 1)
                       ScrollableTableColumnSpec(
@@ -71,17 +75,18 @@ class BuyRequestDetailsPage extends ConsumerWidget {
                       headerTitle: 'Produto'.hardcoded,
                       minWidth: 100,
                       cellBuilder: (item) => BaseRichText(
+                        maxLines: 2,
                         texts: [
                           if (item.priceLookupCode?.isNotEmpty ?? false)
-                            BaseText.title(
-                              '(${item.priceLookupCode!}) ',
+                            BaseText.bodySmall(
+                              '(${item.priceLookupCode!})',
                               color: context.theme.primaryColor,
                             ),
-                          BaseText.title(item.name ?? ''),
-                          BaseText.title(
-                            ' (${item.packingName} ${item.packingQuantity.toString().toBrazilianNumber(3, true)})',
+                          BaseText.bodySmall(
+                            ' (${item.packingName} ${item.packingQuantity.toString().toBrazilianNumber(3, true)}) ',
                             color: context.theme.colorScheme.secondary,
                           ),
+                          BaseText.bodySmall(item.name ?? ''),
                         ],
                       ),
                       sortValueMapper: (item) =>
@@ -102,7 +107,7 @@ class BuyRequestDetailsPage extends ConsumerWidget {
                     ),
                     ScrollableTableColumnSpec(
                       headerTitle: 'Valor'.hardcoded,
-                      minWidth: 45,
+                      minWidth: 55,
                       isMoney: true,
                       footerCellBuilder: (items) {
                         final total = items.fold(
@@ -121,7 +126,7 @@ class BuyRequestDetailsPage extends ConsumerWidget {
                     ),
                     ScrollableTableColumnSpec(
                       headerTitle: 'Total'.hardcoded,
-                      minWidth: 45,
+                      minWidth: 55,
                       isMoney: true,
                       cellBuilder: (item) => BaseText.title(
                         item.total.toString().toBrazilianNumber(),
