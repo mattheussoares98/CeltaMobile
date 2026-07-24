@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
@@ -14,6 +15,7 @@ part 'statistics_state_controller.g.dart';
 class StatisticsStateController extends _$StatisticsStateController {
   @override
   FutureOr<BsfProcessAuthorizationStatisticEntity> build() async {
+    ref.watch(validatedUserSessionProvider);
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(
         .generic,
