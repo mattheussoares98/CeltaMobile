@@ -25,6 +25,7 @@ void main() {
       LoadShallowBuyRequestParams(
         requestParams: EntityFactory.makeEcRequestParams(),
         selectedDate: DateTime(2026),
+        finalDate: DateTime(2026, 3, 31),
         enterpriseCode: 0,
       ),
     );
@@ -44,6 +45,7 @@ void main() {
     shallowParams = LoadShallowBuyRequestParams(
       requestParams: EntityFactory.makeEcRequestParams(),
       selectedDate: DateTime(2026, 7, 20),
+      finalDate: DateTime(2026, 10, 18),
       enterpriseCode: faker.randomGenerator.integer(100),
     );
     detailsParams = LoadBuyRequestDetailsParams(

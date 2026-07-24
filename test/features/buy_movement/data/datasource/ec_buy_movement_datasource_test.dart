@@ -22,6 +22,7 @@ void main() {
     shallowParams = LoadShallowBuyMovementParams(
       requestParams: requestParams,
       selectedDate: faker.date.dateTime(),
+      finalDate: faker.date.dateTime(),
       enterpriseCode: faker.randomGenerator.integer(100),
     );
     detailsParams = LoadBuyMovementDetailsParams(
@@ -52,6 +53,7 @@ void main() {
               ...shallowParams.requestParams.toMap(),
               'InitialEntranceDate': shallowParams.selectedDate
                   .toIso8601String(),
+              'FinalEntranceDate': shallowParams.finalDate.toIso8601String(),
               'EnterpriseCode': shallowParams.enterpriseCode,
             },
           ),

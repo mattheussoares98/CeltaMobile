@@ -25,6 +25,7 @@ void main() {
       LoadShallowBuyMovementParams(
         requestParams: EntityFactory.makeEcRequestParams(),
         selectedDate: faker.date.dateTime(),
+        finalDate: faker.date.dateTime(),
         enterpriseCode: faker.randomGenerator.integer(100),
       ),
     );
@@ -43,6 +44,7 @@ void main() {
     shallowParams = LoadShallowBuyMovementParams(
       requestParams: EntityFactory.makeEcRequestParams(),
       selectedDate: faker.date.dateTime(),
+      finalDate: faker.date.dateTime(),
       enterpriseCode: faker.randomGenerator.integer(100),
     );
     detailsParams = LoadBuyMovementDetailsParams(

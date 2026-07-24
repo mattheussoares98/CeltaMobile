@@ -36,6 +36,7 @@ class ShallowBuyRequestStateController
     LoadShallowBuyRequestParams params = LoadShallowBuyRequestParams(
       requestParams: ecParams,
       selectedDate: date,
+      finalDate: date.add(const Duration(days: 90)),
       enterpriseCode: enterpriseCode,
     );
 

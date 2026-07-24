@@ -68,6 +68,7 @@ void main() {
           LoadShallowBuyMovementParams(
             requestParams: requestParams,
             selectedDate: selectedDate,
+            finalDate: selectedDate.add(const Duration(days: 90)),
             enterpriseCode: enterpriseCode,
           ),
         ),
@@ -78,6 +79,7 @@ void main() {
       final params = LoadShallowBuyMovementParams(
         requestParams: requestParams,
         selectedDate: selectedDate,
+        finalDate: selectedDate.add(const Duration(days: 90)),
         enterpriseCode: enterpriseCode,
       );
       when(
@@ -109,6 +111,7 @@ void main() {
       final params = LoadShallowBuyMovementParams(
         requestParams: requestParams,
         selectedDate: selectedDate,
+        finalDate: selectedDate.add(const Duration(days: 90)),
         enterpriseCode: enterpriseCode,
       );
       when(() => repository.loadShallow(params)).thenThrow(exception);

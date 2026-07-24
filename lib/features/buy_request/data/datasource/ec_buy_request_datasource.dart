@@ -19,6 +19,7 @@ class EcBuyRequestDatasource implements IEcBuyRequestDatasource {
       body: {
         ...params.requestParams.toMap(),
         'InitialCreateDate': params.selectedDate.toIso8601String(),
+        'FinalCreateDate': params.finalDate.toIso8601String(),
         'EnterpriseCode': params.enterpriseCode,
       },
     );

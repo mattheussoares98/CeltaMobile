@@ -19,6 +19,7 @@ class EcBuyMovementDatasource implements IEcBuyMovementDatasource {
       body: {
         ...params.requestParams.toMap(),
         'InitialEntranceDate': params.selectedDate.toIso8601String(),
+        'FinalEntranceDate': params.finalDate.toIso8601String(),
         'EnterpriseCode': params.enterpriseCode,
       },
     );

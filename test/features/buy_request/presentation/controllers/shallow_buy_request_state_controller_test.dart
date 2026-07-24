@@ -33,6 +33,7 @@ void main() {
           accessKey: '',
         ),
         selectedDate: DateTime(2026),
+        finalDate: DateTime(2026, 3, 31),
         enterpriseCode: 0,
       ),
     );
@@ -88,6 +89,7 @@ void main() {
       final expectedLoadParams = LoadShallowBuyRequestParams(
         requestParams: expectedParams,
         selectedDate: selectedDate,
+        finalDate: selectedDate.add(const Duration(days: 90)),
         enterpriseCode: enterpriseCode,
       );
 

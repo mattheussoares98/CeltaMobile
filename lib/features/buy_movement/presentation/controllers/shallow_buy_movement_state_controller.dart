@@ -35,6 +35,7 @@ class ShallowBuyMovementStateController
     LoadShallowBuyMovementParams params = LoadShallowBuyMovementParams(
       requestParams: ecParams,
       selectedDate: date,
+      finalDate: date.add(const Duration(days: 90)),
       enterpriseCode: enterpriseCode,
     );
 
