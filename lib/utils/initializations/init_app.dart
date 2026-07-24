@@ -28,7 +28,8 @@ Future<void> _initFirebase() async {
 
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.macOS ||
-      kIsWeb) {
+      kIsWeb ||
+      kDebugMode) {
     return;
   }
 
