@@ -5,7 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BuyMovementDetailsPage extends ConsumerWidget {
   final int buyMovementCode;
-  const BuyMovementDetailsPage({super.key, required this.buyMovementCode});
+  final int enterpriseCode;
+
+  const BuyMovementDetailsPage({
+    super.key,
+    required this.buyMovementCode,
+    required this.enterpriseCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

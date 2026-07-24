@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ShallowBuyMovementPage extends ConsumerWidget {
-  const ShallowBuyMovementPage({super.key});
+  final int enterpriseCode;
+  const ShallowBuyMovementPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
