@@ -41,7 +41,6 @@ class VoteController extends _$VoteController {
             'Ainda existem produtos sem cadastros. Eles precisam ser vinculados'
                 .hardcoded,
           );
-          //TODO test to vote when it is missing some products
         } else if (differences
                 .productsWithoutJudgementStatusRequestForFiscalNote
                 ?.isNotEmpty ??
