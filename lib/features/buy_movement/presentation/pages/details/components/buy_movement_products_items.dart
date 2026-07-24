@@ -40,7 +40,7 @@ class BuyMovementProductsItems extends ConsumerWidget {
                           ),
                         BaseText.title(product.name ?? ''),
                         BaseText.title(
-                          ' (${product.packingName} ${product.packingQuantity.toString().toBrazilianNumber(3, true)})',
+                          ' (${product.packingName})',
                           color: context.theme.colorScheme.secondary,
                         ),
                       ],
@@ -60,6 +60,10 @@ class BuyMovementProductsItems extends ConsumerWidget {
                           title: 'Total'.hardcoded,
                           value: product.totalLiquid,
                           isPrice: true,
+                        ),
+                        SummaryTableItem(
+                          title: 'CFOP'.hardcoded,
+                          value: product.fiscalCode,
                         ),
                       ],
                     ),
