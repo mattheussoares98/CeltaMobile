@@ -4,7 +4,7 @@ enum Modules {
   adjustStock('Ajustar estoque'),
   buyQuotation('Cotação de compras'),
   buyRequest('Pedido de compras'),
-  buyMovement('Compras'),
+  buyMovement('Consulta de compras'),
   competingPrices('Preços concorrentes'),
   customerRegister('Cadastro de clientes'),
   expeditionConference('Expedição (conferência)'),
