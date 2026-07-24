@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -30,13 +31,19 @@ class ShallowBuyRequestStateController
     return null;
   }
 
-  Future<void> load(DateTime date) async {
+  Future<void> load(DateTime initialDate, DateTime finalDate) async {
     final ecParams = await ref.read(ecRequestParamsProvider().future);
+
+    if (initialDate.difference(finalDate).inDays.abs() > 89) {
+      throw AppException(
+        'A diferença entre as datas não pode ser maior que 89 dias',
+      );
+    }
 
     LoadShallowBuyRequestParams params = LoadShallowBuyRequestParams(
       requestParams: ecParams,
-      selectedDate: date,
-      finalDate: date.add(const Duration(days: 90)),
+      selectedDate: initialDate,
+      finalDate: finalDate,
       enterpriseCode: enterpriseCode,
     );
 
