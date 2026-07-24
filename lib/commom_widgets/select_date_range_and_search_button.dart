@@ -30,8 +30,7 @@ class _SelectDateRangeAndSearchButtonState
   late DateTime _initialDate;
   late DateTime _finalDate;
 
-  Duration get _maximumRange =>
-      Duration(days: widget.maximumDaysDifference.inDays - 1);
+  Duration get _maximumRange => widget.maximumDaysDifference;
 
   @override
   void initState() {

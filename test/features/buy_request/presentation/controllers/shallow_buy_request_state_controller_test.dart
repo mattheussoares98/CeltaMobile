@@ -28,11 +28,7 @@ void main() {
   setUpAll(() {
     registerFallbackValue(
       LoadShallowBuyRequestParams(
-        requestParams: const EcRequestParams(
-          workingUrl: '',
-          user: '',
-          accessKey: '',
-        ),
+        requestParams: EntityFactory.makeEcRequestParams(),
         selectedDate: DateTime(2026),
         finalDate: DateTime(2026, 3, 31),
         enterpriseCode: 0,
@@ -154,7 +150,7 @@ void main() {
           .read(
             shallowBuyRequestStateControllerProvider(enterpriseCode).notifier,
           )
-          .load(initialDate, initialDate.add(const Duration(days: 89)));
+          .load(initialDate, initialDate.add(const Duration(days: 90)));
 
       expect(states, [
         isA<AsyncData<List<EcBuyRequestDtoEntity>?>>(),
@@ -162,7 +158,7 @@ void main() {
         isA<AsyncError<List<EcBuyRequestDtoEntity>?>>(),
       ]);
     });
-    test('should throw when passing a period bigger than 90 days', () async {
+    test('should throw when the date difference is 91 days', () async {
       final container = makeProviderContainer();
       addTearDown(container.dispose);
 
@@ -180,12 +176,7 @@ void main() {
             .read(
               shallowBuyRequestStateControllerProvider(enterpriseCode).notifier,
             )
-            .load(
-              initialDate,
-              initialDate.add(
-                Duration(days: faker.randomGenerator.integer(999, min: 89)),
-              ),
-            ),
+            .load(initialDate, initialDate.add(const Duration(days: 91))),
         throwsA(isA<AppException>()),
       );
     });

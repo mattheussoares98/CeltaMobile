@@ -29,8 +29,8 @@ class ShallowBuyMovementsPage extends ConsumerWidget {
             return SelectDateRangeAndSearchButton(
               maximumDaysDifference: const Duration(days: 90),
               isLoading: ref.watch(provider.select((state) => state.isLoading)),
-              onSearch: (initialDate, _) =>
-                  ref.read(provider.notifier).load(initialDate),
+              onSearch: (initialDate, finalDate) =>
+                  ref.read(provider.notifier).load(initialDate, finalDate),
             );
           },
         ),

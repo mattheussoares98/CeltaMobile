@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'shallow_buy_movement_state_controller.g.dart';
@@ -29,13 +31,18 @@ class ShallowBuyMovementStateController
     return null;
   }
 
-  Future<void> load(DateTime date) async {
+  Future<void> load(DateTime initialDate, DateTime finalDate) async {
     final ecParams = await ref.read(ecRequestParamsProvider().future);
 
+    if (initialDate.difference(finalDate).inDays.abs() > 90) {
+      throw AppException(
+        'A diferença do período não pode ser maior que 90 dias'.hardcoded,
+      );
+    }
     LoadShallowBuyMovementParams params = LoadShallowBuyMovementParams(
       requestParams: ecParams,
-      selectedDate: date,
-      finalDate: date.add(const Duration(days: 90)),
+      selectedDate: initialDate,
+      finalDate: finalDate,
       enterpriseCode: enterpriseCode,
     );
 

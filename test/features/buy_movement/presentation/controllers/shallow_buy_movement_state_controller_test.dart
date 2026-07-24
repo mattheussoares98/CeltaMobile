@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
@@ -21,7 +22,7 @@ void main() {
   late EcRequestParams requestParams;
   late List<EcBuyMovementDtoEntity> buyMovements;
   late int enterpriseCode;
-  late DateTime selectedDate;
+  late DateTime initialDate;
 
   setUp(() {
     repository = MockEcBuyMovementRepository();
@@ -38,7 +39,18 @@ void main() {
       (_) => EntityFactory.makeEcBuyMovementDtoEntity(),
     );
     enterpriseCode = faker.randomGenerator.integer(100, min: 1);
-    selectedDate = faker.date.dateTime();
+    initialDate = faker.date.dateTime();
+  });
+
+  setUpAll(() {
+    registerFallbackValue(
+      LoadShallowBuyMovementParams(
+        requestParams: EntityFactory.makeEcRequestParams(),
+        selectedDate: DateTime.now(),
+        finalDate: DateTime.now(),
+        enterpriseCode: 0,
+      ),
+    );
   });
 
   ProviderContainer makeProviderContainer() {
@@ -67,8 +79,8 @@ void main() {
         () => repository.loadShallow(
           LoadShallowBuyMovementParams(
             requestParams: requestParams,
-            selectedDate: selectedDate,
-            finalDate: selectedDate.add(const Duration(days: 90)),
+            selectedDate: initialDate,
+            finalDate: initialDate.add(const Duration(days: 90)),
             enterpriseCode: enterpriseCode,
           ),
         ),
@@ -78,8 +90,8 @@ void main() {
     test('load should request and expose shallow buy movements', () async {
       final params = LoadShallowBuyMovementParams(
         requestParams: requestParams,
-        selectedDate: selectedDate,
-        finalDate: selectedDate.add(const Duration(days: 90)),
+        selectedDate: initialDate,
+        finalDate: initialDate.add(const Duration(days: 89)),
         enterpriseCode: enterpriseCode,
       );
       when(
@@ -95,7 +107,7 @@ void main() {
           .read(
             shallowBuyMovementStateControllerProvider(enterpriseCode).notifier,
           )
-          .load(selectedDate);
+          .load(initialDate, params.finalDate);
 
       expect(
         container.read(
@@ -110,8 +122,8 @@ void main() {
       final exception = Exception(faker.lorem.sentence());
       final params = LoadShallowBuyMovementParams(
         requestParams: requestParams,
-        selectedDate: selectedDate,
-        finalDate: selectedDate.add(const Duration(days: 90)),
+        selectedDate: initialDate,
+        finalDate: initialDate.add(const Duration(days: 90)),
         enterpriseCode: enterpriseCode,
       );
       when(() => repository.loadShallow(params)).thenThrow(exception);
@@ -125,7 +137,7 @@ void main() {
           .read(
             shallowBuyMovementStateControllerProvider(enterpriseCode).notifier,
           )
-          .load(selectedDate);
+          .load(initialDate, params.finalDate);
 
       final state = container.read(
         shallowBuyMovementStateControllerProvider(enterpriseCode),
@@ -133,6 +145,31 @@ void main() {
       expect(state, isA<AsyncError<List<EcBuyMovementDtoEntity>?>>());
       expect(state.error, same(exception));
       verify(() => repository.loadShallow(params)).called(1);
+    });
+
+    test('should throw when the date difference is 91 days', () async {
+      final container = makeProviderContainer();
+      addTearDown(container.dispose);
+
+      when(() => repository.loadShallow(any())).thenAnswer((_) async => []);
+
+      final states = <AsyncValue<List<EcBuyMovementDtoEntity>?>>[];
+      container.listen(
+        shallowBuyMovementStateControllerProvider(enterpriseCode),
+        (_, next) => states.add(next),
+        fireImmediately: true,
+      );
+
+      await expectLater(
+        container
+            .read(
+              shallowBuyMovementStateControllerProvider(
+                enterpriseCode,
+              ).notifier,
+            )
+            .load(initialDate, initialDate.add(const Duration(days: 91))),
+        throwsA(isA<AppException>()),
+      );
     });
   });
 }

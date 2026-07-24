@@ -34,9 +34,9 @@ class ShallowBuyRequestStateController
   Future<void> load(DateTime initialDate, DateTime finalDate) async {
     final ecParams = await ref.read(ecRequestParamsProvider().future);
 
-    if (initialDate.difference(finalDate).inDays.abs() > 89) {
+    if (initialDate.difference(finalDate).inDays.abs() > 90) {
       throw AppException(
-        'A diferença entre as datas não pode ser maior que 89 dias',
+        'A diferença entre as datas não pode ser maior que 90 dias',
       );
     }
 
