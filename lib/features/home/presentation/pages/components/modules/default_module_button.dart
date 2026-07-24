@@ -121,13 +121,14 @@ class DefaultModuleButton extends ConsumerWidget {
                 ),
                 if ((module == Modules.productsRegister))
                   MessageBadge(message: 'Suspenso'.hardcoded),
-                if ((module == Modules.processAuthorization) &&
+                if (module == Modules.processAuthorization &&
                     DateTime.now().isBefore(DateTime(2026, 8, 13)))
                   MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.synchronizer)
                   MessageBadge(message: 'Em breve'.hardcoded),
-                if (module == Modules.buyMovement)
-                  MessageBadge(message: 'Em breve'.hardcoded),
+                if (module == Modules.buyMovement &&
+                    DateTime.now().isBefore(DateTime(2026, 9)))
+                  MessageBadge(message: 'Novo'.hardcoded),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),
