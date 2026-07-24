@@ -76,16 +76,16 @@ class BuyRequestDetailsPage extends ConsumerWidget {
                           SummaryTable(
                             items: [
                               SummaryTableItem(
-                                title: 'Qtd',
+                                title: 'Qtd'.hardcoded,
                                 value: product.quantity,
                               ),
                               SummaryTableItem(
-                                title: 'Valor',
+                                title: 'Valor'.hardcoded,
                                 value: product.value,
                                 isPrice: true,
                               ),
                               SummaryTableItem(
-                                title: 'Total',
+                                title: 'Total'.hardcoded,
                                 value: product.total,
                                 isPrice: true,
                               ),
