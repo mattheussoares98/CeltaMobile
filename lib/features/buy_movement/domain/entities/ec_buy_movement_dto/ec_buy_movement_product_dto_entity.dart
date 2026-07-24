@@ -7,6 +7,7 @@ class EcBuyMovementProductDtoEntity extends Equatable {
   final double? packingQuantity;
   final String? packingName;
   final double? quantity;
+  final double? value;
   final double? totalLiquid;
 
   const EcBuyMovementProductDtoEntity({
@@ -16,6 +17,7 @@ class EcBuyMovementProductDtoEntity extends Equatable {
     required this.packingQuantity,
     required this.packingName,
     required this.quantity,
+    required this.value,
     required this.totalLiquid,
   });
 
@@ -27,6 +29,7 @@ class EcBuyMovementProductDtoEntity extends Equatable {
     packingQuantity,
     packingName,
     quantity,
+    value,
     totalLiquid,
   ];
 }

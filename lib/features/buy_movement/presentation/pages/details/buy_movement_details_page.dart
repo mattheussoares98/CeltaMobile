@@ -82,8 +82,7 @@ class BuyMovementDetailsPage extends ConsumerWidget {
                               ),
                               SummaryTableItem(
                                 title: 'Valor'.hardcoded,
-                                value:
-                                    843516884, //TODO return this property in the API
+                                value: product.value,
                                 isPrice: true,
                               ),
                               SummaryTableItem(

@@ -9,6 +9,7 @@ class EcBuyMovementProductDtoModel extends EcBuyMovementProductDtoEntity {
     required super.packingName,
     required super.quantity,
     required super.totalLiquid,
+    required super.value,
   });
 
   factory EcBuyMovementProductDtoModel.fromJson(Map json) =>
@@ -20,6 +21,7 @@ class EcBuyMovementProductDtoModel extends EcBuyMovementProductDtoEntity {
         packingName: json['packingName'] as String?,
         quantity: (json['quantity'] as num?)?.toDouble(),
         totalLiquid: (json['totalLiquid'] as num?)?.toDouble(),
+        value: (json['value'] as num?)?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +32,7 @@ class EcBuyMovementProductDtoModel extends EcBuyMovementProductDtoEntity {
     'packingName': packingName,
     'quantity': quantity,
     'totalLiquid': totalLiquid,
+    'value': value,
   };
 
   factory EcBuyMovementProductDtoModel.fromEntity(
@@ -42,6 +45,7 @@ class EcBuyMovementProductDtoModel extends EcBuyMovementProductDtoEntity {
     packingName: entity.packingName,
     quantity: entity.quantity,
     totalLiquid: entity.totalLiquid,
+    value: entity.value,
   );
 
   EcBuyMovementProductDtoEntity toEntity() => EcBuyMovementProductDtoEntity(
@@ -52,5 +56,6 @@ class EcBuyMovementProductDtoModel extends EcBuyMovementProductDtoEntity {
     packingName: packingName,
     quantity: quantity,
     totalLiquid: totalLiquid,
+    value: value,
   );
 }

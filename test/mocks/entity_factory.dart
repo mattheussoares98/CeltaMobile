@@ -6,10 +6,10 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/models/models.dart';
+import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/data/models/models.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
@@ -2364,6 +2364,7 @@ class EntityFactory {
             packingName: faker.lorem.word(),
             quantity: faker.randomGenerator.decimal(),
             totalLiquid: faker.randomGenerator.decimal(),
+            value: faker.randomGenerator.decimal(),
           ),
         ],
       );
