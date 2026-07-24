@@ -21,7 +21,19 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
       ),
       pinnedBody: Padding(
         padding: const EdgeInsets.only(bottom: Sizes.p12),
-        child: SelectDateAndSearchButton(enterpriseCode: enterpriseCode),
+        child: Consumer(
+          builder: (_, ref, _) {
+            final provider = shallowBuyRequestStateControllerProvider(
+              enterpriseCode,
+            );
+            return SelectDateRangeAndSearchButton(
+              maximumDaysDifference: const Duration(days: 90),
+              isLoading: ref.watch(provider.select((state) => state.isLoading)),
+              onSearch: (initialDate, _) =>
+                  ref.read(provider.notifier).load(initialDate),
+            );
+          },
+        ),
       ),
       body: Consumer(
         builder: (_, ref, _) {
