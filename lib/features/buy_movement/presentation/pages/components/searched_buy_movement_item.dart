@@ -50,6 +50,20 @@ class SearchedBuyMovementItem extends StatelessWidget {
                         .ddMMyyyyHHmm,
                       ),
                     ),
+                  if (buyMovement.dateOfEmission != null)
+                    TitleAndSubTitle(
+                      title: 'Emitido em'.hardcoded,
+                      subTitle: buyMovement.dateOfEmission?.formatDate(
+                        .ddMMyyyyHHmm,
+                      ),
+                    ),
+                  if (buyMovement.dateOfEntrance != null)
+                    TitleAndSubTitle(
+                      title: 'Entrada em'.hardcoded,
+                      subTitle: buyMovement.dateOfEntrance?.formatDate(
+                        .ddMMyyyyHHmm,
+                      ),
+                    ),
                   if (buyMovement.buyers?.isNotEmpty ?? false)
                     TitleAndSubTitle(
                       title: 'Compradores'.hardcoded,
