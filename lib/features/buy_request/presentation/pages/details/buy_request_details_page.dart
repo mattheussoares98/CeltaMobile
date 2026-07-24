@@ -100,7 +100,14 @@ class _BuyRequestDetailsPageState extends ConsumerState<BuyRequestDetailsPage> {
         controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: SearchedBuyRequestItem(buyRequest: shallowBuyRequest!),
+            child: Consumer(
+              builder: (_, ref, _) {
+                final completeBuyRequest = ref.watch(provider).value;
+                return SearchedBuyRequestItem(
+                  buyRequest: completeBuyRequest ?? shallowBuyRequest!,
+                );
+              },
+            ),
           ),
           BuyRequestProductsItems(buyRequestCode: widget.buyRequestCode),
           gapSliverH24,

@@ -76,6 +76,11 @@ class SearchedBuyMovementItem extends StatelessWidget {
                       title: 'Fornecedor'.hardcoded,
                       subTitle: buyMovement.supplier?.name,
                     ),
+                  if (buyMovement.requests?.isNotEmpty ?? false)
+                    TitleAndSubTitle(
+                      title: 'Pedidos'.hardcoded,
+                      subTitle: buyMovement.requests?.join('; '),
+                    ),
                   if (onTapItem == null)
                     //! details page
                     _SearchedBuyMovementSummary(processCode: buyMovement.code),

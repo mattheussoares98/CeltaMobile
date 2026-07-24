@@ -97,12 +97,18 @@ class _BuyMovementDetailsPageState
           );
         },
       ),
-      //TODO add bottomNavigationBar when it has buy request
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: SearchedBuyMovementItem(buyMovement: shallowBuyMovement!),
+            child: Consumer(
+              builder: (_, ref, _) {
+                final completeBuyRequest = ref.watch(provider).value;
+                return SearchedBuyMovementItem(
+                  buyMovement: completeBuyRequest ?? shallowBuyMovement!,
+                );
+              },
+            ),
           ),
           BuyMovementProductsItems(buyMovementCode: widget.buyMovementCode),
           gapSliverH24,
