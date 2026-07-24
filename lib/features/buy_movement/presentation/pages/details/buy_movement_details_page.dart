@@ -31,10 +31,10 @@ class BuyMovementDetailsPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       appBar: BaseAppBar(
-        title: (shallowBuyMovement?.code.toString().isNotEmpty ?? false)
-            //TODO use personalizedCode instead
-            ? 'Detalhes pedido (${shallowBuyMovement?.code ?? ''})'.hardcoded
-            : 'Detalhes'.hardcoded,
+        title: ((shallowBuyMovement?.documentNumber ?? 0) > 0)
+            ? 'Detalhes da compra (${shallowBuyMovement?.documentNumber ?? ''})'
+                  .hardcoded
+            : 'Detalhes da compra'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,
       ),
       //TODO add bottomNavigationBar when it has buy request
@@ -64,7 +64,7 @@ class BuyMovementDetailsPage extends ConsumerWidget {
                             texts: [
                               if (product.priceLookupCode?.isNotEmpty ?? false)
                                 BaseText.title(
-                                  '(${product.priceLookupCode!}) ',
+                                  '(${product.priceLookupCode!}) '.hardcoded,
                                   color: context.theme.primaryColor,
                                 ),
                               BaseText.title(product.name ?? ''),
@@ -77,17 +77,17 @@ class BuyMovementDetailsPage extends ConsumerWidget {
                           SummaryTable(
                             items: [
                               SummaryTableItem(
-                                title: 'Qtd',
+                                title: 'Qtd'.hardcoded,
                                 value: product.quantity,
                               ),
                               SummaryTableItem(
-                                title: 'Valor',
+                                title: 'Valor'.hardcoded,
                                 value:
                                     843516884, //TODO return this property in the API
                                 isPrice: true,
                               ),
                               SummaryTableItem(
-                                title: 'Total',
+                                title: 'Total'.hardcoded,
                                 value: product.totalLiquid,
                                 isPrice: true,
                               ),

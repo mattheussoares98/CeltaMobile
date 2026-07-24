@@ -22,7 +22,7 @@ class SearchedBuyMovementItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'buy_request_${buyMovement.code}',
+      tag: 'buy_request_${buyMovement.documentNumber}',
       child: Card(
         clipBehavior: .hardEdge,
         color: buyMovement.isCancelled == true ? Colors.red[50] : null,
@@ -34,22 +34,15 @@ class SearchedBuyMovementItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .stretch,
                 children: [
-                  if (onTapItem != null)
-                    BaseRichText(
-                      texts: [
-                        BaseText('Cód '.hardcoded),
-                        //TODO show personalizedCode instead
-                        BaseText.titleMedium(
-                          buyMovement.code.toString(),
-                          fontWeight: FontWeight.bold,
-                        ),
-                        // BaseText.titleMedium(
-                        //   buyMovement.code.substring(8, 12).hardcoded,
-                        //   fontWeight: FontWeight.bold,
-                        //   color: context.theme.colorScheme.secondary,
-                        // ),
-                      ],
-                    ),
+                  BaseRichText(
+                    texts: [
+                      BaseText('Documento '.hardcoded),
+                      BaseText.titleMedium(
+                        buyMovement.documentNumber.toString(),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
                   if (buyMovement.dateOfCreation != null)
                     TitleAndSubTitle(
                       title: 'Criado em'.hardcoded,

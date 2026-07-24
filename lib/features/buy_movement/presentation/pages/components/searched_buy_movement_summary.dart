@@ -14,7 +14,9 @@ class _SearchedBuyMovementSummary extends ConsumerWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        if ((buyMovementDetails.totalBruteFromProductsAndServices ?? 0) > 0)
+        if (buyMovementDetails.totalBruteFromProductsAndServices !=
+                buyMovementDetails.totalLiquid &&
+            (buyMovementDetails.totalBruteFromProductsAndServices ?? 0) > 0)
           TitleAndSubTitle(
             title: 'Total bruto produtos/serviços'.hardcoded,
             subTitle: buyMovementDetails.totalBruteFromProductsAndServices,
