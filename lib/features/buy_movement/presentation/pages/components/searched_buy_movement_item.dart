@@ -25,6 +25,7 @@ class SearchedBuyMovementItem extends StatelessWidget {
       tag: 'buy_request_${buyMovement.code}',
       child: Card(
         clipBehavior: .hardEdge,
+        color: buyMovement.isCancelled == true ? Colors.red[50] : null,
         child: InkWell(
           onTap: PlatformUtil.isIOS ? null : onTapItem,
           child: Padding(
@@ -81,6 +82,17 @@ class SearchedBuyMovementItem extends StatelessWidget {
                     TitleAndSubTitle(
                       title: 'Observações'.hardcoded,
                       subTitle: buyMovement.observations,
+                    ),
+                  if (buyMovement.isCancelled == true &&
+                      (buyMovement.userOfCancellation?.name?.isNotEmpty ??
+                          false))
+                    BaseRichText(
+                      texts: [
+                        BaseText.error(
+                          buyMovement.userOfCancellation?.name ?? '',
+                        ),
+                        BaseText.error(' cancelou essa compra'.hardcoded),
+                      ],
                     ),
                   if (onTapItem != null && PlatformUtil.isIOS)
                     Align(
