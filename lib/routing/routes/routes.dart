@@ -12,6 +12,7 @@ export './splash_route.dart';
 export './stock_replacement_route.dart';
 export './transfer_between_stocks_route.dart';
 export 'adjust_sale_price/adjust_sale_price.dart';
+export 'buy_movement/buy_movement.dart';
 export 'buy_quotation/buy_quotation.dart';
 export 'buy_request/buy_request.dart';
 export 'competing_prices/competing_prices.dart';

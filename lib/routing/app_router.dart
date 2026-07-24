@@ -129,6 +129,7 @@ GoRouter goRouter(Ref ref) {
           ]),
         ]),
         searchProductsRoute(),
+        shallowBuyMovementRoute([buyMovementDetailsRoute()]),
         stockReplacementRoute(),
         transferBetweenStocksRoute(),
         transferRequestRquestsTypesRoute([
