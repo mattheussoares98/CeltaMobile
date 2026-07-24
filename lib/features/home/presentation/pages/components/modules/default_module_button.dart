@@ -8,6 +8,7 @@ import 'package:celta_inventario/features/home/presentation/pages/components/com
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +29,15 @@ class DefaultModuleButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     void accessModule() async {
+      //TODO remove this
+      if (module == Modules.buyMovement && !kDebugMode) {
+        showToastMessage(
+          'Esse módulo ainda não está disponível. Em breve estará disponível'
+              .hardcoded,
+        );
+        return;
+      }
+
       Routes? selectedActionRoute;
       if (const {
         Routes.saleRequestActionSelector,
@@ -115,6 +125,8 @@ class DefaultModuleButton extends ConsumerWidget {
                     DateTime.now().isBefore(DateTime(2026, 8, 13)))
                   MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.synchronizer)
+                  MessageBadge(message: 'Em breve'.hardcoded),
+                if (module == Modules.buyMovement)
                   MessageBadge(message: 'Em breve'.hardcoded),
                 FavoriteIconButton(
                   module: module,

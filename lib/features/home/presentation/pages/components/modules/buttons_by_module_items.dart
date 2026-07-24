@@ -158,14 +158,13 @@ class ButtonsByModuleItems {
         ),
         passEnterpriseToNextRoute: false,
       ),
-    // if (kDebugMode)
-    //   Modules.productsRegister: DefaultModuleButton(
-    //     route: Routes.productsRegisterSearchProduct,
-    //     module: Modules.productsRegister,
-    //     platformIcon: PlatformIcon(
-    //       materialIcon: Icons.add_outlined,
-    //       cupertinoIcon: CupertinoIcons.add,
-    //     ),
-    //   ),
+    Modules.buyMovement: DefaultModuleButton(
+      route: Routes.shallowBuyMovement,
+      module: Modules.buyMovement,
+      platformIcon: PlatformIcon(
+        materialIcon: Icons.shopping_basket,
+        cupertinoIcon: CupertinoIcons.gift,
+      ),
+    ),
   };
 }
