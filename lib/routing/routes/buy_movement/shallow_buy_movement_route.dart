@@ -8,6 +8,6 @@ RouteBase shallowBuyMovementRoute(List<RouteBase> routes) => GoRoute(
   routes: routes,
   builder: (context, state) {
     final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
-    return ShallowBuyMovementPage(enterpriseCode: enterpriseCode);
+    return ShallowBuyMovementsPage(enterpriseCode: enterpriseCode);
   },
 );

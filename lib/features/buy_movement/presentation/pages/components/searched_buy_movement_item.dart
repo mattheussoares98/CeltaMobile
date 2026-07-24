@@ -1,0 +1,105 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
+import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+part 'searched_buy_movement_summary.dart';
+
+class SearchedBuyMovementItem extends StatelessWidget {
+  final VoidCallback? onTapItem; //! is not passed on details page
+  final EcBuyMovementDtoEntity buyMovement;
+  const SearchedBuyMovementItem({
+    super.key,
+    this.onTapItem,
+    required this.buyMovement,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'buy_request_${buyMovement.code}',
+      child: Card(
+        clipBehavior: .hardEdge,
+        child: InkWell(
+          onTap: PlatformUtil.isIOS ? null : onTapItem,
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: .stretch,
+                children: [
+                  if (onTapItem != null)
+                    BaseRichText(
+                      texts: [
+                        BaseText('Cód '.hardcoded),
+                        //TODO show personalizedCode instead
+                        BaseText.titleMedium(
+                          buyMovement.code.toString(),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        // BaseText.titleMedium(
+                        //   buyMovement.code.substring(8, 12).hardcoded,
+                        //   fontWeight: FontWeight.bold,
+                        //   color: context.theme.colorScheme.secondary,
+                        // ),
+                      ],
+                    ),
+                  if (buyMovement.dateOfCreation != null)
+                    TitleAndSubTitle(
+                      title: 'Criado em'.hardcoded,
+                      subTitle: buyMovement.dateOfCreation?.formatDate(
+                        .ddMMyyyyHHmm,
+                      ),
+                    ),
+                  if (buyMovement.buyers?.isNotEmpty ?? false)
+                    TitleAndSubTitle(
+                      title: 'Compradores'.hardcoded,
+                      subTitle: buyMovement.buyers
+                          ?.map((e) => e.name)
+                          .join('; '),
+                    ),
+                  if (buyMovement.supplier?.name?.isNotEmpty ?? false)
+                    TitleAndSubTitle(
+                      title: 'Fornecedor'.hardcoded,
+                      subTitle: buyMovement.supplier?.name,
+                    ),
+                  if (onTapItem == null)
+                    //! details page
+                    _SearchedBuyMovementSummary(processCode: buyMovement.code),
+
+                  TitleAndSubTitle(
+                    title: 'Valor líquido'.hardcoded,
+                    subTitle: buyMovement.totalLiquid ?? 0,
+                    subTitleIsPrice: true,
+                  ),
+                  if (buyMovement.observations?.isNotEmpty ?? false)
+                    TitleAndSubTitle(
+                      title: 'Observações'.hardcoded,
+                      subTitle: buyMovement.observations,
+                    ),
+                  if (onTapItem != null && PlatformUtil.isIOS)
+                    Align(
+                      alignment: .centerRight,
+                      child: PrimaryTextButton(
+                        text: 'Detalhes'.hardcoded,
+                        onPressed: onTapItem,
+                        platformIcon: const PlatformIcon(
+                          cupertinoIcon: CupertinoIcons.pencil,
+                          materialIcon: Icons.edit,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

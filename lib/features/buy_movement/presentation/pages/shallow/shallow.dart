@@ -1,1 +1,1 @@
-export 'shallow_buy_movement_page.dart';
+export 'shallow_buy_movements_page.dart';
