@@ -44,7 +44,8 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       Routes.processAuthorization => DateTime(2026, 7, 17),
       Routes.insertUpdateSaleRequest => DateTime(2026, 6, 22),
       Routes.adjustCost => DateTime(2026, 3, 31),
-      Routes.searchBuyRequests => DateTime(2026, 7, 24),
+      Routes.searchBuyRequests => DateTime(2026, 7, 25),
+      Routes.shallowBuyMovement => DateTime(2026, 7, 25),
       _ => null,
     };
 
