@@ -103,10 +103,14 @@ class _BuyMovementDetailsPageState
           SliverToBoxAdapter(
             child: Consumer(
               builder: (_, ref, _) {
-                final completeBuyRequest = ref.watch(provider).value;
-                return SearchedBuyMovementItem(
-                  buyMovement: completeBuyRequest ?? shallowBuyMovement!,
-                );
+                final completeBuyMovement = ref.watch(provider).value;
+                final appliedBuyMovement =
+                    completeBuyMovement ?? shallowBuyMovement;
+
+                if (appliedBuyMovement == null) {
+                  return const SizedBox.shrink();
+                }
+                return SearchedBuyMovementItem(buyMovement: appliedBuyMovement);
               },
             ),
           ),
