@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
@@ -37,20 +39,19 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     _isProcessing = true;
 
     final minimumDateLoadRequestType = DateTime(2026, 5, 7);
-    final minimumBsVersionDate = kDebugMode
-        ? null
-        : switch (route) {
-            Routes.searchSaleRequests => DateTime(2026, 3, 26),
-            Routes.createSaleRequest => minimumDateLoadRequestType,
-            Routes.saleRequestRequestsTypes => minimumDateLoadRequestType,
-            Routes.transferRequestRequestsTypes => minimumDateLoadRequestType,
-            Routes.processAuthorization => DateTime(2026, 7, 17),
-            Routes.insertUpdateSaleRequest => DateTime(2026, 6, 22),
-            Routes.adjustCost => DateTime(2026, 3, 31),
-            Routes.searchBuyRequests => DateTime(2026, 7, 25),
-            Routes.shallowBuyMovement => DateTime(2026, 7, 25),
-            _ => null,
-          };
+    final minimumBsVersionDate = switch (route) {
+      Routes.searchSaleRequests => DateTime(2026, 3, 26),
+      Routes.createSaleRequest => minimumDateLoadRequestType,
+      Routes.saleRequestRequestsTypes => minimumDateLoadRequestType,
+      Routes.transferRequestRequestsTypes => minimumDateLoadRequestType,
+      Routes.processAuthorization => DateTime(2026, 7, 17),
+      Routes.insertUpdateSaleRequest => DateTime(2026, 6, 22),
+      Routes.adjustCost => DateTime(2026, 3, 31),
+      Routes.searchBuyRequests => DateTime(2026, 7, 25),
+      Routes.shallowBuyMovement => DateTime(2026, 7, 25),
+      Routes.buyMovementDetails => DateTime(2026, 7, 25),
+      _ => null,
+    };
 
     state = const AsyncValue.loading();
     try {
@@ -61,15 +62,18 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           );
 
           if (bsVersionDate?.isBefore(minimumBsVersionDate) ?? false) {
-            if (!context.mounted) return;
-            showAlertDialog(
-              context: context,
-              title: 'Atualize o BS'.hardcoded,
-              content:
-                  'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
-                      .hardcoded,
-            );
-            return;
+            if (kDebugMode) {
+              dev.log('Continuing because it is on debug mode');
+            } else {
+              if (!context.mounted) return;
+              showAlertDialog(
+                context: context,
+                title: 'Atualize o BS'.hardcoded,
+                content:
+                    'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
+                        .hardcoded,
+              );
+            }
           }
         }
 
