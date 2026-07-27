@@ -1,8 +1,12 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Shopping extends StatelessWidget {
   const Shopping({super.key, required this.widget});
@@ -64,6 +68,39 @@ class Shopping extends StatelessWidget {
                   title: 'Quantidade'.hardcoded,
                   subTitle: buy.Quantity.toString().toBrazilianNumber(),
                 ),
+                if (buy.Code != null)
+                  Consumer(
+                    builder: (_, ref, _) {
+                      return Align(
+                        child: PrimaryTextButton(
+                          text: 'Detalhes da compra'.hardcoded,
+                          platformIcon: const PlatformIcon(
+                            cupertinoIcon: CupertinoIcons.arrow_up_right,
+                            materialIcon: Icons.arrow_outward,
+                          ),
+                          onPressed: () {
+                            ref
+                                .read(
+                                  tryAccessModuleControllerProvider.notifier,
+                                )
+                                .tryAccess(
+                                  context: context,
+                                  route: Routes.buyMovementDetails,
+                                  enterpriseCode: widget.product.EnterpriseCode,
+                                  module: Modules.buyMovement,
+                                  pathParameters: {
+                                    'buyMovementCode': buy.Code.toString(),
+                                    'enterpriseCode': widget
+                                        .product
+                                        .EnterpriseCode
+                                        .toString(),
+                                  },
+                                );
+                          },
+                        ),
+                      );
+                    },
+                  ),
               ],
             );
           },
