@@ -19,43 +19,53 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
         title: 'Consulta de pedidos de compras'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,
       ),
-      pinnedBody: Padding(
-        padding: const EdgeInsets.only(bottom: Sizes.p12),
-        child: Consumer(
-          builder: (_, ref, _) {
-            final provider = shallowBuyRequestStateControllerProvider(
-              enterpriseCode,
-            );
-            return SelectDateRangeAndSearchButton(
-              maximumDaysDifference: const Duration(days: 90),
-              isLoading: ref.watch(provider.select((state) => state.isLoading)),
-              onSearch: (initialDate, finalDate) =>
-                  ref.read(provider.notifier).load(initialDate, finalDate),
-            );
-          },
-        ),
-      ),
-      body: Consumer(
-        builder: (_, ref, _) {
-          final provider = shallowBuyRequestStateControllerProvider(
-            enterpriseCode,
-          );
-          return AsyncValueWidget(
-            value: ref.watch(provider),
-            tryAgain: null,
-            data: (buyRequests) {
-              if (buyRequests?.isEmpty == true) {
-                return Center(
-                  child: BaseText.error(
-                    'Nenhum pedido de compra foi encontrado'.hardcoded,
-                  ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: Sizes.p12),
+            child: Consumer(
+              builder: (_, ref, _) {
+                final provider = shallowBuyRequestStateControllerProvider(
+                  enterpriseCode,
                 );
-              }
+                return SelectDateRangeAndSearchButton(
+                  maximumDaysDifference: const Duration(days: 90),
+                  isLoading: ref.watch(
+                    provider.select((state) => state.isLoading),
+                  ),
+                  onSearch: (initialDate, finalDate) =>
+                      ref.read(provider.notifier).load(initialDate, finalDate),
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: Consumer(
+              builder: (_, ref, _) {
+                final provider = shallowBuyRequestStateControllerProvider(
+                  enterpriseCode,
+                );
+                return AsyncValueWidget(
+                  value: ref.watch(provider),
+                  tryAgain: null,
+                  data: (buyRequests) {
+                    if (buyRequests?.isEmpty == true) {
+                      return Center(
+                        child: BaseText.error(
+                          'Nenhum pedido de compra foi encontrado'.hardcoded,
+                        ),
+                      );
+                    }
 
-              return ShallowBuyRequestItems(enterpriseCode: enterpriseCode);
-            },
-          );
-        },
+                    return ShallowBuyRequestItems(
+                      enterpriseCode: enterpriseCode,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

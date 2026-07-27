@@ -25,6 +25,7 @@ class DestinyStocksDropdown extends ConsumerWidget {
       },
       data: (stocks) {
         return BaseDropDown<StockTypeEntity?>(
+          showLabelAtTopLeft: true,
           onChanged: (value) {
             ref
                 .read(

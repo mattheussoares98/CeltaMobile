@@ -37,6 +37,7 @@ class JustificationsDropdown extends ConsumerWidget {
         },
         data: (justifications) {
           return BaseDropDown<TransferJustificationEntity?>(
+            showLabelAtTopLeft: true,
             onChanged: (value) async {
               ref
                   .read(

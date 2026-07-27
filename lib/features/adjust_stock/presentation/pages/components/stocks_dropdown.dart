@@ -34,6 +34,7 @@ class StocksDropdown extends ConsumerWidget {
         },
         data: (stocks) {
           return BaseDropDown<StockTypeEntity?>(
+            showLabelAtTopLeft: true,
             onChanged: selectedJustificationInternalCode != null
                 ? null
                 : (value) {

@@ -79,21 +79,23 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       ),
       tryAgain: null,
       data: (products) {
-        return ResponsiveListFlow(
-          itemCount: products.length,
-          itemBuilder: (_, index) {
-            final product = products[index];
+        return Expanded(
+          child: ResponsiveListFlow(
+            itemCount: products.length,
+            itemBuilder: (_, index) {
+              final product = products[index];
 
-            return _ProductItem(
-              key: ValueKey('product_${product.ProductPackingCode}'),
-              enterpriseCode: widget.enterpriseCode,
-              product: product,
-              index: index,
-              quantityController: quantityController,
-              quantityFocusNode: quantityFocusNode,
-              addInLot: () => addInLot(product),
-            );
-          },
+              return _ProductItem(
+                key: ValueKey('product_${product.ProductPackingCode}'),
+                enterpriseCode: widget.enterpriseCode,
+                product: product,
+                index: index,
+                quantityController: quantityController,
+                quantityFocusNode: quantityFocusNode,
+                addInLot: () => addInLot(product),
+              );
+            },
+          ),
         );
       },
     );

@@ -1,5 +1,3 @@
-import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
-    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
+import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
+    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 
 import '../commom_widgets.dart';
-
-part 'pinned_body_keyboard_animator.dart';
 
 class BaseScaffold extends StatelessWidget {
   const BaseScaffold({
@@ -26,7 +24,6 @@ class BaseScaffold extends StatelessWidget {
     this.padding,
     this.usePadding = true,
     required this.body,
-    this.pinnedBody,
     this.bottomNavigationBar,
     this.observeScreenChanges = false,
     this.drawer,
@@ -46,7 +43,6 @@ class BaseScaffold extends StatelessWidget {
 
   final bool usePadding;
   final Widget body;
-  final Widget? pinnedBody;
   final Widget? bottomNavigationBar;
   final bool observeScreenChanges;
   final Widget? drawer;
@@ -72,7 +68,9 @@ class BaseScaffold extends StatelessWidget {
       );
     }
 
-    return buildOrientationReader(builder: (context) => _BaseScaffold(this));
+    return buildOrientationReader(
+      builder: (context) => _BaseScaffold(this),
+    );
   }
 }
 
@@ -120,15 +118,7 @@ class _BaseScaffold extends ConsumerWidget {
                     ))
         : EdgeInsets.zero;
 
-    if (params.pinnedBody != null) {
-      newChild = Column(
-        children: [
-          _PinnedBodyKeyboardAnimator(child: params.pinnedBody!),
-          Expanded(child: params.body),
-        ],
-      );
-      newChild = Padding(padding: effectivePadding, child: newChild);
-    } else if (params.isScrollable) {
+    if (params.isScrollable) {
       newChild = SingleChildScrollView(
         padding: effectivePadding,
         physics: params.scrollPhysics,
@@ -194,9 +184,7 @@ class _BaseScaffold extends ConsumerWidget {
             )
           : newChild;
 
-      final orientation = NativeDeviceOrientationReaderWrapper.orientation(
-        context,
-      );
+      final orientation = NativeDeviceOrientationReaderWrapper.orientation(context);
       final isRotatedLeft =
           orientation == NativeDeviceOrientation.landscapeLeft;
       final isRotatedRight =
@@ -298,4 +286,3 @@ class _BaseScaffold extends ConsumerWidget {
     return scaffold;
   }
 }
-

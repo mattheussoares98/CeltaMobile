@@ -86,7 +86,6 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
     });
 
     ref.observeLoading([confirmAdjustStockControllerProvider]);
-    final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     return Form(
       key: formKey,
@@ -97,39 +96,32 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
           title: 'Ajuste de estoque'.hardcoded,
           selectedEnterpriseCode: widget.enterpriseCode,
         ),
-        pinnedBody: Column(
-          children: [
-            SearchProductField(enterpriseCode: widget.enterpriseCode),
-            gapH8,
-            if (isDesktop) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: JustificationsDropdown(
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Center(
+                child: SizedBox(
+                  width: Breakpoint.tablet,
+                  child: SearchProductField(
+                    enterpriseCode: widget.enterpriseCode,
                   ),
-                  gapW8,
-                  Expanded(
-                    child: StocksDropdown(
-                      enterpriseCode: widget.enterpriseCode,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ] else ...[
-              JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-              gapH8,
-              StocksDropdown(enterpriseCode: widget.enterpriseCode),
-            ],
-            gapH8,
+            ),
+            gapSliverH8,
+            SliverToBoxAdapter(
+              child: Dropdowns(enterpriseCode: widget.enterpriseCode),
+            ),
+            gapSliverH8,
+            SliverFillRemaining(
+              child: ProductsItems(
+                quantityFocusNode: quantityFocusNode,
+                formKey: formKey,
+                enterpriseCode: widget.enterpriseCode,
+                quantityController: quantityController,
+              ),
+            ),
           ],
-        ),
-        body: ProductsItems(
-          quantityFocusNode: quantityFocusNode,
-          formKey: formKey,
-          enterpriseCode: widget.enterpriseCode,
-          quantityController: quantityController,
         ),
       ),
     );

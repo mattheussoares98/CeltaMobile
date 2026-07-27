@@ -47,34 +47,31 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       Modules.transferBetweenStocks,
     );
 
-    return Form(
-      key: formKey,
-      child: BaseScaffold(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-        pinnedBody: SizedBox(
-          width: Breakpoint.desktop,
-          child: Column(
-            children: [
-              BaseSearchProducts(
+    return BaseScaffold(
+      isScrollable: false,
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      body: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            SizedBox(
+              width: Breakpoint.tablet,
+              child: BaseSearchProducts(
                 searchValueController: searchValueController,
                 searchProductKey: searchProductKey,
                 searchProducts: (exactProductCode) =>
                     _searchProducts(searchProductKey, exactProductCode),
               ),
-              gapH8,
-              JustificationsDropdown(enterpriseCode: widget.enterpriseCode),
-              gapH8,
-              OriginStocksDropdown(enterpriseCode: widget.enterpriseCode),
-              gapH8,
-              DestinyStocksDropdown(enterpriseCode: widget.enterpriseCode),
-              gapH8,
-            ],
-          ),
-        ),
-        body: ProductsItems(
-          searchProductKey: searchProductKey,
-          enterpriseCode: widget.enterpriseCode,
-          formKey: formKey,
+            ),
+            gapH8,
+            DropDowns(enterpriseCode: widget.enterpriseCode),
+            gapH8,
+            ProductsItems(
+              searchProductKey: searchProductKey,
+              enterpriseCode: widget.enterpriseCode,
+              formKey: formKey,
+            ),
+          ],
         ),
       ),
     );

@@ -30,6 +30,7 @@ class OriginStocksDropdown extends ConsumerWidget {
       },
       data: (stocks) {
         return BaseDropDown<StockTypeEntity?>(
+          showLabelAtTopLeft: true,
           onChanged: selectedJustification?.CodigoInterno_TipoEstoque != null
               ? null
               : (value) {
