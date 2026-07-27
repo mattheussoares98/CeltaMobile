@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'package:celta_inventario/core/providers/app_version/app_version.dart';
+import 'package:celta_inventario/core/providers/services/services.dart';
 
 part 'app_version_state_controller.g.dart';
 
@@ -8,6 +8,7 @@ part 'app_version_state_controller.g.dart';
 class AppVersionStateController extends _$AppVersionStateController {
   @override
   FutureOr<String> build() async {
-    return await ref.read(loadAppVersionDatasourceProvider).get();
+    return await ref.read(deviceServiceProvider).getAppVersion();
   }
 }
+
