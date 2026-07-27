@@ -29,6 +29,7 @@ class DatabaseConstants {
   );
   static const transferRequest = _HiveBoxConfig('transfer_request');
   static const userSession = _HiveBoxConfig('user_session');
+  static const installationIdKey = 'installation_id';
   static const saleRequestDraft = _HiveBoxConfig('sale_request_draft');
 }
 

@@ -3,6 +3,7 @@ import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/features/auth/data/models/models.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,9 +15,13 @@ void main() {
   late MockBox hive;
 
   late UserSessionEntity userSessionEntity;
+  late String installationId;
 
   void initSut() {
-    sut = LocalUserSessionDatasource(hive);
+    sut = LocalUserSessionDatasource(
+      hive,
+      installationIdFactory: () => installationId,
+    );
   }
 
   void initInjections() {
@@ -32,6 +37,7 @@ void main() {
 
   void initEntities() {
     userSessionEntity = EntityFactory.makeUserSessionEntity();
+    installationId = faker.guid.guid();
   }
 
   setUp(() {
@@ -64,6 +70,31 @@ void main() {
       ).called(1);
     });
   });
+
+  group('getOrCreateInstallationId', () {
+    test('Should return the stored installation ID', () async {
+      hive.mockGet(DatabaseConstants.installationIdKey, installationId);
+
+      expect(await sut.getOrCreateInstallationId(), installationId);
+
+      verify(() => hive.get(DatabaseConstants.installationIdKey)).called(1);
+      verifyNever(
+        () => hive.put(DatabaseConstants.installationIdKey, installationId),
+      );
+    });
+
+    test('Should generate and persist a new installation ID', () async {
+      hive.mockGet(DatabaseConstants.installationIdKey, null);
+
+      expect(await sut.getOrCreateInstallationId(), installationId);
+
+      verify(() => hive.get(DatabaseConstants.installationIdKey)).called(1);
+      verify(
+        () => hive.put(DatabaseConstants.installationIdKey, installationId),
+      ).called(1);
+    });
+  });
+
   group('Get', () {
     test('Should behave correctly', () async {
       expect(
