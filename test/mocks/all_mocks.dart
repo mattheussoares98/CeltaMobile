@@ -389,9 +389,19 @@ class EnterpriseManagerRepositorySpy extends Mock
 class LocalUserSessionDatasourceSpy extends Mock
     implements ILocalUserSessionDatasource {
   LocalUserSessionDatasourceSpy() {
+    when(
+      () => this.getOrCreateInstallationId(),
+    ).thenAnswer((_) async => '00000000-0000-4000-8000-000000000001');
     when(() => this.logout()).thenAnswer((_) async => {});
     when(() => this.save(any())).thenAnswer((_) async {});
   }
+
+  void mockInstallationId(String installationId) {
+    when(
+      () => getOrCreateInstallationId(),
+    ).thenAnswer((_) async => installationId);
+  }
+
   void mockGetSession(UserSessionModel? response) {
     when(() => this.get()).thenAnswer((_) async => response);
   }
@@ -407,14 +417,12 @@ class SupabaseUserSessionDatasourceSpy extends Mock
         firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
         fcmToken: any(named: 'fcmToken'),
         appVersion: any(named: 'appVersion'),
+        installationId: any(named: 'installationId'),
       ),
     ).thenAnswer((_) async => {});
     when(
-      () => this.removeUserSession(
-        userName: any(named: 'userName'),
-        deviceType: any(named: 'deviceType'),
-        enterpriseId: any(named: 'enterpriseId'),
-      ),
+      () =>
+          this.removeUserSession(installationId: any(named: 'installationId')),
     ).thenAnswer((_) async {});
   }
 }

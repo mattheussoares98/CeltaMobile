@@ -5,6 +5,15 @@ import 'package:flutter/foundation.dart';
 
 class NotificationDatasource implements INotificationDatasource {
   @override
+  Stream<String> get onTokenRefresh {
+    if (PlatformUtil.isDesktop || PlatformUtil.isWeb) {
+      return const Stream.empty();
+    }
+
+    return FirebaseMessaging.instance.onTokenRefresh;
+  }
+
+  @override
   Future<String?> getToken() async {
     try {
       if (PlatformUtil.isDesktop || PlatformUtil.isWeb) {

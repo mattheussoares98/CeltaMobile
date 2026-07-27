@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,14 +31,18 @@ DeviceType get deviceType {
 
 @Riverpod(keepAlive: true)
 class UserSession extends _$UserSession {
+  StreamSubscription<String>? _tokenRefreshSubscription;
+
   @override
   Future<UserSessionModel?> build() async {
+    _listenForTokenRefresh();
+
     //dont need to use guard because the riverpor already treat this and return async error if throws
 
     final localSession = await ref.watch(userSessionRepositoryProvider).get();
 
     if (localSession != null) {
-      _syncSupabaseSession(localSession);
+      unawaited(_syncSupabaseSession(localSession));
       return localSession;
     }
     return null;
@@ -46,23 +52,15 @@ class UserSession extends _$UserSession {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await ref.read(userSessionRepositoryProvider).save(value);
-      _syncSupabaseSession(value);
+      unawaited(_syncSupabaseSession(value));
       return value;
     });
   }
 
-  Future<void> logout(DeviceType deviceType) async {
+  Future<void> logout() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final userName = state.value!.user.name!;
-      final enterpriseId = state.value!.enterprise!.id!;
-      await ref
-          .read(userSessionRepositoryProvider)
-          .logout(
-            userName: userName,
-            deviceType: deviceType,
-            enterpriseId: enterpriseId,
-          );
+      await ref.read(userSessionRepositoryProvider).logout();
 
       final boxesToClear = ref.read(boxesToClearOnLogoutProvider);
       for (final box in boxesToClear) {
@@ -72,12 +70,29 @@ class UserSession extends _$UserSession {
     });
   }
 
-  Future<void> _syncSupabaseSession(UserSessionModel session) async {
+  void _listenForTokenRefresh() {
+    _tokenRefreshSubscription ??= ref
+        .read(notificationDatasourceProvider)
+        .onTokenRefresh
+        .listen((fcmToken) {
+          final session = state.value;
+          if (session == null) return;
+
+          unawaited(_syncSupabaseSession(session, refreshedFcmToken: fcmToken));
+        });
+
+    ref.onDispose(() => _tokenRefreshSubscription?.cancel());
+  }
+
+  Future<void> _syncSupabaseSession(
+    UserSessionModel session, {
+    String? refreshedFcmToken,
+  }) async {
     try {
       // 1. Get the latest FCM token from the dedicated datasource
-      final fcmToken = await ref
-          .read(notificationDatasourceProvider)
-          .getToken();
+      final fcmToken =
+          refreshedFcmToken ??
+          await ref.read(notificationDatasourceProvider).getToken();
 
       final appVersion = await ref.read(
         appVersionStateControllerProvider.future,
@@ -85,9 +100,9 @@ class UserSession extends _$UserSession {
 
       // 3. Call the RPC to upsert the session record
       await ref
-          .read(supabaseUserSessionDatasourceProvider)
-          .handleUserSession(
-            firebaseEnterpriseId: session.enterprise!.id!,
+          .read(userSessionRepositoryProvider)
+          .synchronizeRemoteSession(
+            enterpriseId: session.enterprise!.id!,
             userName: session.user.name!,
             deviceType: deviceType,
             fcmToken: fcmToken,

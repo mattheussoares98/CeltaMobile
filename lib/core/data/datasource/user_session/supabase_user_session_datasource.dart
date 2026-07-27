@@ -14,32 +14,26 @@ class SupabaseUserSessionDatasource implements ISupabaseUserSessionDatasource {
     required int firebaseEnterpriseId,
     required String? fcmToken,
     required String appVersion,
+    required String installationId,
   }) async {
     await _supabase.rpc(
-      'handle_user_session',
+      'handle_user_session_v2',
       params: {
         'p_user_name': userName,
         'p_device_type': deviceType.name.toLowerCase(),
         'p_enterprise_id': firebaseEnterpriseId,
         'p_fcm_token': fcmToken,
         'p_app_version': appVersion,
+        'p_installation_id': installationId,
       },
     );
   }
 
   @override
-  Future<void> removeUserSession({
-    required String userName,
-    required DeviceType deviceType,
-    required int enterpriseId,
-  }) async {
+  Future<void> removeUserSession({required String installationId}) async {
     await _supabase.rpc(
-      'delete_user_session',
-      params: {
-        'p_user_name': userName,
-        'p_device_type': deviceType.name.toLowerCase(),
-        'p_enterprise_id': enterpriseId,
-      },
+      'delete_user_session_v2',
+      params: {'p_installation_id': installationId},
     );
   }
 }

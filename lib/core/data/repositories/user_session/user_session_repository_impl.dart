@@ -14,21 +14,40 @@ class UserSessionRepositoryImpl implements IUserSessionRepository {
   );
 
   @override
-  Future<void> logout({
+  Future<void> synchronizeRemoteSession({
     required String userName,
     required DeviceType deviceType,
     required int enterpriseId,
+    required String? fcmToken,
+    required String appVersion,
   }) async {
+    final installationId = await localUserSessionDatasource
+        .getOrCreateInstallationId();
+
+    await supabaseUserSessionDatasource.handleUserSession(
+      userName: userName,
+      deviceType: deviceType,
+      firebaseEnterpriseId: enterpriseId,
+      fcmToken: fcmToken,
+      appVersion: appVersion,
+      installationId: installationId,
+    );
+  }
+
+  @override
+  Future<void> logout() async {
+    final installationId = await localUserSessionDatasource
+        .getOrCreateInstallationId();
+
     try {
-      supabaseUserSessionDatasource.removeUserSession(
-        userName: userName,
-        deviceType: deviceType,
-        enterpriseId: enterpriseId,
+      await supabaseUserSessionDatasource.removeUserSession(
+        installationId: installationId,
       );
       //*should call local logout event supabase throws because can't disable the user to do logout
     } catch (e) {
       debugPrint(e.toString());
     }
+
     return await localUserSessionDatasource.logout();
   }
 

@@ -16,6 +16,7 @@ void main() {
   late int firebaseEnterpriseId;
   late String? fcmToken;
   late String appVersion;
+  late String installationId;
 
   void initEntities() {
     userName = faker.internet.userName();
@@ -24,6 +25,7 @@ void main() {
     firebaseEnterpriseId = faker.randomGenerator.integer(100);
     fcmToken = faker.guid.guid();
     appVersion = faker.lorem.word();
+    installationId = faker.guid.guid();
   }
 
   void initSut() {
@@ -57,15 +59,17 @@ void main() {
         firebaseEnterpriseId: firebaseEnterpriseId,
         fcmToken: fcmToken,
         appVersion: appVersion,
+        installationId: installationId,
       );
 
-      expect(supabaseClient.lastRpcFunction, 'handle_user_session');
+      expect(supabaseClient.lastRpcFunction, 'handle_user_session_v2');
       expect(supabaseClient.lastRpcParams, {
         'p_user_name': userName,
         'p_device_type': deviceType.name.toLowerCase(),
         'p_enterprise_id': firebaseEnterpriseId,
         'p_fcm_token': fcmToken,
         'p_app_version': appVersion,
+        'p_installation_id': installationId,
       });
     });
     test('should rethrow the error', () async {
@@ -78,6 +82,7 @@ void main() {
         firebaseEnterpriseId: firebaseEnterpriseId,
         fcmToken: fcmToken,
         appVersion: appVersion,
+        installationId: installationId,
       );
 
       expect(result, throwsA(error));
@@ -85,28 +90,18 @@ void main() {
   });
   group('Handle remove', () {
     test('should behave correctly on success', () async {
-      await sut.removeUserSession(
-        userName: userName,
-        deviceType: deviceType,
-        enterpriseId: firebaseEnterpriseId,
-      );
+      await sut.removeUserSession(installationId: installationId);
 
-      expect(supabaseClient.lastRpcFunction, 'delete_user_session');
+      expect(supabaseClient.lastRpcFunction, 'delete_user_session_v2');
       expect(supabaseClient.lastRpcParams, {
-        'p_user_name': userName,
-        'p_device_type': deviceType.name.toLowerCase(),
-        'p_enterprise_id': firebaseEnterpriseId,
+        'p_installation_id': installationId,
       });
     });
     test('should rethrow the error', () async {
       final error = Exception(faker.lorem.sentence());
       supabaseClient.mockFromError(error);
 
-      final result = sut.removeUserSession(
-        userName: userName,
-        deviceType: deviceType,
-        enterpriseId: firebaseEnterpriseId,
-      );
+      final result = sut.removeUserSession(installationId: installationId);
 
       expect(result, throwsA(error));
     });

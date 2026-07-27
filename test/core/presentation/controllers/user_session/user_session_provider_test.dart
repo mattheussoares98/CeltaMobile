@@ -21,12 +21,15 @@ class UserSessionRepositorySpy extends Mock implements IUserSessionRepository {
   UserSessionRepositorySpy() {
     when(() => this.save(any())).thenAnswer((_) async => {});
     when(
-      () => this.logout(
+      () => this.synchronizeRemoteSession(
         userName: any(named: 'userName'),
         deviceType: any(named: 'deviceType'),
         enterpriseId: any(named: 'enterpriseId'),
+        fcmToken: any(named: 'fcmToken'),
+        appVersion: any(named: 'appVersion'),
       ),
     ).thenAnswer((_) async => {});
+    when(() => this.logout()).thenAnswer((_) async => {});
   }
 
   void mockGet(UserSessionModel? response) {
@@ -49,40 +52,37 @@ class FakeAppVersion extends AppVersionStateController {
 
 void main() {
   late UserSessionRepositorySpy userSessionRepository;
-  late SupabaseUserSessionDatasourceSpy supabaseUserSessionDatasource;
   late NotificationDatasourceSpy notificationDatasource;
+  late StreamController<String> tokenRefreshController;
 
   late UserSessionModel userSession;
   late List<MockBox> mockBoxesToClearOnLogout;
-  late DeviceType deviceType;
   late String appVersion;
+  late String initialFcmToken;
 
   setUp(() {
     userSessionRepository = UserSessionRepositorySpy();
-    supabaseUserSessionDatasource = SupabaseUserSessionDatasourceSpy();
     notificationDatasource = NotificationDatasourceSpy();
+    tokenRefreshController = StreamController<String>.broadcast();
+    addTearDown(tokenRefreshController.close);
 
     userSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
     appVersion = faker.lorem.word();
+    initialFcmToken = faker.guid.guid();
 
     mockBoxesToClearOnLogout = [MockBox(), MockBox(), MockBox()];
 
     registerFallbackValue(userSession);
 
     userSessionRepository.mockGet(userSession);
-    deviceType = DeviceType
-        .values[faker.randomGenerator.integer(DeviceType.values.length)];
     when(
-      () => supabaseUserSessionDatasource.handleUserSession(
-        userName: any(named: 'userName'),
-        deviceType: any(named: 'deviceType'),
-        firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
-        fcmToken: any(named: 'fcmToken'),
-        appVersion: any(named: 'appVersion'),
-      ),
-    ).thenAnswer((_) async => {});
+      () => notificationDatasource.getToken(),
+    ).thenAnswer((_) async => initialFcmToken);
+    when(
+      () => notificationDatasource.onTokenRefresh,
+    ).thenAnswer((_) => tokenRefreshController.stream);
   });
 
   ProviderContainer makeProviderContainer() {
@@ -92,9 +92,6 @@ void main() {
         userSessionRepositoryProvider.overrideWithValue(userSessionRepository),
         boxesToClearOnLogoutProvider.overrideWithValue(
           mockBoxesToClearOnLogout,
-        ),
-        supabaseUserSessionDatasourceProvider.overrideWithValue(
-          supabaseUserSessionDatasource,
         ),
         appVersionStateControllerProvider.overrideWith(
           () => FakeAppVersion(appVersion),
@@ -145,11 +142,6 @@ void main() {
         expect(result, isNull);
       });
       test('should save session with correct parameters', () async {
-        final token = faker.guid.guid();
-        when(
-          () => notificationDatasource.getToken(),
-        ).thenAnswer((_) async => token);
-
         final container = makeProviderContainer();
         addTearDown(container.dispose);
 
@@ -158,21 +150,60 @@ void main() {
 
         //!in the controller is not waiting call this method. But here, needs to wait
         await untilCalled(
-          () => supabaseUserSessionDatasource.handleUserSession(
-            userName: any(named: 'userName'),
-            deviceType: any(named: 'deviceType'),
-            firebaseEnterpriseId: any(named: 'firebaseEnterpriseId'),
-            fcmToken: any(named: 'fcmToken'),
-            appVersion: any(named: 'appVersion'),
+          () => userSessionRepository.synchronizeRemoteSession(
+            userName: userSession.user.name!,
+            deviceType: deviceType,
+            enterpriseId: userSession.enterprise!.id!,
+            fcmToken: initialFcmToken,
+            appVersion: appVersion,
           ),
         );
         // ASSERT
         verify(
-          () => supabaseUserSessionDatasource.handleUserSession(
-            firebaseEnterpriseId: userSession.enterprise!.id!,
+          () => userSessionRepository.synchronizeRemoteSession(
+            enterpriseId: userSession.enterprise!.id!,
             userName: userSession.user.name!,
-            deviceType: any(named: 'deviceType'),
-            fcmToken: token,
+            deviceType: deviceType,
+            fcmToken: initialFcmToken,
+            appVersion: appVersion,
+          ),
+        ).called(1);
+      });
+
+      test('should synchronize when the FCM token refreshes', () async {
+        final refreshedFcmToken = faker.guid.guid();
+        final container = makeProviderContainer();
+        addTearDown(container.dispose);
+
+        await container.read(userSessionProvider.future);
+        await untilCalled(
+          () => userSessionRepository.synchronizeRemoteSession(
+            userName: userSession.user.name!,
+            deviceType: deviceType,
+            enterpriseId: userSession.enterprise!.id!,
+            fcmToken: initialFcmToken,
+            appVersion: appVersion,
+          ),
+        );
+        clearInteractions(userSessionRepository);
+
+        tokenRefreshController.add(refreshedFcmToken);
+
+        await untilCalled(
+          () => userSessionRepository.synchronizeRemoteSession(
+            userName: userSession.user.name!,
+            deviceType: deviceType,
+            enterpriseId: userSession.enterprise!.id!,
+            fcmToken: refreshedFcmToken,
+            appVersion: appVersion,
+          ),
+        );
+        verify(
+          () => userSessionRepository.synchronizeRemoteSession(
+            userName: userSession.user.name!,
+            deviceType: deviceType,
+            enterpriseId: userSession.enterprise!.id!,
+            fcmToken: refreshedFcmToken,
             appVersion: appVersion,
           ),
         ).called(1);
@@ -222,20 +253,14 @@ void main() {
           container.listen(userSessionProvider, (_, next) => states.add(next));
 
           // ACT
-          await container.read(userSessionProvider.notifier).logout(deviceType);
+          await container.read(userSessionProvider.notifier).logout();
 
           // ASSERT
           expect(states, [
             isA<AsyncLoading>(),
             isA<AsyncData<UserSessionModel?>>(),
           ]);
-          verify(
-            () => userSessionRepository.logout(
-              userName: userSession.user.name!,
-              deviceType: deviceType,
-              enterpriseId: userSession.enterprise!.id!,
-            ),
-          ).called(1);
+          verify(() => userSessionRepository.logout()).called(1);
 
           for (var box in mockBoxesToClearOnLogout) {
             verify(() => box.clear()).called(1);
@@ -248,24 +273,12 @@ void main() {
           final container = makeProviderContainer();
           addTearDown(container.dispose);
           await container.read(userSessionProvider.future);
-          when(
-            () => userSessionRepository.logout(
-              userName: any(named: 'userName'),
-              deviceType: any(named: 'deviceType'),
-              enterpriseId: any(named: 'enterpriseId'),
-            ),
-          ).thenThrow(Exception());
+          when(() => userSessionRepository.logout()).thenThrow(Exception());
 
           // ACT
-          await container.read(userSessionProvider.notifier).logout(deviceType);
+          await container.read(userSessionProvider.notifier).logout();
 
-          verify(
-            () => userSessionRepository.logout(
-              userName: userSession.user.name!,
-              deviceType: deviceType,
-              enterpriseId: userSession.enterprise!.id!,
-            ),
-          ).called(1);
+          verify(() => userSessionRepository.logout()).called(1);
 
           for (var box in mockBoxesToClearOnLogout) {
             verifyNever(() => box.clear());
