@@ -28,8 +28,12 @@ Future<void> _initFirebase() async {
 
   if (defaultTargetPlatform == TargetPlatform.windows ||
       defaultTargetPlatform == TargetPlatform.macOS ||
-      kIsWeb ||
-      kDebugMode) {
+      kIsWeb) {
+    return;
+  }
+
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
     return;
   }
 
