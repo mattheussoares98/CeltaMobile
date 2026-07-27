@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class LastBuyEntranceEntity extends Equatable {
+  final int? Code;
   final String Number;
   final String EntranceDate;
   final String Supplier;
@@ -8,6 +9,7 @@ class LastBuyEntranceEntity extends Equatable {
   final String Packing;
   final double Quantity;
   const LastBuyEntranceEntity({
+    required this.Code,
     required this.Number,
     required this.EntranceDate,
     required this.Supplier,
@@ -18,6 +20,7 @@ class LastBuyEntranceEntity extends Equatable {
 
   @override
   List<Object?> get props => [
+    Code,
     Number,
     EntranceDate,
     Supplier,

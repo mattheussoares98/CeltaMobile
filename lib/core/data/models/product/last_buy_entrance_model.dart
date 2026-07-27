@@ -1,35 +1,19 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 
-class LastBuyEntranceModel extends Equatable {
-  final String Number;
-  final String EntranceDate;
-  final String Supplier;
-  final String FiscalCode;
-  final String Packing;
-  final double Quantity;
+class LastBuyEntranceModel extends LastBuyEntranceEntity {
   const LastBuyEntranceModel({
-    required this.Number,
-    required this.EntranceDate,
-    required this.Supplier,
-    required this.FiscalCode,
-    required this.Packing,
-    required this.Quantity,
+    required super.Code,
+    required super.Number,
+    required super.EntranceDate,
+    required super.Supplier,
+    required super.FiscalCode,
+    required super.Packing,
+    required super.Quantity,
   });
-
-  @override
-  List<Object?> get props => [
-    Number,
-    EntranceDate,
-    Supplier,
-    FiscalCode,
-    Packing,
-    Quantity,
-  ];
 
   factory LastBuyEntranceModel.fromJson(Map json) {
     return LastBuyEntranceModel(
+      Code: json['Code'],
       Number: json['Number'],
       EntranceDate: json['EntranceDate'],
       Supplier: json['Supplier'],
@@ -40,6 +24,7 @@ class LastBuyEntranceModel extends Equatable {
   }
   factory LastBuyEntranceModel.fromEntity(LastBuyEntranceEntity entity) {
     return LastBuyEntranceModel(
+      Code: entity.Code,
       Number: entity.Number,
       EntranceDate: entity.EntranceDate,
       Supplier: entity.Supplier,
@@ -50,6 +35,7 @@ class LastBuyEntranceModel extends Equatable {
   }
 
   Map<String, dynamic> toJson() => {
+    'Code': Code,
     'Number': Number,
     'EntranceDate': EntranceDate,
     'Supplier': Supplier,
@@ -59,6 +45,7 @@ class LastBuyEntranceModel extends Equatable {
   };
 
   LastBuyEntranceEntity toEntity() => LastBuyEntranceEntity(
+    Code: Code,
     Number: Number,
     EntranceDate: EntranceDate,
     Supplier: Supplier,

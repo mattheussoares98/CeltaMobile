@@ -214,6 +214,7 @@ class EntityFactory {
 
   static LastBuyEntranceEntity makeLastBuyEntranceEntity() =>
       LastBuyEntranceEntity(
+        Code: faker.randomGenerator.integer(100),
         Number: faker.randomGenerator.integer(100).toString(),
         EntranceDate: faker.date.dateTime().toIso8601String(),
         Supplier: faker.company.name(),
