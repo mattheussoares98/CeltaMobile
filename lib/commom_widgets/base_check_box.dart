@@ -24,7 +24,6 @@ class BaseCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isIOS = PlatformUtil.isCupertino;
-    //TODO test on an iOS device
     if (width != null || height != null) {
       final size = width ?? height ?? Sizes.p20;
       return Semantics(

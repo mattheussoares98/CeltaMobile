@@ -49,7 +49,7 @@ class OpenSaleRequestDetailsPageButton extends ConsumerWidget {
                           'customerCode': saleRequest.customer!.code.toString(),
                         },
                       );
-                    }, //TODO test this page on iOS device
+                    },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
                 child: Row(

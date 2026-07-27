@@ -46,7 +46,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       BsRoutine.adjustStock,
       Modules.transferBetweenStocks,
     );
-
+    //TODO check this page on an iOS device. There is a large blank space on top of this
     return BaseScaffold(
       isScrollable: false,
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
