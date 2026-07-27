@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,6 +34,10 @@ class BuyMovementDetailsStateController
       requestParams: ecParams,
       buyMovementCode: buyMovementCode,
     );
+
+    ref
+        .read(appUsageStateControllerProvider.notifier)
+        .addUsage(UsageType.buyMovementDetails);
 
     return await ref.read(ecBuyMovementRepositoryProvider).loadDetails(params);
   }

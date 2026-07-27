@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/domain/repositories/repositories.dart';
@@ -21,6 +22,7 @@ void main() {
   late EcRequestParams requestParams;
   late EcBuyMovementDtoEntity buyMovement;
   late int buyMovementCode;
+  late FakeAppUsageStateController fakeAppUsage;
 
   setUp(() {
     repository = MockEcBuyMovementRepository();
@@ -34,6 +36,7 @@ void main() {
     );
     buyMovement = EntityFactory.makeEcBuyMovementDtoEntity();
     buyMovementCode = faker.randomGenerator.integer(100, min: 1);
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   ProviderContainer makeProviderContainer() {
@@ -44,6 +47,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -65,6 +69,7 @@ void main() {
       );
 
       expect(result, buyMovement);
+      expect(fakeAppUsage.lastUsageType, UsageType.buyMovementDetails);
       verify(() => repository.loadDetails(params)).called(1);
     });
 

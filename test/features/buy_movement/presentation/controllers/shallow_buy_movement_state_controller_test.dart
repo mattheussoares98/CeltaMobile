@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
@@ -23,6 +24,7 @@ void main() {
   late List<EcBuyMovementDtoEntity> buyMovements;
   late int enterpriseCode;
   late DateTime initialDate;
+  late FakeAppUsageStateController fakeAppUsage;
 
   setUp(() {
     repository = MockEcBuyMovementRepository();
@@ -40,6 +42,7 @@ void main() {
     );
     enterpriseCode = faker.randomGenerator.integer(100, min: 1);
     initialDate = faker.date.dateTime();
+    fakeAppUsage = FakeAppUsageStateController();
   });
 
   setUpAll(() {
@@ -61,6 +64,7 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
+        appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
       ],
     );
   }
@@ -115,6 +119,7 @@ void main() {
         ),
         AsyncData<List<EcBuyMovementDtoEntity>?>(buyMovements),
       );
+      expect(fakeAppUsage.lastUsageType, UsageType.shallowBuyMovement);
       verify(() => repository.loadShallow(params)).called(1);
     });
 

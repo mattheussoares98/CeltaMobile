@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
@@ -48,6 +50,9 @@ class ShallowBuyMovementStateController
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.shallowBuyMovement);
       final result = await ref
           .read(ecBuyMovementRepositoryProvider)
           .loadShallow(params);
