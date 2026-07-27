@@ -45,22 +45,23 @@ class _ValueFieldAndConfirmButtonState
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        final totalLiquidAndPaidDifference = getCurrentDifference();
-        if (totalLiquidAndPaidDifference > 0) {
-          valueController.text = totalLiquidAndPaidDifference
-              .toString()
-              .toBrazilianNumber();
-        }
+        updateMissingValue();
       }
     });
   }
 
-  double getCurrentDifference() {
-    return ref.read(
+  void updateMissingValue() {
+    final missingValue = ref.read(
       insertUpdateStateControllerProvider.select(
         (s) => s.value?.totalLiquidAndPaidDifference ?? 0,
       ),
     );
+    if (missingValue > 0) {
+      valueController.text = missingValue
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+    }
   }
 
   void onSubmit() {
@@ -96,12 +97,7 @@ class _ValueFieldAndConfirmButtonState
         widget.portionsController.clear();
         widget.validityController.clear();
 
-        final currentDifference = getCurrentDifference();
-        if (currentDifference > 0) {
-          valueController.text = currentDifference
-              .toString()
-              .toBrazilianNumber();
-        }
+        updateMissingValue();
       } else {
         showToastMessage(
           error ?? 'Erro ao adicionar pagamento'.hardcoded,
@@ -120,9 +116,7 @@ class _ValueFieldAndConfirmButtonState
             builder: (_, ref, _) {
               WidgetsBinding.instance.addPostFrameCallback((_) async {
                 if (mounted) {
-                  valueController.text = getCurrentDifference()
-                      .toString()
-                      .toBrazilianNumber();
+                  updateMissingValue();
                 }
               });
 
