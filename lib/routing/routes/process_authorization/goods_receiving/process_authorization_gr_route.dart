@@ -6,7 +6,6 @@ RouteBase processAuthorizationGRRoute() => GoRoute(
   path: ':processCode/goods-receiving',
   name: Routes.processAuthorizationGR.name,
   builder: (context, state) {
-    //TODO test how build the URL on web platform
     return ProcessAuthorizationGRPage(
       processCode: int.parse(state.pathParameters['processCode'].toString()),
     );
