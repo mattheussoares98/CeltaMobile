@@ -92,6 +92,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       child: BaseScaffold(
         isScrollable: false,
         resizeToAvoidBottomInset: true,
+        padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
         appBar: BaseAppBar(
           title: 'Ajuste de estoque'.hardcoded,
           selectedEnterpriseCode: widget.enterpriseCode,
