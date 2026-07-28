@@ -55,7 +55,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       margin: const pw.EdgeInsets.only(bottom: 10.0),
       child: pw.Text(
         'Pedido Nº: ${saleRequest.personalizedCode}',
-        style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+        style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
       ),
     );
   }
@@ -113,9 +113,9 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     final deliveryTax = saleRequest.deliveryTax?.deliveryTax;
     final deliveryTaxStr = _formatValueType(deliveryTax);
 
-    final totalLiquidStr = saleRequest.totalLiquid.toString().toBrazilianNumber(
-      
-    );
+    final totalLiquidStr = saleRequest.totalLiquid
+        .toString()
+        .toBrazilianNumber();
 
     final items = <pw.Widget>[
       _infoRow('Modelo de Pedido:'.hardcoded, requestTypeStr),
@@ -171,7 +171,10 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
             width: 140,
             child: pw.Text(
               label,
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10),
+              style: const pw.TextStyle(
+                fontWeight: pw.FontWeight.bold,
+                fontSize: 10,
+              ),
             ),
           ),
           pw.Text(value, style: const pw.TextStyle(fontSize: 10)),
@@ -186,11 +189,17 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       children: [
         pw.Text(
           'Cliente: ${saleRequest.customer?.name ?? "Não informado".hardcoded}',
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14),
+          style: const pw.TextStyle(
+            fontWeight: pw.FontWeight.bold,
+            fontSize: 14,
+          ),
         ),
         pw.Text(
           'Vendedor: ${saleRequest.seller?.name ?? "Não informado".hardcoded}',
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14),
+          style: const pw.TextStyle(
+            fontWeight: pw.FontWeight.bold,
+            fontSize: 14,
+          ),
         ),
         pw.SizedBox(height: 12),
         if (saleRequest.instructions?.isNotEmpty ?? false) ...[
@@ -210,7 +219,10 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text(title, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        pw.Text(
+          title,
+          style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
+        ),
         pw.Container(
           padding: const pw.EdgeInsets.all(8),
           decoration: pw.BoxDecoration(
@@ -254,7 +266,10 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       children: [
         pw.Text(
           'Formas de Pagamento'.hardcoded,
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 12),
+          style: const pw.TextStyle(
+            fontWeight: pw.FontWeight.bold,
+            fontSize: 12,
+          ),
         ),
         pw.SizedBox(height: 6),
         pw.Table(
@@ -413,7 +428,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                   children: [
                     pw.Text(
                       '${item.product?.name ?? "N/A"} ',
-                      style: pw.TextStyle(
+                      style: const pw.TextStyle(
                         fontWeight: pw.FontWeight.bold,
                         fontSize: 9,
                       ),
@@ -539,7 +554,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       padding: const pw.EdgeInsets.all(4),
       child: pw.Text(
         text,
-        style: pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
+        style: const pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold),
       ),
     );
   }

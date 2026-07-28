@@ -1,10 +1,9 @@
+import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
-
-import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
 
 class ShareDownloadDatasource implements IShareDownloadDatasource {
   @override
@@ -18,7 +17,7 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
       );
     }
 
-    final response = await FilePicker.platform.saveFile(
+    final response = await FilePicker.saveFile(
       bytes: file.bytes,
       fileName: '${file.name}${file.extension}',
     );
