@@ -20,9 +20,27 @@ class BaseSegmentedButtons<T extends SelectableItem<T>>
 
   @override
   Widget build(BuildContext context) {
-    final selectedItem = items.cast<T>().firstWhere(
-      (item) => item.value == selectedValue,
+    if (items.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
+    if (items.length == 1) {
+      final singleItem = items.first;
+      return Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Sizes.p16,
+          vertical: Sizes.p8,
+        ),
+        decoration: BoxDecoration(
+          color: singleItem.color ?? context.theme.primaryColor,
+          borderRadius: BorderRadius.circular(Sizes.p8),
+        ),
+        child: BaseText(singleItem.name, color: Colors.white),
+      );
+    }
+
+    final selectedItem = items.cast<T?>().firstWhere(
+      (item) => item?.value == selectedValue,
       orElse: () => items.first,
     );
 
@@ -36,14 +54,16 @@ class BaseSegmentedButtons<T extends SelectableItem<T>>
             }
           },
 
-          thumbColor: selectedItem.color ?? context.theme.primaryColor,
+          thumbColor: selectedItem?.color ?? context.theme.primaryColor,
 
           children: {
             for (var item in items)
               item.value: Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal:
-                      (constraints.maxWidth / items.length / item.name.length) >
+                      (constraints.maxWidth /
+                              items.length /
+                              (item.name.isEmpty ? 1 : item.name.length)) >
                           20
                       ? Sizes.p20
                       : Sizes.p4,
