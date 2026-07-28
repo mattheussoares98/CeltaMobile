@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:equatable/equatable.dart';
 
 class ProductNotFoundModel extends Equatable {
   final int? internalCode;
@@ -20,7 +19,8 @@ class ProductNotFoundModel extends Equatable {
 
   factory ProductNotFoundModel.fromJson(Map json) => ProductNotFoundModel(
     internalCode: int.parse(json["CodigoInterno_ProcRecebProNaoIden"]),
-    quantity: double.parse(json["Quantidade_ProcRecebProNaoIden"]),
+    quantity:
+        double.tryParse(json["Quantidade_ProcRecebProNaoIden"] ?? '0') ?? 0,
     ean: json["Ean_ProcRecebProNaoIden"],
     observations: json["Obs_ProcRecebProNaoIden"],
   );
