@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
     if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -172,15 +173,23 @@ class _BaseScaffold extends ConsumerWidget {
     Widget scaffold;
 
     if (context.isCupertino && params.drawer == null) {
-      const cupertinoTabBarHeight = 49.0;
       var cupertinoBody = bottomNavigationWidget != null
-          ? Padding(
-              padding: EdgeInsets.only(
-                bottom:
-                    cupertinoTabBarHeight +
-                    (params.bottomNavigationBar == null ? Sizes.p8 : 0),
-              ),
-              child: newChild,
+          ? Consumer(
+              builder: (_, ref, _) {
+                final keyboardIsOpened = ref.watch(
+                  keyboardVisibilityStateControllerProvider,
+                );
+                const cupertinoTabBarHeight = 49.0;
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom:
+                        (keyboardIsOpened ? 0 : cupertinoTabBarHeight) +
+                        (params.bottomNavigationBar == null ? Sizes.p8 : 0),
+                  ),
+                  child: newChild,
+                );
+              },
             )
           : newChild;
 
