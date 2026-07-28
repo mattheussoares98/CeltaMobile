@@ -16,7 +16,7 @@ class ConfirmAndRequestButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: Sizes.p8),
+      padding: const EdgeInsets.only(bottom: Sizes.p16),
       child: Row(
         children: [
           Expanded(
