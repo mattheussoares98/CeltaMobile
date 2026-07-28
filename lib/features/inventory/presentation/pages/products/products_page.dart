@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/infraestructure/infrastructure.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
@@ -169,6 +170,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
         title: 'Produtos'.hardcoded,
         selectedEnterpriseCode: widget.enterpriseCode,

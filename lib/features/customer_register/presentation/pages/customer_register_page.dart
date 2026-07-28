@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/pages.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -71,6 +72,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
 
     return BaseScaffold(
       isScrollable: false,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: Consumer(
         builder: (context, ref, _) {
           return BaseAppBar(

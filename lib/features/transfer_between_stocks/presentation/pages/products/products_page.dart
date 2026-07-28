@@ -46,32 +46,28 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       BsRoutine.adjustStock,
       Modules.transferBetweenStocks,
     );
-    //TODO check this page on an iOS device. There is a large blank space on top of this
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            SizedBox(
-              width: Breakpoint.tablet,
-              child: BaseSearchProducts(
-                searchValueController: searchValueController,
-                searchProductKey: searchProductKey,
-                searchProducts: (exactProductCode) =>
-                    _searchProducts(searchProductKey, exactProductCode),
-              ),
-            ),
-            gapH8,
-            DropDowns(enterpriseCode: widget.enterpriseCode),
-            gapH8,
-            ProductsItems(
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          SizedBox(
+            width: Breakpoint.tablet,
+            child: BaseSearchProducts(
+              searchValueController: searchValueController,
               searchProductKey: searchProductKey,
-              enterpriseCode: widget.enterpriseCode,
-              formKey: formKey,
+              searchProducts: (exactProductCode) =>
+                  _searchProducts(searchProductKey, exactProductCode),
             ),
-          ],
-        ),
+          ),
+          gapH8,
+          DropDowns(enterpriseCode: widget.enterpriseCode),
+          gapH8,
+          ProductsItems(
+            searchProductKey: searchProductKey,
+            enterpriseCode: widget.enterpriseCode,
+            formKey: formKey,
+          ),
+        ],
       ),
     );
   }

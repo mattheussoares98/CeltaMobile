@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/mixins/mixins.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
@@ -86,6 +87,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
 
     return BaseScaffold(
       isScrollable: false,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       onPopInvokedWithResult: () async {
         if (scannedProducts.isEmpty) {
           if (context.mounted) {

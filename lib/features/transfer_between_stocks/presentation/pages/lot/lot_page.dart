@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
@@ -68,38 +67,35 @@ class _LotPageState extends ConsumerState<LotPage> {
       return Center(child: BaseText.error('Lote vazio'.hardcoded));
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: CustomScrollView(
-              slivers: [
-                LotItems(
-                  quantityController: lotQuantityController,
-                  enterpriseCode: widget.enterpriseCode,
-                  quantityFocusNode: lotQuantityFocusNode,
-                ),
-              ],
-            ),
-          ),
-          Consumer(
-            builder: (_, ref, _) {
-              final keyboardIsOpened = ref.watch(
-                keyboardVisibilityStateControllerProvider,
-              );
-              if (keyboardIsOpened) {
-                return const SizedBox.shrink();
-              }
-              return ConfirmAndRequestButtons(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              LotItems(
+                quantityController: lotQuantityController,
                 enterpriseCode: widget.enterpriseCode,
-                confirmRequest: confirmRequest,
-              );
-            },
+                quantityFocusNode: lotQuantityFocusNode,
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Consumer(
+          builder: (_, ref, _) {
+            final keyboardIsOpened = ref.watch(
+              keyboardVisibilityStateControllerProvider,
+            );
+            if (keyboardIsOpened) {
+              return const SizedBox.shrink();
+            }
+            return ConfirmAndRequestButtons(
+              enterpriseCode: widget.enterpriseCode,
+              confirmRequest: confirmRequest,
+            );
+          },
+        ),
+      ],
     );
   }
 }

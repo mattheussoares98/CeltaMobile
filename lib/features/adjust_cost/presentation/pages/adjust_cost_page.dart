@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -21,6 +22,7 @@ class AdjustCostPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
         title: 'Alterar custo de reposição'.hardcoded,
         selectedEnterpriseCode: enterpriseCode,

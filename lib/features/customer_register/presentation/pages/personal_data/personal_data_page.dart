@@ -128,6 +128,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
     return BaseScaffold(
       resizeToAvoidBottomInset: true,
       safeAreaTop: false,
+      usePadding: false,
       body: ResponsiveScrollableWidget(
         child: Form(
           key: formKey,

@@ -38,6 +38,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       refreshProvider: receiptsStateControllerProvider(widget.enterpriseCode),
       appBar: BaseAppBar(
         title: 'Recebimentos'.hardcoded,

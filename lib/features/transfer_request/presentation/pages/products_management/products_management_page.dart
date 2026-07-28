@@ -48,6 +48,7 @@ class ProductsManagementPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
         titleWidget: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

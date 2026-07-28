@@ -50,6 +50,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
 
     return BaseScaffold(
       isScrollable: false,
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
         title: 'Pesquisar produtos'.hardcoded,
         selectedEnterpriseCode: widget.enterpriseCode,
