@@ -47,10 +47,9 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       Modules.transferBetweenStocks,
     );
     //TODO check this page on an iOS device. There is a large blank space on top of this
-    return BaseScaffold(
-      isScrollable: false,
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
-      body: Form(
+      child: Form(
         key: formKey,
         child: Column(
           children: [

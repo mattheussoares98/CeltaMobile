@@ -1,3 +1,5 @@
+import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
+    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
-import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub.dart'
-    if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 
 import '../commom_widgets.dart';
 
@@ -68,9 +68,7 @@ class BaseScaffold extends StatelessWidget {
       );
     }
 
-    return buildOrientationReader(
-      builder: (context) => _BaseScaffold(this),
-    );
+    return buildOrientationReader(builder: (context) => _BaseScaffold(this));
   }
 }
 
@@ -184,7 +182,9 @@ class _BaseScaffold extends ConsumerWidget {
             )
           : newChild;
 
-      final orientation = NativeDeviceOrientationReaderWrapper.orientation(context);
+      final orientation = NativeDeviceOrientationReaderWrapper.orientation(
+        context,
+      );
       final isRotatedLeft =
           orientation == NativeDeviceOrientation.landscapeLeft;
       final isRotatedRight =
