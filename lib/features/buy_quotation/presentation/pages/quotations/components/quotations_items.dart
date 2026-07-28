@@ -21,7 +21,7 @@ class QuotationsItems extends ConsumerWidget {
           ref.invalidate(buyQuotationsStateControllerProvider(enterpriseCode)),
       data: (quotations) {
         return ResponsiveListFlow(
-          padding: const EdgeInsets.only(bottom: Sizes.p64),
+          padding: const EdgeInsets.only(bottom: Sizes.p120),
           itemCount: quotations.length,
           itemBuilder: (_, index) {
             final quotation = quotations[index];
@@ -82,9 +82,7 @@ class _QuotationItem extends StatelessWidget {
               TitleAndSubTitle(
                 title: 'Data limite'.hardcoded,
                 emptyMessage: 'Nenhuma data de limite'.hardcoded,
-                subTitle: quotation.DateOfLimit?.formatDate(
-                  
-                ),
+                subTitle: quotation.DateOfLimit?.formatDate(),
               ),
               TitleAndSubTitle(
                 title: 'Observações'.hardcoded,

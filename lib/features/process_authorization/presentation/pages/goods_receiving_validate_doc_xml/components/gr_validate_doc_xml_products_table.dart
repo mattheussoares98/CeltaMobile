@@ -314,6 +314,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           processCode: processCode,
           areJudgedItems: areJudgedItems,
         ),
+        gapH8,
       ],
     );
   }

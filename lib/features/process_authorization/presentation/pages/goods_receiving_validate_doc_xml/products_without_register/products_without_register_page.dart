@@ -19,10 +19,9 @@ class ProductsWithoutRegisterPage extends ConsumerWidget {
       provider.select((s) => s.value?.productsWithoutCadaster ?? []),
     );
 
-    return BaseScaffold(
-      isScrollable: false,
-      padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, Sizes.p8, 0),
-      body: ResponsiveListFlow(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
+      child: ResponsiveListFlow(
         itemCount: productsWithoutRegister.length,
         itemBuilder: (context, index) {
           final product = productsWithoutRegister[index];

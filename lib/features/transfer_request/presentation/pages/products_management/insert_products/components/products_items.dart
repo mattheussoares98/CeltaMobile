@@ -138,7 +138,6 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
       data: (products) {
         return ResponsiveListFlow(
           isSliver: true,
-          padding: EdgeInsets.zero,
           itemCount: products.length,
           itemBuilder: (_, index) {
             final product = products[index];

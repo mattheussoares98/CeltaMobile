@@ -175,8 +175,10 @@ class _BaseScaffold extends ConsumerWidget {
       const cupertinoTabBarHeight = 49.0;
       var cupertinoBody = bottomNavigationWidget != null
           ? Padding(
-              padding: const EdgeInsets.only(
-                bottom: cupertinoTabBarHeight + Sizes.p8,
+              padding: EdgeInsets.only(
+                bottom:
+                    cupertinoTabBarHeight +
+                    (params.bottomNavigationBar == null ? Sizes.p8 : 0),
               ),
               child: newChild,
             )

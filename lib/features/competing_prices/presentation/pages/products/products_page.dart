@@ -44,32 +44,38 @@ class ProductsPage extends ConsumerWidget {
       isScrollable: false,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(subtitle: AppBarTitle(widget: this)),
-      body: ResponsiveScrollableWidget(
-        isSliverPage: true,
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Filters(
-                enterpriseCode: enterpriseCode,
-                researchCode: researchCode,
-                concurrentCode: concurrentCode,
-              ),
+      body: Column(
+        children: [
+          SizedBox(
+            width: Breakpoint.tablet,
+            child: Column(
+              children: [
+                Filters(
+                  enterpriseCode: enterpriseCode,
+                  researchCode: researchCode,
+                  concurrentCode: concurrentCode,
+                ),
+                SearchProductsField(
+                  enterpriseCode: enterpriseCode,
+                  researchCode: researchCode,
+                  concurrentCode: concurrentCode,
+                ),
+              ],
             ),
-            SliverToBoxAdapter(
-              child: SearchProductsField(
-                enterpriseCode: enterpriseCode,
-                researchCode: researchCode,
-                concurrentCode: concurrentCode,
-              ),
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                gapSliverH8,
+                ProductsItems(
+                  enterpriseCode: enterpriseCode,
+                  researchCode: researchCode,
+                  concurrentCode: concurrentCode,
+                ),
+              ],
             ),
-            gapSliverH8,
-            ProductsItems(
-              enterpriseCode: enterpriseCode,
-              researchCode: researchCode,
-              concurrentCode: concurrentCode,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

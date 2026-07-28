@@ -44,6 +44,7 @@ class CartPage extends ConsumerWidget {
                       return ResponsiveListFlow(
                         isSliver: true,
                         itemCount: items.length,
+                        padding: const EdgeInsets.only(bottom: Sizes.p80),
                         itemBuilder: (_, index) {
                           final item = items[index];
 

@@ -58,7 +58,7 @@ class _BuyRequestPageState extends ConsumerState<CreateBuyRequestPage> {
     return BaseScaffold(
       isScrollable: false,
       resizeToAvoidBottomInset: true,
-      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, 0),
       appBar: BaseAppBar(
         title: appBarTitles[currentPageIndex],
         selectedEnterpriseCode: widget.enterpriseCode,

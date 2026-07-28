@@ -37,9 +37,9 @@ class PaymentsList extends ConsumerWidget {
 
         final color = context.theme.disabledColor.withAlpha(30);
 
-        return SliverList.separated(
-          itemCount: financials?.length,
-          separatorBuilder: (context, fIndex) => gapH8,
+        return ResponsiveListFlow(
+          isSliver: true,
+          itemCount: financials?.length ?? 0,
           itemBuilder: (context, fIndex) {
             final financial = financials![fIndex];
 

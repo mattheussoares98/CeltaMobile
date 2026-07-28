@@ -56,7 +56,7 @@ class CustomersPage extends ConsumerWidget {
             slivers: [
               ConsumerCustomer(),
               SearchedCustomersItems(),
-              gapSliverH32,
+              gapSliverH80,
             ],
           ),
         ),
