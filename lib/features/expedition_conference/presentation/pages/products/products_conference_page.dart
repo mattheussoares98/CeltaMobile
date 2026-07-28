@@ -87,7 +87,12 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
 
     return BaseScaffold(
       isScrollable: false,
-      padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+      padding: const EdgeInsets.fromLTRB(
+        Sizes.p8,
+        0,
+        Sizes.p8,
+        0,
+      ), //TODO review on iOS device
       onPopInvokedWithResult: () async {
         if (scannedProducts.isEmpty) {
           if (context.mounted) {

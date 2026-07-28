@@ -65,7 +65,7 @@ class GRJudgmentButtons extends ConsumerWidget {
 
     if (areJudgedItems) {
       return Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
+        padding: const EdgeInsets.all(Sizes.p4),
         child: PrimaryButton(
           text: 'Anular julgamentos'.hardcoded,
           onPressed: onPressed == null
@@ -76,7 +76,7 @@ class GRJudgmentButtons extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
+      padding: const EdgeInsets.all(Sizes.p4),
       child: Row(
         children: [
           Expanded(

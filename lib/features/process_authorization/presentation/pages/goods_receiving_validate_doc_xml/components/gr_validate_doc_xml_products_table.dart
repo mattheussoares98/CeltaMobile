@@ -314,7 +314,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           processCode: processCode,
           areJudgedItems: areJudgedItems,
         ),
-        gapH8,
+        //TODO test on iOS devices. I removed a padding
       ],
     );
   }

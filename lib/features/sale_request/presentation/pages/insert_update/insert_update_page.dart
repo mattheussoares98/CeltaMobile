@@ -80,7 +80,12 @@ class _InsertUpdateContent extends ConsumerWidget {
 
           return BaseScaffold(
             isScrollable: false,
-            padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
+            padding: const EdgeInsets.fromLTRB(
+              Sizes.p8,
+              0,
+              Sizes.p8,
+              0,
+            ), //TODO review on iOS device
             appBar: BaseAppBar(
               selectedEnterpriseCode: enterpriseCode,
               title: saleRequestId == 0
