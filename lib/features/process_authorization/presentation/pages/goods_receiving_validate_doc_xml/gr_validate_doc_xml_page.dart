@@ -6,22 +6,54 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class GRValidateDocXmlPage extends ConsumerWidget {
+class GRValidateDocXmlPage extends ConsumerStatefulWidget {
   final int processCode;
   const GRValidateDocXmlPage({super.key, required this.processCode});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _GRValidateDocXmlPageState();
+}
+
+class _GRValidateDocXmlPageState extends ConsumerState<GRValidateDocXmlPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final provider = gRDocFiscalNoteDifferencesStateControllerProvider(
-      processCode,
+      widget.processCode,
     );
-    final uiController = gRValidateDocXmlUiControllerProvider(processCode);
+    final uiController = gRValidateDocXmlUiControllerProvider(
+      widget.processCode,
+    );
     final productsWithtoutRegister = ref.watch(
       provider.select((s) => s.value?.productsWithoutCadaster ?? []),
     );
 
-    final judgmentController = judgmentControllerProvider(processCode);
+    final judgmentController = judgmentControllerProvider(widget.processCode);
 
     ref.observeLoading([judgmentController]);
     ref.listen(judgmentController, (previous, next) {
@@ -37,7 +69,7 @@ class GRValidateDocXmlPage extends ConsumerWidget {
       usePadding: false,
       appBar: BaseAppBar(
         title: 'Diferenças de XML'.hardcoded,
-        actions: [OpenVotePageButton(processCode: processCode)],
+        actions: [OpenVotePageButton(processCode: widget.processCode)],
       ),
       bottomNavigationBar: Consumer(
         builder: (_, ref, _) {
@@ -107,14 +139,14 @@ class GRValidateDocXmlPage extends ConsumerWidget {
             children: [
               GRValidateDocXmlProductsTable(
                 areJudgedItems: false,
-                processCode: processCode,
+                processCode: widget.processCode,
               ),
               GRValidateDocXmlProductsTable(
                 areJudgedItems: true,
-                processCode: processCode,
+                processCode: widget.processCode,
               ),
               if (productsWithtoutRegister.isNotEmpty)
-                ProductsWithoutRegisterPage(processCode: processCode),
+                ProductsWithoutRegisterPage(processCode: widget.processCode),
             ],
           );
         },
