@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_version/app_version.dart';
 import 'package:celta_inventario/core/providers/hive/hive.dart';
 import 'package:celta_inventario/core/providers/notification/notification.dart';
 import 'package:celta_inventario/core/providers/user_session/user_session.dart';
-import 'package:celta_inventario/core/presentation/controllers/app_version/app_version.dart';
+import 'package:flutter/foundation.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_session_provider.g.dart';
 
@@ -113,7 +112,9 @@ class UserSession extends _$UserSession {
     } catch (e) {
       // PERFORMANCE: We log the error but don't rethrow, as a failed
       // analytics/session sync shouldn't crash the user's app experience.
-      debugPrint('Sync Error: Background session sync failed [Trace:');
+      debugPrint(
+        'Sync Error: Background session sync failed [error: ${e.toString()}]',
+      );
     }
   }
 }
