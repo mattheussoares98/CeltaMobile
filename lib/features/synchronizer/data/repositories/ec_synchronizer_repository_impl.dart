@@ -1,25 +1,24 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 
 class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   final IEcSynchronizerDatasource datasource;
 
-  EcSynchronizerRepositoryImpl(this.datasource);
+  const EcSynchronizerRepositoryImpl(this.datasource);
 
   @override
-  Future<dynamic> searchCount(EcRequestParams params) async {
-    final response = await datasource.searchCount(params);
-
-    //TODO create tests
-    return response;
-  }
+  Future<List<SynchronizerErrorSummaryEntity>> searchCount(
+    EcRequestParams params,
+  ) async => (await datasource.searchCount(
+    params,
+  )).map((model) => model.toEntity()).toList();
 
   @override
-  Future<dynamic> searchByKey(EcRequestParams params, String errorKey) async {
-    final response = await datasource.searchByKey(params, errorKey: errorKey);
-
-    //TODO create tests
-    return response;
-  }
+  Future<SynchronizerErrorDetailsEntity> searchByKey(
+    EcRequestParams params,
+    String errorKey,
+  ) async =>
+      (await datasource.searchByKey(params, errorKey: errorKey)).toEntity();
 }

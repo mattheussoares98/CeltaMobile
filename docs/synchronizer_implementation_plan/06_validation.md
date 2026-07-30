@@ -12,7 +12,8 @@ Read this file when adding tests, running verification, or determining completio
 - [ ] Test summary/detail model conversions.
 - [x] Test datasource URL, POST method, headers, body, response, and error propagation.
   - Result: four focused datasource tests passed for typed count/detail success and request-error propagation without enterprise context.
-- [ ] Test repository mapping and category preservation.
+- [x] Test repository mapping and category preservation.
+  - Result: focused repository tests cover summary/detail mapping, key preservation, exact forwarding, and error propagation.
 - [ ] Test summary controller load, reload, empty, and failure states.
 - [ ] Test detail controller forwarding, load, reload, empty, and failure states.
 - [ ] Add summary widget-state tests.

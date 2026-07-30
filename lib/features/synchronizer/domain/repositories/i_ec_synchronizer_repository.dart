@@ -1,7 +1,13 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 abstract class IEcSynchronizerRepository {
-  Future<dynamic> searchCount(EcRequestParams params);
+  Future<List<SynchronizerErrorSummaryEntity>> searchCount(
+    EcRequestParams params,
+  );
 
-  Future<dynamic> searchByKey(EcRequestParams params, String errorKey);
+  Future<SynchronizerErrorDetailsEntity> searchByKey(
+    EcRequestParams params,
+    String errorKey,
+  );
 }

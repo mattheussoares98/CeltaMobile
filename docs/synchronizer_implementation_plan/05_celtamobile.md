@@ -34,9 +34,10 @@ Follow the project `.agents` rules for architecture, models, UI, navigation, and
 - [x] Implement typed `searchCount`.
 - [x] Implement typed `searchByKey`.
   - Result: datasource methods send explicit operations without enterprise context, matching the aggregate BSF reads, then parse typed summary/detail models.
-- [ ] Remove `dynamic` from repository interface.
-- [ ] Map summaries in repository implementation.
-- [ ] Map details in repository implementation.
+- [x] Remove `dynamic` from repository interface.
+- [x] Map summaries in repository implementation.
+- [x] Map details in repository implementation.
+  - Result: repository exposes domain entities only and preserves detail category/key while mapping datasource models.
 - [ ] Preserve `ecRequestParamsProvider().future`.
 - [x] Update providers only as required.
   - Result: retained interface-based Riverpod injection and aligned the provider with the const datasource constructor.
