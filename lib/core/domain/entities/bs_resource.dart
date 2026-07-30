@@ -11,6 +11,7 @@ enum BsResource {
   saleRequestChangeTPrice(666, "Pedido de vendas (alterar preços)"),
   priceConference(611, "Pesquisa de preços"),
   researchOfPrice(585, "Preços concorrentes"),
+  synchronizer(632, "Monitor dos serviços de sincronização"),
   goodsReceiving(1143, "Recebimento de mercadorias"),
   processAuthorizationRules(971, "Regras para autorização de processos");
 
