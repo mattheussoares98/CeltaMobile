@@ -5,16 +5,20 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   const SynchronizerErrorDetailsModel({
     required super.category,
     required super.errorKey,
+    required super.detailType,
     required super.items,
   });
 
   factory SynchronizerErrorDetailsModel.fromJson(Map json) {
-    final errorKey = json['ErrorKey'] as String;
+    final detailType = SynchronizerErrorDetailType.fromValue(
+      json['DetailType'] as int,
+    );
     return SynchronizerErrorDetailsModel(
       category: json['Category'] as String,
-      errorKey: errorKey,
+      errorKey: json['ErrorKey'] as String,
+      detailType: detailType,
       items: (json['Items'] as List)
-          .map((item) => _detailFromJson(errorKey, item as Map))
+          .map((item) => _detailFromJson(detailType, item as Map))
           .toList(),
     );
   }
@@ -22,6 +26,7 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   Map toJson() => {
     'Category': category,
     'ErrorKey': errorKey,
+    'DetailType': detailType.value,
     'Items': items.map(_detailToJson).toList(),
   };
 
@@ -30,79 +35,68 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   ) => SynchronizerErrorDetailsModel(
     category: entity.category,
     errorKey: entity.errorKey,
+    detailType: entity.detailType,
     items: entity.items.map(_detailFromEntity).toList(),
   );
 
   SynchronizerErrorDetailsEntity toEntity() => SynchronizerErrorDetailsEntity(
     category: category,
     errorKey: errorKey,
+    detailType: detailType,
     items: items.map(_detailToEntity).toList(),
   );
 
   static SynchronizerErrorDetailEntity _detailFromJson(
-    String errorKey,
+    SynchronizerErrorDetailType detailType,
     Map json,
   ) {
-    switch (errorKey) {
-      case 'Cupons não lidos (erros durante a leitura de vendas)':
-      case 'Cupons não lidos (marcados para releitura)':
+    switch (detailType) {
+      case SynchronizerErrorDetailType.coupon:
         return BSFCouponSynchronizerErrorDetailModel.fromJson(json);
-      case 'Movimentos de caixa não lidos (erros durante a leitura de vendas)':
-      case 'Movimentos de caixa não lidos (marcados para releitura)':
+      case SynchronizerErrorDetailType.cashierMovement:
         return BSFCashierMovementSynchronizerErrorDetailModel.fromJson(json);
-      case 'Notas fiscais baseadas em cupom (não vinculadas à venda alguma)':
+      case SynchronizerErrorDetailType.fiscalNote:
         return BSFFiscalNoteSynchronizerErrorDetailModel.fromJson(json);
-      case 'Notas fiscais (NFCe) a serem inutilizadas (não vinculadas à venda alguma)':
+      case SynchronizerErrorDetailType.nFeDisable:
         return BSFNFeDisableSynchronizerErrorDetailModel.fromJson(json);
-      case 'Problemas na execução das tarefas do sincronizador':
+      case SynchronizerErrorDetailType.schedule:
         return BSFScheduleSynchronizerErrorDetailModel.fromJson(json);
-      case 'Transações com erro':
+      case SynchronizerErrorDetailType.transaction:
         return BSFTransactionSynchronizerErrorDetailModel.fromJson(json);
-      case 'Vendas lidas após o fechamento de caixa (o caixa foi fechado antes que a venda fosse gravada)':
+      case SynchronizerErrorDetailType.treasuryMovement:
         return BSFTreasuryMovementSynchronizerErrorDetailModel.fromJson(json);
-      case 'Mapas resumo de caixas não lidos (erros durante a leitura de vendas)':
-      case 'Mapas resumo de caixas não lidos (marcados para releitura)':
+      case SynchronizerErrorDetailType.mapSummarySaleEcf:
         return BSFMapSummarySaleEcfSynchronizerErrorDetailModel.fromJson(json);
-      case 'Clientes com erros (erros durante a leitura de pedidos)':
+      case SynchronizerErrorDetailType.customerWithError:
         return BSFCustomerWithErrorSynchronizerErrorDetailModel.fromJson(json);
-      case 'Clientes aguardando aprovação':
+      case SynchronizerErrorDetailType.customerWaitingApproval:
         return BSFCustomerWaitingApprovalSynchronizerErrorDetailModel.fromJson(
           json,
         );
-      case 'Pedidos de vendas com erros (erros durante a leitura de pedidos)':
-      case 'Pedidos de vendas com erros durante a leitura (marcados para releitura)':
+      case SynchronizerErrorDetailType.saleRequestWithError:
         return BSFSaleRequestWithErrorSynchronizerErrorDetailModel.fromJson(
           json,
         );
-      case 'Pedidos de venda aguardando aprovação':
+      case SynchronizerErrorDetailType.saleRequestWaitingApproval:
         return BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel.fromJson(
           json,
         );
-      case 'Pedidos de venda marcados para utilização':
+      case SynchronizerErrorDetailType.saleRequestMarked:
         return BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromJson(json);
-      case 'Produtos de site com problemas':
+      case SynchronizerErrorDetailType.productWithError:
         return BSFProductWithErrorSynchronizerErrorDetailModel.fromJson(json);
-      case 'Sangrias não lidas (erros durante a leitura de sangrias)':
-      case 'Sangrias não lidas (marcadas para releitura)':
+      case SynchronizerErrorDetailType.readBleeding:
         return BSFReadBleedingSynchronizerErrorDetailModel.fromJson(json);
-      case 'Correspondente bancário não lidos (erros durante a leitura de correspondentes bancários)':
-      case 'Correspondente bancário não lidos (marcados para releitura)':
+      case SynchronizerErrorDetailType.correspondentBanking:
         return BSFCorrespondentBankingSynchronizerErrorDetailModel.fromJson(
           json,
         );
-      case 'Problema na carga de vendas (Scanntech)':
+      case SynchronizerErrorDetailType.saleMovementScanntechLoad:
         return BSFSaleMovementScanntechLoadSynchronizerErrorDetailModel.fromJson(
           json,
         );
-      case 'Erro no envio de vendas':
-      case 'Erro no envio de vendas (Marcados para reenvio)':
-      case 'Erro no envio de clientes':
-      case 'Erro no envio de clientes (Marcados para reenvio)':
-      case 'Erro no envio de funcionários':
-      case 'Erro no envio de funcionários (Marcados para reenvio)':
+      case SynchronizerErrorDetailType.sendData:
         return BSFSendDataSynchronizerErrorDetailModel.fromJson(json);
-      default:
-        throw FormatException('Unsupported synchronizer error key: $errorKey');
     }
   }
 
