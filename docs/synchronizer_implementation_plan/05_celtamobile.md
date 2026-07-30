@@ -12,14 +12,18 @@ Follow the project `.agents` rules for architecture, models, UI, navigation, and
   - Result: added an immutable typed summary contract; narrow entity analysis passed.
 - [x] Add base read-only detail entity preserving category/key.
   - Result: added a typed detail base and response envelope preserving category/key; narrow entity analysis passed.
-- [ ] Add summary model with `fromJson`, `toJson`, `fromEntity`, and `toEntity`.
-- [ ] Add detail-envelope model with all conversions.
+- [x] Add summary model with `fromJson`, `toJson`, `fromEntity`, and `toEntity`.
+  - Result: added a summary model extending its entity through the super constructor; narrow model analysis passed.
+- [x] Add detail-envelope model with all conversions.
+  - Result: added typed category dispatch and envelope conversions with explicit unsupported-key failure; narrow model analysis passed.
 - [x] Add one typed detail entity per supported Commerce API adapter.
   - Result: added Equatable domain entities for all 18 supported Commerce API detail shapes, with one class per file under `entities/details`; narrow entity analysis passed.
-- [ ] Add one typed detail model per supported Commerce API adapter.
+- [x] Add one typed detail model per supported Commerce API adapter.
+  - Result: added one model per supported detail shape under `models/details/implementations`; every model extends its entity and uses super parameters; narrow model analysis passed.
 - [x] Update domain barrel exports.
   - Result: exported all new synchronizer domain contracts; narrow entity analysis passed.
-- [ ] Update model barrel exports.
+- [x] Update model barrel exports.
+  - Result: added `models`, `details`, and `implementations` barrel exports; narrow model analysis passed.
 - [ ] Update shared test factories.
 
 ## Datasource and repository

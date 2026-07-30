@@ -26,12 +26,13 @@ Do not read every file by default. Read `01_scope_and_rules.md`, then the one or
 - All reachable category adapters are completed; CAT52 was explicitly excluded and manifestation is not actively registered.
 - Commerce API unit tests: excluded by project rule.
 - CeltaMobile domain entities: completed.
-- CeltaMobile models, data flow, controllers, and UI: pending.
+- CeltaMobile domain entities and models: completed.
+- CeltaMobile data flow, controllers, and UI: pending.
 - Final validation: pending.
 
 ## Next step
 
-Open [05_celtamobile.md](05_celtamobile.md) and implement **Add summary model with all conversions** only.
+Open [05_celtamobile.md](05_celtamobile.md) and implement **Update shared test factories** only.
 
 ## Plan status rule
 
