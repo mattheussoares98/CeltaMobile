@@ -6,13 +6,20 @@ Follow the project `.agents` rules for architecture, models, UI, navigation, and
 
 ## Domain and models
 
-- [ ] Add synchronizer search-operation enum.
-- [ ] Add Equatable summary entity with category/key, description, and count.
-- [ ] Add base read-only detail entity preserving category/key.
+- [x] Add synchronizer search-operation enum.
+  - Result: added explicit API values for `searchCount` and `searchByKey`; narrow entity analysis passed.
+- [x] Add Equatable summary entity with category/key, description, and count.
+  - Result: added an immutable typed summary contract; narrow entity analysis passed.
+- [x] Add base read-only detail entity preserving category/key.
+  - Result: added a typed detail base and response envelope preserving category/key; narrow entity analysis passed.
 - [ ] Add summary model with `fromJson`, `toJson`, `fromEntity`, and `toEntity`.
 - [ ] Add detail-envelope model with all conversions.
-- [ ] Add one typed detail entity/model per supported Commerce API adapter.
-- [ ] Update barrel exports.
+- [x] Add one typed detail entity per supported Commerce API adapter.
+  - Result: added Equatable domain entities for all 18 supported Commerce API detail shapes, with one class per file under `entities/details`; narrow entity analysis passed.
+- [ ] Add one typed detail model per supported Commerce API adapter.
+- [x] Update domain barrel exports.
+  - Result: exported all new synchronizer domain contracts; narrow entity analysis passed.
+- [ ] Update model barrel exports.
 - [ ] Update shared test factories.
 
 ## Datasource and repository
@@ -47,4 +54,3 @@ Follow the project `.agents` rules for architecture, models, UI, navigation, and
 - [ ] Add no mutation buttons or gestures.
 - [ ] Prevent overflow for long messages/identifiers.
 - [ ] Keep lists lazy.
-
