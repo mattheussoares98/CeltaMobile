@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
@@ -15,11 +16,11 @@ part 'statistics_state_controller.g.dart';
 class StatisticsStateController extends _$StatisticsStateController {
   @override
   FutureOr<BsfProcessAuthorizationStatisticEntity> build() async {
-    ref.watch(validatedUserSessionProvider);
+    await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(
-        .generic,
-        .processAuthorizationRules,
+        BsRoutine.generic,
+        BsResource.processAuthorizationRules,
       ),
       //! automatically reloading the permission when the user tap the button to access the module
     );
