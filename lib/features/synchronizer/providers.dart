@@ -7,9 +7,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'providers.g.dart';
 
 @riverpod
-IEcSynchronizerDatasource ecSynchronizerDatasource(Ref ref) {
-  return EcSynchronizerDatasource(ref.watch(httpClientProvider));
-}
+IEcSynchronizerDatasource ecSynchronizerDatasource(Ref ref) =>
+    EcSynchronizerDatasource(ref.watch(httpClientProvider));
 
 @riverpod
 IEcSynchronizerRepository ecSynchronizerRepository(Ref ref) {

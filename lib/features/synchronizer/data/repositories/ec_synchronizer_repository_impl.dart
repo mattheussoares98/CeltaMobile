@@ -14,4 +14,12 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
     //TODO create tests
     return response;
   }
+
+  @override
+  Future<dynamic> searchByKey(EcRequestParams params, String errorKey) async {
+    final response = await datasource.searchByKey(params, errorKey: errorKey);
+
+    //TODO create tests
+    return response;
+  }
 }

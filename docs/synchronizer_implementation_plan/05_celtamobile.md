@@ -24,19 +24,22 @@ Follow the project `.agents` rules for architecture, models, UI, navigation, and
   - Result: exported all new synchronizer domain contracts; narrow entity analysis passed.
 - [x] Update model barrel exports.
   - Result: added `models`, `details`, and `implementations` barrel exports; narrow model analysis passed.
-- [ ] Update shared test factories.
+- [x] Update shared test factories.
+  - Result: added summary and representative typed-detail entity factories for datasource tests.
 
 ## Datasource and repository
 
-- [ ] Replace GET count request with the typed POST contract.
-- [ ] Remove `dynamic` from datasource interface.
-- [ ] Implement typed `searchCount`.
-- [ ] Implement typed `searchByKey`.
+- [x] Replace GET count request with the typed POST contract.
+- [x] Remove `dynamic` from datasource interface.
+- [x] Implement typed `searchCount`.
+- [x] Implement typed `searchByKey`.
+  - Result: datasource methods send explicit operations without enterprise context, matching the aggregate BSF reads, then parse typed summary/detail models.
 - [ ] Remove `dynamic` from repository interface.
 - [ ] Map summaries in repository implementation.
 - [ ] Map details in repository implementation.
 - [ ] Preserve `ecRequestParamsProvider().future`.
-- [ ] Update providers only as required.
+- [x] Update providers only as required.
+  - Result: retained interface-based Riverpod injection and aligned the provider with the const datasource constructor.
 
 ## Controllers
 

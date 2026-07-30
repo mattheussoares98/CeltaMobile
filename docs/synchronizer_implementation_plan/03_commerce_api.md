@@ -7,7 +7,7 @@ Read this file for common Commerce API contracts, controller behavior, authoriza
 - [x] Add `SynchronizerErrorSearchOperation`.
   - Result: numeric `SearchCount` and `SearchByKey`; model Release build passed.
 - [x] Add `SearchSynchronizerErrorsParameters`.
-  - Result: inherits `SearchBaseParameters` and contains enterprise, operation, and optional key; model Release build passed.
+  - Result: inherits `SearchBaseParameters` and contains operation and optional key; enterprise is intentionally omitted because synchronizer reads are aggregate/global.
 - [x] Add GET example parameters.
   - Result: controller-root GET returns the complete example; legacy count remains at `Synchronizer/SearchCount`; API Release build passed.
 
@@ -16,7 +16,7 @@ Read this file for common Commerce API contracts, controller behavior, authoriza
 - [x] Add `DalSynchronizer.SearchByKey`.
   - Result: typed delegation to existing BLL; DAL Release build passed.
 - [x] Add POST validation.
-  - Result: validates body, enterprise, enum, conditional key, and resource `1348`; API Release build passed.
+  - Result: validates body, enum, conditional key, and global resource `1348`; API Release build passed.
 - [x] Dispatch POST operations.
   - Result: only count or lookup-by-key reaches BSF; API Release build passed.
 - [x] Remove the duplicate Commerce API error-category enum and mapper.

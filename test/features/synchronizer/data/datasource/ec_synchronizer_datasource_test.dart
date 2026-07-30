@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/features/synchronizer/data/datasource/datasource.dart';
-import 'package:faker/faker.dart';
+import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -13,7 +14,6 @@ void main() {
   late MockHttpClient httpClient;
 
   final params = EntityFactory.makeEcRequestParams();
-  final response = {'count': faker.randomGenerator.integer(100)};
 
   setUp(() {
     httpClient = MockHttpClient();
@@ -21,41 +21,49 @@ void main() {
   });
 
   group('searchCount', () {
-    test(
-      'should call http with correct parameters and return response on success',
-      () async {
-        when(
-          () => httpClient.request(
-            url: '${params.workingUrl}/api/Synchronizer',
-            method: 'get',
-            headers: params.toHeaders(),
-            body: params.toMap(),
-          ),
-        ).thenAnswer((_) async => response);
+    final models = [
+      SynchronizerErrorSummaryModel.fromEntity(
+        EntityFactory.makeSynchronizerErrorSummaryEntity(),
+      ),
+    ];
+    final response = models.map((model) => model.toJson()).toList();
+    final body = {
+      ...params.toMap(),
+      'Operation': SynchronizerErrorSearchOperation.searchCount.value,
+    };
 
-        final result = await sut.searchCount(params);
+    test('should post the typed request and return summary models', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => response);
 
-        expect(result, response);
-        verify(
-          () => httpClient.request(
-            url: '${params.workingUrl}/api/Synchronizer',
-            method: 'get',
-            headers: params.toHeaders(),
-            body: params.toMap(),
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(httpClient);
-      },
-    );
+      final result = await sut.searchCount(params);
 
-    test('should rethrow when the http request fails', () async {
+      expect(result, models);
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
       final exception = Exception('Failed to search synchronizer count');
       when(
         () => httpClient.request(
           url: '${params.workingUrl}/api/Synchronizer',
-          method: 'get',
+          method: 'post',
           headers: params.toHeaders(),
-          body: params.toMap(),
+          body: body,
         ),
       ).thenThrow(exception);
 
@@ -65,9 +73,70 @@ void main() {
       verify(
         () => httpClient.request(
           url: '${params.workingUrl}/api/Synchronizer',
-          method: 'get',
+          method: 'post',
           headers: params.toHeaders(),
-          body: params.toMap(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
+  group('searchByKey', () {
+    final model = SynchronizerErrorDetailsModel.fromEntity(
+      EntityFactory.makeSynchronizerErrorDetailsEntity(),
+    );
+    final errorKey = model.errorKey;
+    final body = {
+      ...params.toMap(),
+      'Operation': SynchronizerErrorSearchOperation.searchByKey.value,
+      'ErrorKey': errorKey,
+    };
+
+    test('should post the typed request and return the detail model', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => model.toJson());
+
+      final result = await sut.searchByKey(params, errorKey: errorKey);
+
+      expect(result, model);
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to search synchronizer details');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.searchByKey(params, errorKey: errorKey);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
         ),
       ).called(1);
       verifyNoMoreInteractions(httpClient);

@@ -20,6 +20,7 @@ import 'package:celta_inventario/features/products_register/domain/entities/enti
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:faker/faker.dart';
 
@@ -1048,6 +1049,26 @@ class EntityFactory {
     actualPage: faker.randomGenerator.integer(100),
     recordsByPage: faker.randomGenerator.integer(100),
   );
+
+  static SynchronizerErrorSummaryEntity makeSynchronizerErrorSummaryEntity() =>
+      SynchronizerErrorSummaryEntity(
+        category: faker.lorem.word(),
+        errorKey: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+        count: faker.randomGenerator.integer(100),
+      );
+
+  static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity() =>
+      SynchronizerErrorDetailsEntity(
+        category: faker.lorem.word(),
+        errorKey: faker.lorem.word(),
+        detailType: SynchronizerErrorDetailType.transaction,
+        items: [
+          BSFTransactionSynchronizerErrorDetailEntity(
+            transactionId: faker.guid.guid(),
+          ),
+        ],
+      );
 
   static BSFSaleRequestEntity makeBSFSaleRequestEntity() =>
       BSFSaleRequestEntity(
