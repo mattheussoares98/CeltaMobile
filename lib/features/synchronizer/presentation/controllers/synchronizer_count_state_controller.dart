@@ -17,7 +17,7 @@ class SynchronizerCountStateController
     extends _$SynchronizerCountStateController {
   @override
   FutureOr<List<SynchronizerErrorSummaryEntity>> build() async {
-    ref.watch(validatedUserSessionProvider);
+    await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(
         BsRoutine.generic,

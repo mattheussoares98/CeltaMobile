@@ -48,9 +48,7 @@ void main() {
     return ProviderContainer(
       retry: (retryCount, error) => null,
       overrides: [
-        ecSynchronizerRepositoryProvider.overrideWithValue(
-          mockRepository,
-        ),
+        ecSynchronizerRepositoryProvider.overrideWithValue(mockRepository),
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
@@ -174,6 +172,9 @@ void main() {
           BsResource.synchronizer,
         ).future,
       );
+
+      // Ensure initial load finishes
+      await container.read(synchronizerCountStateControllerProvider.future);
 
       final controller = container.read(
         synchronizerCountStateControllerProvider.notifier,
