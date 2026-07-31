@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,6 +32,21 @@ class ModuleIcon extends StatelessWidget {
             final quantity = ref.watch(
               statisticsStateControllerProvider.select(
                 (s) => s.value?.openedJudgements,
+              ),
+            );
+
+            if (quantity != null) {
+              return QuantityBadge(
+                quantity: quantity,
+                platformIcon: platformIcon,
+                isSelected: true,
+                animateInfinite: true,
+              );
+            }
+          } else if (module == Modules.synchronizer) {
+            final quantity = ref.watch(
+              synchronizerCountStateControllerProvider.select(
+                (s) => s.value?.fold(0, (p, e) => p + e.count),
               ),
             );
 
