@@ -13,12 +13,17 @@ class SynchronizerDetailsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = synchronizerDetailsStateControllerProvider(errorKey);
-    final errorQuantity = ref.watch(
-      synchronizerCountStateControllerProvider.select(
-        (s) => s.value?.firstWhereOrNull((e) => e.errorKey == errorKey)?.count,
-      ),
+    final detailsProvider = synchronizerDetailsStateControllerProvider(
+      errorKey,
     );
+    final errorQuantity =
+        ref.watch(detailsProvider.select((s) => s.value?.items.length)) ??
+        ref.watch(
+          synchronizerCountStateControllerProvider.select(
+            (s) =>
+                s.value?.firstWhereOrNull((e) => e.errorKey == errorKey)?.count,
+          ),
+        );
 
     void markToReadAgain(
       SynchronizerErrorDetailType detailType,
@@ -35,7 +40,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      refreshProvider: provider,
+      refreshProvider: detailsProvider,
       appBar: BaseAppBar(
         titleWidget: BaseRichText(
           maxLines: 2,
@@ -46,8 +51,8 @@ class SynchronizerDetailsPage extends ConsumerWidget {
         ),
       ),
       body: AsyncValueWidget(
-        value: ref.watch(provider),
-        tryAgain: () => ref.invalidate(provider),
+        value: ref.watch(detailsProvider),
+        tryAgain: () => ref.invalidate(detailsProvider),
         data: (data) {
           if (data.items.isEmpty) {
             return const SynchronizerEmptyErrors();
