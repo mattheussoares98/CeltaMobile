@@ -1070,6 +1070,19 @@ class EntityFactory {
         ],
       );
 
+  static BSFCouponSynchronizerErrorDetailEntity
+  makeBSFCouponSynchronizerErrorDetailEntity({int? code}) =>
+      BSFCouponSynchronizerErrorDetailEntity(
+        code: code ?? faker.randomGenerator.integer(100, min: 1),
+        enterprisePersonalizedCode: faker.randomGenerator.numberOfLength(6),
+        creationDate: faker.date.dateTime(),
+        deliveryDate: faker.date.dateTime(),
+        couponNumber: faker.randomGenerator.numberOfLength(6),
+        ecfNumber: faker.randomGenerator.numberOfLength(6),
+        cashRegisterNumber: faker.randomGenerator.numberOfLength(6),
+        details: [faker.lorem.sentence()],
+      );
+
   static BSFSaleRequestEntity makeBSFSaleRequestEntity() =>
       BSFSaleRequestEntity(
         code: faker.randomGenerator.integer(100),
