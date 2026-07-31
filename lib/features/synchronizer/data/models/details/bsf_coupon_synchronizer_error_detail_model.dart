@@ -3,6 +3,7 @@ import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.
 class BSFCouponSynchronizerErrorDetailModel
     extends BSFCouponSynchronizerErrorDetailEntity {
   const BSFCouponSynchronizerErrorDetailModel({
+    required super.code,
     required super.enterprisePersonalizedCode,
     required super.creationDate,
     required super.deliveryDate,
@@ -14,6 +15,7 @@ class BSFCouponSynchronizerErrorDetailModel
 
   factory BSFCouponSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFCouponSynchronizerErrorDetailModel(
+        code: json['Code'] as int,
         enterprisePersonalizedCode:
             json['EnterprisePersonalizedCode'] as String,
         creationDate: DateTime.parse(json['CreationDate'] as String),
@@ -25,6 +27,7 @@ class BSFCouponSynchronizerErrorDetailModel
       );
 
   Map toJson() => {
+    'Code': code,
     'EnterprisePersonalizedCode': enterprisePersonalizedCode,
     'CreationDate': creationDate.toIso8601String(),
     'DeliveryDate': deliveryDate.toIso8601String(),
@@ -37,6 +40,7 @@ class BSFCouponSynchronizerErrorDetailModel
   factory BSFCouponSynchronizerErrorDetailModel.fromEntity(
     BSFCouponSynchronizerErrorDetailEntity entity,
   ) => BSFCouponSynchronizerErrorDetailModel(
+    code: entity.code,
     enterprisePersonalizedCode: entity.enterprisePersonalizedCode,
     creationDate: entity.creationDate,
     deliveryDate: entity.deliveryDate,
@@ -48,6 +52,7 @@ class BSFCouponSynchronizerErrorDetailModel
 
   BSFCouponSynchronizerErrorDetailEntity toEntity() =>
       BSFCouponSynchronizerErrorDetailEntity(
+        code: code,
         enterprisePersonalizedCode: enterprisePersonalizedCode,
         creationDate: creationDate,
         deliveryDate: deliveryDate,
