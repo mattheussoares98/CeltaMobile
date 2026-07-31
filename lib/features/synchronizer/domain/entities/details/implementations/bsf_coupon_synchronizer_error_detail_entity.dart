@@ -1,7 +1,9 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
 class BSFCouponSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity {
+    extends SynchronizerErrorDetailEntity
+    implements RereadableSynchronizerErrorDetailEntity {
+  @override
   final int code;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
