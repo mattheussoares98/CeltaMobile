@@ -1,9 +1,6 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
-class BSFCouponSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity
-    implements RereadableSynchronizerErrorDetailEntity {
-  @override
+class BSFCouponSynchronizerEntity extends SynchronizerErrorDetailEntity {
   final int code;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
@@ -13,7 +10,7 @@ class BSFCouponSynchronizerErrorDetailEntity
   final String cashRegisterNumber;
   final List<String> details;
 
-  const BSFCouponSynchronizerErrorDetailEntity({
+  const BSFCouponSynchronizerEntity({
     required this.code,
     required this.enterprisePersonalizedCode,
     required this.creationDate,

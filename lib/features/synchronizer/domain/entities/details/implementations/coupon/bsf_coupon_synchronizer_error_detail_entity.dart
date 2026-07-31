@@ -1,0 +1,15 @@
+import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
+
+class BSFCouponSynchronizerErrorDetailEntity extends BSFCouponSynchronizerEntity
+    implements RereadableSynchronizerErrorDetailEntity {
+  const BSFCouponSynchronizerErrorDetailEntity({
+    required super.code,
+    required super.enterprisePersonalizedCode,
+    required super.creationDate,
+    required super.deliveryDate,
+    required super.couponNumber,
+    required super.ecfNumber,
+    required super.cashRegisterNumber,
+    required super.details,
+  });
+}
