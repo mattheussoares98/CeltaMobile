@@ -1,7 +1,5 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
-import 'implementations.dart';
-
 class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
     extends SynchronizerErrorDetailEntity {
   final String enterprisePersonalizedCode;
