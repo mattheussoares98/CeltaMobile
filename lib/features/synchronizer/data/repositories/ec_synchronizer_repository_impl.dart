@@ -19,6 +19,11 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   Future<SynchronizerErrorDetailsEntity> searchByKey(
     EcRequestParams params,
     String errorKey,
-  ) async =>
-      (await datasource.searchByKey(params, errorKey: errorKey)).toEntity();
+  ) async => (await datasource.searchByKey(params, errorKey)).toEntity();
+
+  @override
+  Future<void> markCouponsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async => await datasource.markCouponsToReadAgain(params, codes);
 }

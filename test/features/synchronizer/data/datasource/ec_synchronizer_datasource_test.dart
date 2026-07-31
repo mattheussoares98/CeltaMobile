@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/features/synchronizer/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
@@ -101,9 +103,9 @@ void main() {
           headers: params.toHeaders(),
           body: body,
         ),
-      ).thenAnswer((_) async => model.toJson());
+      ).thenAnswer((_) async => json.encode(model.toJson()));
 
-      final result = await sut.searchByKey(params, errorKey: errorKey);
+      final result = await sut.searchByKey(params, errorKey);
 
       expect(result, model);
       verify(
@@ -128,12 +130,93 @@ void main() {
         ),
       ).thenThrow(exception);
 
-      final call = sut.searchByKey(params, errorKey: errorKey);
+      final call = sut.searchByKey(params, errorKey);
 
       await expectLater(call, throwsA(same(exception)));
       verify(
         () => httpClient.request(
           url: '${params.workingUrl}/api/Synchronizer',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
+  group('markCouponsToReadAgain', () {
+    const url = '/api/Synchronizer/MarkCouponsToReadAgain';
+
+    test('should post one coupon code', () async {
+      const codes = [123];
+      final body = {...params.toMap(), 'Codes': codes};
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markCouponsToReadAgain(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should post multiple coupon codes in one request', () async {
+      const codes = [123, 456, 789];
+      final body = {...params.toMap(), 'Codes': codes};
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markCouponsToReadAgain(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      const codes = [123];
+      final body = {...params.toMap(), 'Codes': codes};
+      final exception = Exception('Failed to mark coupons for rereading');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markCouponsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
           method: 'post',
           headers: params.toHeaders(),
           body: body,

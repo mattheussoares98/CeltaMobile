@@ -10,4 +10,6 @@ abstract class IEcSynchronizerRepository {
     EcRequestParams params,
     String errorKey,
   );
+
+  Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
 }

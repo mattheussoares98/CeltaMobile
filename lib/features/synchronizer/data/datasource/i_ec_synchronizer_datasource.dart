@@ -7,7 +7,9 @@ abstract class IEcSynchronizerDatasource {
   );
 
   Future<SynchronizerErrorDetailsModel> searchByKey(
-    EcRequestParams params, {
-    required String errorKey,
-  });
+    EcRequestParams params,
+    String errorKey,
+  );
+
+  Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
 }

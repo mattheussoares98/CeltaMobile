@@ -64,16 +64,14 @@ void main() {
         );
         final errorKey = model.errorKey;
         when(
-          () => datasource.searchByKey(params, errorKey: errorKey),
+          () => datasource.searchByKey(params, errorKey),
         ).thenAnswer((_) async => model);
 
         final result = await sut.searchByKey(params, errorKey);
 
         expect(result, model.toEntity());
         expect(result.errorKey, errorKey);
-        verify(
-          () => datasource.searchByKey(params, errorKey: errorKey),
-        ).called(1);
+        verify(() => datasource.searchByKey(params, errorKey)).called(1);
         verifyNoMoreInteractions(datasource);
       },
     );
@@ -84,16 +82,40 @@ void main() {
       );
       final errorKey = model.errorKey;
       final exception = Exception('Failed to search synchronizer details');
-      when(
-        () => datasource.searchByKey(params, errorKey: errorKey),
-      ).thenThrow(exception);
+      when(() => datasource.searchByKey(params, errorKey)).thenThrow(exception);
 
       final call = sut.searchByKey(params, errorKey);
 
       await expectLater(call, throwsA(same(exception)));
-      verify(
-        () => datasource.searchByKey(params, errorKey: errorKey),
-      ).called(1);
+      verify(() => datasource.searchByKey(params, errorKey)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
+  group('markCouponsToReadAgain', () {
+    const codes = [123, 456];
+
+    test('should delegate the coupon codes to the datasource', () async {
+      when(
+        () => datasource.markCouponsToReadAgain(params, codes),
+      ).thenAnswer((_) async {});
+
+      await sut.markCouponsToReadAgain(params, codes);
+
+      verify(() => datasource.markCouponsToReadAgain(params, codes)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to mark coupons for rereading');
+      when(
+        () => datasource.markCouponsToReadAgain(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.markCouponsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(() => datasource.markCouponsToReadAgain(params, codes)).called(1);
       verifyNoMoreInteractions(datasource);
     });
   });

@@ -33,9 +33,9 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
 
   @override
   Future<SynchronizerErrorDetailsModel> searchByKey(
-    EcRequestParams params, {
-    required String errorKey,
-  }) async {
+    EcRequestParams params,
+    String errorKey,
+  ) async {
     final response = await httpClient.request(
       url: '${params.workingUrl}/api/Synchronizer',
       method: 'post',
@@ -48,5 +48,18 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
     );
 
     return SynchronizerErrorDetailsModel.fromJson(json.decode(response) as Map);
+  }
+
+  @override
+  Future<void> markCouponsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/MarkCouponsToReadAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
   }
 }
