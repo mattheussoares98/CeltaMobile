@@ -38,7 +38,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           final detailType = data.detailType;
           return switch (detailType) {
             SynchronizerErrorDetailType.coupon => CouponItems(
-              items: data.items as List<BSFCouponSynchronizerErrorDetailEntity>,
+              items: data.items.cast<BSFCouponSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.cashierMovement => Container(),
             SynchronizerErrorDetailType.fiscalNote => Container(),
