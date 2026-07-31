@@ -10,11 +10,11 @@ class BSFCustomerWaitingApprovalSynchronizerErrorDetailModel
   factory BSFCustomerWaitingApprovalSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFCustomerWaitingApprovalSynchronizerErrorDetailModel(
-    customerCode: json['CustomerCode'] as String,
-    customerName: json['CustomerName'] as String,
+    customerCode: json['customerCode'] as String,
+    customerName: json['customerName'] as String,
   );
 
-  Map toJson() => {'CustomerCode': customerCode, 'CustomerName': customerName};
+  Map toJson() => {'customerCode': customerCode, 'customerName': customerName};
 
   factory BSFCustomerWaitingApprovalSynchronizerErrorDetailModel.fromEntity(
     BSFCustomerWaitingApprovalSynchronizerErrorDetailEntity entity,

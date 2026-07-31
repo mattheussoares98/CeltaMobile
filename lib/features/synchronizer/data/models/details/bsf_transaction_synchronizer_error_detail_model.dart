@@ -8,10 +8,10 @@ class BSFTransactionSynchronizerErrorDetailModel
 
   factory BSFTransactionSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFTransactionSynchronizerErrorDetailModel(
-        transactionId: json['TransactionId'] as String,
+        transactionId: json['transactionId'] as String,
       );
 
-  Map toJson() => {'TransactionId': transactionId};
+  Map toJson() => {'transactionId': transactionId};
 
   factory BSFTransactionSynchronizerErrorDetailModel.fromEntity(
     BSFTransactionSynchronizerErrorDetailEntity entity,

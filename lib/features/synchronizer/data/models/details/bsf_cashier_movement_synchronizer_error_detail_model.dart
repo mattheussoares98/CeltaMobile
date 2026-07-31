@@ -13,20 +13,20 @@ class BSFCashierMovementSynchronizerErrorDetailModel
   factory BSFCashierMovementSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFCashierMovementSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['EnterprisePersonalizedCode'] as String,
-        creationDate: DateTime.parse(json['CreationDate'] as String),
+            json['enterprisePersonalizedCode'] as String,
+        creationDate: DateTime.parse(json['creationDate'] as String),
         openOrCloseDate: DateTime.parse(json['OpenOrCloseDate'] as String),
         cashRegisterPersonalizedCode:
-            json['CashRegisterPersonalizedCode'] as String,
-        description: json['Description'] as String,
+            json['cashRegisterPersonalizedCode'] as String,
+        description: json['description'] as String,
       );
 
   Map toJson() => {
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'CreationDate': creationDate.toIso8601String(),
+    'enterprisePersonalizedCode': enterprisePersonalizedCode,
+    'creationDate': creationDate.toIso8601String(),
     'OpenOrCloseDate': openOrCloseDate.toIso8601String(),
-    'CashRegisterPersonalizedCode': cashRegisterPersonalizedCode,
-    'Description': description,
+    'cashRegisterPersonalizedCode': cashRegisterPersonalizedCode,
+    'description': description,
   };
 
   factory BSFCashierMovementSynchronizerErrorDetailModel.fromEntity(

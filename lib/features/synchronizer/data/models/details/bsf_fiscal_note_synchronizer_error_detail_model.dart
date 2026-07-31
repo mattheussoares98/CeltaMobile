@@ -12,17 +12,17 @@ class BSFFiscalNoteSynchronizerErrorDetailModel
   factory BSFFiscalNoteSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFFiscalNoteSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['EnterprisePersonalizedCode'] as String,
-        issuanceDate: DateTime.parse(json['IssuanceDate'] as String),
-        number: (json['Number'] as num).toInt(),
-        series: json['Series'] as String,
+            json['enterprisePersonalizedCode'] as String,
+        issuanceDate: DateTime.parse(json['issuanceDate'] as String),
+        number: (json['number'] as num).toInt(),
+        series: json['series'] as String,
       );
 
   Map toJson() => {
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'IssuanceDate': issuanceDate.toIso8601String(),
-    'Number': number,
-    'Series': series,
+    'enterprisePersonalizedCode': enterprisePersonalizedCode,
+    'issuanceDate': issuanceDate.toIso8601String(),
+    'number': number,
+    'series': series,
   };
 
   factory BSFFiscalNoteSynchronizerErrorDetailModel.fromEntity(

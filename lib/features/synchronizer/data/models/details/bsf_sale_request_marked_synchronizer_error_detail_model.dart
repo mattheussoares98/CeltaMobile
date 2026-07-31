@@ -10,15 +10,15 @@ class BSFSaleRequestMarkedSynchronizerErrorDetailModel
 
   factory BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFSaleRequestMarkedSynchronizerErrorDetailModel(
-        personalizedCode: json['PersonalizedCode'] as String,
-        customer: json['Customer'] as String,
-        totalLiquid: (json['TotalLiquid'] as num).toDouble(),
+        personalizedCode: json['personalizedCode'] as String,
+        customer: json['customer'] as String,
+        totalLiquid: (json['totalLiquid'] as num).toDouble(),
       );
 
   Map toJson() => {
-    'PersonalizedCode': personalizedCode,
-    'Customer': customer,
-    'TotalLiquid': totalLiquid,
+    'personalizedCode': personalizedCode,
+    'customer': customer,
+    'totalLiquid': totalLiquid,
   };
 
   factory BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromEntity(

@@ -18,15 +18,15 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
   factory BSFSaleRequestWithErrorSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFSaleRequestWithErrorSynchronizerErrorDetailModel(
-    enterprisePersonalizedCode: json['EnterprisePersonalizedCode'] as String,
-    creationDate: DateTime.parse(json['CreationDate'] as String),
-    cadasterDate: DateTime.parse(json['CadasterDate'] as String),
-    commerceSite: json['CommerceSite'] as String,
-    saleRequestInvoiceCode: json['SaleRequestInvoiceCode'] as String,
-    saleRequestNumber: json['SaleRequestNumber'] as String,
-    commerceSiteFile: json['CommerceSiteFile'] as String,
-    details: List<String>.from(json['Details'] as List),
-    productsNotFound: (json['ProductsNotFound'] as List)
+    enterprisePersonalizedCode: json['enterprisePersonalizedCode'] as String,
+    creationDate: DateTime.parse(json['creationDate'] as String),
+    cadasterDate: DateTime.parse(json['cadasterDate'] as String),
+    commerceSite: json['commerceSite'] as String,
+    saleRequestInvoiceCode: json['saleRequestInvoiceCode'] as String,
+    saleRequestNumber: json['saleRequestNumber'] as String,
+    commerceSiteFile: json['commerceSiteFile'] as String,
+    details: List<String>.from(json['details'] as List),
+    productsNotFound: (json['productsNotFound'] as List)
         .map(
           (item) =>
               BSFSaleRequestProductNotFoundDetailModel.fromJson(item as Map),
@@ -35,15 +35,15 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
   );
 
   Map toJson() => {
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'CreationDate': creationDate.toIso8601String(),
-    'CadasterDate': cadasterDate.toIso8601String(),
-    'CommerceSite': commerceSite,
-    'SaleRequestInvoiceCode': saleRequestInvoiceCode,
-    'SaleRequestNumber': saleRequestNumber,
-    'CommerceSiteFile': commerceSiteFile,
-    'Details': details,
-    'ProductsNotFound': productsNotFound
+    'enterprisePersonalizedCode': enterprisePersonalizedCode,
+    'creationDate': creationDate.toIso8601String(),
+    'cadasterDate': cadasterDate.toIso8601String(),
+    'commerceSite': commerceSite,
+    'saleRequestInvoiceCode': saleRequestInvoiceCode,
+    'saleRequestNumber': saleRequestNumber,
+    'commerceSiteFile': commerceSiteFile,
+    'details': details,
+    'productsNotFound': productsNotFound
         .map(BSFSaleRequestProductNotFoundDetailModel.fromEntity)
         .map((model) => model.toJson())
         .toList(),

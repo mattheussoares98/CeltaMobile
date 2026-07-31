@@ -15,23 +15,23 @@ class BSFCorrespondentBankingSynchronizerErrorDetailModel
   factory BSFCorrespondentBankingSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFCorrespondentBankingSynchronizerErrorDetailModel(
-    enterprisePersonalizedCode: json['EnterprisePersonalizedCode'] as String,
-    creationDate: DateTime.parse(json['CreationDate'] as String),
-    deliveryDate: DateTime.parse(json['DeliveryDate'] as String),
-    correspondentBankingNumber: json['CorrespondentBankingNumber'] as String,
-    ecfNumber: json['EcfNumber'] as String,
-    cashRegisterNumber: json['CashRegisterNumber'] as String,
-    details: List<String>.from(json['Details'] as List),
+    enterprisePersonalizedCode: json['enterprisePersonalizedCode'] as String,
+    creationDate: DateTime.parse(json['creationDate'] as String),
+    deliveryDate: DateTime.parse(json['deliveryDate'] as String),
+    correspondentBankingNumber: json['correspondentBankingNumber'] as String,
+    ecfNumber: json['ecfNumber'] as String,
+    cashRegisterNumber: json['cashRegisterNumber'] as String,
+    details: List<String>.from(json['details'] as List),
   );
 
   Map toJson() => {
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'CreationDate': creationDate.toIso8601String(),
-    'DeliveryDate': deliveryDate.toIso8601String(),
-    'CorrespondentBankingNumber': correspondentBankingNumber,
-    'EcfNumber': ecfNumber,
-    'CashRegisterNumber': cashRegisterNumber,
-    'Details': details,
+    'enterprisePersonalizedCode': enterprisePersonalizedCode,
+    'creationDate': creationDate.toIso8601String(),
+    'deliveryDate': deliveryDate.toIso8601String(),
+    'correspondentBankingNumber': correspondentBankingNumber,
+    'ecfNumber': ecfNumber,
+    'cashRegisterNumber': cashRegisterNumber,
+    'details': details,
   };
 
   factory BSFCorrespondentBankingSynchronizerErrorDetailModel.fromEntity(

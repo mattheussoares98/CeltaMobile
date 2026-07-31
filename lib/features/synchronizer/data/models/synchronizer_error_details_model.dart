@@ -11,23 +11,23 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
 
   factory SynchronizerErrorDetailsModel.fromJson(Map json) {
     final detailType = SynchronizerErrorDetailType.fromValue(
-      json['DetailType'] as int,
+      json['detailType'] as int,
     );
     return SynchronizerErrorDetailsModel(
-      category: json['Category'] as String,
-      errorKey: json['ErrorKey'] as String,
+      category: json['category'] as String,
+      errorKey: json['errorKey'] as String,
       detailType: detailType,
-      items: (json['Items'] as List)
+      items: (json['items'] as List)
           .map((item) => _detailFromJson(detailType, item as Map))
           .toList(),
     );
   }
 
   Map toJson() => {
-    'Category': category,
-    'ErrorKey': errorKey,
-    'DetailType': detailType.value,
-    'Items': items.map(_detailToJson).toList(),
+    'category': category,
+    'errorKey': errorKey,
+    'detailType': detailType.value,
+    'items': items.map(_detailToJson).toList(),
   };
 
   factory SynchronizerErrorDetailsModel.fromEntity(

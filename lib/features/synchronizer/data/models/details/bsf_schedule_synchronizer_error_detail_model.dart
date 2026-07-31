@@ -11,17 +11,17 @@ class BSFScheduleSynchronizerErrorDetailModel
 
   factory BSFScheduleSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFScheduleSynchronizerErrorDetailModel(
-        serverName: json['ServerName'] as String,
-        enterpriseName: json['EnterpriseName'] as String,
-        executionDate: DateTime.parse(json['ExecutionDate'] as String),
-        description: json['Description'] as String,
+        serverName: json['serverName'] as String,
+        enterpriseName: json['enterpriseName'] as String,
+        executionDate: DateTime.parse(json['executionDate'] as String),
+        description: json['description'] as String,
       );
 
   Map toJson() => {
-    'ServerName': serverName,
-    'EnterpriseName': enterpriseName,
-    'ExecutionDate': executionDate.toIso8601String(),
-    'Description': description,
+    'serverName': serverName,
+    'enterpriseName': enterpriseName,
+    'executionDate': executionDate.toIso8601String(),
+    'description': description,
   };
 
   factory BSFScheduleSynchronizerErrorDetailModel.fromEntity(

@@ -10,13 +10,13 @@ class BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel
   factory BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel(
-    generatingSystemCode: json['GeneratingSystemCode'] as String,
-    personalizedCode: json['PersonalizedCode'] as String,
+    generatingSystemCode: json['generatingSystemCode'] as String,
+    personalizedCode: json['personalizedCode'] as String,
   );
 
   Map toJson() => {
-    'GeneratingSystemCode': generatingSystemCode,
-    'PersonalizedCode': personalizedCode,
+    'generatingSystemCode': generatingSystemCode,
+    'personalizedCode': personalizedCode,
   };
 
   factory BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel.fromEntity(

@@ -10,17 +10,17 @@ class SynchronizerErrorSummaryModel extends SynchronizerErrorSummaryEntity {
 
   factory SynchronizerErrorSummaryModel.fromJson(Map json) =>
       SynchronizerErrorSummaryModel(
-        category: json['Category'] as String,
-        errorKey: json['ErrorKey'] as String,
-        description: json['Description'] as String,
-        count: (json['Count'] as num).toInt(),
+        category: json['category'] as String,
+        errorKey: json['errorKey'] as String,
+        description: json['description'] as String,
+        count: (json['count'] as num).toInt(),
       );
 
   Map toJson() => {
-    'Category': category,
-    'ErrorKey': errorKey,
-    'Description': description,
-    'Count': count,
+    'category': category,
+    'errorKey': errorKey,
+    'description': description,
+    'count': count,
   };
 
   factory SynchronizerErrorSummaryModel.fromEntity(

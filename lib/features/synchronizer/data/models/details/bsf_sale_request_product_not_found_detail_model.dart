@@ -10,15 +10,15 @@ class BSFSaleRequestProductNotFoundDetailModel
 
   factory BSFSaleRequestProductNotFoundDetailModel.fromJson(Map json) =>
       BSFSaleRequestProductNotFoundDetailModel(
-        eCommerceCode: json['ECommerceCode'] as String,
-        name: json['Name'] as String,
-        price: (json['Price'] as num).toDouble(),
+        eCommerceCode: json['eCommerceCode'] as String,
+        name: json['name'] as String,
+        price: (json['price'] as num).toDouble(),
       );
 
   Map toJson() => {
-    'ECommerceCode': eCommerceCode,
-    'Name': name,
-    'Price': price,
+    'eCommerceCode': eCommerceCode,
+    'name': name,
+    'price': price,
   };
 
   factory BSFSaleRequestProductNotFoundDetailModel.fromEntity(

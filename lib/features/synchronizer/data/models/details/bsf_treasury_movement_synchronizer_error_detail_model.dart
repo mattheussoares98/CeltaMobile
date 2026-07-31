@@ -12,17 +12,17 @@ class BSFTreasuryMovementSynchronizerErrorDetailModel
   factory BSFTreasuryMovementSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFTreasuryMovementSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['EnterprisePersonalizedCode'] as String,
-        saleDate: DateTime.parse(json['SaleDate'] as String),
-        couponNumber: json['CouponNumber'] as String,
-        ecfNumber: json['EcfNumber'] as String,
+            json['enterprisePersonalizedCode'] as String,
+        saleDate: DateTime.parse(json['saleDate'] as String),
+        couponNumber: json['couponNumber'] as String,
+        ecfNumber: json['ecfNumber'] as String,
       );
 
   Map toJson() => {
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'SaleDate': saleDate.toIso8601String(),
-    'CouponNumber': couponNumber,
-    'EcfNumber': ecfNumber,
+    'enterprisePersonalizedCode': enterprisePersonalizedCode,
+    'saleDate': saleDate.toIso8601String(),
+    'couponNumber': couponNumber,
+    'ecfNumber': ecfNumber,
   };
 
   factory BSFTreasuryMovementSynchronizerErrorDetailModel.fromEntity(
