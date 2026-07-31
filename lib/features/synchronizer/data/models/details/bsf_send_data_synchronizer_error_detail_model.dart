@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFSendDataSynchronizerErrorDetailModel
     extends BSFSendDataSynchronizerErrorDetailEntity {
@@ -14,23 +14,23 @@ class BSFSendDataSynchronizerErrorDetailModel
   factory BSFSendDataSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFSendDataSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        commerceSite: json['commerceSite'] as String,
-        description: json['description'] as String,
-        siteCode: json['siteCode'] as String,
-        sendDate: json['sendDate'] == null
+            json['EnterprisePersonalizedCode'] as String,
+        commerceSite: json['CommerceSite'] as String,
+        description: json['Description'] as String,
+        siteCode: json['SiteCode'] as String,
+        sendDate: json['SendDate'] == null
             ? null
-            : DateTime.parse(json['sendDate'] as String),
-        error: json['error'] as String,
+            : DateTime.parse(json['SendDate'] as String),
+        error: json['Error'] as String,
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'commerceSite': commerceSite,
-    'description': description,
-    'siteCode': siteCode,
-    'sendDate': sendDate?.toIso8601String(),
-    'error': error,
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'CommerceSite': commerceSite,
+    'Description': description,
+    'SiteCode': siteCode,
+    'SendDate': sendDate?.toIso8601String(),
+    'Error': error,
   };
 
   factory BSFSendDataSynchronizerErrorDetailModel.fromEntity(

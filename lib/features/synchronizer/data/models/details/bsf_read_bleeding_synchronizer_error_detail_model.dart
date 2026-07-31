@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFReadBleedingSynchronizerErrorDetailModel
     extends BSFReadBleedingSynchronizerErrorDetailEntity {
@@ -13,19 +13,19 @@ class BSFReadBleedingSynchronizerErrorDetailModel
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFReadBleedingSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        creationDate: DateTime.parse(json['creationDate'] as String),
-        movementDate: DateTime.parse(json['movementDate'] as String),
-        cashierNumber: json['cashierNumber'] as String,
-        description: json['description'] as String,
+            json['EnterprisePersonalizedCode'] as String,
+        creationDate: DateTime.parse(json['CreationDate'] as String),
+        movementDate: DateTime.parse(json['MovementDate'] as String),
+        cashierNumber: json['CashierNumber'] as String,
+        description: json['Description'] as String,
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'creationDate': creationDate.toIso8601String(),
-    'movementDate': movementDate.toIso8601String(),
-    'cashierNumber': cashierNumber,
-    'description': description,
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'CreationDate': creationDate.toIso8601String(),
+    'MovementDate': movementDate.toIso8601String(),
+    'CashierNumber': cashierNumber,
+    'Description': description,
   };
 
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromEntity(

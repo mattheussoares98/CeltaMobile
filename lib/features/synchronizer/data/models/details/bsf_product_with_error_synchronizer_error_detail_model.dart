@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFProductWithErrorSynchronizerErrorDetailModel
     extends BSFProductWithErrorSynchronizerErrorDetailEntity {
@@ -22,37 +22,37 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
   factory BSFProductWithErrorSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFProductWithErrorSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        enterpriseFantasyName: json['enterpriseFantasizesName'] as String,
-        commerceSite: json['commerceSite'] as String,
-        priceLookUp: json['priceLookUp'] as String,
-        productName: json['productName'] as String,
-        formattedPacking: json['formattedPacking'] as String,
-        productCommerceSiteId: json['productCommerceSiteId'] as String,
-        errorDescription: json['errordescription'] as String,
-        errorMessage: json['errorMessage'] as String,
-        moreInfo: json['moreInfo'] as String,
-        hasSendingRestriction: json['hasSendingRestriction'] as bool,
-        lastChargeOfProduct: _date(json['lastChargeOfProduct']),
-        lastChargeOfSalePrice: _date(json['lastChargeOfSalePrice']),
-        lastChargeOfStock: _date(json['lastChargeOfStock']),
+            json['EnterprisePersonalizedCode'] as String,
+        enterpriseFantasyName: json['EnterpriseFantasizesName'] as String,
+        commerceSite: json['CommerceSite'] as String,
+        priceLookUp: json['PriceLookUp'] as String,
+        productName: json['ProductName'] as String,
+        formattedPacking: json['FormattedPacking'] as String,
+        productCommerceSiteId: json['ProductCommerceSiteId'] as String,
+        errorDescription: json['Errordescription'] as String,
+        errorMessage: json['ErrorMessage'] as String,
+        moreInfo: json['MoreInfo'] as String,
+        hasSendingRestriction: json['HasSendingRestriction'] as bool,
+        lastChargeOfProduct: _date(json['LastChargeOfProduct']),
+        lastChargeOfSalePrice: _date(json['LastChargeOfSalePrice']),
+        lastChargeOfStock: _date(json['LastChargeOfStock']),
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'enterpriseFantasizesName': enterpriseFantasyName,
-    'commerceSite': commerceSite,
-    'priceLookUp': priceLookUp,
-    'productName': productName,
-    'formattedPacking': formattedPacking,
-    'productCommerceSiteId': productCommerceSiteId,
-    'errordescription': errorDescription,
-    'errorMessage': errorMessage,
-    'moreInfo': moreInfo,
-    'hasSendingRestriction': hasSendingRestriction,
-    'lastChargeOfProduct': lastChargeOfProduct?.toIso8601String(),
-    'lastChargeOfSalePrice': lastChargeOfSalePrice?.toIso8601String(),
-    'lastChargeOfStock': lastChargeOfStock?.toIso8601String(),
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'EnterpriseFantasizesName': enterpriseFantasyName,
+    'CommerceSite': commerceSite,
+    'PriceLookUp': priceLookUp,
+    'ProductName': productName,
+    'FormattedPacking': formattedPacking,
+    'ProductCommerceSiteId': productCommerceSiteId,
+    'Errordescription': errorDescription,
+    'ErrorMessage': errorMessage,
+    'MoreInfo': moreInfo,
+    'HasSendingRestriction': hasSendingRestriction,
+    'LastChargeOfProduct': lastChargeOfProduct?.toIso8601String(),
+    'LastChargeOfSalePrice': lastChargeOfSalePrice?.toIso8601String(),
+    'LastChargeOfStock': lastChargeOfStock?.toIso8601String(),
   };
 
   factory BSFProductWithErrorSynchronizerErrorDetailModel.fromEntity(

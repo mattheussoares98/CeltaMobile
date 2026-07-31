@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFCustomerWaitingApprovalSynchronizerErrorDetailModel
     extends BSFCustomerWaitingApprovalSynchronizerErrorDetailEntity {
@@ -10,11 +10,11 @@ class BSFCustomerWaitingApprovalSynchronizerErrorDetailModel
   factory BSFCustomerWaitingApprovalSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFCustomerWaitingApprovalSynchronizerErrorDetailModel(
-    customerCode: json['customerCode'] as String,
-    customerName: json['customerName'] as String,
+    customerCode: json['CustomerCode'] as String,
+    customerName: json['CustomerName'] as String,
   );
 
-  Map toJson() => {'customerCode': customerCode, 'customerName': customerName};
+  Map toJson() => {'CustomerCode': customerCode, 'CustomerName': customerName};
 
   factory BSFCustomerWaitingApprovalSynchronizerErrorDetailModel.fromEntity(
     BSFCustomerWaitingApprovalSynchronizerErrorDetailEntity entity,

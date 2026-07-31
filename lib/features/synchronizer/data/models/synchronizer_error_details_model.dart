@@ -1,5 +1,5 @@
-import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/data/models/models.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   const SynchronizerErrorDetailsModel({
@@ -11,23 +11,23 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
 
   factory SynchronizerErrorDetailsModel.fromJson(Map json) {
     final detailType = SynchronizerErrorDetailType.fromValue(
-      json['detailType'] as int,
+      json['DetailType'] as int,
     );
     return SynchronizerErrorDetailsModel(
-      category: json['category'] as String,
-      errorKey: json['errorKey'] as String,
+      category: json['Category'] as String,
+      errorKey: json['ErrorKey'] as String,
       detailType: detailType,
-      items: (json['items'] as List)
+      items: (json['Items'] as List)
           .map((item) => _detailFromJson(detailType, item as Map))
           .toList(),
     );
   }
 
   Map toJson() => {
-    'category': category,
-    'errorKey': errorKey,
-    'detailType': detailType.value,
-    'items': items.map(_detailToJson).toList(),
+    'Category': category,
+    'ErrorKey': errorKey,
+    'DetailType': detailType.value,
+    'Items': items.map(_detailToJson).toList(),
   };
 
   factory SynchronizerErrorDetailsModel.fromEntity(
@@ -173,7 +173,7 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
     if (entity is BSFSendDataSynchronizerErrorDetailEntity) {
       return BSFSendDataSynchronizerErrorDetailModel.fromEntity(entity);
     }
-    throw ArgumentError.value(entity, 'entity', 'Unsupported detail entity');
+    throw ArgumentError.value(entity, 'Entity', 'Unsupported detail entity');
   }
 
   static Map _detailToJson(SynchronizerErrorDetailEntity detail) {

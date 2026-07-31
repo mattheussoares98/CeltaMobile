@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel
     extends BSFSaleRequestWaitingApprovalSynchronizerErrorDetailEntity {
@@ -10,13 +10,13 @@ class BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel
   factory BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel(
-    generatingSystemCode: json['generatingSystemCode'] as String,
-    personalizedCode: json['personalizedCode'] as String,
+    generatingSystemCode: json['GeneratingSystemCode'] as String,
+    personalizedCode: json['PersonalizedCode'] as String,
   );
 
   Map toJson() => {
-    'generatingSystemCode': generatingSystemCode,
-    'personalizedCode': personalizedCode,
+    'GeneratingSystemCode': generatingSystemCode,
+    'PersonalizedCode': personalizedCode,
   };
 
   factory BSFSaleRequestWaitingApprovalSynchronizerErrorDetailModel.fromEntity(

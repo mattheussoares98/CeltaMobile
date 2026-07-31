@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFMapSummarySaleEcfSynchronizerErrorDetailModel
     extends BSFMapSummarySaleEcfSynchronizerErrorDetailEntity {
@@ -15,23 +15,23 @@ class BSFMapSummarySaleEcfSynchronizerErrorDetailModel
   factory BSFMapSummarySaleEcfSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFMapSummarySaleEcfSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        creationDate: DateTime.parse(json['creationDate'] as String),
-        finalizationDate: DateTime.parse(json['finalizationDate'] as String),
-        ecfPersonalizedCode: json['ecfPersonalizedCode'] as String,
-        ecfSerialNumber: json['ecfSerialNumber'] as String,
-        userAllowedRead: json['userAllowedRead'] as String,
-        description: json['description'] as String,
+            json['EnterprisePersonalizedCode'] as String,
+        creationDate: DateTime.parse(json['CreationDate'] as String),
+        finalizationDate: DateTime.parse(json['FinalizationDate'] as String),
+        ecfPersonalizedCode: json['EcfPersonalizedCode'] as String,
+        ecfSerialNumber: json['EcfSerialNumber'] as String,
+        userAllowedRead: json['UserAllowedRead'] as String,
+        description: json['Description'] as String,
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'creationDate': creationDate.toIso8601String(),
-    'finalizationDate': finalizationDate.toIso8601String(),
-    'ecfPersonalizedCode': ecfPersonalizedCode,
-    'ecfSerialNumber': ecfSerialNumber,
-    'userAllowedRead': userAllowedRead,
-    'description': description,
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'CreationDate': creationDate.toIso8601String(),
+    'FinalizationDate': finalizationDate.toIso8601String(),
+    'EcfPersonalizedCode': ecfPersonalizedCode,
+    'EcfSerialNumber': ecfSerialNumber,
+    'UserAllowedRead': userAllowedRead,
+    'Description': description,
   };
 
   factory BSFMapSummarySaleEcfSynchronizerErrorDetailModel.fromEntity(

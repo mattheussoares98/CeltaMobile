@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFScheduleSynchronizerErrorDetailModel
     extends BSFScheduleSynchronizerErrorDetailEntity {
@@ -11,17 +11,17 @@ class BSFScheduleSynchronizerErrorDetailModel
 
   factory BSFScheduleSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFScheduleSynchronizerErrorDetailModel(
-        serverName: json['serverName'] as String,
-        enterpriseName: json['enterpriseName'] as String,
-        executionDate: DateTime.parse(json['executionDate'] as String),
-        description: json['description'] as String,
+        serverName: json['ServerName'] as String,
+        enterpriseName: json['EnterpriseName'] as String,
+        executionDate: DateTime.parse(json['ExecutionDate'] as String),
+        description: json['Description'] as String,
       );
 
   Map toJson() => {
-    'serverName': serverName,
-    'enterpriseName': enterpriseName,
-    'executionDate': executionDate.toIso8601String(),
-    'description': description,
+    'ServerName': serverName,
+    'EnterpriseName': enterpriseName,
+    'ExecutionDate': executionDate.toIso8601String(),
+    'Description': description,
   };
 
   factory BSFScheduleSynchronizerErrorDetailModel.fromEntity(

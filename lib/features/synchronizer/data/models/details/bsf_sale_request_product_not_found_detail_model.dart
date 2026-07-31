@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFSaleRequestProductNotFoundDetailModel
     extends BSFSaleRequestProductNotFoundDetailEntity {
@@ -10,15 +10,15 @@ class BSFSaleRequestProductNotFoundDetailModel
 
   factory BSFSaleRequestProductNotFoundDetailModel.fromJson(Map json) =>
       BSFSaleRequestProductNotFoundDetailModel(
-        eCommerceCode: json['eCommerceCode'] as String,
-        name: json['name'] as String,
-        price: (json['price'] as num).toDouble(),
+        eCommerceCode: json['ECommerceCode'] as String,
+        name: json['Name'] as String,
+        price: (json['Price'] as num).toDouble(),
       );
 
   Map toJson() => {
-    'eCommerceCode': eCommerceCode,
-    'name': name,
-    'price': price,
+    'ECommerceCode': eCommerceCode,
+    'Name': name,
+    'Price': price,
   };
 
   factory BSFSaleRequestProductNotFoundDetailModel.fromEntity(

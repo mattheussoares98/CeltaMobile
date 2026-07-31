@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFTransactionSynchronizerErrorDetailModel
     extends BSFTransactionSynchronizerErrorDetailEntity {
@@ -8,10 +8,10 @@ class BSFTransactionSynchronizerErrorDetailModel
 
   factory BSFTransactionSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFTransactionSynchronizerErrorDetailModel(
-        transactionId: json['transactionId'] as String,
+        transactionId: json['TransactionId'] as String,
       );
 
-  Map toJson() => {'transactionId': transactionId};
+  Map toJson() => {'TransactionId': transactionId};
 
   factory BSFTransactionSynchronizerErrorDetailModel.fromEntity(
     BSFTransactionSynchronizerErrorDetailEntity entity,

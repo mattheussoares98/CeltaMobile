@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
@@ -45,6 +47,6 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       },
     );
 
-    return SynchronizerErrorDetailsModel.fromJson(response as Map);
+    return SynchronizerErrorDetailsModel.fromJson(json.decode(response) as Map);
   }
 }

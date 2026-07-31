@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFCashierMovementSynchronizerErrorDetailModel
     extends BSFCashierMovementSynchronizerErrorDetailEntity {
@@ -13,20 +13,20 @@ class BSFCashierMovementSynchronizerErrorDetailModel
   factory BSFCashierMovementSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFCashierMovementSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        creationDate: DateTime.parse(json['creationDate'] as String),
+            json['EnterprisePersonalizedCode'] as String,
+        creationDate: DateTime.parse(json['CreationDate'] as String),
         openOrCloseDate: DateTime.parse(json['OpenOrCloseDate'] as String),
         cashRegisterPersonalizedCode:
-            json['cashRegisterPersonalizedCode'] as String,
-        description: json['description'] as String,
+            json['CashRegisterPersonalizedCode'] as String,
+        description: json['Description'] as String,
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'creationDate': creationDate.toIso8601String(),
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'CreationDate': creationDate.toIso8601String(),
     'OpenOrCloseDate': openOrCloseDate.toIso8601String(),
-    'cashRegisterPersonalizedCode': cashRegisterPersonalizedCode,
-    'description': description,
+    'CashRegisterPersonalizedCode': cashRegisterPersonalizedCode,
+    'Description': description,
   };
 
   factory BSFCashierMovementSynchronizerErrorDetailModel.fromEntity(

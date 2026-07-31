@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFTreasuryMovementSynchronizerErrorDetailModel
     extends BSFTreasuryMovementSynchronizerErrorDetailEntity {
@@ -12,17 +12,17 @@ class BSFTreasuryMovementSynchronizerErrorDetailModel
   factory BSFTreasuryMovementSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFTreasuryMovementSynchronizerErrorDetailModel(
         enterprisePersonalizedCode:
-            json['enterprisePersonalizedCode'] as String,
-        saleDate: DateTime.parse(json['saleDate'] as String),
-        couponNumber: json['couponNumber'] as String,
-        ecfNumber: json['ecfNumber'] as String,
+            json['EnterprisePersonalizedCode'] as String,
+        saleDate: DateTime.parse(json['SaleDate'] as String),
+        couponNumber: json['CouponNumber'] as String,
+        ecfNumber: json['EcfNumber'] as String,
       );
 
   Map toJson() => {
-    'enterprisePersonalizedCode': enterprisePersonalizedCode,
-    'saleDate': saleDate.toIso8601String(),
-    'couponNumber': couponNumber,
-    'ecfNumber': ecfNumber,
+    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
+    'SaleDate': saleDate.toIso8601String(),
+    'CouponNumber': couponNumber,
+    'EcfNumber': ecfNumber,
   };
 
   factory BSFTreasuryMovementSynchronizerErrorDetailModel.fromEntity(

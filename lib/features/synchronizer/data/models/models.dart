@@ -1,3 +1,3 @@
-export 'details/details.dart';
-export 'synchronizer_error_details_model.dart';
-export 'synchronizer_error_summary_model.dart';
+export 'Details/details.dart';
+export 'Synchronizer_error_details_model.dart';
+export 'Synchronizer_error_summary_model.dart';

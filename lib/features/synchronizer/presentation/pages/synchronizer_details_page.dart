@@ -18,6 +18,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
     );
 
     return BaseScaffold(
+      isScrollable: false,
       appBar: BaseAppBar(
         titleWidget: BaseRichText(
           maxLines: 2,

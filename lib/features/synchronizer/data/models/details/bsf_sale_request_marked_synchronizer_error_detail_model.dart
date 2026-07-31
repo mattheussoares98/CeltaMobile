@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class BSFSaleRequestMarkedSynchronizerErrorDetailModel
     extends BSFSaleRequestMarkedSynchronizerErrorDetailEntity {
@@ -10,15 +10,15 @@ class BSFSaleRequestMarkedSynchronizerErrorDetailModel
 
   factory BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFSaleRequestMarkedSynchronizerErrorDetailModel(
-        personalizedCode: json['personalizedCode'] as String,
-        customer: json['customer'] as String,
-        totalLiquid: (json['totalLiquid'] as num).toDouble(),
+        personalizedCode: json['PersonalizedCode'] as String,
+        customer: json['Customer'] as String,
+        totalLiquid: (json['TotalLiquid'] as num).toDouble(),
       );
 
   Map toJson() => {
-    'personalizedCode': personalizedCode,
-    'customer': customer,
-    'totalLiquid': totalLiquid,
+    'PersonalizedCode': personalizedCode,
+    'Customer': customer,
+    'TotalLiquid': totalLiquid,
   };
 
   factory BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromEntity(
