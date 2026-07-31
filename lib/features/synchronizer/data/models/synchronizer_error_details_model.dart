@@ -1,5 +1,5 @@
-import 'Package:celta_inventario/features/synchronizer/data/models/models.dart';
-import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   const SynchronizerErrorDetailsModel({
@@ -53,6 +53,8 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
     switch (detailType) {
       case SynchronizerErrorDetailType.coupon:
         return BSFCouponSynchronizerErrorDetailModel.fromJson(json);
+      case SynchronizerErrorDetailType.couponMarkedToReadAgain:
+        return BSFCouponMarkedToReadSynchronizerErrorDetailModel.fromJson(json);
       case SynchronizerErrorDetailType.cashierMovement:
         return BSFCashierMovementSynchronizerErrorDetailModel.fromJson(json);
       case SynchronizerErrorDetailType.fiscalNote:
@@ -105,6 +107,11 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   ) {
     if (entity is BSFCouponSynchronizerErrorDetailEntity) {
       return BSFCouponSynchronizerErrorDetailModel.fromEntity(entity);
+    }
+    if (entity is BSFCouponMarkedToReadSynchronizerErrorDetailEntity) {
+      return BSFCouponMarkedToReadSynchronizerErrorDetailModel.fromEntity(
+        entity,
+      );
     }
     if (entity is BSFCashierMovementSynchronizerErrorDetailEntity) {
       return BSFCashierMovementSynchronizerErrorDetailModel.fromEntity(entity);
@@ -179,6 +186,9 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   static Map _detailToJson(SynchronizerErrorDetailEntity detail) {
     final model = _detailFromEntity(detail);
     if (model is BSFCouponSynchronizerErrorDetailModel) return model.toJson();
+    if (model is BSFCouponMarkedToReadSynchronizerErrorDetailModel) {
+      return model.toJson();
+    }
     if (model is BSFCashierMovementSynchronizerErrorDetailModel) {
       return model.toJson();
     }
@@ -234,6 +244,9 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
   ) {
     final model = _detailFromEntity(detail);
     if (model is BSFCouponSynchronizerErrorDetailModel) return model.toEntity();
+    if (model is BSFCouponMarkedToReadSynchronizerErrorDetailModel) {
+      return model.toEntity();
+    }
     if (model is BSFCashierMovementSynchronizerErrorDetailModel) {
       return model.toEntity();
     }

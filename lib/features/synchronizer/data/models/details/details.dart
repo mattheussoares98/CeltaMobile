@@ -1,6 +1,5 @@
 export 'bsf_cashier_movement_synchronizer_error_detail_model.dart';
 export 'bsf_correspondent_banking_synchronizer_error_detail_model.dart';
-export 'bsf_coupon_synchronizer_error_detail_model.dart';
 export 'bsf_customer_waiting_approval_synchronizer_error_detail_model.dart';
 export 'bsf_customer_with_error_synchronizer_error_detail_model.dart';
 export 'bsf_fiscal_note_synchronizer_error_detail_model.dart';
@@ -17,3 +16,4 @@ export 'bsf_schedule_synchronizer_error_detail_model.dart';
 export 'bsf_send_data_synchronizer_error_detail_model.dart';
 export 'bsf_transaction_synchronizer_error_detail_model.dart';
 export 'bsf_treasury_movement_synchronizer_error_detail_model.dart';
+export 'coupon/coupon.dart';

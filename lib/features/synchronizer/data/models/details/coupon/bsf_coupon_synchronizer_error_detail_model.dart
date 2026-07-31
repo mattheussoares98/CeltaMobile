@@ -1,7 +1,8 @@
-import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/data/models/details/details.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
-class BSFCouponSynchronizerErrorDetailModel
-    extends BSFCouponSynchronizerErrorDetailEntity {
+class BSFCouponSynchronizerErrorDetailModel extends BSFCouponSynchronizerModel
+    implements BSFCouponSynchronizerErrorDetailEntity {
   const BSFCouponSynchronizerErrorDetailModel({
     required super.code,
     required super.enterprisePersonalizedCode,
@@ -13,29 +14,19 @@ class BSFCouponSynchronizerErrorDetailModel
     required super.details,
   });
 
-  factory BSFCouponSynchronizerErrorDetailModel.fromJson(Map json) =>
-      BSFCouponSynchronizerErrorDetailModel(
-        code: json['Code'] as int,
-        enterprisePersonalizedCode:
-            json['EnterprisePersonalizedCode'] as String,
-        creationDate: DateTime.parse(json['CreationDate'] as String),
-        deliveryDate: DateTime.parse(json['DeliveryDate'] as String),
-        couponNumber: json['CouponNumber'] as String,
-        ecfNumber: json['EcfNumber'] as String,
-        cashRegisterNumber: json['CashRegisterNumber'] as String,
-        details: List<String>.from(json['Details'] as List),
-      );
-
-  Map toJson() => {
-    'Code': code,
-    'EnterprisePersonalizedCode': enterprisePersonalizedCode,
-    'CreationDate': creationDate.toIso8601String(),
-    'DeliveryDate': deliveryDate.toIso8601String(),
-    'CouponNumber': couponNumber,
-    'EcfNumber': ecfNumber,
-    'CashRegisterNumber': cashRegisterNumber,
-    'Details': details,
-  };
+  factory BSFCouponSynchronizerErrorDetailModel.fromJson(Map json) {
+    final base = BSFCouponSynchronizerModel.fromJson(json);
+    return BSFCouponSynchronizerErrorDetailModel(
+      code: base.code,
+      enterprisePersonalizedCode: base.enterprisePersonalizedCode,
+      creationDate: base.creationDate,
+      deliveryDate: base.deliveryDate,
+      couponNumber: base.couponNumber,
+      ecfNumber: base.ecfNumber,
+      cashRegisterNumber: base.cashRegisterNumber,
+      details: base.details,
+    );
+  }
 
   factory BSFCouponSynchronizerErrorDetailModel.fromEntity(
     BSFCouponSynchronizerErrorDetailEntity entity,
