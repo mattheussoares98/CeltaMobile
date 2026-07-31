@@ -83,9 +83,11 @@ class BaseText extends StatelessWidget {
     TextAlign? textAlign,
     Color? color,
     FontStyle? fontStyle,
+    int? maxLines,
   }) => BaseText(
     text,
     textAlign: textAlign,
+    maxLines: maxLines,
     color: color,
     textType: TextType.titleSmall,
     fontWeight: FontWeight.w600,

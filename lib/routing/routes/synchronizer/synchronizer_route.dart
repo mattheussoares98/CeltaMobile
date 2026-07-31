@@ -2,8 +2,9 @@ import 'package:celta_inventario/features/synchronizer/presentation/pages/pages.
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:go_router/go_router.dart';
 
-RouteBase synchronizerRoute() => GoRoute(
+RouteBase synchronizerRoute(List<RouteBase> routes) => GoRoute(
   path: 'synchronizer',
+  routes: routes,
   name: Routes.synchronizer.name,
   builder: (context, state) {
     return const SynchronizerPage();

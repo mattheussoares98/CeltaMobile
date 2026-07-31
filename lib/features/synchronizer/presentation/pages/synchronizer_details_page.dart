@@ -16,10 +16,16 @@ class SynchronizerDetailsPage extends ConsumerWidget {
         (s) => s.value?.firstWhereOrNull((e) => e.errorKey == errorKey)?.count,
       ),
     );
+
     return BaseScaffold(
       appBar: BaseAppBar(
-        title:
-            errorKey + (errorQuantity == null ? '' : errorQuantity.toString()),
+        titleWidget: BaseRichText(
+          maxLines: 2,
+          texts: [
+            if (errorQuantity != null) BaseText.error('($errorQuantity) '),
+            BaseText.title(errorKey, maxLines: 2),
+          ],
+        ),
       ),
       body: AsyncValueWidget(
         value: ref.watch(provider),

@@ -52,6 +52,7 @@ enum Routes {
   splash,
   stockReplacement,
   synchronizer,
+  synchronizerDetails,
   transferRequestDestinyEnterprises,
   transferRequestOriginEnterprises,
   transferRequestProductsManagement,
