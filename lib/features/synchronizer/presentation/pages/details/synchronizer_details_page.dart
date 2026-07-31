@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/details/components/components.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,19 @@ class SynchronizerDetailsPage extends ConsumerWidget {
       ),
     );
 
+    void markToReadAgain(
+      SynchronizerErrorDetailType detailType,
+      List<int> codes,
+    ) {
+      ref
+          .read(
+            markSynchronizerItemsToReadAgainControllerProvider(
+              detailType,
+            ).notifier,
+          )
+          .markToReadAgain(codes, errorKey);
+    }
+
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
@@ -35,10 +49,20 @@ class SynchronizerDetailsPage extends ConsumerWidget {
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
         data: (data) {
-          final detailType = data.detailType;
-          return switch (detailType) {
+          if (data.items.isEmpty) {
+            return const SynchronizerEmptyErrors();
+          }
+
+          final rereadableItems = data.items
+              .whereType<RereadableSynchronizerErrorDetailEntity>()
+              .toList();
+          final items = switch (data.detailType) {
             SynchronizerErrorDetailType.coupon => CouponItems(
               items: data.items.cast<BSFCouponSynchronizerErrorDetailEntity>(),
+            ),
+            SynchronizerErrorDetailType.couponMarkedToReadAgain => CouponItems(
+              items: data.items
+                  .cast<BSFCouponMarkedToReadSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.cashierMovement => Container(),
             SynchronizerErrorDetailType.fiscalNote => Container(),
@@ -60,6 +84,34 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               Container(),
             SynchronizerErrorDetailType.sendData => Container(),
           };
+
+          //! When there is no readable (can mark to read again) return the items directly
+          if (rereadableItems.isEmpty) return items;
+
+          return Column(
+            children: [
+              RereadActions(
+                detailType: data.detailType,
+                onMarkAll: () {
+                  markToReadAgain(
+                    data.detailType,
+                    rereadableItems.map((e) => e.code).toList(),
+                  );
+                },
+                onMarkSelected: () {
+                  markToReadAgain(
+                    data.detailType,
+                    ref.read(
+                      selectedSynchronizerCodesStateControllerProvider(
+                        data.detailType,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Expanded(child: items),
+            ],
+          );
         },
       ),
     );
