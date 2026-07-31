@@ -129,6 +129,7 @@ GoRouter goRouter(Ref ref) {
           ]),
         ]),
         searchProductsRoute(),
+        synchronizerRoute(),
         shallowBuyMovementRoute([buyMovementDetailsRoute()]),
         stockReplacementRoute(),
         transferBetweenStocksRoute(),

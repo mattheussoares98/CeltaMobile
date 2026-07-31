@@ -22,5 +22,5 @@ export 'process_authorization/process_authorization.dart';
 export 'products_register/products_register.dart';
 export 'receipts/receipts.dart';
 export 'sale_request/sale_request.dart';
-export 'synchronizer_route.dart';
+export 'synchronizer/synchronizer.dart';
 export 'transfer_request/transfer_request.dart';
