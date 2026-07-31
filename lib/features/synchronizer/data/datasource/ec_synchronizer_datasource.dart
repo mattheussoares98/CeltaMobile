@@ -24,8 +24,8 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       },
     );
 
-    return (response as List<Map>)
-        .map(SynchronizerErrorSummaryModel.fromJson)
+    return (response as List<dynamic>)
+        .map((e) => SynchronizerErrorSummaryModel.fromJson(e as Map))
         .toList();
   }
 
