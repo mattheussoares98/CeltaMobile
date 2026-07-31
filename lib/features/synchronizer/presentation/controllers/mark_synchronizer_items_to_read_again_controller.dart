@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -20,7 +21,7 @@ class MarkSynchronizerItemsToReadAgainController
     }
   }
 
-  Future<void> markToReadAgain(List<int> codes) async {
+  Future<void> markToReadAgain(List<int> codes, String errorKey) async {
     if (codes.isEmpty) return;
 
     state = const AsyncLoading();
@@ -36,6 +37,7 @@ class MarkSynchronizerItemsToReadAgainController
             'Rereading is not implemented for $detailType',
           );
       }
+      ref.invalidate(synchronizerDetailsStateControllerProvider(errorKey));
     });
   }
 }

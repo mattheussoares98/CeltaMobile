@@ -18,6 +18,7 @@ void main() {
   late MockEcSynchronizerRepository repository;
   late UserSessionModel session;
   late EcRequestParams params;
+  const errorKey = 'any_key';
 
   setUp(() {
     repository = MockEcSynchronizerRepository();
@@ -64,7 +65,7 @@ void main() {
               SynchronizerErrorDetailType.coupon,
             ).notifier,
           )
-          .markToReadAgain(codes);
+          .markToReadAgain(codes, errorKey);
 
       verify(() => repository.markCouponsToReadAgain(params, codes)).called(1);
       expect(
@@ -99,7 +100,7 @@ void main() {
             SynchronizerErrorDetailType.coupon,
           ).notifier,
         )
-        .markToReadAgain(codes);
+        .markToReadAgain(codes, errorKey);
 
     expect(
       container
@@ -130,7 +131,7 @@ void main() {
             SynchronizerErrorDetailType.coupon,
           ).notifier,
         )
-        .markToReadAgain(const []);
+        .markToReadAgain(const [], errorKey);
 
     expect(
       container.read(
