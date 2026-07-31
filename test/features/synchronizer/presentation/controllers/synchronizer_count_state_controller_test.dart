@@ -155,37 +155,5 @@ void main() {
         verifyNever(() => mockRepository.searchCount(any()));
       },
     );
-
-    test('reload() should trigger searchCount and update state', () async {
-      // ARRANGE
-      final summaryList = <SynchronizerErrorSummaryEntity>[];
-      when(
-        () => mockRepository.searchCount(any()),
-      ).thenAnswer((_) async => summaryList);
-
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
-
-      await container.read(
-        canAccessResourceStateControllerProvider(
-          BsRoutine.generic,
-          BsResource.synchronizer,
-        ).future,
-      );
-
-      // Ensure initial load finishes
-      await container.read(synchronizerCountStateControllerProvider.future);
-
-      final controller = container.read(
-        synchronizerCountStateControllerProvider.notifier,
-      );
-
-      // ACT
-      await controller.reload();
-
-      // ASSERT
-      final state = container.read(synchronizerCountStateControllerProvider);
-      expect(state.value, summaryList);
-    });
   });
 }

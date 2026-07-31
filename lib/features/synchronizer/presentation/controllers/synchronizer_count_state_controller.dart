@@ -47,13 +47,4 @@ class SynchronizerCountStateController
 
     return await repository.searchCount(ecParams);
   }
-
-  Future<void> reload() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(ecSynchronizerRepositoryProvider);
-      final ecParams = await ref.read(ecRequestParamsProvider().future);
-      return await repository.searchCount(ecParams);
-    });
-  }
 }

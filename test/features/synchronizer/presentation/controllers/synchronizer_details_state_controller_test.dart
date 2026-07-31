@@ -167,47 +167,5 @@ void main() {
         verifyNever(() => mockRepository.searchByKey(any(), any()));
       },
     );
-
-    test('reload() should trigger searchByKey and update state', () async {
-      // ARRANGE
-      const fakeDetails = SynchronizerErrorDetailsEntity(
-        category: 'Produtos com erro',
-        errorKey: testKey,
-        detailType: SynchronizerErrorDetailType.productWithError,
-        items: [],
-      );
-
-      when(
-        () => mockRepository.searchByKey(any(), testKey),
-      ).thenAnswer((_) async => fakeDetails);
-
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
-
-      await container.read(
-        canAccessResourceStateControllerProvider(
-          BsRoutine.generic,
-          BsResource.synchronizer,
-        ).future,
-      );
-
-      // Ensure initial load finishes
-      await container.read(
-        synchronizerDetailsStateControllerProvider(testKey).future,
-      );
-
-      final controller = container.read(
-        synchronizerDetailsStateControllerProvider(testKey).notifier,
-      );
-
-      // ACT
-      await controller.reload();
-
-      // ASSERT
-      final state = container.read(
-        synchronizerDetailsStateControllerProvider(testKey),
-      );
-      expect(state.value, fakeDetails);
-    });
   });
 }

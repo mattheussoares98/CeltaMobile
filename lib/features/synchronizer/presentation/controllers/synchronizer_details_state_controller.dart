@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -35,14 +33,5 @@ class SynchronizerDetailsStateController
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 
     return await repository.searchByKey(ecParams, errorKey);
-  }
-
-  Future<void> reload() async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(ecSynchronizerRepositoryProvider);
-      final ecParams = await ref.read(ecRequestParamsProvider().future);
-      return await repository.searchByKey(ecParams, errorKey);
-    });
   }
 }
