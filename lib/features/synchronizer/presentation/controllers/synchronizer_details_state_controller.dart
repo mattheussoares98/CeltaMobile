@@ -4,8 +4,10 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'synchronizer_details_state_controller.g.dart';
@@ -16,6 +18,11 @@ class SynchronizerDetailsStateController
   @override
   FutureOr<SynchronizerErrorDetailsEntity> build(String errorKey) async {
     await ref.watch(validatedUserSessionProvider.future);
+    ref.watch(
+      synchronizerCountStateControllerProvider.selectAsync(
+        (s) => s.firstWhereOrNull((e) => e.errorKey == errorKey),
+      ),
+    );
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(
         BsRoutine.generic,
