@@ -120,19 +120,54 @@ void main() {
     });
   });
 
+  group('markSaleRequestsWithErrorToReadAgain', () {
+    const codes = [123, 456];
+
+    test('should delegate the sale request codes to the datasource', () async {
+      when(
+        () => datasource.markSaleRequestsWithErrorToReadAgain(params, codes),
+      ).thenAnswer((_) async {});
+
+      await sut.markSaleRequestsWithErrorToReadAgain(params, codes);
+
+      verify(
+        () => datasource.markSaleRequestsWithErrorToReadAgain(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to mark sale requests for rereading');
+      when(
+        () => datasource.markSaleRequestsWithErrorToReadAgain(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.markSaleRequestsWithErrorToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.markSaleRequestsWithErrorToReadAgain(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('deleteScheduleErrors', () {
     const codes = [123, 456];
 
-    test('should delegate the schedule error codes to the datasource', () async {
-      when(
-        () => datasource.deleteScheduleErrors(params, codes),
-      ).thenAnswer((_) async {});
+    test(
+      'should delegate the schedule error codes to the datasource',
+      () async {
+        when(
+          () => datasource.deleteScheduleErrors(params, codes),
+        ).thenAnswer((_) async {});
 
-      await sut.deleteScheduleErrors(params, codes);
+        await sut.deleteScheduleErrors(params, codes);
 
-      verify(() => datasource.deleteScheduleErrors(params, codes)).called(1);
-      verifyNoMoreInteractions(datasource);
-    });
+        verify(() => datasource.deleteScheduleErrors(params, codes)).called(1);
+        verifyNoMoreInteractions(datasource);
+      },
+    );
 
     test('should propagate datasource errors', () async {
       final exception = Exception('Failed to delete schedule errors');

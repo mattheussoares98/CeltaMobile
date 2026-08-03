@@ -28,6 +28,13 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   ) async => await datasource.markCouponsToReadAgain(params, codes);
 
   @override
+  Future<void> markSaleRequestsWithErrorToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async =>
+      await datasource.markSaleRequestsWithErrorToReadAgain(params, codes);
+
+  @override
   Future<void> deleteScheduleErrors(
     EcRequestParams params,
     List<int> codes,

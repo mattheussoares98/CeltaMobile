@@ -226,6 +226,60 @@ void main() {
     });
   });
 
+  group('markSaleRequestsWithErrorToReadAgain', () {
+    const codes = [123, 456];
+    const url = '/api/Synchronizer/MarkSaleRequestsWithErrorToReadAgain';
+    final body = {...params.toMap(), 'Codes': codes};
+
+    test('should post all sale request codes in one request', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markSaleRequestsWithErrorToReadAgain(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to mark sale requests for rereading');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markSaleRequestsWithErrorToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('deleteScheduleErrors', () {
     const codes = [123, 456];
     const url = '/api/Synchronizer/DeleteScheduleErrors';

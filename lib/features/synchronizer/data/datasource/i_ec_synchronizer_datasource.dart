@@ -13,5 +13,10 @@ abstract class IEcSynchronizerDatasource {
 
   Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
 
+  Future<void> markSaleRequestsWithErrorToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  );
+
   Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);
 }
