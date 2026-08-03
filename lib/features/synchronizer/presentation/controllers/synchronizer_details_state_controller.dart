@@ -39,6 +39,8 @@ class SynchronizerDetailsStateController
     final repository = ref.read(ecSynchronizerRepositoryProvider);
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 
+    ref.invalidate(synchronizerCountStateControllerProvider);
+
     return await repository.searchByKey(ecParams, errorKey);
   }
 }

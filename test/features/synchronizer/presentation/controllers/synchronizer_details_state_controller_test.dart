@@ -27,6 +27,17 @@ class FakeCanAccessResourceStateController
   }
 }
 
+class FakeSynchronizerCountStateController
+    extends SynchronizerCountStateController {
+  int buildCount = 0;
+
+  @override
+  Future<List<SynchronizerErrorSummaryEntity>> build() async {
+    buildCount++;
+    return [];
+  }
+}
+
 void main() {
   late MockEcSynchronizerRepository mockRepository;
   late UserSessionModel fakeSession;
@@ -45,6 +56,7 @@ void main() {
   ProviderContainer makeProviderContainer({
     UserSessionModel? session,
     bool hasAccess = true,
+    FakeSynchronizerCountStateController? countController,
   }) {
     return ProviderContainer(
       retry: (retryCount, error) => null,
@@ -57,6 +69,10 @@ void main() {
           BsRoutine.generic,
           BsResource.synchronizer,
         ).overrideWith(() => FakeCanAccessResourceStateController(hasAccess)),
+        if (countController != null)
+          synchronizerCountStateControllerProvider.overrideWith(
+            () => countController,
+          ),
       ],
     );
   }
@@ -102,6 +118,43 @@ void main() {
           testKey,
         ),
       ).called(1);
+    });
+
+    test('should invalidate synchronizer count provider', () async {
+      // ARRANGE
+      const fakeDetails = SynchronizerErrorDetailsEntity(
+        category: 'Produtos com erro',
+        errorKey: testKey,
+        detailType: SynchronizerErrorDetailType.productWithError,
+        items: [],
+      );
+      final countController = FakeSynchronizerCountStateController();
+      when(
+        () => mockRepository.searchByKey(any(), testKey),
+      ).thenAnswer((_) async => fakeDetails);
+      final container = makeProviderContainer(
+        session: fakeSession,
+        countController: countController,
+      );
+      addTearDown(container.dispose);
+
+      await container.read(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizer,
+        ).future,
+      );
+      await container.read(synchronizerCountStateControllerProvider.future);
+      expect(countController.buildCount, 1);
+
+      // ACT
+      await container.read(
+        synchronizerDetailsStateControllerProvider(testKey).future,
+      );
+
+      // ASSERT
+      await container.read(synchronizerCountStateControllerProvider.future);
+      expect(countController.buildCount, 2);
     });
 
     test('should throw AppException when session is invalid', () async {
