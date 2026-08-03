@@ -7,13 +7,13 @@ part 'selected_synchronizer_codes_state_controller.g.dart';
 class SelectedSynchronizerCodesStateController
     extends _$SelectedSynchronizerCodesStateController {
   @override
-  List<int> build(SynchronizerErrorDetailType detailType) => [];
+  Set<int> build(SynchronizerErrorDetailType detailType) => {};
 
   void select(int code) {
     if (state.any((e) => e == code)) {
-      state = state.where((e) => e != code).toList();
+      state = state.where((e) => e != code).toSet();
     } else {
-      state = [...state, code];
+      state = {...state, code};
     }
   }
 }

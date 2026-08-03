@@ -20,7 +20,7 @@ class SelectableActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void onTap(List<int> codes) {
+    void onTap(Set<int> codes) {
       switch (detailType) {
         case SynchronizerErrorDetailType.couponMarkedToReadAgain:
           ref
@@ -29,12 +29,12 @@ class SelectableActions extends ConsumerWidget {
                   detailType,
                 ).notifier,
               )
-              .markToReadAgain(codes, errorKey);
+              .markToReadAgain(codes.toList(), errorKey);
           break;
         case SynchronizerErrorDetailType.schedule:
           ref
               .read(deleteScheduleErrorsControllerProvider.notifier)
-              .delete(codes, errorKey);
+              .delete(codes.toList(), errorKey);
           break;
         default:
       }
@@ -64,7 +64,7 @@ class SelectableActions extends ConsumerWidget {
                 _ => 'BUG. Não implementado'.hardcoded,
               },
               onPressed: () {
-                onTap(selectableItems.map((e) => e.code).toList());
+                onTap(selectableItems.map((e) => e.code).toSet());
               },
             ),
           ),
