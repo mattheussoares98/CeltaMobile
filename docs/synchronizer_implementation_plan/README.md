@@ -16,6 +16,7 @@ Reproduce in CeltaMobile the read-only synchronization-error behavior from the E
 | [04_error_adapters.md](04_error_adapters.md) | When implementing or reviewing a category-specific read adapter |
 | [05_celtamobile.md](05_celtamobile.md) | When changing Mobile domain, data, controllers, navigation, or UI |
 | [06_validation.md](06_validation.md) | When adding tests, running builds/analyzers, or deciding whether work is complete |
+| [07_schedule_error_deletion.md](07_schedule_error_deletion.md) | When implementing deletion of selected schedule-execution errors |
 
 Do not read every file by default. Read `01_scope_and_rules.md`, then the one or two files relevant to the current unchecked step.
 
