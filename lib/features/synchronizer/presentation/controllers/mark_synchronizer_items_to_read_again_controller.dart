@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,6 +25,11 @@ class MarkSynchronizerItemsToReadAgainController
       await repository.markCouponsToReadAgain(ecParams, codes);
 
       ref.invalidate(synchronizerDetailsStateControllerProvider(errorKey));
+      ref.invalidate(
+        selectedSynchronizerCodesStateControllerProvider(
+          SynchronizerErrorDetailType.couponMarkedToReadAgain,
+        ),
+      );
     });
   }
 }
