@@ -4,6 +4,7 @@ import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.
 class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
     extends BSFSaleRequestWithErrorSynchronizerErrorDetailEntity {
   const BSFSaleRequestWithErrorSynchronizerErrorDetailModel({
+    required super.code,
     required super.enterprisePersonalizedCode,
     required super.creationDate,
     required super.cadasterDate,
@@ -18,6 +19,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
   factory BSFSaleRequestWithErrorSynchronizerErrorDetailModel.fromJson(
     Map json,
   ) => BSFSaleRequestWithErrorSynchronizerErrorDetailModel(
+    code: json['Code'] as int,
     enterprisePersonalizedCode: json['EnterprisePersonalizedCode'] as String,
     creationDate: DateTime.parse(json['CreationDate'] as String),
     cadasterDate: DateTime.parse(json['CadasterDate'] as String),
@@ -35,6 +37,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
   );
 
   Map toJson() => {
+    'Code': code,
     'EnterprisePersonalizedCode': enterprisePersonalizedCode,
     'CreationDate': creationDate.toIso8601String(),
     'CadasterDate': cadasterDate.toIso8601String(),
@@ -52,6 +55,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
   factory BSFSaleRequestWithErrorSynchronizerErrorDetailModel.fromEntity(
     BSFSaleRequestWithErrorSynchronizerErrorDetailEntity entity,
   ) => BSFSaleRequestWithErrorSynchronizerErrorDetailModel(
+    code: entity.code,
     enterprisePersonalizedCode: entity.enterprisePersonalizedCode,
     creationDate: entity.creationDate,
     cadasterDate: entity.cadasterDate,
@@ -67,6 +71,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailModel
 
   BSFSaleRequestWithErrorSynchronizerErrorDetailEntity toEntity() =>
       BSFSaleRequestWithErrorSynchronizerErrorDetailEntity(
+        code: code,
         enterprisePersonalizedCode: enterprisePersonalizedCode,
         creationDate: creationDate,
         cadasterDate: cadasterDate,

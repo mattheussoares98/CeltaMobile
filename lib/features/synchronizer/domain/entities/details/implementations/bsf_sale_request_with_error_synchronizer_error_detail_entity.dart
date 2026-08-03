@@ -1,7 +1,10 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
 class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity {
+    extends SynchronizerErrorDetailEntity
+    implements SelectableSynchronizerErrorDetailEntity {
+  @override
+  final int code;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
   final DateTime cadasterDate;
@@ -13,6 +16,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
   final List<BSFSaleRequestProductNotFoundDetailEntity> productsNotFound;
 
   const BSFSaleRequestWithErrorSynchronizerErrorDetailEntity({
+    required this.code,
     required this.enterprisePersonalizedCode,
     required this.creationDate,
     required this.cadasterDate,
