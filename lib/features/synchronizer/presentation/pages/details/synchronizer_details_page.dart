@@ -69,25 +69,24 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               items: data.items
                   .cast<BSFCouponMarkedToReadSynchronizerErrorDetailEntity>(),
             ),
-            SynchronizerErrorDetailType.cashierMovement => Container(),
-            SynchronizerErrorDetailType.fiscalNote => Container(),
-            SynchronizerErrorDetailType.nFeDisable => Container(),
-            SynchronizerErrorDetailType.schedule => Container(),
-            SynchronizerErrorDetailType.transaction => Container(),
-            SynchronizerErrorDetailType.treasuryMovement => Container(),
-            SynchronizerErrorDetailType.mapSummarySaleEcf => Container(),
-            SynchronizerErrorDetailType.customerWithError => Container(),
-            SynchronizerErrorDetailType.customerWaitingApproval => Container(),
-            SynchronizerErrorDetailType.saleRequestWithError => Container(),
-            SynchronizerErrorDetailType.saleRequestWaitingApproval =>
-              Container(),
-            SynchronizerErrorDetailType.saleRequestMarked => Container(),
-            SynchronizerErrorDetailType.productWithError => Container(),
-            SynchronizerErrorDetailType.readBleeding => Container(),
-            SynchronizerErrorDetailType.correspondentBanking => Container(),
-            SynchronizerErrorDetailType.saleMovementScanntechLoad =>
-              Container(),
-            SynchronizerErrorDetailType.sendData => Container(),
+            SynchronizerErrorDetailType.cashierMovement ||
+            SynchronizerErrorDetailType.fiscalNote ||
+            SynchronizerErrorDetailType.nFeDisable ||
+            SynchronizerErrorDetailType.schedule ||
+            SynchronizerErrorDetailType.transaction ||
+            SynchronizerErrorDetailType.treasuryMovement ||
+            SynchronizerErrorDetailType.mapSummarySaleEcf ||
+            SynchronizerErrorDetailType.customerWithError ||
+            SynchronizerErrorDetailType.customerWaitingApproval ||
+            SynchronizerErrorDetailType.saleRequestWithError ||
+            SynchronizerErrorDetailType.saleRequestWaitingApproval ||
+            SynchronizerErrorDetailType.saleRequestMarked ||
+            SynchronizerErrorDetailType.productWithError ||
+            SynchronizerErrorDetailType.readBleeding ||
+            SynchronizerErrorDetailType.correspondentBanking ||
+            SynchronizerErrorDetailType.saleMovementScanntechLoad ||
+            SynchronizerErrorDetailType.sendData =>
+              const NotImplementedDetailType(),
           };
 
           //! When there is no readable (can mark to read again) return the items directly
