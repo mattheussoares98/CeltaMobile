@@ -30,6 +30,7 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
 
   @override
   List<Object?> get props => [
+    code,
     enterprisePersonalizedCode,
     creationDate,
     cadasterDate,
