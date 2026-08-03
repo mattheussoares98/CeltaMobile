@@ -22,24 +22,30 @@ Expose it as `POST /Synchronizer/DeleteScheduleErrors`. Keep the existing aggreg
 
 ## Commerce API
 
-- [ ] Add `Code` to `ScheduleSynchronizerErrorDetail` and map `schedule.Code` in `ScheduleSynchronizerErrorDetailAdapter`.
+- [x] Add `Code` to `ScheduleSynchronizerErrorDetail` and map `schedule.Code` in `ScheduleSynchronizerErrorDetailAdapter`.
   - Why: the client must receive the exact BSF primary identifier used by the existing delete path.
-- [ ] Add `DeleteScheduleErrorsParameters` in the Schedule model folder with `List<int> Codes`.
-- [ ] Add `DalSynchronizer.DeleteScheduleErrors(IEnumerable<int> codes)`.
+  - Result: added the integer `Code` response property and mapped it directly from the BSF schedule model; Commerce API Model Release build passed with 0 warnings and 0 errors.
+- [x] Add `DeleteScheduleErrorsParameters` in the Schedule model folder with `List<int> Codes`.
+  - Result: added the schedule-specific request DTO with a non-null code list.
+- [x] Add `DalSynchronizer.DeleteScheduleErrors(IEnumerable<int> codes)`.
   - Construct one `ModelSynchronizerConfigErrorSchedule` per code, place them in `ModelSynchronizerConfigErrorScheduleCollection`, and call the existing `BllSynchronizerConfigErrorSchedule.Delete` once.
   - Keep construction/delegation in DAL; do not place BSF model creation in the controller.
-- [ ] Add `SynchronizerController.DeleteScheduleErrors`.
+  - Result: DAL constructs the BSF schedule models and collection, then delegates once to the existing schedule BLL.
+- [x] Add `SynchronizerController.DeleteScheduleErrors`.
   - Require resource `633`, matching ERP UI deletion authorization.
   - Reject a null/empty list and any code less than or equal to zero.
   - Deduplicate codes before DAL delegation.
   - Return `Ok()` only after BSF completes; preserve the controller's existing error-response convention.
+  - Result: added the POST endpoint with resource `633`, required positive-code validation, deduplication, BSF delegation, and the existing controller error convention. Build verification was skipped at the user's request.
 - [ ] Build `CeltaCommerceAPI.csproj` in Release.
   - Do not add Commerce API unit tests, per project rule.
 
 ## CeltaMobile domain and data
 
-- [ ] Add required `code` to `BSFScheduleSynchronizerErrorDetailEntity` and include it in `props`.
-- [ ] Add required `code` to `BSFScheduleSynchronizerErrorDetailModel` constructor, `fromJson`, `toJson`, `fromEntity`, and `toEntity`.
+- [x] Add required `code` to `BSFScheduleSynchronizerErrorDetailEntity` and include it in `props`.
+  - Result: added the required integer identifier and included it in Equatable equality.
+- [x] Add required `code` to `BSFScheduleSynchronizerErrorDetailModel` constructor, `fromJson`, `toJson`, `fromEntity`, and `toEntity`.
+  - Result: preserved `Code` through every JSON and entity conversion; narrow Dart analysis passed with no issues.
 - [ ] Introduce a deletion capability contract for coded deletable details, in its own file, and have the schedule entity implement it.
   - Why: presentation should show deletion only for explicitly deletable payloads; `DetailType` describes payload shape, not mutation capability.
 - [ ] Update schedule factories and model-conversion tests for `Code`.

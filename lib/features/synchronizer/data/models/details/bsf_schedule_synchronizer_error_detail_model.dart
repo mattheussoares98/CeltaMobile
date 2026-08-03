@@ -3,6 +3,7 @@ import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.
 class BSFScheduleSynchronizerErrorDetailModel
     extends BSFScheduleSynchronizerErrorDetailEntity {
   const BSFScheduleSynchronizerErrorDetailModel({
+    required super.code,
     required super.serverName,
     required super.enterpriseName,
     required super.executionDate,
@@ -11,6 +12,7 @@ class BSFScheduleSynchronizerErrorDetailModel
 
   factory BSFScheduleSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFScheduleSynchronizerErrorDetailModel(
+        code: json['Code'] as int,
         serverName: json['ServerName'] as String,
         enterpriseName: json['EnterpriseName'] as String,
         executionDate: DateTime.parse(json['ExecutionDate'] as String),
@@ -18,6 +20,7 @@ class BSFScheduleSynchronizerErrorDetailModel
       );
 
   Map toJson() => {
+    'Code': code,
     'ServerName': serverName,
     'EnterpriseName': enterpriseName,
     'ExecutionDate': executionDate.toIso8601String(),
@@ -27,6 +30,7 @@ class BSFScheduleSynchronizerErrorDetailModel
   factory BSFScheduleSynchronizerErrorDetailModel.fromEntity(
     BSFScheduleSynchronizerErrorDetailEntity entity,
   ) => BSFScheduleSynchronizerErrorDetailModel(
+    code: entity.code,
     serverName: entity.serverName,
     enterpriseName: entity.enterpriseName,
     executionDate: entity.executionDate,
@@ -35,6 +39,7 @@ class BSFScheduleSynchronizerErrorDetailModel
 
   BSFScheduleSynchronizerErrorDetailEntity toEntity() =>
       BSFScheduleSynchronizerErrorDetailEntity(
+        code: code,
         serverName: serverName,
         enterpriseName: enterpriseName,
         executionDate: executionDate,
