@@ -4,11 +4,12 @@ import 'package:celta_inventario/features/process_authorization/domain/entities/
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'process_authorization_sale_request_errors_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class ProcessAuthorizationSaleRequestErrorsStateController
     extends _$ProcessAuthorizationSaleRequestErrorsStateController {
   @override
@@ -16,6 +17,8 @@ class ProcessAuthorizationSaleRequestErrorsStateController
     required int processCode,
     required SaleRequestErrorType errorType,
   }) async {
+    ref.cache();
+
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 

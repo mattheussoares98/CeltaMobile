@@ -5,15 +5,18 @@ import 'package:celta_inventario/features/process_authorization/presentation/con
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'gr_doc_fiscal_note_differences_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class GRDocFiscalNoteDifferencesStateController
     extends _$GRDocFiscalNoteDifferencesStateController {
   @override
   FutureOr<BSFGREntity> build(int processCode) async {
+    ref.cache();
+
     final repository = ref.read(ecProcessAuthorizationRepositoryProvider);
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 
