@@ -115,8 +115,12 @@ class TryAccessModuleController extends _$TryAccessModuleController {
               module,
             ))) {
           if (!context.mounted) return;
-          _showDisabledModuleMessage(context, module);
-          return;
+          if (kDebugMode) {
+            dev.log('Continuing because it is on debug mode');
+          } else {
+            _showDisabledModuleMessage(context, module);
+            return;
+          }
         }
 
         if (module == Modules.adjustPrice ||
@@ -134,8 +138,12 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           final canAccess = await _canAccessModule(routine, resource);
 
           if (!canAccess && context.mounted) {
-            _showUserWithoutPermissionMessage(context, resource);
-            return;
+            if (kDebugMode) {
+              dev.log('Continuing because it is on debug mode');
+            } else {
+              _showUserWithoutPermissionMessage(context, resource);
+              return;
+            }
           }
         }
 
