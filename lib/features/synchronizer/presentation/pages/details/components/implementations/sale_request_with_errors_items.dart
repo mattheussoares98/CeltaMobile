@@ -83,6 +83,19 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                       title: 'Pedido'.hardcoded,
                       subTitle: item.saleRequestNumber,
                     ),
+                  for (var i = 0; i < item.details.length; i++)
+                    Column(
+                      children: [
+                        if (i == 0 || i < item.details.length) const Divider(),
+                        if (i == 0)
+                          Align(child: BaseText.error('Detalhes'.hardcoded)),
+                        BaseText.title(
+                          item.details[i],
+                          color: Colors.red,
+                          textAlign: .start,
+                        ),
+                      ],
+                    ),
                   if (item.productsNotFound.isNotEmpty)
                     for (var i = 0; i < item.productsNotFound.length; i++)
                       Column(
@@ -121,17 +134,6 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                           ),
                         ],
                       ),
-                  for (var i = 0; i < item.details.length; i++)
-                    Column(
-                      children: [
-                        if (i > 0 && i < item.details.length) const Divider(),
-                        BaseText.title(
-                          item.details[i],
-                          color: Colors.red,
-                          textAlign: .start,
-                        ),
-                      ],
-                    ),
                 ],
               ),
             ),
