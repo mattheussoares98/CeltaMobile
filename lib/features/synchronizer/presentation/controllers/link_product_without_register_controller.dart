@@ -11,12 +11,13 @@ class LinkProductWithoutRegisterController
   @override
   FutureOr<void> build() {}
 
-  void link({
+  Future<bool> link({
     required String errorKey,
     required int productNotFoundCode,
     required int productCode,
     required int productPackingCode,
   }) async {
+    bool succeeds = false;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(ecSynchronizerRepositoryProvider);
@@ -28,10 +29,12 @@ class LinkProductWithoutRegisterController
         productCode: productCode,
         productPackingCode: productPackingCode,
       );
+      succeeds = true;
 
       await ref
           .read(synchronizerDetailsStateControllerProvider(errorKey).notifier)
           .loadSilently();
     });
+    return succeeds;
   }
 }

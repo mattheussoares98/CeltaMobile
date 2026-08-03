@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -69,20 +67,10 @@ void main() {
     ],
   );
 
-  Future<AsyncValue<void>> link(ProviderContainer container) async {
-    final completer = Completer<AsyncValue<void>>();
-    final subscription = container.listen(
-      linkProductWithoutRegisterControllerProvider,
-      (previous, next) {
-        if (previous is AsyncLoading<void> && next is! AsyncLoading<void>) {
-          completer.complete(next);
-        }
-      },
-    );
-    addTearDown(subscription.close);
+  Future<bool> link(ProviderContainer container) async {
     await container.read(linkProductWithoutRegisterControllerProvider.future);
 
-    container
+    return container
         .read(linkProductWithoutRegisterControllerProvider.notifier)
         .link(
           errorKey: errorKey,
@@ -90,8 +78,6 @@ void main() {
           productCode: productCode,
           productPackingCode: productPackingCode,
         );
-
-    return completer.future;
   }
 
   test('link should link the product and refresh details', () async {
@@ -108,7 +94,7 @@ void main() {
 
     final result = await link(container);
 
-    expect(result, const AsyncData<void>(null));
+    expect(result, isTrue);
     verify(
       () => repository.linkSaleRequestProductNotFound(
         params,
@@ -138,7 +124,11 @@ void main() {
 
       final result = await link(container);
 
-      expect(result.error, same(exception));
+      expect(result, isFalse);
+      expect(
+        container.read(linkProductWithoutRegisterControllerProvider).error,
+        same(exception),
+      );
       verify(
         () => repository.linkSaleRequestProductNotFound(
           params,
@@ -168,7 +158,11 @@ void main() {
 
     final result = await link(container);
 
-    expect(result.error, same(exception));
+    expect(result, isTrue);
+    expect(
+      container.read(linkProductWithoutRegisterControllerProvider).error,
+      same(exception),
+    );
     expect(detailsController.loadSilentlyCount, 1);
     verify(
       () => repository.linkSaleRequestProductNotFound(
