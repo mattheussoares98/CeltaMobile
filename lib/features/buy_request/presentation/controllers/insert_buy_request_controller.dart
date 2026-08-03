@@ -1,17 +1,19 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/buy_request/providers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/buy_request/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_buy_request_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class InsertBuyRequestController extends _$InsertBuyRequestController {
   @override
-  FutureOr<void> build(int enterpriseCode) async {}
+  FutureOr<void> build(int enterpriseCode) async {
+    ref.cache();
+  }
 
   Future<bool> insert(String observations) async {
     bool succeeds = false;

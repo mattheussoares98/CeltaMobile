@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/enterprise/enterprise.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprises/providers.dart';
+import 'package:celta_inventario/utils/extensions/extensions.dart';
+import 'package:collection/collection.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'enterprises_state_controller.g.dart';
 
@@ -15,6 +15,8 @@ part 'enterprises_state_controller.g.dart';
 class EnterprisesStateController extends _$EnterprisesStateController {
   @override
   Future<List<EnterpriseEntity>> build({int? enterpriseCode}) async {
+    ref.cache(60);
+
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final workingUrl = validatedUser!.enterprise!.workingUrl!;

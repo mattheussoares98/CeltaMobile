@@ -1,18 +1,20 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/providers/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'concurrents_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class ConcurrentsStateController extends _$ConcurrentsStateController {
   @override
   Future<List<ConcurrentEntity>> build() async {
+    ref.cache();
+
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     return await ref

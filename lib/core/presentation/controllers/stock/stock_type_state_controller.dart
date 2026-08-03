@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/providers/stock/stock.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/stock/stock.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'stock_type_state_controller.g.dart';
 
@@ -12,6 +12,8 @@ part 'stock_type_state_controller.g.dart';
 class StockTypeStateController extends _$StockTypeStateController {
   @override
   Future<List<StockTypeEntity>> build(int enterpriseCode) async {
+    ref.cache(60);
+
     final repository = ref.watch(soapStockTypeRepositoryProvider);
     final userSession = await ref.watch(validatedUserSessionProvider.future);
 

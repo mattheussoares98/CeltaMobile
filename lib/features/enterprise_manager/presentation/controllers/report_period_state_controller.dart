@@ -1,11 +1,14 @@
+import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'report_period_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class ReportPeriodStateController extends _$ReportPeriodStateController {
   @override
   DateTime build() {
+    ref.cache(60);
+
     final now = DateTime.now();
     final start = DateTime(now.year, now.month);
     //!only the month matters because save only the year and month on the database

@@ -1,21 +1,23 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/transfer_request/providers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/transfer_request/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_transfer_request_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class InsertTransferRequestController
     extends _$InsertTransferRequestController {
   @override
-  FutureOr<void> build(DraftKey draftKey) {}
+  FutureOr<void> build(DraftKey draftKey) {
+    ref.cache();
+  }
 
   Future<void> insert() async {
     state = const AsyncValue.loading();

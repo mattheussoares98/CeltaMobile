@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/transfer_request/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'destiny_enterprises_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class DestinyEnterprisesStateController
     extends _$DestinyEnterprisesStateController {
   @override
@@ -16,6 +16,8 @@ class DestinyEnterprisesStateController
     required int requestTypeCode,
     required int enterpriseOriginCode,
   }) async {
+    ref.cache(60);
+
     final validatedUser = await ref.watch(validatedUserSessionProvider.future);
 
     final enterprises = await ref

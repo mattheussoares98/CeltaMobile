@@ -1,6 +1,3 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
@@ -8,13 +5,18 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/providers.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'entry_quantity_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class EntryQuantityStateController extends _$EntryQuantityStateController {
   @override
   FutureOr<LastChangedProductEntity?> build(int codigoInternoInvCont) async {
+    ref.cache();
+
     return null;
   }
 
@@ -42,9 +44,7 @@ class EntryQuantityStateController extends _$EntryQuantityStateController {
       List<ProductEntity> products = [];
       try {
         products = await ref.read(
-          searchProductsStateControllerProvider(
-            searchProductKey,
-          ).future,
+          searchProductsStateControllerProvider(searchProductKey).future,
         );
       } catch (e) {
         return state.value;

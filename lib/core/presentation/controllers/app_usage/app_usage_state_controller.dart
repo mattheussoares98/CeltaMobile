@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/app_usage/app_usage.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,7 +12,10 @@ part 'app_usage_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class AppUsageStateController extends _$AppUsageStateController {
   @override
-  FutureOr<List<GroupedUsageEntity>?> build() => null;
+  FutureOr<List<GroupedUsageEntity>?> build() {
+    ref.cache(60);
+    return null;
+  }
 
   Future<void> loadRemoteUsageReport(DateTime date) async {
     state = const AsyncValue.loading();

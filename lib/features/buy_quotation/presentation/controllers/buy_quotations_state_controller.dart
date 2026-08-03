@@ -8,7 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'buy_quotations_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class BuyQuotationsStateController extends _$BuyQuotationsStateController {
   @override
   Future<List<BuyQuotationEntity>> build(int enterpriseCode) async {
