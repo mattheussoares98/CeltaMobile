@@ -1,5 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectableActions extends ConsumerWidget {
+  //TODO change the file name
   const SelectableActions({
     super.key,
     required this.detailType,
@@ -20,7 +23,27 @@ class SelectableActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final canProceed = switch (detailType) {
+      SynchronizerErrorDetailType.schedule => ref.watch(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizerDelete,
+        ).select((s) => s.value == true),
+      ),
+      _ => true,
+    };
+
     void onTap(Set<int> codes) {
+      if (!canProceed) {
+        showAlertDialog(
+          context: context,
+          title: 'Atenção'.hardcoded,
+          content:
+              'Seu usuário não possui permissão para realizar esse procedimento'
+                  .hardcoded,
+        );
+        return;
+      }
       switch (detailType) {
         case SynchronizerErrorDetailType.couponMarkedToReadAgain:
           ref
@@ -60,9 +83,9 @@ class SelectableActions extends ConsumerWidget {
                   'Excluir todos'.hardcoded,
                 _ => 'BUG. Não implementado'.hardcoded,
               },
-              onPressed: () {
-                onTap(selectableItems.map((e) => e.code).toSet());
-              },
+              onPressed: canProceed
+                  ? () => onTap(selectableItems.map((e) => e.code).toSet())
+                  : null,
             ),
           ),
           gapW8,
@@ -84,7 +107,7 @@ class SelectableActions extends ConsumerWidget {
                     _ => 'BUG. Não implementado'.hardcoded,
                   },
 
-                  onPressed: hasSelectedItems
+                  onPressed: hasSelectedItems && canProceed
                       ? () {
                           onTap(
                             ref.read(
