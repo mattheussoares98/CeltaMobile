@@ -12,4 +12,6 @@ abstract class IEcSynchronizerRepository {
   );
 
   Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
+
+  Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);
 }

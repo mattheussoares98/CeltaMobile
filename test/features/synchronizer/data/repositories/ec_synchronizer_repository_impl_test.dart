@@ -119,4 +119,32 @@ void main() {
       verifyNoMoreInteractions(datasource);
     });
   });
+
+  group('deleteScheduleErrors', () {
+    const codes = [123, 456];
+
+    test('should delegate the schedule error codes to the datasource', () async {
+      when(
+        () => datasource.deleteScheduleErrors(params, codes),
+      ).thenAnswer((_) async {});
+
+      await sut.deleteScheduleErrors(params, codes);
+
+      verify(() => datasource.deleteScheduleErrors(params, codes)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to delete schedule errors');
+      when(
+        () => datasource.deleteScheduleErrors(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.deleteScheduleErrors(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(() => datasource.deleteScheduleErrors(params, codes)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
 }

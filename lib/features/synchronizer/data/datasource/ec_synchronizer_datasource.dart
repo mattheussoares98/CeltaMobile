@@ -62,4 +62,17 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       body: {...params.toMap(), 'Codes': codes},
     );
   }
+
+  @override
+  Future<void> deleteScheduleErrors(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/DeleteScheduleErrors',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
+  }
 }

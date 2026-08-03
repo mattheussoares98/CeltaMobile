@@ -26,4 +26,10 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
     EcRequestParams params,
     List<int> codes,
   ) async => await datasource.markCouponsToReadAgain(params, codes);
+
+  @override
+  Future<void> deleteScheduleErrors(
+    EcRequestParams params,
+    List<int> codes,
+  ) async => await datasource.deleteScheduleErrors(params, codes);
 }

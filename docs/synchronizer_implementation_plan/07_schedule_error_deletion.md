@@ -49,10 +49,13 @@ Expose it as `POST /Synchronizer/DeleteScheduleErrors`. Keep the existing aggreg
 - [ ] Introduce a deletion capability contract for coded deletable details, in its own file, and have the schedule entity implement it.
   - Why: presentation should show deletion only for explicitly deletable payloads; `DetailType` describes payload shape, not mutation capability.
 - [ ] Update schedule factories and model-conversion tests for `Code`.
-- [ ] Add `deleteScheduleErrors(EcRequestParams params, List<int> codes)` to datasource and repository interfaces and implementations.
+- [x] Add `deleteScheduleErrors(EcRequestParams params, List<int> codes)` to datasource and repository interfaces and implementations.
   - POST to `/api/Synchronizer/DeleteScheduleErrors` with `{...params.toMap(), 'Codes': codes}`.
-- [ ] Add focused datasource tests for the exact URL, verb, headers, body, successful completion, and propagated request failure.
-- [ ] Add focused repository tests for exact forwarding and propagated failure.
+  - Result: added typed deletion methods across both interfaces and implementations with exact code-list forwarding.
+- [x] Add focused datasource tests for the exact URL, verb, headers, body, successful completion, and propagated request failure.
+  - Result: covered one batched POST and request-error propagation with exact argument verification.
+- [x] Add focused repository tests for exact forwarding and propagated failure.
+  - Result: covered exact datasource delegation and error propagation; both focused suites passed 17 tests in total.
 
 ## CeltaMobile command and UI
 
