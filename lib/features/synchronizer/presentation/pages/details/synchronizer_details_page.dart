@@ -16,26 +16,34 @@ class SynchronizerDetailsPage extends ConsumerWidget {
     final detailsProvider = synchronizerDetailsStateControllerProvider(
       errorKey,
     );
-    final errorQuantity =
-        ref.watch(detailsProvider.select((s) => s.value?.items.length)) ??
-        ref.watch(
-          synchronizerCountStateControllerProvider.select(
-            (s) =>
-                s.value?.firstWhereOrNull((e) => e.errorKey == errorKey)?.count,
-          ),
-        );
 
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: detailsProvider,
       usePadding: false,
       appBar: BaseAppBar(
-        titleWidget: BaseRichText(
-          maxLines: 2,
-          texts: [
-            if (errorQuantity != null) BaseText.error('($errorQuantity) '),
-            BaseText.title(errorKey, maxLines: 2),
-          ],
+        titleWidget: Consumer(
+          builder: (_, ref, _) {
+            final errorQuantity =
+                ref.watch(
+                  detailsProvider.select((s) => s.value?.items.length),
+                ) ??
+                ref.watch(
+                  synchronizerCountStateControllerProvider.select(
+                    (s) => s.value
+                        ?.firstWhereOrNull((e) => e.errorKey == errorKey)
+                        ?.count,
+                  ),
+                );
+
+            return BaseRichText(
+              maxLines: 2,
+              texts: [
+                if (errorQuantity != null) BaseText.error('($errorQuantity) '),
+                BaseText.title(errorKey, maxLines: 2),
+              ],
+            );
+          },
         ),
       ),
       body: AsyncValueWidget(
