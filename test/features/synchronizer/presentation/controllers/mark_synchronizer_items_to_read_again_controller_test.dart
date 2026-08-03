@@ -1,7 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
@@ -54,26 +53,16 @@ void main() {
       final container = makeContainer();
       addTearDown(container.dispose);
       await container.read(
-        markSynchronizerItemsToReadAgainControllerProvider(
-          SynchronizerErrorDetailType.coupon,
-        ).future,
+        markSynchronizerItemsToReadAgainControllerProvider.future,
       );
 
       await container
-          .read(
-            markSynchronizerItemsToReadAgainControllerProvider(
-              SynchronizerErrorDetailType.coupon,
-            ).notifier,
-          )
+          .read(markSynchronizerItemsToReadAgainControllerProvider.notifier)
           .markToReadAgain(codes, errorKey);
 
       verify(() => repository.markCouponsToReadAgain(params, codes)).called(1);
       expect(
-        container.read(
-          markSynchronizerItemsToReadAgainControllerProvider(
-            SynchronizerErrorDetailType.coupon,
-          ),
-        ),
+        container.read(markSynchronizerItemsToReadAgainControllerProvider),
         const AsyncData<void>(null),
       );
       verifyNoMoreInteractions(repository);
@@ -89,27 +78,15 @@ void main() {
     final container = makeContainer();
     addTearDown(container.dispose);
     await container.read(
-      markSynchronizerItemsToReadAgainControllerProvider(
-        SynchronizerErrorDetailType.coupon,
-      ).future,
+      markSynchronizerItemsToReadAgainControllerProvider.future,
     );
 
     await container
-        .read(
-          markSynchronizerItemsToReadAgainControllerProvider(
-            SynchronizerErrorDetailType.coupon,
-          ).notifier,
-        )
+        .read(markSynchronizerItemsToReadAgainControllerProvider.notifier)
         .markToReadAgain(codes, errorKey);
 
     expect(
-      container
-          .read(
-            markSynchronizerItemsToReadAgainControllerProvider(
-              SynchronizerErrorDetailType.coupon,
-            ),
-          )
-          .error,
+      container.read(markSynchronizerItemsToReadAgainControllerProvider).error,
       same(exception),
     );
     verify(() => repository.markCouponsToReadAgain(params, codes)).called(1);
@@ -120,25 +97,15 @@ void main() {
     final container = makeContainer();
     addTearDown(container.dispose);
     await container.read(
-      markSynchronizerItemsToReadAgainControllerProvider(
-        SynchronizerErrorDetailType.coupon,
-      ).future,
+      markSynchronizerItemsToReadAgainControllerProvider.future,
     );
 
     await container
-        .read(
-          markSynchronizerItemsToReadAgainControllerProvider(
-            SynchronizerErrorDetailType.coupon,
-          ).notifier,
-        )
+        .read(markSynchronizerItemsToReadAgainControllerProvider.notifier)
         .markToReadAgain(const [], errorKey);
 
     expect(
-      container.read(
-        markSynchronizerItemsToReadAgainControllerProvider(
-          SynchronizerErrorDetailType.coupon,
-        ),
-      ),
+      container.read(markSynchronizerItemsToReadAgainControllerProvider),
       const AsyncData<void>(null),
     );
     verifyNoMoreInteractions(repository);

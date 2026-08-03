@@ -24,11 +24,7 @@ class SelectableActions extends ConsumerWidget {
       switch (detailType) {
         case SynchronizerErrorDetailType.couponMarkedToReadAgain:
           ref
-              .read(
-                markSynchronizerItemsToReadAgainControllerProvider(
-                  detailType,
-                ).notifier,
-              )
+              .read(markSynchronizerItemsToReadAgainControllerProvider.notifier)
               .markToReadAgain(codes.toList(), errorKey);
           break;
         case SynchronizerErrorDetailType.schedule:
@@ -40,15 +36,10 @@ class SelectableActions extends ConsumerWidget {
       }
     }
 
-    ref.listen(markSynchronizerItemsToReadAgainControllerProvider(detailType), (
-      p,
-      n,
-    ) {
+    ref.listen(markSynchronizerItemsToReadAgainControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
-    ref.observeLoading([
-      markSynchronizerItemsToReadAgainControllerProvider(detailType),
-    ]);
+    ref.observeLoading([markSynchronizerItemsToReadAgainControllerProvider]);
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
