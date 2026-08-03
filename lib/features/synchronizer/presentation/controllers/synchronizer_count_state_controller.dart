@@ -12,11 +12,25 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'synchronizer_count_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class SynchronizerCountStateController
     extends _$SynchronizerCountStateController {
   @override
   FutureOr<List<SynchronizerErrorSummaryEntity>> build() async {
+    Timer? disposeTimer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      disposeTimer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      disposeTimer?.cancel();
+    });
+    ref.onDispose(() {
+      disposeTimer?.cancel();
+    });
+
     await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(

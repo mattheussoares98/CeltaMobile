@@ -12,10 +12,24 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'statistics_state_controller.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class StatisticsStateController extends _$StatisticsStateController {
   @override
   FutureOr<BsfProcessAuthorizationStatisticEntity> build() async {
+    Timer? disposeTimer;
+    final link = ref.keepAlive();
+    ref.onCancel(() {
+      disposeTimer = Timer(const Duration(seconds: 20), () {
+        link.close();
+      });
+    });
+    ref.onResume(() {
+      disposeTimer?.cancel();
+    });
+    ref.onDispose(() {
+      disposeTimer?.cancel();
+    });
+
     await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(
       canAccessResourceStateControllerProvider(
