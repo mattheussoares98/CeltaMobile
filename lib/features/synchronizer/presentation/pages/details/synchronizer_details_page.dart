@@ -59,8 +59,8 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             return const SynchronizerEmptyErrors();
           }
 
-          final rereadableItems = data.items
-              .whereType<RereadableSynchronizerErrorDetailEntity>()
+          final selectableItems = data.items
+              .whereType<SelectableSynchronizerErrorDetailEntity>()
               .toList();
           final items = switch (data.detailType) {
             SynchronizerErrorDetailType.coupon => CouponItems(
@@ -97,7 +97,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           };
 
           //! When there is no readable (can mark to read again) return the items directly
-          if (rereadableItems.isEmpty) return items;
+          if (selectableItems.isEmpty) return items;
 
           return Column(
             children: [
@@ -106,7 +106,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                 onMarkAll: () {
                   markToReadAgain(
                     data.detailType,
-                    rereadableItems.map((e) => e.code).toList(),
+                    selectableItems.map((e) => e.code).toList(),
                   );
                 },
                 onMarkSelected: () {

@@ -25,7 +25,7 @@ class ScheduleItems extends ConsumerWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
-            onTap: item is RereadableSynchronizerErrorDetailEntity
+            onTap: item is SelectableSynchronizerErrorDetailEntity
                 ? () => ref
                       .read(provider.notifier)
                       .select(1) //TODO fix
@@ -43,7 +43,7 @@ class ScheduleItems extends ConsumerWidget {
                           subTitle: item.enterpriseName,
                         ),
                       ),
-                      if (item is RereadableSynchronizerErrorDetailEntity)
+                      if (item is SelectableSynchronizerErrorDetailEntity)
                         Consumer(
                           builder: (_, ref, _) {
                             final isSelected = ref.watch(

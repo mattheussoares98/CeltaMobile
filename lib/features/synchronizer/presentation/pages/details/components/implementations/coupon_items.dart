@@ -25,7 +25,7 @@ class CouponItems extends ConsumerWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
-            onTap: item is RereadableSynchronizerErrorDetailEntity
+            onTap: item is SelectableSynchronizerErrorDetailEntity
                 ? () => ref.read(provider.notifier).select(item.code)
                 : null,
             child: Padding(
@@ -41,7 +41,7 @@ class CouponItems extends ConsumerWidget {
                           subTitle: item.enterprisePersonalizedCode,
                         ),
                       ),
-                      if (item is RereadableSynchronizerErrorDetailEntity)
+                      if (item is SelectableSynchronizerErrorDetailEntity)
                         Consumer(
                           builder: (_, ref, _) {
                             final isSelected = ref.watch(
