@@ -11,6 +11,7 @@ part 'mark_synchronizer_items_to_read_again_controller.g.dart';
 @riverpod
 class MarkSynchronizerItemsToReadAgainController
     extends _$MarkSynchronizerItemsToReadAgainController {
+  //TODO change to markCouponsToReadAgainController
   @override
   FutureOr<void> build() {}
 
