@@ -74,9 +74,12 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               items: data.items
                   .cast<BSFNFeDisableSynchronizerErrorDetailEntity>(),
             ),
+            SynchronizerErrorDetailType.schedule => ScheduleItems(
+              items: data.items
+                  .cast<BSFScheduleSynchronizerErrorDetailEntity>(),
+            ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
-            SynchronizerErrorDetailType.schedule ||
             SynchronizerErrorDetailType.transaction ||
             SynchronizerErrorDetailType.treasuryMovement ||
             SynchronizerErrorDetailType.mapSummarySaleEcf ||
