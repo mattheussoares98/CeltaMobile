@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
-import 'package:celta_inventario/features/adjust_cost/providers.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/adjust_cost/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'confirm_adjust_cost_controller.g.dart';
 
@@ -16,20 +16,7 @@ part 'confirm_adjust_cost_controller.g.dart';
 class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
   @override
   FutureOr<void> build(int enterpriseCode) {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 5), () {
-        //enough to avoid loosing the state too fast
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache(5);
   }
 
   Future<void> confirm(AdjustCostParametersEntity parameters) async {
@@ -70,9 +57,7 @@ class ConfirmAdjustCostController extends _$ConfirmAdjustCostController {
       );
 
       final products = await ref.read(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
       final oldProduct = products.elementAtOrNull(productIndex);
       if (oldProduct == null) return;

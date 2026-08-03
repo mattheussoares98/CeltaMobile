@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/products/products.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'selected_product_state_controller.g.dart';
 
@@ -13,20 +13,8 @@ part 'selected_product_state_controller.g.dart';
 class SelectedProductStateController extends _$SelectedProductStateController {
   @override
   FutureOr<ProductEntity?> build(int enterpriseCode, String plu) {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 1), () {
-        //only the enough to don't lose the state while is changing the page
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache(1);
+    //only the enough to don't lose the state while is changing the page
     return null;
   }
 

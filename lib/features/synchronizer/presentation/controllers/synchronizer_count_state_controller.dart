@@ -8,6 +8,7 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'synchronizer_count_state_controller.g.dart';
@@ -17,19 +18,7 @@ class SynchronizerCountStateController
     extends _$SynchronizerCountStateController {
   @override
   FutureOr<List<SynchronizerErrorSummaryEntity>> build() async {
-    Timer? disposeTimer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      disposeTimer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      disposeTimer?.cancel();
-    });
-    ref.onDispose(() {
-      disposeTimer?.cancel();
-    });
+    ref.cache();
 
     await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(

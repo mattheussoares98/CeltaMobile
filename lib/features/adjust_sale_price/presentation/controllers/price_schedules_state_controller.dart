@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/providers.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'price_schedules_state_controller.g.dart';
 
@@ -16,19 +16,7 @@ class PriceSchedulesStateController extends _$PriceSchedulesStateController {
     int enterpriseCode,
     String productPlu,
   ) {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
 
     return null;
   }

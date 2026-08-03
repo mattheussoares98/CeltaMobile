@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_detail_controller.g.dart';
@@ -14,13 +13,7 @@ class ProductDetailController extends _$ProductDetailController {
     required int enterpriseCode,
     required int productCode,
   }) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), link.close);
-    });
-    ref.onResume(() => timer?.cancel());
-    ref.onDispose(() => timer?.cancel());
+    ref.cache();
 
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 

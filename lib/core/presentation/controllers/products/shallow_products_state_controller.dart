@@ -22,19 +22,7 @@ class ShallowProductsStateController extends _$ShallowProductsStateController {
   @override
   FutureOr<List<ProductEntity>?> build() async {
     ref.onDispose(() => _activeToken?.cancel());
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
     return null;
   }
 

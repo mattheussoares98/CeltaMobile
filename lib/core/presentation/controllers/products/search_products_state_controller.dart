@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
+import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/products/products.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
-import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'search_products_state_controller.g.dart';
 
@@ -15,19 +15,7 @@ part 'search_products_state_controller.g.dart';
 class SearchProductsStateController extends _$SearchProductsStateController {
   @override
   Future<List<ProductEntity>> build(SearchProductKey searchProductKey) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
 
     return [];
   }

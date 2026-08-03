@@ -1,30 +1,17 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/providers/providers.dart';
-
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:celta_inventario/utils/utils.dart';
 part 'researchs_state_controller.g.dart';
 
 @riverpod
 class ResearchsStateController extends _$ResearchsStateController {
   @override
   Future<List<ResearchEntity>> build(int enterpriseCode) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
     return await _load(null);
   }
 

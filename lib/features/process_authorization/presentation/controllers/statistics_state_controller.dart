@@ -8,6 +8,7 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'statistics_state_controller.g.dart';
@@ -16,19 +17,7 @@ part 'statistics_state_controller.g.dart';
 class StatisticsStateController extends _$StatisticsStateController {
   @override
   FutureOr<BsfProcessAuthorizationStatisticEntity> build() async {
-    Timer? disposeTimer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      disposeTimer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      disposeTimer?.cancel();
-    });
-    ref.onDispose(() {
-      disposeTimer?.cancel();
-    });
+    ref.cache();
 
     await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(

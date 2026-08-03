@@ -6,6 +6,7 @@ import 'package:celta_inventario/core/providers/ec_request_params/ec_request_par
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'sale_requests_state_controller.g.dart';
@@ -16,19 +17,7 @@ class SaleRequestsStateController extends _$SaleRequestsStateController {
   FutureOr<EcPaginationResults<SaleRequestEntity>?> build(
     int enterpriseCode,
   ) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
     return null;
   }
 

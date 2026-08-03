@@ -7,6 +7,7 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/providers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'shallow_buy_movement_state_controller.g.dart';
@@ -16,19 +17,7 @@ class ShallowBuyMovementStateController
     extends _$ShallowBuyMovementStateController {
   @override
   FutureOr<List<EcBuyMovementDtoEntity>?> build(int enterpriseCode) {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
 
     return null;
   }

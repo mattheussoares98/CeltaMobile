@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'selected_product_index_state_controller.g.dart';
@@ -9,20 +8,8 @@ class SelectedProductIndeStateController
     extends _$SelectedProductIndeStateController {
   @override
   int? build(int receiptCode) {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 30), () {
-        //enough to avoid loosing the state while is building the products
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache(30);
+    //enough to avoid loosing the state while is building the products
 
     return null;
   }

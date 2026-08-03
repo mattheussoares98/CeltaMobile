@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/providers/address/address.dart';
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'address_by_cep_state_controller.g.dart';
 
@@ -11,19 +11,8 @@ part 'address_by_cep_state_controller.g.dart';
 class AddressByCepStateController extends _$AddressByCepStateController {
   @override
   FutureOr<AddressEntity?> build(Modules module) async {
-    Timer? timer;
-    final link = ref.keepAlive();
-    ref.onCancel(() {
-      timer = Timer(const Duration(seconds: 20), () {
-        link.close();
-      });
-    });
-    ref.onResume(() {
-      timer?.cancel();
-    });
-    ref.onDispose(() {
-      timer?.cancel();
-    });
+    ref.cache();
+
     return null;
   }
 
