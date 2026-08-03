@@ -28,6 +28,19 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   ) async => await datasource.markCouponsToReadAgain(params, codes);
 
   @override
+  Future<void> linkSaleRequestProductNotFound(
+    EcRequestParams params, {
+    required int productNotFoundCode,
+    required int productCode,
+    required int productPackingCode,
+  }) async => await datasource.linkSaleRequestProductNotFound(
+    params,
+    productNotFoundCode: productNotFoundCode,
+    productCode: productCode,
+    productPackingCode: productPackingCode,
+  );
+
+  @override
   Future<void> markSaleRequestsWithErrorToReadAgain(
     EcRequestParams params,
     List<int> codes,

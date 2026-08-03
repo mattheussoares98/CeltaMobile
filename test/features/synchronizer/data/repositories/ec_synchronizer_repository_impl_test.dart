@@ -152,6 +152,70 @@ void main() {
     });
   });
 
+  group('linkSaleRequestProductNotFound', () {
+    const productNotFoundCode = 123;
+    const productCode = 456;
+    const productPackingCode = 789;
+
+    test('should delegate the product link codes to the datasource', () async {
+      when(
+        () => datasource.linkSaleRequestProductNotFound(
+          params,
+          productNotFoundCode: productNotFoundCode,
+          productCode: productCode,
+          productPackingCode: productPackingCode,
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.linkSaleRequestProductNotFound(
+        params,
+        productNotFoundCode: productNotFoundCode,
+        productCode: productCode,
+        productPackingCode: productPackingCode,
+      );
+
+      verify(
+        () => datasource.linkSaleRequestProductNotFound(
+          params,
+          productNotFoundCode: productNotFoundCode,
+          productCode: productCode,
+          productPackingCode: productPackingCode,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to link the sale request product');
+      when(
+        () => datasource.linkSaleRequestProductNotFound(
+          params,
+          productNotFoundCode: productNotFoundCode,
+          productCode: productCode,
+          productPackingCode: productPackingCode,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.linkSaleRequestProductNotFound(
+        params,
+        productNotFoundCode: productNotFoundCode,
+        productCode: productCode,
+        productPackingCode: productPackingCode,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.linkSaleRequestProductNotFound(
+          params,
+          productNotFoundCode: productNotFoundCode,
+          productCode: productCode,
+          productPackingCode: productPackingCode,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('deleteScheduleErrors', () {
     const codes = [123, 456];
 

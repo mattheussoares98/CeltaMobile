@@ -13,6 +13,13 @@ abstract class IEcSynchronizerRepository {
 
   Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
 
+  Future<void> linkSaleRequestProductNotFound(
+    EcRequestParams params, {
+    required int productNotFoundCode,
+    required int productCode,
+    required int productPackingCode,
+  });
+
   Future<void> markSaleRequestsWithErrorToReadAgain(
     EcRequestParams params,
     List<int> codes,

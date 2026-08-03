@@ -280,6 +280,77 @@ void main() {
     });
   });
 
+  group('linkSaleRequestProductNotFound', () {
+    const productNotFoundCode = 123;
+    const productCode = 456;
+    const productPackingCode = 789;
+    const url = '/api/Synchronizer/LinkSaleRequestProductNotFound';
+    final body = {
+      ...params.toMap(),
+      'ProductNotFoundCode': productNotFoundCode,
+      'ProductCode': productCode,
+      'ProductPackingCode': productPackingCode,
+    };
+
+    test('should post the product link codes', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.linkSaleRequestProductNotFound(
+        params,
+        productNotFoundCode: productNotFoundCode,
+        productCode: productCode,
+        productPackingCode: productPackingCode,
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to link the sale request product');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.linkSaleRequestProductNotFound(
+        params,
+        productNotFoundCode: productNotFoundCode,
+        productCode: productCode,
+        productPackingCode: productPackingCode,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('deleteScheduleErrors', () {
     const codes = [123, 456];
     const url = '/api/Synchronizer/DeleteScheduleErrors';
