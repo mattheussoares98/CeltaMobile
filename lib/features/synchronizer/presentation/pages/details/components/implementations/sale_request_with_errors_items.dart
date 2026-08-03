@@ -68,6 +68,59 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                       DateFormatType.ddMMyyyyHHmm,
                     ),
                   ),
+                  if (item.commerceSite.isNotEmpty)
+                    TitleAndSubTitle(
+                      title: 'Site'.hardcoded,
+                      subTitle: item.commerceSite,
+                    ),
+                  if (item.saleRequestInvoiceCode.isNotEmpty)
+                    TitleAndSubTitle(
+                      title: 'Fatura'.hardcoded,
+                      subTitle: item.saleRequestInvoiceCode,
+                    ),
+                  if (item.saleRequestNumber.isNotEmpty)
+                    TitleAndSubTitle(
+                      title: 'Pedido'.hardcoded,
+                      subTitle: item.saleRequestNumber,
+                    ),
+                  if (item.productsNotFound.isNotEmpty)
+                    for (var i = 0; i < item.productsNotFound.length; i++)
+                      Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          if (i == 0 || i < item.productsNotFound.length)
+                            const Divider(),
+                          if (i == 0)
+                            Align(
+                              child: BaseText.error(
+                                'Produtos não encontrados'.hardcoded,
+                              ),
+                            ),
+                          TitleAndSubTitle(
+                            title: 'Cód site'.hardcoded,
+                            subTitle: item.productsNotFound[i].eCommerceCode,
+                          ),
+                          TitleAndSubTitle(
+                            title: 'Produto'.hardcoded,
+                            subTitle: item.productsNotFound[i].name,
+                          ),
+                          Align(
+                            alignment: .centerRight,
+                            child: PrimaryButton(
+                              onPressed: () {
+                                showAlertDialog(
+                                  context: context,
+                                  title: 'Pendent implementation'.hardcoded,
+                                  content:
+                                      'If you are seeing this, the developer forgot to implement this method before releasing. He should create a new controller to associate the product not found and should reload (silently) the errors to apply the changes without showing a loading'
+                                          .hardcoded,
+                                );
+                              },
+                              text: 'Associate'.hardcoded,
+                            ),
+                          ),
+                        ],
+                      ),
                   for (var i = 0; i < item.details.length; i++)
                     Column(
                       children: [
