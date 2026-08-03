@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectableActions extends ConsumerWidget {
-  //TODO change the file name
   const SelectableActions({
     super.key,
     required this.detailType,
@@ -44,31 +43,16 @@ class SelectableActions extends ConsumerWidget {
         );
         return;
       }
-      switch (detailType) {
-        case SynchronizerErrorDetailType.couponMarkedToReadAgain:
-          ref
-              .read(markSynchronizerItemsToReadAgainControllerProvider.notifier)
-              .markToReadAgain(codes.toList(), errorKey);
-          break;
-        case SynchronizerErrorDetailType.schedule:
-          ref
-              .read(deleteScheduleErrorsControllerProvider.notifier)
-              .delete(codes.toList(), errorKey);
-          break;
-        default:
-      }
+
+      ref
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .handle(codes.toList(), errorKey, detailType);
     }
 
-    ref.listen(markSynchronizerItemsToReadAgainControllerProvider, (p, n) {
+    ref.listen(handleSelectedCodesControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
-    ref.listen(deleteScheduleErrorsControllerProvider, (p, n) {
-      n.showAlertDialogOnError(context);
-    });
-    ref.observeLoading([
-      markSynchronizerItemsToReadAgainControllerProvider,
-      deleteScheduleErrorsControllerProvider,
-    ]);
+    ref.observeLoading([handleSelectedCodesControllerProvider]);
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
@@ -77,7 +61,8 @@ class SelectableActions extends ConsumerWidget {
           Expanded(
             child: PrimaryButton(
               text: switch (detailType) {
-                SynchronizerErrorDetailType.couponMarkedToReadAgain =>
+                SynchronizerErrorDetailType.couponMarkedToReadAgain ||
+                SynchronizerErrorDetailType.saleRequestWithError =>
                   'Marcar todos para releitura'.hardcoded,
                 SynchronizerErrorDetailType.schedule =>
                   'Excluir todos'.hardcoded,
@@ -100,7 +85,8 @@ class SelectableActions extends ConsumerWidget {
 
                 return PrimaryButton(
                   text: switch (detailType) {
-                    SynchronizerErrorDetailType.couponMarkedToReadAgain =>
+                    SynchronizerErrorDetailType.couponMarkedToReadAgain ||
+                    SynchronizerErrorDetailType.saleRequestWithError =>
                       'Marcar selecionados para releitura'.hardcoded,
                     SynchronizerErrorDetailType.schedule =>
                       'Excluir selecionados'.hardcoded,

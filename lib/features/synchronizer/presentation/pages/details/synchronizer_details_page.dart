@@ -73,6 +73,13 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               items: data.items
                   .cast<BSFScheduleSynchronizerErrorDetailEntity>(),
             ),
+            SynchronizerErrorDetailType.saleRequestWithError =>
+              SaleRequestWithErrorsItems(
+                items: data.items
+                    .cast<
+                      BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
+                    >(),
+              ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
@@ -80,7 +87,6 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.mapSummarySaleEcf ||
             SynchronizerErrorDetailType.customerWithError ||
             SynchronizerErrorDetailType.customerWaitingApproval ||
-            SynchronizerErrorDetailType.saleRequestWithError ||
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
             SynchronizerErrorDetailType.saleRequestMarked ||
             SynchronizerErrorDetailType.productWithError ||
