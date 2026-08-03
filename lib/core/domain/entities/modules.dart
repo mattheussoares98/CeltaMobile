@@ -15,7 +15,7 @@ enum Modules {
   reports('Relatórios'),
   saleRequest('Pedido de vendas'),
   searchProducts('Pesquisar produtos'),
-  synchronizer('Sincronizador'),
+  synchronizer('Sincronismo'),
   stockReplacement('Substituição de estoque'),
   transferBetweenStocks('Transferência (estoques)'),
   transferRequest('Pedido de transferência');
