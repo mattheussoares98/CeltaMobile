@@ -39,7 +39,13 @@ class SelectableActions extends ConsumerWidget {
     ref.listen(markSynchronizerItemsToReadAgainControllerProvider, (p, n) {
       n.showAlertDialogOnError(context);
     });
-    ref.observeLoading([markSynchronizerItemsToReadAgainControllerProvider]);
+    ref.listen(deleteScheduleErrorsControllerProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+    });
+    ref.observeLoading([
+      markSynchronizerItemsToReadAgainControllerProvider,
+      deleteScheduleErrorsControllerProvider,
+    ]);
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
