@@ -7,12 +7,12 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CouponItems extends StatelessWidget {
+class CouponItems extends ConsumerWidget {
   const CouponItems({super.key, required this.items});
   final List<BSFCouponSynchronizerEntity> items;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final provider = selectedSynchronizerCodesStateControllerProvider(
       SynchronizerErrorDetailType.coupon,
     );
@@ -24,33 +24,39 @@ class CouponItems extends StatelessWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
+            onTap: item is RereadableSynchronizerErrorDetailEntity
+                ? () => ref.read(provider.notifier).select(item.code)
+                : null,
             child: Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  if (item is BSFCouponSynchronizerErrorDetailEntity)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Consumer(
-                        builder: (_, ref, _) {
-                          final isSelected = ref.watch(
-                            provider.select((s) => s.contains(item.code)),
-                          );
-                          return BaseCheckBox(
-                            name: 'Selecionar cupom'.hardcoded,
-                            enabled: isSelected,
-                            onChanged: (_) =>
-                                ref.read(provider.notifier).select(item.code),
-                            width: Sizes.p24,
-                            height: Sizes.p24,
-                          );
-                        },
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TitleAndSubTitle(
+                          title: 'Empresa'.hardcoded,
+                          subTitle: item.enterprisePersonalizedCode,
+                        ),
                       ),
-                    ),
-                  TitleAndSubTitle(
-                    title: 'Empresa'.hardcoded,
-                    subTitle: item.enterprisePersonalizedCode,
+                      if (item is RereadableSynchronizerErrorDetailEntity)
+                        Consumer(
+                          builder: (_, ref, _) {
+                            final isSelected = ref.watch(
+                              provider.select((s) => s.contains(item.code)),
+                            );
+                            return BaseCheckBox(
+                              name: 'Selecionar cupom'.hardcoded,
+                              enabled: isSelected,
+                              onChanged: (_) =>
+                                  ref.read(provider.notifier).select(item.code),
+                              width: Sizes.p20,
+                              height: Sizes.p20,
+                            );
+                          },
+                        ),
+                    ],
                   ),
                   TitleAndSubTitle(
                     title: 'Última leitura'.hardcoded,
