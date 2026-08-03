@@ -25,19 +25,6 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           ),
         );
 
-    void markToReadAgain(
-      SynchronizerErrorDetailType detailType,
-      List<int> codes,
-    ) {
-      ref
-          .read(
-            markSynchronizerItemsToReadAgainControllerProvider(
-              detailType,
-            ).notifier,
-          )
-          .markToReadAgain(codes, errorKey);
-    }
-
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: detailsProvider,
@@ -101,24 +88,10 @@ class SynchronizerDetailsPage extends ConsumerWidget {
 
           return Column(
             children: [
-              RereadActions(
+              SelectableActions(
                 detailType: data.detailType,
-                onMarkAll: () {
-                  markToReadAgain(
-                    data.detailType,
-                    selectableItems.map((e) => e.code).toList(),
-                  );
-                },
-                onMarkSelected: () {
-                  markToReadAgain(
-                    data.detailType,
-                    ref.read(
-                      selectedSynchronizerCodesStateControllerProvider(
-                        data.detailType,
-                      ),
-                    ),
-                  );
-                },
+                selectableItems: selectableItems,
+                errorKey: errorKey,
               ),
               Expanded(child: items),
             ],

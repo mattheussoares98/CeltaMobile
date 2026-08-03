@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'delete_schedule_errors_controller.g.dart';
@@ -10,7 +11,9 @@ part 'delete_schedule_errors_controller.g.dart';
 @riverpod
 class DeleteScheduleErrorsController extends _$DeleteScheduleErrorsController {
   @override
-  FutureOr<void> build() => null;
+  FutureOr<void> build() {
+    ref.cache();
+  }
 
   Future<void> delete(List<int> codes, String errorKey) async {
     state = const AsyncLoading();

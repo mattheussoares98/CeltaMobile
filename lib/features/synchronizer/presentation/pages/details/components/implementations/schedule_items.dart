@@ -25,11 +25,7 @@ class ScheduleItems extends ConsumerWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
-            onTap: item is SelectableSynchronizerErrorDetailEntity
-                ? () => ref
-                      .read(provider.notifier)
-                      .select(1) //TODO fix
-                : null,
+            onTap: () => ref.read(provider.notifier).select(item.code),
             child: Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Column(
@@ -43,23 +39,21 @@ class ScheduleItems extends ConsumerWidget {
                           subTitle: item.enterpriseName,
                         ),
                       ),
-                      if (item is SelectableSynchronizerErrorDetailEntity)
-                        Consumer(
-                          builder: (_, ref, _) {
-                            final isSelected = ref.watch(
-                              provider.select((s) => s.contains(1)), //TODO fix
-                            );
-                            return BaseCheckBox(
-                              name: 'Selecionar cupom'.hardcoded,
-                              enabled: isSelected,
-                              onChanged: (_) => ref
-                                  .read(provider.notifier)
-                                  .select(1), //TODO fix
-                              width: Sizes.p20,
-                              height: Sizes.p20,
-                            );
-                          },
-                        ),
+                      Consumer(
+                        builder: (_, ref, _) {
+                          final isSelected = ref.watch(
+                            provider.select((s) => s.contains(item.code)),
+                          );
+                          return BaseCheckBox(
+                            name: 'Selecionar erro'.hardcoded,
+                            enabled: isSelected,
+                            onChanged: (_) =>
+                                ref.read(provider.notifier).select(item.code),
+                            width: Sizes.p20,
+                            height: Sizes.p20,
+                          );
+                        },
+                      ),
                     ],
                   ),
                   TitleAndSubTitle(

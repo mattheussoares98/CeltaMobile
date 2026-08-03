@@ -1,7 +1,9 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
 class BSFScheduleSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity {
+    extends SynchronizerErrorDetailEntity
+    implements SelectableSynchronizerErrorDetailEntity {
+  @override
   final int code;
   final String serverName;
   final String enterpriseName;
