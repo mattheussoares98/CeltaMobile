@@ -12,6 +12,7 @@ enum BsResource {
   priceConference(611, "Pesquisa de preços"),
   researchOfPrice(585, "Preços concorrentes"),
   synchronizer(632, "Monitor dos serviços de sincronização"),
+  synchronizerDelete(633, "Monitor dos serviços de sincronização (exclusão)"),
   goodsReceiving(1143, "Recebimento de mercadorias"),
   processAuthorizationRules(971, "Regras para autorização de processos");
 
