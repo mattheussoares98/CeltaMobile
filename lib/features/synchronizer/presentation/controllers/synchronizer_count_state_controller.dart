@@ -37,17 +37,24 @@ class SynchronizerCountStateController
     final repository = ref.read(ecSynchronizerRepositoryProvider);
     final ecParams = await ref.watch(ecRequestParamsProvider().future);
 
-    final timer = Timer.periodic(const Duration(minutes: 1), (_) async {
-      try {
-        final newData = await repository.searchCount(ecParams);
-        state = AsyncData(newData);
-      } catch (_) {
-        // Silently ignore errors and keep previous state
-      }
-    });
+    final timer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) => refreshSilently(),
+    );
 
     ref.onDispose(timer.cancel);
 
     return await repository.searchCount(ecParams);
+  }
+
+  Future<void> refreshSilently() async {
+    try {
+      final repository = ref.read(ecSynchronizerRepositoryProvider);
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
+      final newData = await repository.searchCount(ecParams);
+      state = AsyncData(newData);
+    } catch (_) {
+      // Keep the current state when a silent refresh fails.
+    }
   }
 }

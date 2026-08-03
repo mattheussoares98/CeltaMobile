@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
@@ -94,6 +96,94 @@ void main() {
           ),
         ),
       ).called(1);
+    });
+
+    test('refreshSilently should keep data while refreshing', () async {
+      // ARRANGE
+      const initialData = <SynchronizerErrorSummaryEntity>[];
+      final refreshedData = [
+        EntityFactory.makeSynchronizerErrorSummaryEntity(),
+      ];
+      final refreshCompleter =
+          Completer<List<SynchronizerErrorSummaryEntity>>();
+      var searchCountCallCount = 0;
+      final expectedParams = EcRequestParams(
+        workingUrl: fakeSession.enterprise!.workingUrl!,
+        user: fakeSession.user.name!,
+        accessKey: fakeSession.user.AccessKey!,
+      );
+      when(() => mockRepository.searchCount(expectedParams)).thenAnswer((_) {
+        searchCountCallCount++;
+        return searchCountCallCount == 1
+            ? Future.value(initialData)
+            : refreshCompleter.future;
+      });
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+      await container.read(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizer,
+        ).future,
+      );
+      await container.read(synchronizerCountStateControllerProvider.future);
+
+      // ACT
+      final refresh = container
+          .read(synchronizerCountStateControllerProvider.notifier)
+          .refreshSilently();
+
+      // ASSERT
+      expect(
+        container.read(synchronizerCountStateControllerProvider),
+        const AsyncData(initialData),
+      );
+      refreshCompleter.complete(refreshedData);
+      await refresh;
+      expect(
+        container.read(synchronizerCountStateControllerProvider),
+        AsyncData(refreshedData),
+      );
+      verify(() => mockRepository.searchCount(expectedParams)).called(2);
+    });
+
+    test('refreshSilently should keep data when refreshing fails', () async {
+      // ARRANGE
+      const initialData = <SynchronizerErrorSummaryEntity>[];
+      var searchCountCallCount = 0;
+      final expectedParams = EcRequestParams(
+        workingUrl: fakeSession.enterprise!.workingUrl!,
+        user: fakeSession.user.name!,
+        accessKey: fakeSession.user.AccessKey!,
+      );
+      when(() => mockRepository.searchCount(expectedParams)).thenAnswer((_) {
+        searchCountCallCount++;
+        if (searchCountCallCount == 1) return Future.value(initialData);
+        throw Exception('Refresh failed');
+      });
+
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+      await container.read(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizer,
+        ).future,
+      );
+      await container.read(synchronizerCountStateControllerProvider.future);
+
+      // ACT
+      await container
+          .read(synchronizerCountStateControllerProvider.notifier)
+          .refreshSilently();
+
+      // ASSERT
+      expect(
+        container.read(synchronizerCountStateControllerProvider),
+        const AsyncData(initialData),
+      );
+      verify(() => mockRepository.searchCount(expectedParams)).called(2);
     });
 
     test('should throw AppException when session is invalid', () async {

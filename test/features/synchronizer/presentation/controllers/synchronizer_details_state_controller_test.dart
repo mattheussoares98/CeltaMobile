@@ -30,11 +30,17 @@ class FakeCanAccessResourceStateController
 class FakeSynchronizerCountStateController
     extends SynchronizerCountStateController {
   int buildCount = 0;
+  int silentRefreshCount = 0;
 
   @override
   Future<List<SynchronizerErrorSummaryEntity>> build() async {
     buildCount++;
     return [];
+  }
+
+  @override
+  Future<void> refreshSilently() async {
+    silentRefreshCount++;
   }
 }
 
@@ -120,7 +126,7 @@ void main() {
       ).called(1);
     });
 
-    test('should invalidate synchronizer count provider', () async {
+    test('should silently refresh synchronizer count provider', () async {
       // ARRANGE
       const fakeDetails = SynchronizerErrorDetailsEntity(
         category: 'Produtos com erro',
@@ -153,8 +159,8 @@ void main() {
       );
 
       // ASSERT
-      await container.read(synchronizerCountStateControllerProvider.future);
-      expect(countController.buildCount, 2);
+      expect(countController.buildCount, 1);
+      expect(countController.silentRefreshCount, 1);
     });
 
     test('should throw AppException when session is invalid', () async {
