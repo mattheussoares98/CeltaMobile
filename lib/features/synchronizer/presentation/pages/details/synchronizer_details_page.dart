@@ -41,6 +41,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: detailsProvider,
+      usePadding: false,
       appBar: BaseAppBar(
         titleWidget: BaseRichText(
           maxLines: 2,
@@ -69,9 +70,12 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               items: data.items
                   .cast<BSFCouponMarkedToReadSynchronizerErrorDetailEntity>(),
             ),
+            SynchronizerErrorDetailType.nFeDisable => NfeDisableItems(
+              items: data.items
+                  .cast<BSFNFeDisableSynchronizerErrorDetailEntity>(),
+            ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
-            SynchronizerErrorDetailType.nFeDisable ||
             SynchronizerErrorDetailType.schedule ||
             SynchronizerErrorDetailType.transaction ||
             SynchronizerErrorDetailType.treasuryMovement ||

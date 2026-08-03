@@ -19,6 +19,7 @@ class CouponItems extends ConsumerWidget {
 
     return ResponsiveListFlow(
       itemCount: items.length,
+      padding: const EdgeInsets.all(Sizes.p8),
       itemBuilder: (context, index) {
         final item = items[index];
         return Card(
