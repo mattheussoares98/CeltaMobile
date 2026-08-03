@@ -163,6 +163,93 @@ void main() {
       expect(countController.silentRefreshCount, 1);
     });
 
+    test('loadSilently should replace state with refreshed details', () async {
+      // ARRANGE
+      const initialDetails = SynchronizerErrorDetailsEntity(
+        category: 'Produtos com erro',
+        errorKey: testKey,
+        detailType: SynchronizerErrorDetailType.productWithError,
+        items: [],
+      );
+      const refreshedDetails = SynchronizerErrorDetailsEntity(
+        category: 'Produtos atualizados',
+        errorKey: testKey,
+        detailType: SynchronizerErrorDetailType.productWithError,
+        items: [],
+      );
+      final expectedParams = EcRequestParams(
+        workingUrl: fakeSession.enterprise!.workingUrl!,
+        user: fakeSession.user.name!,
+        accessKey: fakeSession.user.AccessKey!,
+      );
+      when(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).thenAnswer((_) async => initialDetails);
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+      await container.read(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizer,
+        ).future,
+      );
+      final provider = synchronizerDetailsStateControllerProvider(testKey);
+      await container.read(provider.future);
+      when(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).thenAnswer((_) async => refreshedDetails);
+
+      // ACT
+      await container.read(provider.notifier).loadSilently();
+
+      // ASSERT
+      expect(container.read(provider).value, refreshedDetails);
+      verify(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).called(2);
+    });
+
+    test('loadSilently should preserve state when refresh fails', () async {
+      // ARRANGE
+      const initialDetails = SynchronizerErrorDetailsEntity(
+        category: 'Produtos com erro',
+        errorKey: testKey,
+        detailType: SynchronizerErrorDetailType.productWithError,
+        items: [],
+      );
+      final expectedParams = EcRequestParams(
+        workingUrl: fakeSession.enterprise!.workingUrl!,
+        user: fakeSession.user.name!,
+        accessKey: fakeSession.user.AccessKey!,
+      );
+      when(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).thenAnswer((_) async => initialDetails);
+      final container = makeProviderContainer(session: fakeSession);
+      addTearDown(container.dispose);
+      await container.read(
+        canAccessResourceStateControllerProvider(
+          BsRoutine.generic,
+          BsResource.synchronizer,
+        ).future,
+      );
+      final provider = synchronizerDetailsStateControllerProvider(testKey);
+      await container.read(provider.future);
+      when(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).thenThrow(Exception('refresh failed'));
+
+      // ACT
+      await container.read(provider.notifier).loadSilently();
+
+      // ASSERT
+      expect(container.read(provider).value, initialDetails);
+      expect(container.read(provider).hasError, isFalse);
+      verify(
+        () => mockRepository.searchByKey(expectedParams, testKey),
+      ).called(2);
+    });
+
     test('should throw AppException when session is invalid', () async {
       // ARRANGE
       final container = makeProviderContainer();

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as console;
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
@@ -46,5 +47,16 @@ class SynchronizerDetailsStateController
     );
 
     return await repository.searchByKey(ecParams, errorKey);
+  }
+
+  Future<void> loadSilently() async {
+    try {
+      final repository = ref.read(ecSynchronizerRepositoryProvider);
+      final ecParams = await ref.read(ecRequestParamsProvider().future);
+      final result = await repository.searchByKey(ecParams, errorKey);
+      state = AsyncData(result);
+    } catch (e) {
+      console.log(e.toString());
+    }
   }
 }
