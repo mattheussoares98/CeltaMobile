@@ -18,8 +18,9 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
   Future<void> handle(
     List<int> codes,
     String errorKey,
-    SynchronizerErrorDetailType detailType,
-  ) async {
+    SynchronizerErrorDetailType detailType, {
+    bool isDeleting = false,
+  }) async {
     if (codes.isEmpty) return;
 
     state = const AsyncLoading();
@@ -35,7 +36,12 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
           codes,
         ),
         SynchronizerErrorDetailType.saleRequestWithError =>
-          repository.markSaleRequestsWithErrorToReadAgain(ecParams, codes),
+          isDeleting
+              ? repository.deleteSaleRequestsWithError(ecParams, codes)
+              : repository.markSaleRequestsWithErrorToReadAgain(
+                  ecParams,
+                  codes,
+                ),
         _ => throw AppException('Tipo de detalhe não implementado'.hardcoded),
       };
 

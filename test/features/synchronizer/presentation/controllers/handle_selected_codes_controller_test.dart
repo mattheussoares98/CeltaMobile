@@ -83,6 +83,9 @@ void main() {
         when(
           () => repository.markSaleRequestsWithErrorToReadAgain(params, codes),
         ).thenAnswer((_) async {});
+        when(
+          () => repository.deleteSaleRequestsWithError(params, codes),
+        ).thenAnswer((_) async {});
       default:
         throw ArgumentError.value(detailType);
     }
@@ -124,6 +127,34 @@ void main() {
       verifyNoMoreInteractions(repository);
     });
   }
+
+  test(
+    'should dispatch saleRequestWithError to deleteSaleRequestsWithError when isDeleting is true',
+    () async {
+      stubRepositoryMethod(SynchronizerErrorDetailType.saleRequestWithError);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(handleSelectedCodesControllerProvider.future);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .handle(
+            codes,
+            errorKey,
+            SynchronizerErrorDetailType.saleRequestWithError,
+            isDeleting: true,
+          );
+
+      verify(
+        () => repository.deleteSaleRequestsWithError(params, codes),
+      ).called(1);
+      expect(
+        container.read(handleSelectedCodesControllerProvider),
+        const AsyncData<void>(null),
+      );
+      verifyNoMoreInteractions(repository);
+    },
+  );
 
   for (final detailType in unimplementedDetailTypes) {
     test('should expose an error for unimplemented $detailType', () async {
