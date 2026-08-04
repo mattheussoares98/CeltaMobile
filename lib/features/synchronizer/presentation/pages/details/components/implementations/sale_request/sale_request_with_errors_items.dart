@@ -87,11 +87,13 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                     TitleAndSubTitle(
                       title: 'Fatura'.hardcoded,
                       subTitle: item.saleRequestInvoiceCode,
+                      copyableSubtitle: true,
                     ),
                   if (item.saleRequestNumber.isNotEmpty)
                     TitleAndSubTitle(
                       title: 'Pedido'.hardcoded,
                       subTitle: item.saleRequestNumber,
+                      copyableSubtitle: true,
                     ),
                   for (var i = 0; i < item.details.length; i++)
                     Column(
@@ -122,10 +124,12 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                           TitleAndSubTitle(
                             title: 'Cód site'.hardcoded,
                             subTitle: item.productsNotFound[i].eCommerceCode,
+                            copyableSubtitle: true,
                           ),
                           TitleAndSubTitle(
                             title: 'Produto'.hardcoded,
                             subTitle: item.productsNotFound[i].name,
+                            copyableSubtitle: true,
                           ),
                           Align(
                             alignment: .centerRight,
