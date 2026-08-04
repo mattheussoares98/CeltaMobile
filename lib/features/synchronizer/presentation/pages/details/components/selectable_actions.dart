@@ -66,107 +66,104 @@ class SelectableActions extends ConsumerWidget {
     });
     ref.observeLoading([handleSelectedCodesControllerProvider]);
 
+    final hasSelectedItems = ref.watch(
+      selectedSynchronizerCodesStateControllerProvider(
+        detailType,
+      ).select((s) => s.isNotEmpty),
+    );
+
+    final isSaleRequestMarkedToReadAgain =
+        detailType == SynchronizerErrorDetailType.saleRequestWithError &&
+        (errorKey.toLowerCase().contains(
+          'pedidos de vendas com erros durante a leitura',
+          //! this errorKey should always be visible and should have this floating to add new sale requests
+        ));
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
-      child: Row(
-        children: [
-          Expanded(
-            child: PrimaryButton(
-              text: switch (detailType) {
-                SynchronizerErrorDetailType.coupon ||
-                SynchronizerErrorDetailType.saleRequestWithError =>
-                  'Reler todos'.hardcoded,
-                SynchronizerErrorDetailType.schedule =>
-                  'Excluir todos'.hardcoded,
-                _ => 'BUG. Não implementado'.hardcoded,
-              },
-              onPressed: canDelete
-                  ? () => detailType == SynchronizerErrorDetailType.schedule
-                        ? deleteSelected(
-                            selectableItems.map((e) => e.code).toSet(),
-                          )
-                        : markToReadAgain(
-                            selectableItems.map((e) => e.code).toSet(),
-                          )
-                  : null,
-            ),
-          ),
-          gapW8,
-          Consumer(
-            builder: (_, ref, _) {
-              final hasSelectedItems = ref.watch(
-                selectedSynchronizerCodesStateControllerProvider(
-                  detailType,
-                ).select((s) => s.isNotEmpty),
-              );
-
-              return Expanded(
-                flex:
-                    detailType ==
-                        SynchronizerErrorDetailType.saleRequestWithError
-                    ? 2
-                    : 1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: PrimaryButton(
-                        text: switch (detailType) {
-                          SynchronizerErrorDetailType.coupon ||
-                          SynchronizerErrorDetailType.saleRequestWithError =>
-                            'Reler selecionados'.hardcoded,
-                          SynchronizerErrorDetailType.schedule =>
-                            'Excluir selecionados'.hardcoded,
-                          _ => 'BUG. Não implementado'.hardcoded,
-                        },
-
-                        onPressed: hasSelectedItems
-                            ? () {
-                                detailType ==
-                                        SynchronizerErrorDetailType.schedule
-                                    ? deleteSelected(
-                                        ref.read(
-                                          selectedSynchronizerCodesStateControllerProvider(
-                                            detailType,
-                                          ),
-                                        ),
-                                      )
-                                    : markToReadAgain(
-                                        ref.read(
-                                          selectedSynchronizerCodesStateControllerProvider(
-                                            detailType,
-                                          ),
-                                        ),
-                                      );
-                              }
-                            : null,
-                      ),
-                    ),
-                    if (detailType ==
-                        SynchronizerErrorDetailType.saleRequestWithError) ...[
-                      gapW8,
-                      Expanded(
-                        child: PrimaryButton(
-                          text: 'Excluir selecionados'.hardcoded,
-                          onPressed: hasSelectedItems && canDelete
-                              ? () {
-                                  deleteSelected(
-                                    ref.read(
-                                      selectedSynchronizerCodesStateControllerProvider(
-                                        detailType,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              : null,
-                        ),
-                      ),
-                    ],
-                  ],
+      child: SizedBox(
+        width: Breakpoint.tablet,
+        child: Row(
+          children: [
+            if (!isSaleRequestMarkedToReadAgain)
+              Expanded(
+                child: PrimaryButton(
+                  text: switch (detailType) {
+                    SynchronizerErrorDetailType.coupon ||
+                    SynchronizerErrorDetailType.saleRequestWithError =>
+                      'Reler todos'.hardcoded,
+                    SynchronizerErrorDetailType.schedule =>
+                      'Excluir todos'.hardcoded,
+                    _ => 'BUG. Não implementado'.hardcoded,
+                  },
+                  onPressed: canDelete
+                      ? () => detailType == SynchronizerErrorDetailType.schedule
+                            ? deleteSelected(
+                                selectableItems.map((e) => e.code).toSet(),
+                              )
+                            : markToReadAgain(
+                                selectableItems.map((e) => e.code).toSet(),
+                              )
+                      : null,
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            if (!isSaleRequestMarkedToReadAgain) ...[
+              gapW8,
+              Expanded(
+                child: PrimaryButton(
+                  text: switch (detailType) {
+                    SynchronizerErrorDetailType.coupon ||
+                    SynchronizerErrorDetailType.saleRequestWithError =>
+                      'Reler selecionados'.hardcoded,
+                    SynchronizerErrorDetailType.schedule =>
+                      'Excluir selecionados'.hardcoded,
+                    _ => 'BUG. Não implementado'.hardcoded,
+                  },
+
+                  onPressed: hasSelectedItems
+                      ? () {
+                          detailType == SynchronizerErrorDetailType.schedule
+                              ? deleteSelected(
+                                  ref.read(
+                                    selectedSynchronizerCodesStateControllerProvider(
+                                      detailType,
+                                    ),
+                                  ),
+                                )
+                              : markToReadAgain(
+                                  ref.read(
+                                    selectedSynchronizerCodesStateControllerProvider(
+                                      detailType,
+                                    ),
+                                  ),
+                                );
+                        }
+                      : null,
+                ),
+              ),
+            ],
+            if (detailType ==
+                SynchronizerErrorDetailType.saleRequestWithError) ...[
+              gapW8,
+              Expanded(
+                child: PrimaryButton(
+                  text: 'Excluir selecionados'.hardcoded,
+                  onPressed: hasSelectedItems && canDelete
+                      ? () {
+                          deleteSelected(
+                            ref.read(
+                              selectedSynchronizerCodesStateControllerProvider(
+                                detailType,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
