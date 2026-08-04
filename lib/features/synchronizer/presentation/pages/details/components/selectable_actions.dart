@@ -63,7 +63,7 @@ class SelectableActions extends ConsumerWidget {
               text: switch (detailType) {
                 SynchronizerErrorDetailType.couponMarkedToReadAgain ||
                 SynchronizerErrorDetailType.saleRequestWithError =>
-                  'Marcar todos para releitura'.hardcoded,
+                  'Reler todos'.hardcoded,
                 SynchronizerErrorDetailType.schedule =>
                   'Excluir todos'.hardcoded,
                 _ => 'BUG. Não implementado'.hardcoded,
@@ -87,7 +87,7 @@ class SelectableActions extends ConsumerWidget {
                   text: switch (detailType) {
                     SynchronizerErrorDetailType.couponMarkedToReadAgain ||
                     SynchronizerErrorDetailType.saleRequestWithError =>
-                      'Marcar selecionados para releitura'.hardcoded,
+                      'Reler selecionados'.hardcoded,
                     SynchronizerErrorDetailType.schedule =>
                       'Excluir selecionados'.hardcoded,
                     _ => 'BUG. Não implementado'.hardcoded,
