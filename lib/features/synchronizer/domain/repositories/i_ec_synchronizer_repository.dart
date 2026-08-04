@@ -25,5 +25,10 @@ abstract class IEcSynchronizerRepository {
     List<int> codes,
   );
 
+  Future<void> deleteSaleRequestsWithError(
+    EcRequestParams params,
+    List<int> codes,
+  );
+
   Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);
 }

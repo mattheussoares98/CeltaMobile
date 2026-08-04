@@ -216,6 +216,38 @@ void main() {
     });
   });
 
+  group('deleteSaleRequestsWithError', () {
+    const codes = [123, 456];
+
+    test('should delegate the sale request codes to the datasource', () async {
+      when(
+        () => datasource.deleteSaleRequestsWithError(params, codes),
+      ).thenAnswer((_) async {});
+
+      await sut.deleteSaleRequestsWithError(params, codes);
+
+      verify(
+        () => datasource.deleteSaleRequestsWithError(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to delete sale requests');
+      when(
+        () => datasource.deleteSaleRequestsWithError(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.deleteSaleRequestsWithError(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.deleteSaleRequestsWithError(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('deleteScheduleErrors', () {
     const codes = [123, 456];
 
