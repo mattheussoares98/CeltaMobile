@@ -23,7 +23,14 @@ class SynchronizerPage extends ConsumerWidget {
         tryAgain: () =>
             ref.invalidate(synchronizerCountStateControllerProvider),
         data: (errors) {
-          errors.removeWhere((e) => e.count <= 0);
+          errors.removeWhere(
+            (e) =>
+                e.count <= 0 &&
+                !e.errorKey.toLowerCase().contains(
+                  'pedidos de vendas com erros durante a leitura',
+                  //! This error should always be displayed
+                ),
+          );
 
           if (errors.isEmpty) {
             return const SynchronizerEmptyErrors();
