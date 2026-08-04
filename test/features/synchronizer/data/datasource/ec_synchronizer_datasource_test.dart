@@ -280,6 +280,77 @@ void main() {
     });
   });
 
+  group('insertSaleRequestsToReadAgain', () {
+    const enterpriseCode = 1;
+    const enterpriseCommerceSiteCode = 2;
+    const saleRequestIds = ['123', '456'];
+    const url = '/api/Synchronizer/InsertSaleRequestsToReadAgain';
+    final body = {
+      ...params.toMap(),
+      'EnterpriseCode': enterpriseCode,
+      'EnterpriseCommerceSiteCode': enterpriseCommerceSiteCode,
+      'SaleRequestIds': saleRequestIds,
+    };
+
+    test('should post all sale request identifiers in one request', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.insertSaleRequestsToReadAgain(
+        params,
+        enterpriseCode: enterpriseCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        saleRequestIds: saleRequestIds,
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to insert sale requests to reread');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.insertSaleRequestsToReadAgain(
+        params,
+        enterpriseCode: enterpriseCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        saleRequestIds: saleRequestIds,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('linkSaleRequestProductNotFound', () {
     const productNotFoundCode = 123;
     const productCode = 456;

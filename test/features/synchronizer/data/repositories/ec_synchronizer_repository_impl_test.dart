@@ -152,6 +152,73 @@ void main() {
     });
   });
 
+  group('insertSaleRequestsToReadAgain', () {
+    const enterpriseCode = 1;
+    const enterpriseCommerceSiteCode = 2;
+    const saleRequestIds = ['123', '456'];
+
+    test(
+      'should delegate the sale request identifiers to the datasource',
+      () async {
+        when(
+          () => datasource.insertSaleRequestsToReadAgain(
+            params,
+            enterpriseCode: enterpriseCode,
+            enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+            saleRequestIds: saleRequestIds,
+          ),
+        ).thenAnswer((_) async {});
+
+        await sut.insertSaleRequestsToReadAgain(
+          params,
+          enterpriseCode: enterpriseCode,
+          enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+          saleRequestIds: saleRequestIds,
+        );
+
+        verify(
+          () => datasource.insertSaleRequestsToReadAgain(
+            params,
+            enterpriseCode: enterpriseCode,
+            enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+            saleRequestIds: saleRequestIds,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(datasource);
+      },
+    );
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to insert sale requests to reread');
+      when(
+        () => datasource.insertSaleRequestsToReadAgain(
+          params,
+          enterpriseCode: enterpriseCode,
+          enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+          saleRequestIds: saleRequestIds,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.insertSaleRequestsToReadAgain(
+        params,
+        enterpriseCode: enterpriseCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        saleRequestIds: saleRequestIds,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.insertSaleRequestsToReadAgain(
+          params,
+          enterpriseCode: enterpriseCode,
+          enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+          saleRequestIds: saleRequestIds,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('linkSaleRequestProductNotFound', () {
     const productNotFoundCode = 123;
     const productCode = 456;

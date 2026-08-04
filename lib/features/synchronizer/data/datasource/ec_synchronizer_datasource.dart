@@ -99,6 +99,27 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> insertSaleRequestsToReadAgain(
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int enterpriseCommerceSiteCode,
+    required List<String> saleRequestIds,
+  }) async {
+    await httpClient.request(
+      url:
+          '${params.workingUrl}/api/Synchronizer/InsertSaleRequestsToReadAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'EnterpriseCode': enterpriseCode,
+        'EnterpriseCommerceSiteCode': enterpriseCommerceSiteCode,
+        'SaleRequestIds': saleRequestIds,
+      },
+    );
+  }
+
+  @override
   Future<void> deleteSaleRequestsWithError(
     EcRequestParams params,
     List<int> codes,

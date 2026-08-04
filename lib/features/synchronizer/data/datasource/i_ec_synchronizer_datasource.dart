@@ -25,6 +25,13 @@ abstract class IEcSynchronizerDatasource {
     List<int> codes,
   );
 
+  Future<void> insertSaleRequestsToReadAgain(
+    EcRequestParams params, {
+    required int enterpriseCode,
+    required int enterpriseCommerceSiteCode,
+    required List<String> saleRequestIds,
+  });
+
   Future<void> deleteSaleRequestsWithError(
     EcRequestParams params,
     List<int> codes,
