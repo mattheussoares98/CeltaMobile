@@ -1067,16 +1067,48 @@ class EntityFactory {
         description: faker.lorem.sentence(),
       );
 
-  static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity() =>
-      SynchronizerErrorDetailsEntity(
-        category: faker.lorem.word(),
-        errorKey: faker.lorem.word(),
-        detailType: SynchronizerErrorDetailType.transaction,
-        items: [
+  static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity({
+    SynchronizerErrorDetailType detailType =
+        SynchronizerErrorDetailType.transaction,
+    List<SynchronizerErrorDetailEntity>? items,
+  }) => SynchronizerErrorDetailsEntity(
+    category: faker.lorem.word(),
+    errorKey: faker.lorem.word(),
+    detailType: detailType,
+    items:
+        items ??
+        [
           BSFTransactionSynchronizerErrorDetailEntity(
             transactionId: faker.guid.guid(),
           ),
         ],
+  );
+
+  static BSFProductWithErrorSynchronizerErrorGroupEntity
+  makeBSFProductWithErrorSynchronizerErrorGroupEntity({
+    BSFProductWithErrorType type = BSFProductWithErrorType.error,
+  }) => BSFProductWithErrorSynchronizerErrorGroupEntity(
+    type: type,
+    errors: [makeBSFProductWithErrorSynchronizerErrorDetailEntity()],
+  );
+
+  static BSFProductWithErrorSynchronizerErrorDetailEntity
+  makeBSFProductWithErrorSynchronizerErrorDetailEntity() =>
+      BSFProductWithErrorSynchronizerErrorDetailEntity(
+        enterprisePersonalizedCode: faker.randomGenerator.numberOfLength(6),
+        enterpriseFantasyName: faker.company.name(),
+        commerceSite: faker.company.name(),
+        priceLookUp: faker.randomGenerator.numberOfLength(6),
+        productName: faker.food.dish(),
+        formattedPacking: faker.lorem.word(),
+        productCommerceSiteId: faker.guid.guid(),
+        errorDescription: faker.lorem.sentence(),
+        errorMessage: faker.lorem.sentence(),
+        moreInfo: faker.lorem.sentence(),
+        hasSendingRestriction: faker.randomGenerator.boolean(),
+        lastChargeOfProduct: faker.date.dateTime(),
+        lastChargeOfSalePrice: faker.date.dateTime(),
+        lastChargeOfStock: faker.date.dateTime(),
       );
 
   static BSFCouponSynchronizerErrorDetailEntity

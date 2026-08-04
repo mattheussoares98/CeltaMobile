@@ -86,7 +86,7 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
       case SynchronizerErrorDetailType.saleRequestMarked:
         return BSFSaleRequestMarkedSynchronizerErrorDetailModel.fromJson(json);
       case SynchronizerErrorDetailType.productWithError:
-        return BSFProductWithErrorSynchronizerErrorDetailModel.fromJson(json);
+        return BSFProductWithErrorSynchronizerErrorGroupModel.fromJson(json);
       case SynchronizerErrorDetailType.readBleeding:
         return BSFReadBleedingSynchronizerErrorDetailModel.fromJson(json);
       case SynchronizerErrorDetailType.correspondentBanking:
@@ -161,6 +161,9 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
         entity,
       );
     }
+    if (entity is BSFProductWithErrorSynchronizerErrorGroupEntity) {
+      return BSFProductWithErrorSynchronizerErrorGroupModel.fromEntity(entity);
+    }
     if (entity is BSFProductWithErrorSynchronizerErrorDetailEntity) {
       return BSFProductWithErrorSynchronizerErrorDetailModel.fromEntity(entity);
     }
@@ -223,6 +226,9 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
     if (model is BSFSaleRequestMarkedSynchronizerErrorDetailModel) {
       return model.toJson();
     }
+    if (model is BSFProductWithErrorSynchronizerErrorGroupModel) {
+      return model.toJson();
+    }
     if (model is BSFProductWithErrorSynchronizerErrorDetailModel) {
       return model.toJson();
     }
@@ -281,6 +287,9 @@ class SynchronizerErrorDetailsModel extends SynchronizerErrorDetailsEntity {
       return model.toEntity();
     }
     if (model is BSFSaleRequestMarkedSynchronizerErrorDetailModel) {
+      return model.toEntity();
+    }
+    if (model is BSFProductWithErrorSynchronizerErrorGroupModel) {
       return model.toEntity();
     }
     if (model is BSFProductWithErrorSynchronizerErrorDetailModel) {
