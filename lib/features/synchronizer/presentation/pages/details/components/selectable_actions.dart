@@ -22,7 +22,7 @@ class SelectableActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canProceed = switch (detailType) {
+    final canDelete = switch (detailType) {
       SynchronizerErrorDetailType.schedule => ref.watch(
         canAccessResourceStateControllerProvider(
           BsRoutine.generic,
@@ -32,8 +32,8 @@ class SelectableActions extends ConsumerWidget {
       _ => true,
     };
 
-    void onTap(Set<int> codes, {bool isDeleting = false}) {
-      if (!canProceed) {
+    bool validateCanDelete() {
+      if (!canDelete) {
         showAlertDialog(
           context: context,
           title: 'Atenção'.hardcoded,
@@ -41,12 +41,24 @@ class SelectableActions extends ConsumerWidget {
               'Seu usuário não possui permissão para realizar esse procedimento'
                   .hardcoded,
         );
-        return;
+        return false;
       }
+
+      return true;
+    }
+
+    void markToReadAgain(Set<int> codes) {
+      ref
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .markToReadAgain(codes.toList(), errorKey, detailType);
+    }
+
+    void deleteSelected(Set<int> codes) {
+      if (!validateCanDelete()) return;
 
       ref
           .read(handleSelectedCodesControllerProvider.notifier)
-          .handle(codes.toList(), errorKey, detailType, isDeleting: isDeleting);
+          .deleteSelected(codes.toList(), errorKey, detailType);
     }
 
     ref.listen(handleSelectedCodesControllerProvider, (p, n) {
@@ -68,8 +80,14 @@ class SelectableActions extends ConsumerWidget {
                   'Excluir todos'.hardcoded,
                 _ => 'BUG. Não implementado'.hardcoded,
               },
-              onPressed: canProceed
-                  ? () => onTap(selectableItems.map((e) => e.code).toSet())
+              onPressed: canDelete
+                  ? () => detailType == SynchronizerErrorDetailType.schedule
+                        ? deleteSelected(
+                            selectableItems.map((e) => e.code).toSet(),
+                          )
+                        : markToReadAgain(
+                            selectableItems.map((e) => e.code).toSet(),
+                          )
                   : null,
             ),
           ),
@@ -101,15 +119,24 @@ class SelectableActions extends ConsumerWidget {
                           _ => 'BUG. Não implementado'.hardcoded,
                         },
 
-                        onPressed: hasSelectedItems && canProceed
+                        onPressed: hasSelectedItems
                             ? () {
-                                onTap(
-                                  ref.read(
-                                    selectedSynchronizerCodesStateControllerProvider(
-                                      detailType,
-                                    ),
-                                  ),
-                                );
+                                detailType ==
+                                        SynchronizerErrorDetailType.schedule
+                                    ? deleteSelected(
+                                        ref.read(
+                                          selectedSynchronizerCodesStateControllerProvider(
+                                            detailType,
+                                          ),
+                                        ),
+                                      )
+                                    : markToReadAgain(
+                                        ref.read(
+                                          selectedSynchronizerCodesStateControllerProvider(
+                                            detailType,
+                                          ),
+                                        ),
+                                      );
                               }
                             : null,
                       ),
@@ -120,15 +147,14 @@ class SelectableActions extends ConsumerWidget {
                       Expanded(
                         child: PrimaryButton(
                           text: 'Excluir selecionados'.hardcoded,
-                          onPressed: hasSelectedItems && canProceed
+                          onPressed: hasSelectedItems && canDelete
                               ? () {
-                                  onTap(
+                                  deleteSelected(
                                     ref.read(
                                       selectedSynchronizerCodesStateControllerProvider(
                                         detailType,
                                       ),
                                     ),
-                                    isDeleting: true,
                                   );
                                 }
                               : null,

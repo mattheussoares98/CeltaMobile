@@ -27,18 +27,26 @@ class FakeSynchronizerDetailsStateController
 }
 
 void main() {
-  const implementedDetailTypes = <SynchronizerErrorDetailType>{
+  const rereadDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.coupon,
+    SynchronizerErrorDetailType.saleRequestWithError,
+  };
+  const deleteDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.schedule,
     SynchronizerErrorDetailType.saleRequestWithError,
   };
-  final unimplementedDetailTypes = SynchronizerErrorDetailType.values.toSet()
-    ..removeAll(implementedDetailTypes);
+  final unsupportedRereadDetailTypes =
+      SynchronizerErrorDetailType.values.toSet()..removeAll(rereadDetailTypes);
+  final unsupportedDeleteDetailTypes =
+      SynchronizerErrorDetailType.values.toSet()..removeAll(deleteDetailTypes);
 
   late MockEcSynchronizerRepository repository;
   late UserSessionModel session;
   late EcRequestParams params;
   const codes = [123, 456];
+  const enterpriseCode = 1;
+  const enterpriseCommerceSiteCode = 2;
+  const saleRequestIds = ['request-1', 'request-2'];
   const errorKey = 'any_key';
 
   setUp(() {
@@ -108,8 +116,8 @@ void main() {
     }
   }
 
-  for (final detailType in implementedDetailTypes) {
-    test('should dispatch $detailType to its repository method', () async {
+  for (final detailType in rereadDetailTypes) {
+    test('should reread $detailType through its repository method', () async {
       stubRepositoryMethod(detailType);
       final container = makeContainer();
       addTearDown(container.dispose);
@@ -117,7 +125,7 @@ void main() {
 
       await container
           .read(handleSelectedCodesControllerProvider.notifier)
-          .handle(codes, errorKey, detailType);
+          .markToReadAgain(codes, errorKey, detailType);
 
       verifyRepositoryMethod(detailType);
       expect(
@@ -128,43 +136,64 @@ void main() {
     });
   }
 
-  test(
-    'should dispatch saleRequestWithError to deleteSaleRequestsWithError when isDeleting is true',
-    () async {
-      stubRepositoryMethod(SynchronizerErrorDetailType.saleRequestWithError);
+  for (final detailType in deleteDetailTypes) {
+    test('should delete $detailType through its repository method', () async {
+      stubRepositoryMethod(detailType);
       final container = makeContainer();
       addTearDown(container.dispose);
       await container.read(handleSelectedCodesControllerProvider.future);
 
       await container
           .read(handleSelectedCodesControllerProvider.notifier)
-          .handle(
-            codes,
-            errorKey,
-            SynchronizerErrorDetailType.saleRequestWithError,
-            isDeleting: true,
-          );
+          .deleteSelected(codes, errorKey, detailType);
 
-      verify(
-        () => repository.deleteSaleRequestsWithError(params, codes),
-      ).called(1);
+      switch (detailType) {
+        case SynchronizerErrorDetailType.schedule:
+          verify(
+            () => repository.deleteScheduleErrors(params, codes),
+          ).called(1);
+        case SynchronizerErrorDetailType.saleRequestWithError:
+          verify(
+            () => repository.deleteSaleRequestsWithError(params, codes),
+          ).called(1);
+        default:
+          throw ArgumentError.value(detailType);
+      }
       expect(
         container.read(handleSelectedCodesControllerProvider),
         const AsyncData<void>(null),
       );
       verifyNoMoreInteractions(repository);
-    },
-  );
+    });
+  }
 
-  for (final detailType in unimplementedDetailTypes) {
-    test('should expose an error for unimplemented $detailType', () async {
+  for (final detailType in unsupportedRereadDetailTypes) {
+    test('should expose an error when rereading $detailType', () async {
       final container = makeContainer();
       addTearDown(container.dispose);
       await container.read(handleSelectedCodesControllerProvider.future);
 
       await container
           .read(handleSelectedCodesControllerProvider.notifier)
-          .handle(codes, errorKey, detailType);
+          .markToReadAgain(codes, errorKey, detailType);
+
+      expect(
+        container.read(handleSelectedCodesControllerProvider).error,
+        isA<AppException>(),
+      );
+      verifyNoMoreInteractions(repository);
+    });
+  }
+
+  for (final detailType in unsupportedDeleteDetailTypes) {
+    test('should expose an error when deleting $detailType', () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(handleSelectedCodesControllerProvider.future);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .deleteSelected(codes, errorKey, detailType);
 
       expect(
         container.read(handleSelectedCodesControllerProvider).error,
@@ -184,13 +213,49 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
+        .markToReadAgain(codes, errorKey, SynchronizerErrorDetailType.coupon);
 
     expect(
       container.read(handleSelectedCodesControllerProvider).error,
       same(exception),
     );
     verify(() => repository.markCouponsToReadAgain(params, codes)).called(1);
+    verifyNoMoreInteractions(repository);
+  });
+
+  test('should insert sale requests to read again', () async {
+    when(
+      () => repository.insertSaleRequestsToReadAgain(
+        params,
+        enterpriseCode: enterpriseCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        saleRequestIds: saleRequestIds,
+      ),
+    ).thenAnswer((_) async {});
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .insertSaleRequestsToReadAgain(
+          errorKey,
+          enterpriseCode: enterpriseCode,
+          enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+          saleRequestIds: saleRequestIds,
+        );
+
+    verify(
+      () => repository.insertSaleRequestsToReadAgain(
+        params,
+        enterpriseCode: enterpriseCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        saleRequestIds: saleRequestIds,
+      ),
+    ).called(1);
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
     verifyNoMoreInteractions(repository);
   });
 
@@ -210,7 +275,7 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
+        .markToReadAgain(codes, errorKey, SynchronizerErrorDetailType.coupon);
     await container.read(detailsProvider.future);
 
     expect(detailsController.buildCount, 2);
@@ -230,7 +295,7 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
+        .markToReadAgain(codes, errorKey, SynchronizerErrorDetailType.coupon);
 
     expect(container.read(selectedCodesProvider), isEmpty);
   });
@@ -242,7 +307,32 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(const [], errorKey, SynchronizerErrorDetailType.coupon);
+        .markToReadAgain(
+          const [],
+          errorKey,
+          SynchronizerErrorDetailType.coupon,
+        );
+
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
+    verifyNoMoreInteractions(repository);
+  });
+
+  test('should ignore an empty sale request identifier list', () async {
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    await container.read(handleSelectedCodesControllerProvider.future);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .insertSaleRequestsToReadAgain(
+          errorKey,
+          enterpriseCode: enterpriseCode,
+          enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+          saleRequestIds: const [],
+        );
 
     expect(
       container.read(handleSelectedCodesControllerProvider),
