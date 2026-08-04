@@ -32,7 +32,7 @@ class SelectableActions extends ConsumerWidget {
       _ => true,
     };
 
-    void onTap(Set<int> codes) {
+    void onTap(Set<int> codes, {bool isDeleting = false}) {
       if (!canProceed) {
         showAlertDialog(
           context: context,
@@ -46,7 +46,7 @@ class SelectableActions extends ConsumerWidget {
 
       ref
           .read(handleSelectedCodesControllerProvider.notifier)
-          .handle(codes.toList(), errorKey, detailType);
+          .handle(codes.toList(), errorKey, detailType, isDeleting: isDeleting);
     }
 
     ref.listen(handleSelectedCodesControllerProvider, (p, n) {
@@ -61,7 +61,7 @@ class SelectableActions extends ConsumerWidget {
           Expanded(
             child: PrimaryButton(
               text: switch (detailType) {
-                SynchronizerErrorDetailType.couponMarkedToReadAgain ||
+                SynchronizerErrorDetailType.coupon ||
                 SynchronizerErrorDetailType.saleRequestWithError =>
                   'Reler todos'.hardcoded,
                 SynchronizerErrorDetailType.schedule =>
@@ -93,7 +93,7 @@ class SelectableActions extends ConsumerWidget {
                     Expanded(
                       child: PrimaryButton(
                         text: switch (detailType) {
-                          SynchronizerErrorDetailType.couponMarkedToReadAgain ||
+                          SynchronizerErrorDetailType.coupon ||
                           SynchronizerErrorDetailType.saleRequestWithError =>
                             'Reler selecionados'.hardcoded,
                           SynchronizerErrorDetailType.schedule =>
@@ -122,7 +122,14 @@ class SelectableActions extends ConsumerWidget {
                           text: 'Excluir selecionados'.hardcoded,
                           onPressed: hasSelectedItems && canProceed
                               ? () {
-                                  //TODO implement
+                                  onTap(
+                                    ref.read(
+                                      selectedSynchronizerCodesStateControllerProvider(
+                                        detailType,
+                                      ),
+                                    ),
+                                    isDeleting: true,
+                                  );
                                 }
                               : null,
                         ),
