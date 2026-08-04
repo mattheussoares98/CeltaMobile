@@ -1058,6 +1058,15 @@ class EntityFactory {
         count: faker.randomGenerator.integer(100),
       );
 
+  static EcCommerceSiteEntity makeEcCommerceSiteEntity() =>
+      EcCommerceSiteEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+        environmentName: faker.lorem.word(),
+        commerceSiteIdentification: faker.randomGenerator.integer(100),
+        description: faker.lorem.sentence(),
+      );
+
   static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity() =>
       SynchronizerErrorDetailsEntity(
         category: faker.lorem.word(),

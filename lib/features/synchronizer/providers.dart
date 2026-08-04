@@ -7,6 +7,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'providers.g.dart';
 
 @riverpod
+IEcCommerceSiteDatasource ecCommerceSiteDatasource(Ref ref) =>
+    EcCommerceSiteDatasource(ref.watch(httpClientProvider));
+
+@riverpod
+IEcCommerceSiteRepository ecCommerceSiteRepository(Ref ref) =>
+    EcCommerceSiteRepositoryImpl(
+      EcCommerceSiteDatasource(ref.watch(httpClientProvider)),
+    );
+
+@riverpod
 IEcSynchronizerDatasource ecSynchronizerDatasource(Ref ref) =>
     EcSynchronizerDatasource(ref.watch(httpClientProvider));
 
