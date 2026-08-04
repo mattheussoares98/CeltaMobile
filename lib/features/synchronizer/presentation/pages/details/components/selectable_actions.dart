@@ -74,39 +74,64 @@ class SelectableActions extends ConsumerWidget {
             ),
           ),
           gapW8,
-          Expanded(
-            child: Consumer(
-              builder: (_, ref, _) {
-                final hasSelectedItems = ref.watch(
-                  selectedSynchronizerCodesStateControllerProvider(
-                    detailType,
-                  ).select((s) => s.isNotEmpty),
-                );
+          Consumer(
+            builder: (_, ref, _) {
+              final hasSelectedItems = ref.watch(
+                selectedSynchronizerCodesStateControllerProvider(
+                  detailType,
+                ).select((s) => s.isNotEmpty),
+              );
 
-                return PrimaryButton(
-                  text: switch (detailType) {
-                    SynchronizerErrorDetailType.couponMarkedToReadAgain ||
-                    SynchronizerErrorDetailType.saleRequestWithError =>
-                      'Reler selecionados'.hardcoded,
-                    SynchronizerErrorDetailType.schedule =>
-                      'Excluir selecionados'.hardcoded,
-                    _ => 'BUG. Não implementado'.hardcoded,
-                  },
+              return Expanded(
+                flex:
+                    detailType ==
+                        SynchronizerErrorDetailType.saleRequestWithError
+                    ? 2
+                    : 1,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        text: switch (detailType) {
+                          SynchronizerErrorDetailType.couponMarkedToReadAgain ||
+                          SynchronizerErrorDetailType.saleRequestWithError =>
+                            'Reler selecionados'.hardcoded,
+                          SynchronizerErrorDetailType.schedule =>
+                            'Excluir selecionados'.hardcoded,
+                          _ => 'BUG. Não implementado'.hardcoded,
+                        },
 
-                  onPressed: hasSelectedItems && canProceed
-                      ? () {
-                          onTap(
-                            ref.read(
-                              selectedSynchronizerCodesStateControllerProvider(
-                                detailType,
-                              ),
-                            ),
-                          );
-                        }
-                      : null,
-                );
-              },
-            ),
+                        onPressed: hasSelectedItems && canProceed
+                            ? () {
+                                onTap(
+                                  ref.read(
+                                    selectedSynchronizerCodesStateControllerProvider(
+                                      detailType,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : null,
+                      ),
+                    ),
+                    if (detailType ==
+                        SynchronizerErrorDetailType.saleRequestWithError) ...[
+                      gapW8,
+                      Expanded(
+                        child: PrimaryButton(
+                          text: 'Excluir selecionados'.hardcoded,
+                          onPressed: hasSelectedItems && canProceed
+                              ? () {
+                                  //TODO implement
+                                }
+                              : null,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            },
           ),
         ],
       ),
