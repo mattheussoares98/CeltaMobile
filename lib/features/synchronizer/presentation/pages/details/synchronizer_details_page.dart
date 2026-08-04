@@ -45,7 +45,22 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           builder: (_, ref, _) {
             final errorQuantity =
                 ref.watch(
-                  detailsProvider.select((s) => s.value?.items.length),
+                  detailsProvider.select((s) {
+                    final items = s.value?.items;
+
+                    final productsItems = items
+                        ?.whereType<
+                          BSFProductWithErrorSynchronizerErrorGroupEntity
+                        >();
+
+                    if (productsItems?.isNotEmpty ?? false) {
+                      return productsItems!
+                          .map((e) => e.errors.length)
+                          .reduce((a, b) => a + b);
+                    }
+
+                    return items?.length;
+                  }),
                 ) ??
                 ref.watch(
                   synchronizerCountStateControllerProvider.select(
@@ -100,9 +115,12 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                       BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
                     >(),
               ),
-            SynchronizerErrorDetailType.saleRequestMarked => const BaseText(
-              'test',
-            ),
+            SynchronizerErrorDetailType.productWithError =>
+              SynchronizerProductsWithErrosPage(
+                items: data.items
+                    .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>(),
+              ),
+            SynchronizerErrorDetailType.saleRequestMarked ||
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
@@ -111,7 +129,6 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.customerWithError ||
             SynchronizerErrorDetailType.customerWaitingApproval ||
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
-            SynchronizerErrorDetailType.productWithError ||
             SynchronizerErrorDetailType.readBleeding ||
             SynchronizerErrorDetailType.correspondentBanking ||
             SynchronizerErrorDetailType.saleMovementScanntechLoad ||
