@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -7,9 +10,16 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+part './associate_product_page.dart';
+
 class SaleRequestWithErrorsItems extends ConsumerWidget {
-  const SaleRequestWithErrorsItems({super.key, required this.items});
+  const SaleRequestWithErrorsItems({
+    super.key,
+    required this.items,
+    required this.errorKey,
+  });
   final List<BSFSaleRequestWithErrorSynchronizerErrorDetailEntity> items;
+  final String errorKey;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,16 +130,16 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                           Align(
                             alignment: .centerRight,
                             child: PrimaryButton(
-                              onPressed: () {
-                                showAlertDialog(
-                                  context: context,
-                                  title: 'Pendent implementation'.hardcoded,
-                                  content:
-                                      'If you are seeing this, the developer forgot to implement this method before releasing. He should create a new controller to associate the product not found and should reload (silently) the errors to apply the changes without showing a loading'
-                                          .hardcoded,
+                              onPressed: () async {
+                                await showModalPage(
+                                  AssociateProductPage(
+                                    errorKey: errorKey,
+                                    productNotFound: item.productsNotFound[i],
+                                  ),
+                                  context,
                                 );
                               },
-                              text: 'Associate'.hardcoded,
+                              text: 'Associar'.hardcoded,
                             ),
                           ),
                         ],

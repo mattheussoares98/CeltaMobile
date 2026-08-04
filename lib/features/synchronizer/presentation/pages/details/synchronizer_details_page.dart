@@ -75,6 +75,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             ),
             SynchronizerErrorDetailType.saleRequestWithError =>
               SaleRequestWithErrorsItems(
+                errorKey: errorKey,
                 items: data.items
                     .cast<
                       BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
