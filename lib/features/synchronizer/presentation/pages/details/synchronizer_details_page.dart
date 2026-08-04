@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/synchronizer/presentation/controllers/
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/details/components/components.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,6 +22,21 @@ class SynchronizerDetailsPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: detailsProvider,
       usePadding: false,
+      floatingActionButton:
+          (errorKey.toLowerCase().contains(
+            'pedidos de vendas com erros durante a leitura',
+            //! this errorKey should always be visible and should have this floating to add new sale requests
+          ))
+          ? FloatingActionButton(
+              onPressed: () {
+                //TODO open a new modal page to link the sale request
+              },
+              child: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.add,
+                materialIcon: Icons.add,
+              ),
+            )
+          : null,
       appBar: BaseAppBar(
         titleWidget: Consumer(
           builder: (_, ref, _) {
@@ -81,6 +97,9 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                       BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
                     >(),
               ),
+            SynchronizerErrorDetailType.saleRequestMarked => const BaseText(
+              'test',
+            ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
@@ -89,7 +108,6 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.customerWithError ||
             SynchronizerErrorDetailType.customerWaitingApproval ||
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
-            SynchronizerErrorDetailType.saleRequestMarked ||
             SynchronizerErrorDetailType.productWithError ||
             SynchronizerErrorDetailType.readBleeding ||
             SynchronizerErrorDetailType.correspondentBanking ||
