@@ -65,15 +65,15 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     );
   }
 
-  Future<void> insertSaleRequestsToReadAgain(
+  Future<bool> insertSaleRequestsToReadAgain(
     String errorKey, {
     required int enterpriseCode,
     required int enterpriseCommerceSiteCode,
     required List<String> saleRequestIds,
   }) async {
-    if (saleRequestIds.isEmpty) return;
+    if (saleRequestIds.isEmpty) return false;
 
-    await _execute(
+    return await _execute(
       errorKey,
       SynchronizerErrorDetailType.saleRequestWithError,
       (repository, ecParams) => repository.insertSaleRequestsToReadAgain(
@@ -85,19 +85,22 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     );
   }
 
-  Future<void> _execute(
+  Future<bool> _execute(
     String errorKey,
     SynchronizerErrorDetailType detailType,
     Future<void> Function(IEcSynchronizerRepository, EcRequestParams) operation,
   ) async {
+    bool succeeds = false;
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final repository = ref.read(ecSynchronizerRepositoryProvider);
       final ecParams = await ref.read(ecRequestParamsProvider().future);
 
       await operation(repository, ecParams);
+      succeeds = true;
       _invalidateAfterSuccess(errorKey, detailType);
     });
+    return succeeds;
   }
 
   void _invalidateAfterSuccess(

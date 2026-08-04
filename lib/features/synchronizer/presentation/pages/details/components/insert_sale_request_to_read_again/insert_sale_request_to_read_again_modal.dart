@@ -47,12 +47,12 @@ class _InsertSaleRequestToReadAgainState
     });
   }
 
-  void onSubmit() {
+  Future<void> onSubmit() async {
     if (formKey.currentState?.validate() != true) {
       return;
     }
 
-    ref
+    final succeeds = await ref
         .read(handleSelectedCodesControllerProvider.notifier)
         .insertSaleRequestsToReadAgain(
           widget.errorKey,
@@ -60,11 +60,15 @@ class _InsertSaleRequestToReadAgainState
           enterpriseCommerceSiteCode: selectedCommerceSite!.code,
           saleRequestIds: [saleRequestIdController.text],
         );
-    //TODO close the page when it succeeds
+
+    if (mounted && succeeds) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    ref.observeLoading([handleSelectedCodesControllerProvider]);
     return BaseScaffold(
       body: Form(
         key: formKey,
@@ -93,7 +97,7 @@ class _InsertSaleRequestToReadAgainState
               animation: saleRequestIdController,
               builder: (context, _) {
                 return PrimaryButton(
-                  text: 'Inserir'.hardcoded,
+                  text: 'Inserir para releitura'.hardcoded,
                   onPressed:
                       selectedEnterprise == null ||
                           selectedCommerceSite == null ||

@@ -223,7 +223,7 @@ void main() {
     verifyNoMoreInteractions(repository);
   });
 
-  test('should insert sale requests to read again', () async {
+  test('should insert sale requests to read again and return true', () async {
     when(
       () => repository.insertSaleRequestsToReadAgain(
         params,
@@ -235,7 +235,7 @@ void main() {
     final container = makeContainer();
     addTearDown(container.dispose);
 
-    await container
+    final succeeds = await container
         .read(handleSelectedCodesControllerProvider.notifier)
         .insertSaleRequestsToReadAgain(
           errorKey,
@@ -243,6 +243,8 @@ void main() {
           enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
           saleRequestIds: saleRequestIds,
         );
+
+    expect(succeeds, isTrue);
 
     verify(
       () => repository.insertSaleRequestsToReadAgain(
@@ -325,14 +327,16 @@ void main() {
     addTearDown(container.dispose);
     await container.read(handleSelectedCodesControllerProvider.future);
 
-    await container
+    final succeeds = await container
         .read(handleSelectedCodesControllerProvider.notifier)
         .insertSaleRequestsToReadAgain(
           errorKey,
           enterpriseCode: enterpriseCode,
           enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
-          saleRequestIds: const [],
+          saleRequestIds: [],
         );
+
+    expect(succeeds, isFalse);
 
     expect(
       container.read(handleSelectedCodesControllerProvider),
