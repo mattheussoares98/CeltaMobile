@@ -10,7 +10,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-part './associate_product_page.dart';
+part 'associate_product_page.dart';
 
 class SaleRequestWithErrorsItems extends ConsumerWidget {
   const SaleRequestWithErrorsItems({

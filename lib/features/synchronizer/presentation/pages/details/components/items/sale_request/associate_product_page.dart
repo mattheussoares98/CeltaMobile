@@ -1,4 +1,4 @@
-part of './sale_request_with_errors_items.dart';
+part of 'sale_request_with_errors_items.dart';
 
 class AssociateProductPage extends ConsumerStatefulWidget {
   const AssociateProductPage({
