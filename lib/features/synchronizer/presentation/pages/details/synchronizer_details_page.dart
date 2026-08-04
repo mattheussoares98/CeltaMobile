@@ -29,7 +29,10 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           ))
           ? FloatingActionButton(
               onPressed: () {
-                //TODO open a new modal page to link the sale request
+                showModalPage(
+                  InsertSaleRequestToReadAgainModal(errorKey: errorKey),
+                  context,
+                );
               },
               child: const PlatformIcon(
                 cupertinoIcon: CupertinoIcons.add,
