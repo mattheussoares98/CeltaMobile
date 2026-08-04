@@ -1,6 +1,5 @@
-import 'package:equatable/equatable.dart';
-
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class EcCommerceSiteModel extends Equatable {
   final int code;
@@ -18,11 +17,11 @@ class EcCommerceSiteModel extends Equatable {
   });
 
   factory EcCommerceSiteModel.fromJson(Map json) => EcCommerceSiteModel(
-    code: json['Code'],
-    enterpriseCode: json['EnterpriseCode'],
-    environmentName: json['EnvironmentName'],
-    commerceSiteIdentification: json['CommerceSiteIdentification'],
-    description: json['Description'],
+    code: json['code'],
+    enterpriseCode: json['enterpriseCode'],
+    environmentName: json['environmentName'],
+    commerceSiteIdentification: json['commerceSiteIdentification'],
+    description: json['description'],
   );
 
   factory EcCommerceSiteModel.fromEntity(EcCommerceSiteEntity entity) =>
@@ -35,11 +34,11 @@ class EcCommerceSiteModel extends Equatable {
       );
 
   Map toJson() => {
-    'Code': code,
-    'EnterpriseCode': enterpriseCode,
-    'EnvironmentName': environmentName,
-    'CommerceSiteIdentification': commerceSiteIdentification,
-    'Description': description,
+    'code': code,
+    'enterpriseCode': enterpriseCode,
+    'environmentName': environmentName,
+    'commerceSiteIdentification': commerceSiteIdentification,
+    'description': description,
   };
 
   EcCommerceSiteEntity toEntity() => EcCommerceSiteEntity(
