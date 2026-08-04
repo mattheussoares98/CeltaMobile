@@ -15,12 +15,29 @@ class EcCommerceSiteEntity extends Equatable {
     required this.description,
   });
 
+  EcCommerceSiteEntity copyWith({
+    int? code,
+    int? enterpriseCode,
+    String? environmentName,
+    int? commerceSiteIdentification,
+    String? description,
+  }) {
+    return EcCommerceSiteEntity(
+      code: code ?? this.code,
+      enterpriseCode: enterpriseCode ?? this.enterpriseCode,
+      environmentName: environmentName ?? this.environmentName,
+      commerceSiteIdentification:
+          commerceSiteIdentification ?? this.commerceSiteIdentification,
+      description: description ?? this.description,
+    );
+  }
+
   @override
   List<Object?> get props => [
-    code,
-    enterpriseCode,
-    environmentName,
-    commerceSiteIdentification,
-    description,
-  ];
+        code,
+        enterpriseCode,
+        environmentName,
+        commerceSiteIdentification,
+        description,
+      ];
 }
