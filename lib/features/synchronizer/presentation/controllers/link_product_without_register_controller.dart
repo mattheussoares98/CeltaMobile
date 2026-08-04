@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
+import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'link_product_without_register_controller.g.dart';
@@ -9,7 +10,9 @@ part 'link_product_without_register_controller.g.dart';
 class LinkProductWithoutRegisterController
     extends _$LinkProductWithoutRegisterController {
   @override
-  FutureOr<void> build() {}
+  FutureOr<void> build() {
+    ref.cache(); //avoid problem while is closing the page and it is being used yet
+  }
 
   Future<bool> link({
     required String errorKey,
