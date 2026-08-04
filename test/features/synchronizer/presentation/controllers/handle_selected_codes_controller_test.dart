@@ -28,7 +28,7 @@ class FakeSynchronizerDetailsStateController
 
 void main() {
   const implementedDetailTypes = <SynchronizerErrorDetailType>{
-    SynchronizerErrorDetailType.couponMarkedToReadAgain,
+    SynchronizerErrorDetailType.coupon,
     SynchronizerErrorDetailType.schedule,
     SynchronizerErrorDetailType.saleRequestWithError,
   };
@@ -71,7 +71,7 @@ void main() {
 
   void stubRepositoryMethod(SynchronizerErrorDetailType detailType) {
     switch (detailType) {
-      case SynchronizerErrorDetailType.couponMarkedToReadAgain:
+      case SynchronizerErrorDetailType.coupon:
         when(
           () => repository.markCouponsToReadAgain(params, codes),
         ).thenAnswer((_) async {});
@@ -93,7 +93,7 @@ void main() {
 
   void verifyRepositoryMethod(SynchronizerErrorDetailType detailType) {
     switch (detailType) {
-      case SynchronizerErrorDetailType.couponMarkedToReadAgain:
+      case SynchronizerErrorDetailType.coupon:
         verify(
           () => repository.markCouponsToReadAgain(params, codes),
         ).called(1);
@@ -184,11 +184,7 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(
-          codes,
-          errorKey,
-          SynchronizerErrorDetailType.couponMarkedToReadAgain,
-        );
+        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
 
     expect(
       container.read(handleSelectedCodesControllerProvider).error,
@@ -214,11 +210,7 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(
-          codes,
-          errorKey,
-          SynchronizerErrorDetailType.couponMarkedToReadAgain,
-        );
+        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
     await container.read(detailsProvider.future);
 
     expect(detailsController.buildCount, 2);
@@ -232,17 +224,13 @@ void main() {
     addTearDown(container.dispose);
     final selectedCodesProvider =
         selectedSynchronizerCodesStateControllerProvider(
-          SynchronizerErrorDetailType.couponMarkedToReadAgain,
+          SynchronizerErrorDetailType.coupon,
         );
     container.read(selectedCodesProvider.notifier).select(codes.first);
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(
-          codes,
-          errorKey,
-          SynchronizerErrorDetailType.couponMarkedToReadAgain,
-        );
+        .handle(codes, errorKey, SynchronizerErrorDetailType.coupon);
 
     expect(container.read(selectedCodesProvider), isEmpty);
   });
@@ -254,11 +242,7 @@ void main() {
 
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
-        .handle(
-          const [],
-          errorKey,
-          SynchronizerErrorDetailType.couponMarkedToReadAgain,
-        );
+        .handle(const [], errorKey, SynchronizerErrorDetailType.coupon);
 
     expect(
       container.read(handleSelectedCodesControllerProvider),

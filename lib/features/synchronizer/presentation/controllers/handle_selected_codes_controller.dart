@@ -29,8 +29,10 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
       final ecParams = await ref.read(ecRequestParamsProvider().future);
 
       final method = switch (detailType) {
-        SynchronizerErrorDetailType.couponMarkedToReadAgain =>
-          repository.markCouponsToReadAgain(ecParams, codes),
+        SynchronizerErrorDetailType.coupon => repository.markCouponsToReadAgain(
+          ecParams,
+          codes,
+        ),
         SynchronizerErrorDetailType.schedule => repository.deleteScheduleErrors(
           ecParams,
           codes,
@@ -38,6 +40,7 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
         SynchronizerErrorDetailType.saleRequestWithError =>
           isDeleting
               ? repository.deleteSaleRequestsWithError(ecParams, codes)
+              //TODO test this delete method in production
               : repository.markSaleRequestsWithErrorToReadAgain(
                   ecParams,
                   codes,
