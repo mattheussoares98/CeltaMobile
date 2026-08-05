@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/entities.
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,150 +19,110 @@ class SynchronizerProductsWithErrosPage extends ConsumerStatefulWidget {
 }
 
 class _SynchronizerProductsWithErrosPageState
-    extends ConsumerState<SynchronizerProductsWithErrosPage>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(
-      length: BSFProductWithErrorType.values.length,
-      vsync: this,
-    );
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
+    extends ConsumerState<SynchronizerProductsWithErrosPage> {
+  int currentIndex = 0; //TODO create a separated controller for this
 
   @override
   Widget build(BuildContext context) {
     //TODO enable to select the products and make some actions
-    return Column(
-      children: [
-        AnimatedBuilder(
-          animation: _tabController,
-          builder: (context, child) {
-            return TabBar(
-              padding: EdgeInsets.zero,
-              labelPadding: const EdgeInsets.only(right: Sizes.p12),
-              controller: _tabController,
-              dividerHeight: 0,
-              tabs: BSFProductWithErrorType.values.map((type) {
-                final index = type.index;
-                final isSelected = _tabController.index == index;
+    return BaseScaffold(
+      isScrollable: false,
+      usePadding: false,
+      bottomNavigationBar: BaseBottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: (value) => setState(() {
+          currentIndex = value;
+        }),
+        items: BSFProductWithErrorType.values.map((type) {
+          final group = widget.items.firstWhereOrNull((e) => e.type == type);
+          final quantity = group?.errors.length ?? 0;
+
+          final IconData materialIcon;
+          final IconData cupertinoIcon;
+
+          switch (type) {
+            case BSFProductWithErrorType.error:
+              materialIcon = Icons.error_outline;
+              cupertinoIcon = CupertinoIcons.exclamationmark_circle;
+            case BSFProductWithErrorType.markedToSendAgain:
+              materialIcon = Icons.sync;
+              cupertinoIcon = CupertinoIcons.refresh;
+            case BSFProductWithErrorType.markedToIgnoreError:
+              materialIcon = Icons.visibility_off_outlined;
+              cupertinoIcon = CupertinoIcons.eye_slash;
+          }
+
+          final String label = switch (type) {
+            BSFProductWithErrorType.error => 'Erro'.hardcoded,
+            BSFProductWithErrorType.markedToSendAgain => 'Reenviar'.hardcoded,
+            BSFProductWithErrorType.markedToIgnoreError =>
+              'Ignorados'.hardcoded,
+          };
+
+          return BaseBottomNavigationBarItem(
+            label: label,
+            platformIcon: PlatformIcon(
+              materialIcon: materialIcon,
+              cupertinoIcon: cupertinoIcon,
+            ),
+            badgeLabel: quantity.toString(),
+          );
+        }).toList(),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: IndexedStack(
+              index: currentIndex,
+              children: BSFProductWithErrorType.values.map((type) {
                 final group = widget.items.firstWhereOrNull(
                   (e) => e.type == type,
                 );
-                final quantity = group?.errors.length ?? 0;
+                final errors = group?.errors ?? const [];
 
-                final IconData materialIcon;
-                final IconData cupertinoIcon;
+                if (errors.isEmpty) return const SynchronizerEmptyErrors();
 
-                switch (type) {
-                  case BSFProductWithErrorType.error:
-                    materialIcon = Icons.error_outline;
-                    cupertinoIcon = CupertinoIcons.exclamationmark_circle;
-                  case BSFProductWithErrorType.markedToSendAgain:
-                    materialIcon = Icons.sync;
-                    cupertinoIcon = CupertinoIcons.refresh;
-                  case BSFProductWithErrorType.markedToIgnoreError:
-                    materialIcon = Icons.visibility_off_outlined;
-                    cupertinoIcon = CupertinoIcons.eye_slash;
-                }
+                final groupedErrors = groupBy(
+                  errors,
+                  (e) => e.enterprisePersonalizedCode,
+                );
+                final keys = groupedErrors.keys.toList();
 
-                final String label = switch (type) {
-                  BSFProductWithErrorType.error => 'Erro'.hardcoded,
-                  BSFProductWithErrorType.markedToSendAgain =>
-                    'Reenviar'.hardcoded,
-                  BSFProductWithErrorType.markedToIgnoreError =>
-                    'Ignorados'.hardcoded,
-                };
+                return ResponsiveListFlow(
+                  itemCount: keys.length,
+                  padding: const EdgeInsets.all(Sizes.p8),
+                  itemBuilder: (context, index) {
+                    final code = keys[index];
+                    final enterpriseErrors = groupedErrors[code] ?? [];
+                    final fantasyName =
+                        enterpriseErrors.firstOrNull?.enterpriseFantasyName ??
+                        '';
 
-                return Tab(
-                  child: Row(
-                    mainAxisAlignment: .center,
-                    children: [
-                      Flexible(
-                        child: Text(
-                          label,
-                          style: context.theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                          textAlign: TextAlign.center,
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: Sizes.p8),
+                      child: ExpansionTile(
+                        initiallyExpanded: true,
+                        title: BaseRichText(
+                          texts: [
+                            BaseText.title('$code - $fantasyName '),
+                            BaseText.title(
+                              '(${enterpriseErrors.length})',
+                              color: Colors.red,
+                            ),
+                          ],
                         ),
+                        children: enterpriseErrors.map((item) {
+                          return SynchronizerProductErrorItem(item: item);
+                        }).toList(),
                       ),
-                      gapW4,
-                      QuantityBadge(
-                        quantity: quantity,
-                        platformIcon: PlatformIcon(
-                          materialIcon: materialIcon,
-                          cupertinoIcon: cupertinoIcon,
-                        ),
-                        isSelected: isSelected,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               }).toList(),
-            );
-          },
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: BSFProductWithErrorType.values.map((type) {
-              final group = widget.items.firstWhereOrNull(
-                (e) => e.type == type,
-              );
-              final errors = group?.errors ?? const [];
-
-              if (errors.isEmpty) return const SynchronizerEmptyErrors();
-
-              final groupedErrors = groupBy(
-                errors,
-                (e) => e.enterprisePersonalizedCode,
-              );
-              final keys = groupedErrors.keys.toList();
-
-              return ResponsiveListFlow(
-                itemCount: keys.length,
-                padding: const EdgeInsets.all(Sizes.p8),
-                itemBuilder: (context, index) {
-                  final code = keys[index];
-                  final enterpriseErrors = groupedErrors[code] ?? [];
-                  final fantasyName =
-                      enterpriseErrors.firstOrNull?.enterpriseFantasyName ?? '';
-
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: Sizes.p8),
-                    child: ExpansionTile(
-                      initiallyExpanded: true,
-                      title: BaseRichText(
-                        texts: [
-                          BaseText.title('$code - $fantasyName '),
-                          BaseText.title(
-                            '(${enterpriseErrors.length})',
-                            color: Colors.red,
-                          ),
-                        ],
-                      ),
-                      children: enterpriseErrors.map((item) {
-                        return SynchronizerProductErrorItem(item: item);
-                      }).toList(),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
