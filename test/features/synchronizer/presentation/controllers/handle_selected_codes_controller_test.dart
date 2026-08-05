@@ -47,6 +47,20 @@ void main() {
   const enterpriseCode = 1;
   const enterpriseCommerceSiteCode = 2;
   const saleRequestIds = ['request-1', 'request-2'];
+  const products = [
+    ProductWithErrorActionParams(
+      enterpriseCode: enterpriseCode,
+      productCode: 10,
+      productPackingCode: 20,
+      enterpriseCommerceSiteCode: 30,
+    ),
+    ProductWithErrorActionParams(
+      enterpriseCode: enterpriseCode,
+      productCode: 40,
+      productPackingCode: 50,
+      enterpriseCommerceSiteCode: 60,
+    ),
+  ];
   const errorKey = 'any_key';
 
   setUp(() {
@@ -222,6 +236,113 @@ void main() {
     verify(() => repository.markCouponsToReadAgain(params, codes)).called(1);
     verifyNoMoreInteractions(repository);
   });
+
+  test('should mark products to send again', () async {
+    when(
+      () => repository.markProductsToSendAgain(params, products),
+    ).thenAnswer((_) async {});
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .markProductsToSendAgain(products, errorKey);
+
+    verify(
+      () => repository.markProductsToSendAgain(params, products),
+    ).called(1);
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
+    verifyNoMoreInteractions(repository);
+  });
+
+  test('should unmark products to send again', () async {
+    when(
+      () => repository.unmarkProductsToSendAgain(params, products),
+    ).thenAnswer((_) async {});
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .unmarkProductsToSendAgain(products, errorKey);
+
+    verify(
+      () => repository.unmarkProductsToSendAgain(params, products),
+    ).called(1);
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
+    verifyNoMoreInteractions(repository);
+  });
+
+  test('should mark products to ignore error', () async {
+    when(
+      () => repository.markProductsToIgnoreError(params, products),
+    ).thenAnswer((_) async {});
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .markProductsToIgnoreError(products, errorKey);
+
+    verify(
+      () => repository.markProductsToIgnoreError(params, products),
+    ).called(1);
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
+    verifyNoMoreInteractions(repository);
+  });
+
+  test('should expose product action repository errors in its state', () async {
+    final exception = Exception('Failed to handle products');
+    when(
+      () => repository.markProductsToSendAgain(params, products),
+    ).thenThrow(exception);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .markProductsToSendAgain(products, errorKey);
+
+    expect(
+      container.read(handleSelectedCodesControllerProvider).error,
+      same(exception),
+    );
+    verify(
+      () => repository.markProductsToSendAgain(params, products),
+    ).called(1);
+    verifyNoMoreInteractions(repository);
+  });
+
+  test(
+    'should ignore an empty product list for every product action',
+    () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(handleSelectedCodesControllerProvider.future);
+      final controller = container.read(
+        handleSelectedCodesControllerProvider.notifier,
+      );
+
+      await controller.markProductsToSendAgain(const [], errorKey);
+      await controller.unmarkProductsToSendAgain(const [], errorKey);
+      await controller.markProductsToIgnoreError(const [], errorKey);
+
+      expect(
+        container.read(handleSelectedCodesControllerProvider),
+        const AsyncData<void>(null),
+      );
+      verifyNoMoreInteractions(repository);
+    },
+  );
 
   test('should insert sale requests to read again and return true', () async {
     when(

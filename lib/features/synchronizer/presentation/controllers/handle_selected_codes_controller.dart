@@ -85,6 +85,54 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     );
   }
 
+  Future<void> markProductsToSendAgain(
+    List<ProductWithErrorActionParams> products,
+    String errorKey,
+  ) async {
+    if (products.isEmpty) return;
+
+    await _execute(
+      errorKey,
+      SynchronizerErrorDetailType.productWithError,
+      (repository, ecParams) => repository.markProductsToSendAgain(
+        ecParams,
+        products,
+      ),
+    );
+  }
+
+  Future<void> unmarkProductsToSendAgain(
+    List<ProductWithErrorActionParams> products,
+    String errorKey,
+  ) async {
+    if (products.isEmpty) return;
+
+    await _execute(
+      errorKey,
+      SynchronizerErrorDetailType.productWithError,
+      (repository, ecParams) => repository.unmarkProductsToSendAgain(
+        ecParams,
+        products,
+      ),
+    );
+  }
+
+  Future<void> markProductsToIgnoreError(
+    List<ProductWithErrorActionParams> products,
+    String errorKey,
+  ) async {
+    if (products.isEmpty) return;
+
+    await _execute(
+      errorKey,
+      SynchronizerErrorDetailType.productWithError,
+      (repository, ecParams) => repository.markProductsToIgnoreError(
+        ecParams,
+        products,
+      ),
+    );
+  }
+
   Future<bool> _execute(
     String errorKey,
     SynchronizerErrorDetailType detailType,
