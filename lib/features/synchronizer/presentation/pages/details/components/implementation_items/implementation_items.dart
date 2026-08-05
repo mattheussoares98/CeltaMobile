@@ -1,5 +1,5 @@
 export 'coupon_items.dart';
 export 'nfe_disable_items.dart';
 export 'products/products.dart';
-export 'sale_request/sale_request.dart';
+export 'sale_request_with_error/sale_request_with_error.dart';
 export 'schedule_items.dart';
