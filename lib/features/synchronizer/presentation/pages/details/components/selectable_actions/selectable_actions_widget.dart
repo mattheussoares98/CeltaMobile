@@ -41,10 +41,10 @@ class SelectableActions extends ConsumerWidget {
       ).select((s) => s.value == true),
     );
 
+    final notifier = ref.read(handleSelectedCodesControllerProvider.notifier);
+
     void markToReadAgain(Set<int> codes) {
-      ref
-          .read(handleSelectedCodesControllerProvider.notifier)
-          .markToReadAgain(codes.toList(), errorKey, detailType);
+      notifier.markToReadAgain(codes.toList(), errorKey, detailType);
     }
 
     void deleteSelected(Set<int> codes) {
@@ -58,9 +58,7 @@ class SelectableActions extends ConsumerWidget {
         );
         return;
       }
-      ref
-          .read(handleSelectedCodesControllerProvider.notifier)
-          .deleteSelected(codes.toList(), errorKey, detailType);
+      notifier.deleteSelected(codes.toList(), errorKey, detailType);
     }
 
     final isSaleRequestMarkedToReadAgain =
@@ -158,9 +156,6 @@ class SelectableActions extends ConsumerWidget {
                 .toList();
           }
 
-          final notifier = ref.read(
-            handleSelectedCodesControllerProvider.notifier,
-          );
           final allCodesParams = getParams(allCodes);
           final selectedCodesParams = getParams(selectedCodes.toList());
 
@@ -228,6 +223,24 @@ class SelectableActions extends ConsumerWidget {
                 actions.addAll(sendProductsButtons);
             }
           }
+        case SynchronizerErrorDetailType.saleRequestMarked:
+          void unmarkSaleRequests(Set<int> codes) {
+            notifier.unmarkSaleRequestsMarked(codes.toList(), errorKey);
+          }
+          actions.addAll([
+            SelectableAction(
+              label: 'Desmarcar todos'.hardcoded,
+              onPressed: () => unmarkSaleRequests(
+                selectableItems.expand((e) => e.selectableCodes).toSet(),
+              ),
+            ),
+            SelectableAction(
+              label: 'Desmarcar selecionados'.hardcoded,
+              onPressed: hasSelected
+                  ? () => unmarkSaleRequests(selectedCodes)
+                  : null,
+            ),
+          ]);
         default:
           break;
       }
