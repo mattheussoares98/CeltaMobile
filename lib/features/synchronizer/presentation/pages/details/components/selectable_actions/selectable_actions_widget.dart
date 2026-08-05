@@ -165,6 +165,26 @@ class SelectableActions extends ConsumerWidget {
           final selectedCodesParams = getParams(selectedCodes.toList());
 
           if (group != null && group.errors.isNotEmpty) {
+            final ignoreButtons = [
+              SelectableAction(
+                label: 'Ignorar todos'.hardcoded,
+                onPressed: () => notifier.markProductsToIgnoreError(
+                  allCodesParams,
+                  errorKey,
+                ),
+                color: Colors.red,
+              ),
+              SelectableAction(
+                label: 'Ignorar selecionados'.hardcoded,
+                onPressed: hasSelected
+                    ? () => notifier.markProductsToIgnoreError(
+                        selectedCodesParams,
+                        errorKey,
+                      )
+                    : null,
+                color: Colors.red,
+              ),
+            ];
             switch (activeType) {
               case BSFProductWithErrorType.error:
                 actions.addAll([
@@ -184,31 +204,14 @@ class SelectableActions extends ConsumerWidget {
                           )
                         : null,
                   ),
-                  SelectableAction(
-                    label: 'Ignorar todos'.hardcoded,
-                    onPressed: () => notifier.markProductsToIgnoreError(
-                      allCodesParams,
-                      errorKey,
-                    ),
-                    color: Colors.red,
-                  ),
-                  SelectableAction(
-                    label: 'Ignorar selecionados'.hardcoded,
-                    onPressed: hasSelected
-                        ? () => notifier.markProductsToIgnoreError(
-                            selectedCodesParams,
-                            errorKey,
-                          )
-                        : null,
-                    color: Colors.red,
-                  ),
+                  ...ignoreButtons,
                 ]);
               case BSFProductWithErrorType.markedToSendAgain:
                 actions.addAll([
                   SelectableAction(
                     label: 'Desmarcar todos'.hardcoded,
                     onPressed: () => notifier.unmarkProductsToSendAgain(
-                      getParams(allCodes),
+                      allCodesParams,
                       errorKey,
                     ),
                   ),
@@ -216,11 +219,12 @@ class SelectableActions extends ConsumerWidget {
                     label: 'Desmarcar selecionados'.hardcoded,
                     onPressed: hasSelected
                         ? () => notifier.unmarkProductsToSendAgain(
-                            getParams(selectedCodes.toList()),
+                            selectedCodesParams,
                             errorKey,
                           )
                         : null,
                   ),
+                  ...ignoreButtons,
                 ]);
               case BSFProductWithErrorType.markedToIgnoreError:
                 break;
