@@ -3,6 +3,7 @@ import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.
 class BSFProductWithErrorSynchronizerErrorDetailModel
     extends BSFProductWithErrorSynchronizerErrorDetailEntity {
   const BSFProductWithErrorSynchronizerErrorDetailModel({
+    required super.code,
     required super.enterprisePersonalizedCode,
     required super.enterpriseFantasyName,
     required super.commerceSite,
@@ -21,6 +22,7 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
 
   factory BSFProductWithErrorSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFProductWithErrorSynchronizerErrorDetailModel(
+        code: json['Code'] as int,
         enterprisePersonalizedCode:
             json['EnterprisePersonalizedCode'] as String,
         enterpriseFantasyName: json['EnterpriseFantasizesName'] as String,
@@ -39,6 +41,7 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
       );
 
   Map toJson() => {
+    'Code': code,
     'EnterprisePersonalizedCode': enterprisePersonalizedCode,
     'EnterpriseFantasizesName': enterpriseFantasyName,
     'CommerceSite': commerceSite,
@@ -58,6 +61,7 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
   factory BSFProductWithErrorSynchronizerErrorDetailModel.fromEntity(
     BSFProductWithErrorSynchronizerErrorDetailEntity entity,
   ) => BSFProductWithErrorSynchronizerErrorDetailModel(
+    code: entity.code,
     enterprisePersonalizedCode: entity.enterprisePersonalizedCode,
     enterpriseFantasyName: entity.enterpriseFantasyName,
     commerceSite: entity.commerceSite,
@@ -76,6 +80,7 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
 
   BSFProductWithErrorSynchronizerErrorDetailEntity toEntity() =>
       BSFProductWithErrorSynchronizerErrorDetailEntity(
+        code: code,
         enterprisePersonalizedCode: enterprisePersonalizedCode,
         enterpriseFantasyName: enterpriseFantasyName,
         commerceSite: commerceSite,

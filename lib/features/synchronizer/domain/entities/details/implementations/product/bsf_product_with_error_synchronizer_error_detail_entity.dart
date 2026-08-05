@@ -2,6 +2,7 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/details/d
 
 class BSFProductWithErrorSynchronizerErrorDetailEntity
     extends SynchronizerErrorDetailEntity {
+  final int code;
   final String enterprisePersonalizedCode;
   final String enterpriseFantasyName;
   final String commerceSite;
@@ -18,6 +19,7 @@ class BSFProductWithErrorSynchronizerErrorDetailEntity
   final DateTime? lastChargeOfStock;
 
   const BSFProductWithErrorSynchronizerErrorDetailEntity({
+    required this.code,
     required this.enterprisePersonalizedCode,
     required this.enterpriseFantasyName,
     required this.commerceSite,
@@ -36,6 +38,7 @@ class BSFProductWithErrorSynchronizerErrorDetailEntity
 
   @override
   List<Object?> get props => [
+    code,
     enterprisePersonalizedCode,
     enterpriseFantasyName,
     commerceSite,
