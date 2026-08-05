@@ -18,11 +18,17 @@ class MockEcSynchronizerRepository extends Mock
 class FakeSynchronizerDetailsStateController
     extends SynchronizerDetailsStateController {
   int buildCount = 0;
+  int loadSilentlyCount = 0;
 
   @override
   Future<SynchronizerErrorDetailsEntity> build(String errorKey) async {
     buildCount++;
     return EntityFactory.makeSynchronizerErrorDetailsEntity();
+  }
+
+  @override
+  Future<void> loadSilently() async {
+    loadSilentlyCount++;
   }
 }
 
@@ -84,10 +90,9 @@ void main() {
       validatedUserSessionProvider.overrideWith(
         () => FakeValidatedUserSession(session),
       ),
-      if (detailsController != null)
-        synchronizerDetailsStateControllerProvider(
-          errorKey,
-        ).overrideWith(() => detailsController),
+      synchronizerDetailsStateControllerProvider(errorKey).overrideWith(
+        () => detailsController ?? FakeSynchronizerDetailsStateController(),
+      ),
     ],
   );
 
@@ -401,7 +406,7 @@ void main() {
         .markToReadAgain(codes, errorKey, SynchronizerErrorDetailType.coupon);
     await container.read(detailsProvider.future);
 
-    expect(detailsController.buildCount, 2);
+    expect(detailsController.loadSilentlyCount, 1);
   });
 
   test('should invalidate selected synchronizer codes after success', () async {
