@@ -31,7 +31,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
     required Routes route,
     required int? enterpriseCode,
     required Modules module,
-    bool replace = false,
+    bool createSubRoute = false,
     Map<String, String>? pathParameters,
     Object? extra,
   }) async {
@@ -148,7 +148,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
         }
 
         if (!context.mounted) return;
-        if (replace == true) {
+        if (createSubRoute == true) {
           context.goNamed(
             route.name,
             pathParameters: pathParameters ?? {},

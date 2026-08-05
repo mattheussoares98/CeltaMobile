@@ -62,7 +62,7 @@ class DefaultModuleButton extends ConsumerWidget {
             module: module,
             route: selectedActionRoute ?? route,
             enterpriseCode: enterpriseCode,
-            replace: true,
+            createSubRoute: true,
             pathParameters: passEnterpriseToNextRoute
                 ? {'enterpriseCode': enterpriseCode.toString()}
                 : null,
