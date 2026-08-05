@@ -97,6 +97,14 @@ class _HeroRequestSummary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final args = SaleRequestArgs(
+      enterpriseCode: enterpriseCode,
+      customerCode: customerCode,
+      saleRequestId: saleRequestId,
+    );
+    final saleRequestDetails = ref
+        .watch(saleRequestDetailsStateControllerProvider(args))
+        .value;
     return Hero(
       tag: 'sale_request_$saleRequestId',
       child: Material(
@@ -104,11 +112,8 @@ class _HeroRequestSummary extends ConsumerWidget {
         child: RequestSummaryWidget(
           showDetails: true,
           showCustomer: false,
-          args: SaleRequestArgs(
-            enterpriseCode: enterpriseCode,
-            customerCode: customerCode,
-            saleRequestId: saleRequestId,
-          ),
+          saleRequestDetails: saleRequestDetails,
+          args: args,
         ),
       ),
     );

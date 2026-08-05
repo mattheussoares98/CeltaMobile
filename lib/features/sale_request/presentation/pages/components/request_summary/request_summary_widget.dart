@@ -17,12 +17,14 @@ class RequestSummaryWidget extends ConsumerWidget {
   final bool showDetails;
   final SaleRequestArgs args;
   final bool showPrintAndPdfButtons;
+  final BSFSaleRequestEntity? saleRequestDetails;
   const RequestSummaryWidget({
     super.key,
     this.onTap,
     this.showCustomer = true,
     this.showDetails = false,
     this.showPrintAndPdfButtons = false,
+    this.saleRequestDetails,
     required this.args,
   });
 
@@ -36,9 +38,27 @@ class RequestSummaryWidget extends ConsumerWidget {
       ),
     );
 
-    if (saleRequest == null) {
+    if (saleRequest == null && saleRequestDetails == null) {
       return const SizedBox.shrink();
     }
+
+    final saleRequestNumber =
+        saleRequest?.SaleRequestNumber ?? saleRequestDetails?.personalizedCode;
+    final requestTypePersonalizedCode =
+        saleRequest?.RequestType?.PersonalizedCode ??
+        saleRequestDetails?.requestType?.personalizedCode;
+    final requestTypeName =
+        saleRequest?.RequestType?.Name ?? saleRequestDetails?.requestType?.name;
+    final sellerName =
+        saleRequest?.Seller?.Name ?? saleRequestDetails?.seller?.name;
+    final dateHourOfCreation =
+        saleRequest?.DateHourOfCreation ?? saleRequestDetails?.dateOfEmission;
+    final customerName =
+        saleRequest?.customer?.Name ?? saleRequestDetails?.customer?.name;
+    final observations =
+        saleRequest?.observations ?? saleRequestDetails?.observations;
+    final totalLiquid =
+        saleRequest?.TotalLiquid ?? saleRequestDetails?.totalLiquid;
 
     return Card(
       clipBehavior: onTap == null ? null : Clip.antiAlias,
@@ -70,37 +90,37 @@ class RequestSummaryWidget extends ConsumerWidget {
                     TitleAndSubTitle(
                       title: 'Núm pedido'.hardcoded,
                       copyableSubtitle: true,
-                      subTitle: saleRequest.SaleRequestNumber,
+                      subTitle: saleRequestNumber,
                     ),
-                    if (saleRequest.RequestType != null)
+                    if (requestTypePersonalizedCode != null)
                       TitleAndSubTitle(
                         title: 'Modelo de pedido'.hardcoded,
                         copyableSubtitle: true,
                         subTitle:
-                            '${saleRequest.RequestType?.PersonalizedCode.isEmpty ?? true ? '' : '(${saleRequest.RequestType?.PersonalizedCode})'} ${saleRequest.RequestType?.Name}',
+                            '${requestTypePersonalizedCode.isEmpty ? '' : '($requestTypePersonalizedCode)'} $requestTypeName',
                       ),
-                    if (saleRequest.Seller != null)
+                    if (sellerName != null)
                       TitleAndSubTitle(
                         title: 'Vendedor'.hardcoded,
                         copyableSubtitle: true,
-                        subTitle: saleRequest.Seller?.Name,
+                        subTitle: sellerName,
                       ),
-                    if (saleRequest.DateHourOfCreation != null)
+                    if (dateHourOfCreation != null)
                       TitleAndSubTitle(
                         title: 'Data'.hardcoded,
-                        subTitle: saleRequest.DateHourOfCreation!.formatDate(
+                        subTitle: dateHourOfCreation.formatDate(
                           DateFormatType.ddMMyyyyHHmm,
                         ),
                       ),
-                    if (showCustomer && saleRequest.customer != null)
+                    if (showCustomer && (customerName?.isNotEmpty ?? false))
                       TitleAndSubTitle(
                         title: 'Cliente'.hardcoded,
-                        subTitle: saleRequest.customer!.Name,
+                        subTitle: customerName,
                       ),
-                    if (saleRequest.observations?.isNotEmpty ?? false)
+                    if (observations?.isNotEmpty ?? false)
                       TitleAndSubTitle(
                         title: 'Observações'.hardcoded,
-                        subTitle: saleRequest.observations,
+                        subTitle: observations,
                       ),
                     if (showDetails)
                       Consumer(
@@ -153,7 +173,7 @@ class RequestSummaryWidget extends ConsumerWidget {
                       ),
                     TitleAndSubTitle(
                       title: 'Total líquido'.hardcoded,
-                      subTitle: saleRequest.TotalLiquid,
+                      subTitle: totalLiquid,
                       subTitleIsPrice: true,
                     ),
                     if (showPrintAndPdfButtons) ...[
