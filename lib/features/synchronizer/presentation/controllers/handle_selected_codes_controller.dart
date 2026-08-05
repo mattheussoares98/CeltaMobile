@@ -65,6 +65,20 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     );
   }
 
+  Future<void> unmarkSaleRequestsMarked(
+    List<int> codes,
+    String errorKey,
+  ) async {
+    if (codes.isEmpty) return;
+
+    await _execute(
+      errorKey,
+      SynchronizerErrorDetailType.saleRequestMarked,
+      (repository, ecParams) =>
+          repository.unmarkSaleRequestsMarked(ecParams, codes),
+    );
+  }
+
   Future<bool> insertSaleRequestsToReadAgain(
     String errorKey, {
     required int enterpriseCode,

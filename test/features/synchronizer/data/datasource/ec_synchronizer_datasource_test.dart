@@ -281,6 +281,60 @@ void main() {
     });
   });
 
+  group('unmarkSaleRequestsMarked', () {
+    const codes = [123, 456];
+    const url = '/api/Synchronizer/UnmarkSaleRequestsMarked';
+    final body = {...params.toMap(), 'Codes': codes};
+
+    test('should post all marked sale request codes in one request', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.unmarkSaleRequestsMarked(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to unmark sale requests');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.unmarkSaleRequestsMarked(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('insertSaleRequestsToReadAgain', () {
     const enterpriseCode = 1;
     const enterpriseCommerceSiteCode = 2;

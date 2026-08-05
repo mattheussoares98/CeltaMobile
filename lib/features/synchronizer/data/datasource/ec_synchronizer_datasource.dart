@@ -99,6 +99,19 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> unmarkSaleRequestsMarked(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/UnmarkSaleRequestsMarked',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
+  }
+
+  @override
   Future<void> insertSaleRequestsToReadAgain(
     EcRequestParams params, {
     required int enterpriseCode,

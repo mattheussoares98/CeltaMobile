@@ -152,6 +152,41 @@ void main() {
     });
   });
 
+  group('unmarkSaleRequestsMarked', () {
+    const codes = [123, 456];
+
+    test(
+      'should delegate the marked sale request codes to the datasource',
+      () async {
+        when(
+          () => datasource.unmarkSaleRequestsMarked(params, codes),
+        ).thenAnswer((_) async {});
+
+        await sut.unmarkSaleRequestsMarked(params, codes);
+
+        verify(
+          () => datasource.unmarkSaleRequestsMarked(params, codes),
+        ).called(1);
+        verifyNoMoreInteractions(datasource);
+      },
+    );
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to unmark sale requests');
+      when(
+        () => datasource.unmarkSaleRequestsMarked(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.unmarkSaleRequestsMarked(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.unmarkSaleRequestsMarked(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('insertSaleRequestsToReadAgain', () {
     const enterpriseCode = 1;
     const enterpriseCommerceSiteCode = 2;

@@ -186,6 +186,81 @@ void main() {
     });
   }
 
+  group('unmarkSaleRequestsMarked', () {
+    test('should delegate codes and refresh the related state', () async {
+      final detailsController = FakeSynchronizerDetailsStateController();
+      when(
+        () => repository.unmarkSaleRequestsMarked(params, codes),
+      ).thenAnswer((_) async {});
+      final container = makeContainer(detailsController: detailsController);
+      addTearDown(container.dispose);
+      final detailsProvider = synchronizerDetailsStateControllerProvider(
+        errorKey,
+      );
+      final detailsSubscription = container.listen(detailsProvider, (_, _) {});
+      addTearDown(detailsSubscription.close);
+      await container.read(detailsProvider.future);
+      final selectedCodesProvider =
+          selectedSynchronizerCodesStateControllerProvider(
+            SynchronizerErrorDetailType.saleRequestMarked,
+          );
+      container.read(selectedCodesProvider.notifier).select(codes.first);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .unmarkSaleRequestsMarked(codes, errorKey);
+
+      verify(
+        () => repository.unmarkSaleRequestsMarked(params, codes),
+      ).called(1);
+      expect(detailsController.loadSilentlyCount, 1);
+      expect(container.read(selectedCodesProvider), isEmpty);
+      expect(
+        container.read(handleSelectedCodesControllerProvider),
+        const AsyncData<void>(null),
+      );
+      verifyNoMoreInteractions(repository);
+    });
+
+    test('should expose repository errors in its state', () async {
+      final exception = Exception('Failed to unmark sale requests');
+      when(
+        () => repository.unmarkSaleRequestsMarked(params, codes),
+      ).thenThrow(exception);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .unmarkSaleRequestsMarked(codes, errorKey);
+
+      expect(
+        container.read(handleSelectedCodesControllerProvider).error,
+        same(exception),
+      );
+      verify(
+        () => repository.unmarkSaleRequestsMarked(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(repository);
+    });
+
+    test('should ignore an empty code list', () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(handleSelectedCodesControllerProvider.future);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .unmarkSaleRequestsMarked(const [], errorKey);
+
+      expect(
+        container.read(handleSelectedCodesControllerProvider),
+        const AsyncData<void>(null),
+      );
+      verifyNoMoreInteractions(repository);
+    });
+  });
+
   for (final detailType in unsupportedRereadDetailTypes) {
     test('should expose an error when rereading $detailType', () async {
       final container = makeContainer();
