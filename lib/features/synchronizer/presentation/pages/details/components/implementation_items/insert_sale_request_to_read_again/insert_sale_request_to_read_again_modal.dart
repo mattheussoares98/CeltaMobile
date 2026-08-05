@@ -11,8 +11,8 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-part './select_comerce_site_drop_down.dart';
-part './select_enterprise_drop_down.dart';
+part 'select_comerce_site_drop_down.dart';
+part 'select_enterprise_drop_down.dart';
 
 class InsertSaleRequestToReadAgainModal extends ConsumerStatefulWidget {
   const InsertSaleRequestToReadAgainModal({super.key, required this.errorKey});
