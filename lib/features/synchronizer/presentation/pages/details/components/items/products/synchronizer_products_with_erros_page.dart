@@ -44,65 +44,75 @@ class _SynchronizerProductsWithErrosPageState
     //TODO enable to select the products and make some actions
     return Column(
       children: [
-        TabBar(
-          controller: _tabController,
-          dividerHeight: 0,
-          tabs: BSFProductWithErrorType.values.map((type) {
-            final index = type.index;
-            final isSelected = _tabController.index == index;
-            final group = widget.items.firstWhereOrNull((e) => e.type == type);
-            final quantity = group?.errors.length ?? 0;
+        AnimatedBuilder(
+          animation: _tabController,
+          builder: (context, child) {
+            return TabBar(
+              padding: EdgeInsets.zero,
+              labelPadding: const EdgeInsets.only(right: Sizes.p12),
+              controller: _tabController,
+              dividerHeight: 0,
+              tabs: BSFProductWithErrorType.values.map((type) {
+                final index = type.index;
+                final isSelected = _tabController.index == index;
+                final group = widget.items.firstWhereOrNull(
+                  (e) => e.type == type,
+                );
+                final quantity = group?.errors.length ?? 0;
 
-            final IconData materialIcon;
-            final IconData cupertinoIcon;
+                final IconData materialIcon;
+                final IconData cupertinoIcon;
 
-            switch (type) {
-              case BSFProductWithErrorType.error:
-                materialIcon = Icons.error_outline;
-                cupertinoIcon = CupertinoIcons.exclamationmark_circle;
-              case BSFProductWithErrorType.markedToSendAgain:
-                materialIcon = Icons.sync;
-                cupertinoIcon = CupertinoIcons.refresh;
-              case BSFProductWithErrorType.markedToIgnoreError:
-                materialIcon = Icons.visibility_off_outlined;
-                cupertinoIcon = CupertinoIcons.eye_slash;
-            }
+                switch (type) {
+                  case BSFProductWithErrorType.error:
+                    materialIcon = Icons.error_outline;
+                    cupertinoIcon = CupertinoIcons.exclamationmark_circle;
+                  case BSFProductWithErrorType.markedToSendAgain:
+                    materialIcon = Icons.sync;
+                    cupertinoIcon = CupertinoIcons.refresh;
+                  case BSFProductWithErrorType.markedToIgnoreError:
+                    materialIcon = Icons.visibility_off_outlined;
+                    cupertinoIcon = CupertinoIcons.eye_slash;
+                }
 
-            final String label = switch (type) {
-              BSFProductWithErrorType.error => 'Com erro'.hardcoded,
-              BSFProductWithErrorType.markedToSendAgain => 'Reenviar'.hardcoded,
-              BSFProductWithErrorType.markedToIgnoreError =>
-                'Ignorados'.hardcoded,
-            };
+                final String label = switch (type) {
+                  BSFProductWithErrorType.error => 'Erro'.hardcoded,
+                  BSFProductWithErrorType.markedToSendAgain =>
+                    'Reenviar'.hardcoded,
+                  BSFProductWithErrorType.markedToIgnoreError =>
+                    'Ignorados'.hardcoded,
+                };
 
-            return Tab(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  QuantityBadge(
-                    quantity: quantity,
-                    platformIcon: PlatformIcon(
-                      materialIcon: materialIcon,
-                      cupertinoIcon: cupertinoIcon,
-                    ),
-                    isSelected: isSelected,
-                  ),
-                  gapW4,
-                  Flexible(
-                    child: Text(
-                      label,
-                      style: context.theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: isSelected
-                            ? FontWeight.bold
-                            : FontWeight.normal,
+                return Tab(
+                  child: Row(
+                    mainAxisAlignment: .center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          label,
+                          style: context.theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                      gapW4,
+                      QuantityBadge(
+                        quantity: quantity,
+                        platformIcon: PlatformIcon(
+                          materialIcon: materialIcon,
+                          cupertinoIcon: cupertinoIcon,
+                        ),
+                        isSelected: isSelected,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }).toList(),
             );
-          }).toList(),
+          },
         ),
         Expanded(
           child: TabBarView(

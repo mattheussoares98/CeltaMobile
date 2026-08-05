@@ -3,6 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SynchronizerProductErrorItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class SynchronizerProductErrorItem extends StatelessWidget {
                   '(${item.priceLookUp})',
                   color: context.theme.primaryColor,
                 ),
-                BaseText.title(' ${item.productName} '),
+                BaseText.titleMedium(' ${item.productName} '),
                 BaseText.title(
                   item.formattedPacking,
                   color: context.theme.colorScheme.secondary,
@@ -50,41 +51,52 @@ class SynchronizerProductErrorItem extends StatelessWidget {
               BaseText.error(item.errorMessage, textAlign: .start),
             if (item.lastChargeOfProduct != null)
               TitleAndSubTitle(
-                title: 'Última carga do produto'.hardcoded,
+                title: 'Carga do produto'.hardcoded,
                 subTitle: item.lastChargeOfProduct!.formatDate(
                   DateFormatType.ddMMyyyyHHmm,
                 ),
               ),
             if (item.lastChargeOfSalePrice != null)
               TitleAndSubTitle(
-                title: 'Última carga de preços'.hardcoded,
+                title: 'Carga de preços'.hardcoded,
                 subTitle: item.lastChargeOfSalePrice!.formatDate(
                   DateFormatType.ddMMyyyyHHmm,
                 ),
               ),
             if (item.lastChargeOfStock != null)
               TitleAndSubTitle(
-                title: 'Última carga de estoques'.hardcoded,
+                title: 'Carga de estoques'.hardcoded,
                 subTitle: item.lastChargeOfStock!.formatDate(
                   DateFormatType.ddMMyyyyHHmm,
                 ),
               ),
-            if (item.hasSendingRestriction)
-              Row(
-                children: [
-                  const Icon(Icons.warning, color: Colors.orange, size: 16),
-                  gapW4,
-                  Expanded(
-                    child: Text(
-                      'Possui restrição de envio'.hardcoded,
-                      style: context.theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            Row(
+              children: [
+                PlatformIcon(
+                  cupertinoIcon: item.hasSendingRestriction
+                      ? CupertinoIcons.exclamationmark_triangle
+                      : CupertinoIcons.check_mark,
+                  materialIcon: item.hasSendingRestriction
+                      ? Icons.warning
+                      : Icons.check,
+                  color: item.hasSendingRestriction
+                      ? Colors.orange
+                      : Colors.green,
+                  size: 16,
+                ),
+                gapW4,
+                Expanded(
+                  child: BaseText(
+                    item.hasSendingRestriction
+                        ? 'Não enviado ao site'.hardcoded
+                        : 'Enviado ao site'.hardcoded,
+                    color: item.hasSendingRestriction
+                        ? Colors.orange
+                        : Colors.green,
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

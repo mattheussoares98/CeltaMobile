@@ -90,7 +90,7 @@ class BaseText extends StatelessWidget {
     maxLines: maxLines,
     color: color,
     textType: TextType.titleSmall,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.bold,
     fontStyle: fontStyle,
   );
 
@@ -105,7 +105,7 @@ class BaseText extends StatelessWidget {
     textAlign: textAlign,
     color: color,
     textType: TextType.titleMedium,
-    fontWeight: fontWeight ?? FontWeight.w600,
+    fontWeight: fontWeight ?? FontWeight.bold,
     fontStyle: fontStyle,
   );
   factory BaseText.titleLarge(
