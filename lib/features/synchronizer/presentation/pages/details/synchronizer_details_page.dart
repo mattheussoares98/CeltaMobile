@@ -119,6 +119,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               SynchronizerProductsWithErrosPage(
                 items: data.items
                     .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>(),
+                errorKey: errorKey,
               ),
             SynchronizerErrorDetailType.saleRequestMarked ||
             SynchronizerErrorDetailType.cashierMovement ||
@@ -136,16 +137,14 @@ class SynchronizerDetailsPage extends ConsumerWidget {
               const NotImplementedDetailType(),
           };
 
-          //! When there is no readable (can mark to read again) return the items directly
-          if (selectableItems.isEmpty) return items;
-
           return Column(
             children: [
-              SelectableActions(
-                detailType: data.detailType,
-                selectableItems: selectableItems,
-                errorKey: errorKey,
-              ),
+              if (selectableItems.isNotEmpty)
+                SelectableActions(
+                  detailType: data.detailType,
+                  errorKey: errorKey,
+                  selectableItems: selectableItems,
+                ),
               Expanded(child: items),
             ],
           );

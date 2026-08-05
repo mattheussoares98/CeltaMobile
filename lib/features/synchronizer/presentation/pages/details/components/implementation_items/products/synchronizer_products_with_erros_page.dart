@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -10,8 +11,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SynchronizerProductsWithErrosPage extends ConsumerStatefulWidget {
-  const SynchronizerProductsWithErrosPage({super.key, required this.items});
+  const SynchronizerProductsWithErrosPage({
+    super.key,
+    required this.items,
+    required this.errorKey,
+  });
   final List<BSFProductWithErrorSynchronizerErrorGroupEntity> items;
+  final String errorKey;
 
   @override
   ConsumerState<SynchronizerProductsWithErrosPage> createState() =>
@@ -24,7 +30,98 @@ class _SynchronizerProductsWithErrosPageState
 
   @override
   Widget build(BuildContext context) {
-    //TODO enable to select the products and make some actions
+    final activeType = BSFProductWithErrorType.values[currentIndex];
+
+    final selectedCodes = ref.watch(
+      selectedSynchronizerCodesStateControllerProvider(
+        SynchronizerErrorDetailType.productWithError,
+      ),
+    );
+    final hasSelected = selectedCodes.isNotEmpty;
+
+    final group = widget.items.firstWhereOrNull((e) => e.type == activeType);
+    final allCodes = group?.errors.map((e) => e.code).toList() ?? const [];
+
+    List<ProductWithErrorActionParams> getParams(List<int> targetCodes) {
+      if (group == null) return [];
+      return group.errors
+          .where((e) => targetCodes.contains(e.code))
+          .map(
+            (e) => ProductWithErrorActionParams(
+              enterpriseCode: e.enterpriseCode,
+              productCode: e.code,
+              productPackingCode: e.productPackingCode,
+              enterpriseCommerceSiteCode: e.enterpriseCommerceSiteCode,
+            ),
+          )
+          .toList();
+    }
+
+    final notifier = ref.read(handleSelectedCodesControllerProvider.notifier);
+
+    final List<SelectableAction> actions = [];
+
+    if (group != null && group.errors.isNotEmpty) {
+      switch (activeType) {
+        case BSFProductWithErrorType.error:
+          actions.addAll([
+            SelectableAction(
+              label: 'Reenviar todos'.hardcoded,
+              onPressed: () => notifier.markProductsToSendAgain(
+                getParams(allCodes),
+                widget.errorKey,
+              ),
+            ),
+            SelectableAction(
+              label: 'Reenviar selecionados'.hardcoded,
+              onPressed: hasSelected
+                  ? () => notifier.markProductsToSendAgain(
+                      getParams(selectedCodes.toList()),
+                      widget.errorKey,
+                    )
+                  : null,
+            ),
+            SelectableAction(
+              label: 'Ignorar todos'.hardcoded,
+              onPressed: () => notifier.markProductsToIgnoreError(
+                getParams(allCodes),
+                widget.errorKey,
+              ),
+            ),
+            SelectableAction(
+              label: 'Ignorar selecionados'.hardcoded,
+              onPressed: hasSelected
+                  ? () => notifier.markProductsToIgnoreError(
+                      getParams(selectedCodes.toList()),
+                      widget.errorKey,
+                    )
+                  : null,
+            ),
+          ]);
+        case BSFProductWithErrorType.markedToSendAgain:
+          actions.addAll([
+            SelectableAction(
+              label: 'Desmarcar todos'.hardcoded,
+              onPressed: () => notifier.unmarkProductsToSendAgain(
+                getParams(allCodes),
+                widget.errorKey,
+              ),
+            ),
+            SelectableAction(
+              label: 'Desmarcar selecionados'.hardcoded,
+              onPressed: hasSelected
+                  ? () => notifier.unmarkProductsToSendAgain(
+                      getParams(selectedCodes.toList()),
+                      widget.errorKey,
+                    )
+                  : null,
+            ),
+          ]);
+        case BSFProductWithErrorType.markedToIgnoreError:
+          break;
+      }
+    }
+
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
@@ -71,6 +168,12 @@ class _SynchronizerProductsWithErrosPageState
       ),
       body: Column(
         children: [
+          SelectableActions(
+            detailType: SynchronizerErrorDetailType.productWithError,
+            errorKey: widget.errorKey,
+            selectableItems: widget.items,
+            actions: actions,
+          ),
           Expanded(
             child: IndexedStack(
               index: currentIndex,

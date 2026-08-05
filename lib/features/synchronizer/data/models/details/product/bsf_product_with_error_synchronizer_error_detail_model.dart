@@ -4,6 +4,9 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
     extends BSFProductWithErrorSynchronizerErrorDetailEntity {
   const BSFProductWithErrorSynchronizerErrorDetailModel({
     required super.code,
+    required super.enterpriseCode,
+    required super.productPackingCode,
+    required super.enterpriseCommerceSiteCode,
     required super.enterprisePersonalizedCode,
     required super.enterpriseFantasyName,
     required super.commerceSite,
@@ -23,6 +26,9 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
   factory BSFProductWithErrorSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFProductWithErrorSynchronizerErrorDetailModel(
         code: json['Code'] as int,
+        enterpriseCode: json['EnterpriseCode'] as int,
+        productPackingCode: json['ProductPackingCode'] as int,
+        enterpriseCommerceSiteCode: json['EnterpriseCommerceSiteCode'] as int,
         enterprisePersonalizedCode:
             json['EnterprisePersonalizedCode'] as String,
         enterpriseFantasyName: json['EnterpriseFantasizesName'] as String,
@@ -42,6 +48,9 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
 
   Map toJson() => {
     'Code': code,
+    'EnterpriseCode': enterpriseCode,
+    'ProductPackingCode': productPackingCode,
+    'EnterpriseCommerceSiteCode': enterpriseCommerceSiteCode,
     'EnterprisePersonalizedCode': enterprisePersonalizedCode,
     'EnterpriseFantasizesName': enterpriseFantasyName,
     'CommerceSite': commerceSite,
@@ -62,6 +71,9 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
     BSFProductWithErrorSynchronizerErrorDetailEntity entity,
   ) => BSFProductWithErrorSynchronizerErrorDetailModel(
     code: entity.code,
+    enterpriseCode: entity.enterpriseCode,
+    productPackingCode: entity.productPackingCode,
+    enterpriseCommerceSiteCode: entity.enterpriseCommerceSiteCode,
     enterprisePersonalizedCode: entity.enterprisePersonalizedCode,
     enterpriseFantasyName: entity.enterpriseFantasyName,
     commerceSite: entity.commerceSite,
@@ -81,6 +93,9 @@ class BSFProductWithErrorSynchronizerErrorDetailModel
   BSFProductWithErrorSynchronizerErrorDetailEntity toEntity() =>
       BSFProductWithErrorSynchronizerErrorDetailEntity(
         code: code,
+        enterpriseCode: enterpriseCode,
+        productPackingCode: productPackingCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
         enterprisePersonalizedCode: enterprisePersonalizedCode,
         enterpriseFantasyName: enterpriseFantasyName,
         commerceSite: commerceSite,

@@ -12,7 +12,7 @@ class BSFProductWithErrorSynchronizerErrorGroupEntity
   });
 
   @override
-  List<int> get selectableCodes => [];
+  List<int> get selectableCodes => errors.map((e) => e.code).toList();
 
   @override
   List<Object?> get props => [type, errors];

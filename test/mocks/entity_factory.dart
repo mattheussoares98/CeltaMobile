@@ -1096,6 +1096,9 @@ class EntityFactory {
   makeBSFProductWithErrorSynchronizerErrorDetailEntity() =>
       BSFProductWithErrorSynchronizerErrorDetailEntity(
         code: faker.randomGenerator.integer(100, min: 1),
+        enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+        productPackingCode: faker.randomGenerator.integer(100, min: 1),
+        enterpriseCommerceSiteCode: faker.randomGenerator.integer(100, min: 1),
         enterprisePersonalizedCode: faker.randomGenerator.numberOfLength(6),
         enterpriseFantasyName: faker.company.name(),
         commerceSite: faker.company.name(),
