@@ -94,10 +94,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     await _execute(
       errorKey,
       SynchronizerErrorDetailType.productWithError,
-      (repository, ecParams) => repository.markProductsToSendAgain(
-        ecParams,
-        products,
-      ),
+      (repository, ecParams) =>
+          repository.markProductsToSendAgain(ecParams, products),
     );
   }
 
@@ -110,10 +108,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     await _execute(
       errorKey,
       SynchronizerErrorDetailType.productWithError,
-      (repository, ecParams) => repository.unmarkProductsToSendAgain(
-        ecParams,
-        products,
-      ),
+      (repository, ecParams) =>
+          repository.unmarkProductsToSendAgain(ecParams, products),
     );
   }
 
@@ -126,10 +122,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     await _execute(
       errorKey,
       SynchronizerErrorDetailType.productWithError,
-      (repository, ecParams) => repository.markProductsToIgnoreError(
-        ecParams,
-        products,
-      ),
+      (repository, ecParams) =>
+          repository.markProductsToIgnoreError(ecParams, products),
     );
   }
 
@@ -146,16 +140,18 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
 
       await operation(repository, ecParams);
       succeeds = true;
-      _invalidateAfterSuccess(errorKey, detailType);
+      await _invalidateAfterSuccess(errorKey, detailType);
     });
     return succeeds;
   }
 
-  void _invalidateAfterSuccess(
+  Future<void> _invalidateAfterSuccess(
     String errorKey,
     SynchronizerErrorDetailType detailType,
-  ) {
-    ref.invalidate(synchronizerDetailsStateControllerProvider(errorKey));
+  ) async {
+    await ref
+        .read(synchronizerDetailsStateControllerProvider(errorKey).notifier)
+        .loadSilently();
     ref.invalidate(
       selectedSynchronizerCodesStateControllerProvider(detailType),
     );
