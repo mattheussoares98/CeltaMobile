@@ -3,12 +3,14 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/details/d
 class BSFScheduleSynchronizerErrorDetailEntity
     extends SynchronizerErrorDetailEntity
     implements SelectableSynchronizerErrorDetailEntity {
-  @override
   final int code;
   final String serverName;
   final String enterpriseName;
   final DateTime executionDate;
   final String description;
+
+  @override
+  List<int> get selectableCodes => [code];
 
   const BSFScheduleSynchronizerErrorDetailEntity({
     required this.code,

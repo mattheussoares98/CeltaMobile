@@ -14,6 +14,9 @@ class BSFCouponSynchronizerErrorDetailModel extends BSFCouponSynchronizerModel
     required super.details,
   });
 
+  @override
+  List<int> get selectableCodes => [code];
+
   factory BSFCouponSynchronizerErrorDetailModel.fromJson(Map json) {
     final base = BSFCouponSynchronizerModel.fromJson(json);
     return BSFCouponSynchronizerErrorDetailModel(

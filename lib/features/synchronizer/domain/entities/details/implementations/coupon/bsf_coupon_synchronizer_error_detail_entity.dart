@@ -12,4 +12,7 @@ class BSFCouponSynchronizerErrorDetailEntity extends BSFCouponSynchronizerEntity
     required super.cashRegisterNumber,
     required super.details,
   });
+
+  @override
+  List<int> get selectableCodes => [code];
 }

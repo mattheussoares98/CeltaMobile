@@ -96,10 +96,14 @@ class SelectableActions extends ConsumerWidget {
                   onPressed: canDelete
                       ? () => detailType == SynchronizerErrorDetailType.schedule
                             ? deleteSelected(
-                                selectableItems.map((e) => e.code).toSet(),
+                                selectableItems
+                                    .expand((e) => e.selectableCodes)
+                                    .toSet(),
                               )
                             : markToReadAgain(
-                                selectableItems.map((e) => e.code).toSet(),
+                                selectableItems
+                                    .expand((e) => e.selectableCodes)
+                                    .toSet(),
                               )
                       : null,
                 ),

@@ -3,7 +3,6 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/details/d
 class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
     extends SynchronizerErrorDetailEntity
     implements SelectableSynchronizerErrorDetailEntity {
-  @override
   final int code;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
@@ -14,6 +13,9 @@ class BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
   final String commerceSiteFile;
   final List<String> details;
   final List<BSFSaleRequestProductNotFoundDetailEntity> productsNotFound;
+
+  @override
+  List<int> get selectableCodes => [code];
 
   const BSFSaleRequestWithErrorSynchronizerErrorDetailEntity({
     required this.code,

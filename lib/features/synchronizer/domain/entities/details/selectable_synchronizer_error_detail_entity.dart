@@ -1,3 +1,4 @@
 abstract interface class SelectableSynchronizerErrorDetailEntity {
-  int get code;
+  List<int> get selectableCodes;
 }
+
