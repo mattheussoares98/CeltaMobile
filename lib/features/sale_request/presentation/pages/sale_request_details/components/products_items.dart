@@ -41,23 +41,22 @@ class ProductsItems extends ConsumerWidget {
                   vertical: Sizes.p8,
                 ),
                 child: Column(
+                  crossAxisAlignment: .start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          product?.name ?? '',
-                          style: context.theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
+                    BaseRichText(
+                      texts: [
+                        if (product
+                                ?.productPackingPriceLookUpString
+                                ?.isNotEmpty ??
+                            false)
+                          BaseText.title(
+                            '${product!.productPackingPriceLookUpString!} ',
+                            color: context.theme.primaryColor,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          'PLU: ${product?.productPackingPriceLookUpString} | (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
-                          style: context.theme.textTheme.labelSmall?.copyWith(
-                            color: context.theme.hintColor,
-                          ),
+                        BaseText.title(product?.name ?? ''),
+                        BaseText.title(
+                          ' (${product?.productPackingTypeString} ${product?.productPackingQuantity.toString().toBrazilianNumber(3, true)})',
+                          color: context.theme.colorScheme.secondary,
                         ),
                       ],
                     ),
