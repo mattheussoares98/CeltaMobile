@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
@@ -12,7 +13,7 @@ import '../../../../mocks/mocks.dart';
 class MockHttpClient extends Mock implements HttpClient {}
 
 void main() {
-  late IEcSynchronizerDatasource sut;
+  late EcSynchronizerDatasource sut;
   late MockHttpClient httpClient;
 
   final params = EntityFactory.makeEcRequestParams();
@@ -475,6 +476,104 @@ void main() {
       verifyNoMoreInteractions(httpClient);
     });
   });
+
+  void testProductWithErrorAction({
+    required String operation,
+    required Future<void> Function(
+      EcSynchronizerDatasource datasource,
+      EcRequestParams params,
+      List<ProductWithErrorActionParams> products,
+    )
+    action,
+  }) {
+    group(operation, () {
+      const products = [
+        ProductWithErrorActionParams(
+          enterpriseCode: 1,
+          productCode: 2,
+          productPackingCode: 3,
+          enterpriseCommerceSiteCode: 4,
+        ),
+        ProductWithErrorActionParams(
+          enterpriseCode: 5,
+          productCode: 6,
+          productPackingCode: 7,
+          enterpriseCommerceSiteCode: 8,
+        ),
+      ];
+      final url = '/api/Synchronizer/$operation';
+      final body = {
+        ...params.toMap(),
+        'Products': products.map((product) => product.toMap()).toList(),
+      };
+
+      test('should post all products in one request', () async {
+        when(
+          () => httpClient.request(
+            url: '${params.workingUrl}$url',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: body,
+          ),
+        ).thenAnswer((_) async => null);
+
+        await action(sut, params, products);
+
+        verify(
+          () => httpClient.request(
+            url: '${params.workingUrl}$url',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: body,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(httpClient);
+      });
+
+      test('should propagate request errors', () async {
+        final exception = Exception('Failed to perform $operation');
+        when(
+          () => httpClient.request(
+            url: '${params.workingUrl}$url',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: body,
+          ),
+        ).thenThrow(exception);
+
+        final call = action(sut, params, products);
+
+        await expectLater(call, throwsA(same(exception)));
+        verify(
+          () => httpClient.request(
+            url: '${params.workingUrl}$url',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: body,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(httpClient);
+      });
+    });
+  }
+
+  testProductWithErrorAction(
+    operation: 'MarkProductsToSendAgain',
+    action: (datasource, params, products) =>
+        datasource.markProductsToSendAgain(params, products),
+  );
+
+  testProductWithErrorAction(
+    operation: 'UnmarkProductsToSendAgain',
+    action: (datasource, params, products) =>
+        datasource.unmarkProductsToSendAgain(params, products),
+  );
+
+  testProductWithErrorAction(
+    operation: 'MarkProductsToIgnoreError',
+    action: (datasource, params, products) =>
+        datasource.markProductsToIgnoreError(params, products),
+  );
 
   group('deleteScheduleErrors', () {
     const codes = [123, 456];

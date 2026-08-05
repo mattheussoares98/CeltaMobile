@@ -67,6 +67,24 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   ) async => await datasource.deleteSaleRequestsWithError(params, codes);
 
   @override
+  Future<void> markProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async => await datasource.markProductsToSendAgain(params, products);
+
+  @override
+  Future<void> unmarkProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async => await datasource.unmarkProductsToSendAgain(params, products);
+
+  @override
+  Future<void> markProductsToIgnoreError(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async => await datasource.markProductsToIgnoreError(params, products);
+
+  @override
   Future<void> deleteScheduleErrors(
     EcRequestParams params,
     List<int> codes,

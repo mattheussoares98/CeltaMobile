@@ -133,6 +133,58 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> markProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async {
+    await _handleProductsWithError(
+      params,
+      operation: 'MarkProductsToSendAgain',
+      products: products,
+    );
+  }
+
+  @override
+  Future<void> unmarkProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async {
+    await _handleProductsWithError(
+      params,
+      operation: 'UnmarkProductsToSendAgain',
+      products: products,
+    );
+  }
+
+  @override
+  Future<void> markProductsToIgnoreError(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  ) async {
+    await _handleProductsWithError(
+      params,
+      operation: 'MarkProductsToIgnoreError',
+      products: products,
+    );
+  }
+
+  Future<void> _handleProductsWithError(
+    EcRequestParams params, {
+    required String operation,
+    required List<ProductWithErrorActionParams> products,
+  }) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/$operation',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'Products': products.map((product) => product.toMap()).toList(),
+      },
+    );
+  }
+
+  @override
   Future<void> deleteScheduleErrors(
     EcRequestParams params,
     List<int> codes,

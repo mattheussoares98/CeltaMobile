@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 abstract class IEcSynchronizerDatasource {
   Future<List<SynchronizerErrorSummaryModel>> searchCount(
@@ -35,6 +36,21 @@ abstract class IEcSynchronizerDatasource {
   Future<void> deleteSaleRequestsWithError(
     EcRequestParams params,
     List<int> codes,
+  );
+
+  Future<void> markProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  );
+
+  Future<void> unmarkProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  );
+
+  Future<void> markProductsToIgnoreError(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
   );
 
   Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);

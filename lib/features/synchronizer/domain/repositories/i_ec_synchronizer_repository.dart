@@ -37,5 +37,20 @@ abstract class IEcSynchronizerRepository {
     List<int> codes,
   );
 
+  Future<void> markProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  );
+
+  Future<void> unmarkProductsToSendAgain(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  );
+
+  Future<void> markProductsToIgnoreError(
+    EcRequestParams params,
+    List<ProductWithErrorActionParams> products,
+  );
+
   Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);
 }
