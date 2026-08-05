@@ -22,15 +22,12 @@ class SelectableActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canDelete = switch (detailType) {
-      SynchronizerErrorDetailType.schedule => ref.watch(
-        canAccessResourceStateControllerProvider(
-          BsRoutine.generic,
-          BsResource.synchronizerDelete,
-        ).select((s) => s.value == true),
-      ),
-      _ => true,
-    };
+    final canDelete = ref.watch(
+      canAccessResourceStateControllerProvider(
+        BsRoutine.generic,
+        BsResource.synchronizerDelete,
+      ).select((s) => s.value == true),
+    );
 
     bool validateCanDelete() {
       if (!canDelete) {
