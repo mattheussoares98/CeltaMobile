@@ -1,12 +1,9 @@
-// lib/features/synchronizer/presentation/pages/details/components/selectable_actions/selectable_action.dart
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class SelectableAction {
   final String label;
   final VoidCallback? onPressed;
+  final Color? color;
 
-  const SelectableAction({
-    required this.label,
-    this.onPressed,
-  });
+  const SelectableAction({required this.label, this.onPressed, this.color});
 }

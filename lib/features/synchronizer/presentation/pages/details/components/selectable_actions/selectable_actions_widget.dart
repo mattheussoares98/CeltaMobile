@@ -19,13 +19,11 @@ class SelectableActions extends ConsumerWidget {
     required this.detailType,
     required this.errorKey,
     required this.selectableItems,
-    this.actions = const [],
   });
 
   final SynchronizerErrorDetailType detailType;
   final String errorKey;
   final List<SelectableSynchronizerErrorDetailEntity> selectableItems;
-  final List<SelectableAction> actions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,12 +67,12 @@ class SelectableActions extends ConsumerWidget {
           'pedidos de vendas com erros durante a leitura',
         );
 
-    final List<SelectableAction> handledActions = [];
+    final List<SelectableAction> actions = [];
 
-    if (actions.isEmpty && !isSaleRequestMarkedToReadAgain) {
+    if (!isSaleRequestMarkedToReadAgain) {
       switch (detailType) {
         case SynchronizerErrorDetailType.coupon:
-          handledActions.addAll([
+          actions.addAll([
             SelectableAction(
               label: 'Reler todos'.hardcoded,
               onPressed: () => markToReadAgain(
@@ -89,7 +87,7 @@ class SelectableActions extends ConsumerWidget {
             ),
           ]);
         case SynchronizerErrorDetailType.schedule:
-          handledActions.addAll([
+          actions.addAll([
             SelectableAction(
               label: 'Excluir todos'.hardcoded,
               onPressed: () => deleteSelected(
@@ -104,7 +102,7 @@ class SelectableActions extends ConsumerWidget {
             ),
           ]);
         case SynchronizerErrorDetailType.saleRequestWithError:
-          handledActions.addAll([
+          actions.addAll([
             SelectableAction(
               label: 'Reler todos'.hardcoded,
               onPressed: () => markToReadAgain(
@@ -124,11 +122,112 @@ class SelectableActions extends ConsumerWidget {
                   : null,
             ),
           ]);
+        case SynchronizerErrorDetailType.productWithError:
+          final currentIndex = ref.watch(
+            selectedSynchronizerProductPageIndexStateControllerProvider,
+          );
+          final activeType = BSFProductWithErrorType.values[currentIndex];
+          final selectedCodes = ref.watch(
+            selectedSynchronizerCodesStateControllerProvider(
+              SynchronizerErrorDetailType.productWithError,
+            ),
+          );
+          final items = selectableItems
+              .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>();
+          final hasSelected = selectedCodes.isNotEmpty;
+
+          final group = items.firstWhereOrNull((e) => e.type == activeType);
+          final allCodes =
+              group?.errors.map((e) => e.code).toList() ?? const [];
+
+          List<ProductWithErrorActionParams> getParams(List<int> targetCodes) {
+            if (group == null) return [];
+            return group.errors
+                .where((e) => targetCodes.contains(e.code))
+                .map(
+                  (e) => ProductWithErrorActionParams(
+                    enterpriseCode: e.enterpriseCode,
+                    productCode: e.code,
+                    productPackingCode: e.productPackingCode,
+                    enterpriseCommerceSiteCode: e.enterpriseCommerceSiteCode,
+                  ),
+                )
+                .toList();
+          }
+
+          final notifier = ref.read(
+            handleSelectedCodesControllerProvider.notifier,
+          );
+
+          if (group != null && group.errors.isNotEmpty) {
+            switch (activeType) {
+              case BSFProductWithErrorType.error:
+                final allCodesParams = getParams(allCodes);
+                final selectedCodesParams = getParams(selectedCodes.toList());
+                actions.addAll([
+                  SelectableAction(
+                    label: 'Reenviar todos'.hardcoded,
+                    onPressed: () => notifier.markProductsToSendAgain(
+                      allCodesParams,
+                      errorKey,
+                    ),
+                  ),
+                  SelectableAction(
+                    label: 'Reenviar selecionados'.hardcoded,
+                    onPressed: hasSelected
+                        ? () => notifier.markProductsToSendAgain(
+                            selectedCodesParams,
+                            errorKey,
+                          )
+                        : null,
+                  ),
+                  SelectableAction(
+                    label: 'Ignorar todos'.hardcoded,
+                    onPressed: () => notifier.markProductsToIgnoreError(
+                      allCodesParams,
+                      errorKey,
+                    ),
+                    color: Colors.red,
+                  ),
+                  SelectableAction(
+                    label: 'Ignorar selecionados'.hardcoded,
+                    onPressed: hasSelected
+                        ? () => notifier.markProductsToIgnoreError(
+                            selectedCodesParams,
+                            errorKey,
+                          )
+                        : null,
+                    color: Colors.red,
+                  ),
+                ]);
+              case BSFProductWithErrorType.markedToSendAgain:
+                actions.addAll([
+                  SelectableAction(
+                    label: 'Desmarcar todos'.hardcoded,
+                    onPressed: () => notifier.unmarkProductsToSendAgain(
+                      getParams(allCodes),
+                      errorKey,
+                    ),
+                  ),
+                  SelectableAction(
+                    label: 'Desmarcar selecionados'.hardcoded,
+                    onPressed: hasSelected
+                        ? () => notifier.unmarkProductsToSendAgain(
+                            getParams(selectedCodes.toList()),
+                            errorKey,
+                          )
+                        : null,
+                  ),
+                ]);
+              case BSFProductWithErrorType.markedToIgnoreError:
+                break;
+            }
+          }
         default:
           break;
       }
     }
-    if (actions.isEmpty && handledActions.isEmpty) {
+    if (actions.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -142,16 +241,14 @@ class SelectableActions extends ConsumerWidget {
       child: SizedBox(
         width: Breakpoint.tablet,
         child: Row(
-          children: (actions.isEmpty ? handledActions : actions).mapIndexed((
-            index,
-            action,
-          ) {
+          children: actions.mapIndexed((index, action) {
             return Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 0.0 : Sizes.p8),
                 child: PrimaryButton(
                   text: action.label,
                   onPressed: action.onPressed,
+                  backgroundColor: action.color,
                 ),
               ),
             );
