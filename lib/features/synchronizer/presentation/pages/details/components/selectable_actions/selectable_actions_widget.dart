@@ -1,4 +1,6 @@
 // lib/features/synchronizer/presentation/pages/details/components/selectable_actions/selectable_actions_widget.dart
+import 'dart:math';
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -126,19 +128,20 @@ class SelectableActions extends ConsumerWidget {
           final currentIndex = ref.watch(
             selectedSynchronizerProductPageIndexStateControllerProvider,
           );
-          final activeType = BSFProductWithErrorType.values[currentIndex];
           final selectedCodes = ref.watch(
             selectedSynchronizerCodesStateControllerProvider(
               SynchronizerErrorDetailType.productWithError,
             ),
           );
+          final activeType = BSFProductWithErrorType.values[currentIndex];
           final items = selectableItems
-              .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>();
-          final hasSelected = selectedCodes.isNotEmpty;
+              .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>()
+              .where((e) => e.type == activeType);
 
           final group = items.firstWhereOrNull((e) => e.type == activeType);
           final allCodes =
               group?.errors.map((e) => e.code).toList() ?? const [];
+          final hasSelected = selectedCodes.any((e) => allCodes.contains(e));
 
           List<ProductWithErrorActionParams> getParams(List<int> targetCodes) {
             if (group == null) return [];
@@ -158,12 +161,12 @@ class SelectableActions extends ConsumerWidget {
           final notifier = ref.read(
             handleSelectedCodesControllerProvider.notifier,
           );
+          final allCodesParams = getParams(allCodes);
+          final selectedCodesParams = getParams(selectedCodes.toList());
 
           if (group != null && group.errors.isNotEmpty) {
             switch (activeType) {
               case BSFProductWithErrorType.error:
-                final allCodesParams = getParams(allCodes);
-                final selectedCodesParams = getParams(selectedCodes.toList());
                 actions.addAll([
                   SelectableAction(
                     label: 'Reenviar todos'.hardcoded,
@@ -241,6 +244,10 @@ class SelectableActions extends ConsumerWidget {
       child: SizedBox(
         width: Breakpoint.tablet,
         child: Row(
+          key: ValueKey(Random().nextInt(100000)),
+          //* when using this on ProductsWithError page, because it is being used
+          //* on more than one page, should use this key to avoid the impression
+          //* that is using the same button when changing the page index
           children: actions.mapIndexed((index, action) {
             return Expanded(
               child: Padding(
