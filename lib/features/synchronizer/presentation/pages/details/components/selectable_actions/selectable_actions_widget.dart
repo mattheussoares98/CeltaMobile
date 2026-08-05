@@ -185,27 +185,25 @@ class SelectableActions extends ConsumerWidget {
                 color: Colors.red,
               ),
             ];
+            final sendProductsButtons = [
+              SelectableAction(
+                label: 'Reenviar todos'.hardcoded,
+                onPressed: () =>
+                    notifier.markProductsToSendAgain(allCodesParams, errorKey),
+              ),
+              SelectableAction(
+                label: 'Reenviar selecionados'.hardcoded,
+                onPressed: hasSelected
+                    ? () => notifier.markProductsToSendAgain(
+                        selectedCodesParams,
+                        errorKey,
+                      )
+                    : null,
+              ),
+            ];
             switch (activeType) {
               case BSFProductWithErrorType.error:
-                actions.addAll([
-                  SelectableAction(
-                    label: 'Reenviar todos'.hardcoded,
-                    onPressed: () => notifier.markProductsToSendAgain(
-                      allCodesParams,
-                      errorKey,
-                    ),
-                  ),
-                  SelectableAction(
-                    label: 'Reenviar selecionados'.hardcoded,
-                    onPressed: hasSelected
-                        ? () => notifier.markProductsToSendAgain(
-                            selectedCodesParams,
-                            errorKey,
-                          )
-                        : null,
-                  ),
-                  ...ignoreButtons,
-                ]);
+                actions.addAll([...sendProductsButtons, ...ignoreButtons]);
               case BSFProductWithErrorType.markedToSendAgain:
                 actions.addAll([
                   SelectableAction(
@@ -227,7 +225,7 @@ class SelectableActions extends ConsumerWidget {
                   ...ignoreButtons,
                 ]);
               case BSFProductWithErrorType.markedToIgnoreError:
-                break;
+                actions.addAll(sendProductsButtons);
             }
           }
         default:
