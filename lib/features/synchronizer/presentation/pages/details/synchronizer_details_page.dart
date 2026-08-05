@@ -121,7 +121,11 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                     .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>(),
                 errorKey: errorKey,
               ),
-            SynchronizerErrorDetailType.saleRequestMarked ||
+            SynchronizerErrorDetailType.saleRequestMarked =>
+              SaleRequestMarkedItems(
+                items: data.items
+                    .cast<BSFSaleRequestMarkedSynchronizerErrorDetailEntity>(),
+              ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
