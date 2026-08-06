@@ -1,6 +1,6 @@
 // lib/features/sale_request/domain/entities/bsf/bsf_employee_entity.dart
-import 'package:equatable/equatable.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class BSFEmployeeEntity extends Equatable {
   final int? code;
@@ -108,9 +108,10 @@ class BSFEmployeeEntity extends Equatable {
     bool? isFired,
     String? jobRoleString,
     List<String>? accountEmails,
+    bool? annulCode,
   }) {
     return BSFEmployeeEntity(
-      code: code ?? this.code,
+      code: annulCode == true ? null : code ?? this.code,
       personalizedCode: personalizedCode ?? this.personalizedCode,
       buyer: buyer ?? this.buyer,
       seller: seller ?? this.seller,

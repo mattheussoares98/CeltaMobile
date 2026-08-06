@@ -61,6 +61,7 @@ class SearchedCustomersStateController
                 searchValue: value,
                 enterpriseCode: args.enterpriseCode,
                 searchByPersonalizedCode: searchByPersonalizedCode,
+                sellerCode: insertUpdateState.seller?.code,
               ),
             );
 

@@ -17,7 +17,7 @@ void main() {
   late EcBSFCustomersRepositorySpy mockRepository;
   late UserSessionModel fakeSession;
   late SaleRequestArgs fakeArgs;
-  late BSFCustomerEntity fakeCustomer;
+  late BSFSaleRequestEntity saleRequest;
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
     registerFallbackValue(EntityFactory.makeEcGetCustomersParams());
@@ -34,7 +34,12 @@ void main() {
       enterpriseCode: faker.randomGenerator.integer(100),
     );
     // User requested to use a high number for code to avoid repetitions
-    fakeCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(code: 999999);
+    saleRequest = BSFSaleRequestEntity.empty().copyWith(
+      customer: EntityFactory.makeBSFCustomerEntity().copyWith(code: 999999),
+      seller: EntityFactory.makeBSFEmployeeEntity().copyWith(
+        annulCode: faker.randomGenerator.boolean(),
+      ),
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -45,15 +50,11 @@ void main() {
         validatedUserSessionProvider.overrideWith(
           () => FakeValidatedUserSession(session),
         ),
-        saleRequestDetailsStateControllerProvider(fakeArgs).overrideWith(
-          () => FakeSaleRequestDetailsController(
-            BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
-          ),
-        ),
+        saleRequestDetailsStateControllerProvider(
+          fakeArgs,
+        ).overrideWith(() => FakeSaleRequestDetailsController(saleRequest)),
         insertUpdateStateControllerProvider.overrideWith(
-          () => FakeInsertUpdateStateController(
-            BSFSaleRequestEntity.empty().copyWith(customer: fakeCustomer),
-          ),
+          () => FakeInsertUpdateStateController(saleRequest),
         ),
       ],
     );
@@ -70,7 +71,7 @@ void main() {
           searchedCustomersStateControllerProvider.future,
         );
 
-        expect(state.customers, [fakeCustomer]);
+        expect(state.customers, [saleRequest.customer]);
       },
     );
 
@@ -102,7 +103,7 @@ void main() {
 
       final state = container.read(searchedCustomersStateControllerProvider);
 
-      expect(state.value?.customers, [fakeCustomer, ...searchResults]);
+      expect(state.value?.customers, [saleRequest.customer, ...searchResults]);
       expect(state.value?.errorMessage, isNull);
       expect(state.value?.searchByPersonalizedCode, searchByPersonalizedCode);
       verify(
@@ -116,6 +117,7 @@ void main() {
             searchValue: searchValue,
             enterpriseCode: fakeArgs.enterpriseCode,
             searchByPersonalizedCode: searchByPersonalizedCode,
+            sellerCode: saleRequest.seller?.code,
           ),
         ),
       ).called(1);
@@ -128,7 +130,7 @@ void main() {
         addTearDown(container.dispose);
 
         final updatedFakeCustomer = EntityFactory.makeBSFCustomerEntity()
-            .copyWith(code: fakeCustomer.code);
+            .copyWith(code: saleRequest.customer?.code);
 
         final otherCustomer = EntityFactory.makeBSFCustomerEntity().copyWith(
           code: 1,
