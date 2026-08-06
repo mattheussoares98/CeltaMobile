@@ -30,7 +30,7 @@ class EcGetCustomersParams extends Equatable {
       'params': params.toMap(),
       'searchValue': searchValue,
       'enterpriseCode': enterpriseCode,
-      'sellerCode': sellerCode,
+      'sellerCode': ?sellerCode,
       'searchByPersonalizedCode': searchByPersonalizedCode,
     };
   }
