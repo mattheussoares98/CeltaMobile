@@ -14,7 +14,7 @@ class EcSellerDatasource implements IEcSellerDatasource {
       method: 'get',
       headers: params.toHeaders(),
     );
-
+    //TODO should return only sellers which the user has access
     return (response as List).map((e) => EcSellerModel.fromJson(e)).toList();
   }
 }
