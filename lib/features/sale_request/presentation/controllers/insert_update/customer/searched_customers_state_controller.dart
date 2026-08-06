@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/entities/customer/customer.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
@@ -55,10 +56,12 @@ class SearchedCustomersStateController
         final customers = await ref
             .read(ecCustomersRepositoryProvider)
             .searchForMobileApp(
-              params: params,
-              searchValue: value,
-              enterpriseCode: args.enterpriseCode,
-              searchByPersonalizedCode: searchByPersonalizedCode,
+              EcGetCustomersParams(
+                params: params,
+                searchValue: value,
+                enterpriseCode: args.enterpriseCode,
+                searchByPersonalizedCode: searchByPersonalizedCode,
+              ),
             );
 
         if (customers.isEmpty) {

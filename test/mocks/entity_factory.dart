@@ -2448,4 +2448,13 @@ class EntityFactory {
           ),
         ],
       );
+
+  static EcGetCustomersParams makeEcGetCustomersParams({String? searchValue}) =>
+      EcGetCustomersParams(
+        params: makeEcRequestParams(),
+        searchValue: searchValue ?? faker.lorem.word(),
+        enterpriseCode: faker.randomGenerator.integer(100),
+        sellerCode: faker.randomGenerator.integer(100),
+        searchByPersonalizedCode: faker.randomGenerator.boolean(),
+      );
 }

@@ -1,11 +1,10 @@
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/providers/customer/customer.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
+import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
-import 'package:celta_inventario/core/providers/customer/customer.dart';
-import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 
 part 'consumer_customer_state_controller.g.dart';
 
@@ -23,10 +22,12 @@ class ConsumerCustomerStateController
       final customer = await ref
           .read(ecCustomersRepositoryProvider)
           .searchForMobileApp(
-            params: params,
-            searchValue: "-1",
-            enterpriseCode: enterpriseCode,
-            searchByPersonalizedCode: false,
+            EcGetCustomersParams(
+              params: params,
+              searchValue: "-1",
+              enterpriseCode: enterpriseCode,
+              searchByPersonalizedCode: false,
+            ),
           );
 
       if (customer.isEmpty) {

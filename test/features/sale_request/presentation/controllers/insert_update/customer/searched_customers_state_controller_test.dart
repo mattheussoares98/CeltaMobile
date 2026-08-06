@@ -18,9 +18,9 @@ void main() {
   late UserSessionModel fakeSession;
   late SaleRequestArgs fakeArgs;
   late BSFCustomerEntity fakeCustomer;
-
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
+    registerFallbackValue(EntityFactory.makeEcGetCustomersParams());
   });
 
   setUp(() {
@@ -107,14 +107,16 @@ void main() {
       expect(state.value?.searchByPersonalizedCode, searchByPersonalizedCode);
       verify(
         () => mockRepository.searchForMobileApp(
-          params: EcRequestParams(
-            workingUrl: fakeSession.enterprise!.workingUrl!,
-            user: fakeSession.user.name!,
-            accessKey: fakeSession.user.AccessKey!,
+          EcGetCustomersParams(
+            params: EcRequestParams(
+              workingUrl: fakeSession.enterprise!.workingUrl!,
+              user: fakeSession.user.name!,
+              accessKey: fakeSession.user.AccessKey!,
+            ),
+            searchValue: searchValue,
+            enterpriseCode: fakeArgs.enterpriseCode,
+            searchByPersonalizedCode: searchByPersonalizedCode,
           ),
-          searchValue: searchValue,
-          enterpriseCode: fakeArgs.enterpriseCode,
-          searchByPersonalizedCode: searchByPersonalizedCode,
         ),
       ).called(1);
     });
@@ -179,28 +181,31 @@ void main() {
       },
     );
 
-    test('toggleSearchByPersonalizedCode should toggle the boolean in state', () async {
-      final container = makeProviderContainer(session: fakeSession);
-      addTearDown(container.dispose);
+    test(
+      'toggleSearchByPersonalizedCode should toggle the boolean in state',
+      () async {
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
 
-      final controller = container.read(
-        searchedCustomersStateControllerProvider.notifier,
-      );
+        final controller = container.read(
+          searchedCustomersStateControllerProvider.notifier,
+        );
 
-      await container.read(searchedCustomersStateControllerProvider.future);
+        await container.read(searchedCustomersStateControllerProvider.future);
 
-      var state = container.read(searchedCustomersStateControllerProvider);
-      expect(state.value?.searchByPersonalizedCode, isFalse);
+        var state = container.read(searchedCustomersStateControllerProvider);
+        expect(state.value?.searchByPersonalizedCode, isFalse);
 
-      controller.toggleSearchByPersonalizedCode();
+        controller.toggleSearchByPersonalizedCode();
 
-      state = container.read(searchedCustomersStateControllerProvider);
-      expect(state.value?.searchByPersonalizedCode, isTrue);
+        state = container.read(searchedCustomersStateControllerProvider);
+        expect(state.value?.searchByPersonalizedCode, isTrue);
 
-      controller.toggleSearchByPersonalizedCode();
+        controller.toggleSearchByPersonalizedCode();
 
-      state = container.read(searchedCustomersStateControllerProvider);
-      expect(state.value?.searchByPersonalizedCode, isFalse);
-    });
+        state = container.read(searchedCustomersStateControllerProvider);
+        expect(state.value?.searchByPersonalizedCode, isFalse);
+      },
+    );
   });
 }

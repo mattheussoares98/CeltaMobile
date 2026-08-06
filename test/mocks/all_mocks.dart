@@ -1117,24 +1117,12 @@ class EcBSFCustomersDatasourceSpy extends Mock
     implements IEcCustomersDatasource {
   void mockSearchForMobileApp(List<BSFCustomerModel> response) {
     when(
-      () => this.searchForMobileApp(
-        params: any(named: 'params'),
-        searchValue: any(named: 'searchValue'),
-        enterpriseCode: any(named: 'enterpriseCode'),
-        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
-      ),
+      () => this.searchForMobileApp(any()),
     ).thenAnswer((_) async => response);
   }
 
   void mockSearchForMobileAppError() {
-    when(
-      () => this.searchForMobileApp(
-        params: any(named: 'params'),
-        searchValue: any(named: 'searchValue'),
-        enterpriseCode: any(named: 'enterpriseCode'),
-        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
-      ),
-    ).thenThrow(Exception());
+    when(() => this.searchForMobileApp(any())).thenThrow(Exception());
   }
 }
 
@@ -1142,23 +1130,11 @@ class EcBSFCustomersRepositorySpy extends Mock
     implements IEcCustomersRepository {
   void mockSearchForMobileApp(List<BSFCustomerEntity> response) {
     when(
-      () => this.searchForMobileApp(
-        params: any(named: 'params'),
-        searchValue: any(named: 'searchValue'),
-        enterpriseCode: any(named: 'enterpriseCode'),
-        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
-      ),
+      () => this.searchForMobileApp(any()),
     ).thenAnswer((_) async => response);
   }
 
   void mockSearchForMobileAppError() {
-    when(
-      () => this.searchForMobileApp(
-        params: any(named: 'params'),
-        searchValue: any(named: 'searchValue'),
-        enterpriseCode: any(named: 'enterpriseCode'),
-        searchByPersonalizedCode: any(named: 'searchByPersonalizedCode'),
-      ),
-    ).thenThrow(Exception());
+    when(() => this.searchForMobileApp(any())).thenThrow(Exception());
   }
 }

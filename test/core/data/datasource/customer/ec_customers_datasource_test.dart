@@ -13,10 +13,7 @@ void main() {
   late IEcCustomersDatasource sut;
   late HttpClientSpy httpClient;
 
-  late EcRequestParams params;
-  late String searchValue;
-  late int enterpriseCode;
-  late bool searchByPersonalizedCode;
+  late EcGetCustomersParams params;
   late List<BSFCustomerEntity> customerEntities;
 
   void initInjections() {
@@ -28,10 +25,14 @@ void main() {
   }
 
   void initEntities() {
-    params = EntityFactory.makeEcRequestParams();
-    searchValue = faker.person.name();
-    enterpriseCode = faker.randomGenerator.integer(100);
-    searchByPersonalizedCode = faker.randomGenerator.boolean();
+    params = EcGetCustomersParams(
+      params: EntityFactory.makeEcRequestParams(),
+      searchValue: faker.person.name(),
+      enterpriseCode: faker.randomGenerator.integer(100),
+      sellerCode: faker.randomGenerator.integer(100),
+      searchByPersonalizedCode: faker.randomGenerator.boolean(),
+    );
+
     customerEntities = [
       EntityFactory.makeBSFCustomerEntity(),
       EntityFactory.makeBSFCustomerEntity(),
@@ -56,24 +57,14 @@ void main() {
   });
 
   test('should call adapter with correct params', () async {
-    await sut.searchForMobileApp(
-      params: params,
-      searchValue: searchValue,
-      enterpriseCode: enterpriseCode,
-      searchByPersonalizedCode: searchByPersonalizedCode,
-    );
+    await sut.searchForMobileApp(params);
 
     verify(
       () => httpClient.request(
-        url: '${params.workingUrl}/api/Customers/SearchForMobileApp',
+        url: '${params.params.workingUrl}/api/Customers/SearchForMobileApp',
         method: 'post',
-        headers: params.toHeaders(),
-        body: {
-          ...params.toMap(),
-          'SearchValue': searchValue,
-          'EnterpriseCode': enterpriseCode,
-          'SearchByPersonalizedCode': searchByPersonalizedCode,
-        },
+        headers: params.params.toHeaders(),
+        body: params.toJson(),
       ),
     ).called(1);
   });
@@ -81,23 +72,13 @@ void main() {
   test('should return empty list when api return empty or null', () async {
     httpClient.mockRequest(faker.randomGenerator.boolean() ? null : '');
 
-    final result = await sut.searchForMobileApp(
-      params: params,
-      searchValue: searchValue,
-      enterpriseCode: enterpriseCode,
-      searchByPersonalizedCode: searchByPersonalizedCode,
-    );
+    final result = await sut.searchForMobileApp(params);
 
     expect(result, isEmpty);
   });
 
   test('should return correct list of models on success', () async {
-    final result = await sut.searchForMobileApp(
-      params: params,
-      searchValue: searchValue,
-      enterpriseCode: enterpriseCode,
-      searchByPersonalizedCode: searchByPersonalizedCode,
-    );
+    final result = await sut.searchForMobileApp(params);
 
     expect(
       result,

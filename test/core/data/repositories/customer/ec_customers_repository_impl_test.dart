@@ -12,10 +12,7 @@ void main() {
   late IEcCustomersRepository sut;
   late EcBSFCustomersDatasourceSpy datasource;
 
-  late EcRequestParams params;
-  late String searchValue;
-  late int enterpriseCode;
-  late bool searchByPersonalizedCode;
+  late EcGetCustomersParams params;
   late List<BSFCustomerModel> customerModels;
 
   void initInjections() {
@@ -27,10 +24,13 @@ void main() {
   }
 
   void initEntities() {
-    params = EntityFactory.makeEcRequestParams();
-    searchValue = faker.person.name();
-    enterpriseCode = faker.randomGenerator.integer(100);
-    searchByPersonalizedCode = faker.randomGenerator.boolean();
+    params = EcGetCustomersParams(
+      params: EntityFactory.makeEcRequestParams(),
+      searchValue: faker.person.name(),
+      enterpriseCode: faker.randomGenerator.integer(100),
+      sellerCode: faker.randomGenerator.integer(100),
+      searchByPersonalizedCode: faker.randomGenerator.boolean(),
+    );
     customerModels = [
       BSFCustomerModel.fromEntity(EntityFactory.makeBSFCustomerEntity()),
       BSFCustomerModel.fromEntity(EntityFactory.makeBSFCustomerEntity()),
@@ -53,34 +53,17 @@ void main() {
   });
 
   test('should behave correctly on success', () async {
-    final result = await sut.searchForMobileApp(
-      params: params,
-      searchValue: searchValue,
-      enterpriseCode: enterpriseCode,
-      searchByPersonalizedCode: searchByPersonalizedCode,
-    );
+    final result = await sut.searchForMobileApp(params);
 
     expect(result, customerModels.map((e) => e.toEntity()).toList());
 
-    verify(
-      () => datasource.searchForMobileApp(
-        params: params,
-        searchValue: searchValue,
-        enterpriseCode: enterpriseCode,
-        searchByPersonalizedCode: searchByPersonalizedCode,
-      ),
-    ).called(1);
+    verify(() => datasource.searchForMobileApp(params)).called(1);
   });
 
   test('should throw if datasource throws', () async {
     datasource.mockSearchForMobileAppError();
 
-    final future = sut.searchForMobileApp(
-      params: params,
-      searchValue: searchValue,
-      enterpriseCode: enterpriseCode,
-      searchByPersonalizedCode: searchByPersonalizedCode,
-    );
+    final future = sut.searchForMobileApp(params);
 
     expect(future, throwsA(isA<Exception>()));
   });

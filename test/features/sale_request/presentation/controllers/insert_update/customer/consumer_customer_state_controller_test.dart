@@ -19,6 +19,8 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
+    registerFallbackValue(EntityFactory.makeEcGetCustomersParams());
   });
 
   setUp(() {
@@ -53,16 +55,7 @@ void main() {
         addTearDown(container.dispose);
 
         when(
-          () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
-          ),
+          () => mockRepository.searchForMobileApp(any()),
         ).thenAnswer((_) async => [fakeCustomer]);
 
         final state = await container.read(
@@ -72,14 +65,16 @@ void main() {
         expect(state, fakeCustomer);
         verify(
           () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
+            EcGetCustomersParams(
+              params: EcRequestParams(
+                workingUrl: fakeSession.enterprise!.workingUrl!,
+                user: fakeSession.user.name!,
+                accessKey: fakeSession.user.AccessKey!,
+              ),
+              searchValue: "-1",
+              enterpriseCode: fakeEnterprise.Code!,
+              searchByPersonalizedCode: false,
             ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
           ),
         ).called(1);
       },
@@ -92,16 +87,7 @@ void main() {
         addTearDown(container.dispose);
 
         when(
-          () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
-          ),
+          () => mockRepository.searchForMobileApp(any()),
         ).thenAnswer((_) async => []);
 
         final state = await container.read(
@@ -111,14 +97,16 @@ void main() {
         expect(state, isNull);
         verify(
           () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
+            EcGetCustomersParams(
+              params: EcRequestParams(
+                workingUrl: fakeSession.enterprise!.workingUrl!,
+                user: fakeSession.user.name!,
+                accessKey: fakeSession.user.AccessKey!,
+              ),
+              searchValue: "-1",
+              enterpriseCode: fakeEnterprise.Code!,
+              searchByPersonalizedCode: false,
             ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
           ),
         ).called(1);
       },
@@ -130,18 +118,7 @@ void main() {
         final container = makeProviderContainer(session: fakeSession);
         addTearDown(container.dispose);
 
-        when(
-          () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
-          ),
-        ).thenAnswer(
+        when(() => mockRepository.searchForMobileApp(any())).thenAnswer(
           (_) async => throw Exception(
             "o número de documento informado não foi encontrado",
           ),
@@ -154,14 +131,16 @@ void main() {
         expect(state, isNull);
         verify(
           () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
+            EcGetCustomersParams(
+              params: EcRequestParams(
+                workingUrl: fakeSession.enterprise!.workingUrl!,
+                user: fakeSession.user.name!,
+                accessKey: fakeSession.user.AccessKey!,
+              ),
+              searchValue: "-1",
+              enterpriseCode: fakeEnterprise.Code!,
+              searchByPersonalizedCode: false,
             ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
           ),
         ).called(1);
       },
@@ -176,16 +155,7 @@ void main() {
         final genericException = Exception(faker.lorem.sentence());
 
         when(
-          () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
-            ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
-          ),
+          () => mockRepository.searchForMobileApp(any()),
         ).thenAnswer((_) async => throw genericException);
 
         await expectLater(
@@ -194,14 +164,16 @@ void main() {
         );
         verify(
           () => mockRepository.searchForMobileApp(
-            params: EcRequestParams(
-              workingUrl: fakeSession.enterprise!.workingUrl!,
-              user: fakeSession.user.name!,
-              accessKey: fakeSession.user.AccessKey!,
+            EcGetCustomersParams(
+              params: EcRequestParams(
+                workingUrl: fakeSession.enterprise!.workingUrl!,
+                user: fakeSession.user.name!,
+                accessKey: fakeSession.user.AccessKey!,
+              ),
+              searchValue: "-1",
+              enterpriseCode: fakeEnterprise.Code!,
+              searchByPersonalizedCode: false,
             ),
-            searchValue: "-1",
-            enterpriseCode: fakeEnterprise.Code!,
-            searchByPersonalizedCode: false,
           ),
         ).called(1);
       },

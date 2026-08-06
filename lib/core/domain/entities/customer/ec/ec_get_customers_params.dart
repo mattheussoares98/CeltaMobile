@@ -5,14 +5,14 @@ class EcGetCustomersParams extends Equatable {
   final EcRequestParams params;
   final String searchValue;
   final int enterpriseCode;
-  final int sellerCode;
+  final int? sellerCode;
   final bool searchByPersonalizedCode;
 
   const EcGetCustomersParams({
     required this.params,
     required this.searchValue,
     required this.enterpriseCode,
-    required this.sellerCode,
+    this.sellerCode,
     required this.searchByPersonalizedCode,
   });
 
