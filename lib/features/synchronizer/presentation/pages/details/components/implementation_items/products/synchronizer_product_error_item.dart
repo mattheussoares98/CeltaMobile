@@ -81,8 +81,27 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
                   title: 'Descrição do erro'.hardcoded,
                   subTitle: item.errorDescription,
                 ),
-              if (item.errorMessage.isNotEmpty)
-                BaseText.error(item.errorMessage, textAlign: .start),
+              Row(
+                children: [
+                  Expanded(
+                    child: BaseText.error(item.errorMessage, textAlign: .start),
+                  ),
+                  if (item.moreInfo.isNotEmpty)
+                    IconButton(
+                      onPressed: () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Mais informações do erro'.hardcoded,
+                          content: item.moreInfo,
+                        );
+                      },
+                      icon: const PlatformIcon(
+                        cupertinoIcon: CupertinoIcons.info_circle,
+                        materialIcon: Icons.info_outline,
+                      ),
+                    ),
+                ],
+              ),
               if (item.lastChargeOfProduct != null)
                 TitleAndSubTitle(
                   title: 'Carga do produto'.hardcoded,
