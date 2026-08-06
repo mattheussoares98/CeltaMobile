@@ -37,15 +37,6 @@ class CustomerItem extends ConsumerWidget {
           if (customer.cnpjCpfNumber != null)
             Text(customer.cnpjCpfNumber!.toMaskedCnpjCpf()),
           if (hasCovenants) ...[
-            const SizedBox(height: Sizes.p4),
-            TitleAndSubTitle(
-              title: null,
-              subTitle: 'Convênios'.hardcoded,
-              subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
-                color: context.theme.primaryColorDark,
-              ),
-            ),
-            const SizedBox(height: Sizes.p4),
             Consumer(
               builder: (context, ref, _) {
                 final selectedCovenant = ref.watch(
@@ -61,64 +52,82 @@ class CustomerItem extends ConsumerWidget {
                       (e.saleBlockade?.allowSale ?? true) &&
                       (e.dismissalDate?.isBefore(DateTime(0002)) ?? true);
                 }).toList();
-                return BaseChoiceChip<BsfCovenantEntity>(
-                  items: allowedCovenantes,
-                  selectedValue: selectedCovenant,
-                  allowNullSelection: true,
-                  onChanged: (covenant) async {
-                    final notifier = ref.read(
-                      insertUpdateStateControllerProvider.notifier,
-                    );
-                    final actions = notifier.updateCustomerOrCovenant(
-                      customer,
-                      covenant: covenant,
-                      onlyValidating: true,
-                      isChangingCovenant: true,
-                    );
-                    if (actions.isNotEmpty) {
-                      final isBlocked = actions.any(
-                        (a) =>
-                            a.type ==
-                            BSFSaleRequestSanitizationType.customerBlocked,
-                      );
 
-                      if (isBlocked) {
-                        await showAlertDialog(
-                          context: context,
-                          title: 'Cliente Bloqueado'.hardcoded,
-                          content: actions
-                              .firstWhere(
-                                (a) =>
-                                    a.type ==
-                                    BSFSaleRequestSanitizationType
-                                        .customerBlocked,
-                              )
-                              .message,
-                          defaultActionText: 'Entendido'.hardcoded,
+                if (allowedCovenantes.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+
+                return Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    gapH4,
+                    TitleAndSubTitle(
+                      title: null,
+                      subTitle: 'Convênios'.hardcoded,
+                      subTitleStyle: context.theme.textTheme.titleSmall
+                          ?.copyWith(color: context.theme.primaryColorDark),
+                    ),
+                    gapH4,
+                    BaseChoiceChip<BsfCovenantEntity>(
+                      items: allowedCovenantes,
+                      selectedValue: selectedCovenant,
+                      allowNullSelection: true,
+                      onChanged: (covenant) async {
+                        final notifier = ref.read(
+                          insertUpdateStateControllerProvider.notifier,
                         );
-                        return;
-                      }
+                        final actions = notifier.updateCustomerOrCovenant(
+                          customer,
+                          covenant: covenant,
+                          onlyValidating: true,
+                          isChangingCovenant: true,
+                        );
+                        if (actions.isNotEmpty) {
+                          final isBlocked = actions.any(
+                            (a) =>
+                                a.type ==
+                                BSFSaleRequestSanitizationType.customerBlocked,
+                          );
 
-                      final confirmed = await showAlertDialog(
-                        context: context,
-                        title: 'Alteração do cliente'.hardcoded,
-                        content:
-                            'Esta alteração terá os seguintes impactos no pedido:\n\n'
-                                    '${actions.map((a) => '• ${a.message}').join('\n')}\n\n'
-                                    'Deseja prosseguir?'
-                                .hardcoded,
-                        cancelActionText: 'Cancelar'.hardcoded,
-                        defaultActionText: 'Confirmar'.hardcoded,
-                      );
+                          if (isBlocked) {
+                            await showAlertDialog(
+                              context: context,
+                              title: 'Cliente Bloqueado'.hardcoded,
+                              content: actions
+                                  .firstWhere(
+                                    (a) =>
+                                        a.type ==
+                                        BSFSaleRequestSanitizationType
+                                            .customerBlocked,
+                                  )
+                                  .message,
+                              defaultActionText: 'Entendido'.hardcoded,
+                            );
+                            return;
+                          }
 
-                      if (confirmed != true) return;
-                    }
-                    notifier.updateCustomerOrCovenant(
-                      customer,
-                      covenant: covenant,
-                      isChangingCovenant: true,
-                    );
-                  },
+                          final confirmed = await showAlertDialog(
+                            context: context,
+                            title: 'Alteração do cliente'.hardcoded,
+                            content:
+                                'Esta alteração terá os seguintes impactos no pedido:\n\n'
+                                        '${actions.map((a) => '• ${a.message}').join('\n')}\n\n'
+                                        'Deseja prosseguir?'
+                                    .hardcoded,
+                            cancelActionText: 'Cancelar'.hardcoded,
+                            defaultActionText: 'Confirmar'.hardcoded,
+                          );
+
+                          if (confirmed != true) return;
+                        }
+                        notifier.updateCustomerOrCovenant(
+                          customer,
+                          covenant: covenant,
+                          isChangingCovenant: true,
+                        );
+                      },
+                    ),
+                  ],
                 );
               },
             ),
@@ -175,9 +184,7 @@ class CustomerItem extends ConsumerWidget {
                 if (confirmed != true) return;
               }
 
-              notifier.updateCustomerOrCovenant(
-                customer,
-              );
+              notifier.updateCustomerOrCovenant(customer);
             }
           : null,
     );
