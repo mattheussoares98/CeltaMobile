@@ -17,7 +17,7 @@ part 'statistics_state_controller.g.dart';
 class StatisticsStateController extends _$StatisticsStateController {
   @override
   FutureOr<BsfProcessAuthorizationStatisticEntity> build() async {
-    ref.cache();
+    ref.cache(1);
 
     await ref.watch(validatedUserSessionProvider.future);
     final canAccess = ref.watch(
