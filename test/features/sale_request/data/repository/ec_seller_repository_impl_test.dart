@@ -1,7 +1,9 @@
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/data/repository/repository.dart';
+import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/repository/repository.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -19,11 +21,15 @@ void main() {
   });
 
   group('get', () {
-    final tParams = EntityFactory.makeEcRequestParams();
     final tEntity = EntityFactory.makeSellerEntity();
     final tModel = EcSellerModel.fromEntity(tEntity);
     final tModelList = [tModel];
     final tEntityList = [tEntity];
+    final tEnterpriseCode = faker.randomGenerator.integer(100);
+    final tParams = GetSellerParams(
+      params: EntityFactory.makeEcRequestParams(),
+      enterpriseCode: tEnterpriseCode,
+    );
 
     test(
       'should return List<SellerEntity> when datasource returns data successfully',

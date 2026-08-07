@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SummaryPage extends ConsumerWidget {
-  const SummaryPage({super.key});
+  final int enterpriseCode;
+  const SummaryPage({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,19 +51,23 @@ class SummaryPage extends ConsumerWidget {
             ],
             gapSliverH8,
             if (isDesktop) ...[
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: Row(
                   children: [
-                    Expanded(child: RequestTypeDropDown()),
+                    const Expanded(child: RequestTypeDropDown()),
                     gapW8,
-                    Expanded(child: SellerDropdown()),
+                    Expanded(
+                      child: SellerDropdown(enterpriseCode: enterpriseCode),
+                    ),
                   ],
                 ),
               ),
             ] else ...[
               const SliverToBoxAdapter(child: RequestTypeDropDown()),
               gapSliverH8,
-              const SliverToBoxAdapter(child: SellerDropdown()),
+              SliverToBoxAdapter(
+                child: SellerDropdown(enterpriseCode: enterpriseCode),
+              ),
             ],
             gapSliverH8,
             const SliverToBoxAdapter(

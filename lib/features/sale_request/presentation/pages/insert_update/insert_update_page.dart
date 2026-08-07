@@ -105,7 +105,7 @@ class _InsertUpdateContent extends ConsumerWidget {
                 const CartBadgeAction(),
               ],
             ),
-            body: const InsertUpdateBody(),
+            body: InsertUpdateBody(enterpriseCode: enterpriseCode),
             bottomNavigationBar: const InsertUpdateBottomNavigationBar(),
             floatingActionButton: CreateCustomerFloatingButton(
               enterpriseCode: enterpriseCode,

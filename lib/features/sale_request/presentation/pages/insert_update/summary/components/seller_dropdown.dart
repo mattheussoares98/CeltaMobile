@@ -8,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SellerDropdown extends ConsumerWidget {
-  const SellerDropdown({super.key});
+  final int enterpriseCode;
+  const SellerDropdown({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncValueWidget(
-      value: ref.watch(sellersStateControllerProvider),
-      tryAgain: () => ref.invalidate(sellersStateControllerProvider),
+      value: ref.watch(sellersStateControllerProvider(enterpriseCode)),
+      tryAgain: () =>
+          ref.invalidate(sellersStateControllerProvider(enterpriseCode)),
       data: (sellers) {
         if (sellers.isEmpty) return const SizedBox.shrink();
 

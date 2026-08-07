@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class InsertUpdateBody extends ConsumerWidget {
-  const InsertUpdateBody({super.key});
+  final int enterpriseCode;
+  const InsertUpdateBody({super.key, required this.enterpriseCode});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,12 +18,12 @@ class InsertUpdateBody extends ConsumerWidget {
       data: (_) {
         return IndexedStack(
           index: pageIndex,
-          children: const [
-            ProductsPage(),
-            CustomersPage(),
-            ItemsPage(),
-            PaymentsPage(),
-            SummaryPage(),
+          children: [
+            const ProductsPage(),
+            const CustomersPage(),
+            const ItemsPage(),
+            const PaymentsPage(),
+            SummaryPage(enterpriseCode: enterpriseCode),
           ],
         );
       },

@@ -18,6 +18,8 @@ void main() {
   late MockEcSellerRepository mockRepository;
   late UserSessionModel fakeSession;
   late List<EcSellerEntity> fakeSellers;
+  late GetSellerParams
+  params; //TODO change this file name and put Ec before starting the name
 
   setUp(() {
     mockRepository = MockEcSellerRepository();
@@ -25,6 +27,14 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeSellers = [EntityFactory.makeSellerEntity()];
+    params = GetSellerParams(
+      params: EcRequestParams(
+        workingUrl: fakeSession.enterprise!.workingUrl!,
+        user: fakeSession.user.name!,
+        accessKey: fakeSession.user.AccessKey!,
+      ),
+      enterpriseCode: fakeSession.enterprise!.id,
+    );
   });
 
   ProviderContainer makeProviderContainer({UserSessionModel? session}) {
@@ -44,11 +54,6 @@ void main() {
       'should call repository and return a list of sellers on success',
       () async {
         // ARRANGE
-        final params = EcRequestParams(
-          workingUrl: fakeSession.enterprise!.workingUrl!,
-          user: fakeSession.user.name!,
-          accessKey: fakeSession.user.AccessKey!,
-        );
 
         when(
           () => mockRepository.get(params),
@@ -59,7 +64,7 @@ void main() {
 
         // ACT
         final result = await container.read(
-          sellersStateControllerProvider.future,
+          sellersStateControllerProvider(fakeSession.enterprise!.id!).future,
         );
 
         // ASSERT
@@ -76,14 +81,10 @@ void main() {
 
       // ACT & ASSERT
       await expectLater(
-        container.read(sellersStateControllerProvider.future),
+        container.read(
+          sellersStateControllerProvider(fakeSession.enterprise!.id!).future,
+        ),
         throwsA(isA<AppException>()),
-      );
-
-      final params = EcRequestParams(
-        workingUrl: fakeSession.enterprise!.workingUrl!,
-        user: fakeSession.user.name!,
-        accessKey: fakeSession.user.AccessKey!,
       );
 
       verifyNever(() => mockRepository.get(params));

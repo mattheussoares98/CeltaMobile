@@ -9,11 +9,13 @@ part 'sellers_state_controller.g.dart';
 @riverpod
 class SellersStateController extends _$SellersStateController {
   @override
-  FutureOr<List<EcSellerEntity>> build() async {
+  FutureOr<List<EcSellerEntity>> build(int enterpriseCode) async {
     ref.cache(60);
 
     final params = await ref.watch(ecRequestParamsProvider().future);
 
-    return await ref.read(ecSellerRepositoryProvider).get(params);
+    return await ref
+        .read(ecSellerRepositoryProvider)
+        .get(GetSellerParams(params: params, enterpriseCode: enterpriseCode));
   }
 }
