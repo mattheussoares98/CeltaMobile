@@ -159,6 +159,7 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
         mark: mark,
       ),
     );
+    //TODO should reload the count quantity because it is being shown on details page
   }
 
   Future<bool> _execute(

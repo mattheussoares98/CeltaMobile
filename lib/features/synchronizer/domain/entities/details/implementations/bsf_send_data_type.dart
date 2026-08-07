@@ -19,4 +19,14 @@ enum BSFSendDataType {
         return BSFSendDataType.sale;
     }
   }
+
+  factory BSFSendDataType.fromErrorKey(String errorKey) {
+    if (errorKey.contains('envio de vendas')) {
+      return BSFSendDataType.sale;
+    } else if (errorKey.contains('envio de clientes')) {
+      return BSFSendDataType.customer;
+    } else {
+      return BSFSendDataType.employee;
+    }
+  }
 }

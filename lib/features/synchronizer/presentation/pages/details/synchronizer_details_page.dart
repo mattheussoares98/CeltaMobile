@@ -43,37 +43,43 @@ class SynchronizerDetailsPage extends ConsumerWidget {
       appBar: BaseAppBar(
         titleWidget: Consumer(
           builder: (_, ref, _) {
-            final errorQuantity =
-                ref.watch(
-                  detailsProvider.select((s) {
-                    final items = s.value?.items;
+            final detailsQuantity = ref.watch(
+              detailsProvider.select((s) {
+                final items = s.value?.items;
 
-                    final productsItems = items
-                        ?.whereType<
-                          BSFProductWithErrorSynchronizerErrorGroupEntity
-                        >();
+                final productsItems = items
+                    ?.whereType<
+                      BSFProductWithErrorSynchronizerErrorGroupEntity
+                    >();
 
-                    if (productsItems?.isNotEmpty ?? false) {
-                      return productsItems!
-                          .map((e) => e.errors.length)
-                          .reduce((a, b) => a + b);
-                    }
+                if (productsItems?.isNotEmpty ?? false) {
+                  return productsItems!
+                      .map((e) => e.errors.length)
+                      .reduce((a, b) => a + b);
+                }
 
-                    return items?.length;
-                  }),
-                ) ??
-                ref.watch(
-                  synchronizerCountStateControllerProvider.select(
-                    (s) => s.value
-                        ?.firstWhereOrNull((e) => e.errorKey == errorKey)
-                        ?.count,
-                  ),
-                );
+                return items?.length;
+              }),
+            );
+
+            final countQuantity = ref.watch(
+              synchronizerCountStateControllerProvider.select(
+                (s) => s.value
+                    ?.firstWhereOrNull((e) => e.errorKey == errorKey)
+                    ?.count,
+              ),
+            );
+
+            final errorQuantity = detailsQuantity ?? countQuantity;
 
             return BaseRichText(
               maxLines: 2,
               texts: [
                 if (errorQuantity != null) BaseText.error('($errorQuantity) '),
+                if ((detailsQuantity ?? 0) > 0 &&
+                    (countQuantity ?? 0) > 0 &&
+                    detailsQuantity != countQuantity)
+                  BaseText.error('/ ($countQuantity) ', fontStyle: .italic),
                 BaseText.title(errorKey, maxLines: 2),
               ],
             );
@@ -126,6 +132,11 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                 items: data.items
                     .cast<BSFSaleRequestMarkedSynchronizerErrorDetailEntity>(),
               ),
+            SynchronizerErrorDetailType.sendData => SynchronizerSendDataPage(
+              items: data.items
+                  .cast<BSFSendDataSynchronizerErrorDetailEntity>(),
+              errorKey: errorKey,
+            ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
@@ -136,8 +147,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
             SynchronizerErrorDetailType.readBleeding ||
             SynchronizerErrorDetailType.correspondentBanking ||
-            SynchronizerErrorDetailType.saleMovementScanntechLoad ||
-            SynchronizerErrorDetailType.sendData =>
+            SynchronizerErrorDetailType.saleMovementScanntechLoad =>
               const NotImplementedDetailType(),
           };
 

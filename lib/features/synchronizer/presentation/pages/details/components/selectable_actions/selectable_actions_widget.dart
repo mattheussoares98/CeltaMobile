@@ -126,11 +126,6 @@ class SelectableActions extends ConsumerWidget {
           final currentIndex = ref.watch(
             selectedSynchronizerProductPageIndexStateControllerProvider,
           );
-          final selectedCodes = ref.watch(
-            selectedSynchronizerCodesStateControllerProvider(
-              SynchronizerErrorDetailType.productWithError,
-            ),
-          );
           final activeType = BSFProductWithErrorType.values[currentIndex];
           final items = selectableItems
               .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>()
@@ -238,6 +233,39 @@ class SelectableActions extends ConsumerWidget {
               label: 'Desmarcar selecionados'.hardcoded,
               onPressed: hasSelected
                   ? () => unmarkSaleRequests(selectedCodes)
+                  : null,
+            ),
+          ]);
+        case SynchronizerErrorDetailType.sendData:
+          final type = BSFSendDataType.fromErrorKey(errorKey);
+          final areMarked = errorKey.toLowerCase().contains('marcados');
+
+          actions.addAll([
+            SelectableAction(
+              label: areMarked
+                  ? 'Desmarcar envio (todos)'
+                  : 'Reenviar todos'.hardcoded,
+              onPressed: () => notifier.markSendDataToSendAgain(
+                sendDataType: type,
+                codes: selectableItems
+                    .expand((e) => e.selectableCodes)
+                    .toSet()
+                    .toList(),
+                errorKey: errorKey,
+                mark: !areMarked,
+              ),
+            ),
+            SelectableAction(
+              label: areMarked
+                  ? 'Desmarcar envio (selecionados)'
+                  : 'Reenviar selecionados'.hardcoded,
+              onPressed: hasSelected
+                  ? () => notifier.markSendDataToSendAgain(
+                      sendDataType: type,
+                      codes: selectedCodes.toList(),
+                      errorKey: errorKey,
+                      mark: !areMarked,
+                    )
                   : null,
             ),
           ]);
