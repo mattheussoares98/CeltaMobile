@@ -145,6 +145,7 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     required BSFSendDataType sendDataType,
     required List<int> codes,
     required String errorKey,
+    required bool mark,
   }) async {
     if (codes.isEmpty) return;
 
@@ -155,7 +156,7 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
         ecParams,
         sendDataType: sendDataType,
         codes: codes,
-        mark: true,
+        mark: mark,
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/entities.
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -79,6 +80,10 @@ void main() {
       user: session.user.name!,
       accessKey: session.user.AccessKey!,
     );
+  });
+
+  setUpAll(() {
+    registerFallbackValue(EntityFactory.makeEcRequestParams());
   });
 
   ProviderContainer makeContainer({
@@ -549,12 +554,14 @@ void main() {
   test('should mark send data to send again', () async {
     when(
       () => repository.markSendDataToSendAgain(
-        params,
+        any(),
         sendDataType: BSFSendDataType.sale,
-        codes: codes,
-        mark: true,
+        codes: any(named: 'codes'),
+        mark: any(named: 'mark'),
       ),
     ).thenAnswer((_) async {});
+    final mark = faker.randomGenerator.boolean();
+
     final container = makeContainer();
     addTearDown(container.dispose);
 
@@ -564,6 +571,7 @@ void main() {
           sendDataType: BSFSendDataType.sale,
           codes: codes,
           errorKey: errorKey,
+          mark: mark,
         );
 
     verify(
@@ -571,7 +579,7 @@ void main() {
         params,
         sendDataType: BSFSendDataType.sale,
         codes: codes,
-        mark: true,
+        mark: mark,
       ),
     ).called(1);
     expect(
@@ -594,6 +602,7 @@ void main() {
             sendDataType: BSFSendDataType.sale,
             codes: const [],
             errorKey: errorKey,
+            mark: true,
           );
 
       expect(
