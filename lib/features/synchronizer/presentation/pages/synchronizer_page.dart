@@ -17,7 +17,7 @@ class SynchronizerPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: synchronizerCountStateControllerProvider,
-      appBar: BaseAppBar(title: 'Sincronizador'.hardcoded),
+      appBar: BaseAppBar(title: 'Sincronismo'.hardcoded),
       body: AsyncValueWidget(
         value: ref.watch(synchronizerCountStateControllerProvider),
         tryAgain: () =>
