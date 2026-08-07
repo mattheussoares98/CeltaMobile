@@ -58,4 +58,11 @@ abstract class IEcSynchronizerRepository {
   );
 
   Future<void> deleteScheduleErrors(EcRequestParams params, List<int> codes);
+
+  Future<void> markSendDataToSendAgain(
+    EcRequestParams params, {
+    required BSFSendDataType sendDataType,
+    required List<int> codes,
+    required bool mark,
+  });
 }

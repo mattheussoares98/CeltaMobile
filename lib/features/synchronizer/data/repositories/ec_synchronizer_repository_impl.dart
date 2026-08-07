@@ -95,4 +95,17 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
     EcRequestParams params,
     List<int> codes,
   ) async => await datasource.deleteScheduleErrors(params, codes);
+
+  @override
+  Future<void> markSendDataToSendAgain(
+    EcRequestParams params, {
+    required BSFSendDataType sendDataType,
+    required List<int> codes,
+    required bool mark,
+  }) async => await datasource.markSendDataToSendAgain(
+        params,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: mark,
+      );
 }

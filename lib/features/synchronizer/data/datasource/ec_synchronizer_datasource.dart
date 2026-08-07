@@ -209,4 +209,24 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       body: {...params.toMap(), 'Codes': codes},
     );
   }
+
+  @override
+  Future<void> markSendDataToSendAgain(
+    EcRequestParams params, {
+    required BSFSendDataType sendDataType,
+    required List<int> codes,
+    required bool mark,
+  }) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/MarkSendDataToSendAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {
+        ...params.toMap(),
+        'SendDataType': sendDataType.value,
+        'Codes': codes,
+        'Mark': mark,
+      },
+    );
+  }
 }

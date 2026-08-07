@@ -682,4 +682,75 @@ void main() {
       verifyNoMoreInteractions(httpClient);
     });
   });
+
+  group('markSendDataToSendAgain', () {
+    const url = '/api/Synchronizer/MarkSendDataToSendAgain';
+    const sendDataType = BSFSendDataType.sale;
+    const codes = [123, 456];
+    const mark = true;
+    final body = {
+      ...params.toMap(),
+      'SendDataType': sendDataType.value,
+      'Codes': codes,
+      'Mark': mark,
+    };
+
+    test('should post send data parameters', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markSendDataToSendAgain(
+        params,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: mark,
+      );
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Failed to mark send data to send again');
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markSendDataToSendAgain(
+        params,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: mark,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
 }

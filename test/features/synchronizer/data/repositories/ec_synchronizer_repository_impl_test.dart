@@ -2,6 +2,7 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
 import 'package:celta_inventario/features/synchronizer/data/repositories/repositories.dart';
+import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -377,6 +378,70 @@ void main() {
 
       await expectLater(call, throwsA(same(exception)));
       verify(() => datasource.deleteScheduleErrors(params, codes)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
+  group('markSendDataToSendAgain', () {
+    const sendDataType = BSFSendDataType.sale;
+    const codes = [123, 456];
+    const mark = true;
+
+    test('should delegate the parameters to the datasource', () async {
+      when(
+        () => datasource.markSendDataToSendAgain(
+          params,
+          sendDataType: sendDataType,
+          codes: codes,
+          mark: mark,
+        ),
+      ).thenAnswer((_) async {});
+
+      await sut.markSendDataToSendAgain(
+        params,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: mark,
+      );
+
+      verify(
+        () => datasource.markSendDataToSendAgain(
+          params,
+          sendDataType: sendDataType,
+          codes: codes,
+          mark: mark,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to mark send data to send again');
+      when(
+        () => datasource.markSendDataToSendAgain(
+          params,
+          sendDataType: sendDataType,
+          codes: codes,
+          mark: mark,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markSendDataToSendAgain(
+        params,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: mark,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.markSendDataToSendAgain(
+          params,
+          sendDataType: sendDataType,
+          codes: codes,
+          mark: mark,
+        ),
+      ).called(1);
       verifyNoMoreInteractions(datasource);
     });
   });
