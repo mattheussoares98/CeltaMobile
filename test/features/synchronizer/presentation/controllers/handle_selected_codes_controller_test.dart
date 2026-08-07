@@ -545,4 +545,62 @@ void main() {
     );
     verifyNoMoreInteractions(repository);
   });
+
+  test('should mark send data to send again', () async {
+    when(
+      () => repository.markSendDataToSendAgain(
+        params,
+        sendDataType: BSFSendDataType.sale,
+        codes: codes,
+        mark: true,
+      ),
+    ).thenAnswer((_) async {});
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container
+        .read(handleSelectedCodesControllerProvider.notifier)
+        .markSendDataToSendAgain(
+          sendDataType: BSFSendDataType.sale,
+          codes: codes,
+          errorKey: errorKey,
+        );
+
+    verify(
+      () => repository.markSendDataToSendAgain(
+        params,
+        sendDataType: BSFSendDataType.sale,
+        codes: codes,
+        mark: true,
+      ),
+    ).called(1);
+    expect(
+      container.read(handleSelectedCodesControllerProvider),
+      const AsyncData<void>(null),
+    );
+    verifyNoMoreInteractions(repository);
+  });
+
+  test(
+    'should ignore an empty code list for markSendDataToSendAgain',
+    () async {
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(handleSelectedCodesControllerProvider.future);
+
+      await container
+          .read(handleSelectedCodesControllerProvider.notifier)
+          .markSendDataToSendAgain(
+            sendDataType: BSFSendDataType.sale,
+            codes: const [],
+            errorKey: errorKey,
+          );
+
+      expect(
+        container.read(handleSelectedCodesControllerProvider),
+        const AsyncData<void>(null),
+      );
+      verifyNoMoreInteractions(repository);
+    },
+  );
 }

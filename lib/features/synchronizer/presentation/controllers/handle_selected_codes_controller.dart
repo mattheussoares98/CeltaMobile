@@ -141,6 +141,25 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     );
   }
 
+  Future<void> markSendDataToSendAgain({
+    required BSFSendDataType sendDataType,
+    required List<int> codes,
+    required String errorKey,
+  }) async {
+    if (codes.isEmpty) return;
+
+    await _execute(
+      errorKey,
+      SynchronizerErrorDetailType.sendData,
+      (repository, ecParams) => repository.markSendDataToSendAgain(
+        ecParams,
+        sendDataType: sendDataType,
+        codes: codes,
+        mark: true,
+      ),
+    );
+  }
+
   Future<bool> _execute(
     String errorKey,
     SynchronizerErrorDetailType detailType,
