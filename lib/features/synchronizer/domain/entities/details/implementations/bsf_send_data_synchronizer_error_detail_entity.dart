@@ -1,7 +1,8 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
 class BSFSendDataSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity {
+    extends SynchronizerErrorDetailEntity
+    implements SelectableSynchronizerErrorDetailEntity {
   final String enterprisePersonalizedCode;
   final String commerceSite;
   final String description;
@@ -45,4 +46,7 @@ class BSFSendDataSynchronizerErrorDetailEntity
     isSent,
     isToResend,
   ];
+
+  @override
+  List<int> get selectableCodes => [internalCode];
 }
