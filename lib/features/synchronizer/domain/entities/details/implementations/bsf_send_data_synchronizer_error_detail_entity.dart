@@ -8,6 +8,12 @@ class BSFSendDataSynchronizerErrorDetailEntity
   final String siteCode;
   final DateTime? sendDate;
   final String error;
+  final BSFSendDataType sendDataType;
+  final int internalCode;
+  final int enterpriseCommerceSiteCode;
+  final int enterpriseCode;
+  final bool isSent;
+  final bool isToResend;
 
   const BSFSendDataSynchronizerErrorDetailEntity({
     required this.enterprisePersonalizedCode,
@@ -16,6 +22,12 @@ class BSFSendDataSynchronizerErrorDetailEntity
     required this.siteCode,
     required this.sendDate,
     required this.error,
+    required this.sendDataType,
+    required this.internalCode,
+    required this.enterpriseCommerceSiteCode,
+    required this.enterpriseCode,
+    required this.isSent,
+    required this.isToResend,
   });
 
   @override
@@ -26,5 +38,11 @@ class BSFSendDataSynchronizerErrorDetailEntity
     siteCode,
     sendDate,
     error,
+    sendDataType,
+    internalCode,
+    enterpriseCommerceSiteCode,
+    enterpriseCode,
+    isSent,
+    isToResend,
   ];
 }

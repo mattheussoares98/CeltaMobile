@@ -13,6 +13,7 @@ export 'bsf_sale_request_waiting_approval_synchronizer_error_detail_entity.dart'
 export 'bsf_sale_request_with_error_synchronizer_error_detail_entity.dart';
 export 'bsf_schedule_synchronizer_error_detail_entity.dart';
 export 'bsf_send_data_synchronizer_error_detail_entity.dart';
+export 'bsf_send_data_type.dart';
 export 'bsf_transaction_synchronizer_error_detail_entity.dart';
 export 'bsf_treasury_movement_synchronizer_error_detail_entity.dart';
 export 'coupon/coupon.dart';

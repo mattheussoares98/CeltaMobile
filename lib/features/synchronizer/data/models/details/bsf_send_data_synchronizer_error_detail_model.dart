@@ -9,6 +9,12 @@ class BSFSendDataSynchronizerErrorDetailModel
     required super.siteCode,
     required super.sendDate,
     required super.error,
+    required super.sendDataType,
+    required super.internalCode,
+    required super.enterpriseCommerceSiteCode,
+    required super.enterpriseCode,
+    required super.isSent,
+    required super.isToResend,
   });
 
   factory BSFSendDataSynchronizerErrorDetailModel.fromJson(Map json) =>
@@ -22,6 +28,12 @@ class BSFSendDataSynchronizerErrorDetailModel
             ? null
             : DateTime.parse(json['SendDate'] as String),
         error: json['Error'] as String,
+        sendDataType: BSFSendDataType.fromValue(json['SendDataType'] as int),
+        internalCode: json['InternalCode'] as int,
+        enterpriseCommerceSiteCode: json['EnterpriseCommerceSiteCode'] as int,
+        enterpriseCode: json['EnterpriseCode'] as int,
+        isSent: json['IsSent'] as bool,
+        isToResend: json['IsToResend'] as bool,
       );
 
   Map toJson() => {
@@ -31,6 +43,12 @@ class BSFSendDataSynchronizerErrorDetailModel
     'SiteCode': siteCode,
     'SendDate': sendDate?.toIso8601String(),
     'Error': error,
+    'SendDataType': sendDataType.value,
+    'InternalCode': internalCode,
+    'EnterpriseCommerceSiteCode': enterpriseCommerceSiteCode,
+    'EnterpriseCode': enterpriseCode,
+    'IsSent': isSent,
+    'IsToResend': isToResend,
   };
 
   factory BSFSendDataSynchronizerErrorDetailModel.fromEntity(
@@ -42,6 +60,12 @@ class BSFSendDataSynchronizerErrorDetailModel
     siteCode: entity.siteCode,
     sendDate: entity.sendDate,
     error: entity.error,
+    sendDataType: entity.sendDataType,
+    internalCode: entity.internalCode,
+    enterpriseCommerceSiteCode: entity.enterpriseCommerceSiteCode,
+    enterpriseCode: entity.enterpriseCode,
+    isSent: entity.isSent,
+    isToResend: entity.isToResend,
   );
 
   BSFSendDataSynchronizerErrorDetailEntity toEntity() =>
@@ -52,5 +76,11 @@ class BSFSendDataSynchronizerErrorDetailModel
         siteCode: siteCode,
         sendDate: sendDate,
         error: error,
+        sendDataType: sendDataType,
+        internalCode: internalCode,
+        enterpriseCommerceSiteCode: enterpriseCommerceSiteCode,
+        enterpriseCode: enterpriseCode,
+        isSent: isSent,
+        isToResend: isToResend,
       );
 }
