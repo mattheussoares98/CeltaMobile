@@ -49,9 +49,13 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
               (s) => s.value?.searchByPersonalizedCode == true,
             ),
           );
+          final isLoading = ref.watch(
+            searchedCustomersStateControllerProvider.select((s) => s.isLoading),
+          );
           return BaseTextFormField(
             controller: searchController,
             labelText: 'Pesquisar'.hardcoded,
+            enabled: isLoading != true,
             hintText: searchByPersonalizedCode
                 ? 'Código personalizado'.hardcoded
                 : 'Nome|Cód|CPF/CNPJ',
