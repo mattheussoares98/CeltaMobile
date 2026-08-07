@@ -43,6 +43,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(EntityFactory.makeEcRequestParams());
+    registerFallbackValue(EntityFactory.makeEcGetCustomersParams());
   });
 
   setUp(() {
