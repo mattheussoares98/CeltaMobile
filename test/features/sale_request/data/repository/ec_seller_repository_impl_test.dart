@@ -26,7 +26,7 @@ void main() {
     final tModelList = [tModel];
     final tEntityList = [tEntity];
     final tEnterpriseCode = faker.randomGenerator.integer(100);
-    final tParams = GetSellerParams(
+    final tParams = EcGetSellerParams(
       params: EntityFactory.makeEcRequestParams(),
       enterpriseCode: tEnterpriseCode,
     );

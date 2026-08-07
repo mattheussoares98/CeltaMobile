@@ -7,5 +7,5 @@ export './sale_request_cart_product_entity.dart';
 export './sale_request_entity.dart';
 export './sale_request_type_entity.dart';
 export 'bsf/bsf.dart';
+export 'ec_get_seller_params.dart';
 export 'ec_seller_entity.dart';
-export 'get_seller_params.dart';

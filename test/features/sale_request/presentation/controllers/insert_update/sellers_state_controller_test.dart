@@ -18,8 +18,7 @@ void main() {
   late MockEcSellerRepository mockRepository;
   late UserSessionModel fakeSession;
   late List<EcSellerEntity> fakeSellers;
-  late GetSellerParams
-  params; //TODO change this file name and put Ec before starting the name
+  late EcGetSellerParams params;
 
   setUp(() {
     mockRepository = MockEcSellerRepository();
@@ -27,7 +26,7 @@ void main() {
       EntityFactory.makeUserSessionEntity(),
     );
     fakeSellers = [EntityFactory.makeSellerEntity()];
-    params = GetSellerParams(
+    params = EcGetSellerParams(
       params: EcRequestParams(
         workingUrl: fakeSession.enterprise!.workingUrl!,
         user: fakeSession.user.name!,

@@ -7,7 +7,7 @@ class EcSellerRepositoryImpl implements IEcSellerRepository {
   EcSellerRepositoryImpl(this.datasource);
 
   @override
-  Future<List<EcSellerEntity>> get(GetSellerParams params) async {
+  Future<List<EcSellerEntity>> get(EcGetSellerParams params) async {
     final models = await datasource.get(params);
     return models.map((e) => e.toEntity()).toList();
   }

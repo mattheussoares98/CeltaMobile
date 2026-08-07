@@ -16,6 +16,6 @@ class SellersStateController extends _$SellersStateController {
 
     return await ref
         .read(ecSellerRepositoryProvider)
-        .get(GetSellerParams(params: params, enterpriseCode: enterpriseCode));
+        .get(EcGetSellerParams(params: params, enterpriseCode: enterpriseCode));
   }
 }

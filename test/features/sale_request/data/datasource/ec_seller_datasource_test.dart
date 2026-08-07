@@ -42,7 +42,7 @@ void main() {
 
         // Act
         final result = await datasource.get(
-          GetSellerParams(params: tParams, enterpriseCode: tEnterpriseCode),
+          EcGetSellerParams(params: tParams, enterpriseCode: tEnterpriseCode),
         );
 
         // Assert
@@ -72,7 +72,7 @@ void main() {
 
       // Act
       final call = datasource.get(
-        GetSellerParams(params: tParams, enterpriseCode: tEnterpriseCode),
+        EcGetSellerParams(params: tParams, enterpriseCode: tEnterpriseCode),
       );
 
       // Assert

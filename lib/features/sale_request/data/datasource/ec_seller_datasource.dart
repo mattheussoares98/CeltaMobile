@@ -8,7 +8,7 @@ class EcSellerDatasource implements IEcSellerDatasource {
   EcSellerDatasource(this.httpClient);
 
   @override
-  Future<List<EcSellerModel>> get(GetSellerParams params) async {
+  Future<List<EcSellerModel>> get(EcGetSellerParams params) async {
     final response = await httpClient.request(
       url:
           '${params.params.workingUrl}/api/Sellers?enterpriseCode=${params.enterpriseCode}',
