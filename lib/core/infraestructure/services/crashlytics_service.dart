@@ -19,7 +19,34 @@ class CrashlyticsService implements ICrashlyticsService {
     }
 
     await Future.wait(
-      customKeys.map((item) => _crashlytics.setCustomKey(item.key, item.value)),
+      customKeys.map(
+        (item) => _crashlytics.setCustomKey(item.key, item.value.toString()),
+      ),
     );
+  }
+
+  @override
+  Future<void> recordNonFatalError({
+    required dynamic exception,
+    required StackTrace stackTrace,
+    String? reason,
+    List<CrashlyticsCustomKeyEntity>? customKeys,
+  }) async {
+    if (PlatformUtil.isDesktop || PlatformUtil.isWeb) {
+      return;
+    }
+
+    if (customKeys != null) {
+      await setCustomKeys(customKeys);
+      for (final item in customKeys) {
+        await _crashlytics.log('${item.key}: ${item.value}');
+      }
+    }
+
+    if (reason != null) {
+      await _crashlytics.log('Reason: $reason');
+    }
+
+    await _crashlytics.recordError(exception, stackTrace, reason: reason);
   }
 }
