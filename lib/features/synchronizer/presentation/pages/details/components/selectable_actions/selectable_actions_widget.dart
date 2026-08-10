@@ -269,6 +269,21 @@ class SelectableActions extends ConsumerWidget {
                   : null,
             ),
           ]);
+        case SynchronizerErrorDetailType.readBleeding:
+          actions.addAll([
+            SelectableAction(
+              label: 'Reler todas'.hardcoded,
+              onPressed: () => markToReadAgain(
+                selectableItems.expand((e) => e.selectableCodes).toSet(),
+              ),
+            ),
+            SelectableAction(
+              label: 'Reler selecionadas'.hardcoded,
+              onPressed: hasSelected
+                  ? () => markToReadAgain(selectedCodes)
+                  : null,
+            ),
+          ]);
         default:
           break;
       }
