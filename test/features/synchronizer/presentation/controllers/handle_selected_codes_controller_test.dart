@@ -33,6 +33,23 @@ class FakeSynchronizerDetailsStateController
   }
 }
 
+class FakeSynchronizerCountStateController
+    extends SynchronizerCountStateController {
+  int buildCount = 0;
+  int silentRefreshCount = 0;
+
+  @override
+  Future<List<SynchronizerErrorSummaryEntity>> build() async {
+    buildCount++;
+    return [];
+  }
+
+  @override
+  Future<void> refreshSilently() async {
+    silentRefreshCount++;
+  }
+}
+
 void main() {
   const rereadDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.coupon,
@@ -89,6 +106,7 @@ void main() {
 
   ProviderContainer makeContainer({
     FakeSynchronizerDetailsStateController? detailsController,
+    FakeSynchronizerCountStateController? countController,
   }) => ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [
@@ -98,6 +116,9 @@ void main() {
       ),
       synchronizerDetailsStateControllerProvider(errorKey).overrideWith(
         () => detailsController ?? FakeSynchronizerDetailsStateController(),
+      ),
+      synchronizerCountStateControllerProvider.overrideWith(
+        () => countController ?? FakeSynchronizerCountStateController(),
       ),
     ],
   );
@@ -576,8 +597,9 @@ void main() {
       ),
     ).thenAnswer((_) async {});
     final mark = faker.randomGenerator.boolean();
+    final countController = FakeSynchronizerCountStateController();
 
-    final container = makeContainer();
+    final container = makeContainer(countController: countController);
     addTearDown(container.dispose);
 
     await container
@@ -597,6 +619,7 @@ void main() {
         mark: mark,
       ),
     ).called(1);
+    expect(countController.silentRefreshCount, 1);
     expect(
       container.read(handleSelectedCodesControllerProvider),
       const AsyncData<void>(null),
