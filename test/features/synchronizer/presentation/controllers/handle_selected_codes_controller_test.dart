@@ -37,6 +37,7 @@ void main() {
   const rereadDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.coupon,
     SynchronizerErrorDetailType.saleRequestWithError,
+    SynchronizerErrorDetailType.saleMovementScanntechLoad,
   };
   const deleteDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.schedule,
@@ -118,6 +119,13 @@ void main() {
         when(
           () => repository.deleteSaleRequestsWithError(params, codes),
         ).thenAnswer((_) async {});
+      case SynchronizerErrorDetailType.saleMovementScanntechLoad:
+        when(
+          () => repository.markSaleMovementScanntechLoadErrorsToReadAgain(
+            params,
+            codes,
+          ),
+        ).thenAnswer((_) async {});
       default:
         throw ArgumentError.value(detailType);
     }
@@ -134,6 +142,13 @@ void main() {
       case SynchronizerErrorDetailType.saleRequestWithError:
         verify(
           () => repository.markSaleRequestsWithErrorToReadAgain(params, codes),
+        ).called(1);
+      case SynchronizerErrorDetailType.saleMovementScanntechLoad:
+        verify(
+          () => repository.markSaleMovementScanntechLoadErrorsToReadAgain(
+            params,
+            codes,
+          ),
         ).called(1);
       default:
         throw ArgumentError.value(detailType);

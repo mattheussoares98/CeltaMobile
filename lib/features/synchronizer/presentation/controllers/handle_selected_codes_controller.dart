@@ -34,6 +34,11 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
         ),
         SynchronizerErrorDetailType.saleRequestWithError =>
           repository.markSaleRequestsWithErrorToReadAgain(ecParams, codes),
+        SynchronizerErrorDetailType.saleMovementScanntechLoad =>
+          repository.markSaleMovementScanntechLoadErrorsToReadAgain(
+            ecParams,
+            codes,
+          ),
         _ => throw AppException(
           'Tipo de detalhe para ler novamente não implementado'.hardcoded,
         ),
