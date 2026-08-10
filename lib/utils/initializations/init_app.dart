@@ -37,6 +37,8 @@ Future<void> _initFirebase() async {
     return;
   }
 
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
   _startNotificationService();
 
   FlutterError.onError = (errorDetails) {
@@ -44,7 +46,7 @@ Future<void> _initFirebase() async {
     // Checking this avoids unnecessary network traffic for non-breaking issues.
     if (errorDetails.silent) return;
 
-    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
 }
 

@@ -160,7 +160,10 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
             SynchronizerErrorDetailType.correspondentBanking ||
             SynchronizerErrorDetailType.saleMovementScanntechLoad =>
-              const NotImplementedDetailType(),
+              NotImplementedDetailType(
+                detailType: data.detailType,
+                errorKey: errorKey,
+              ),
           };
 
           return Column(
