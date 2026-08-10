@@ -1,7 +1,9 @@
 import 'package:celta_inventario/features/synchronizer/domain/entities/details/details.dart';
 
 class BSFCashierMovementSynchronizerErrorDetailEntity
-    extends SynchronizerErrorDetailEntity {
+    extends SynchronizerErrorDetailEntity
+    implements SelectableSynchronizerErrorDetailEntity {
+  final int code;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
   final DateTime openOrCloseDate;
@@ -9,6 +11,7 @@ class BSFCashierMovementSynchronizerErrorDetailEntity
   final String description;
 
   const BSFCashierMovementSynchronizerErrorDetailEntity({
+    required this.code,
     required this.enterprisePersonalizedCode,
     required this.creationDate,
     required this.openOrCloseDate,
@@ -18,10 +21,15 @@ class BSFCashierMovementSynchronizerErrorDetailEntity
 
   @override
   List<Object?> get props => [
+    code,
     enterprisePersonalizedCode,
     creationDate,
     openOrCloseDate,
     cashRegisterPersonalizedCode,
     description,
   ];
+
+  @override
+  // TODO: implement selectableCodes
+  List<int> get selectableCodes => [code];
 }

@@ -7,6 +7,7 @@ class BSFCashierMovementSynchronizerErrorDetailModel
     required super.creationDate,
     required super.openOrCloseDate,
     required super.cashRegisterPersonalizedCode,
+    required super.code,
     required super.description,
   });
 
@@ -18,6 +19,7 @@ class BSFCashierMovementSynchronizerErrorDetailModel
         openOrCloseDate: DateTime.parse(json['OpenOrCloseDate'] as String),
         cashRegisterPersonalizedCode:
             json['CashRegisterPersonalizedCode'] as String,
+        code: json['Code'] as int,
         description: json['Description'] as String,
       );
 
@@ -26,6 +28,7 @@ class BSFCashierMovementSynchronizerErrorDetailModel
     'CreationDate': creationDate.toIso8601String(),
     'OpenOrCloseDate': openOrCloseDate.toIso8601String(),
     'CashRegisterPersonalizedCode': cashRegisterPersonalizedCode,
+    'Code': code,
     'Description': description,
   };
 
@@ -36,6 +39,7 @@ class BSFCashierMovementSynchronizerErrorDetailModel
     creationDate: entity.creationDate,
     openOrCloseDate: entity.openOrCloseDate,
     cashRegisterPersonalizedCode: entity.cashRegisterPersonalizedCode,
+    code: entity.code,
     description: entity.description,
   );
 
@@ -45,6 +49,7 @@ class BSFCashierMovementSynchronizerErrorDetailModel
         creationDate: creationDate,
         openOrCloseDate: openOrCloseDate,
         cashRegisterPersonalizedCode: cashRegisterPersonalizedCode,
+        code: code,
         description: description,
       );
 }
