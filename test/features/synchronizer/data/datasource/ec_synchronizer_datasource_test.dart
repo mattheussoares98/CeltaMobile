@@ -227,6 +227,62 @@ void main() {
     });
   });
 
+  group('markReadBleedingsToReadAgain', () {
+    const codes = [123, 456];
+    const url = '/api/Synchronizer/MarkReadBleedingsToReadAgain';
+    final body = {...params.toMap(), 'Codes': codes};
+
+    test('should post all read bleeding codes in one request', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markReadBleedingsToReadAgain(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception(
+        'Failed to mark read bleedings for rereading',
+      );
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markReadBleedingsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('markSaleRequestsWithErrorToReadAgain', () {
     const codes = [123, 456];
     const url = '/api/Synchronizer/MarkSaleRequestsWithErrorToReadAgain';

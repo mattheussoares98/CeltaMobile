@@ -64,6 +64,19 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> markReadBleedingsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url: '${params.workingUrl}/api/Synchronizer/MarkReadBleedingsToReadAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
+  }
+
+  @override
   Future<void> linkSaleRequestProductNotFound(
     EcRequestParams params, {
     required int productNotFoundCode,

@@ -53,6 +53,7 @@ class FakeSynchronizerCountStateController
 void main() {
   const rereadDetailTypes = <SynchronizerErrorDetailType>{
     SynchronizerErrorDetailType.coupon,
+    SynchronizerErrorDetailType.readBleeding,
     SynchronizerErrorDetailType.saleRequestWithError,
     SynchronizerErrorDetailType.saleMovementScanntechLoad,
   };
@@ -129,6 +130,10 @@ void main() {
         when(
           () => repository.markCouponsToReadAgain(params, codes),
         ).thenAnswer((_) async {});
+      case SynchronizerErrorDetailType.readBleeding:
+        when(
+          () => repository.markReadBleedingsToReadAgain(params, codes),
+        ).thenAnswer((_) async {});
       case SynchronizerErrorDetailType.schedule:
         when(
           () => repository.deleteScheduleErrors(params, codes),
@@ -157,6 +162,10 @@ void main() {
       case SynchronizerErrorDetailType.coupon:
         verify(
           () => repository.markCouponsToReadAgain(params, codes),
+        ).called(1);
+      case SynchronizerErrorDetailType.readBleeding:
+        verify(
+          () => repository.markReadBleedingsToReadAgain(params, codes),
         ).called(1);
       case SynchronizerErrorDetailType.schedule:
         verify(() => repository.deleteScheduleErrors(params, codes)).called(1);

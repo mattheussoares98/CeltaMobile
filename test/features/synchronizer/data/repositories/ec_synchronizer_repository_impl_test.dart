@@ -121,6 +121,40 @@ void main() {
     });
   });
 
+  group('markReadBleedingsToReadAgain', () {
+    const codes = [123, 456];
+
+    test('should delegate the read bleeding codes to the datasource', () async {
+      when(
+        () => datasource.markReadBleedingsToReadAgain(params, codes),
+      ).thenAnswer((_) async {});
+
+      await sut.markReadBleedingsToReadAgain(params, codes);
+
+      verify(
+        () => datasource.markReadBleedingsToReadAgain(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception(
+        'Failed to mark read bleedings for rereading',
+      );
+      when(
+        () => datasource.markReadBleedingsToReadAgain(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.markReadBleedingsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.markReadBleedingsToReadAgain(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('markSaleRequestsWithErrorToReadAgain', () {
     const codes = [123, 456];
 
