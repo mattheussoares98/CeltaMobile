@@ -32,6 +32,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
           ecParams,
           codes,
         ),
+        SynchronizerErrorDetailType.cashierMovement =>
+          repository.markCashierMovementsToReadAgain(ecParams, codes),
         SynchronizerErrorDetailType.readBleeding =>
           repository.markReadBleedingsToReadAgain(ecParams, codes),
         SynchronizerErrorDetailType.saleRequestWithError =>

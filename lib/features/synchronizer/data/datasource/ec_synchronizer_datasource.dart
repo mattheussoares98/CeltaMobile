@@ -64,6 +64,20 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> markCashierMovementsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url:
+          '${params.workingUrl}/api/Synchronizer/MarkCashierMovementsToReadAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
+  }
+
+  @override
   Future<void> markReadBleedingsToReadAgain(
     EcRequestParams params,
     List<int> codes,

@@ -155,6 +155,43 @@ void main() {
     });
   });
 
+  group('markCashierMovementsToReadAgain', () {
+    const codes = [123, 456];
+
+    test(
+      'should delegate the cashier movement codes to the datasource',
+      () async {
+        when(
+          () => datasource.markCashierMovementsToReadAgain(params, codes),
+        ).thenAnswer((_) async {});
+
+        await sut.markCashierMovementsToReadAgain(params, codes);
+
+        verify(
+          () => datasource.markCashierMovementsToReadAgain(params, codes),
+        ).called(1);
+        verifyNoMoreInteractions(datasource);
+      },
+    );
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception(
+        'Failed to mark cashier movements for rereading',
+      );
+      when(
+        () => datasource.markCashierMovementsToReadAgain(params, codes),
+      ).thenThrow(exception);
+
+      final call = sut.markCashierMovementsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.markCashierMovementsToReadAgain(params, codes),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('markSaleRequestsWithErrorToReadAgain', () {
     const codes = [123, 456];
 

@@ -283,6 +283,62 @@ void main() {
     });
   });
 
+  group('markCashierMovementsToReadAgain', () {
+    const codes = [123, 456];
+    const url = '/api/Synchronizer/MarkCashierMovementsToReadAgain';
+    final body = {...params.toMap(), 'Codes': codes};
+
+    test('should post all cashier movement codes in one request', () async {
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenAnswer((_) async => null);
+
+      await sut.markCashierMovementsToReadAgain(params, codes);
+
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+
+    test('should propagate request errors', () async {
+      final exception = Exception(
+        'Failed to mark cashier movements for rereading',
+      );
+      when(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markCashierMovementsToReadAgain(params, codes);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url: '${params.workingUrl}$url',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: body,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('markSaleRequestsWithErrorToReadAgain', () {
     const codes = [123, 456];
     const url = '/api/Synchronizer/MarkSaleRequestsWithErrorToReadAgain';

@@ -14,6 +14,11 @@ abstract class IEcSynchronizerDatasource {
 
   Future<void> markCouponsToReadAgain(EcRequestParams params, List<int> codes);
 
+  Future<void> markCashierMovementsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  );
+
   Future<void> markReadBleedingsToReadAgain(
     EcRequestParams params,
     List<int> codes,

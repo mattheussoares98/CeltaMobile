@@ -28,6 +28,12 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   ) async => await datasource.markCouponsToReadAgain(params, codes);
 
   @override
+  Future<void> markCashierMovementsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async => await datasource.markCashierMovementsToReadAgain(params, codes);
+
+  @override
   Future<void> markReadBleedingsToReadAgain(
     EcRequestParams params,
     List<int> codes,
