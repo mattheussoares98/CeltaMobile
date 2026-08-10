@@ -137,12 +137,16 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                   .cast<BSFSendDataSynchronizerErrorDetailEntity>(),
               errorKey: errorKey,
             ),
+            SynchronizerErrorDetailType.customerWithError =>
+              CustomersWithErrorsItems(
+                items: data.items
+                    .cast<BSFCustomerWithErrorSynchronizerErrorDetailEntity>(),
+              ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
             SynchronizerErrorDetailType.treasuryMovement ||
             SynchronizerErrorDetailType.mapSummarySaleEcf ||
-            SynchronizerErrorDetailType.customerWithError ||
             SynchronizerErrorDetailType.customerWaitingApproval ||
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
             SynchronizerErrorDetailType.readBleeding ||

@@ -1,3 +1,4 @@
+export './customers_with_errors_items.dart';
 export 'coupon_items.dart';
 export 'nfe_disable_items.dart';
 export 'products/products.dart';
