@@ -49,7 +49,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
 
                 final productsItems = items
                     ?.whereType<
-                      BSFProductWithErrorSynchronizerErrorGroupEntity
+                      EcProductWithErrorSynchronizerErrorGroupEntity
                     >();
 
                 if (productsItems?.isNotEmpty ?? false) {
@@ -95,61 +95,59 @@ class SynchronizerDetailsPage extends ConsumerWidget {
           }
 
           final selectableItems = data.items
-              .whereType<SelectableSynchronizerErrorDetailEntity>()
+              .whereType<EcSelectableSynchronizerErrorDetailEntity>()
               .toList();
           final items = switch (data.detailType) {
             SynchronizerErrorDetailType.coupon => CouponItems(
-              items: data.items.cast<BSFCouponSynchronizerErrorDetailEntity>(),
+              items: data.items.cast<EcCouponSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.couponMarkedToReadAgain => CouponItems(
               items: data.items
-                  .cast<BSFCouponMarkedToReadSynchronizerErrorDetailEntity>(),
+                  .cast<EcCouponMarkedToReadSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.nFeDisable => NfeDisableItems(
               items: data.items
-                  .cast<BSFNFeDisableSynchronizerErrorDetailEntity>(),
+                  .cast<EcNFeDisableSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.schedule => ScheduleItems(
-              items: data.items
-                  .cast<BSFScheduleSynchronizerErrorDetailEntity>(),
+              items: data.items.cast<EcScheduleSynchronizerErrorDetailEntity>(),
             ),
             SynchronizerErrorDetailType.saleRequestWithError =>
               SaleRequestWithErrorsItems(
                 errorKey: errorKey,
                 items: data.items
                     .cast<
-                      BSFSaleRequestWithErrorSynchronizerErrorDetailEntity
+                      EcSaleRequestWithErrorSynchronizerErrorDetailEntity
                     >(),
               ),
             SynchronizerErrorDetailType.productWithError =>
               SynchronizerProductsWithErrosPage(
                 items: data.items
-                    .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>(),
+                    .cast<EcProductWithErrorSynchronizerErrorGroupEntity>(),
                 errorKey: errorKey,
               ),
             SynchronizerErrorDetailType.saleRequestMarked =>
               SaleRequestMarkedItems(
                 items: data.items
-                    .cast<BSFSaleRequestMarkedSynchronizerErrorDetailEntity>(),
+                    .cast<EcSaleRequestMarkedSynchronizerErrorDetailEntity>(),
               ),
             SynchronizerErrorDetailType.sendData => SynchronizerSendDataPage(
-              items: data.items
-                  .cast<BSFSendDataSynchronizerErrorDetailEntity>(),
+              items: data.items.cast<EcSendDataSynchronizerErrorDetailEntity>(),
               errorKey: errorKey,
             ),
             SynchronizerErrorDetailType.customerWithError =>
               CustomersWithErrorsItems(
                 items: data.items
-                    .cast<BSFCustomerWithErrorSynchronizerErrorDetailEntity>(),
+                    .cast<EcCustomerWithErrorSynchronizerErrorDetailEntity>(),
               ),
             SynchronizerErrorDetailType.readBleeding => ReadBleedingsItems(
               items: data.items
-                  .cast<BSFReadBleedingSynchronizerErrorDetailEntity>(),
+                  .cast<EcReadBleedingSynchronizerErrorDetailEntity>(),
               errorKey: errorKey,
             ),
             SynchronizerErrorDetailType.cashierMovement => CashierMovementItems(
               items: data.items
-                  .cast<BSFCashierMovementSynchronizerErrorDetailEntity>(),
+                  .cast<EcCashierMovementSynchronizerErrorDetailEntity>(),
               errorKey: errorKey,
             ),
             SynchronizerErrorDetailType.fiscalNote ||

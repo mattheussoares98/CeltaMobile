@@ -26,10 +26,10 @@ void main() {
   group('searchCount', () {
     test('should map summary models to entities', () async {
       final models = [
-        SynchronizerErrorSummaryModel.fromEntity(
+        EcSynchronizerErrorSummaryModel.fromEntity(
           EntityFactory.makeSynchronizerErrorSummaryEntity(),
         ),
-        SynchronizerErrorSummaryModel.fromEntity(
+        EcSynchronizerErrorSummaryModel.fromEntity(
           EntityFactory.makeSynchronizerErrorSummaryEntity(),
         ),
       ];
@@ -60,7 +60,7 @@ void main() {
     test(
       'should map the detail model to an entity preserving its key',
       () async {
-        final model = SynchronizerErrorDetailsModel.fromEntity(
+        final model = EcSynchronizerErrorDetailsModel.fromEntity(
           EntityFactory.makeSynchronizerErrorDetailsEntity(),
         );
         final errorKey = model.errorKey;
@@ -78,7 +78,7 @@ void main() {
     );
 
     test('should propagate datasource errors', () async {
-      final model = SynchronizerErrorDetailsModel.fromEntity(
+      final model = EcSynchronizerErrorDetailsModel.fromEntity(
         EntityFactory.makeSynchronizerErrorDetailsEntity(),
       );
       final errorKey = model.errorKey;
@@ -506,7 +506,7 @@ void main() {
   });
 
   group('markSendDataToSendAgain', () {
-    const sendDataType = BSFSendDataType.sale;
+    const sendDataType = EcSendDataType.sale;
     const codes = [123, 456];
     const mark = true;
 

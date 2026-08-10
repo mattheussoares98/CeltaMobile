@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CouponItems extends ConsumerWidget {
   const CouponItems({super.key, required this.items});
-  final List<BSFCouponSynchronizerEntity> items;
+  final List<EcCouponSynchronizerEntity> items;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +25,7 @@ class CouponItems extends ConsumerWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
-            onTap: item is SelectableSynchronizerErrorDetailEntity
+            onTap: item is EcSelectableSynchronizerErrorDetailEntity
                 ? () => ref.read(provider.notifier).select(item.code)
                 : null,
             child: Padding(
@@ -41,7 +41,7 @@ class CouponItems extends ConsumerWidget {
                           subTitle: item.enterprisePersonalizedCode,
                         ),
                       ),
-                      if (item is SelectableSynchronizerErrorDetailEntity)
+                      if (item is EcSelectableSynchronizerErrorDetailEntity)
                         Consumer(
                           builder: (_, ref, _) {
                             final isSelected = ref.watch(

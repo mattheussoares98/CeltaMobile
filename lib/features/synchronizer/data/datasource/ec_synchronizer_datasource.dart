@@ -13,7 +13,7 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   const EcSynchronizerDatasource(this.httpClient);
 
   @override
-  Future<List<SynchronizerErrorSummaryModel>> searchCount(
+  Future<List<EcSynchronizerErrorSummaryModel>> searchCount(
     EcRequestParams params,
   ) async {
     final response = await httpClient.request(
@@ -27,12 +27,12 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
     );
 
     return (response as List<dynamic>)
-        .map((e) => SynchronizerErrorSummaryModel.fromJson(e as Map))
+        .map((e) => EcSynchronizerErrorSummaryModel.fromJson(e as Map))
         .toList();
   }
 
   @override
-  Future<SynchronizerErrorDetailsModel> searchByKey(
+  Future<EcSynchronizerErrorDetailsModel> searchByKey(
     EcRequestParams params,
     String errorKey,
   ) async {
@@ -47,7 +47,9 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
       },
     );
 
-    return SynchronizerErrorDetailsModel.fromJson(json.decode(response) as Map);
+    return EcSynchronizerErrorDetailsModel.fromJson(
+      json.decode(response) as Map,
+    );
   }
 
   @override
@@ -254,7 +256,7 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   @override
   Future<void> markSendDataToSendAgain(
     EcRequestParams params, {
-    required BSFSendDataType sendDataType,
+    required EcSendDataType sendDataType,
     required List<int> codes,
     required bool mark,
   }) async {

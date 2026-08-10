@@ -609,7 +609,7 @@ void main() {
     when(
       () => repository.markSendDataToSendAgain(
         any(),
-        sendDataType: BSFSendDataType.sale,
+        sendDataType: EcSendDataType.sale,
         codes: any(named: 'codes'),
         mark: any(named: 'mark'),
       ),
@@ -623,7 +623,7 @@ void main() {
     await container
         .read(handleSelectedCodesControllerProvider.notifier)
         .markSendDataToSendAgain(
-          sendDataType: BSFSendDataType.sale,
+          sendDataType: EcSendDataType.sale,
           codes: codes,
           errorKey: errorKey,
           mark: mark,
@@ -632,7 +632,7 @@ void main() {
     verify(
       () => repository.markSendDataToSendAgain(
         params,
-        sendDataType: BSFSendDataType.sale,
+        sendDataType: EcSendDataType.sale,
         codes: codes,
         mark: mark,
       ),
@@ -655,7 +655,7 @@ void main() {
       await container
           .read(handleSelectedCodesControllerProvider.notifier)
           .markSendDataToSendAgain(
-            sendDataType: BSFSendDataType.sale,
+            sendDataType: EcSendDataType.sale,
             codes: const [],
             errorKey: errorKey,
             mark: true,

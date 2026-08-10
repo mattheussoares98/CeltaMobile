@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SynchronizerSendDataItem extends ConsumerWidget {
   const SynchronizerSendDataItem({super.key, required this.item});
-  final BSFSendDataSynchronizerErrorDetailEntity item;
+  final EcSendDataSynchronizerErrorDetailEntity item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

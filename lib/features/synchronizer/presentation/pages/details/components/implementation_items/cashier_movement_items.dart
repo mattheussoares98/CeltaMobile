@@ -13,7 +13,7 @@ class CashierMovementItems extends ConsumerWidget {
     required this.items,
     required this.errorKey,
   });
-  final List<BSFCashierMovementSynchronizerErrorDetailEntity> items;
+  final List<EcCashierMovementSynchronizerErrorDetailEntity> items;
   final String errorKey;
 
   @override

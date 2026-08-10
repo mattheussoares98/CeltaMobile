@@ -76,7 +76,7 @@ abstract class IEcSynchronizerRepository {
 
   Future<void> markSendDataToSendAgain(
     EcRequestParams params, {
-    required BSFSendDataType sendDataType,
+    required EcSendDataType sendDataType,
     required List<int> codes,
     required bool mark,
   });

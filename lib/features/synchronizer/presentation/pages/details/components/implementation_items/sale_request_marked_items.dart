@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SaleRequestMarkedItems extends ConsumerWidget {
   const SaleRequestMarkedItems({super.key, required this.items});
-  final List<BSFSaleRequestMarkedSynchronizerErrorDetailEntity> items;
+  final List<EcSaleRequestMarkedSynchronizerErrorDetailEntity> items;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

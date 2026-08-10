@@ -16,7 +16,7 @@ class SynchronizerProductsWithErrosPage extends ConsumerWidget {
     required this.items,
     required this.errorKey,
   });
-  final List<BSFProductWithErrorSynchronizerErrorGroupEntity> items;
+  final List<EcProductWithErrorSynchronizerErrorGroupEntity> items;
   final String errorKey;
 
   @override
@@ -36,7 +36,7 @@ class SynchronizerProductsWithErrosPage extends ConsumerWidget {
                   .notifier,
             )
             .selectPageIndex,
-        items: BSFProductWithErrorType.values.map((type) {
+        items: EcProductWithErrorType.values.map((type) {
           final group = items.firstWhereOrNull((e) => e.type == type);
           final quantity = group?.errors.length ?? 0;
 
@@ -44,22 +44,21 @@ class SynchronizerProductsWithErrosPage extends ConsumerWidget {
           final IconData cupertinoIcon;
 
           switch (type) {
-            case BSFProductWithErrorType.error:
+            case EcProductWithErrorType.error:
               materialIcon = Icons.error_outline;
               cupertinoIcon = CupertinoIcons.exclamationmark_circle;
-            case BSFProductWithErrorType.markedToSendAgain:
+            case EcProductWithErrorType.markedToSendAgain:
               materialIcon = Icons.sync;
               cupertinoIcon = CupertinoIcons.refresh;
-            case BSFProductWithErrorType.markedToIgnoreError:
+            case EcProductWithErrorType.markedToIgnoreError:
               materialIcon = Icons.visibility_off_outlined;
               cupertinoIcon = CupertinoIcons.eye_slash;
           }
 
           final String label = switch (type) {
-            BSFProductWithErrorType.error => 'Erro'.hardcoded,
-            BSFProductWithErrorType.markedToSendAgain => 'Reenviar'.hardcoded,
-            BSFProductWithErrorType.markedToIgnoreError =>
-              'Ignorados'.hardcoded,
+            EcProductWithErrorType.error => 'Erro'.hardcoded,
+            EcProductWithErrorType.markedToSendAgain => 'Reenviar'.hardcoded,
+            EcProductWithErrorType.markedToIgnoreError => 'Ignorados'.hardcoded,
           };
 
           return BaseBottomNavigationBarItem(
@@ -74,7 +73,7 @@ class SynchronizerProductsWithErrosPage extends ConsumerWidget {
       ),
       body: IndexedStack(
         index: currentIndex,
-        children: BSFProductWithErrorType.values.map((type) {
+        children: EcProductWithErrorType.values.map((type) {
           final group = items.firstWhereOrNull((e) => e.type == type);
           final errors = group?.errors ?? const [];
 

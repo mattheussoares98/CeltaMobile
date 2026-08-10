@@ -18,7 +18,7 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
     required this.items,
     required this.errorKey,
   });
-  final List<BSFSaleRequestWithErrorSynchronizerErrorDetailEntity> items;
+  final List<EcSaleRequestWithErrorSynchronizerErrorDetailEntity> items;
   final String errorKey;
 
   @override

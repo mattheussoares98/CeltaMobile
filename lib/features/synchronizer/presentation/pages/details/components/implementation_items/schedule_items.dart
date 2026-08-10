@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ScheduleItems extends ConsumerWidget {
   const ScheduleItems({super.key, required this.items});
-  final List<BSFScheduleSynchronizerErrorDetailEntity> items;
+  final List<EcScheduleSynchronizerErrorDetailEntity> items;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

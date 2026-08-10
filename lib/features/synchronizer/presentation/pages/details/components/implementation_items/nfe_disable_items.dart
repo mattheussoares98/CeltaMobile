@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 
 class NfeDisableItems extends StatelessWidget {
   const NfeDisableItems({super.key, required this.items});
-  final List<BSFNFeDisableSynchronizerErrorDetailEntity> items;
+  final List<EcNFeDisableSynchronizerErrorDetailEntity> items;
 
   @override
   Widget build(BuildContext context) {
-    return ScrollableTable<BSFNFeDisableSynchronizerErrorDetailEntity>(
+    return ScrollableTable<EcNFeDisableSynchronizerErrorDetailEntity>(
       items: items,
       columns: [
         ScrollableTableColumnSpec(

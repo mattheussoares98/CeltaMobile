@@ -7,7 +7,7 @@ class AssociateProductPage extends ConsumerStatefulWidget {
     required this.productNotFound,
   });
   final String errorKey;
-  final BSFSaleRequestProductNotFoundDetailEntity productNotFound;
+  final EcSaleRequestProductNotFoundDetailEntity productNotFound;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

@@ -120,7 +120,7 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
   @override
   Future<void> markSendDataToSendAgain(
     EcRequestParams params, {
-    required BSFSendDataType sendDataType,
+    required EcSendDataType sendDataType,
     required List<int> codes,
     required bool mark,
   }) async => await datasource.markSendDataToSendAgain(

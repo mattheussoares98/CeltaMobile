@@ -25,7 +25,7 @@ class SelectableActions extends ConsumerWidget {
 
   final SynchronizerErrorDetailType detailType;
   final String errorKey;
-  final List<SelectableSynchronizerErrorDetailEntity> selectableItems;
+  final List<EcSelectableSynchronizerErrorDetailEntity> selectableItems;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,9 +126,9 @@ class SelectableActions extends ConsumerWidget {
           final currentIndex = ref.watch(
             selectedSynchronizerProductPageIndexStateControllerProvider,
           );
-          final activeType = BSFProductWithErrorType.values[currentIndex];
+          final activeType = EcProductWithErrorType.values[currentIndex];
           final items = selectableItems
-              .cast<BSFProductWithErrorSynchronizerErrorGroupEntity>()
+              .cast<EcProductWithErrorSynchronizerErrorGroupEntity>()
               .where((e) => e.type == activeType);
 
           final group = items.firstWhereOrNull((e) => e.type == activeType);
@@ -192,9 +192,9 @@ class SelectableActions extends ConsumerWidget {
               ),
             ];
             switch (activeType) {
-              case BSFProductWithErrorType.error:
+              case EcProductWithErrorType.error:
                 actions.addAll([...sendProductsButtons, ...ignoreButtons]);
-              case BSFProductWithErrorType.markedToSendAgain:
+              case EcProductWithErrorType.markedToSendAgain:
                 actions.addAll([
                   SelectableAction(
                     label: 'Desmarcar todos'.hardcoded,
@@ -214,7 +214,7 @@ class SelectableActions extends ConsumerWidget {
                   ),
                   ...ignoreButtons,
                 ]);
-              case BSFProductWithErrorType.markedToIgnoreError:
+              case EcProductWithErrorType.markedToIgnoreError:
                 actions.addAll(sendProductsButtons);
             }
           }
@@ -237,7 +237,7 @@ class SelectableActions extends ConsumerWidget {
             ),
           ]);
         case SynchronizerErrorDetailType.sendData:
-          final type = BSFSendDataType.fromErrorKey(errorKey);
+          final type = EcSendDataType.fromErrorKey(errorKey);
           final areMarked = errorKey.toLowerCase().contains('marcados');
 
           actions.addAll([

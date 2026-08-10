@@ -151,7 +151,7 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
   }
 
   Future<void> markSendDataToSendAgain({
-    required BSFSendDataType sendDataType,
+    required EcSendDataType sendDataType,
     required List<int> codes,
     required String errorKey,
     required bool mark,

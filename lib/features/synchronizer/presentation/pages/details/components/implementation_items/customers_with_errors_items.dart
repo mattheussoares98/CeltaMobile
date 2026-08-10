@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class CustomersWithErrorsItems extends StatelessWidget {
   const CustomersWithErrorsItems({super.key, required this.items});
-  final List<BSFCustomerWithErrorSynchronizerErrorDetailEntity> items;
+  final List<EcCustomerWithErrorSynchronizerErrorDetailEntity> items;
 
   @override
   Widget build(BuildContext context) {

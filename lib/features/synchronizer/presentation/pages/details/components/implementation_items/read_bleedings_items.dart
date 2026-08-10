@@ -13,7 +13,7 @@ class ReadBleedingsItems extends ConsumerWidget {
     required this.items,
     required this.errorKey,
   });
-  final List<BSFReadBleedingSynchronizerErrorDetailEntity> items;
+  final List<EcReadBleedingSynchronizerErrorDetailEntity> items;
   final String errorKey;
 
   @override

@@ -25,7 +25,7 @@ void main() {
 
   group('searchCount', () {
     final models = [
-      SynchronizerErrorSummaryModel.fromEntity(
+      EcSynchronizerErrorSummaryModel.fromEntity(
         EntityFactory.makeSynchronizerErrorSummaryEntity(),
       ),
     ];
@@ -86,7 +86,7 @@ void main() {
   });
 
   group('searchByKey', () {
-    final model = SynchronizerErrorDetailsModel.fromEntity(
+    final model = EcSynchronizerErrorDetailsModel.fromEntity(
       EntityFactory.makeSynchronizerErrorDetailsEntity(),
     );
     final errorKey = model.errorKey;
@@ -857,7 +857,7 @@ void main() {
 
   group('markSendDataToSendAgain', () {
     const url = '/api/Synchronizer/MarkSendDataToSendAgain';
-    const sendDataType = BSFSendDataType.sale;
+    const sendDataType = EcSendDataType.sale;
     const codes = [123, 456];
     const mark = true;
     final body = {

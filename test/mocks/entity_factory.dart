@@ -1070,7 +1070,7 @@ class EntityFactory {
   static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity({
     SynchronizerErrorDetailType detailType =
         SynchronizerErrorDetailType.transaction,
-    List<SynchronizerErrorDetailEntity>? items,
+    List<EcSynchronizerErrorDetailEntity>? items,
   }) => SynchronizerErrorDetailsEntity(
     category: faker.lorem.word(),
     errorKey: faker.lorem.word(),
@@ -1078,23 +1078,23 @@ class EntityFactory {
     items:
         items ??
         [
-          BSFTransactionSynchronizerErrorDetailEntity(
+          EcTransactionSynchronizerErrorDetailEntity(
             transactionId: faker.guid.guid(),
           ),
         ],
   );
 
-  static BSFProductWithErrorSynchronizerErrorGroupEntity
-  makeBSFProductWithErrorSynchronizerErrorGroupEntity({
-    BSFProductWithErrorType type = BSFProductWithErrorType.error,
-  }) => BSFProductWithErrorSynchronizerErrorGroupEntity(
+  static EcProductWithErrorSynchronizerErrorGroupEntity
+  makeEcProductWithErrorSynchronizerErrorGroupEntity({
+    EcProductWithErrorType type = EcProductWithErrorType.error,
+  }) => EcProductWithErrorSynchronizerErrorGroupEntity(
     type: type,
-    errors: [makeBSFProductWithErrorSynchronizerErrorDetailEntity()],
+    errors: [makeEcProductWithErrorSynchronizerErrorDetailEntity()],
   );
 
-  static BSFProductWithErrorSynchronizerErrorDetailEntity
-  makeBSFProductWithErrorSynchronizerErrorDetailEntity() =>
-      BSFProductWithErrorSynchronizerErrorDetailEntity(
+  static EcProductWithErrorSynchronizerErrorDetailEntity
+  makeEcProductWithErrorSynchronizerErrorDetailEntity() =>
+      EcProductWithErrorSynchronizerErrorDetailEntity(
         code: faker.randomGenerator.integer(100, min: 1),
         enterpriseCode: faker.randomGenerator.integer(100, min: 1),
         productPackingCode: faker.randomGenerator.integer(100, min: 1),
@@ -1115,9 +1115,9 @@ class EntityFactory {
         lastChargeOfStock: faker.date.dateTime(),
       );
 
-  static BSFCouponSynchronizerErrorDetailEntity
-  makeBSFCouponSynchronizerErrorDetailEntity({int? code}) =>
-      BSFCouponSynchronizerErrorDetailEntity(
+  static EcCouponSynchronizerErrorDetailEntity
+  makeEcCouponSynchronizerErrorDetailEntity({int? code}) =>
+      EcCouponSynchronizerErrorDetailEntity(
         code: code ?? faker.randomGenerator.integer(100, min: 1),
         enterprisePersonalizedCode: faker.randomGenerator.numberOfLength(6),
         creationDate: faker.date.dateTime(),

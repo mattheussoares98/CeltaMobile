@@ -3,11 +3,11 @@ import 'package:celta_inventario/features/synchronizer/data/models/models.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 abstract class IEcSynchronizerDatasource {
-  Future<List<SynchronizerErrorSummaryModel>> searchCount(
+  Future<List<EcSynchronizerErrorSummaryModel>> searchCount(
     EcRequestParams params,
   );
 
-  Future<SynchronizerErrorDetailsModel> searchByKey(
+  Future<EcSynchronizerErrorDetailsModel> searchByKey(
     EcRequestParams params,
     String errorKey,
   );
@@ -77,7 +77,7 @@ abstract class IEcSynchronizerDatasource {
 
   Future<void> markSendDataToSendAgain(
     EcRequestParams params, {
-    required BSFSendDataType sendDataType,
+    required EcSendDataType sendDataType,
     required List<int> codes,
     required bool mark,
   });

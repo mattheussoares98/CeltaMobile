@@ -15,7 +15,7 @@ class SynchronizerSendDataPage extends ConsumerWidget {
     required this.items,
     required this.errorKey,
   });
-  final List<BSFSendDataSynchronizerErrorDetailEntity> items;
+  final List<EcSendDataSynchronizerErrorDetailEntity> items;
   final String errorKey;
 
   @override

@@ -5,7 +5,7 @@ class SynchronizerErrorDetailsEntity extends Equatable {
   final String category;
   final String errorKey;
   final SynchronizerErrorDetailType detailType;
-  final List<SynchronizerErrorDetailEntity> items;
+  final List<EcSynchronizerErrorDetailEntity> items;
 
   const SynchronizerErrorDetailsEntity({
     required this.category,

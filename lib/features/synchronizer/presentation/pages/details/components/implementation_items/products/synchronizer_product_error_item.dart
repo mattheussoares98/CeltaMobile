@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SynchronizerProductErrorItem extends ConsumerWidget {
   const SynchronizerProductErrorItem({super.key, required this.item});
-  final BSFProductWithErrorSynchronizerErrorDetailEntity item;
+  final EcProductWithErrorSynchronizerErrorDetailEntity item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
