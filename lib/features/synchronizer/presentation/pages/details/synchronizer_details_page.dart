@@ -147,7 +147,11 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                   .cast<BSFReadBleedingSynchronizerErrorDetailEntity>(),
               errorKey: errorKey,
             ),
-            SynchronizerErrorDetailType.cashierMovement ||
+            SynchronizerErrorDetailType.cashierMovement => CashierMovementItems(
+              items: data.items
+                  .cast<BSFCashierMovementSynchronizerErrorDetailEntity>(),
+              errorKey: errorKey,
+            ),
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
             SynchronizerErrorDetailType.treasuryMovement ||

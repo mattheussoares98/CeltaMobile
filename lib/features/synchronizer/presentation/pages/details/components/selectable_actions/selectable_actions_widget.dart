@@ -286,6 +286,24 @@ class SelectableActions extends ConsumerWidget {
               ),
             ]);
           }
+        case SynchronizerErrorDetailType.cashierMovement:
+          if (errorKey.toLowerCase().contains('marcados') == false) {
+            actions.addAll([
+              SelectableAction(
+                label: 'Reler todos'.hardcoded,
+                onPressed: () => markToReadAgain(
+                  selectableItems.expand((e) => e.selectableCodes).toSet(),
+                ),
+              ),
+              SelectableAction(
+                label: 'Reler selecionados'.hardcoded,
+                onPressed: hasSelected
+                    ? () => markToReadAgain(selectedCodes)
+                    : null,
+              ),
+            ]);
+          }
+
         default:
           break;
       }

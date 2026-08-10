@@ -1,3 +1,4 @@
+export './cashier_movement_items.dart';
 export './customers_with_errors_items.dart';
 export './read_bleedings_items.dart';
 export 'coupon_items.dart';
