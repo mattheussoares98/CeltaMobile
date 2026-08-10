@@ -4,6 +4,7 @@ class BSFReadBleedingSynchronizerErrorDetailEntity
     extends SynchronizerErrorDetailEntity
     implements SelectableSynchronizerErrorDetailEntity {
   final int code;
+  final bool markedToReadAgain;
   final String enterprisePersonalizedCode;
   final DateTime creationDate;
   final DateTime movementDate;
@@ -12,6 +13,7 @@ class BSFReadBleedingSynchronizerErrorDetailEntity
 
   const BSFReadBleedingSynchronizerErrorDetailEntity({
     required this.code,
+    required this.markedToReadAgain,
     required this.enterprisePersonalizedCode,
     required this.creationDate,
     required this.movementDate,
@@ -22,6 +24,7 @@ class BSFReadBleedingSynchronizerErrorDetailEntity
   @override
   List<Object?> get props => [
     code,
+    markedToReadAgain,
     enterprisePersonalizedCode,
     creationDate,
     movementDate,

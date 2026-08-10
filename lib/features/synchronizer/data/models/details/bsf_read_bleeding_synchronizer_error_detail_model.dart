@@ -9,6 +9,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
     required super.movementDate,
     required super.cashierNumber,
     required super.description,
+    required super.markedToReadAgain,
   });
 
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromJson(Map json) =>
@@ -20,6 +21,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
         movementDate: DateTime.parse(json['MovementDate'] as String),
         cashierNumber: json['CashierNumber'] as String,
         description: json['Description'] as String,
+        markedToReadAgain: json['MarkedToReadAgain'] as bool,
       );
 
   Map toJson() => {
@@ -29,6 +31,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
     'MovementDate': movementDate.toIso8601String(),
     'CashierNumber': cashierNumber,
     'Description': description,
+    'MmarkedToReadAgain': markedToReadAgain,
   };
 
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromEntity(
@@ -40,6 +43,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
     movementDate: entity.movementDate,
     cashierNumber: entity.cashierNumber,
     description: entity.description,
+    markedToReadAgain: entity.markedToReadAgain,
   );
 
   BSFReadBleedingSynchronizerErrorDetailEntity toEntity() =>
@@ -50,5 +54,6 @@ class BSFReadBleedingSynchronizerErrorDetailModel
         movementDate: movementDate,
         cashierNumber: cashierNumber,
         description: description,
+        markedToReadAgain: markedToReadAgain,
       );
 }
