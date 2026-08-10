@@ -26,3 +26,9 @@ IEcSynchronizerRepository ecSynchronizerRepository(Ref ref) {
     ref.watch(ecSynchronizerDatasourceProvider),
   );
 }
+
+@riverpod
+IEcSynchronizerManualExecutionDatasource
+ecSynchronizerManualExecutionDatasource(Ref ref) {
+  return EcSynchronizerManualExecutionDatasource(ref.watch(httpClientProvider));
+}
