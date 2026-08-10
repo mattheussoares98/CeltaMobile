@@ -142,6 +142,10 @@ class SynchronizerDetailsPage extends ConsumerWidget {
                 items: data.items
                     .cast<BSFCustomerWithErrorSynchronizerErrorDetailEntity>(),
               ),
+            SynchronizerErrorDetailType.readBleeding => ReadBleedingsItems(
+              items: data.items
+                  .cast<BSFReadBleedingSynchronizerErrorDetailEntity>(),
+            ),
             SynchronizerErrorDetailType.cashierMovement ||
             SynchronizerErrorDetailType.fiscalNote ||
             SynchronizerErrorDetailType.transaction ||
@@ -149,7 +153,6 @@ class SynchronizerDetailsPage extends ConsumerWidget {
             SynchronizerErrorDetailType.mapSummarySaleEcf ||
             SynchronizerErrorDetailType.customerWaitingApproval ||
             SynchronizerErrorDetailType.saleRequestWaitingApproval ||
-            SynchronizerErrorDetailType.readBleeding ||
             SynchronizerErrorDetailType.correspondentBanking ||
             SynchronizerErrorDetailType.saleMovementScanntechLoad =>
               const NotImplementedDetailType(),
