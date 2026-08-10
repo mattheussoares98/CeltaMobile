@@ -48,6 +48,15 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
       await datasource.markSaleRequestsWithErrorToReadAgain(params, codes);
 
   @override
+  Future<void> markSaleMovementScanntechLoadErrorsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async => await datasource.markSaleMovementScanntechLoadErrorsToReadAgain(
+    params,
+    codes,
+  );
+
+  @override
   Future<void> unmarkSaleRequestsMarked(
     EcRequestParams params,
     List<int> codes,
@@ -103,9 +112,9 @@ class EcSynchronizerRepositoryImpl implements IEcSynchronizerRepository {
     required List<int> codes,
     required bool mark,
   }) async => await datasource.markSendDataToSendAgain(
-        params,
-        sendDataType: sendDataType,
-        codes: codes,
-        mark: mark,
-      );
+    params,
+    sendDataType: sendDataType,
+    codes: codes,
+    mark: mark,
+  );
 }

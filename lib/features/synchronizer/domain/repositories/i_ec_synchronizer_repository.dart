@@ -25,6 +25,11 @@ abstract class IEcSynchronizerRepository {
     List<int> codes,
   );
 
+  Future<void> markSaleMovementScanntechLoadErrorsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  );
+
   Future<void> unmarkSaleRequestsMarked(
     EcRequestParams params,
     List<int> codes,

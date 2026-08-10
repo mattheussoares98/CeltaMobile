@@ -99,6 +99,20 @@ class EcSynchronizerDatasource implements IEcSynchronizerDatasource {
   }
 
   @override
+  Future<void> markSaleMovementScanntechLoadErrorsToReadAgain(
+    EcRequestParams params,
+    List<int> codes,
+  ) async {
+    await httpClient.request(
+      url:
+          '${params.workingUrl}/api/Synchronizer/MarkSaleMovementScanntechLoadErrorsToReadAgain',
+      method: 'post',
+      headers: params.toHeaders(),
+      body: {...params.toMap(), 'Codes': codes},
+    );
+  }
+
+  @override
   Future<void> unmarkSaleRequestsMarked(
     EcRequestParams params,
     List<int> codes,

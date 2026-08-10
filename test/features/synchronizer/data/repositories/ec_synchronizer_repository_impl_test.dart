@@ -153,6 +153,58 @@ void main() {
     });
   });
 
+  group('markSaleMovementScanntechLoadErrorsToReadAgain', () {
+    const codes = [123, 456];
+
+    test(
+      'should delegate the Scanntech error codes to the datasource',
+      () async {
+        when(
+          () => datasource.markSaleMovementScanntechLoadErrorsToReadAgain(
+            params,
+            codes,
+          ),
+        ).thenAnswer((_) async {});
+
+        await sut.markSaleMovementScanntechLoadErrorsToReadAgain(params, codes);
+
+        verify(
+          () => datasource.markSaleMovementScanntechLoadErrorsToReadAgain(
+            params,
+            codes,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(datasource);
+      },
+    );
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception(
+        'Failed to mark Scanntech errors for rereading',
+      );
+      when(
+        () => datasource.markSaleMovementScanntechLoadErrorsToReadAgain(
+          params,
+          codes,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.markSaleMovementScanntechLoadErrorsToReadAgain(
+        params,
+        codes,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.markSaleMovementScanntechLoadErrorsToReadAgain(
+          params,
+          codes,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('unmarkSaleRequestsMarked', () {
     const codes = [123, 456];
 
