@@ -8,14 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ReadBleedingsItems extends ConsumerWidget {
-  const ReadBleedingsItems({super.key, required this.items});
+  const ReadBleedingsItems({
+    super.key,
+    required this.items,
+    required this.errorKey,
+  });
   final List<BSFReadBleedingSynchronizerErrorDetailEntity> items;
+  final String errorKey;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = selectedSynchronizerCodesStateControllerProvider(
       SynchronizerErrorDetailType.readBleeding,
     );
+
+    final isSelectable = errorKey.toLowerCase().contains('marcadas') == false;
+
     return ResponsiveListFlow(
       padding: const EdgeInsets.all(Sizes.p8),
       itemCount: items.length,
@@ -24,7 +32,9 @@ class ReadBleedingsItems extends ConsumerWidget {
         return Card(
           clipBehavior: .hardEdge,
           child: InkWell(
-            onTap: () => ref.read(provider.notifier).select(bleeding.code),
+            onTap: isSelectable
+                ? () => ref.read(provider.notifier).select(bleeding.code)
+                : null,
             child: Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: Column(
@@ -38,22 +48,23 @@ class ReadBleedingsItems extends ConsumerWidget {
                           subTitle: bleeding.enterprisePersonalizedCode,
                         ),
                       ),
-                      Consumer(
-                        builder: (_, ref, _) {
-                          final isSelected = ref.watch(
-                            provider.select((s) => s.contains(bleeding.code)),
-                          );
-                          return BaseCheckBox(
-                            name: 'Selecionar'.hardcoded,
-                            enabled: isSelected,
-                            onChanged: (_) => ref
-                                .read(provider.notifier)
-                                .select(bleeding.code),
-                            width: Sizes.p20,
-                            height: Sizes.p20,
-                          );
-                        },
-                      ),
+                      if (isSelectable)
+                        Consumer(
+                          builder: (_, ref, _) {
+                            final isSelected = ref.watch(
+                              provider.select((s) => s.contains(bleeding.code)),
+                            );
+                            return BaseCheckBox(
+                              name: 'Selecionar'.hardcoded,
+                              enabled: isSelected,
+                              onChanged: (_) => ref
+                                  .read(provider.notifier)
+                                  .select(bleeding.code),
+                              width: Sizes.p20,
+                              height: Sizes.p20,
+                            );
+                          },
+                        ),
                     ],
                   ),
                   TitleAndSubTitle(
