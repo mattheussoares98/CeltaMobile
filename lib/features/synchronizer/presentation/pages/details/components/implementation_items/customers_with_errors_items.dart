@@ -1,4 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -10,39 +11,42 @@ class CustomersWithErrorsItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollableTable<BSFCustomerWithErrorSynchronizerErrorDetailEntity>(
-      items: items,
-      rowHeight: 60,
-      columns: [
-        ScrollableTableColumnSpec(
-          headerTitle: 'Empresa'.hardcoded,
-          minWidth: 70,
-          cellBuilder: (item) =>
-              BaseText(item.enterprisePersonalizedCode.toString()),
-        ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Nome cliente'.hardcoded,
-          minWidth: 150,
-          cellBuilder: (item) => BaseText(item.customerName),
-        ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Data erro'.hardcoded,
-          minWidth: 120,
-          cellBuilder: (item) =>
-              BaseText(item.creationDate.formatDate(.ddMMyyyyHHmm)),
-        ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Data cadastro'.hardcoded,
-          minWidth: 120,
-          cellBuilder: (item) =>
-              BaseText(item.cadasterDate.formatDate(.ddMMyyyyHHmm)),
-        ),
-        ScrollableTableColumnSpec(
-          headerTitle: 'Cód cliente'.hardcoded,
-          minWidth: 200,
-          cellBuilder: (item) => BaseText(item.customerCode),
-        ),
-      ],
+    return ResponsiveListFlow(
+      padding: const EdgeInsets.all(Sizes.p8),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final bleeding = items[index];
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p8),
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                TitleAndSubTitle(
+                  title: 'Empresa'.hardcoded,
+                  subTitle: bleeding.enterprisePersonalizedCode,
+                ),
+                TitleAndSubTitle(
+                  title: 'Nome cliente'.hardcoded,
+                  subTitle: bleeding.customerName,
+                ),
+                TitleAndSubTitle(
+                  title: 'Data erro'.hardcoded,
+                  subTitle: bleeding.creationDate.formatDate(.ddMMyyyyHHmm),
+                ),
+                TitleAndSubTitle(
+                  title: 'Data cadastro'.hardcoded,
+                  subTitle: bleeding.cadasterDate.formatDate(.ddMMyyyyHHmm),
+                ),
+                TitleAndSubTitle(
+                  title: 'Cód cliente'.hardcoded,
+                  subTitle: bleeding.customerCode,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
