@@ -15,7 +15,7 @@ class ExecuteManualScheduleController
     required int enterpriseCode,
     required int scheduleCode,
   }) {
-    ref.cache();
+    ref.cache(300);
   }
 
   Future<bool> execute() async {

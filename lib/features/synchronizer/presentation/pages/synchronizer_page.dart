@@ -17,7 +17,13 @@ class SynchronizerPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: synchronizerCountStateControllerProvider,
-      appBar: BaseAppBar(title: 'Sincronismo'.hardcoded),
+      appBar: BaseAppBar(
+        titleWidget: GestureDetector(
+          onLongPress: () =>
+              context.pushNamed(Routes.synchronizerManualExecution.name),
+          child: BaseText.headline('Sincronismo'.hardcoded, fontWeight: .bold),
+        ),
+      ),
       body: AsyncValueWidget(
         value: ref.watch(synchronizerCountStateControllerProvider),
         tryAgain: () =>

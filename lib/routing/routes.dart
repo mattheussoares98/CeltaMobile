@@ -53,6 +53,7 @@ enum Routes {
   stockReplacement,
   synchronizer,
   synchronizerDetails,
+  synchronizerManualExecution,
   transferRequestDestinyEnterprises,
   transferRequestOriginEnterprises,
   transferRequestProductsManagement,

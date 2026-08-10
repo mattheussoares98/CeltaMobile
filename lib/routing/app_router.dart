@@ -129,7 +129,10 @@ GoRouter goRouter(Ref ref) {
           ]),
         ]),
         searchProductsRoute(),
-        synchronizerRoute([synchronizerDetailsRoute()]),
+        synchronizerRoute([
+          synchronizerDetailsRoute(),
+          synchronizerManualExecutionRoute(),
+        ]),
         shallowBuyMovementRoute([buyMovementDetailsRoute()]),
         stockReplacementRoute(),
         transferBetweenStocksRoute(),
