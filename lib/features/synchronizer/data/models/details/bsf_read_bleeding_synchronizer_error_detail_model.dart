@@ -3,6 +3,7 @@ import 'Package:celta_inventario/features/synchronizer/domain/entities/entities.
 class BSFReadBleedingSynchronizerErrorDetailModel
     extends BSFReadBleedingSynchronizerErrorDetailEntity {
   const BSFReadBleedingSynchronizerErrorDetailModel({
+    required super.code,
     required super.enterprisePersonalizedCode,
     required super.creationDate,
     required super.movementDate,
@@ -12,6 +13,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
 
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromJson(Map json) =>
       BSFReadBleedingSynchronizerErrorDetailModel(
+        code: json['Code'],
         enterprisePersonalizedCode:
             json['EnterprisePersonalizedCode'] as String,
         creationDate: DateTime.parse(json['CreationDate'] as String),
@@ -21,6 +23,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
       );
 
   Map toJson() => {
+    'Code': code,
     'EnterprisePersonalizedCode': enterprisePersonalizedCode,
     'CreationDate': creationDate.toIso8601String(),
     'MovementDate': movementDate.toIso8601String(),
@@ -31,6 +34,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
   factory BSFReadBleedingSynchronizerErrorDetailModel.fromEntity(
     BSFReadBleedingSynchronizerErrorDetailEntity entity,
   ) => BSFReadBleedingSynchronizerErrorDetailModel(
+    code: entity.code,
     enterprisePersonalizedCode: entity.enterprisePersonalizedCode,
     creationDate: entity.creationDate,
     movementDate: entity.movementDate,
@@ -40,6 +44,7 @@ class BSFReadBleedingSynchronizerErrorDetailModel
 
   BSFReadBleedingSynchronizerErrorDetailEntity toEntity() =>
       BSFReadBleedingSynchronizerErrorDetailEntity(
+        code: code,
         enterprisePersonalizedCode: enterprisePersonalizedCode,
         creationDate: creationDate,
         movementDate: movementDate,
