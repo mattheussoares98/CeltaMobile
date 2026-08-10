@@ -30,6 +30,5 @@ class BSFCashierMovementSynchronizerErrorDetailEntity
   ];
 
   @override
-  // TODO: implement selectableCodes
   List<int> get selectableCodes => [code];
 }
