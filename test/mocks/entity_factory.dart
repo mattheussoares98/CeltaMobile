@@ -1067,6 +1067,28 @@ class EntityFactory {
         description: faker.lorem.sentence(),
       );
 
+  static ManualExecutionScheduleEntity makeManualExecutionScheduleEntity() =>
+      ManualExecutionScheduleEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        name: faker.lorem.sentence(),
+        dateOfLastExecution: faker.date.dateTime(),
+      );
+
+  static SearchManualExecutionSchedulesParametersEntity
+      makeSearchManualExecutionSchedulesParametersEntity() =>
+          SearchManualExecutionSchedulesParametersEntity(
+            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+          );
+
+  static ExecuteManualScheduleParametersEntity
+      makeExecuteManualScheduleParametersEntity() =>
+          ExecuteManualScheduleParametersEntity(
+            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+            scheduleCode: faker.randomGenerator.integer(100, min: 1),
+          );
+
+
+
   static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity({
     SynchronizerErrorDetailType detailType =
         SynchronizerErrorDetailType.transaction,
