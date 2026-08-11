@@ -11,6 +11,24 @@ class EcSynchronizerManualExecutionDatasource
   const EcSynchronizerManualExecutionDatasource(this.httpClient);
 
   @override
+  Future<List<ManualExecutionEnterpriseModel>> searchManualExecutionEnterprises(
+    EcRequestParams ecParams,
+    SearchManualExecutionEnterprisesParametersModel parameters,
+  ) async {
+    final response = await httpClient.request(
+      url:
+          '${ecParams.workingUrl}/api/Synchronizer/SearchManualExecutionEnterprises',
+      method: 'post',
+      headers: ecParams.toHeaders(),
+      body: {...ecParams.toMap(), ...parameters.toJson()},
+    );
+
+    return (response as List<dynamic>)
+        .map((item) => ManualExecutionEnterpriseModel.fromJson(item as Map))
+        .toList();
+  }
+
+  @override
   Future<List<ManualExecutionScheduleModel>> searchManualExecutionSchedules(
     EcRequestParams ecParams,
     SearchManualExecutionSchedulesParametersModel parameters,

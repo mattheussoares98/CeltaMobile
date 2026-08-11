@@ -21,6 +21,88 @@ void main() {
     sut = EcSynchronizerManualExecutionDatasource(httpClient);
   });
 
+  group('searchManualExecutionEnterprises', () {
+    const searchParamsEntity = SearchManualExecutionEnterprisesParamsEntity(
+      enterpriseCodes: [1],
+    );
+    final searchParamsModel =
+        SearchManualExecutionEnterprisesParametersModel.fromEntity(
+          searchParamsEntity,
+        );
+
+    const enterpriseEntity = ManualExecutionEnterpriseEntity(
+      code: 1,
+      name: 'Enterprise Test',
+    );
+    final enterpriseModel = ManualExecutionEnterpriseModel.fromEntity(
+      enterpriseEntity,
+    );
+
+    final expectedBody = {...params.toMap(), ...searchParamsModel.toJson()};
+
+    test(
+      'should post enterprise codes and return list of manual execution enterprises',
+      () async {
+        when(
+          () => httpClient.request(
+            url:
+                '${params.workingUrl}/api/Synchronizer/SearchManualExecutionEnterprises',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: expectedBody,
+          ),
+        ).thenAnswer((_) async => [enterpriseModel.toJson()]);
+
+        final result = await sut.searchManualExecutionEnterprises(
+          params,
+          searchParamsModel,
+        );
+
+        expect(result, [enterpriseModel]);
+        verify(
+          () => httpClient.request(
+            url:
+                '${params.workingUrl}/api/Synchronizer/SearchManualExecutionEnterprises',
+            method: 'post',
+            headers: params.toHeaders(),
+            body: expectedBody,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(httpClient);
+      },
+    );
+
+    test('should propagate request errors', () async {
+      final exception = Exception('Error searching enterprises');
+      when(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/Synchronizer/SearchManualExecutionEnterprises',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: expectedBody,
+        ),
+      ).thenThrow(exception);
+
+      final call = sut.searchManualExecutionEnterprises(
+        params,
+        searchParamsModel,
+      );
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => httpClient.request(
+          url:
+              '${params.workingUrl}/api/Synchronizer/SearchManualExecutionEnterprises',
+          method: 'post',
+          headers: params.toHeaders(),
+          body: expectedBody,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(httpClient);
+    });
+  });
+
   group('searchManualExecutionSchedules', () {
     const searchParamsEntity = SearchManualExecutionSchedulesParametersEntity(
       enterpriseCode: 1,
