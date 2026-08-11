@@ -41,6 +41,9 @@ class _ManualExecutionPageState
     return BaseScaffold(
       isScrollable: false,
       usePadding: false,
+      refreshProvider: enterpriseCode == null
+          ? null
+          : manualExecutionSchedulesStateControllerProvider(enterpriseCode!),
       appBar: BaseAppBar(
         titleWidget: _EnterpriseDropdown(
           enterpriseCode: enterpriseCode,
