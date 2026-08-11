@@ -38,18 +38,16 @@ class _EnterpriseDropdown extends ConsumerWidget {
             final selectedEnterprise = enterprises.firstWhereOrNull(
               (e) => e.Code == enterpriseCode,
             );
-            return RepaintBoundary(
-              child: BaseDropDown<EnterpriseEntity>(
-                hint: Text('Selecione a empresa'.hardcoded),
-                selectedItem: selectedEnterprise,
-                label: selectedEnterprise != null
-                    ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
-                    : null,
-                onChanged: (enterprise) async {
-                  onChange(enterprise.Code);
-                },
-                items: items,
-              ),
+            return BaseDropDown<EnterpriseEntity>(
+              hint: Text('Selecione a empresa'.hardcoded),
+              selectedItem: selectedEnterprise,
+              label: selectedEnterprise != null
+                  ? '${selectedEnterprise.PersonalizedCode} - ${selectedEnterprise.name}'
+                  : null,
+              onChanged: (enterprise) async {
+                onChange(enterprise.Code);
+              },
+              items: items,
             );
           },
         );
