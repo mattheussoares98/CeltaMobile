@@ -10,18 +10,24 @@ class _EnterpriseDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final enterprises = ref.watch(enterprisesStateControllerProvider()).value;
     return AsyncValueWidget(
       value: ref.watch(manualExecutionEnterprisesStateControllerProvider),
       tryAgain: null,
       errorMaxLines: 1,
-      data: (enterprises) {
-        final items = enterprises
-            .map((e) {
+      data: (synchronizerEnterprises) {
+        final items = synchronizerEnterprises
+            .map((item) {
               // Keep it simple: a single Text is much cheaper than RichText/TextSpan
-              final text = e.name;
+              final enterprise = enterprises?.firstWhereOrNull(
+                (e) => e.Code == item.code,
+              );
+              final text = enterprise != null
+                  ? '(${enterprise.PersonalizedCode}) - ${item.name}'
+                  : item.name;
 
               return DropdownMenuItem<ManualExecutionEnterpriseEntity>(
-                value: e,
+                value: item,
                 child: Text(
                   text,
                   maxLines: 1,
@@ -32,21 +38,18 @@ class _EnterpriseDropdown extends ConsumerWidget {
             })
             .toList(growable: false);
 
-        return Consumer(
-          builder: (context, ref, child) {
-            final selectedEnterprise = enterprises.firstWhereOrNull(
-              (e) => e.code == enterpriseCode,
-            );
-            return BaseDropDown<ManualExecutionEnterpriseEntity>(
-              hint: Text('Selecione a empresa'.hardcoded),
-              selectedItem: selectedEnterprise,
-              label: selectedEnterprise?.name,
-              onChanged: (enterprise) async {
-                onChange(enterprise.code);
-              },
-              items: items,
-            );
+        final selectedEnterprise = synchronizerEnterprises.firstWhereOrNull(
+          (e) => e.code == enterpriseCode,
+        );
+
+        return BaseDropDown<ManualExecutionEnterpriseEntity>(
+          hint: Text('Selecione a empresa'.hardcoded),
+          selectedItem: selectedEnterprise,
+          label: selectedEnterprise?.name,
+          onChanged: (enterprise) async {
+            onChange(enterprise.code);
           },
+          items: items,
         );
       },
     );
