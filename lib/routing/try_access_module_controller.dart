@@ -6,6 +6,7 @@ import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_ver
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/presentation/helpers/helpers.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
@@ -115,7 +116,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
               module,
             ))) {
           if (!context.mounted) return;
-          if (kDebugMode) {
+          if (kDebugMode || ModuleIsFreeUntil.isFree(module)) {
             dev.log('Continuing because it is on debug mode');
           } else {
             _showDisabledModuleMessage(context, module);
