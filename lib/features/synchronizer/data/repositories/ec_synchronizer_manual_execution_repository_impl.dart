@@ -12,6 +12,20 @@ class EcSynchronizerManualExecutionRepositoryImpl
   const EcSynchronizerManualExecutionRepositoryImpl(this.datasource);
 
   @override
+  Future<List<ManualExecutionEnterpriseEntity>>
+  searchManualExecutionEnterprises(
+    EcRequestParams ecParams,
+    SearchManualExecutionEnterprisesParamsEntity parameters,
+  ) async {
+    final models = await datasource.searchManualExecutionEnterprises(
+      ecParams,
+      SearchManualExecutionEnterprisesParametersModel.fromEntity(parameters),
+    );
+
+    return models.map((model) => model.toEntity()).toList();
+  }
+
+  @override
   Future<List<ManualExecutionScheduleEntity>> searchManualExecutionSchedules(
     EcRequestParams ecParams,
     SearchManualExecutionSchedulesParametersEntity parameters,

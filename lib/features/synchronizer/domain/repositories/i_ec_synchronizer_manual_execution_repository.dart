@@ -3,6 +3,12 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 
 abstract class IEcSynchronizerManualExecutionRepository {
+  Future<List<ManualExecutionEnterpriseEntity>>
+  searchManualExecutionEnterprises(
+    EcRequestParams ecParams,
+    SearchManualExecutionEnterprisesParamsEntity parameters,
+  );
+
   Future<List<ManualExecutionScheduleEntity>> searchManualExecutionSchedules(
     EcRequestParams ecParams,
     SearchManualExecutionSchedulesParametersEntity parameters,
