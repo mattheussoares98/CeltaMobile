@@ -12,13 +12,13 @@ class ManualExecutionEnterpriseModel extends Equatable {
   });
 
   factory ManualExecutionEnterpriseModel.fromJson(Map json) =>
-      ManualExecutionEnterpriseModel(code: json['Code'], name: json['Name']);
+      ManualExecutionEnterpriseModel(code: json['code'], name: json['name']);
 
   factory ManualExecutionEnterpriseModel.fromEntity(
     ManualExecutionEnterpriseEntity entity,
   ) => ManualExecutionEnterpriseModel(code: entity.code, name: entity.name);
 
-  Map<String, dynamic> toJson() => {'Code': code, 'Name': name};
+  Map<String, dynamic> toJson() => {'code': code, 'name': name};
 
   ManualExecutionEnterpriseEntity toEntity() =>
       ManualExecutionEnterpriseEntity(code: code, name: name);
