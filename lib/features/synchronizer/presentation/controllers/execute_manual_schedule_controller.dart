@@ -16,6 +16,7 @@ class ExecuteManualScheduleController
     required int enterpriseCode,
     required int scheduleCode,
   }) {
+    ref.watch(ecRequestParamsProvider());
     ref.cache(300);
   }
 
