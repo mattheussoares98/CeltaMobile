@@ -3,7 +3,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ButtonsByModuleItems {
@@ -148,16 +147,15 @@ class ButtonsByModuleItems {
         cupertinoIcon: CupertinoIcons.lock_fill,
       ),
     ),
-    if (kDebugMode) //TODO remove this
-      Modules.synchronizer: DefaultModuleButton(
-        route: Routes.synchronizer,
-        module: Modules.synchronizer,
-        platformIcon: PlatformIcon(
-          materialIcon: Icons.sync_outlined,
-          cupertinoIcon: CupertinoIcons.repeat,
-        ),
-        passEnterpriseToNextRoute: false,
+    Modules.synchronizer: DefaultModuleButton(
+      route: Routes.synchronizer,
+      module: Modules.synchronizer,
+      platformIcon: PlatformIcon(
+        materialIcon: Icons.sync_outlined,
+        cupertinoIcon: CupertinoIcons.repeat,
       ),
+      passEnterpriseToNextRoute: false,
+    ),
     Modules.buyMovement: DefaultModuleButton(
       route: Routes.shallowBuyMovement,
       module: Modules.buyMovement,
