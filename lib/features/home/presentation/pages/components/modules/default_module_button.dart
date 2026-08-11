@@ -115,7 +115,7 @@ class DefaultModuleButton extends ConsumerWidget {
                     DateTime.now().isBefore(DateTime(2026, 8, 13)))
                   MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.synchronizer)
-                  MessageBadge(message: 'Em breve'.hardcoded),
+                  MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.buyMovement &&
                     DateTime.now().isBefore(DateTime(2026, 9)))
                   MessageBadge(message: 'Novo'.hardcoded),
