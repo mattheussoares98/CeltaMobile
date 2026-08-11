@@ -26,6 +26,7 @@ enum UsageType {
   shallowSearchProduct('Consulta produtos (superficial)'),
   shallowSearchSaleRequest('Consulta SIMPLES de pedido de vendas'),
   stockReplacement('Substituiu estoque'),
+  synchronizer('Sincronismo (manipulou)'),
   transferBetweenStocks('Transferiu entre estoques');
 
   final String description;

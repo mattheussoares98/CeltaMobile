@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
@@ -181,6 +182,10 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
     bool succeeds = false;
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(UsageType.synchronizer);
+
       final repository = ref.read(ecSynchronizerRepositoryProvider);
       final ecParams = await ref.read(ecRequestParamsProvider().future);
 

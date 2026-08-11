@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
@@ -70,6 +71,7 @@ void main() {
   late MockEcSynchronizerRepository repository;
   late UserSessionModel session;
   late EcRequestParams params;
+  late FakeAppUsageStateController fakeAppUsage;
   const codes = [123, 456];
   const enterpriseCode = 1;
   const enterpriseCommerceSiteCode = 2;
@@ -92,6 +94,7 @@ void main() {
 
   setUp(() {
     repository = MockEcSynchronizerRepository();
+    fakeAppUsage = FakeAppUsageStateController();
     session = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -109,6 +112,7 @@ void main() {
   ProviderContainer makeContainer({
     FakeSynchronizerDetailsStateController? detailsController,
     FakeSynchronizerCountStateController? countController,
+    FakeAppUsageStateController? appUsageController,
   }) => ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [
@@ -121,6 +125,9 @@ void main() {
       ),
       synchronizerCountStateControllerProvider.overrideWith(
         () => countController ?? FakeSynchronizerCountStateController(),
+      ),
+      appUsageStateControllerProvider.overrideWith(
+        () => appUsageController ?? fakeAppUsage,
       ),
     ],
   );
@@ -206,6 +213,7 @@ void main() {
           .markToReadAgain(codes, errorKey, detailType);
 
       verifyRepositoryMethod(detailType);
+      expect(fakeAppUsage.lastUsageType, UsageType.synchronizer);
       expect(
         container.read(handleSelectedCodesControllerProvider),
         const AsyncData<void>(null),
