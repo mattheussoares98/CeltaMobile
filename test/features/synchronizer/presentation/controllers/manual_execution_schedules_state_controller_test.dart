@@ -62,7 +62,6 @@ void main() {
           EntityFactory.makeManualExecutionScheduleEntity(),
         ];
 
-
         when(
           () => mockRepository.searchManualExecutionSchedules(
             any(),
@@ -134,12 +133,10 @@ void main() {
           const ManualExecutionScheduleEntity(
             code: targetCode,
             name: 'Schedule 1',
-            dateOfLastExecution: null,
           ),
           const ManualExecutionScheduleEntity(
             code: otherCode,
             name: 'Schedule 2',
-            dateOfLastExecution: null,
           ),
         ];
 
@@ -159,7 +156,7 @@ void main() {
           ).future,
         );
 
-        final newExecutionDate = DateTime(2026, 8, 11, 15, 0, 0);
+        final newExecutionDate = DateTime(2026, 8, 11, 15);
 
         // ACT
         container
@@ -183,11 +180,15 @@ void main() {
             .value!;
 
         expect(
-          updatedState.firstWhere((s) => s.code == targetCode).dateOfLastExecution,
+          updatedState
+              .firstWhere((s) => s.code == targetCode)
+              .dateOfLastExecution,
           equals(newExecutionDate),
         );
         expect(
-          updatedState.firstWhere((s) => s.code == otherCode).dateOfLastExecution,
+          updatedState
+              .firstWhere((s) => s.code == otherCode)
+              .dateOfLastExecution,
           isNull,
         );
       },
