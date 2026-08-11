@@ -17,15 +17,17 @@ class SearchManualExecutionEnterprisesParametersModel extends Equatable {
       );
 
   factory SearchManualExecutionEnterprisesParametersModel.fromEntity(
-    SearchManualExecutionEnterprisesParams entity,
+    SearchManualExecutionEnterprisesParamsEntity entity,
   ) => SearchManualExecutionEnterprisesParametersModel(
     enterpriseCodes: entity.enterpriseCodes,
   );
 
   Map<String, dynamic> toJson() => {'EnterpriseCodes': enterpriseCodes};
 
-  SearchManualExecutionEnterprisesParams toEntity() =>
-      SearchManualExecutionEnterprisesParams(enterpriseCodes: enterpriseCodes);
+  SearchManualExecutionEnterprisesParamsEntity toEntity() =>
+      SearchManualExecutionEnterprisesParamsEntity(
+        enterpriseCodes: enterpriseCodes,
+      );
 
   @override
   List<Object?> get props => [enterpriseCodes];
