@@ -19,7 +19,7 @@ Future<void> showModalPage(Widget body, BuildContext context) async {
             minChildSize: 0.5,
             maxChildSize: 0.95,
             builder: (_, controller) {
-              return _Body(body: body);
+              return SafeArea(child: _Body(body: body));
             },
           ),
         ],
