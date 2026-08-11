@@ -37,9 +37,8 @@ void main() {
       const EcRequestParams(workingUrl: '', user: '', accessKey: ''),
     );
     registerFallbackValue(
-      const ExecuteManualScheduleParametersEntity(
+      const SearchManualExecutionSchedulesParametersEntity(
         enterpriseCode: enterpriseCode,
-        scheduleCode: scheduleCode,
       ),
     );
   });
@@ -80,23 +79,68 @@ void main() {
           enterpriseCode: enterpriseCode,
           scheduleCode: scheduleCode,
         );
+    final searchParamsEntity =
+        EntityFactory.makeSearchManualExecutionSchedulesParametersEntity()
+            .copyWith(enterpriseCode: enterpriseCode);
+    final initialSchedules = [
+      const ManualExecutionScheduleEntity(
+        code: scheduleCode,
+        name: 'Schedule 1',
+      ),
+    ];
 
-    test('should execute schedule successfully and return true', () async {
-      when(
-        () => repository.executeManualSchedule(params, executeParamsEntity),
-      ).thenAnswer((_) async {});
+    test(
+      'should execute schedule successfully and update dateOfLastExecution',
+      () async {
+        when(
+          () => repository.executeManualSchedule(params, executeParamsEntity),
+        ).thenAnswer((_) async {});
+        when(
+          () => repository.searchManualExecutionSchedules(
+            any(),
+            searchParamsEntity,
+          ),
+        ).thenAnswer((_) async => initialSchedules);
 
-      final container = makeContainer();
-      addTearDown(container.dispose);
+        final container = makeContainer();
+        addTearDown(container.dispose);
 
-      final result = await execute(container);
+        await container.read(
+          manualExecutionSchedulesStateControllerProvider(
+            enterpriseCode,
+          ).future,
+        );
 
-      expect(result, isTrue);
-      verify(
-        () => repository.executeManualSchedule(params, executeParamsEntity),
-      ).called(1);
-      verifyNoMoreInteractions(repository);
-    });
+        final before = DateTime.now();
+        final result = await execute(container);
+        final after = DateTime.now();
+
+        expect(result, isTrue);
+        verify(
+          () => repository.executeManualSchedule(params, executeParamsEntity),
+        ).called(1);
+
+        final updatedSchedules = container
+            .read(
+              manualExecutionSchedulesStateControllerProvider(enterpriseCode),
+            )
+            .value;
+        expect(updatedSchedules, isNotNull);
+        final updatedSchedule = updatedSchedules!.firstWhere(
+          (s) => s.code == scheduleCode,
+        );
+        expect(updatedSchedule.dateOfLastExecution, isNotNull);
+        expect(
+          updatedSchedule.dateOfLastExecution!.isAfter(
+                before.subtract(const Duration(seconds: 1)),
+              ) &&
+              updatedSchedule.dateOfLastExecution!.isBefore(
+                after.add(const Duration(seconds: 1)),
+              ),
+          isTrue,
+        );
+      },
+    );
 
     test(
       'should return false and capture error when execution fails',

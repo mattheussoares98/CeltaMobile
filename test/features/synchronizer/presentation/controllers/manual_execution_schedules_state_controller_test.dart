@@ -120,5 +120,77 @@ void main() {
         () => mockRepository.searchManualExecutionSchedules(any(), any()),
       );
     });
+
+    test(
+      'updateDateOfLastExecution should update dateOfLastExecution for target schedule code',
+      () async {
+        // ARRANGE
+        final searchParamsEntity =
+            EntityFactory.makeSearchManualExecutionSchedulesParametersEntity()
+                .copyWith(enterpriseCode: testEnterpriseCode);
+        const targetCode = 1;
+        const otherCode = 2;
+        final initialSchedules = [
+          const ManualExecutionScheduleEntity(
+            code: targetCode,
+            name: 'Schedule 1',
+            dateOfLastExecution: null,
+          ),
+          const ManualExecutionScheduleEntity(
+            code: otherCode,
+            name: 'Schedule 2',
+            dateOfLastExecution: null,
+          ),
+        ];
+
+        when(
+          () => mockRepository.searchManualExecutionSchedules(
+            any(),
+            searchParamsEntity,
+          ),
+        ).thenAnswer((_) async => initialSchedules);
+
+        final container = makeProviderContainer(session: fakeSession);
+        addTearDown(container.dispose);
+
+        await container.read(
+          manualExecutionSchedulesStateControllerProvider(
+            testEnterpriseCode,
+          ).future,
+        );
+
+        final newExecutionDate = DateTime(2026, 8, 11, 15, 0, 0);
+
+        // ACT
+        container
+            .read(
+              manualExecutionSchedulesStateControllerProvider(
+                testEnterpriseCode,
+              ).notifier,
+            )
+            .updateDateOfLastExecution(
+              code: targetCode,
+              dateOfLastExecution: newExecutionDate,
+            );
+
+        // ASSERT
+        final updatedState = container
+            .read(
+              manualExecutionSchedulesStateControllerProvider(
+                testEnterpriseCode,
+              ),
+            )
+            .value!;
+
+        expect(
+          updatedState.firstWhere((s) => s.code == targetCode).dateOfLastExecution,
+          equals(newExecutionDate),
+        );
+        expect(
+          updatedState.firstWhere((s) => s.code == otherCode).dateOfLastExecution,
+          isNull,
+        );
+      },
+    );
   });
 }

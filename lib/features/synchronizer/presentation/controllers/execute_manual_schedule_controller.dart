@@ -1,6 +1,7 @@
 // lib/features/synchronizer/presentation/controllers/execute_manual_schedule_controller.dart
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
+import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,6 +35,16 @@ class ExecuteManualScheduleController
           scheduleCode: scheduleCode,
         ),
       );
+      ref
+          .read(
+            manualExecutionSchedulesStateControllerProvider(
+              enterpriseCode,
+            ).notifier,
+          )
+          .updateDateOfLastExecution(
+            code: scheduleCode,
+            dateOfLastExecution: DateTime.now(),
+          );
       succeeds = true;
     });
     return succeeds;

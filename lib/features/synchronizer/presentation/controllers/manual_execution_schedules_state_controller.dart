@@ -28,4 +28,20 @@ class ManualExecutionSchedulesStateController
       ),
     );
   }
+
+  void updateDateOfLastExecution({
+    required int code,
+    required DateTime dateOfLastExecution,
+  }) {
+    if (state is! AsyncData<List<ManualExecutionScheduleEntity>>) return;
+    final currentList = state.value!;
+    final updatedList = [
+      for (final schedule in currentList)
+        if (schedule.code == code)
+          schedule.copyWith(dateOfLastExecution: dateOfLastExecution)
+        else
+          schedule,
+    ];
+    state = AsyncData(updatedList);
+  }
 }
