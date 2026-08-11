@@ -1,9 +1,12 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/helpers/helpers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,11 +21,24 @@ class SynchronizerPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: synchronizerCountStateControllerProvider,
       appBar: BaseAppBar(
-        titleWidget: GestureDetector(
-          onLongPress: () =>
-              context.pushNamed(Routes.synchronizerManualExecution.name),
-          child: BaseText.headline('Sincronismo'.hardcoded, fontWeight: .bold),
+        titleWidget: Align(
+          alignment: PlatformUtil.isIOS ? .center : .centerLeft,
+          child: GestureDetector(
+            onLongPress: () =>
+                context.pushNamed(Routes.synchronizerManualExecution.name),
+            child: BaseText.headline(
+              'Sincronismo'.hardcoded,
+              fontWeight: .bold,
+            ),
+          ),
         ),
+        subtitle: ModuleIsFreeUntil.isFree(Modules.synchronizer)
+            ? BaseText.caption(
+                'Grátis até ${ModuleIsFreeUntil.synchronizerLimit.formatDate()}',
+                fontStyle: .italic,
+                color: context.theme.primaryColor,
+              )
+            : null,
       ),
       body: AsyncValueWidget(
         value: ref.watch(synchronizerCountStateControllerProvider),
