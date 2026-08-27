@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/pages.dart';
+import 'package:celta_inventario/features/customer_register/presentation/pages/save/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,29 +70,24 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     ];
 
     final customer = ref.watch(customerStateControllerProvider).value;
+    final pageIndex = ref.watch(pageIndexStateControllerProvider);
 
     return BaseScaffold(
       isScrollable: false,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-      appBar: Consumer(
-        builder: (context, ref, _) {
-          return BaseAppBar(
-            title: appBarsTitles[ref.watch(pageIndexStateControllerProvider)],
-          );
-        },
+      appBar: BaseAppBar(
+        title: appBarsTitles[pageIndex],
+        actions: [if (pageIndex == 5) const SaveButton()],
       ),
       body: AsyncValueWidget(
         value: ref.watch(globalParametersControllerProvider),
         tryAgain: () => ref.invalidate(globalParametersControllerProvider),
         data: (_) {
-          return IndexedStack(
-            index: ref.watch(pageIndexStateControllerProvider),
-            children: pages,
-          );
+          return IndexedStack(index: pageIndex, children: pages);
         },
       ),
       bottomNavigationBar: BaseBottomNavigationBar(
-        currentIndex: ref.watch(pageIndexStateControllerProvider),
+        currentIndex: pageIndex,
         onTap: (index) async {
           final updated = await updateCustomerInProvider(validateField: true);
           if (!updated) {
