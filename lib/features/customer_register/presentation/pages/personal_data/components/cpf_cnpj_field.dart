@@ -19,30 +19,44 @@ class CpfCnpjField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return BaseTextFormField(
-      key: const ValueKey('CPF/CNPJ'),
-      controller: cpfCnpjController,
-      focusNode: cpfCnpjFocusNode,
-      maxLength: 14,
-      hintText: 'CPF/CNPJ'.hardcoded,
-      labelText: 'CPF/CNPJ'.hardcoded,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: const TextInputType.numberWithOptions(),
-      onFieldSubmitted: (_) {
-        nameFocusNode.requestFocus();
+    final allowRegisterWithoutCpfOrCnpj = ref.read(
+      globalParametersControllerProvider.select(
+        (s) => s.value?.requiredCpfCnpjInCustomer == false,
+      ),
+    );
+
+    return AnimatedBuilder(
+      animation: cpfCnpjController,
+      builder: (context, _) {
+        return BaseTextFormField(
+          key: const ValueKey('CPF/CNPJ'),
+          controller: cpfCnpjController,
+          focusNode: cpfCnpjFocusNode,
+          maxLength: 14,
+          hintText: 'CPF/CNPJ'.hardcoded,
+          labelText: 'CPF/CNPJ'.hardcoded,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: const TextInputType.numberWithOptions(),
+          onFieldSubmitted: (_) {
+            nameFocusNode.requestFocus();
+          },
+          validator:
+              allowRegisterWithoutCpfOrCnpj && cpfCnpjController.text.isEmpty
+              ? null
+              : FormValidators.compose([
+                  NonEmptyValidator(),
+                  CpfCnpjValidator(),
+                ]),
+          onChanged: (value) {
+            if (CpfCnpjValidator().isValid(value)) {
+              ref
+                  .read(customerStateControllerProvider.notifier)
+                  .loadCustomer(value);
+            }
+          },
+          suffixIcon: DefaultDeleteIcon(controller: cpfCnpjController),
+        );
       },
-      validator: FormValidators.compose([
-        NonEmptyValidator(),
-        CpfCnpjValidator(),
-      ]),
-      onChanged: (value) {
-        if (CpfCnpjValidator().isValid(value)) {
-          ref
-              .read(customerStateControllerProvider.notifier)
-              .loadCustomer(value);
-        }
-      },
-      suffixIcon: DefaultDeleteIcon(controller: cpfCnpjController),
     );
   }
 }

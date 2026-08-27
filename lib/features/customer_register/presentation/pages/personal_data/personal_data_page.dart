@@ -124,6 +124,11 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
     });
 
     final customer = ref.watch(customerStateControllerProvider).value;
+    final allowRegisterWithoutCpfOrCnpj = ref.read(
+      globalParametersControllerProvider.select(
+        (s) => s.value?.requiredCpfCnpjInCustomer == false,
+      ),
+    );
 
     return BaseScaffold(
       resizeToAvoidBottomInset: true,
@@ -139,7 +144,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                 nameFocusNode: nameFocusNode,
                 cpfCnpjFocusNode: cpfCnpjFocusNode,
               ),
-              if (customer != null) ...[
+              if (customer != null || allowRegisterWithoutCpfOrCnpj) ...[
                 if (cpfCnpjController.text.length == 14) ...[
                   gapH8,
                   InscriptionField(
