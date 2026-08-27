@@ -95,7 +95,10 @@ void main() {
 
       await container.read(customerStateControllerProvider.future);
 
-      expect(container.read(customerStateControllerProvider).value, null);
+      expect(
+        container.read(customerStateControllerProvider).value,
+        SoapCustomerEntity.empty(),
+      );
     });
     test(
       'should emit [loading, data] and call repository on success',
@@ -160,9 +163,7 @@ void main() {
       },
     );
     test('should return entity with empty values when throws', () async {
-      final container = makeProviderContainer(
-        enterprise: fakeEnterprise,
-      );
+      final container = makeProviderContainer(enterprise: fakeEnterprise);
       addTearDown(container.dispose);
 
       await container.read(customerStateControllerProvider.future);

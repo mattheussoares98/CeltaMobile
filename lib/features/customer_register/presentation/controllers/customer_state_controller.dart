@@ -1,18 +1,17 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'customer_state_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class CustomerStateController extends _$CustomerStateController {
   @override
-  FutureOr<SoapCustomerEntity?> build() => null;
+  FutureOr<SoapCustomerEntity?> build() => SoapCustomerEntity.empty();
 
   Future<void> loadCustomer(String cpfCnpj) async {
     final emptyCustomer = SoapCustomerEntity.empty();
