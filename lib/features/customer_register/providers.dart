@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/providers/http/http.dart';
 import 'package:celta_inventario/core/providers/soap/soap.dart';
 import 'package:celta_inventario/features/customer_register/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/customer_register/data/repositories/repositories.dart';
 import 'package:celta_inventario/features/customer_register/domain/repositories/repositories.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,6 +15,13 @@ IEcGlobalParametersDatasource ecGlobalParametersDatasource(Ref ref) {
 @riverpod
 ISoapLoadCovenantsDatasource soapLoadCovenantsDatasource(Ref ref) {
   return SoapLoadCovenantsDatasource(ref.watch(soapRequestProvider));
+}
+
+@riverpod
+IEcGlobalParametersRepository ecGlobalParametersRepository(Ref ref) {
+  return EcGlobalParametersRepositoryImpl(
+    ref.watch(ecGlobalParametersDatasourceProvider),
+  );
 }
 
 @riverpod
