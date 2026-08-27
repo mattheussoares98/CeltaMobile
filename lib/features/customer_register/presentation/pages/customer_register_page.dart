@@ -80,9 +80,15 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
           );
         },
       ),
-      body: IndexedStack(
-        index: ref.watch(pageIndexStateControllerProvider),
-        children: pages,
+      body: AsyncValueWidget(
+        value: ref.watch(globalParametersControllerProvider),
+        tryAgain: () => ref.invalidate(globalParametersControllerProvider),
+        data: (_) {
+          return IndexedStack(
+            index: ref.watch(pageIndexStateControllerProvider),
+            children: pages,
+          );
+        },
       ),
       bottomNavigationBar: BaseBottomNavigationBar(
         currentIndex: ref.watch(pageIndexStateControllerProvider),
