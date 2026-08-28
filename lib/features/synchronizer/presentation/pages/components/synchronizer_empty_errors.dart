@@ -17,7 +17,6 @@ class SynchronizerEmptyErrors extends StatelessWidget {
             cupertinoIcon: CupertinoIcons.checkmark_seal,
             materialIcon: Icons.check_circle_outline,
             size: 60,
-            //TODO check to create an animation when opening it
           ),
           gapH16,
           BaseText.headline(
