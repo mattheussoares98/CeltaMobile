@@ -164,5 +164,13 @@ class ButtonsByModuleItems {
         cupertinoIcon: CupertinoIcons.gift,
       ),
     ),
+    Modules.printLabel: DefaultModuleButton(
+      route: Routes.printLabelLayoutSummaries,
+      module: Modules.printLabel,
+      platformIcon: PlatformIcon(
+        materialIcon: Icons.print_outlined,
+        cupertinoIcon: CupertinoIcons.printer,
+      ),
+    ),
   };
 }

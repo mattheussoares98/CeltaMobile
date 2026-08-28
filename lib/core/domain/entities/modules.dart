@@ -9,6 +9,7 @@ enum Modules {
   customerRegister('Cadastro de clientes'),
   expeditionConference('Expedição (conferência)'),
   inventory('Inventário'),
+  printLabel('Layout de etiquetas'),
   processAuthorization('Autorização de processos'),
   productsRegister('Cadastro de produtos'),
   receipt('Recebimento'),
