@@ -34,6 +34,7 @@ enum Routes {
   processAuthorizationGR,
   processAuthorizationGRValidateDocumentXml,
   processAuthorizationSaleRequest,
+  printLabelLayoutDetails,
   printLabelLayoutSummaries,
   productsRegisterSearchProduct,
   productsRegisterCreateProduct,

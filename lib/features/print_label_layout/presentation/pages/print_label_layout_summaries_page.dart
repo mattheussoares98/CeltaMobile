@@ -37,6 +37,7 @@ class PrintLabelLayoutSummariesPage extends ConsumerWidget {
               return PrintLabelLayoutSummaryItem(
                 key: ValueKey(summary.code),
                 summary: summary,
+                enterpriseCode: enterpriseCode,
               );
             },
           );
