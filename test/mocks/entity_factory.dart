@@ -15,6 +15,7 @@ import 'package:celta_inventario/features/customer_register/domain/entities/enti
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
@@ -1075,19 +1076,17 @@ class EntityFactory {
       );
 
   static SearchManualExecutionSchedulesParametersEntity
-      makeSearchManualExecutionSchedulesParametersEntity() =>
-          SearchManualExecutionSchedulesParametersEntity(
-            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
-          );
+  makeSearchManualExecutionSchedulesParametersEntity() =>
+      SearchManualExecutionSchedulesParametersEntity(
+        enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+      );
 
   static ExecuteManualScheduleParametersEntity
-      makeExecuteManualScheduleParametersEntity() =>
-          ExecuteManualScheduleParametersEntity(
-            enterpriseCode: faker.randomGenerator.integer(100, min: 1),
-            scheduleCode: faker.randomGenerator.integer(100, min: 1),
-          );
-
-
+  makeExecuteManualScheduleParametersEntity() =>
+      ExecuteManualScheduleParametersEntity(
+        enterpriseCode: faker.randomGenerator.integer(100, min: 1),
+        scheduleCode: faker.randomGenerator.integer(100, min: 1),
+      );
 
   static SynchronizerErrorDetailsEntity makeSynchronizerErrorDetailsEntity({
     SynchronizerErrorDetailType detailType =
@@ -2469,6 +2468,127 @@ class EntityFactory {
             value: faker.randomGenerator.decimal(),
           ),
         ],
+      );
+
+  static BSFPrintLabelLayoutSummaryEntity makeBSFPrintLabelLayoutSummaryEntity({
+    int? code,
+  }) => BSFPrintLabelLayoutSummaryEntity(
+    code: code ?? faker.randomGenerator.integer(100, min: 1),
+    name: faker.lorem.sentence(),
+    layoutType: BSFPrintLabelLayoutType.product,
+    layoutTypeDescription: faker.lorem.word(),
+    formType: BSFPrintLabelFormType.paginated,
+    labelPrinterCode: faker.randomGenerator.integer(100, min: 1),
+    labelPrinterDescription: faker.lorem.sentence(),
+    labelPrinterModelType: BSFLabelPrinterModelType.zebraGC420t,
+    coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+  );
+
+  static BSFPrintLabelPrinterEntity makeBSFPrintLabelPrinterEntity() =>
+      BSFPrintLabelPrinterEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        description: faker.lorem.sentence(),
+        modelType: BSFLabelPrinterModelType.zebraGC420t,
+        isGeneric: false,
+        coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+        supportedFontTypes: const ['A', 'B'],
+        supportedFontSizes: const [8, 10],
+        supportedPrintSpeeds: const ['2', '3'],
+        supportedTemperatures: const ['10', '15'],
+        supportedDirections: const [
+          BSFPrintLabelDirectionType.top,
+          BSFPrintLabelDirectionType.bottom,
+        ],
+      );
+
+  static BSFPrintLabelFieldDefinitionEntity
+  makeBSFPrintLabelFieldDefinitionEntity() =>
+      BSFPrintLabelFieldDefinitionEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        personalizedCode: faker.randomGenerator.integer(100, min: 1),
+        name: faker.lorem.word(),
+        content: faker.lorem.sentence(),
+        originType: BSFPrintLabelFieldOriginType.celtaBSDefined,
+        fieldType: BSFPrintLabelFieldType.string,
+        logoExtensionType: BSFPrintLabelFieldImageExtensionType.notApplicable,
+        logo: const [1, 2, 3, 4],
+        applyToCustomer: false,
+        applyToCovenant: false,
+        applyToProduct: true,
+        applyToCustomerCard: false,
+        applyToSaleBilling: false,
+        applyToTransport: false,
+        applyToSaleRequestProduct: false,
+      );
+
+  static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity() =>
+      BSFPrintLabelFieldFormatEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        stringType: true,
+        integerType: false,
+        floatType: false,
+        dateTimeType: false,
+        qrCodeType: false,
+        name: faker.lorem.word(),
+        description: faker.lorem.sentence(),
+      );
+
+  static BSFPrintLabelLayoutFieldEntity makeBSFPrintLabelLayoutFieldEntity() =>
+      BSFPrintLabelLayoutFieldEntity(
+        code: faker.randomGenerator.integer(100, min: 1),
+        quantityDecimalPlaces: faker.randomGenerator.integer(5),
+        coordinateX: faker.randomGenerator.decimal(),
+        coordinateY: faker.randomGenerator.decimal(),
+        alignmentType: BSFPrintElementAlignmentType.left,
+        width: faker.randomGenerator.decimal(),
+        height: faker.randomGenerator.decimal(),
+        dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+        fontType: 'A',
+        fontSize: 10,
+        isBold: faker.randomGenerator.boolean(),
+        rotateType: BSFPrintElementRotationType.none,
+        ratioBarCode: faker.randomGenerator.decimal(),
+        barcodeSimbologyType: BSFBarcodeSimbologyType.none,
+        positionStartCharacter: faker.randomGenerator.integer(100),
+        maxCharacterSizeDisplacedQuantity: faker.randomGenerator.integer(100),
+        maxCharacterSize: faker.randomGenerator.integer(100),
+        drawLabelBelowBarcode: faker.randomGenerator.boolean(),
+        isReverseText: faker.randomGenerator.boolean(),
+        prefix: faker.lorem.word(),
+        imageName: faker.lorem.word(),
+        field: makeBSFPrintLabelFieldDefinitionEntity(),
+        fieldForDataBarcode: makeBSFPrintLabelFieldDefinitionEntity(),
+        format: makeBSFPrintLabelFieldFormatEntity(),
+      );
+
+  static BSFPrintLabelLayoutEntity makeBSFPrintLabelLayoutEntity({int? code}) =>
+      BSFPrintLabelLayoutEntity(
+        code: code ?? faker.randomGenerator.integer(100, min: 1),
+        name: faker.lorem.sentence(),
+        layoutType: BSFPrintLabelLayoutType.product,
+        formType: BSFPrintLabelFormType.paginated,
+        formWidth: faker.randomGenerator.decimal(),
+        formHeight: faker.randomGenerator.decimal(),
+        formTopMargin: faker.randomGenerator.decimal(),
+        formLeftMargin: faker.randomGenerator.decimal(),
+        quantityColumns: faker.randomGenerator.integer(10, min: 1),
+        labelWidth: faker.randomGenerator.decimal(),
+        labelHeight: faker.randomGenerator.decimal(),
+        labelRightMargin: faker.randomGenerator.decimal(),
+        labelBottomMargin: faker.randomGenerator.decimal(),
+        temperature: faker.randomGenerator.integer(100),
+        printSpeed: faker.randomGenerator.integer(100),
+        directionLabelType: BSFPrintLabelDirectionType.top,
+        considerProductPacking: BSFProductPackingSelectionType.both,
+        intervalPrintPackage: faker.randomGenerator.integer(100),
+        applyFormSizeConfiguration: faker.randomGenerator.boolean(),
+        addressType: BSFPrintLabelAddressType.notApplicable,
+        isConvenePrintLabel: faker.randomGenerator.boolean(),
+        informPrintQuantityByProduct: faker.randomGenerator.boolean(),
+        printProductBySoldQuantity: faker.randomGenerator.boolean(),
+        goesForBalanceAndQuantityInBalance: faker.randomGenerator.boolean(),
+        labelPrinter: makeBSFPrintLabelPrinterEntity(),
+        fields: [makeBSFPrintLabelLayoutFieldEntity()],
       );
 
   static EcGetCustomersParams makeEcGetCustomersParams({String? searchValue}) =>

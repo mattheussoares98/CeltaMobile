@@ -101,9 +101,17 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
       isReverseText: entity.isReverseText,
       prefix: entity.prefix,
       imageName: entity.imageName,
-      field: entity.field,
-      fieldForDataBarcode: entity.fieldForDataBarcode,
-      format: entity.format,
+      field: entity.field == null
+          ? null
+          : BSFPrintLabelFieldDefinitionModel.fromEntity(entity.field!),
+      fieldForDataBarcode: entity.fieldForDataBarcode == null
+          ? null
+          : BSFPrintLabelFieldDefinitionModel.fromEntity(
+              entity.fieldForDataBarcode!,
+            ),
+      format: entity.format == null
+          ? null
+          : BSFPrintLabelFieldFormatModel.fromEntity(entity.format!),
     );
   }
 
@@ -165,9 +173,17 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
       isReverseText: isReverseText,
       prefix: prefix,
       imageName: imageName,
-      field: field,
-      fieldForDataBarcode: fieldForDataBarcode,
-      format: format,
+      field: field == null
+          ? null
+          : BSFPrintLabelFieldDefinitionModel.fromEntity(field!).toEntity(),
+      fieldForDataBarcode: fieldForDataBarcode == null
+          ? null
+          : BSFPrintLabelFieldDefinitionModel.fromEntity(
+              fieldForDataBarcode!,
+            ).toEntity(),
+      format: format == null
+          ? null
+          : BSFPrintLabelFieldFormatModel.fromEntity(format!).toEntity(),
     );
   }
 }

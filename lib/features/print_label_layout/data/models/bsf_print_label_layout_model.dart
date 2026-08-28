@@ -103,8 +103,12 @@ class BSFPrintLabelLayoutModel extends BSFPrintLabelLayoutEntity {
       printProductBySoldQuantity: entity.printProductBySoldQuantity,
       goesForBalanceAndQuantityInBalance:
           entity.goesForBalanceAndQuantityInBalance,
-      labelPrinter: entity.labelPrinter,
-      fields: entity.fields,
+      labelPrinter: entity.labelPrinter == null
+          ? null
+          : BSFPrintLabelPrinterModel.fromEntity(entity.labelPrinter!),
+      fields: entity.fields
+          .map(BSFPrintLabelLayoutFieldModel.fromEntity)
+          .toList(),
     );
   }
 
@@ -169,8 +173,15 @@ class BSFPrintLabelLayoutModel extends BSFPrintLabelLayoutEntity {
       informPrintQuantityByProduct: informPrintQuantityByProduct,
       printProductBySoldQuantity: printProductBySoldQuantity,
       goesForBalanceAndQuantityInBalance: goesForBalanceAndQuantityInBalance,
-      labelPrinter: labelPrinter,
-      fields: fields,
+      labelPrinter: labelPrinter == null
+          ? null
+          : BSFPrintLabelPrinterModel.fromEntity(labelPrinter!).toEntity(),
+      fields: fields
+          .map(
+            (field) =>
+                BSFPrintLabelLayoutFieldModel.fromEntity(field).toEntity(),
+          )
+          .toList(),
     );
   }
 }
