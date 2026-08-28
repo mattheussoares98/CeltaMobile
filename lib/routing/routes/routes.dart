@@ -19,6 +19,7 @@ export 'competing_prices/competing_prices.dart';
 export 'expedition_conference/expedition_conference.dart';
 export 'inventory/inventory.dart';
 export 'process_authorization/process_authorization.dart';
+export 'print_label_layout/print_label_layout.dart';
 export 'products_register/products_register.dart';
 export 'receipts/receipts.dart';
 export 'sale_request/sale_request.dart';

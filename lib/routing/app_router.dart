@@ -114,6 +114,7 @@ GoRouter goRouter(Ref ref) {
           processAuthorizationGRValidateDocXmlRoute(),
           processAuthorizationSaleRequestDiscountsRoute(),
         ]),
+        printLabelLayoutSummariesRoute(),
         productsRegisterSearchProductsRoute([
           productsRegisterCreateProductRoute(),
         ]),
