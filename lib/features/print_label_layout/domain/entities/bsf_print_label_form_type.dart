@@ -1,10 +1,11 @@
 enum BSFPrintLabelFormType {
-  paginated('Paginated'),
-  continuous('Continuous');
+  paginated('Paginated', 'Paginado'),
+  continuous('Continuous', 'Contínuo');
 
   final String apiValue;
+  final String description;
 
-  const BSFPrintLabelFormType(this.apiValue);
+  const BSFPrintLabelFormType(this.apiValue, this.description);
 
   factory BSFPrintLabelFormType.fromJson(Object? value) => values.firstWhere(
     (type) => type.apiValue == value,

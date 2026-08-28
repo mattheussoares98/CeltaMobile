@@ -1,10 +1,11 @@
 enum BSFPrintLabelCoordinateUnit {
-  centimeter('Centimeter'),
-  printerDot('PrinterDot');
+  centimeter('Centimeter', 'Centímetros'),
+  printerDot('PrinterDot', 'Pontos da impressora');
 
   final String apiValue;
+  final String description;
 
-  const BSFPrintLabelCoordinateUnit(this.apiValue);
+  const BSFPrintLabelCoordinateUnit(this.apiValue, this.description);
 
   factory BSFPrintLabelCoordinateUnit.fromJson(Object? value) =>
       values.firstWhere(
