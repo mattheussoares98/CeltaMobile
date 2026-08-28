@@ -74,7 +74,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
         .read(customerStateControllerProvider.notifier)
         .updatePersonalData(
           CpfCnpjNumber: cpfCnpjController.text,
-          PersonType: cpfCnpjController.text.length == 11
+          PersonType: cpfCnpjController.text.length <= 11
               ? CustomerPersonType.fisica
               : CustomerPersonType.juridica,
           RegistrationNumber: inscriptionController.text,
@@ -186,7 +186,7 @@ class PersonalDataPageState extends ConsumerState<PersonalDataPage> {
                 AnimatedBuilder(
                   animation: cpfCnpjController,
                   builder: (_, _) {
-                    if (cpfCnpjController.text.length == 11) {
+                    if (cpfCnpjController.text.length <= 11) {
                       return const Column(children: [gapH8, SexDropDown()]);
                     }
                     return const SizedBox.shrink();

@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:equatable/equatable.dart';
 
 class SoapCustomerModel extends Equatable {
   final int? Code;
@@ -77,7 +76,7 @@ class SoapCustomerModel extends Equatable {
     'Addresses': Addresses?.map((e) => e.toJson()).toList(),
     'CustomerCovenants': CustomerCovenants?.map((e) => e.toJson()).toList(),
     //! throw error if pass the value in a new customer
-    if (Code != null) 'Code': Code,
+    'Code': Code ?? 0,
     if (PersonalizedCode != null) 'PersonalizedCode': PersonalizedCode,
     if (HasPassword != null) 'HasPassword': HasPassword,
     if (saleBlockadeInstruction != null)
