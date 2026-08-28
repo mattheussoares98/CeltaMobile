@@ -11,7 +11,7 @@ part 'customer_state_controller.g.dart';
 @Riverpod(keepAlive: true)
 class CustomerStateController extends _$CustomerStateController {
   @override
-  FutureOr<SoapCustomerEntity?> build() => SoapCustomerEntity.empty();
+  FutureOr<SoapCustomerEntity?> build() => null;
 
   Future<void> loadCustomer(String cpfCnpj) async {
     final emptyCustomer = SoapCustomerEntity.empty();
