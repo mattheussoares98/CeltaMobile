@@ -98,7 +98,9 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   Widget _logo(BuildContext context) {
-    final logo = field.field?.logo;
+    final logo = field.previewImage?.isNotEmpty == true
+        ? field.previewImage
+        : field.field?.logo;
 
     if (logo != null && logo.isNotEmpty) {
       return Image.memory(
@@ -219,6 +221,8 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   String get _previewText {
+    if (field.previewValue != null) return field.previewValue!;
+
     final definition = field.fieldForDataBarcode ?? field.field;
     final value = definition?.content.isNotEmpty == true
         ? definition!.content

@@ -2556,6 +2556,8 @@ class EntityFactory {
         isReverseText: faker.randomGenerator.boolean(),
         prefix: faker.lorem.word(),
         imageName: faker.lorem.word(),
+        previewValue: faker.lorem.sentence(),
+        previewImage: const [1, 2, 3, 4],
         field: makeBSFPrintLabelFieldDefinitionEntity(),
         fieldForDataBarcode: makeBSFPrintLabelFieldDefinitionEntity(),
         format: makeBSFPrintLabelFieldFormatEntity(),

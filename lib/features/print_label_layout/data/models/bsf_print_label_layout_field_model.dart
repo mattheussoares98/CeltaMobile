@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/features/print_label_layout/data/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 
@@ -24,6 +26,8 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
     required super.isReverseText,
     required super.prefix,
     required super.imageName,
+    required super.previewValue,
+    required super.previewImage,
     required super.field,
     required super.fieldForDataBarcode,
     required super.format,
@@ -63,6 +67,10 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
       isReverseText: json['isReverseText'] as bool,
       prefix: json['prefix'] as String,
       imageName: json['imageName'] as String,
+      previewValue: json['previewValue'] as String?,
+      previewImage: json['previewImage'] == null
+          ? null
+          : base64Decode(json['previewImage'] as String),
       field: fieldJson == null
           ? null
           : BSFPrintLabelFieldDefinitionModel.fromJson(fieldJson),
@@ -101,6 +109,8 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
       isReverseText: entity.isReverseText,
       prefix: entity.prefix,
       imageName: entity.imageName,
+      previewValue: entity.previewValue,
+      previewImage: entity.previewImage,
       field: entity.field == null
           ? null
           : BSFPrintLabelFieldDefinitionModel.fromEntity(entity.field!),
@@ -137,6 +147,8 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
     'isReverseText': isReverseText,
     'prefix': prefix,
     'imageName': imageName,
+    'previewValue': previewValue,
+    'previewImage': previewImage == null ? null : base64Encode(previewImage!),
     'field': field == null
         ? null
         : BSFPrintLabelFieldDefinitionModel.fromEntity(field!).toJson(),
@@ -173,6 +185,8 @@ class BSFPrintLabelLayoutFieldModel extends BSFPrintLabelLayoutFieldEntity {
       isReverseText: isReverseText,
       prefix: prefix,
       imageName: imageName,
+      previewValue: previewValue,
+      previewImage: previewImage,
       field: field == null
           ? null
           : BSFPrintLabelFieldDefinitionModel.fromEntity(field!).toEntity(),

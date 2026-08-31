@@ -23,6 +23,8 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
   final bool isReverseText;
   final String prefix;
   final String imageName;
+  final String? previewValue;
+  final List<int>? previewImage;
   final BSFPrintLabelFieldDefinitionEntity? field;
   final BSFPrintLabelFieldDefinitionEntity? fieldForDataBarcode;
   final BSFPrintLabelFieldFormatEntity? format;
@@ -49,6 +51,8 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     required this.isReverseText,
     required this.prefix,
     required this.imageName,
+    required this.previewValue,
+    required this.previewImage,
     required this.field,
     required this.fieldForDataBarcode,
     required this.format,
@@ -77,6 +81,8 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     isReverseText,
     prefix,
     imageName,
+    previewValue,
+    previewImage,
     field,
     fieldForDataBarcode,
     format,
