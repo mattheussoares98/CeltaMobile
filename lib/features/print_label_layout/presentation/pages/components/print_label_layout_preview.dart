@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -72,13 +73,15 @@ class PrintLabelLayoutPreview extends StatelessWidget {
 
                 return Positioned(
                   left: field.coordinateX * scaleX,
-                  top: field.coordinateY * scaleY,
+                  top: _previewMetrics.verticalPosition(field) * scaleY,
                   child: PrintLabelPreviewElement(
                     field: field,
                     coordinateUnit: _coordinateUnit,
+                    previewMetrics: _previewMetrics,
                     scaleX: scaleX,
                     scaleY: scaleY,
                     isOutsideLabel: _isOutsideLabel(field),
+                    isInsideFilledBox: _previewMetrics.isInsideFilledBox(field),
                   ),
                 );
               }).toList(),
@@ -91,6 +94,13 @@ class PrintLabelLayoutPreview extends StatelessWidget {
 
   bool _isOutsideLabel(BSFPrintLabelLayoutFieldEntity field) {
     if (field.coordinateX < 0 || field.coordinateY < 0) return true;
+
+    if (_previewMetrics.isRabbitOS214) {
+      return field.coordinateX + _previewMetrics.renderedWidth(field) >
+              _previewLabelWidth ||
+          field.coordinateY + _previewMetrics.renderedHeight(field) >
+              _previewLabelHeight;
+    }
 
     final hasPhysicalDimensions =
         field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter ||
@@ -110,20 +120,12 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       _previewLabelWidth > 0 &&
       _previewLabelHeight > 0;
 
-  double get _previewLabelWidth =>
-      layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth;
+  double get _previewLabelWidth => _previewMetrics.canvasWidth;
 
-  double get _previewLabelHeight {
-    if (layout.labelHeight > 0) return layout.labelHeight;
-    if (layout.formHeight > 0) return layout.formHeight;
-    if (layout.fields.isEmpty || _previewLabelWidth <= 0) return 0;
+  double get _previewLabelHeight => _previewMetrics.canvasHeight;
 
-    final greatestCoordinateY = layout.fields.fold<double>(
-      0,
-      (value, field) => math.max(value, field.coordinateY),
-    );
-    return greatestCoordinateY + (_previewLabelWidth * 0.1);
-  }
+  PrintLabelPreviewMetrics get _previewMetrics =>
+      PrintLabelPreviewMetrics(layout);
 
   BSFPrintLabelCoordinateUnit get _coordinateUnit =>
       layout.labelPrinter?.coordinateUnit ??

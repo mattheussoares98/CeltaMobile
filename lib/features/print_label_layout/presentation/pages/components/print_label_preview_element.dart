@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -10,17 +11,21 @@ import 'package:flutter/material.dart';
 class PrintLabelPreviewElement extends StatelessWidget {
   final BSFPrintLabelLayoutFieldEntity field;
   final BSFPrintLabelCoordinateUnit coordinateUnit;
+  final PrintLabelPreviewMetrics previewMetrics;
   final double scaleX;
   final double scaleY;
   final bool isOutsideLabel;
+  final bool isInsideFilledBox;
 
   const PrintLabelPreviewElement({
     super.key,
     required this.field,
     required this.coordinateUnit,
+    required this.previewMetrics,
     required this.scaleX,
     required this.scaleY,
     required this.isOutsideLabel,
+    required this.isInsideFilledBox,
   });
 
   static const _minimumSymbolSize = 24.0;
@@ -61,7 +66,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       BSFPrintLabelFieldType.barcode => _barcode(context),
       BSFPrintLabelFieldType.logo => _logo(context),
       BSFPrintLabelFieldType.boxOrLine => _boxOrLine(context),
-      _ => _text(context, width: width),
+      _ => _text(context, width: width, height: height),
     };
   }
 
@@ -123,14 +128,29 @@ class PrintLabelPreviewElement extends StatelessWidget {
     ),
   );
 
-  Widget _boxOrLine(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      border: Border.all(color: context.theme.colorScheme.onSurface),
-    ),
-  );
+  Widget _boxOrLine(BuildContext context) {
+    if (previewMetrics.isFilledBox(field)) {
+      return ColoredBox(color: context.theme.colorScheme.onSurface);
+    }
 
-  Widget _text(BuildContext context, {required double? width}) {
-    final foregroundColor = field.isReverseText
+    final configuredThickness = field.ratioBarCode * math.min(scaleX, scaleY);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: context.theme.colorScheme.onSurface,
+          width: configuredThickness > 0 ? configuredThickness : 1,
+        ),
+      ),
+    );
+  }
+
+  Widget _text(
+    BuildContext context, {
+    required double? width,
+    required double? height,
+  }) {
+    final reverseText = field.isReverseText || isInsideFilledBox;
+    final foregroundColor = reverseText
         ? context.theme.colorScheme.surface
         : context.theme.colorScheme.onSurface;
     final backgroundColor = field.isReverseText
@@ -145,11 +165,27 @@ class PrintLabelPreviewElement extends StatelessWidget {
       textAlign: _textAlign,
       style: TextStyle(
         color: foregroundColor,
-        fontFamily: field.fontType.isEmpty ? null : field.fontType,
+        fontFamily: previewMetrics.isRabbitOS214
+            ? 'monospace'
+            : field.fontType.isEmpty
+            ? null
+            : field.fontType,
         fontSize: _fontSize,
+        height: previewMetrics.isRabbitOS214 ? 1 : null,
         fontWeight: field.isBold ? FontWeight.bold : FontWeight.normal,
       ),
     );
+
+    if (previewMetrics.isRabbitOS214 && width != null && height != null) {
+      final fittedText = FittedBox(
+        fit: BoxFit.fill,
+        alignment: _alignment,
+        child: text,
+      );
+      return backgroundColor == null
+          ? fittedText
+          : ColoredBox(color: backgroundColor, child: fittedText);
+    }
 
     final alignedText = width == null
         ? text
@@ -161,6 +197,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   double? get _previewWidth {
+    if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
+      return previewMetrics.renderedWidth(field) * scaleX;
+    }
+
     if (_hasPhysicalDimensions && field.width > 0) {
       return field.width * scaleX;
     }
@@ -176,6 +216,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   double? get _previewHeight {
+    if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
+      return previewMetrics.renderedHeight(field) * scaleY;
+    }
+
     if (_hasPhysicalDimensions && field.height > 0) {
       return field.height * scaleY;
     }
@@ -210,7 +254,19 @@ class PrintLabelPreviewElement extends StatelessWidget {
       field.barcodeSimbologyType == BSFBarcodeSimbologyType.qrCode ||
       field.format?.qrCodeType == true;
 
+  bool get _isText =>
+      _fieldType != BSFPrintLabelFieldType.barcode &&
+      _fieldType != BSFPrintLabelFieldType.logo &&
+      _fieldType != BSFPrintLabelFieldType.boxOrLine;
+
+  bool get _usesRabbitRenderedDimensions =>
+      _isText || _fieldType == BSFPrintLabelFieldType.boxOrLine;
+
   double get _fontSize {
+    if (previewMetrics.isRabbitOS214) {
+      return previewMetrics.rabbitFontSize(field, scaleY);
+    }
+
     if (field.fontSize <= 0) return 10;
 
     final scaledSize = coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter
