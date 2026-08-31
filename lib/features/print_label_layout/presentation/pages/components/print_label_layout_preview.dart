@@ -72,7 +72,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
                 final scaleY = canvasHeight / _previewLabelHeight;
 
                 return Positioned(
-                  left: field.coordinateX * scaleX,
+                  left: _previewMetrics.horizontalPosition(field) * scaleX,
                   top: _previewMetrics.verticalPosition(field) * scaleY,
                   child: PrintLabelPreviewElement(
                     field: field,

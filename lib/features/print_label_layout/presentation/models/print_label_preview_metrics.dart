@@ -7,7 +7,11 @@ class PrintLabelPreviewMetrics {
 
   const PrintLabelPreviewMetrics(this.layout);
 
+  static const _rabbitConfiguredWidthScale = 0.55;
   static const _rabbitTrailingMarginRatio = 0.12;
+  static const _rabbitBarcodeCaptionHeight = 8.0;
+  static const _rabbitCurrencyHorizontalCorrection = 12.0;
+  static const _rabbitCurrencyVerticalCorrection = -4.0;
 
   bool get isRabbitOS214 =>
       layout.labelPrinter?.modelType == BSFLabelPrinterModelType.rabbitOS214;
@@ -34,7 +38,10 @@ class PrintLabelPreviewMetrics {
       leadingMargin,
       contentRight * _rabbitTrailingMarginRatio,
     );
-    return contentRight + trailingMargin;
+    final configuredWidth =
+        (layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth) *
+        _rabbitConfiguredWidthScale;
+    return math.max(configuredWidth, contentRight + trailingMargin);
   }
 
   double get canvasHeight {
@@ -63,6 +70,9 @@ class PrintLabelPreviewMetrics {
 
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
+    if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+      return _rabbitBarcodeModuleCount(field) * math.max(1, field.ratioBarCode);
+    }
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return math.max(field.width, field.ratioBarCode);
     }
@@ -75,6 +85,10 @@ class PrintLabelPreviewMetrics {
 
   double renderedHeight(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.height;
+    if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+      return field.height +
+          (field.drawLabelBelowBarcode ? _rabbitBarcodeCaptionHeight : 0);
+    }
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return math.max(field.height, field.ratioBarCode);
     }
@@ -98,10 +112,30 @@ class PrintLabelPreviewMetrics {
   double rabbitFontSize(BSFPrintLabelLayoutFieldEntity field, double scaleY) =>
       renderedHeight(field) * scaleY;
 
+  double rabbitBarcodeCaptionFontSize(double scaleY) =>
+      _rabbitBarcodeCaptionHeight * scaleY;
+
+  double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
+    final isCurrencyIndicator =
+        isRabbitOS214 &&
+        field.fontType == '1' &&
+        previewText(field).trim() == r'R$';
+    return field.coordinateX +
+        (isCurrencyIndicator ? _rabbitCurrencyHorizontalCorrection : 0);
+  }
+
   double verticalPosition(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.coordinateY;
 
-    return canvasHeight - field.coordinateY - renderedHeight(field);
+    final isCurrencyIndicator =
+        field.fontType == '1' && previewText(field).trim() == r'R$';
+    final currencyCorrection = isCurrencyIndicator
+        ? _rabbitCurrencyVerticalCorrection
+        : 0;
+    return canvasHeight -
+        field.coordinateY -
+        renderedHeight(field) +
+        currencyCorrection;
   }
 
   bool isFilledBox(BSFPrintLabelLayoutFieldEntity field) {
@@ -140,12 +174,12 @@ class PrintLabelPreviewMetrics {
 
   double rabbitGlyphWidth(BSFPrintLabelLayoutFieldEntity field) =>
       switch (field.fontType) {
-        '1' => 4,
+        '1' => 3,
         '2' => 5,
         '3' => 8,
         '4' => 10,
         '5' => 14,
-        '6' => 20,
+        '6' => 11,
         '7' => 12,
         '8' => 14,
         '9' => math.max(1, field.width * 0.5),
@@ -154,7 +188,7 @@ class PrintLabelPreviewMetrics {
 
   double rabbitGlyphHeight(BSFPrintLabelLayoutFieldEntity field) =>
       switch (field.fontType) {
-        '1' => 8,
+        '1' => 7,
         '2' => 12,
         '3' => 18,
         '4' => 24,
@@ -171,6 +205,13 @@ class PrintLabelPreviewMetrics {
 
   double _verticalMultiplier(BSFPrintLabelLayoutFieldEntity field) =>
       field.fontType == '9' ? 1 : math.max(1, field.height);
+
+  double _rabbitBarcodeModuleCount(BSFPrintLabelLayoutFieldEntity field) =>
+      switch (previewText(field).length) {
+        13 => 95,
+        8 => 67,
+        final length => math.max(1, length * 11),
+      };
 
   bool _isText(BSFPrintLabelLayoutFieldEntity field) {
     final type = _fieldType(field);

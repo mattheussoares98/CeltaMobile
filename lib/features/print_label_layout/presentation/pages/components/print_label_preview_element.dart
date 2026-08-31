@@ -81,24 +81,17 @@ class PrintLabelPreviewElement extends StatelessWidget {
       );
     }
 
-    return CustomPaint(
-      painter: PrintLabelBarcodePainter(
-        color: context.theme.colorScheme.onSurface,
+    return Semantics(
+      image: true,
+      label: field.drawLabelBelowBarcode ? _previewText : null,
+      child: CustomPaint(
+        painter: PrintLabelBarcodePainter(
+          color: context.theme.colorScheme.onSurface,
+          value: _previewText,
+          captionHeight: _fontSize,
+          drawValue: field.drawLabelBelowBarcode,
+        ),
       ),
-      child: field.drawLabelBelowBarcode
-          ? Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                _previewText,
-                maxLines: 1,
-                softWrap: false,
-                style: TextStyle(
-                  color: context.theme.colorScheme.onSurface,
-                  fontSize: _fontSize,
-                ),
-              ),
-            )
-          : null,
     );
   }
 
@@ -172,7 +165,11 @@ class PrintLabelPreviewElement extends StatelessWidget {
             : field.fontType,
         fontSize: _fontSize,
         height: previewMetrics.isRabbitOS214 ? 1 : null,
-        fontWeight: field.isBold ? FontWeight.bold : FontWeight.normal,
+        fontWeight: field.isBold
+            ? FontWeight.bold
+            : previewMetrics.isRabbitOS214 && field.fontType == '6'
+            ? FontWeight.w600
+            : FontWeight.normal,
       ),
     );
 
@@ -260,10 +257,15 @@ class PrintLabelPreviewElement extends StatelessWidget {
       _fieldType != BSFPrintLabelFieldType.boxOrLine;
 
   bool get _usesRabbitRenderedDimensions =>
-      _isText || _fieldType == BSFPrintLabelFieldType.boxOrLine;
+      _isText ||
+      _fieldType == BSFPrintLabelFieldType.barcode ||
+      _fieldType == BSFPrintLabelFieldType.boxOrLine;
 
   double get _fontSize {
     if (previewMetrics.isRabbitOS214) {
+      if (_fieldType == BSFPrintLabelFieldType.barcode) {
+        return previewMetrics.rabbitBarcodeCaptionFontSize(scaleY);
+      }
       return previewMetrics.rabbitFontSize(field, scaleY);
     }
 

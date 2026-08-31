@@ -68,4 +68,98 @@ void main() {
     expect(text.style?.fontFamily, 'monospace');
     expect(text.style?.color, colorScheme.surface);
   });
+
+  testWidgets('should render Rabbit font type 6 as semibold', (tester) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 1,
+      height: 1,
+      dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+      fontType: '6',
+      fontSize: 0,
+      isBold: false,
+      previewValue: '0,00',
+    );
+    final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
+      modelType: BSFLabelPrinterModelType.rabbitOS214,
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      labelPrinter: printer,
+      fields: [field],
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    final text = tester.widget<Text>(find.text('0,00'));
+    expect(text.style?.fontWeight, FontWeight.w600);
+  });
+
+  testWidgets('should configure Rabbit EAN painter with its visible value', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 2,
+      height: 30,
+      dimensionType: BSFPrintLabelFieldDimensionType.printerCommandValue,
+      ratioBarCode: 1.5,
+      drawLabelBelowBarcode: true,
+      previewValue: '7891000379103',
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.barcode,
+      ),
+    );
+    final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
+      modelType: BSFLabelPrinterModelType.rabbitOS214,
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      labelPrinter: printer,
+      fields: [field],
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    final element = find.byType(PrintLabelPreviewElement);
+    final bars = find.descendant(
+      of: element,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is CustomPaint && widget.painter is PrintLabelBarcodePainter,
+      ),
+    );
+    final semanticValue = find.byWidgetPredicate(
+      (widget) =>
+          widget is Semantics && widget.properties.label == '7891000379103',
+    );
+    final painter =
+        tester.widget<CustomPaint>(bars).painter as PrintLabelBarcodePainter;
+
+    expect(bars, findsOneWidget);
+    expect(semanticValue, findsOneWidget);
+    expect(painter.value, '7891000379103');
+    expect(painter.drawValue, isTrue);
+    expect(painter.captionHeight, 8);
+  });
 }

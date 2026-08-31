@@ -24,7 +24,7 @@ void main() {
       );
       final metrics = _metrics([box, description, trailingText]);
 
-      expect(metrics.canvasWidth, closeTo(428.96, 0.001));
+      expect(metrics.canvasWidth, closeTo(429, 0.001));
       expect(metrics.canvasHeight, 108);
     });
 
@@ -35,6 +35,74 @@ void main() {
       expect(metrics.renderedWidth(field), 64);
       expect(metrics.renderedHeight(field), 36);
       expect(metrics.rabbitFontSize(field, 0.5), 18);
+    });
+
+    test('should use Rabbit EAN modules and configured barcode height', () {
+      final field = _rabbitField(
+        coordinateX: 40,
+        coordinateY: 8,
+        width: 2,
+        height: 30,
+        ratioBarCode: 1.5,
+        drawLabelBelowBarcode: true,
+        previewValue: '7891000379103',
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final metrics = _metrics([field]);
+
+      expect(metrics.renderedWidth(field), 142.5);
+      expect(metrics.renderedHeight(field), 38);
+      expect(metrics.rabbitBarcodeCaptionFontSize(1), 8);
+    });
+
+    test('should keep large Rabbit price font horizontally condensed', () {
+      final field = _rabbitField(fontType: '6', previewValue: '0,00');
+      final metrics = _metrics([field]);
+
+      expect(metrics.renderedWidth(field), 44);
+      expect(metrics.renderedHeight(field), 48);
+    });
+
+    test(
+      'should keep the Rabbit currency indicator narrower than its height',
+      () {
+        final field = _rabbitField(
+          width: 6,
+          height: 6,
+          fontType: '1',
+          previewValue: 'R\$',
+        );
+        final metrics = _metrics([field]);
+
+        expect(metrics.renderedWidth(field), 36);
+        expect(metrics.renderedHeight(field), 42);
+      },
+    );
+
+    test('should correct the Rabbit currency indicator glyph origin', () {
+      final currency = _rabbitField(
+        coordinateX: 220,
+        coordinateY: 26,
+        width: 6,
+        height: 6,
+        fontType: '1',
+        previewValue: 'R\$',
+      );
+      final price = _rabbitField(
+        coordinateX: 290,
+        coordinateY: 30,
+        fontType: '6',
+        previewValue: '0,00',
+      );
+      final metrics = _metrics([currency, price]);
+      final currencyBottom =
+          metrics.verticalPosition(currency) + metrics.renderedHeight(currency);
+      final priceBottom =
+          metrics.verticalPosition(price) + metrics.renderedHeight(price);
+
+      expect(metrics.horizontalPosition(currency), 232);
+      expect(metrics.horizontalPosition(price), 290);
+      expect(currencyBottom, priceBottom);
     });
 
     test('should identify a filled Rabbit box and overlapping text', () {
@@ -116,6 +184,7 @@ BSFPrintLabelLayoutFieldEntity _rabbitField({
   double width = 1,
   double height = 1,
   double ratioBarCode = 0,
+  bool drawLabelBelowBarcode = false,
   String fontType = '3',
   String previewValue = 'Texto',
   BSFPrintLabelFieldType fieldType = BSFPrintLabelFieldType.string,
@@ -128,6 +197,7 @@ BSFPrintLabelLayoutFieldEntity _rabbitField({
   fontType: fontType,
   fontSize: 0,
   ratioBarCode: ratioBarCode,
+  drawLabelBelowBarcode: drawLabelBelowBarcode,
   previewValue: previewValue,
   field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
     fieldType: fieldType,
