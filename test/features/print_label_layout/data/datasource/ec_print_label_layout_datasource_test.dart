@@ -15,6 +15,7 @@ void main() {
   late EcRequestParams params;
   late BSFPrintLabelLayoutSummaryModel summaryModel;
   late BSFPrintLabelLayoutModel layoutModel;
+  late BSFPrintLabelFieldEditorOptionsModel fieldEditorOptionsModel;
 
   setUp(() {
     httpClient = MockHttpClient();
@@ -25,6 +26,9 @@ void main() {
     );
     layoutModel = BSFPrintLabelLayoutModel.fromEntity(
       EntityFactory.makeBSFPrintLabelLayoutEntity(),
+    );
+    fieldEditorOptionsModel = BSFPrintLabelFieldEditorOptionsModel.fromEntity(
+      EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
     );
   });
 
@@ -133,6 +137,55 @@ void main() {
     verify(
       () => httpClient.request(
         url: '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
+  test('should get all field editor options in one request', () async {
+    when(
+      () => httpClient.request(
+        url:
+            '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}/FieldEditorOptions',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).thenAnswer((_) async => fieldEditorOptionsModel.toJson());
+
+    final result = await sut.getFieldEditorOptions(params, layoutModel.code);
+
+    expect(result, fieldEditorOptionsModel);
+    verify(
+      () => httpClient.request(
+        url:
+            '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}/FieldEditorOptions',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
+  test('should propagate field editor options request errors', () async {
+    final exception = Exception('Failed to get field editor options');
+    when(
+      () => httpClient.request(
+        url:
+            '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}/FieldEditorOptions',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).thenThrow(exception);
+
+    final call = sut.getFieldEditorOptions(params, layoutModel.code);
+
+    await expectLater(call, throwsA(same(exception)));
+    verify(
+      () => httpClient.request(
+        url:
+            '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}/FieldEditorOptions',
         method: 'get',
         headers: params.toHeaders(),
       ),

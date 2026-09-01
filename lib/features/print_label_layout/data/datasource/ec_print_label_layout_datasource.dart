@@ -36,4 +36,19 @@ class EcPrintLabelLayoutDatasource implements IEcPrintLabelLayoutDatasource {
 
     return BSFPrintLabelLayoutModel.fromJson(response as Map);
   }
+
+  @override
+  Future<BSFPrintLabelFieldEditorOptionsModel> getFieldEditorOptions(
+    EcRequestParams params,
+    int layoutCode,
+  ) async {
+    final response = await httpClient.request(
+      url:
+          '${params.workingUrl}/api/PrintLabelLayouts/$layoutCode/FieldEditorOptions',
+      method: 'get',
+      headers: params.toHeaders(),
+    );
+
+    return BSFPrintLabelFieldEditorOptionsModel.fromJson(response as Map);
+  }
 }

@@ -7,4 +7,9 @@ abstract class IEcPrintLabelLayoutDatasource {
   );
 
   Future<BSFPrintLabelLayoutModel> getDetails(EcRequestParams params, int code);
+
+  Future<BSFPrintLabelFieldEditorOptionsModel> getFieldEditorOptions(
+    EcRequestParams params,
+    int layoutCode,
+  );
 }

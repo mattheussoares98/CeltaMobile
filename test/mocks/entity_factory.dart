@@ -2535,6 +2535,13 @@ class EntityFactory {
         description: faker.lorem.sentence(),
       );
 
+  static BSFPrintLabelFieldEditorOptionsEntity
+  makeBSFPrintLabelFieldEditorOptionsEntity() =>
+      BSFPrintLabelFieldEditorOptionsEntity(
+        fields: [makeBSFPrintLabelFieldDefinitionEntity()],
+        formats: [makeBSFPrintLabelFieldFormatEntity()],
+      );
+
   static BSFPrintLabelLayoutFieldEntity makeBSFPrintLabelLayoutFieldEntity({
     int? code,
     double? coordinateX,
@@ -2626,8 +2633,7 @@ class EntityFactory {
     labelBottomMargin: labelBottomMargin ?? faker.randomGenerator.decimal(),
     temperature: temperature ?? faker.randomGenerator.integer(100),
     printSpeed: printSpeed ?? faker.randomGenerator.integer(100),
-    directionLabelType:
-        directionLabelType ?? BSFPrintLabelDirectionType.top,
+    directionLabelType: directionLabelType ?? BSFPrintLabelDirectionType.top,
     considerProductPacking:
         considerProductPacking ?? BSFProductPackingSelectionType.both,
     intervalPrintPackage:
@@ -2635,15 +2641,13 @@ class EntityFactory {
     applyFormSizeConfiguration:
         applyFormSizeConfiguration ?? faker.randomGenerator.boolean(),
     addressType: addressType ?? BSFPrintLabelAddressType.notApplicable,
-    isConvenePrintLabel:
-        isConvenePrintLabel ?? faker.randomGenerator.boolean(),
+    isConvenePrintLabel: isConvenePrintLabel ?? faker.randomGenerator.boolean(),
     informPrintQuantityByProduct:
         informPrintQuantityByProduct ?? faker.randomGenerator.boolean(),
     printProductBySoldQuantity:
         printProductBySoldQuantity ?? faker.randomGenerator.boolean(),
     goesForBalanceAndQuantityInBalance:
-        goesForBalanceAndQuantityInBalance ??
-        faker.randomGenerator.boolean(),
+        goesForBalanceAndQuantityInBalance ?? faker.randomGenerator.boolean(),
     labelPrinter: labelPrinter ?? makeBSFPrintLabelPrinterEntity(),
     fields: fields ?? [makeBSFPrintLabelLayoutFieldEntity()],
   );
