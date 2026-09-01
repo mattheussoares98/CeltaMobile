@@ -30,6 +30,7 @@ class PrintLabelLayoutAddFieldButton extends ConsumerWidget {
                 PrintLabelLayoutAddFieldPage(
                   layoutCode: layoutCode,
                   fieldOptions: options.fieldOptions,
+                  formats: options.formats,
                 ),
                 context,
               ),

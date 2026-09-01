@@ -78,6 +78,36 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateFieldPrefix(int fieldIndex, String prefix) {
+    _updateField(fieldIndex, (field) => field.copyWith(prefix: prefix));
+  }
+
+  void updateFieldFormat(
+    int fieldIndex,
+    BSFPrintLabelFieldFormatEntity format,
+  ) {
+    _updateField(fieldIndex, (field) => field.copyWith(format: format));
+  }
+
+  void updateFieldPositionStartCharacter(int fieldIndex, int delta) {
+    _updateField(fieldIndex, (field) {
+      return field.copyWith(
+        positionStartCharacter: (field.positionStartCharacter + delta).clamp(
+          0,
+          2147483647,
+        ),
+      );
+    });
+  }
+
+  void updateFieldMaxCharacterSize(int fieldIndex, int delta) {
+    _updateField(fieldIndex, (field) {
+      return field.copyWith(
+        maxCharacterSize: (field.maxCharacterSize + delta).clamp(0, 2147483647),
+      );
+    });
+  }
+
   void toggleFieldVisibility(int fieldIndex) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(isVisible: !field.isVisible);

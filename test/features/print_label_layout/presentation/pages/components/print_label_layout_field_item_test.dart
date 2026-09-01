@@ -85,7 +85,7 @@ void main() {
 
     // Tap increase on X (first add button)
     final addButtons = find.byIcon(Icons.add_circle_outline);
-    expect(addButtons, findsNWidgets(4));
+    expect(addButtons, findsNWidgets(6));
 
     await tester.tap(addButtons.at(0));
     await tester.pumpAndSettle();
@@ -182,10 +182,8 @@ void main() {
 
     expect(find.text('76'), findsOneWidget);
 
-    // Tap rotation 90°
-    expect(find.text('90°'), findsOneWidget);
-    await tester.tap(find.text('90°'));
-    await tester.pumpAndSettle();
+    expect(find.text('Rotação'), findsNothing);
+    expect(find.text('90°'), findsNothing);
   });
 
   testWidgets(

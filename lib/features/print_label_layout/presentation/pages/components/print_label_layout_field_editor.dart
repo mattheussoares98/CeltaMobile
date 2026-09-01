@@ -4,9 +4,11 @@ import 'package:celta_inventario/features/print_label_layout/domain/entities/ent
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class PrintLabelLayoutFieldEditor extends StatelessWidget {
+class PrintLabelLayoutFieldEditor extends HookWidget {
   final BSFPrintLabelLayoutFieldEntity field;
+  final List<BSFPrintLabelFieldFormatEntity> formats;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
   final ValueChanged<double> onCoordinateXChanged;
   final ValueChanged<double> onCoordinateYChanged;
@@ -15,10 +17,15 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
   final ValueChanged<double> onRatioBarCodeChanged;
   final ValueChanged<BSFPrintElementRotationType> onRotationChanged;
   final ValueChanged<bool> onDrawLabelBelowBarcodeChanged;
+  final ValueChanged<String> onPrefixChanged;
+  final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
+  final ValueChanged<int> onPositionStartCharacterChanged;
+  final ValueChanged<int> onMaxCharacterSizeChanged;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
     required this.field,
+    required this.formats,
     required this.coordinateUnit,
     required this.onCoordinateXChanged,
     required this.onCoordinateYChanged,
@@ -27,19 +34,24 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
     required this.onRatioBarCodeChanged,
     required this.onRotationChanged,
     required this.onDrawLabelBelowBarcodeChanged,
+    required this.onPrefixChanged,
+    required this.onFormatChanged,
+    required this.onPositionStartCharacterChanged,
+    required this.onMaxCharacterSizeChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     const fastRepeatInterval = Duration(milliseconds: 25);
+    final prefixController = useTextEditingController(text: field.prefix);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (field.field?.content.isNotEmpty == true)
-          TitleAndSubTitle(
-            title: 'Conteúdo'.hardcoded,
-            subTitle: field.field!.content,
-          ),
+        BaseTextFormField(
+          controller: prefixController,
+          labelText: 'Prefixo'.hardcoded,
+          onChanged: onPrefixChanged,
+        ),
         gapH4,
         BaseText.title('Coordenadas ($_coordinateUnit)'.hardcoded),
         gapH4,
@@ -108,16 +120,18 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
             ),
           ],
         ],
-        gapH8,
-        BaseText.title('Rotação'.hardcoded),
-        gapH4,
-        BaseSegmentedButtons<BSFPrintElementRotationType>(
-          items: BSFPrintElementRotationType.values,
-          selectedValue: field.rotateType,
-          itemLabelBuilder: (item) => item.name,
-          onChanged: onRotationChanged,
-        ),
-        if (field.field?.fieldType == BSFPrintLabelFieldType.barcode) ...[
+        if (_showsRotation) ...[
+          gapH8,
+          BaseText.title('Rotação'.hardcoded),
+          gapH4,
+          BaseSegmentedButtons<BSFPrintElementRotationType>(
+            items: BSFPrintElementRotationType.values,
+            selectedValue: field.rotateType,
+            itemLabelBuilder: (item) => item.name,
+            onChanged: onRotationChanged,
+          ),
+        ],
+        if (_isBarcode && !_isQrCode) ...[
           gapH8,
           BaseSwitch(
             title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
@@ -125,16 +139,47 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
             onChanged: onDrawLabelBelowBarcodeChanged,
           ),
         ],
-        if (field.fontType.isNotEmpty) ...[
-          gapH4,
-          TitleAndSubTitle(
-            title: 'Fonte'.hardcoded,
-            subTitle: '${field.fontType} (${field.fontSize})',
+        if (_isTextField) ...[
+          gapH8,
+          BaseDropDown<BSFPrintLabelFieldFormatEntity>(
+            label: 'Formato'.hardcoded,
+            selectedItem: field.format,
+            showLabelAtTopLeft: true,
+            items: _applicableFormats
+                .map(
+                  (format) => DropdownMenuItem(
+                    value: format,
+                    child: BaseText(format.name),
+                  ),
+                )
+                .toList(),
+            onChanged: onFormatChanged,
           ),
         ],
-        if (field.prefix.isNotEmpty) ...[
+        if (_showsTextCharacterOptions) ...[
           gapH4,
-          TitleAndSubTitle(title: 'Prefixo'.hardcoded, subTitle: field.prefix),
+          Wrap(
+            alignment: .spaceEvenly,
+            runAlignment: .spaceEvenly,
+            children: [
+              PrintLabelLayoutValueAdjuster(
+                label: 'Posição inicial'.hardcoded,
+                value: field.positionStartCharacter.toString(),
+                onDecrease: field.positionStartCharacter > 0
+                    ? () => onPositionStartCharacterChanged(-1)
+                    : null,
+                onIncrease: () => onPositionStartCharacterChanged(1),
+              ),
+              PrintLabelLayoutValueAdjuster(
+                label: 'Máximo de caracteres'.hardcoded,
+                value: field.maxCharacterSize.toString(),
+                onDecrease: field.maxCharacterSize > 0
+                    ? () => onMaxCharacterSizeChanged(-1)
+                    : null,
+                onIncrease: () => onMaxCharacterSizeChanged(1),
+              ),
+            ],
+          ),
         ],
       ],
     );
@@ -189,6 +234,39 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
         ? 0.1
         : 1.0;
   }
+
+  BSFPrintLabelFieldType? get _fieldType => field.field?.fieldType;
+
+  bool get _isBarcode => _fieldType == BSFPrintLabelFieldType.barcode;
+
+  bool get _isQrCode =>
+      _isBarcode &&
+      field.barcodeSimbologyType == BSFBarcodeSimbologyType.qrCode;
+
+  bool get _isTextField => switch (_fieldType) {
+    BSFPrintLabelFieldType.string ||
+    BSFPrintLabelFieldType.integer ||
+    BSFPrintLabelFieldType.float ||
+    BSFPrintLabelFieldType.dateTime => true,
+    _ => false,
+  };
+
+  bool get _showsRotation => _fieldType != BSFPrintLabelFieldType.boxOrLine;
+
+  bool get _showsTextCharacterOptions =>
+      _isTextField && field.format?.qrCodeType != true;
+
+  List<BSFPrintLabelFieldFormatEntity> get _applicableFormats => formats
+      .where(
+        (format) => switch (_fieldType) {
+          BSFPrintLabelFieldType.string => format.stringType,
+          BSFPrintLabelFieldType.integer => format.integerType,
+          BSFPrintLabelFieldType.float => format.floatType,
+          BSFPrintLabelFieldType.dateTime => format.dateTimeType,
+          _ => false,
+        },
+      )
+      .toList();
 
   double get _minHeight => _minWidth;
 

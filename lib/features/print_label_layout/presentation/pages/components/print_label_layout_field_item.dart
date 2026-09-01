@@ -27,6 +27,10 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layoutCode).notifier,
     );
+    final formats = ref
+        .watch(printLabelFieldEditorOptionsControllerProvider(layoutCode))
+        .value
+        ?.formats;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -60,6 +64,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
             ),
             PrintLabelLayoutFieldEditor(
               field: field,
+              formats: formats ?? [if (field.format != null) field.format!],
               coordinateUnit: coordinateUnit,
               onCoordinateXChanged: (delta) =>
                   controller.updateFieldCoordinateX(fieldIndex, delta),
@@ -75,6 +80,14 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldRotateType(fieldIndex, value),
               onDrawLabelBelowBarcodeChanged: (value) => controller
                   .updateFieldDrawLabelBelowBarcode(fieldIndex, value),
+              onPrefixChanged: (value) =>
+                  controller.updateFieldPrefix(fieldIndex, value),
+              onFormatChanged: (value) =>
+                  controller.updateFieldFormat(fieldIndex, value),
+              onPositionStartCharacterChanged: (delta) => controller
+                  .updateFieldPositionStartCharacter(fieldIndex, delta),
+              onMaxCharacterSizeChanged: (delta) =>
+                  controller.updateFieldMaxCharacterSize(fieldIndex, delta),
             ),
           ],
         ),

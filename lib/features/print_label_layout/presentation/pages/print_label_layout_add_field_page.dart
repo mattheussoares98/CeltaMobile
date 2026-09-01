@@ -12,11 +12,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
   final int layoutCode;
   final List<PrintLabelFieldEditorOptionEntity> fieldOptions;
+  final List<BSFPrintLabelFieldFormatEntity> formats;
 
   const PrintLabelLayoutAddFieldPage({
     super.key,
     required this.layoutCode,
     required this.fieldOptions,
+    required this.formats,
   });
 
   @override
@@ -58,6 +60,7 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
               child: SingleChildScrollView(
                 child: PrintLabelLayoutFieldEditor(
                   field: draft.value!,
+                  formats: formats,
                   coordinateUnit: coordinateUnit,
                   onCoordinateXChanged: (delta) => _updateDraft(
                     draft,
@@ -96,6 +99,32 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                   onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(drawLabelBelowBarcode: value),
+                  ),
+                  onPrefixChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(prefix: value),
+                  ),
+                  onFormatChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(format: value),
+                  ),
+                  onPositionStartCharacterChanged: (delta) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(
+                      positionStartCharacter: _updatedIntValue(
+                        field.positionStartCharacter,
+                        delta,
+                      ),
+                    ),
+                  ),
+                  onMaxCharacterSizeChanged: (delta) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(
+                      maxCharacterSize: _updatedIntValue(
+                        field.maxCharacterSize,
+                        delta,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -141,4 +170,7 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
     final updatedValue = (value + delta).clamp(0.0, double.infinity);
     return (updatedValue * 100).roundToDouble() / 100;
   }
+
+  int _updatedIntValue(int value, int delta) =>
+      (value + delta).clamp(0, 2147483647);
 }
