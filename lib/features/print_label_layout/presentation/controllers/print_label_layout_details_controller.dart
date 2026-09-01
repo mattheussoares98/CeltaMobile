@@ -11,7 +11,7 @@ class PrintLabelLayoutDetailsController
     extends _$PrintLabelLayoutDetailsController {
   @override
   FutureOr<BSFPrintLabelLayoutEntity> build(int code) async {
-    ref.cache();
+    ref.cache(60);
     final params = await ref.watch(ecRequestParamsProvider().future);
     return ref
         .read(ecPrintLabelLayoutRepositoryProvider)
