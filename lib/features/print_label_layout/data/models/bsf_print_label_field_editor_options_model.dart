@@ -47,8 +47,17 @@ class BSFPrintLabelFieldEditorOptionsModel
 
   BSFPrintLabelFieldEditorOptionsEntity toEntity() {
     return BSFPrintLabelFieldEditorOptionsEntity(
-      fields: List.unmodifiable(fields),
-      formats: List.unmodifiable(formats),
+      fields: fields
+          .map(
+            (item) =>
+                BSFPrintLabelFieldDefinitionModel.fromEntity(item).toEntity(),
+          )
+          .toList(),
+      formats: formats
+          .map(
+            (item) => BSFPrintLabelFieldFormatModel.fromEntity(item).toEntity(),
+          )
+          .toList(),
     );
   }
 }
