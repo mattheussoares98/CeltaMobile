@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/print_label_layout/domain/entities/ent
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,10 +34,30 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TitleAndSubTitle(
-              title: 'Campo'.hardcoded,
-              subTitle: field.field?.name,
-              emptyMessage: 'Não informado'.hardcoded,
+            Row(
+              children: [
+                Expanded(
+                  child: TitleAndSubTitle(
+                    title: 'Campo'.hardcoded,
+                    subTitle: field.field?.name,
+                    emptyMessage: 'Não informado'.hardcoded,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => controller.toggleFieldVisibility(field.code),
+                  tooltip: field.isVisible
+                      ? 'Ocultar do preview'.hardcoded
+                      : 'Exibir no preview'.hardcoded,
+                  icon: PlatformIcon(
+                    cupertinoIcon: field.isVisible
+                        ? CupertinoIcons.eye
+                        : CupertinoIcons.eye_slash,
+                    materialIcon: field.isVisible
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                  ),
+                ),
+              ],
             ),
             if (field.field?.content.isNotEmpty == true)
               TitleAndSubTitle(

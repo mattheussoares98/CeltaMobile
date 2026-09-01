@@ -54,6 +54,12 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void toggleFieldVisibility(int fieldCode) {
+    _updateField(fieldCode, (field) {
+      return field.copyWith(isVisible: !field.isVisible);
+    });
+  }
+
   void _updateField(
     int fieldCode,
     BSFPrintLabelLayoutFieldEntity Function(BSFPrintLabelLayoutFieldEntity)

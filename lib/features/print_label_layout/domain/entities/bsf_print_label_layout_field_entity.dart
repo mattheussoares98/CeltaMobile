@@ -28,6 +28,7 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
   final BSFPrintLabelFieldDefinitionEntity? field;
   final BSFPrintLabelFieldDefinitionEntity? fieldForDataBarcode;
   final BSFPrintLabelFieldFormatEntity? format;
+  final bool isVisible;
 
   const BSFPrintLabelLayoutFieldEntity({
     required this.code,
@@ -56,6 +57,7 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     required this.field,
     required this.fieldForDataBarcode,
     required this.format,
+    this.isVisible = true,
   });
 
   BSFPrintLabelLayoutFieldEntity copyWith({
@@ -85,6 +87,7 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     BSFPrintLabelFieldDefinitionEntity? field,
     BSFPrintLabelFieldDefinitionEntity? fieldForDataBarcode,
     BSFPrintLabelFieldFormatEntity? format,
+    bool? isVisible,
   }) {
     return BSFPrintLabelLayoutFieldEntity(
       code: code ?? this.code,
@@ -118,6 +121,7 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
       field: field ?? this.field,
       fieldForDataBarcode: fieldForDataBarcode ?? this.fieldForDataBarcode,
       format: format ?? this.format,
+      isVisible: isVisible ?? this.isVisible,
     );
   }
 
@@ -149,5 +153,6 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     field,
     fieldForDataBarcode,
     format,
+    isVisible,
   ];
 }

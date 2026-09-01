@@ -2549,6 +2549,7 @@ class EntityFactory {
     bool? drawLabelBelowBarcode,
     String? previewValue,
     BSFPrintLabelFieldDefinitionEntity? field,
+    bool? isVisible,
   }) => BSFPrintLabelLayoutFieldEntity(
     code: code ?? faker.randomGenerator.integer(100, min: 1),
     quantityDecimalPlaces: faker.randomGenerator.integer(5),
@@ -2577,6 +2578,7 @@ class EntityFactory {
     field: field ?? makeBSFPrintLabelFieldDefinitionEntity(),
     fieldForDataBarcode: makeBSFPrintLabelFieldDefinitionEntity(),
     format: makeBSFPrintLabelFieldFormatEntity(),
+    isVisible: isVisible ?? true,
   );
 
   static BSFPrintLabelLayoutEntity makeBSFPrintLabelLayoutEntity({

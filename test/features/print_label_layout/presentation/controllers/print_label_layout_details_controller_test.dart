@@ -196,4 +196,37 @@ void main() {
         .value!;
     expect(updated.fields.first.height, 0.0);
   });
+
+  test('toggleFieldVisibility should toggle field isVisible', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      isVisible: true,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.toggleFieldVisibility(1);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.isVisible, false);
+
+    notifier.toggleFieldVisibility(1);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.isVisible, true);
+  });
 }

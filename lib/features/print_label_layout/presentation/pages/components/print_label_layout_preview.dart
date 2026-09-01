@@ -98,7 +98,9 @@ class PrintLabelLayoutPreview extends StatelessWidget {
             ),
             child: Stack(
               clipBehavior: Clip.none,
-              children: layout.fields.map((field) {
+              children: layout.fields
+                  .where((field) => field.isVisible)
+                  .map((field) {
                 final scaleX = previewScale;
                 final scaleY = previewScale;
 

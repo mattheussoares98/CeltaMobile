@@ -92,5 +92,17 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Largura: 4.1'), findsOneWidget);
+
+    // Toggle visibility
+    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.visibility_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.visibility_off_outlined), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.visibility_off_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
   });
 }
