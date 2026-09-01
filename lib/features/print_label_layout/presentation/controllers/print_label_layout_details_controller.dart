@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
@@ -43,14 +41,7 @@ class PrintLabelLayoutDetailsController
       final updatedValue = _round(
         (field.width + delta).clamp(0.0, double.infinity),
       );
-      final isFilledBox =
-          field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
-          field.ratioBarCode * 2 >= math.min(field.width, field.height);
-      final updatedRatio = isFilledBox
-          ? _round(math.max(field.ratioBarCode, updatedValue / 2))
-          : field.ratioBarCode;
-
-      return field.copyWith(width: updatedValue, ratioBarCode: updatedRatio);
+      return field.copyWith(width: updatedValue);
     });
   }
 
@@ -59,14 +50,16 @@ class PrintLabelLayoutDetailsController
       final updatedValue = _round(
         (field.height + delta).clamp(0.0, double.infinity),
       );
-      final isFilledBox =
-          field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
-          field.ratioBarCode * 2 >= math.min(field.width, field.height);
-      final updatedRatio = isFilledBox
-          ? _round(math.max(field.ratioBarCode, updatedValue / 2))
-          : field.ratioBarCode;
+      return field.copyWith(height: updatedValue);
+    });
+  }
 
-      return field.copyWith(height: updatedValue, ratioBarCode: updatedRatio);
+  void updateFieldRatioBarCode(int fieldCode, double delta) {
+    _updateField(fieldCode, (field) {
+      final updatedValue = _round(
+        (field.ratioBarCode + delta).clamp(0.0, double.infinity),
+      );
+      return field.copyWith(ratioBarCode: updatedValue);
     });
   }
 

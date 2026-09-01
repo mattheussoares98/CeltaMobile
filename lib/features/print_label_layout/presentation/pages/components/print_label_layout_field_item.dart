@@ -114,7 +114,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                     child: PrintLabelLayoutValueAdjuster(
                       label: 'Largura'.hardcoded,
                       value: _formatDimension(field.width),
-                      onDecrease: field.width > 0
+                      onDecrease: field.width > _minWidth
                           ? () => controller.updateFieldWidth(
                               field.code,
                               -dimStep,
@@ -128,7 +128,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                     child: PrintLabelLayoutValueAdjuster(
                       label: 'Altura'.hardcoded,
                       value: _formatDimension(field.height),
-                      onDecrease: field.height > 0
+                      onDecrease: field.height > _minHeight
                           ? () => controller.updateFieldHeight(
                               field.code,
                               -dimStep,
@@ -140,6 +140,30 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   ),
                 ],
               ),
+              if (field.field?.fieldType ==
+                  BSFPrintLabelFieldType.boxOrLine) ...[
+                gapH4,
+                Row(
+                  children: [
+                    Expanded(
+                      child: PrintLabelLayoutValueAdjuster(
+                        label: 'Espessura do traço'.hardcoded,
+                        value: _formatDimension(field.ratioBarCode),
+                        onDecrease: field.ratioBarCode > _minStrokeThickness
+                            ? () => controller.updateFieldRatioBarCode(
+                                field.code,
+                                -dimStep,
+                              )
+                            : null,
+                        onIncrease: () => controller.updateFieldRatioBarCode(
+                          field.code,
+                          dimStep,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
             if (field.fontType.isNotEmpty) ...[
               gapH4,
@@ -200,4 +224,26 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
     BSFPrintLabelFieldDimensionType.printerCommandValue =>
       'valor do comando'.hardcoded,
   };
+
+  double get _minWidth {
+    if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
+        field.ratioBarCode > 0) {
+      return field.ratioBarCode;
+    }
+    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
+        ? 0.1
+        : 1.0;
+  }
+
+  double get _minHeight {
+    if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
+        field.ratioBarCode > 0) {
+      return field.ratioBarCode;
+    }
+    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
+        ? 0.1
+        : 1.0;
+  }
+
+  double get _minStrokeThickness => 1.0;
 }

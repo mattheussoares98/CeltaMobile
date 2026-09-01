@@ -198,16 +198,11 @@ void main() {
   });
 
   test(
-    'updateFieldHeight should scale ratioBarCode for filled box fields',
+    'updateFieldRatioBarCode should update ratioBarCode and clamp at zero',
     () async {
       final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
         code: 1,
-        width: 190.0,
-        height: 150.0,
         ratioBarCode: 75.0,
-        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
-          fieldType: BSFPrintLabelFieldType.boxOrLine,
-        ),
       );
       final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
         code: 10,
@@ -226,12 +221,17 @@ void main() {
         printLabelLayoutDetailsControllerProvider(10).notifier,
       );
 
-      notifier.updateFieldHeight(1, 1.0);
+      notifier.updateFieldRatioBarCode(1, 5.0);
       var updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
-      expect(updated.fields.first.height, 151.0);
-      expect(updated.fields.first.ratioBarCode, 75.5);
+      expect(updated.fields.first.ratioBarCode, 80.0);
+
+      notifier.updateFieldRatioBarCode(1, -100.0);
+      updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.ratioBarCode, 0.0);
     },
   );
 

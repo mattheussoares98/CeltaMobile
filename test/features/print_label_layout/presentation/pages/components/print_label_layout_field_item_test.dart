@@ -105,4 +105,74 @@ void main() {
 
     expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
   });
+
+  testWidgets('should render stroke thickness adjuster for boxOrLine field', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 2,
+      coordinateX: 20.0,
+      coordinateY: 5.0,
+      width: 190.0,
+      height: 150.0,
+      ratioBarCode: 75.0,
+      dimensionType: BSFPrintLabelFieldDimensionType.printerDot,
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      ),
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, child) {
+                final layoutAsync = ref.watch(
+                  printLabelLayoutDetailsControllerProvider(10),
+                );
+                return layoutAsync.when(
+                  data: (l) => PrintLabelLayoutFieldItem(
+                    layoutCode: 10,
+                    field: l.fields.first,
+                    coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (e, st) => Text(e.toString()),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Largura: 190'), findsOneWidget);
+    expect(find.text('Altura: 150'), findsOneWidget);
+    expect(find.text('Espessura do traço: 75'), findsOneWidget);
+
+    final addButtons = find.byIcon(Icons.add_circle_outline);
+    expect(addButtons, findsNWidgets(5));
+
+    // Tap increase on Espessura do traço (fifth add button)
+    await tester.tap(addButtons.at(4));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Espessura do traço: 76'), findsOneWidget);
+  });
 }
