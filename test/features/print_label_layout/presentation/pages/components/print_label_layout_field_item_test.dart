@@ -58,6 +58,7 @@ void main() {
                 return layoutAsync.when(
                   data: (l) => PrintLabelLayoutFieldItem(
                     layoutCode: 10,
+                    fieldIndex: 0,
                     field: l.fields.first,
                     coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
                   ),
@@ -151,6 +152,7 @@ void main() {
                 return layoutAsync.when(
                   data: (l) => PrintLabelLayoutFieldItem(
                     layoutCode: 10,
+                    fieldIndex: 0,
                     field: l.fields.first,
                     coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
                   ),
@@ -222,6 +224,7 @@ void main() {
                   return layoutAsync.when(
                     data: (l) => PrintLabelLayoutFieldItem(
                       layoutCode: 10,
+                      fieldIndex: 0,
                       field: l.fields.first,
                       coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
                     ),

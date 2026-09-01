@@ -80,8 +80,9 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                           final field = layout.fields[index];
 
                           return PrintLabelLayoutFieldItem(
-                            key: ValueKey(field.code),
+                            key: ValueKey(index),
                             layoutCode: layout.code,
+                            fieldIndex: index,
                             field: field,
                             coordinateUnit: coordinateUnit,
                           );

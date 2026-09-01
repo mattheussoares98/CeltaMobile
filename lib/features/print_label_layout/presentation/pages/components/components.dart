@@ -4,6 +4,7 @@ export 'print_label_ean13_encoder.dart';
 export 'print_label_layout_add_field_button.dart';
 export 'print_label_layout_add_field_page.dart';
 export 'print_label_layout_field_item.dart';
+export 'print_label_layout_field_editor.dart';
 export 'print_label_layout_preview.dart';
 export 'print_label_layout_summary_item.dart';
 export 'print_label_layout_value_adjuster.dart';

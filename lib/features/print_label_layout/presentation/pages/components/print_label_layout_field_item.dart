@@ -10,12 +10,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PrintLabelLayoutFieldItem extends ConsumerWidget {
   final int layoutCode;
+  final int fieldIndex;
   final BSFPrintLabelLayoutFieldEntity field;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
 
   const PrintLabelLayoutFieldItem({
     super.key,
     required this.layoutCode,
+    required this.fieldIndex,
     required this.field,
     required this.coordinateUnit,
   });
@@ -25,9 +27,6 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layoutCode).notifier,
     );
-    final coordStep = _coordinateStep;
-    final dimStep = _dimensionStep;
-
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -44,7 +43,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => controller.toggleFieldVisibility(field.code),
+                  onPressed: () => controller.toggleFieldVisibility(fieldIndex),
                   tooltip: field.isVisible
                       ? 'Ocultar do preview'.hardcoded
                       : 'Exibir no preview'.hardcoded,
@@ -59,198 +58,27 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                 ),
               ],
             ),
-            if (field.field?.content.isNotEmpty == true)
-              TitleAndSubTitle(
-                title: 'Conteúdo'.hardcoded,
-                subTitle: field.field!.content,
-              ),
-            gapH4,
-            BaseText.title('Coordenadas ($_coordinateUnit)'.hardcoded),
-            gapH4,
-            Wrap(
-              alignment: .spaceEvenly,
-              runAlignment: .spaceEvenly,
-              children: [
-                PrintLabelLayoutValueAdjuster(
-                  label: 'X'.hardcoded,
-                  value: _formatCoordinate(field.coordinateX),
-                  onDecrease: field.coordinateX > 0
-                      ? () => controller.updateFieldCoordinateX(
-                          field.code,
-                          -coordStep,
-                        )
-                      : null,
-                  onIncrease: () =>
-                      controller.updateFieldCoordinateX(field.code, coordStep),
-                ),
-                PrintLabelLayoutValueAdjuster(
-                  label: 'Y'.hardcoded,
-                  value: _formatCoordinate(field.coordinateY),
-                  onDecrease: field.coordinateY > 0
-                      ? () => controller.updateFieldCoordinateY(
-                          field.code,
-                          -coordStep,
-                        )
-                      : null,
-                  onIncrease: () =>
-                      controller.updateFieldCoordinateY(field.code, coordStep),
-                ),
-              ],
+            PrintLabelLayoutFieldEditor(
+              field: field,
+              coordinateUnit: coordinateUnit,
+              onCoordinateXChanged: (delta) =>
+                  controller.updateFieldCoordinateX(fieldIndex, delta),
+              onCoordinateYChanged: (delta) =>
+                  controller.updateFieldCoordinateY(fieldIndex, delta),
+              onWidthChanged: (delta) =>
+                  controller.updateFieldWidth(fieldIndex, delta),
+              onHeightChanged: (delta) =>
+                  controller.updateFieldHeight(fieldIndex, delta),
+              onRatioBarCodeChanged: (delta) =>
+                  controller.updateFieldRatioBarCode(fieldIndex, delta),
+              onRotationChanged: (value) =>
+                  controller.updateFieldRotateType(fieldIndex, value),
+              onDrawLabelBelowBarcodeChanged: (value) => controller
+                  .updateFieldDrawLabelBelowBarcode(fieldIndex, value),
             ),
-            if (field.dimensionType !=
-                BSFPrintLabelFieldDimensionType.notApplicable) ...[
-              gapH8,
-              BaseText.title('Dimensões ($_dimensionDescription)'.hardcoded),
-              gapH4,
-              Wrap(
-                alignment: .spaceEvenly,
-                runAlignment: .spaceEvenly,
-                children: [
-                  PrintLabelLayoutValueAdjuster(
-                    label: 'Largura'.hardcoded,
-                    value: _formatDimension(field.width),
-                    onDecrease: field.width > _minWidth
-                        ? () =>
-                              controller.updateFieldWidth(field.code, -dimStep)
-                        : null,
-                    onIncrease: () =>
-                        controller.updateFieldWidth(field.code, dimStep),
-                  ),
-                  PrintLabelLayoutValueAdjuster(
-                    label: 'Altura'.hardcoded,
-                    value: _formatDimension(field.height),
-                    onDecrease: field.height > _minHeight
-                        ? () =>
-                              controller.updateFieldHeight(field.code, -dimStep)
-                        : null,
-                    onIncrease: () =>
-                        controller.updateFieldHeight(field.code, dimStep),
-                  ),
-                ],
-              ),
-              if (field.field?.fieldType ==
-                  BSFPrintLabelFieldType.boxOrLine) ...[
-                gapH4,
-                Row(
-                  children: [
-                    Expanded(
-                      child: PrintLabelLayoutValueAdjuster(
-                        label: 'Espessura do traço'.hardcoded,
-                        value: _formatDimension(field.ratioBarCode),
-                        onDecrease: field.ratioBarCode > _minStrokeThickness
-                            ? () => controller.updateFieldRatioBarCode(
-                                field.code,
-                                -dimStep,
-                              )
-                            : null,
-                        onIncrease: () => controller.updateFieldRatioBarCode(
-                          field.code,
-                          dimStep,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ],
-            gapH8,
-            BaseText.title('Rotação'.hardcoded),
-            gapH4,
-            BaseSegmentedButtons<BSFPrintElementRotationType>(
-              items: BSFPrintElementRotationType.values,
-              selectedValue: field.rotateType,
-              itemLabelBuilder: (item) => item.name,
-              onChanged: (value) =>
-                  controller.updateFieldRotateType(field.code, value),
-            ),
-            if (field.field?.fieldType == BSFPrintLabelFieldType.barcode) ...[
-              gapH8,
-              BaseSwitch(
-                title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
-                value: field.drawLabelBelowBarcode,
-                onChanged: (value) => controller
-                    .updateFieldDrawLabelBelowBarcode(field.code, value),
-              ),
-            ],
-            if (field.fontType.isNotEmpty) ...[
-              gapH4,
-              TitleAndSubTitle(
-                title: 'Fonte'.hardcoded,
-                subTitle: '${field.fontType} (${field.fontSize})',
-              ),
-            ],
-            if (field.prefix.isNotEmpty) ...[
-              gapH4,
-              TitleAndSubTitle(
-                title: 'Prefixo'.hardcoded,
-                subTitle: field.prefix,
-              ),
-            ],
           ],
         ),
       ),
     );
   }
-
-  double get _coordinateStep =>
-      coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
-
-  double get _dimensionStep => switch (field.dimensionType) {
-    BSFPrintLabelFieldDimensionType.centimeter => 0.1,
-    _ => 1.0,
-  };
-
-  String _formatCoordinate(double value) {
-    if (coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter) {
-      return value.toStringAsFixed(1);
-    }
-    return value.truncateToDouble() == value
-        ? value.toStringAsFixed(0)
-        : value.toStringAsFixed(1);
-  }
-
-  String _formatDimension(double value) {
-    if (field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter) {
-      return value.toStringAsFixed(1);
-    }
-    return value.truncateToDouble() == value
-        ? value.toStringAsFixed(0)
-        : value.toStringAsFixed(1);
-  }
-
-  String get _coordinateUnit =>
-      coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter
-      ? 'cm'
-      : 'pontos'.hardcoded;
-
-  String get _dimensionDescription => switch (field.dimensionType) {
-    BSFPrintLabelFieldDimensionType.notApplicable => '',
-    BSFPrintLabelFieldDimensionType.centimeter => 'cm',
-    BSFPrintLabelFieldDimensionType.printerDot => 'pontos'.hardcoded,
-    BSFPrintLabelFieldDimensionType.scaleFactor => 'fator'.hardcoded,
-    BSFPrintLabelFieldDimensionType.printerCommandValue =>
-      'valor do comando'.hardcoded,
-  };
-
-  double get _minWidth {
-    if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
-        field.ratioBarCode > 0) {
-      return field.ratioBarCode;
-    }
-    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
-        ? 0.1
-        : 1.0;
-  }
-
-  double get _minHeight {
-    if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
-        field.ratioBarCode > 0) {
-      return field.ratioBarCode;
-    }
-    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
-        ? 0.1
-        : 1.0;
-  }
-
-  double get _minStrokeThickness => 1.0;
 }
