@@ -47,8 +47,22 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                       },
                     ),
                     SliverToBoxAdapter(
-                      child: BaseText.title(
-                        'Campos (${layout.fields.length})'.hardcoded,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Sizes.p8,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: BaseText.title(
+                                'Campos (${layout.fields.length})'.hardcoded,
+                              ),
+                            ),
+                            PrintLabelLayoutAddFieldButton(
+                              layoutCode: layout.code,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
