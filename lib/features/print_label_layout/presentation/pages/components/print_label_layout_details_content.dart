@@ -14,30 +14,27 @@ class PrintLabelLayoutDetailsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final coordinateUnit = layout.labelPrinter?.coordinateUnit;
 
-    return Padding(
-      padding: const EdgeInsets.all(Sizes.p8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          PrintLabelLayoutPreview(layout: layout),
-          gapH16,
-          PrintLabelLayoutGeneralInformation(layout: layout),
-          gapH16,
-          BaseText.title('Campos (${layout.fields.length})'.hardcoded),
-          gapH8,
-          if (layout.fields.isEmpty)
-            BaseText.caption('Nenhum campo configurado'.hardcoded)
-          else
-            ...layout.fields.map(
-              (field) => PrintLabelLayoutFieldItem(
-                key: ValueKey(field.code),
-                layoutCode: layout.code,
-                field: field,
-                coordinateUnit: coordinateUnit,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        PrintLabelLayoutPreview(layout: layout),
+        gapH8,
+        PrintLabelLayoutGeneralInformation(layout: layout),
+        gapH8,
+        BaseText.title('Campos (${layout.fields.length})'.hardcoded),
+
+        if (layout.fields.isEmpty)
+          BaseText.caption('Nenhum campo configurado'.hardcoded)
+        else
+          ...layout.fields.map(
+            (field) => PrintLabelLayoutFieldItem(
+              key: ValueKey(field.code),
+              layoutCode: layout.code,
+              field: field,
+              coordinateUnit: coordinateUnit,
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

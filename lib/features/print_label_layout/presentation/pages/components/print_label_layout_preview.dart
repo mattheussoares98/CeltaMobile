@@ -36,12 +36,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BaseText.title('Pré-visualização'.hardcoded),
-            gapH4,
-            BaseText.caption(
-              coordinateUnit.description.hardcoded,
-              color: context.theme.colorScheme.onSurfaceVariant,
-            ),
+            BaseText.title('Pré-visualização (APROXIMADA)'.hardcoded),
             gapH8,
             if (!hasValidLabelSize)
               BaseText.caption(
@@ -86,7 +81,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     final isRabbitOS214 = previewMetrics.isRabbitOS214;
 
     return SizedBox(
-      height: canvasHeight + Sizes.p48,
+      height: canvasHeight,
       child: Center(
         child: SizedBox(
           width: canvasWidth,
@@ -98,9 +93,9 @@ class PrintLabelLayoutPreview extends StatelessWidget {
             ),
             child: Stack(
               clipBehavior: Clip.none,
-              children: layout.fields
-                  .where((field) => field.isVisible)
-                  .map((field) {
+              children: layout.fields.where((field) => field.isVisible).map((
+                field,
+              ) {
                 final scaleX = previewScale;
                 final scaleY = previewScale;
 
