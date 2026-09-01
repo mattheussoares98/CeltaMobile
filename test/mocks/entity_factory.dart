@@ -2536,6 +2536,7 @@ class EntityFactory {
       );
 
   static BSFPrintLabelLayoutFieldEntity makeBSFPrintLabelLayoutFieldEntity({
+    int? code,
     double? coordinateX,
     double? coordinateY,
     double? width,
@@ -2549,7 +2550,7 @@ class EntityFactory {
     String? previewValue,
     BSFPrintLabelFieldDefinitionEntity? field,
   }) => BSFPrintLabelLayoutFieldEntity(
-    code: faker.randomGenerator.integer(100, min: 1),
+    code: code ?? faker.randomGenerator.integer(100, min: 1),
     quantityDecimalPlaces: faker.randomGenerator.integer(5),
     coordinateX: coordinateX ?? faker.randomGenerator.decimal(),
     coordinateY: coordinateY ?? faker.randomGenerator.decimal(),

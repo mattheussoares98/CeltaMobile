@@ -17,4 +17,60 @@ class PrintLabelLayoutDetailsController
         .read(ecPrintLabelLayoutRepositoryProvider)
         .getDetails(params, code);
   }
+
+  void updateFieldCoordinateX(int fieldCode, double delta) {
+    _updateField(fieldCode, (field) {
+      final updatedValue = _round(
+        (field.coordinateX + delta).clamp(0.0, double.infinity),
+      );
+      return field.copyWith(coordinateX: updatedValue);
+    });
+  }
+
+  void updateFieldCoordinateY(int fieldCode, double delta) {
+    _updateField(fieldCode, (field) {
+      final updatedValue = _round(
+        (field.coordinateY + delta).clamp(0.0, double.infinity),
+      );
+      return field.copyWith(coordinateY: updatedValue);
+    });
+  }
+
+  void updateFieldWidth(int fieldCode, double delta) {
+    _updateField(fieldCode, (field) {
+      final updatedValue = _round(
+        (field.width + delta).clamp(0.0, double.infinity),
+      );
+      return field.copyWith(width: updatedValue);
+    });
+  }
+
+  void updateFieldHeight(int fieldCode, double delta) {
+    _updateField(fieldCode, (field) {
+      final updatedValue = _round(
+        (field.height + delta).clamp(0.0, double.infinity),
+      );
+      return field.copyWith(height: updatedValue);
+    });
+  }
+
+  void _updateField(
+    int fieldCode,
+    BSFPrintLabelLayoutFieldEntity Function(BSFPrintLabelLayoutFieldEntity)
+    updater,
+  ) {
+    if (state is! AsyncData<BSFPrintLabelLayoutEntity>) return;
+    final current = state.requireValue;
+
+    final updatedFields = current.fields.map((f) {
+      if (f.code == fieldCode) {
+        return updater(f);
+      }
+      return f;
+    }).toList();
+
+    state = AsyncData(current.copyWith(fields: updatedFields));
+  }
+
+  double _round(num value) => (value * 100).round() / 100;
 }

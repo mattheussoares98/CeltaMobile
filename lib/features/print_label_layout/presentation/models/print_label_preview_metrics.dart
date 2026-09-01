@@ -112,9 +112,10 @@ class PrintLabelPreviewMetrics {
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
-      final moduleWidth = field.ratioBarCode > 0
-          ? field.ratioBarCode
-          : math.max(1, field.width * _rabbitPplaBarcodeWidthScale);
+      final baseModuleWidth = field.ratioBarCode > 0
+          ? field.ratioBarCode / 2.0
+          : _rabbitPplaBarcodeWidthScale;
+      final moduleWidth = math.max(0.5, field.width * baseModuleWidth);
       return _rabbitBarcodeModuleCount(field) * moduleWidth;
     }
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
@@ -146,6 +147,9 @@ class PrintLabelPreviewMetrics {
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       final configuredWidth = math.max(field.width, field.ratioBarCode);
       return configuredWidth + _rabbitBoxCanvasExpansion(field);
+    }
+    if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+      return renderedWidth(field);
     }
     if (!_isText(field)) return field.width;
 

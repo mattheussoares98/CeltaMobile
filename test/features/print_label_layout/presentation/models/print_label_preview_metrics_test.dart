@@ -56,6 +56,25 @@ void main() {
       expect(metrics.rabbitBarcodeCaptionFontSize(1), 8);
     });
 
+    test('should dynamically scale barcode renderedWidth when width changes', () {
+      final fieldWidth2 = _rabbitField(
+        width: 2,
+        height: 30,
+        ratioBarCode: 1.5,
+        previewValue: '7891000379103',
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final fieldWidth3 = fieldWidth2.copyWith(width: 3);
+      final fieldWidth1 = fieldWidth2.copyWith(width: 1);
+      final metrics2 = _metrics([fieldWidth2]);
+      final metrics3 = _metrics([fieldWidth3]);
+      final metrics1 = _metrics([fieldWidth1]);
+
+      expect(metrics2.renderedWidth(fieldWidth2), 142.5);
+      expect(metrics3.renderedWidth(fieldWidth3), 213.75);
+      expect(metrics1.renderedWidth(fieldWidth1), 71.25);
+    });
+
     test('should keep large Rabbit price font horizontally condensed', () {
       final field = _rabbitField(fontType: '6', previewValue: '0,00');
       final metrics = _metrics([field]);

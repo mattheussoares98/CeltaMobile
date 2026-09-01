@@ -31,6 +31,7 @@ class PrintLabelLayoutDetailsContent extends StatelessWidget {
             ...layout.fields.map(
               (field) => PrintLabelLayoutFieldItem(
                 key: ValueKey(field.code),
+                layoutCode: layout.code,
                 field: field,
                 coordinateUnit: coordinateUnit,
               ),

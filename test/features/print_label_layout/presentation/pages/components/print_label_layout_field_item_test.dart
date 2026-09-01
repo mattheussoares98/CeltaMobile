@@ -1,0 +1,96 @@
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
+import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/print_label_layout/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../../../../../mocks/mocks.dart';
+
+class MockEcPrintLabelLayoutRepository extends Mock
+    implements IEcPrintLabelLayoutRepository {}
+
+void main() {
+  late MockEcPrintLabelLayoutRepository repository;
+
+  setUp(() {
+    repository = MockEcPrintLabelLayoutRepository();
+  });
+
+  testWidgets('should render field item adjusters and update coordinates', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      coordinateX: 2.0,
+      coordinateY: 3.0,
+      width: 4.0,
+      height: 5.0,
+      dimensionType: BSFPrintLabelFieldDimensionType.centimeter,
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, child) {
+                final layoutAsync = ref.watch(
+                  printLabelLayoutDetailsControllerProvider(10),
+                );
+                return layoutAsync.when(
+                  data: (l) => PrintLabelLayoutFieldItem(
+                    layoutCode: 10,
+                    field: l.fields.first,
+                    coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (e, st) => Text(e.toString()),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('X: 2.0'), findsOneWidget);
+    expect(find.text('Y: 3.0'), findsOneWidget);
+    expect(find.text('Largura: 4.0'), findsOneWidget);
+    expect(find.text('Altura: 5.0'), findsOneWidget);
+
+    // Tap increase on X (first add button)
+    final addButtons = find.byIcon(Icons.add_circle_outline);
+    expect(addButtons, findsNWidgets(4));
+
+    await tester.tap(addButtons.at(0));
+    await tester.pumpAndSettle();
+
+    expect(find.text('X: 2.1'), findsOneWidget);
+
+    // Tap increase on Largura (third add button)
+    await tester.tap(addButtons.at(2));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Largura: 4.1'), findsOneWidget);
+  });
+}

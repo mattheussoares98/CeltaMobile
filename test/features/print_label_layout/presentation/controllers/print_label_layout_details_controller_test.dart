@@ -64,4 +64,136 @@ void main() {
     verify(() => repository.getDetails(params, layout.code)).called(1);
     verifyNoMoreInteractions(repository);
   });
+
+  test('updateFieldCoordinateX should update coordinateX and clamp at zero', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      coordinateX: 2.0,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldCoordinateX(1, 0.5);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.coordinateX, 2.5);
+
+    notifier.updateFieldCoordinateX(1, -3.0);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.coordinateX, 0.0);
+  });
+
+  test('updateFieldCoordinateY should update coordinateY and clamp at zero', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      coordinateY: 1.5,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldCoordinateY(1, 0.2);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.coordinateY, 1.7);
+
+    notifier.updateFieldCoordinateY(1, -2.0);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.coordinateY, 0.0);
+  });
+
+  test('updateFieldWidth should update width and clamp at zero', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      width: 4.0,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldWidth(1, 1.0);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.width, 5.0);
+
+    notifier.updateFieldWidth(1, -10.0);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.width, 0.0);
+  });
+
+  test('updateFieldHeight should update height and clamp at zero', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      height: 3.0,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldHeight(1, 0.5);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.height, 3.5);
+
+    notifier.updateFieldHeight(1, -5.0);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.height, 0.0);
+  });
 }

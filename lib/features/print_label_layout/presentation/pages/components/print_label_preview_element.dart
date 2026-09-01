@@ -206,8 +206,11 @@ class PrintLabelPreviewElement extends StatelessWidget {
     return switch (_fieldType) {
       BSFPrintLabelFieldType.barcode when _isQrCode => _symbolSize,
       BSFPrintLabelFieldType.barcode =>
-        (_fontSize * math.max(6, math.min(_previewText.length, 16) * 0.65))
-            .clamp(_minimumBarcodeWidth, _maximumBarcodeWidth),
+        field.width > 0
+            ? field.width * scaleX
+            : (_fontSize *
+                      math.max(6, math.min(_previewText.length, 16) * 0.65))
+                  .clamp(_minimumBarcodeWidth, _maximumBarcodeWidth),
       BSFPrintLabelFieldType.logo => _symbolSize,
       _ => null,
     };
@@ -224,10 +227,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
 
     return switch (_fieldType) {
       BSFPrintLabelFieldType.barcode when _isQrCode => _symbolSize,
-      BSFPrintLabelFieldType.barcode => (_fontSize * 3).clamp(
-        _minimumSymbolSize,
-        _maximumSymbolSize,
-      ),
+      BSFPrintLabelFieldType.barcode =>
+        field.height > 0
+            ? field.height * scaleY
+            : (_fontSize * 3).clamp(_minimumSymbolSize, _maximumSymbolSize),
       BSFPrintLabelFieldType.logo => _symbolSize,
       _ => null,
     };

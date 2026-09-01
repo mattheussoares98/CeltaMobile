@@ -58,6 +58,70 @@ class BSFPrintLabelLayoutEntity extends Equatable {
     required this.fields,
   });
 
+  BSFPrintLabelLayoutEntity copyWith({
+    int? code,
+    String? name,
+    BSFPrintLabelLayoutType? layoutType,
+    BSFPrintLabelFormType? formType,
+    double? formWidth,
+    double? formHeight,
+    double? formTopMargin,
+    double? formLeftMargin,
+    int? quantityColumns,
+    double? labelWidth,
+    double? labelHeight,
+    double? labelRightMargin,
+    double? labelBottomMargin,
+    int? temperature,
+    int? printSpeed,
+    BSFPrintLabelDirectionType? directionLabelType,
+    BSFProductPackingSelectionType? considerProductPacking,
+    int? intervalPrintPackage,
+    bool? applyFormSizeConfiguration,
+    BSFPrintLabelAddressType? addressType,
+    bool? isConvenePrintLabel,
+    bool? informPrintQuantityByProduct,
+    bool? printProductBySoldQuantity,
+    bool? goesForBalanceAndQuantityInBalance,
+    BSFPrintLabelPrinterEntity? labelPrinter,
+    List<BSFPrintLabelLayoutFieldEntity>? fields,
+  }) {
+    return BSFPrintLabelLayoutEntity(
+      code: code ?? this.code,
+      name: name ?? this.name,
+      layoutType: layoutType ?? this.layoutType,
+      formType: formType ?? this.formType,
+      formWidth: formWidth ?? this.formWidth,
+      formHeight: formHeight ?? this.formHeight,
+      formTopMargin: formTopMargin ?? this.formTopMargin,
+      formLeftMargin: formLeftMargin ?? this.formLeftMargin,
+      quantityColumns: quantityColumns ?? this.quantityColumns,
+      labelWidth: labelWidth ?? this.labelWidth,
+      labelHeight: labelHeight ?? this.labelHeight,
+      labelRightMargin: labelRightMargin ?? this.labelRightMargin,
+      labelBottomMargin: labelBottomMargin ?? this.labelBottomMargin,
+      temperature: temperature ?? this.temperature,
+      printSpeed: printSpeed ?? this.printSpeed,
+      directionLabelType: directionLabelType ?? this.directionLabelType,
+      considerProductPacking:
+          considerProductPacking ?? this.considerProductPacking,
+      intervalPrintPackage: intervalPrintPackage ?? this.intervalPrintPackage,
+      applyFormSizeConfiguration:
+          applyFormSizeConfiguration ?? this.applyFormSizeConfiguration,
+      addressType: addressType ?? this.addressType,
+      isConvenePrintLabel: isConvenePrintLabel ?? this.isConvenePrintLabel,
+      informPrintQuantityByProduct:
+          informPrintQuantityByProduct ?? this.informPrintQuantityByProduct,
+      printProductBySoldQuantity:
+          printProductBySoldQuantity ?? this.printProductBySoldQuantity,
+      goesForBalanceAndQuantityInBalance:
+          goesForBalanceAndQuantityInBalance ??
+          this.goesForBalanceAndQuantityInBalance,
+      labelPrinter: labelPrinter ?? this.labelPrinter,
+      fields: fields ?? this.fields,
+    );
+  }
+
   @override
   List<Object?> get props => [
     code,

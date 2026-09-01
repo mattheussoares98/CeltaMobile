@@ -58,6 +58,69 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     required this.format,
   });
 
+  BSFPrintLabelLayoutFieldEntity copyWith({
+    int? code,
+    int? quantityDecimalPlaces,
+    double? coordinateX,
+    double? coordinateY,
+    BSFPrintElementAlignmentType? alignmentType,
+    double? width,
+    double? height,
+    BSFPrintLabelFieldDimensionType? dimensionType,
+    String? fontType,
+    int? fontSize,
+    bool? isBold,
+    BSFPrintElementRotationType? rotateType,
+    double? ratioBarCode,
+    BSFBarcodeSimbologyType? barcodeSimbologyType,
+    int? positionStartCharacter,
+    int? maxCharacterSizeDisplacedQuantity,
+    int? maxCharacterSize,
+    bool? drawLabelBelowBarcode,
+    bool? isReverseText,
+    String? prefix,
+    String? imageName,
+    String? previewValue,
+    List<int>? previewImage,
+    BSFPrintLabelFieldDefinitionEntity? field,
+    BSFPrintLabelFieldDefinitionEntity? fieldForDataBarcode,
+    BSFPrintLabelFieldFormatEntity? format,
+  }) {
+    return BSFPrintLabelLayoutFieldEntity(
+      code: code ?? this.code,
+      quantityDecimalPlaces:
+          quantityDecimalPlaces ?? this.quantityDecimalPlaces,
+      coordinateX: coordinateX ?? this.coordinateX,
+      coordinateY: coordinateY ?? this.coordinateY,
+      alignmentType: alignmentType ?? this.alignmentType,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      dimensionType: dimensionType ?? this.dimensionType,
+      fontType: fontType ?? this.fontType,
+      fontSize: fontSize ?? this.fontSize,
+      isBold: isBold ?? this.isBold,
+      rotateType: rotateType ?? this.rotateType,
+      ratioBarCode: ratioBarCode ?? this.ratioBarCode,
+      barcodeSimbologyType: barcodeSimbologyType ?? this.barcodeSimbologyType,
+      positionStartCharacter:
+          positionStartCharacter ?? this.positionStartCharacter,
+      maxCharacterSizeDisplacedQuantity:
+          maxCharacterSizeDisplacedQuantity ??
+          this.maxCharacterSizeDisplacedQuantity,
+      maxCharacterSize: maxCharacterSize ?? this.maxCharacterSize,
+      drawLabelBelowBarcode:
+          drawLabelBelowBarcode ?? this.drawLabelBelowBarcode,
+      isReverseText: isReverseText ?? this.isReverseText,
+      prefix: prefix ?? this.prefix,
+      imageName: imageName ?? this.imageName,
+      previewValue: previewValue ?? this.previewValue,
+      previewImage: previewImage ?? this.previewImage,
+      field: field ?? this.field,
+      fieldForDataBarcode: fieldForDataBarcode ?? this.fieldForDataBarcode,
+      format: format ?? this.format,
+    );
+  }
+
   @override
   List<Object?> get props => [
     code,
