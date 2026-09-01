@@ -19,3 +19,4 @@ export 'bsf_print_label_layout_summary_entity.dart';
 export 'bsf_print_label_layout_type.dart';
 export 'bsf_print_label_printer_entity.dart';
 export 'bsf_product_packing_selection_type.dart';
+export 'print_label_field_editor_option_entity.dart';
