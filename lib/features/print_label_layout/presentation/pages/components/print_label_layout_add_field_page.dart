@@ -9,12 +9,12 @@ import 'package:go_router/go_router.dart';
 
 class PrintLabelLayoutAddFieldPage extends ConsumerStatefulWidget {
   final int layoutCode;
-  final List<BSFPrintLabelLayoutFieldEntity> fieldDrafts;
+  final List<PrintLabelFieldEditorOptionEntity> fieldOptions;
 
   const PrintLabelLayoutAddFieldPage({
     super.key,
     required this.layoutCode,
-    required this.fieldDrafts,
+    required this.fieldOptions,
   });
 
   @override
@@ -24,7 +24,7 @@ class PrintLabelLayoutAddFieldPage extends ConsumerStatefulWidget {
 
 class _PrintLabelLayoutAddFieldPageState
     extends ConsumerState<PrintLabelLayoutAddFieldPage> {
-  BSFPrintLabelLayoutFieldEntity? selectedDraft;
+  PrintLabelFieldEditorOptionEntity? selectedOption;
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +35,30 @@ class _PrintLabelLayoutAddFieldPageState
         children: [
           BaseText.title('Adicionar campo ao leiaute'.hardcoded),
           gapH16,
-          BaseDropDown<BSFPrintLabelLayoutFieldEntity>(
+          BaseDropDown<PrintLabelFieldEditorOptionEntity>(
             label: 'Campo'.hardcoded,
-            selectedItem: selectedDraft,
-            items: widget.fieldDrafts
+            selectedItem: selectedOption,
+            items: widget.fieldOptions
                 .map(
-                  (draft) => DropdownMenuItem(
-                    value: draft,
-                    child: BaseText(draft.field?.name ?? 'Sem nome'.hardcoded),
+                  (option) => DropdownMenuItem(
+                    value: option,
+                    child: BaseText(option.definition.name),
                   ),
                 )
                 .toList(),
-            onChanged: (value) => setState(() => selectedDraft = value),
+            onChanged: (value) => setState(() => selectedOption = value),
           ),
-          if (selectedDraft != null) ...[
+          if (selectedOption != null) ...[
             gapH16,
             TitleAndSubTitle(
               title: 'Tipo'.hardcoded,
-              subTitle: selectedDraft!.field?.fieldType.name,
+              subTitle: selectedOption!.definition.fieldType.name,
             ),
           ],
           const Spacer(),
           PrimaryButton(
             text: 'Adicionar'.hardcoded,
-            onPressed: selectedDraft == null ? null : _addField,
+            onPressed: selectedOption == null ? null : _addField,
           ),
         ],
       ),
@@ -70,7 +70,7 @@ class _PrintLabelLayoutAddFieldPageState
         .read(
           printLabelLayoutDetailsControllerProvider(widget.layoutCode).notifier,
         )
-        .addField(selectedDraft!);
+        .addField(selectedOption!.draft);
     context.pop();
   }
 }

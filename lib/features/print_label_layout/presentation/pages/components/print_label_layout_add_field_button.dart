@@ -24,12 +24,12 @@ class PrintLabelLayoutAddFieldButton extends ConsumerWidget {
           cupertinoIcon: CupertinoIcons.add,
           materialIcon: Icons.add,
         ),
-        onPressed: options.fieldDrafts.isEmpty
+        onPressed: options.fieldOptions.isEmpty
             ? null
             : () => showModalPage(
                 PrintLabelLayoutAddFieldPage(
                   layoutCode: layoutCode,
-                  fieldDrafts: options.fieldDrafts,
+                  fieldOptions: options.fieldOptions,
                 ),
                 context,
               ),
