@@ -561,7 +561,7 @@ void main() {
   );
 
   test(
-    'addField should append the server draft with a local identity',
+    'addField should append the unchanged server draft',
     () async {
       final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 0);
       final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
