@@ -24,6 +24,12 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
         tryAgain: () => ref.invalidate(provider),
         data: (layout) {
           final coordinateUnit = layout.labelPrinter?.coordinateUnit;
+          List<Widget> items = [
+            PrintLabelLayoutGeneralInformation(layout: layout),
+            PrintLabelLayoutPrinterParameters(layout: layout),
+            PrintLabelLayoutFormParameters(layout: layout),
+            PrintLabelLayoutLabelParameters(layout: layout),
+          ];
 
           return Column(
             children: [
@@ -32,22 +38,14 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                 child: CustomScrollView(
                   slivers: [
                     gapSliverH8,
-                    SliverToBoxAdapter(
-                      child: PrintLabelLayoutGeneralInformation(layout: layout),
+                    ResponsiveListFlow(
+                      isSliver: true,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        final item = items[index];
+                        return item;
+                      },
                     ),
-                    gapSliverH8,
-                    SliverToBoxAdapter(
-                      child: PrintLabelLayoutPrinterParameters(layout: layout),
-                    ),
-                    gapSliverH8,
-                    SliverToBoxAdapter(
-                      child: PrintLabelLayoutFormParameters(layout: layout),
-                    ),
-                    gapSliverH8,
-                    SliverToBoxAdapter(
-                      child: PrintLabelLayoutLabelParameters(layout: layout),
-                    ),
-                    gapSliverH8,
                     SliverToBoxAdapter(
                       child: BaseText.title(
                         'Campos (${layout.fields.length})'.hardcoded,
