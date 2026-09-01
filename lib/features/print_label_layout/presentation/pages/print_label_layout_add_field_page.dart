@@ -54,11 +54,6 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
           ),
           if (selectedOption.value != null && draft.value != null) ...[
             gapH16,
-            TitleAndSubTitle(
-              title: 'Tipo'.hardcoded,
-              subTitle: selectedOption.value!.definition.fieldType.name,
-            ),
-            gapH16,
             Expanded(
               child: SingleChildScrollView(
                 child: PrintLabelLayoutFieldEditor(
