@@ -31,6 +31,7 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const fastRepeatInterval = Duration(milliseconds: 25);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -48,6 +49,7 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
           children: [
             PrintLabelLayoutValueAdjuster(
               label: 'X'.hardcoded,
+              repeatInterval: fastRepeatInterval,
               value: _formatCoordinate(field.coordinateX),
               onDecrease: field.coordinateX > 0
                   ? () => onCoordinateXChanged(-_coordinateStep)
@@ -56,6 +58,7 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
             ),
             PrintLabelLayoutValueAdjuster(
               label: 'Y'.hardcoded,
+              repeatInterval: fastRepeatInterval,
               value: _formatCoordinate(field.coordinateY),
               onDecrease: field.coordinateY > 0
                   ? () => onCoordinateYChanged(-_coordinateStep)
@@ -75,6 +78,7 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
             children: [
               PrintLabelLayoutValueAdjuster(
                 label: 'Largura'.hardcoded,
+                repeatInterval: fastRepeatInterval,
                 value: _formatDimension(field.width),
                 onDecrease: field.width > _minWidth
                     ? () => onWidthChanged(-_dimensionStep)
@@ -83,6 +87,7 @@ class PrintLabelLayoutFieldEditor extends StatelessWidget {
               ),
               PrintLabelLayoutValueAdjuster(
                 label: 'Altura'.hardcoded,
+                repeatInterval: fastRepeatInterval,
                 value: _formatDimension(field.height),
                 onDecrease: field.height > _minHeight
                     ? () => onHeightChanged(-_dimensionStep)
