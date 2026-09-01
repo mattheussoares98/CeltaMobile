@@ -1,6 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
