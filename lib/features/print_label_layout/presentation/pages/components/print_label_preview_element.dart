@@ -101,8 +101,9 @@ class PrintLabelPreviewElement extends StatelessWidget {
         : field.field?.logo;
 
     if (logo != null && logo.isNotEmpty) {
+      final bytes = logo is Uint8List ? logo : Uint8List.fromList(logo);
       return Image.memory(
-        Uint8List.fromList(logo),
+        bytes,
         fit: BoxFit.contain,
         alignment: Alignment.topLeft,
         errorBuilder: (_, _, _) => _logoPlaceholder(context),

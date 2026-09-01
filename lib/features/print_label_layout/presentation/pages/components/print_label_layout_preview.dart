@@ -18,6 +18,18 @@ class PrintLabelLayoutPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previewMetrics = PrintLabelPreviewMetrics(layout);
+    final previewLabelWidth = previewMetrics.canvasWidth;
+    final previewLabelHeight = previewMetrics.canvasHeight;
+    final hasValidLabelSize =
+        previewLabelWidth.isFinite &&
+        previewLabelHeight.isFinite &&
+        previewLabelWidth > 0 &&
+        previewLabelHeight > 0;
+    final coordinateUnit =
+        layout.labelPrinter?.coordinateUnit ??
+        BSFPrintLabelCoordinateUnit.centimeter;
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -27,33 +39,51 @@ class PrintLabelLayoutPreview extends StatelessWidget {
             BaseText.title('Pré-visualização'.hardcoded),
             gapH4,
             BaseText.caption(
-              _coordinateUnit.description.hardcoded,
+              coordinateUnit.description.hardcoded,
               color: context.theme.colorScheme.onSurfaceVariant,
             ),
             gapH8,
-            if (!_hasValidLabelSize)
+            if (!hasValidLabelSize)
               BaseText.caption(
                 'Informe uma largura e altura válidas para visualizar a etiqueta.'
                     .hardcoded,
                 color: context.theme.colorScheme.error,
               )
             else
-              LayoutBuilder(builder: _previewBuilder),
+              LayoutBuilder(
+                builder: (context, constraints) => _buildPreview(
+                  context,
+                  constraints,
+                  previewMetrics: previewMetrics,
+                  previewLabelWidth: previewLabelWidth,
+                  previewLabelHeight: previewLabelHeight,
+                  coordinateUnit: coordinateUnit,
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _previewBuilder(BuildContext context, BoxConstraints constraints) {
-    final availableWidth = math.max(0, constraints.maxWidth - Sizes.p48);
-    final aspectRatio = _previewLabelWidth / _previewLabelHeight;
+  Widget _buildPreview(
+    BuildContext context,
+    BoxConstraints constraints, {
+    required PrintLabelPreviewMetrics previewMetrics,
+    required double previewLabelWidth,
+    required double previewLabelHeight,
+    required BSFPrintLabelCoordinateUnit coordinateUnit,
+  }) {
+    final availableWidth = math.max(0.0, constraints.maxWidth - Sizes.p48);
+    final aspectRatio = previewLabelWidth / previewLabelHeight;
     final canvasHeight = math.min(
       availableWidth / aspectRatio,
       _maximumPreviewHeight,
     );
-    final previewScale = canvasHeight / _previewLabelHeight;
-    final canvasWidth = _drawableLabelWidth * previewScale;
+    final previewScale = canvasHeight / previewLabelHeight;
+    final drawableLabelWidth = previewMetrics.drawableCanvasWidth;
+    final canvasWidth = drawableLabelWidth * previewScale;
+    final isRabbitOS214 = previewMetrics.isRabbitOS214;
 
     return SizedBox(
       height: canvasHeight + Sizes.p48,
@@ -73,16 +103,23 @@ class PrintLabelLayoutPreview extends StatelessWidget {
                 final scaleY = previewScale;
 
                 return Positioned(
-                  left: _previewMetrics.horizontalPosition(field) * scaleX,
-                  top: _previewMetrics.verticalPosition(field) * scaleY,
+                  left: previewMetrics.horizontalPosition(field) * scaleX,
+                  top: previewMetrics.verticalPosition(field) * scaleY,
                   child: PrintLabelPreviewElement(
                     field: field,
-                    coordinateUnit: _coordinateUnit,
-                    previewMetrics: _previewMetrics,
+                    coordinateUnit: coordinateUnit,
+                    previewMetrics: previewMetrics,
                     scaleX: scaleX,
                     scaleY: scaleY,
-                    isOutsideLabel: _isOutsideLabel(field),
-                    isInsideFilledBox: _previewMetrics.isInsideFilledBox(field),
+                    isOutsideLabel: _isOutsideLabel(
+                      field,
+                      previewMetrics: previewMetrics,
+                      isRabbitOS214: isRabbitOS214,
+                      drawableLabelWidth: drawableLabelWidth,
+                      previewLabelWidth: previewLabelWidth,
+                      previewLabelHeight: previewLabelHeight,
+                    ),
+                    isInsideFilledBox: previewMetrics.isInsideFilledBox(field),
                   ),
                 );
               }).toList(),
@@ -93,45 +130,33 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     );
   }
 
-  bool _isOutsideLabel(BSFPrintLabelLayoutFieldEntity field) {
+  bool _isOutsideLabel(
+    BSFPrintLabelLayoutFieldEntity field, {
+    required PrintLabelPreviewMetrics previewMetrics,
+    required bool isRabbitOS214,
+    required double drawableLabelWidth,
+    required double previewLabelWidth,
+    required double previewLabelHeight,
+  }) {
     if (field.coordinateX < 0 || field.coordinateY < 0) return true;
 
-    if (_previewMetrics.isRabbitOS214) {
-      return _previewMetrics.horizontalPosition(field) +
-                  _previewMetrics.renderedWidth(field) >
-              _drawableLabelWidth ||
-          field.coordinateY + _previewMetrics.renderedHeight(field) >
-              _previewLabelHeight;
+    if (isRabbitOS214) {
+      return previewMetrics.horizontalPosition(field) +
+                  previewMetrics.renderedWidth(field) >
+              drawableLabelWidth ||
+          field.coordinateY + previewMetrics.renderedHeight(field) >
+              previewLabelHeight;
     }
 
     final hasPhysicalDimensions =
         field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter ||
         field.dimensionType == BSFPrintLabelFieldDimensionType.printerDot;
     if (!hasPhysicalDimensions) {
-      return field.coordinateX > _previewLabelWidth ||
-          field.coordinateY > _previewLabelHeight;
+      return field.coordinateX > previewLabelWidth ||
+          field.coordinateY > previewLabelHeight;
     }
 
-    return field.coordinateX + field.width > _previewLabelWidth ||
-        field.coordinateY + field.height > _previewLabelHeight;
+    return field.coordinateX + field.width > previewLabelWidth ||
+        field.coordinateY + field.height > previewLabelHeight;
   }
-
-  bool get _hasValidLabelSize =>
-      _previewLabelWidth.isFinite &&
-      _previewLabelHeight.isFinite &&
-      _previewLabelWidth > 0 &&
-      _previewLabelHeight > 0;
-
-  double get _previewLabelWidth => _previewMetrics.canvasWidth;
-
-  double get _drawableLabelWidth => _previewMetrics.drawableCanvasWidth;
-
-  double get _previewLabelHeight => _previewMetrics.canvasHeight;
-
-  PrintLabelPreviewMetrics get _previewMetrics =>
-      PrintLabelPreviewMetrics(layout);
-
-  BSFPrintLabelCoordinateUnit get _coordinateUnit =>
-      layout.labelPrinter?.coordinateUnit ??
-      BSFPrintLabelCoordinateUnit.centimeter;
 }

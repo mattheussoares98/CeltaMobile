@@ -147,6 +147,7 @@ class PrintLabelBarcodePainter extends CustomPainter {
         area.top + ((area.height - painter.height) / 2),
       ),
     );
+    painter.dispose();
   }
 
   bool _isGuardModule(int index) =>

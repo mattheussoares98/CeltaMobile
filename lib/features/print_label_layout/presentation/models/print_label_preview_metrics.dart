@@ -27,16 +27,17 @@ class PrintLabelPreviewMetrics {
 
     if (layout.fields.isEmpty) return 0;
 
-    final leadingMargin = layout.fields
-        .map((field) => field.coordinateX)
-        .where((coordinate) => coordinate > 0)
-        .fold<double>(0, _smallestPositive);
-    final contentRight = layout.fields.fold<double>(0, (value, field) {
-      return math.max(
-        value,
-        field.coordinateX + horizontalCanvasFootprint(field),
-      );
-    });
+    var leadingMargin = 0.0;
+    var contentRight = 0.0;
+    for (final field in layout.fields) {
+      if (field.coordinateX > 0) {
+        leadingMargin = leadingMargin == 0
+            ? field.coordinateX
+            : math.min(leadingMargin, field.coordinateX);
+      }
+      final right = field.coordinateX + horizontalCanvasFootprint(field);
+      if (right > contentRight) contentRight = right;
+    }
 
     final trailingMargin = math.max(
       leadingMargin,
@@ -53,16 +54,21 @@ class PrintLabelPreviewMetrics {
       return canvasWidth;
     }
 
-    final leadingMargin = layout.fields
-        .map((field) => field.coordinateX)
-        .where((coordinate) => coordinate > 0)
-        .fold<double>(0, _smallestPositive);
-    final contentRight = layout.fields.fold<double>(0, (value, field) {
+    var leadingMargin = 0.0;
+    var contentRight = 0.0;
+    for (final field in layout.fields) {
+      if (field.coordinateX > 0) {
+        leadingMargin = leadingMargin == 0
+            ? field.coordinateX
+            : math.min(leadingMargin, field.coordinateX);
+      }
       final footprint = _fieldType(field) == BSFPrintLabelFieldType.boxOrLine
           ? math.max(field.width, field.ratioBarCode)
           : horizontalCanvasFootprint(field);
-      return math.max(value, field.coordinateX + footprint);
-    });
+      final right = field.coordinateX + footprint;
+      if (right > contentRight) contentRight = right;
+    }
+
     final trailingMargin = math.max(
       leadingMargin,
       contentRight * _rabbitTrailingMarginRatio,
@@ -79,20 +85,26 @@ class PrintLabelPreviewMetrics {
     if (layout.fields.isEmpty) return 0;
 
     if (!isRabbitOS214) {
-      final greatestCoordinateY = layout.fields.fold<double>(
-        0,
-        (value, field) => math.max(value, field.coordinateY),
-      );
+      var greatestCoordinateY = 0.0;
+      for (final field in layout.fields) {
+        if (field.coordinateY > greatestCoordinateY) {
+          greatestCoordinateY = field.coordinateY;
+        }
+      }
       return greatestCoordinateY + (canvasWidth * 0.1);
     }
 
-    final leadingMargin = layout.fields
-        .map((field) => field.coordinateY)
-        .where((coordinate) => coordinate > 0)
-        .fold<double>(0, _smallestPositive);
-    final contentBottom = layout.fields.fold<double>(0, (value, field) {
-      return math.max(value, field.coordinateY + renderedHeight(field));
-    });
+    var leadingMargin = 0.0;
+    var contentBottom = 0.0;
+    for (final field in layout.fields) {
+      if (field.coordinateY > 0) {
+        leadingMargin = leadingMargin == 0
+            ? field.coordinateY
+            : math.min(leadingMargin, field.coordinateY);
+      }
+      final bottom = field.coordinateY + renderedHeight(field);
+      if (bottom > contentBottom) contentBottom = bottom;
+    }
 
     return contentBottom + leadingMargin;
   }
@@ -199,12 +211,16 @@ class PrintLabelPreviewMetrics {
       return false;
     }
 
-    return layout.fields.where(isFilledBox).any((box) {
-      return field.coordinateX >= box.coordinateX &&
+    for (final box in layout.fields) {
+      if (isFilledBox(box) &&
+          field.coordinateX >= box.coordinateX &&
           field.coordinateX < box.coordinateX + renderedWidth(box) &&
           field.coordinateY >= box.coordinateY &&
-          field.coordinateY < box.coordinateY + renderedHeight(box);
-    });
+          field.coordinateY < box.coordinateY + renderedHeight(box)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   String previewText(BSFPrintLabelLayoutFieldEntity field) {
@@ -267,7 +283,4 @@ class PrintLabelPreviewMetrics {
 
   BSFPrintLabelFieldType _fieldType(BSFPrintLabelLayoutFieldEntity field) =>
       field.field?.fieldType ?? BSFPrintLabelFieldType.string;
-
-  double _smallestPositive(double current, double value) =>
-      current == 0 ? value : math.min(current, value);
 }

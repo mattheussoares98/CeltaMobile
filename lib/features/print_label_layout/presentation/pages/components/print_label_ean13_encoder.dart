@@ -50,8 +50,10 @@ class PrintLabelEan13Encoder {
     'LGGLGL',
   ];
 
+  static final _ean13Regex = RegExp(r'^\d{13}$');
+
   String? encode(String value) {
-    if (!RegExp(r'^\d{13}$').hasMatch(value) || !_hasValidChecksum(value)) {
+    if (!_ean13Regex.hasMatch(value) || !_hasValidChecksum(value)) {
       return null;
     }
 

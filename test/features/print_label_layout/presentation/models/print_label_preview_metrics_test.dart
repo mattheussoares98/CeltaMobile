@@ -25,6 +25,7 @@ void main() {
       final metrics = _metrics([box, description, trailingText]);
 
       expect(metrics.canvasWidth, closeTo(429, 0.001));
+      expect(metrics.drawableCanvasWidth, metrics.canvasWidth);
       expect(metrics.canvasHeight, 108);
     });
 
@@ -127,6 +128,25 @@ void main() {
       expect(metrics.isInsideFilledBox(inside), isTrue);
       expect(metrics.isInsideFilledBox(insideExpandedThickness), isTrue);
       expect(metrics.isInsideFilledBox(outside), isFalse);
+    });
+
+    test('should trim only the right edges of a full Rabbit box layout', () {
+      final leadingText = _rabbitField(coordinateX: 20, coordinateY: 227);
+      final box = _rabbitField(
+        coordinateX: 210,
+        coordinateY: 40,
+        width: 190,
+        height: 150,
+        ratioBarCode: 75,
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      );
+      final metrics = _metrics([leadingText, box]);
+
+      expect(metrics.canvasWidth, closeTo(603.4, 0.001));
+      expect(metrics.drawableCanvasWidth, closeTo(448, 0.001));
+      expect(metrics.renderedWidth(box), 190);
+      expect(metrics.renderedHeight(box), 150);
+      expect(metrics.horizontalPosition(box), 210);
     });
 
     test(

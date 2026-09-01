@@ -12,6 +12,8 @@ class PrintLabelLayoutDetailsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final coordinateUnit = layout.labelPrinter?.coordinateUnit;
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
@@ -30,7 +32,7 @@ class PrintLabelLayoutDetailsContent extends StatelessWidget {
               (field) => PrintLabelLayoutFieldItem(
                 key: ValueKey(field.code),
                 field: field,
-                coordinateUnit: layout.labelPrinter?.coordinateUnit,
+                coordinateUnit: coordinateUnit,
               ),
             ),
         ],
