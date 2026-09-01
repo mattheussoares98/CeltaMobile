@@ -561,11 +561,9 @@ void main() {
   );
 
   test(
-    'addField should append a draft initialized from the definition',
+    'addField should append the server draft with a local identity',
     () async {
-      final definition = EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
-        fieldType: BSFPrintLabelFieldType.barcode,
-      );
+      final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 0);
       final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
         code: 10,
         fields: [EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: -1)],
@@ -581,7 +579,7 @@ void main() {
       );
       container
           .read(printLabelLayoutDetailsControllerProvider(10).notifier)
-          .addField(definition);
+          .addField(draft);
 
       final added = container
           .read(printLabelLayoutDetailsControllerProvider(10))
@@ -589,15 +587,7 @@ void main() {
           .fields
           .last;
       expect(added.code, -2);
-      expect(added.field, definition);
-      expect(
-        added.dimensionType,
-        BSFPrintLabelFieldDimensionType.printerCommandValue,
-      );
-      expect(added.coordinateX, 0);
-      expect(added.coordinateY, 0);
-      expect(added.rotateType, BSFPrintElementRotationType.none);
-      expect(added.drawLabelBelowBarcode, true);
+      expect(added.copyWith(code: 0), draft);
     },
   );
 }

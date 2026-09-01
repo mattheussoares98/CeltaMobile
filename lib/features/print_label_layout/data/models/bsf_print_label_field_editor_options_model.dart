@@ -5,6 +5,7 @@ class BSFPrintLabelFieldEditorOptionsModel
     extends BSFPrintLabelFieldEditorOptionsEntity {
   const BSFPrintLabelFieldEditorOptionsModel({
     required super.fields,
+    required super.fieldDrafts,
     required super.formats,
   });
 
@@ -14,6 +15,9 @@ class BSFPrintLabelFieldEditorOptionsModel
           .map(
             (item) => BSFPrintLabelFieldDefinitionModel.fromJson(item as Map),
           )
+          .toList(),
+      fieldDrafts: (json['fieldDrafts'] as List)
+          .map((item) => BSFPrintLabelLayoutFieldModel.fromJson(item as Map))
           .toList(),
       formats: (json['formats'] as List)
           .map((item) => BSFPrintLabelFieldFormatModel.fromJson(item as Map))
@@ -28,6 +32,9 @@ class BSFPrintLabelFieldEditorOptionsModel
       fields: entity.fields
           .map(BSFPrintLabelFieldDefinitionModel.fromEntity)
           .toList(),
+      fieldDrafts: entity.fieldDrafts
+          .map(BSFPrintLabelLayoutFieldModel.fromEntity)
+          .toList(),
       formats: entity.formats
           .map(BSFPrintLabelFieldFormatModel.fromEntity)
           .toList(),
@@ -40,6 +47,9 @@ class BSFPrintLabelFieldEditorOptionsModel
           (item) => BSFPrintLabelFieldDefinitionModel.fromEntity(item).toJson(),
         )
         .toList(),
+    'fieldDrafts': fieldDrafts
+        .map((item) => BSFPrintLabelLayoutFieldModel.fromEntity(item).toJson())
+        .toList(),
     'formats': formats
         .map((item) => BSFPrintLabelFieldFormatModel.fromEntity(item).toJson())
         .toList(),
@@ -51,6 +61,11 @@ class BSFPrintLabelFieldEditorOptionsModel
           .map(
             (item) =>
                 BSFPrintLabelFieldDefinitionModel.fromEntity(item).toEntity(),
+          )
+          .toList(),
+      fieldDrafts: fieldDrafts
+          .map(
+            (item) => BSFPrintLabelLayoutFieldModel.fromEntity(item).toEntity(),
           )
           .toList(),
       formats: formats

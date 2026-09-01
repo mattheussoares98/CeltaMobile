@@ -2539,6 +2539,7 @@ class EntityFactory {
   makeBSFPrintLabelFieldEditorOptionsEntity() =>
       BSFPrintLabelFieldEditorOptionsEntity(
         fields: [makeBSFPrintLabelFieldDefinitionEntity()],
+        fieldDrafts: [makeBSFPrintLabelLayoutFieldEntity(code: 0)],
         formats: [makeBSFPrintLabelFieldFormatEntity()],
       );
 
