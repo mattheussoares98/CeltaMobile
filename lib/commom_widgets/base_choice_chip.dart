@@ -1,23 +1,27 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-/// PERFORMANCE: This widget chooses between a Segmented Control and a Wrap
-/// layout based on available width to prevent text overflow and unreadable labels.
-class BaseChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
+/// PERFORMANCE: Choice chips layout rendered inside a Wrap widget.
+class BaseChoiceChip<T> extends StatelessWidget {
   const BaseChoiceChip({
     super.key,
     required this.items,
-    required this.selectedValue,
     required this.onChanged,
+    required this.itemLabelBuilder,
+    this.itemColorBuilder,
     this.allowNullSelection = false,
+    required this.selections,
   });
 
   final List<T> items;
-  final T? selectedValue;
+  final List<T> selections;
+  //error because of the dart version
+  // ignore: unsafe_variance
   final ValueChanged<T> onChanged;
+  final String Function(T item) itemLabelBuilder;
+  final Color? Function(T item)? itemColorBuilder;
   final bool allowNullSelection;
 
   @override
@@ -29,25 +33,26 @@ class BaseChoiceChip<T extends SelectableItem<T>> extends StatelessWidget {
         runSpacing: Sizes.p8,
         alignment: WrapAlignment.center,
         children: items.map((item) {
-          final isSelected = item.value == selectedValue;
+          final isSelected = selections.contains(item);
+          final color =
+              itemColorBuilder?.call(item) ?? context.theme.colorScheme.primary;
+
           return ChoiceChip(
             key: ValueKey(item),
-            label: BaseText(item.name),
+            label: BaseText(itemLabelBuilder(item)),
             selected: isSelected,
             onSelected: (selected) {
               if (allowNullSelection) {
-                onChanged(item.value);
+                onChanged(item);
               } else if (selected) {
-                onChanged(item.value);
+                onChanged(item);
               }
             },
-            selectedColor: item.color ?? context.theme.primaryColor,
-            checkmarkColor: Colors.white,
+            selectedColor: color,
             labelStyle: TextStyle(
               color: isSelected
                   ? Colors.white
-                  : context.theme.textTheme.bodyMedium?.color,
-              fontSize: 12,
+                  : context.theme.colorScheme.onSurface,
             ),
           );
         }).toList(),

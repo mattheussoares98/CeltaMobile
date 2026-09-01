@@ -30,9 +30,10 @@ class ProductSearchTypeWidget extends StatelessWidget {
                   (s) => s.value?.searchPreference,
                 ),
               );
-              return BaseChoiceChip(
+              return BaseChoiceChip<SearchProductTypePreference>(
                 items: SearchProductTypePreference.values,
-                selectedValue: searchPreference,
+                selections: [?searchPreference],
+                itemLabelBuilder: (item) => item.name,
                 onChanged: (searchPreference) async {
                   await ref
                       .read(appSettingsStateControllerProvider.notifier)

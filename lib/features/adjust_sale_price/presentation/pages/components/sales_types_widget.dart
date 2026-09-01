@@ -51,7 +51,8 @@ class SalesTypeWidget extends ConsumerWidget {
         if (PlatformUtil.isCupertino)
           BaseSegmentedButtons<SaleType>(
             items: items,
-            selectedValue: selectedSaleType?.value,
+            selectedValue: selectedSaleType,
+            itemLabelBuilder: (item) => item.name,
             onChanged: updateValue,
           )
         else

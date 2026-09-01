@@ -90,6 +90,7 @@ class Filters extends ConsumerWidget {
                 builder: (_, ref, _) {
                   return BaseSegmentedButtons<SearchProductCompetingPriceType>(
                     selectedValue: selectedItem.searchType,
+                    itemLabelBuilder: (item) => item.name,
                     onChanged: (value) {
                       ref
                           .read(selectedItemUIControllerProvider.notifier)

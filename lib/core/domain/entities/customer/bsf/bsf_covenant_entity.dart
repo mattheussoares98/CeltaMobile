@@ -1,14 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 
-class BsfCovenantEntity extends Equatable
-    implements SelectableItem<BsfCovenantEntity> {
+class BsfCovenantEntity extends Equatable {
   final int? code;
   final String? personalizedCode;
   final String? legacyCode;
-  @override
   final String name;
   final String? fantasyName;
   final String? cnpjNumber;
@@ -169,10 +166,4 @@ class BsfCovenantEntity extends Equatable
       customerCollectAddress: customerCollectAddress ?? this.customerCollectAddress,
     );
   }
-
-  @override
-  BsfCovenantEntity get value => this;
-
-  @override
-  Color? get color => null;
 }

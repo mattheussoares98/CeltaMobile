@@ -171,6 +171,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
             BaseSegmentedButtons<BSFPrintElementRotationType>(
               items: BSFPrintElementRotationType.values,
               selectedValue: field.rotateType,
+              itemLabelBuilder: (item) => item.name,
               onChanged: (value) =>
                   controller.updateFieldRotateType(field.code, value),
             ),

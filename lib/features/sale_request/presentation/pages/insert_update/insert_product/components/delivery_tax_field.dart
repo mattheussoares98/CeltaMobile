@@ -80,9 +80,10 @@ class DeliveryTaxField extends ConsumerWidget {
             Expanded(
               flex: 6,
               child: ExcludeFocus(
-                child: BaseSegmentedButtons(
+                child: BaseSegmentedButtons<PercentageOrValue>(
                   items: PercentageOrValue.values,
                   selectedValue: deliveryTaxType,
+                  itemLabelBuilder: (item) => item.name,
                   onChanged: (value) => ref
                       .read(uiProvider.notifier)
                       .updateDeliveryTaxType(value),

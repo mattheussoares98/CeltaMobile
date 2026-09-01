@@ -5,7 +5,6 @@ export './device_type.dart';
 export './modules.dart';
 export './operation_type.dart';
 export './practiced_price_type.dart';
-export './selectable_item.dart';
 export './user_entity.dart';
 export './user_session_entity.dart';
 export 'address/address.dart';

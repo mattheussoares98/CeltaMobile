@@ -80,9 +80,10 @@ class IncrementField extends ConsumerWidget {
             Expanded(
               flex: 6,
               child: ExcludeFocus(
-                child: BaseSegmentedButtons(
+                child: BaseSegmentedButtons<PercentageOrValue>(
                   items: PercentageOrValue.values,
                   selectedValue: incrementType,
+                  itemLabelBuilder: (item) => item.name,
                   onChanged: (value) =>
                       ref.read(uiProvider.notifier).updateIncrementType(value),
                 ),

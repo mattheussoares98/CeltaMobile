@@ -153,6 +153,7 @@ class AddDiscount extends ConsumerWidget {
                     child: BaseSegmentedButtons<PercentageOrValue>(
                       items: PercentageOrValue.values,
                       selectedValue: discountType,
+                      itemLabelBuilder: (item) => item.name,
                       onChanged: (type) => _onTypeChanged(context, ref, type),
                     ),
                   );

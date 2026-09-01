@@ -70,7 +70,8 @@ class CustomerItem extends ConsumerWidget {
                     gapH4,
                     BaseChoiceChip<BsfCovenantEntity>(
                       items: allowedCovenantes,
-                      selectedValue: selectedCovenant,
+                      selections: [?selectedCovenant],
+                      itemLabelBuilder: (item) => item.name,
                       allowNullSelection: true,
                       onChanged: (covenant) async {
                         final notifier = ref.read(

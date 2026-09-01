@@ -1,22 +1,28 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class BaseSegmentedButtons<T extends SelectableItem<T>>
-    extends StatelessWidget {
+class BaseSegmentedButtons<T> extends StatelessWidget {
   const BaseSegmentedButtons({
     super.key,
     required this.items,
     required this.selectedValue,
     required this.onChanged,
+    required this.itemLabelBuilder,
+    this.itemColorBuilder,
   });
 
   final List<T> items;
   final T? selectedValue;
-  final ValueChanged<T> onChanged;
+  // The ValueChanged callback accepts a generic parameter T, which triggers
+  // the unsafe_variance check in newer Dart releases. We ignore this safely here
+  // as the callback only propagates selections upwards.
+  // ignore: unsafe_variance
+  final ValueChanged<T>? onChanged;
+  final String Function(T) itemLabelBuilder;
+  final Color? Function(T)? itemColorBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -32,56 +38,51 @@ class BaseSegmentedButtons<T extends SelectableItem<T>>
           vertical: Sizes.p8,
         ),
         decoration: BoxDecoration(
-          color: singleItem.color ?? context.theme.primaryColor,
+          color:
+              itemColorBuilder?.call(singleItem) ?? context.theme.primaryColor,
           borderRadius: BorderRadius.circular(Sizes.p8),
         ),
-        child: BaseText(singleItem.name, color: Colors.white),
+        child: BaseText(itemLabelBuilder(singleItem), color: Colors.white),
       );
     }
 
-    final selectedItem = items.cast<T?>().firstWhere(
-      (item) => item?.value == selectedValue,
-      orElse: () => items.first,
-    );
+    // Find the index of the selected value
+    final selectedIndex = selectedValue == null
+        ? -1
+        : items.indexOf(selectedValue as T);
+    final fallbackIndex = items.isNotEmpty ? 0 : -1;
+    final activeIndex = selectedIndex != -1 ? selectedIndex : fallbackIndex;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return CupertinoSlidingSegmentedControl<T>(
-          groupValue: selectedValue,
-          onValueChanged: (value) {
-            if (value != null) {
-              onChanged(value);
-            }
-          },
+    final selectedColor = activeIndex != -1
+        ? itemColorBuilder?.call(items[activeIndex])
+        : null;
 
-          thumbColor: selectedItem?.color ?? context.theme.primaryColor,
-
-          children: {
-            for (var item in items)
-              item.value: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal:
-                      (constraints.maxWidth /
-                              items.length /
-                              (item.name.isEmpty ? 1 : item.name.length)) >
-                          20
-                      ? Sizes.p20
-                      : Sizes.p4,
-                  vertical: Sizes.p8,
-                ),
-                child: FittedBox(
-                  child: BaseText(
-                    item.name,
-                    overflow: TextOverflow.ellipsis,
-                    color: selectedValue == item.value
-                        ? Colors.white
-                        : CupertinoColors.black,
-                  ),
+    return IgnorePointer(
+      ignoring: onChanged == null,
+      child: CupertinoSlidingSegmentedControl<int>(
+        groupValue: activeIndex != -1 ? activeIndex : null,
+        onValueChanged: (index) {
+          if (index != null && index >= 0 && index < items.length) {
+            onChanged?.call(items[index]);
+          }
+        },
+        thumbColor: selectedColor ?? context.theme.primaryColor,
+        children: {
+          for (int i = 0; i < items.length; i++)
+            i: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: FittedBox(
+                child: BaseText(
+                  itemLabelBuilder(items[i]),
+                  overflow: TextOverflow.ellipsis,
+                  color: activeIndex == i
+                      ? Colors.white
+                      : context.theme.colorScheme.onSurface,
                 ),
               ),
-          },
-        );
-      },
+            ),
+        },
+      ),
     );
   }
 }

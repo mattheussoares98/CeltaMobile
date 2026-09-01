@@ -35,13 +35,14 @@ class PricesTypesWidget extends ConsumerWidget {
         if (PlatformUtil.isCupertino)
           BaseSegmentedButtons<PriceType>(
             items: items,
-            selectedValue: selectedPriceType?.value,
+            selectedValue: selectedPriceType,
+            itemLabelBuilder: (item) => item.name,
             onChanged: unTap,
           )
         else
           RadioGroup<PriceType>(
             key: Key(showVertical ? "vertical" : "horizontal"),
-            groupValue: selectedPriceType?.value,
+            groupValue: selectedPriceType,
             onChanged: unTap,
             child: showVertical
                 ? Column(
