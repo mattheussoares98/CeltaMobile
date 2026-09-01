@@ -6,6 +6,7 @@ export 'bsf_print_label_address_type.dart';
 export 'bsf_print_label_coordinate_unit.dart';
 export 'bsf_print_label_direction_type.dart';
 export 'bsf_print_label_field_definition_entity.dart';
+export 'bsf_print_label_field_editor_options_entity.dart';
 export 'bsf_print_label_field_dimension_type.dart';
 export 'bsf_print_label_field_format_entity.dart';
 export 'bsf_print_label_field_image_extension_type.dart';
