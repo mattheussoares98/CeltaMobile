@@ -20,6 +20,8 @@ void main() {
   late BSFPrintLabelLayoutSummaryModel summaryModel;
   late BSFPrintLabelLayoutEntity layoutEntity;
   late BSFPrintLabelLayoutModel layoutModel;
+  late BSFPrintLabelFieldEditorOptionsEntity fieldEditorOptionsEntity;
+  late BSFPrintLabelFieldEditorOptionsModel fieldEditorOptionsModel;
 
   setUp(() {
     datasource = MockEcPrintLabelLayoutDatasource();
@@ -29,6 +31,11 @@ void main() {
     summaryModel = BSFPrintLabelLayoutSummaryModel.fromEntity(summaryEntity);
     layoutEntity = EntityFactory.makeBSFPrintLabelLayoutEntity();
     layoutModel = BSFPrintLabelLayoutModel.fromEntity(layoutEntity);
+    fieldEditorOptionsEntity =
+        EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity();
+    fieldEditorOptionsModel = BSFPrintLabelFieldEditorOptionsModel.fromEntity(
+      fieldEditorOptionsEntity,
+    );
   });
 
   group('getSummaries', () {
@@ -79,6 +86,37 @@ void main() {
 
       await expectLater(call, throwsA(same(exception)));
       verify(() => datasource.getDetails(params, layoutEntity.code)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
+  group('getFieldEditorOptions', () {
+    test('should return an entity from the datasource model', () async {
+      when(
+        () => datasource.getFieldEditorOptions(params, layoutEntity.code),
+      ).thenAnswer((_) async => fieldEditorOptionsModel);
+
+      final result = await sut.getFieldEditorOptions(params, layoutEntity.code);
+
+      expect(result, fieldEditorOptionsEntity);
+      verify(
+        () => datasource.getFieldEditorOptions(params, layoutEntity.code),
+      ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to get field editor options');
+      when(
+        () => datasource.getFieldEditorOptions(params, layoutEntity.code),
+      ).thenThrow(exception);
+
+      final call = sut.getFieldEditorOptions(params, layoutEntity.code);
+
+      await expectLater(call, throwsA(same(exception)));
+      verify(
+        () => datasource.getFieldEditorOptions(params, layoutEntity.code),
+      ).called(1);
       verifyNoMoreInteractions(datasource);
     });
   });

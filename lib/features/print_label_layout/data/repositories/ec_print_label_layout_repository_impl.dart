@@ -25,4 +25,13 @@ class EcPrintLabelLayoutRepositoryImpl
     final model = await datasource.getDetails(params, code);
     return model.toEntity();
   }
+
+  @override
+  Future<BSFPrintLabelFieldEditorOptionsEntity> getFieldEditorOptions(
+    EcRequestParams params,
+    int layoutCode,
+  ) async {
+    final model = await datasource.getFieldEditorOptions(params, layoutCode);
+    return model.toEntity();
+  }
 }

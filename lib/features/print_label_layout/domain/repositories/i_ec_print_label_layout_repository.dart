@@ -10,4 +10,9 @@ abstract class IEcPrintLabelLayoutRepository {
     EcRequestParams params,
     int code,
   );
+
+  Future<BSFPrintLabelFieldEditorOptionsEntity> getFieldEditorOptions(
+    EcRequestParams params,
+    int layoutCode,
+  );
 }
