@@ -174,5 +174,74 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Espessura do traço: 76'), findsOneWidget);
+
+    // Tap rotation 90°
+    expect(find.text('90°'), findsOneWidget);
+    await tester.tap(find.text('90°'));
+    await tester.pumpAndSettle();
   });
+
+  testWidgets(
+    'should render and toggle drawLabelBelowBarcode switch for barcode field',
+    (tester) async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 3,
+        drawLabelBelowBarcode: true,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.barcode,
+        ),
+      );
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+
+      final params = EntityFactory.makeEcRequestParams();
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => layout);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            ecRequestParamsProvider().overrideWith((ref) => params),
+            ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: Consumer(
+                builder: (context, ref, child) {
+                  final layoutAsync = ref.watch(
+                    printLabelLayoutDetailsControllerProvider(10),
+                  );
+                  return layoutAsync.when(
+                    data: (l) => PrintLabelLayoutFieldItem(
+                      layoutCode: 10,
+                      field: l.fields.first,
+                      coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+                    ),
+                    loading: () => const CircularProgressIndicator(),
+                    error: (e, st) => Text(e.toString()),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Imprimir o texto abaixo do código de barras'),
+        findsOneWidget,
+      );
+
+      final switchFinder = find.byType(Switch);
+      expect(switchFinder, findsOneWidget);
+
+      await tester.tap(switchFinder);
+      await tester.pumpAndSettle();
+    },
+  );
 }

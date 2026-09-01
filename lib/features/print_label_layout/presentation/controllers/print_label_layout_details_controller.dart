@@ -63,6 +63,21 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateFieldRotateType(
+    int fieldCode,
+    BSFPrintElementRotationType rotateType,
+  ) {
+    _updateField(fieldCode, (field) {
+      return field.copyWith(rotateType: rotateType);
+    });
+  }
+
+  void updateFieldDrawLabelBelowBarcode(int fieldCode, bool drawLabel) {
+    _updateField(fieldCode, (field) {
+      return field.copyWith(drawLabelBelowBarcode: drawLabel);
+    });
+  }
+
   void toggleFieldVisibility(int fieldCode) {
     _updateField(fieldCode, (field) {
       return field.copyWith(isVisible: !field.isVisible);

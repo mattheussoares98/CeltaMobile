@@ -165,6 +165,24 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                 ),
               ],
             ],
+            gapH8,
+            BaseText.title('Rotação'.hardcoded),
+            gapH4,
+            BaseSegmentedButtons<BSFPrintElementRotationType>(
+              items: BSFPrintElementRotationType.values,
+              selectedValue: field.rotateType,
+              onChanged: (value) =>
+                  controller.updateFieldRotateType(field.code, value),
+            ),
+            if (field.field?.fieldType == BSFPrintLabelFieldType.barcode) ...[
+              gapH8,
+              BaseSwitch(
+                title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
+                value: field.drawLabelBelowBarcode,
+                onChanged: (value) => controller
+                    .updateFieldDrawLabelBelowBarcode(field.code, value),
+              ),
+            ],
             if (field.fontType.isNotEmpty) ...[
               gapH4,
               TitleAndSubTitle(

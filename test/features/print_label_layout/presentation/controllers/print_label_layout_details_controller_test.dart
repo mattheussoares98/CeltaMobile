@@ -267,4 +267,63 @@ void main() {
         .value!;
     expect(updated.fields.first.isVisible, true);
   });
+
+  test('updateFieldRotateType should update field rotation', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      rotateType: BSFPrintElementRotationType.none,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldRotateType(1, BSFPrintElementRotationType.rotate90);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.fields.first.rotateType, BSFPrintElementRotationType.rotate90);
+  });
+
+  test(
+    'updateFieldDrawLabelBelowBarcode should update drawLabelBelowBarcode',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        drawLabelBelowBarcode: false,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateFieldDrawLabelBelowBarcode(1, true);
+      var updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.drawLabelBelowBarcode, true);
+    },
+  );
 }
