@@ -67,39 +67,33 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
             gapH4,
             BaseText.title('Coordenadas ($_coordinateUnit)'.hardcoded),
             gapH4,
-            Row(
+            Wrap(
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
               children: [
-                Expanded(
-                  child: PrintLabelLayoutValueAdjuster(
-                    label: 'X'.hardcoded,
-                    value: _formatCoordinate(field.coordinateX),
-                    onDecrease: field.coordinateX > 0
-                        ? () => controller.updateFieldCoordinateX(
-                            field.code,
-                            -coordStep,
-                          )
-                        : null,
-                    onIncrease: () => controller.updateFieldCoordinateX(
-                      field.code,
-                      coordStep,
-                    ),
-                  ),
+                PrintLabelLayoutValueAdjuster(
+                  label: 'X'.hardcoded,
+                  value: _formatCoordinate(field.coordinateX),
+                  onDecrease: field.coordinateX > 0
+                      ? () => controller.updateFieldCoordinateX(
+                          field.code,
+                          -coordStep,
+                        )
+                      : null,
+                  onIncrease: () =>
+                      controller.updateFieldCoordinateX(field.code, coordStep),
                 ),
-                Expanded(
-                  child: PrintLabelLayoutValueAdjuster(
-                    label: 'Y'.hardcoded,
-                    value: _formatCoordinate(field.coordinateY),
-                    onDecrease: field.coordinateY > 0
-                        ? () => controller.updateFieldCoordinateY(
-                            field.code,
-                            -coordStep,
-                          )
-                        : null,
-                    onIncrease: () => controller.updateFieldCoordinateY(
-                      field.code,
-                      coordStep,
-                    ),
-                  ),
+                PrintLabelLayoutValueAdjuster(
+                  label: 'Y'.hardcoded,
+                  value: _formatCoordinate(field.coordinateY),
+                  onDecrease: field.coordinateY > 0
+                      ? () => controller.updateFieldCoordinateY(
+                          field.code,
+                          -coordStep,
+                        )
+                      : null,
+                  onIncrease: () =>
+                      controller.updateFieldCoordinateY(field.code, coordStep),
                 ),
               ],
             ),
@@ -108,35 +102,29 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
               gapH8,
               BaseText.title('Dimensões ($_dimensionDescription)'.hardcoded),
               gapH4,
-              Row(
+              Wrap(
+                alignment: .spaceEvenly,
+                runAlignment: .spaceEvenly,
                 children: [
-                  Expanded(
-                    child: PrintLabelLayoutValueAdjuster(
-                      label: 'Largura'.hardcoded,
-                      value: _formatDimension(field.width),
-                      onDecrease: field.width > _minWidth
-                          ? () => controller.updateFieldWidth(
-                              field.code,
-                              -dimStep,
-                            )
-                          : null,
-                      onIncrease: () =>
-                          controller.updateFieldWidth(field.code, dimStep),
-                    ),
+                  PrintLabelLayoutValueAdjuster(
+                    label: 'Largura'.hardcoded,
+                    value: _formatDimension(field.width),
+                    onDecrease: field.width > _minWidth
+                        ? () =>
+                              controller.updateFieldWidth(field.code, -dimStep)
+                        : null,
+                    onIncrease: () =>
+                        controller.updateFieldWidth(field.code, dimStep),
                   ),
-                  Expanded(
-                    child: PrintLabelLayoutValueAdjuster(
-                      label: 'Altura'.hardcoded,
-                      value: _formatDimension(field.height),
-                      onDecrease: field.height > _minHeight
-                          ? () => controller.updateFieldHeight(
-                              field.code,
-                              -dimStep,
-                            )
-                          : null,
-                      onIncrease: () =>
-                          controller.updateFieldHeight(field.code, dimStep),
-                    ),
+                  PrintLabelLayoutValueAdjuster(
+                    label: 'Altura'.hardcoded,
+                    value: _formatDimension(field.height),
+                    onDecrease: field.height > _minHeight
+                        ? () =>
+                              controller.updateFieldHeight(field.code, -dimStep)
+                        : null,
+                    onIncrease: () =>
+                        controller.updateFieldHeight(field.code, dimStep),
                   ),
                 ],
               ),
