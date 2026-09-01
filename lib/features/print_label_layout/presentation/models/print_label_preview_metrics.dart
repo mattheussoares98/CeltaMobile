@@ -12,6 +12,10 @@ class PrintLabelPreviewMetrics {
   static const _rabbitBarcodeCaptionHeight = 8.0;
   static const _rabbitCurrencyHorizontalCorrection = 12.0;
   static const _rabbitCurrencyVerticalCorrection = -4.0;
+  // Calibrates PPLA horizontal command values against the normalized preview
+  // canvas while preserving the printer's configured proportions.
+  static const _rabbitPplaBarcodeWidthScale = 0.30625;
+  static const _rabbitPplaBoxCanvasExpansionScale = 1.85;
 
   bool get isRabbitOS214 =>
       layout.labelPrinter?.modelType == BSFLabelPrinterModelType.rabbitOS214;
@@ -34,6 +38,31 @@ class PrintLabelPreviewMetrics {
       );
     });
 
+    final trailingMargin = math.max(
+      leadingMargin,
+      contentRight * _rabbitTrailingMarginRatio,
+    );
+    final configuredWidth =
+        (layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth) *
+        _rabbitConfiguredWidthScale;
+    return math.max(configuredWidth, contentRight + trailingMargin);
+  }
+
+  double get drawableCanvasWidth {
+    if (!isRabbitOS214 || !layout.fields.any(_hasTwoFullHorizontalEdges)) {
+      return canvasWidth;
+    }
+
+    final leadingMargin = layout.fields
+        .map((field) => field.coordinateX)
+        .where((coordinate) => coordinate > 0)
+        .fold<double>(0, _smallestPositive);
+    final contentRight = layout.fields.fold<double>(0, (value, field) {
+      final footprint = _fieldType(field) == BSFPrintLabelFieldType.boxOrLine
+          ? math.max(field.width, field.ratioBarCode)
+          : horizontalCanvasFootprint(field);
+      return math.max(value, field.coordinateX + footprint);
+    });
     final trailingMargin = math.max(
       leadingMargin,
       contentRight * _rabbitTrailingMarginRatio,
@@ -71,7 +100,10 @@ class PrintLabelPreviewMetrics {
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
-      return _rabbitBarcodeModuleCount(field) * math.max(1, field.ratioBarCode);
+      final moduleWidth = field.ratioBarCode > 0
+          ? field.ratioBarCode
+          : math.max(1, field.width * _rabbitPplaBarcodeWidthScale);
+      return _rabbitBarcodeModuleCount(field) * moduleWidth;
     }
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return math.max(field.width, field.ratioBarCode);
@@ -100,7 +132,8 @@ class PrintLabelPreviewMetrics {
   double horizontalCanvasFootprint(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
-      return renderedWidth(field);
+      final configuredWidth = math.max(field.width, field.ratioBarCode);
+      return configuredWidth + _rabbitBoxCanvasExpansion(field);
     }
     if (!_isText(field)) return field.width;
 
@@ -120,8 +153,11 @@ class PrintLabelPreviewMetrics {
         isRabbitOS214 &&
         field.fontType == '1' &&
         previewText(field).trim() == r'R$';
-    return field.coordinateX +
-        (isCurrencyIndicator ? _rabbitCurrencyHorizontalCorrection : 0);
+    if (isCurrencyIndicator) {
+      return field.coordinateX + _rabbitCurrencyHorizontalCorrection;
+    }
+
+    return field.coordinateX;
   }
 
   double verticalPosition(BSFPrintLabelLayoutFieldEntity field) {
@@ -147,6 +183,15 @@ class PrintLabelPreviewMetrics {
     final smallestDimension = math.min(field.width, field.height);
     return smallestDimension > 0 && field.ratioBarCode * 2 >= smallestDimension;
   }
+
+  double _rabbitBoxCanvasExpansion(BSFPrintLabelLayoutFieldEntity field) {
+    return _hasTwoFullHorizontalEdges(field)
+        ? field.ratioBarCode * _rabbitPplaBoxCanvasExpansionScale
+        : 0;
+  }
+
+  bool _hasTwoFullHorizontalEdges(BSFPrintLabelLayoutFieldEntity field) =>
+      field.ratioBarCode > 0 && field.height >= field.ratioBarCode * 2;
 
   bool isInsideFilledBox(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214 ||

@@ -52,7 +52,8 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       availableWidth / aspectRatio,
       _maximumPreviewHeight,
     );
-    final canvasWidth = canvasHeight * aspectRatio;
+    final previewScale = canvasHeight / _previewLabelHeight;
+    final canvasWidth = _drawableLabelWidth * previewScale;
 
     return SizedBox(
       height: canvasHeight + Sizes.p48,
@@ -68,8 +69,8 @@ class PrintLabelLayoutPreview extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: layout.fields.map((field) {
-                final scaleX = canvasWidth / _previewLabelWidth;
-                final scaleY = canvasHeight / _previewLabelHeight;
+                final scaleX = previewScale;
+                final scaleY = previewScale;
 
                 return Positioned(
                   left: _previewMetrics.horizontalPosition(field) * scaleX,
@@ -96,8 +97,9 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     if (field.coordinateX < 0 || field.coordinateY < 0) return true;
 
     if (_previewMetrics.isRabbitOS214) {
-      return field.coordinateX + _previewMetrics.renderedWidth(field) >
-              _previewLabelWidth ||
+      return _previewMetrics.horizontalPosition(field) +
+                  _previewMetrics.renderedWidth(field) >
+              _drawableLabelWidth ||
           field.coordinateY + _previewMetrics.renderedHeight(field) >
               _previewLabelHeight;
     }
@@ -121,6 +123,8 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       _previewLabelHeight > 0;
 
   double get _previewLabelWidth => _previewMetrics.canvasWidth;
+
+  double get _drawableLabelWidth => _previewMetrics.drawableCanvasWidth;
 
   double get _previewLabelHeight => _previewMetrics.canvasHeight;
 
