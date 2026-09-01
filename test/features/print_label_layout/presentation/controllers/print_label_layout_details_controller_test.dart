@@ -89,13 +89,13 @@ void main() {
         printLabelLayoutDetailsControllerProvider(10).notifier,
       );
 
-      notifier.updateFieldCoordinateX(1, 0.5);
+      notifier.updateFieldCoordinateX(0, 0.5);
       var updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
       expect(updated.fields.first.coordinateX, 2.5);
 
-      notifier.updateFieldCoordinateX(1, -3.0);
+      notifier.updateFieldCoordinateX(0, -3.0);
       updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
@@ -127,13 +127,13 @@ void main() {
         printLabelLayoutDetailsControllerProvider(10).notifier,
       );
 
-      notifier.updateFieldCoordinateY(1, 0.2);
+      notifier.updateFieldCoordinateY(0, 0.2);
       var updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
       expect(updated.fields.first.coordinateY, 1.7);
 
-      notifier.updateFieldCoordinateY(1, -2.0);
+      notifier.updateFieldCoordinateY(0, -2.0);
       updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
@@ -161,13 +161,13 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.updateFieldWidth(1, 1.0);
+    notifier.updateFieldWidth(0, 1.0);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
     expect(updated.fields.first.width, 5.0);
 
-    notifier.updateFieldWidth(1, -10.0);
+    notifier.updateFieldWidth(0, -10.0);
     updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
@@ -194,13 +194,13 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.updateFieldHeight(1, 0.5);
+    notifier.updateFieldHeight(0, 0.5);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
     expect(updated.fields.first.height, 3.5);
 
-    notifier.updateFieldHeight(1, -5.0);
+    notifier.updateFieldHeight(0, -5.0);
     updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
@@ -231,13 +231,13 @@ void main() {
         printLabelLayoutDetailsControllerProvider(10).notifier,
       );
 
-      notifier.updateFieldRatioBarCode(1, 5.0);
+      notifier.updateFieldRatioBarCode(0, 5.0);
       var updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
       expect(updated.fields.first.ratioBarCode, 80.0);
 
-      notifier.updateFieldRatioBarCode(1, -100.0);
+      notifier.updateFieldRatioBarCode(0, -100.0);
       updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
@@ -265,13 +265,13 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.toggleFieldVisibility(1);
+    notifier.toggleFieldVisibility(0);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
     expect(updated.fields.first.isVisible, false);
 
-    notifier.toggleFieldVisibility(1);
+    notifier.toggleFieldVisibility(0);
     updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
@@ -298,7 +298,7 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.updateFieldRotateType(1, BSFPrintElementRotationType.rotate90);
+    notifier.updateFieldRotateType(0, BSFPrintElementRotationType.rotate90);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
@@ -332,7 +332,7 @@ void main() {
         printLabelLayoutDetailsControllerProvider(10).notifier,
       );
 
-      notifier.updateFieldDrawLabelBelowBarcode(1, true);
+      notifier.updateFieldDrawLabelBelowBarcode(0, true);
       var updated = container
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
@@ -586,8 +586,7 @@ void main() {
           .requireValue
           .fields
           .last;
-      expect(added.code, -2);
-      expect(added.copyWith(code: 0), draft);
+      expect(added, draft);
     },
   );
 }

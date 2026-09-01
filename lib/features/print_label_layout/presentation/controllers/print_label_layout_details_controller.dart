@@ -18,8 +18,8 @@ class PrintLabelLayoutDetailsController
         .getDetails(params, code);
   }
 
-  void updateFieldCoordinateX(int fieldCode, double delta) {
-    _updateField(fieldCode, (field) {
+  void updateFieldCoordinateX(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
       final updatedValue = _round(
         (field.coordinateX + delta).clamp(0.0, double.infinity),
       );
@@ -27,8 +27,8 @@ class PrintLabelLayoutDetailsController
     });
   }
 
-  void updateFieldCoordinateY(int fieldCode, double delta) {
-    _updateField(fieldCode, (field) {
+  void updateFieldCoordinateY(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
       final updatedValue = _round(
         (field.coordinateY + delta).clamp(0.0, double.infinity),
       );
@@ -36,8 +36,8 @@ class PrintLabelLayoutDetailsController
     });
   }
 
-  void updateFieldWidth(int fieldCode, double delta) {
-    _updateField(fieldCode, (field) {
+  void updateFieldWidth(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
       final updatedValue = _round(
         (field.width + delta).clamp(0.0, double.infinity),
       );
@@ -45,8 +45,8 @@ class PrintLabelLayoutDetailsController
     });
   }
 
-  void updateFieldHeight(int fieldCode, double delta) {
-    _updateField(fieldCode, (field) {
+  void updateFieldHeight(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
       final updatedValue = _round(
         (field.height + delta).clamp(0.0, double.infinity),
       );
@@ -54,8 +54,8 @@ class PrintLabelLayoutDetailsController
     });
   }
 
-  void updateFieldRatioBarCode(int fieldCode, double delta) {
-    _updateField(fieldCode, (field) {
+  void updateFieldRatioBarCode(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
       final updatedValue = _round(
         (field.ratioBarCode + delta).clamp(0.0, double.infinity),
       );
@@ -64,36 +64,29 @@ class PrintLabelLayoutDetailsController
   }
 
   void updateFieldRotateType(
-    int fieldCode,
+    int fieldIndex,
     BSFPrintElementRotationType rotateType,
   ) {
-    _updateField(fieldCode, (field) {
+    _updateField(fieldIndex, (field) {
       return field.copyWith(rotateType: rotateType);
     });
   }
 
-  void updateFieldDrawLabelBelowBarcode(int fieldCode, bool drawLabel) {
-    _updateField(fieldCode, (field) {
+  void updateFieldDrawLabelBelowBarcode(int fieldIndex, bool drawLabel) {
+    _updateField(fieldIndex, (field) {
       return field.copyWith(drawLabelBelowBarcode: drawLabel);
     });
   }
 
-  void toggleFieldVisibility(int fieldCode) {
-    _updateField(fieldCode, (field) {
+  void toggleFieldVisibility(int fieldIndex) {
+    _updateField(fieldIndex, (field) {
       return field.copyWith(isVisible: !field.isVisible);
     });
   }
 
   void addField(BSFPrintLabelLayoutFieldEntity draft) {
     _updateLayout((layout) {
-      final draftCode =
-          layout.fields.fold<int>(0, (lowestCode, field) {
-            return field.code < lowestCode ? field.code : lowestCode;
-          }) -
-          1;
-      final field = draft.copyWith(code: draftCode);
-
-      return layout.copyWith(fields: [...layout.fields, field]);
+      return layout.copyWith(fields: [...layout.fields, draft]);
     });
   }
 
@@ -213,19 +206,15 @@ class PrintLabelLayoutDetailsController
   }
 
   void _updateField(
-    int fieldCode,
+    int fieldIndex,
     BSFPrintLabelLayoutFieldEntity Function(BSFPrintLabelLayoutFieldEntity)
     updater,
   ) {
     if (state is! AsyncData<BSFPrintLabelLayoutEntity>) return;
     final current = state.requireValue;
-
-    final updatedFields = current.fields.map((f) {
-      if (f.code == fieldCode) {
-        return updater(f);
-      }
-      return f;
-    }).toList();
+    if (fieldIndex < 0 || fieldIndex >= current.fields.length) return;
+    final updatedFields = [...current.fields];
+    updatedFields[fieldIndex] = updater(updatedFields[fieldIndex]);
 
     state = AsyncData(current.copyWith(fields: updatedFields));
   }
