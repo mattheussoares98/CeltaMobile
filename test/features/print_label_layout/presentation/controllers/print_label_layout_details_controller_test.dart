@@ -559,4 +559,45 @@ void main() {
       expect(updated.informPrintQuantityByProduct, true);
     },
   );
+
+  test(
+    'addField should append a draft initialized from the definition',
+    () async {
+      final definition = EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: -1)],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .addField(definition);
+
+      final added = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields
+          .last;
+      expect(added.code, -2);
+      expect(added.field, definition);
+      expect(
+        added.dimensionType,
+        BSFPrintLabelFieldDimensionType.printerCommandValue,
+      );
+      expect(added.coordinateX, 0);
+      expect(added.coordinateY, 0);
+      expect(added.rotateType, BSFPrintElementRotationType.none);
+      expect(added.drawLabelBelowBarcode, true);
+    },
+  );
 }

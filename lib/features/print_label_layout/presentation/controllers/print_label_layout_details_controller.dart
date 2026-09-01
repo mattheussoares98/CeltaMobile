@@ -84,6 +84,47 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void addField(BSFPrintLabelFieldDefinitionEntity definition) {
+    _updateLayout((layout) {
+      final draftCode =
+          layout.fields.fold<int>(0, (lowestCode, field) {
+            return field.code < lowestCode ? field.code : lowestCode;
+          }) -
+          1;
+      final printer = layout.labelPrinter;
+      final field = BSFPrintLabelLayoutFieldEntity(
+        code: draftCode,
+        quantityDecimalPlaces: 0,
+        coordinateX: 0,
+        coordinateY: 0,
+        alignmentType: BSFPrintElementAlignmentType.left,
+        width: 0,
+        height: 0,
+        dimensionType: _dimensionType(definition.fieldType, printer?.isGeneric),
+        fontType: printer?.supportedFontTypes.firstOrNull ?? '',
+        fontSize: printer?.supportedFontSizes.firstOrNull ?? 10,
+        isBold: false,
+        rotateType: BSFPrintElementRotationType.none,
+        ratioBarCode: 0,
+        barcodeSimbologyType: BSFBarcodeSimbologyType.none,
+        positionStartCharacter: 0,
+        maxCharacterSizeDisplacedQuantity: 0,
+        maxCharacterSize: 0,
+        drawLabelBelowBarcode: true,
+        isReverseText: false,
+        prefix: '',
+        imageName: '',
+        previewValue: definition.content,
+        previewImage: definition.logo,
+        field: definition,
+        fieldForDataBarcode: null,
+        format: null,
+      );
+
+      return layout.copyWith(fields: [...layout.fields, field]);
+    });
+  }
+
   void updateName(String name) {
     _updateLayout((layout) => layout.copyWith(name: name));
   }
@@ -218,4 +259,28 @@ class PrintLabelLayoutDetailsController
   }
 
   double _round(num value) => (value * 100).round() / 100;
+
+  BSFPrintLabelFieldDimensionType _dimensionType(
+    BSFPrintLabelFieldType fieldType,
+    bool? isGenericPrinter,
+  ) {
+    if (isGenericPrinter == true) {
+      return switch (fieldType) {
+        BSFPrintLabelFieldType.string ||
+        BSFPrintLabelFieldType.integer ||
+        BSFPrintLabelFieldType.float ||
+        BSFPrintLabelFieldType.dateTime =>
+          BSFPrintLabelFieldDimensionType.notApplicable,
+        _ => BSFPrintLabelFieldDimensionType.centimeter,
+      };
+    }
+
+    return switch (fieldType) {
+      BSFPrintLabelFieldType.boxOrLine =>
+        BSFPrintLabelFieldDimensionType.printerDot,
+      BSFPrintLabelFieldType.barcode =>
+        BSFPrintLabelFieldDimensionType.printerCommandValue,
+      _ => BSFPrintLabelFieldDimensionType.scaleFactor,
+    };
+  }
 }
