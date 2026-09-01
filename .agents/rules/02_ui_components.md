@@ -31,6 +31,7 @@ Never hardcode pixel values. Use:
 - Typography → `context.theme.textTheme.*`
 
 ## Widget Rules
+- Prefer hook widgets over `StatefulWidget`.
 - Extract sub-widgets into `components/` when file exceeds 100 lines.
 - Extracted components read providers directly (`ref.watch/read`) — no prop drilling.
 - Follow `BuyRequestPage` folder pattern.
