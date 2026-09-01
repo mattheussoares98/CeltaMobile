@@ -15,25 +15,44 @@ class PrintLabelLayoutDetailsContent extends StatelessWidget {
     final coordinateUnit = layout.labelPrinter?.coordinateUnit;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         PrintLabelLayoutPreview(layout: layout),
-        gapH8,
-        PrintLabelLayoutGeneralInformation(layout: layout),
-        gapH8,
-        BaseText.title('Campos (${layout.fields.length})'.hardcoded),
+        Expanded(
+          child: CustomScrollView(
+            slivers: [
+              gapSliverH8,
+              SliverToBoxAdapter(
+                child: PrintLabelLayoutGeneralInformation(layout: layout),
+              ),
+              gapSliverH8,
+              SliverToBoxAdapter(
+                child: BaseText.title(
+                  'Campos (${layout.fields.length})'.hardcoded,
+                ),
+              ),
 
-        if (layout.fields.isEmpty)
-          BaseText.caption('Nenhum campo configurado'.hardcoded)
-        else
-          ...layout.fields.map(
-            (field) => PrintLabelLayoutFieldItem(
-              key: ValueKey(field.code),
-              layoutCode: layout.code,
-              field: field,
-              coordinateUnit: coordinateUnit,
-            ),
+              if (layout.fields.isEmpty)
+                SliverToBoxAdapter(
+                  child: BaseText.caption('Nenhum campo configurado'.hardcoded),
+                )
+              else
+                ResponsiveListFlow(
+                  isSliver: true,
+                  itemCount: layout.fields.length,
+                  itemBuilder: (context, index) {
+                    final field = layout.fields[index];
+
+                    return PrintLabelLayoutFieldItem(
+                      key: ValueKey(field.code),
+                      layoutCode: layout.code,
+                      field: field,
+                      coordinateUnit: coordinateUnit,
+                    );
+                  },
+                ),
+            ],
           ),
+        ),
       ],
     );
   }

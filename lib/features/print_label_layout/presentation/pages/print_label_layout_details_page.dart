@@ -21,9 +21,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
-        data: (layout) => ResponsiveScrollableWidget(
-          child: PrintLabelLayoutDetailsContent(layout: layout),
-        ),
+        data: (layout) => PrintLabelLayoutDetailsContent(layout: layout),
       ),
     );
   }
