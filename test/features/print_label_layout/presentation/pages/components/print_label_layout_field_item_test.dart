@@ -73,10 +73,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('X: 2.0'), findsOneWidget);
-    expect(find.text('Y: 3.0'), findsOneWidget);
-    expect(find.text('Largura: 4.0'), findsOneWidget);
-    expect(find.text('Altura: 5.0'), findsOneWidget);
+    expect(find.text('X'), findsOneWidget);
+    expect(find.text('2.0'), findsOneWidget);
+    expect(find.text('Y'), findsOneWidget);
+    expect(find.text('3.0'), findsOneWidget);
+    expect(find.text('Largura'), findsOneWidget);
+    expect(find.text('4.0'), findsOneWidget);
+    expect(find.text('Altura'), findsOneWidget);
+    expect(find.text('5.0'), findsOneWidget);
 
     // Tap increase on X (first add button)
     final addButtons = find.byIcon(Icons.add_circle_outline);
@@ -85,13 +89,13 @@ void main() {
     await tester.tap(addButtons.at(0));
     await tester.pumpAndSettle();
 
-    expect(find.text('X: 2.1'), findsOneWidget);
+    expect(find.text('2.1'), findsOneWidget);
 
     // Tap increase on Largura (third add button)
     await tester.tap(addButtons.at(2));
     await tester.pumpAndSettle();
 
-    expect(find.text('Largura: 4.1'), findsOneWidget);
+    expect(find.text('4.1'), findsOneWidget);
 
     // Toggle visibility
     expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
@@ -162,9 +166,10 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Largura: 190'), findsOneWidget);
-    expect(find.text('Altura: 150'), findsOneWidget);
-    expect(find.text('Espessura do traço: 75'), findsOneWidget);
+    expect(find.text('190'), findsOneWidget);
+    expect(find.text('150'), findsOneWidget);
+    expect(find.text('Espessura do traço'), findsOneWidget);
+    expect(find.text('75'), findsOneWidget);
 
     final addButtons = find.byIcon(Icons.add_circle_outline);
     expect(addButtons, findsNWidgets(5));
@@ -173,7 +178,7 @@ void main() {
     await tester.tap(addButtons.at(4));
     await tester.pumpAndSettle();
 
-    expect(find.text('Espessura do traço: 76'), findsOneWidget);
+    expect(find.text('76'), findsOneWidget);
 
     // Tap rotation 90°
     expect(find.text('90°'), findsOneWidget);

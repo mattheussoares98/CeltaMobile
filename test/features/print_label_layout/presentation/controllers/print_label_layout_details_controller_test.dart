@@ -65,71 +65,81 @@ void main() {
     verifyNoMoreInteractions(repository);
   });
 
-  test('updateFieldCoordinateX should update coordinateX and clamp at zero', () async {
-    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
-      code: 1,
-      coordinateX: 2.0,
-    );
-    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
-      code: 10,
-      fields: [field],
-    );
-    when(
-      () => repository.getDetails(params, 10),
-    ).thenAnswer((_) async => initialLayout);
-    final container = makeContainer();
-    addTearDown(container.dispose);
+  test(
+    'updateFieldCoordinateX should update coordinateX and clamp at zero',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        coordinateX: 2.0,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
 
-    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
-    final notifier = container.read(
-      printLabelLayoutDetailsControllerProvider(10).notifier,
-    );
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
 
-    notifier.updateFieldCoordinateX(1, 0.5);
-    var updated = container
-        .read(printLabelLayoutDetailsControllerProvider(10))
-        .value!;
-    expect(updated.fields.first.coordinateX, 2.5);
+      notifier.updateFieldCoordinateX(1, 0.5);
+      var updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.coordinateX, 2.5);
 
-    notifier.updateFieldCoordinateX(1, -3.0);
-    updated = container
-        .read(printLabelLayoutDetailsControllerProvider(10))
-        .value!;
-    expect(updated.fields.first.coordinateX, 0.0);
-  });
+      notifier.updateFieldCoordinateX(1, -3.0);
+      updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.coordinateX, 0.0);
+    },
+  );
 
-  test('updateFieldCoordinateY should update coordinateY and clamp at zero', () async {
-    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
-      code: 1,
-      coordinateY: 1.5,
-    );
-    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
-      code: 10,
-      fields: [field],
-    );
-    when(
-      () => repository.getDetails(params, 10),
-    ).thenAnswer((_) async => initialLayout);
-    final container = makeContainer();
-    addTearDown(container.dispose);
+  test(
+    'updateFieldCoordinateY should update coordinateY and clamp at zero',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        coordinateY: 1.5,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
 
-    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
-    final notifier = container.read(
-      printLabelLayoutDetailsControllerProvider(10).notifier,
-    );
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
 
-    notifier.updateFieldCoordinateY(1, 0.2);
-    var updated = container
-        .read(printLabelLayoutDetailsControllerProvider(10))
-        .value!;
-    expect(updated.fields.first.coordinateY, 1.7);
+      notifier.updateFieldCoordinateY(1, 0.2);
+      var updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.coordinateY, 1.7);
 
-    notifier.updateFieldCoordinateY(1, -2.0);
-    updated = container
-        .read(printLabelLayoutDetailsControllerProvider(10))
-        .value!;
-    expect(updated.fields.first.coordinateY, 0.0);
-  });
+      notifier.updateFieldCoordinateY(1, -2.0);
+      updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.coordinateY, 0.0);
+    },
+  );
 
   test('updateFieldWidth should update width and clamp at zero', () async {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
@@ -292,7 +302,10 @@ void main() {
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
-    expect(updated.fields.first.rotateType, BSFPrintElementRotationType.rotate90);
+    expect(
+      updated.fields.first.rotateType,
+      BSFPrintElementRotationType.rotate90,
+    );
   });
 
   test(
@@ -324,6 +337,226 @@ void main() {
           .read(printLabelLayoutDetailsControllerProvider(10))
           .value!;
       expect(updated.fields.first.drawLabelBelowBarcode, true);
+    },
+  );
+
+  test('updateName should update layout name', () async {
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      name: 'Old Name',
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateName('New Name');
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.name, 'New Name');
+  });
+
+  test('updateTemperature should update temperature clamped at zero', () async {
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      temperature: 15,
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateTemperature(2);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.temperature, 16);
+
+    notifier.updateTemperature(-30);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.temperature, 1);
+  });
+
+  test('updatePrintSpeed should update printSpeed clamped at min', () async {
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      printSpeed: 4,
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updatePrintSpeed(1);
+    var updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.printSpeed, 5);
+
+    notifier.updatePrintSpeed(-10);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.printSpeed, 1);
+  });
+
+  test(
+    'updateIntervalPrintPackage should update interval clamped at zero',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        intervalPrintPackage: 100,
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateIntervalPrintPackage(50);
+      var updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.intervalPrintPackage, 150);
+
+      notifier.updateIntervalPrintPackage(-300);
+      updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.intervalPrintPackage, 0);
+    },
+  );
+
+  test('updateFormType should update formType', () async {
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      formType: BSFPrintLabelFormType.continuous,
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFormType(BSFPrintLabelFormType.paginated);
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.formType, BSFPrintLabelFormType.paginated);
+  });
+
+  test('updateFormWidth and margins should update form dimensions', () async {
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      formWidth: 100.0,
+      formTopMargin: 5.0,
+      formLeftMargin: 5.0,
+      applyFormSizeConfiguration: false,
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFormWidth(10.0);
+    notifier.updateFormTopMargin(2.5);
+    notifier.updateFormLeftMargin(1.5);
+    notifier.updateApplyFormSizeConfiguration(true);
+
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.formWidth, 110.0);
+    expect(updated.formTopMargin, 7.5);
+    expect(updated.formLeftMargin, 6.5);
+    expect(updated.applyFormSizeConfiguration, true);
+  });
+
+  test(
+    'updateLabelWidth, height and margins should update label dimensions',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        labelWidth: 50.0,
+        labelHeight: 30.0,
+        labelRightMargin: 2.0,
+        labelBottomMargin: 2.0,
+        considerProductPacking: BSFProductPackingSelectionType.onlyUnitary,
+        informPrintQuantityByProduct: false,
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateLabelWidth(5.0);
+      notifier.updateLabelHeight(10.0);
+      notifier.updateLabelRightMargin(1.0);
+      notifier.updateLabelBottomMargin(1.0);
+      notifier.updateConsiderProductPacking(
+        BSFProductPackingSelectionType.both,
+      );
+      notifier.updateInformPrintQuantityByProduct(true);
+
+      final updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.labelWidth, 55.0);
+      expect(updated.labelHeight, 40.0);
+      expect(updated.labelRightMargin, 3.0);
+      expect(updated.labelBottomMargin, 3.0);
+      expect(
+        updated.considerProductPacking,
+        BSFProductPackingSelectionType.both,
+      );
+      expect(updated.informPrintQuantityByProduct, true);
     },
   );
 }

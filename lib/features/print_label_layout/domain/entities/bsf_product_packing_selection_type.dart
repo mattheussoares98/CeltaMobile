@@ -1,11 +1,12 @@
 enum BSFProductPackingSelectionType {
-  onlyUnitary('OnlyUnitary'),
-  onlyMultiple('OnlyMultiple'),
-  both('Both');
+  onlyUnitary('OnlyUnitary', 'Unitário'),
+  onlyMultiple('OnlyMultiple', 'Múltiplo'),
+  both('Both', 'Ambos');
 
   final String apiValue;
+  final String label;
 
-  const BSFProductPackingSelectionType(this.apiValue);
+  const BSFProductPackingSelectionType(this.apiValue, this.label);
 
   factory BSFProductPackingSelectionType.fromJson(Object? value) =>
       values.firstWhere(

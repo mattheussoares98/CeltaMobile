@@ -84,6 +84,121 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateName(String name) {
+    _updateLayout((layout) => layout.copyWith(name: name));
+  }
+
+  void updateTemperature(int delta) {
+    _updateLayout((layout) {
+      final updated = (layout.temperature + delta).clamp(1, 16);
+      return layout.copyWith(temperature: updated);
+    });
+  }
+
+  void updatePrintSpeed(int delta) {
+    _updateLayout((layout) {
+      final updated = (layout.printSpeed + delta).clamp(1, 5);
+      return layout.copyWith(printSpeed: updated);
+    });
+  }
+
+  void updateIntervalPrintPackage(int delta) {
+    _updateLayout((layout) {
+      final updated = (layout.intervalPrintPackage + delta).clamp(0, 9999);
+      return layout.copyWith(intervalPrintPackage: updated);
+    });
+  }
+
+  void updateFormType(BSFPrintLabelFormType formType) {
+    _updateLayout((layout) => layout.copyWith(formType: formType));
+  }
+
+  void updateFormWidth(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.formWidth + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(formWidth: updated);
+    });
+  }
+
+  void updateFormTopMargin(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.formTopMargin + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(formTopMargin: updated);
+    });
+  }
+
+  void updateFormLeftMargin(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.formLeftMargin + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(formLeftMargin: updated);
+    });
+  }
+
+  void updateApplyFormSizeConfiguration(bool value) {
+    _updateLayout(
+      (layout) => layout.copyWith(applyFormSizeConfiguration: value),
+    );
+  }
+
+  void updateLabelWidth(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.labelWidth + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(labelWidth: updated);
+    });
+  }
+
+  void updateLabelHeight(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.labelHeight + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(labelHeight: updated);
+    });
+  }
+
+  void updateLabelRightMargin(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.labelRightMargin + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(labelRightMargin: updated);
+    });
+  }
+
+  void updateLabelBottomMargin(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.labelBottomMargin + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(labelBottomMargin: updated);
+    });
+  }
+
+  void updateConsiderProductPacking(BSFProductPackingSelectionType value) {
+    _updateLayout((layout) => layout.copyWith(considerProductPacking: value));
+  }
+
+  void updateInformPrintQuantityByProduct(bool value) {
+    _updateLayout(
+      (layout) => layout.copyWith(informPrintQuantityByProduct: value),
+    );
+  }
+
+  void _updateLayout(
+    BSFPrintLabelLayoutEntity Function(BSFPrintLabelLayoutEntity) updater,
+  ) {
+    if (state is! AsyncData<BSFPrintLabelLayoutEntity>) return;
+    state = AsyncData(updater(state.requireValue));
+  }
+
   void _updateField(
     int fieldCode,
     BSFPrintLabelLayoutFieldEntity Function(BSFPrintLabelLayoutFieldEntity)

@@ -13,6 +13,7 @@ void main() {
           body: PrintLabelRepeatingIconButton(
             onPressed: () => callCount++,
             icon: const Icon(Icons.add),
+            repeatInterval: const Duration(milliseconds: 75),
           ),
         ),
       ),
@@ -69,6 +70,7 @@ void main() {
           body: PrintLabelRepeatingIconButton(
             onPressed: null,
             icon: Icon(Icons.add),
+            repeatInterval: Duration(milliseconds: 75),
           ),
         ),
       ),

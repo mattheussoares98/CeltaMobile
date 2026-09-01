@@ -37,6 +37,18 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                     ),
                     gapSliverH8,
                     SliverToBoxAdapter(
+                      child: PrintLabelLayoutPrinterParameters(layout: layout),
+                    ),
+                    gapSliverH8,
+                    SliverToBoxAdapter(
+                      child: PrintLabelLayoutFormParameters(layout: layout),
+                    ),
+                    gapSliverH8,
+                    SliverToBoxAdapter(
+                      child: PrintLabelLayoutLabelParameters(layout: layout),
+                    ),
+                    gapSliverH8,
+                    SliverToBoxAdapter(
                       child: BaseText.title(
                         'Campos (${layout.fields.length})'.hardcoded,
                       ),

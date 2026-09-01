@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class PrintLabelRepeatingIconButton extends StatefulWidget {
+class PrintLabelRepeatingIconButton extends HookWidget {
   final VoidCallback? onPressed;
   final Widget icon;
   final VisualDensity? visualDensity;
@@ -17,66 +18,51 @@ class PrintLabelRepeatingIconButton extends StatefulWidget {
     this.visualDensity,
     this.padding,
     this.constraints,
-    this.repeatInterval = const Duration(milliseconds: 75),
+    required this.repeatInterval,
   });
 
   @override
-  State<PrintLabelRepeatingIconButton> createState() =>
-      _PrintLabelRepeatingIconButtonState();
-}
-
-class _PrintLabelRepeatingIconButtonState
-    extends State<PrintLabelRepeatingIconButton> {
-  Timer? _timer;
-
-  bool get _isEnabled => widget.onPressed != null;
-
-  void _startRepeating() {
-    if (!_isEnabled) return;
-    _stopRepeating();
-
-    widget.onPressed?.call();
-    _timer = Timer.periodic(widget.repeatInterval, (_) {
-      if (!mounted || !_isEnabled) {
-        _stopRepeating();
-        return;
-      }
-      widget.onPressed?.call();
-    });
-  }
-
-  void _stopRepeating() {
-    _timer?.cancel();
-    _timer = null;
-  }
-
-  @override
-  void dispose() {
-    _stopRepeating();
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(covariant PrintLabelRepeatingIconButton oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.onPressed == null && oldWidget.onPressed != null) {
-      _stopRepeating();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final timerRef = useRef<Timer?>(null);
+    final isEnabled = onPressed != null;
+
+    void stopRepeating() {
+      timerRef.value?.cancel();
+      timerRef.value = null;
+    }
+
+    void startRepeating() {
+      if (!isEnabled) return;
+      stopRepeating();
+
+      onPressed?.call();
+      timerRef.value = Timer.periodic(repeatInterval, (_) {
+        if (!isEnabled) {
+          stopRepeating();
+          return;
+        }
+        onPressed?.call();
+      });
+    }
+
+    useEffect(() {
+      if (!isEnabled) {
+        stopRepeating();
+      }
+      return stopRepeating;
+    }, [isEnabled, repeatInterval]);
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onLongPressStart: _isEnabled ? (_) => _startRepeating() : null,
-      onLongPressEnd: (_) => _stopRepeating(),
-      onLongPressCancel: _stopRepeating,
+      onLongPressStart: isEnabled ? (_) => startRepeating() : null,
+      onLongPressEnd: (_) => stopRepeating(),
+      onLongPressCancel: stopRepeating,
       child: IconButton(
-        onPressed: widget.onPressed,
-        icon: widget.icon,
-        visualDensity: widget.visualDensity,
-        padding: widget.padding,
-        constraints: widget.constraints,
+        onPressed: onPressed,
+        icon: icon,
+        visualDensity: visualDensity,
+        padding: padding,
+        constraints: constraints,
       ),
     );
   }
