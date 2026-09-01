@@ -197,6 +197,44 @@ void main() {
     expect(updated.fields.first.height, 0.0);
   });
 
+  test(
+    'updateFieldHeight should scale ratioBarCode for filled box fields',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        width: 190.0,
+        height: 150.0,
+        ratioBarCode: 75.0,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.boxOrLine,
+        ),
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateFieldHeight(1, 1.0);
+      var updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!;
+      expect(updated.fields.first.height, 151.0);
+      expect(updated.fields.first.ratioBarCode, 75.5);
+    },
+  );
+
   test('toggleFieldVisibility should toggle field isVisible', () async {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
       code: 1,

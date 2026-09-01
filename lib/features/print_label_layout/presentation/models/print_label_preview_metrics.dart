@@ -197,7 +197,8 @@ class PrintLabelPreviewMetrics {
     }
 
     final smallestDimension = math.min(field.width, field.height);
-    return smallestDimension > 0 && field.ratioBarCode * 2 >= smallestDimension;
+    return smallestDimension > 0 &&
+        field.ratioBarCode * 2 >= (smallestDimension - 1.0);
   }
 
   double _rabbitBoxCanvasExpansion(BSFPrintLabelLayoutFieldEntity field) {
@@ -216,7 +217,8 @@ class PrintLabelPreviewMetrics {
     }
 
     for (final box in layout.fields) {
-      if (isFilledBox(box) &&
+      if (box.isVisible &&
+          isFilledBox(box) &&
           field.coordinateX >= box.coordinateX &&
           field.coordinateX < box.coordinateX + renderedWidth(box) &&
           field.coordinateY >= box.coordinateY &&
