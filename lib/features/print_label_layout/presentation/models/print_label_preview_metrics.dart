@@ -8,10 +8,13 @@ class PrintLabelPreviewMetrics {
   const PrintLabelPreviewMetrics(this.layout);
 
   static const _rabbitConfiguredWidthScale = 0.55;
+  static const _rabbitDrawableWidthScale = 0.52;
   static const _rabbitTrailingMarginRatio = 0.12;
+  static const _rabbitDrawableTrailingMarginRatio = 0.04;
   static const _rabbitBarcodeCaptionHeight = 8.0;
   static const _rabbitCurrencyHorizontalCorrection = 12.0;
   static const _rabbitCurrencyVerticalCorrection = -4.0;
+  static const _rabbitBarcodeRatioDivisor = 2.3;
   // Calibrates PPLA horizontal command values against the normalized preview
   // canvas while preserving the printer's configured proportions.
   static const _rabbitPplaBarcodeWidthScale = 0.30625;
@@ -70,11 +73,11 @@ class PrintLabelPreviewMetrics {
 
     final trailingMargin = math.max(
       leadingMargin,
-      contentRight * _rabbitTrailingMarginRatio,
+      contentRight * _rabbitDrawableTrailingMarginRatio,
     );
     final configuredWidth =
         (layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth) *
-        _rabbitConfiguredWidthScale;
+        _rabbitDrawableWidthScale;
     return math.max(configuredWidth, contentRight + trailingMargin);
   }
 
@@ -112,7 +115,7 @@ class PrintLabelPreviewMetrics {
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       final baseModuleWidth = field.ratioBarCode > 0
-          ? field.ratioBarCode / 2.0
+          ? field.ratioBarCode / _rabbitBarcodeRatioDivisor
           : _rabbitPplaBarcodeWidthScale;
       final moduleWidth = math.max(0.5, field.width * baseModuleWidth);
       return _rabbitBarcodeModuleCount(field) * moduleWidth;
@@ -145,11 +148,22 @@ class PrintLabelPreviewMetrics {
     BSFPrintLabelLayoutFieldEntity field, {
     required double drawableWidth,
     required double previewHeight,
-  }) =>
-      horizontalPosition(field) +
-              renderedWidth(field, text: visiblePreviewText(field)) >
-          drawableWidth ||
-      field.coordinateY + renderedHeight(field) > previewHeight;
+  }) {
+    final width = renderedWidth(field, text: visiblePreviewText(field));
+    final height = renderedHeight(field);
+    final left = horizontalPosition(field);
+    final bottom = verticalPosition(field);
+
+    if (field.rotateType == BSFPrintElementRotationType.rotate270) {
+      return left + height > drawableWidth ||
+          bottom - width < 0 ||
+          bottom > previewHeight;
+    }
+
+    return left + width > drawableWidth ||
+        bottom < 0 ||
+        bottom + height > previewHeight;
+  }
 
   double horizontalCanvasFootprint(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
@@ -185,21 +199,84 @@ class PrintLabelPreviewMetrics {
       return field.coordinateX + _rabbitCurrencyHorizontalCorrection;
     }
 
+    if (isRabbitOS214 &&
+        field.rotateType == BSFPrintElementRotationType.rotate270) {
+      if (field.coordinateX > drawableCanvasWidth / 2) {
+        return field.coordinateX + renderedHeight(field);
+      }
+      return math.max(0, field.coordinateX - (renderedHeight(field) / 2));
+    }
+
     return field.coordinateX;
   }
 
   double verticalPosition(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.coordinateY;
 
+    if (field.rotateType == BSFPrintElementRotationType.rotate270) {
+      final bottomAnchor = _rightmostRotatedField;
+      if (bottomAnchor != null && !identical(field, bottomAnchor)) {
+        return verticalPosition(bottomAnchor);
+      }
+    }
+
+    if (field.rotateType == BSFPrintElementRotationType.rotate270 &&
+        field.coordinateX > drawableCanvasWidth / 2) {
+      final barcode = _nearestBarcode(field);
+      if (barcode != null) {
+        return verticalPosition(barcode) +
+            renderedWidth(field, text: visiblePreviewText(field));
+      }
+    }
+
     final isCurrencyIndicator =
         field.fontType == '1' && previewText(field).trim() == r'R$';
     final currencyCorrection = isCurrencyIndicator
         ? _rabbitCurrencyVerticalCorrection
         : 0;
+    final rotationCorrection =
+        field.rotateType == BSFPrintElementRotationType.rotate270
+        ? math.max(
+            0,
+            renderedWidth(field, text: visiblePreviewText(field)) -
+                renderedHeight(field),
+          )
+        : 0;
     return canvasHeight -
         field.coordinateY -
         renderedHeight(field) +
-        currencyCorrection;
+        currencyCorrection +
+        rotationCorrection;
+  }
+
+  BSFPrintLabelLayoutFieldEntity? get _rightmostRotatedField {
+    BSFPrintLabelLayoutFieldEntity? rightmost;
+    for (final candidate in layout.fields) {
+      if (!candidate.isVisible ||
+          candidate.rotateType != BSFPrintElementRotationType.rotate270) {
+        continue;
+      }
+      if (rightmost == null || candidate.coordinateX > rightmost.coordinateX) {
+        rightmost = candidate;
+      }
+    }
+    return rightmost;
+  }
+
+  BSFPrintLabelLayoutFieldEntity? _nearestBarcode(
+    BSFPrintLabelLayoutFieldEntity field,
+  ) {
+    BSFPrintLabelLayoutFieldEntity? nearest;
+    var nearestDistance = double.infinity;
+    for (final candidate in layout.fields) {
+      if (!candidate.isVisible || !candidate.isBarcode) continue;
+      final distance = (candidate.coordinateX - field.coordinateX).abs();
+      if (distance < nearestDistance) {
+        nearest = candidate;
+        nearestDistance = distance;
+      }
+    }
+    return nearest;
   }
 
   bool isFilledBox(BSFPrintLabelLayoutFieldEntity field) {

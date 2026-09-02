@@ -72,7 +72,7 @@ void main() {
       );
       final metrics = _metrics([field]);
 
-      expect(metrics.renderedWidth(field), 142.5);
+      expect(metrics.renderedWidth(field), closeTo(123.913, 0.001));
       expect(metrics.renderedHeight(field), 38);
       expect(metrics.rabbitBarcodeCaptionFontSize(1), 8);
     });
@@ -93,9 +93,9 @@ void main() {
         final metrics3 = _metrics([fieldWidth3]);
         final metrics1 = _metrics([fieldWidth1]);
 
-        expect(metrics2.renderedWidth(fieldWidth2), 142.5);
-        expect(metrics3.renderedWidth(fieldWidth3), 213.75);
-        expect(metrics1.renderedWidth(fieldWidth1), 71.25);
+        expect(metrics2.renderedWidth(fieldWidth2), closeTo(123.913, 0.001));
+        expect(metrics3.renderedWidth(fieldWidth3), closeTo(185.870, 0.001));
+        expect(metrics1.renderedWidth(fieldWidth1), closeTo(61.957, 0.001));
       },
     );
 
@@ -190,7 +190,7 @@ void main() {
       final metrics = _metrics([leadingText, box]);
 
       expect(metrics.canvasWidth, closeTo(603.4, 0.001));
-      expect(metrics.drawableCanvasWidth, closeTo(448, 0.001));
+      expect(metrics.drawableCanvasWidth, closeTo(420, 0.001));
       expect(metrics.renderedWidth(box), 190);
       expect(metrics.renderedHeight(box), 150);
       expect(metrics.horizontalPosition(box), 210);
@@ -226,10 +226,57 @@ void main() {
         );
       },
     );
+
+    test('should compensate Rabbit 270-degree rotated text position', () {
+      final date = _rabbitField(
+        coordinateX: 5,
+        coordinateY: 20,
+        fontType: '2',
+        previewValue: '02/09/26',
+        rotateType: BSFPrintElementRotationType.rotate270,
+      ).copyWith(positionStartCharacter: 1, maxCharacterSize: 0);
+      final plu = _rabbitField(
+        coordinateX: 400,
+        coordinateY: 20,
+        fontType: '2',
+        previewValue: '000017',
+        rotateType: BSFPrintElementRotationType.rotate270,
+      ).copyWith(positionStartCharacter: 1, maxCharacterSize: 0);
+      final barcode = _rabbitField(
+        coordinateX: 280,
+        coordinateY: 20,
+        width: 2,
+        height: 30,
+        ratioBarCode: 1.5,
+        drawLabelBelowBarcode: true,
+        previewValue: '7891000379103',
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final metrics = _metrics([date, barcode, plu], labelWidth: 840);
+
+      expect(metrics.horizontalPosition(date), 0);
+      expect(
+        metrics.horizontalPosition(plu),
+        plu.coordinateX + metrics.renderedHeight(plu),
+      );
+      expect(metrics.verticalPosition(date), metrics.verticalPosition(plu));
+      expect(metrics.drawableCanvasWidth, closeTo(436.8, 0.001));
+      expect(
+        metrics.exceedsRabbitBounds(
+          plu,
+          drawableWidth: metrics.drawableCanvasWidth,
+          previewHeight: metrics.canvasHeight,
+        ),
+        isFalse,
+      );
+    });
   });
 }
 
-PrintLabelPreviewMetrics _metrics(List<BSFPrintLabelLayoutFieldEntity> fields) {
+PrintLabelPreviewMetrics _metrics(
+  List<BSFPrintLabelLayoutFieldEntity> fields, {
+  double labelWidth = 780,
+}) {
   final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
     modelType: BSFLabelPrinterModelType.rabbitOS214,
     coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
@@ -237,7 +284,7 @@ PrintLabelPreviewMetrics _metrics(List<BSFPrintLabelLayoutFieldEntity> fields) {
   final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
     formWidth: 800,
     formHeight: 0,
-    labelWidth: 780,
+    labelWidth: labelWidth,
     labelHeight: 0,
     labelPrinter: printer,
     fields: fields,
@@ -255,6 +302,7 @@ BSFPrintLabelLayoutFieldEntity _rabbitField({
   String fontType = '3',
   String previewValue = 'Texto',
   BSFPrintLabelFieldType fieldType = BSFPrintLabelFieldType.string,
+  BSFPrintElementRotationType rotateType = BSFPrintElementRotationType.none,
 }) => EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
   coordinateX: coordinateX,
   coordinateY: coordinateY,
@@ -266,6 +314,7 @@ BSFPrintLabelLayoutFieldEntity _rabbitField({
   ratioBarCode: ratioBarCode,
   drawLabelBelowBarcode: drawLabelBelowBarcode,
   previewValue: previewValue,
+  rotateType: rotateType,
   field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
     fieldType: fieldType,
   ),
