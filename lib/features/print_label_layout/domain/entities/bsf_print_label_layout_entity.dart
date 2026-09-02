@@ -75,6 +75,9 @@ class BSFPrintLabelLayoutEntity extends Equatable {
           (labelPrinter?.modelType == BSFLabelPrinterModelType.os214Plus &&
               field.fontType == '9'));
 
+  bool supportsBold(BSFPrintLabelLayoutFieldEntity field) =>
+      isGenericPrinter && field.usesTextCharacterOptions;
+
   BSFPrintLabelLayoutEntity copyWith({
     int? code,
     String? name,

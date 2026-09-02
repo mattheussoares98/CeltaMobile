@@ -433,6 +433,37 @@ void main() {
     },
   );
 
+  test('updateFieldIsBold should update bold printing', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      isBold: false,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldIsBold(0, true);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields
+          .first
+          .isBold,
+      true,
+    );
+  });
+
   test(
     'updateFieldDrawLabelBelowBarcode should update drawLabelBelowBarcode',
     () async {

@@ -117,6 +117,10 @@ class PrintLabelLayoutDetailsController
   static int changedFontSize(int fontSize, bool advance) =>
       (fontSize + (advance ? 1 : -1)).clamp(0, 216);
 
+  void updateFieldIsBold(int fieldIndex, bool isBold) {
+    _updateField(fieldIndex, (field) => field.copyWith(isBold: isBold));
+  }
+
   void updateFieldPositionStartCharacter(int fieldIndex, int delta) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(

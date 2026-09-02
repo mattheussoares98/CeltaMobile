@@ -148,6 +148,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                           ),
                     ),
                   ),
+                  onIsBoldChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(isBold: value),
+                  ),
                   onPositionStartCharacterChanged: (delta) => _updateDraft(
                     draft,
                     (field) => field.copyWith(

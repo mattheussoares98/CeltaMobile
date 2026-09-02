@@ -27,6 +27,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<int> onMaxCharacterSizeChanged;
   final ValueChanged<int> onFontTypeChanged;
   final ValueChanged<bool> onFontSizeChange;
+  final ValueChanged<bool> onIsBoldChanged;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
@@ -48,6 +49,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onMaxCharacterSizeChanged,
     required this.onFontTypeChanged,
     required this.onFontSizeChange,
+    required this.onIsBoldChanged,
   });
 
   @override
@@ -61,6 +63,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     );
     final supportsFontType = layout?.supportsFontType(field) ?? false;
     final supportsFontSize = layout?.supportsFontSize(field) ?? false;
+    final supportsBold = layout?.supportsBold(field) ?? false;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -249,6 +252,16 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             ],
           ],
         ),
+        if (supportsBold) ...[
+          gapH8,
+          BaseCheckBox(
+            name: 'Imprimir texto em negrito'.hardcoded,
+            enabled: field.isBold,
+            onChanged: (value) {
+              if (value != null) onIsBoldChanged(value);
+            },
+          ),
+        ],
       ],
     );
   }
