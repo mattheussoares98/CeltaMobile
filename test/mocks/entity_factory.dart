@@ -2525,13 +2525,16 @@ class EntityFactory {
 
   static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity({
     int? code,
+    bool? stringType,
+    bool? integerType,
+    bool? floatType,
     bool? dateTimeType,
     bool? qrCodeType,
   }) => BSFPrintLabelFieldFormatEntity(
     code: code ?? faker.randomGenerator.integer(100, min: 1),
-    stringType: true,
-    integerType: false,
-    floatType: false,
+    stringType: stringType ?? true,
+    integerType: integerType ?? false,
+    floatType: floatType ?? false,
     dateTimeType: dateTimeType ?? false,
     qrCodeType: qrCodeType ?? false,
     name: faker.lorem.word(),

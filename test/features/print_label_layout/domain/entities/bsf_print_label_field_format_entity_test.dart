@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
@@ -36,5 +37,17 @@ void main() {
     final format = EntityFactory.makeBSFPrintLabelFieldFormatEntity(code: 1);
 
     expect(format.dateTimePattern, isNull);
+  });
+
+  test('should identify whether the format supports a field type', () {
+    final format = EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+      stringType: false,
+      integerType: true,
+    );
+
+    expect(format.supports(BSFPrintLabelFieldType.integer), isTrue);
+    expect(format.supports(BSFPrintLabelFieldType.string), isFalse);
+    expect(format.supports(BSFPrintLabelFieldType.barcode), isFalse);
+    expect(format.supports(null), isFalse);
   });
 }

@@ -65,6 +65,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsFontType = layout?.supportsFontType(field) ?? false;
     final supportsFontSize = layout?.supportsFontSize(field) ?? false;
     final supportsBold = layout?.supportsBold(field) ?? false;
+    final resolvedCoordinateUnit =
+        coordinateUnit ?? BSFPrintLabelCoordinateUnit.printerDot;
     final previewContent = switch ((
       field.fieldType,
       field.format?.dateTimePattern,
@@ -90,7 +92,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           onChanged: onPrefixChanged,
         ),
         gapH4,
-        BaseText.title('Coordenadas ($_coordinateUnit)'.hardcoded),
+        BaseText.title(
+          'Coordenadas (${resolvedCoordinateUnit.label})'.hardcoded,
+        ),
         gapH4,
         Wrap(
           alignment: .spaceEvenly,
@@ -99,27 +103,31 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             PrintLabelLayoutValueAdjuster(
               label: 'X'.hardcoded,
               repeatInterval: fastRepeatInterval,
-              value: _formatCoordinate(field.coordinateX),
+              value: resolvedCoordinateUnit.format(field.coordinateX),
               onDecrease: field.coordinateX > 0
-                  ? () => onCoordinateXChanged(-_coordinateStep)
+                  ? () =>
+                        onCoordinateXChanged(-resolvedCoordinateUnit.editorStep)
                   : null,
-              onIncrease: () => onCoordinateXChanged(_coordinateStep),
+              onIncrease: () =>
+                  onCoordinateXChanged(resolvedCoordinateUnit.editorStep),
             ),
             PrintLabelLayoutValueAdjuster(
               label: 'Y'.hardcoded,
               repeatInterval: fastRepeatInterval,
-              value: _formatCoordinate(field.coordinateY),
+              value: resolvedCoordinateUnit.format(field.coordinateY),
               onDecrease: field.coordinateY > 0
-                  ? () => onCoordinateYChanged(-_coordinateStep)
+                  ? () =>
+                        onCoordinateYChanged(-resolvedCoordinateUnit.editorStep)
                   : null,
-              onIncrease: () => onCoordinateYChanged(_coordinateStep),
+              onIncrease: () =>
+                  onCoordinateYChanged(resolvedCoordinateUnit.editorStep),
             ),
           ],
         ),
         if (field.dimensionType !=
             BSFPrintLabelFieldDimensionType.notApplicable) ...[
           gapH8,
-          BaseText.title('Dimensões ($_dimensionDescription)'.hardcoded),
+          BaseText.title('Dimensões (${field.dimensionType.label})'.hardcoded),
           gapH4,
           Wrap(
             alignment: .spaceEvenly,
@@ -128,20 +136,22 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               PrintLabelLayoutValueAdjuster(
                 label: 'Largura'.hardcoded,
                 repeatInterval: fastRepeatInterval,
-                value: _formatDimension(field.width),
-                onDecrease: field.width > _minWidth
-                    ? () => onWidthChanged(-_dimensionStep)
+                value: field.dimensionType.format(field.width),
+                onDecrease: field.width > field.minimumEditorWidth
+                    ? () => onWidthChanged(-field.dimensionType.editorStep)
                     : null,
-                onIncrease: () => onWidthChanged(_dimensionStep),
+                onIncrease: () =>
+                    onWidthChanged(field.dimensionType.editorStep),
               ),
               PrintLabelLayoutValueAdjuster(
                 label: 'Altura'.hardcoded,
                 repeatInterval: fastRepeatInterval,
-                value: _formatDimension(field.height),
-                onDecrease: field.height > _minHeight
-                    ? () => onHeightChanged(-_dimensionStep)
+                value: field.dimensionType.format(field.height),
+                onDecrease: field.height > field.minimumEditorHeight
+                    ? () => onHeightChanged(-field.dimensionType.editorStep)
                     : null,
-                onIncrease: () => onHeightChanged(_dimensionStep),
+                onIncrease: () =>
+                    onHeightChanged(field.dimensionType.editorStep),
               ),
             ],
           ),
@@ -149,15 +159,17 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             gapH4,
             PrintLabelLayoutValueAdjuster(
               label: 'Espessura do traço'.hardcoded,
-              value: _formatDimension(field.ratioBarCode),
-              onDecrease: field.ratioBarCode > _minStrokeThickness
-                  ? () => onRatioBarCodeChanged(-_dimensionStep)
+              value: field.dimensionType.format(field.ratioBarCode),
+              onDecrease:
+                  field.ratioBarCode > field.minimumEditorStrokeThickness
+                  ? () => onRatioBarCodeChanged(-field.dimensionType.editorStep)
                   : null,
-              onIncrease: () => onRatioBarCodeChanged(_dimensionStep),
+              onIncrease: () =>
+                  onRatioBarCodeChanged(field.dimensionType.editorStep),
             ),
           ],
         ],
-        if (_showsRotation) ...[
+        if (field.showsRotationEditor) ...[
           gapH8,
           BaseText.title('Rotação'.hardcoded),
           gapH4,
@@ -183,11 +195,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           BaseSegmentedButtons<BSFPrintElementAlignmentType>(
             items: BSFPrintElementAlignmentType.values,
             selectedValue: field.alignmentType,
-            itemLabelBuilder: (item) => switch (item) {
-              .left => 'Esquerda'.hardcoded,
-              .middle => 'Centro'.hardcoded,
-              .right => 'Direita'.hardcoded,
-            },
+            itemLabelBuilder: (item) => item.label.hardcoded,
             onChanged: onAlignmentChanged,
           ),
           gapH8,
@@ -195,7 +203,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             label: 'Formato'.hardcoded,
             selectedItem: field.format,
             showLabelAtTopLeft: true,
-            items: _applicableFormats
+            items: field
+                .applicableFormats(formats)
                 .map(
                   (format) => DropdownMenuItem(
                     value: format,
@@ -210,12 +219,12 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           gapH8,
           PrintLabelLayoutValueAdjuster(
             label: 'Tipo da fonte'.hardcoded,
-            value: _fontType.toString(),
-            onDecrease: _fontType > 1
-                ? () => onFontTypeChanged(_fontType - 1)
+            value: field.editorFontType.toString(),
+            onDecrease: field.editorFontType > 1
+                ? () => onFontTypeChanged(field.editorFontType - 1)
                 : null,
-            onIncrease: _fontType < 6
-                ? () => onFontTypeChanged(_fontType + 1)
+            onIncrease: field.editorFontType < 6
+                ? () => onFontTypeChanged(field.editorFontType + 1)
                 : null,
           ),
         ],
@@ -239,7 +248,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 ),
               ),
             ],
-            if (_showsTextCharacterOptions) ...[
+            if (field.usesTextCharacterOptions) ...[
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
@@ -275,75 +284,4 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
       ],
     );
   }
-
-  double get _coordinateStep =>
-      coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
-
-  double get _dimensionStep => switch (field.dimensionType) {
-    BSFPrintLabelFieldDimensionType.centimeter => 0.1,
-    _ => 1.0,
-  };
-
-  String _formatCoordinate(double value) {
-    if (coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter) {
-      return value.toStringAsFixed(1);
-    }
-    return value.truncateToDouble() == value
-        ? value.toStringAsFixed(0)
-        : value.toStringAsFixed(1);
-  }
-
-  String _formatDimension(double value) {
-    if (field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter) {
-      return value.toStringAsFixed(1);
-    }
-    return value.truncateToDouble() == value
-        ? value.toStringAsFixed(0)
-        : value.toStringAsFixed(1);
-  }
-
-  String get _coordinateUnit =>
-      coordinateUnit == BSFPrintLabelCoordinateUnit.centimeter
-      ? 'cm'
-      : 'pontos'.hardcoded;
-
-  String get _dimensionDescription => switch (field.dimensionType) {
-    BSFPrintLabelFieldDimensionType.notApplicable => '',
-    BSFPrintLabelFieldDimensionType.centimeter => 'cm',
-    BSFPrintLabelFieldDimensionType.printerDot => 'pontos'.hardcoded,
-    BSFPrintLabelFieldDimensionType.scaleFactor => 'fator'.hardcoded,
-    BSFPrintLabelFieldDimensionType.printerCommandValue =>
-      'valor do comando'.hardcoded,
-  };
-
-  double get _minWidth {
-    if (field.isBoxOrLine && field.ratioBarCode > 0) {
-      return field.ratioBarCode;
-    }
-    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
-        ? 0.1
-        : 1.0;
-  }
-
-  bool get _showsRotation => !field.isBoxOrLine;
-
-  bool get _showsTextCharacterOptions => field.usesTextCharacterOptions;
-
-  int get _fontType => field.fontTypeNumber.clamp(1, 6);
-
-  List<BSFPrintLabelFieldFormatEntity> get _applicableFormats => formats
-      .where(
-        (format) => switch (field.fieldType) {
-          BSFPrintLabelFieldType.string => format.stringType,
-          BSFPrintLabelFieldType.integer => format.integerType,
-          BSFPrintLabelFieldType.float => format.floatType,
-          BSFPrintLabelFieldType.dateTime => format.dateTimeType,
-          _ => false,
-        },
-      )
-      .toList();
-
-  double get _minHeight => _minWidth;
-
-  double get _minStrokeThickness => 1.0;
 }

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:equatable/equatable.dart';
 
 class BSFPrintLabelFieldFormatEntity extends Equatable {
@@ -39,6 +40,14 @@ class BSFPrintLabelFieldFormatEntity extends Equatable {
     21 => 'HHmmss',
     22 => 'HHmm',
     _ => null,
+  };
+
+  bool supports(BSFPrintLabelFieldType? fieldType) => switch (fieldType) {
+    BSFPrintLabelFieldType.string => stringType,
+    BSFPrintLabelFieldType.integer => integerType,
+    BSFPrintLabelFieldType.float => floatType,
+    BSFPrintLabelFieldType.dateTime => dateTimeType,
+    _ => false,
   };
 
   @override

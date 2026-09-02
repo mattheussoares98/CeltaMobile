@@ -1,11 +1,12 @@
 enum BSFPrintElementAlignmentType {
-  left('Left'),
-  middle('Middle'),
-  right('Right');
+  left('Left', 'Esquerda'),
+  middle('Middle', 'Centro'),
+  right('Right', 'Direita');
 
   final String apiValue;
+  final String label;
 
-  const BSFPrintElementAlignmentType(this.apiValue);
+  const BSFPrintElementAlignmentType(this.apiValue, this.label);
 
   factory BSFPrintElementAlignmentType.fromJson(Object? value) =>
       values.firstWhere(

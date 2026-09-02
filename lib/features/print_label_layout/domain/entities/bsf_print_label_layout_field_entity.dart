@@ -80,7 +80,26 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
 
   int get fontTypeNumber => int.tryParse(fontType) ?? 1;
 
+  int get editorFontType => fontTypeNumber.clamp(1, 6);
+
+  double get minimumEditorWidth {
+    if (isBoxOrLine && ratioBarCode > 0) return ratioBarCode;
+    return dimensionType == BSFPrintLabelFieldDimensionType.centimeter
+        ? 0.1
+        : 1.0;
+  }
+
+  double get minimumEditorHeight => minimumEditorWidth;
+
+  double get minimumEditorStrokeThickness => 1.0;
+
+  bool get showsRotationEditor => !isBoxOrLine;
+
   bool get usesTextCharacterOptions => isTextField && !isQrCode;
+
+  List<BSFPrintLabelFieldFormatEntity> applicableFormats(
+    Iterable<BSFPrintLabelFieldFormatEntity> formats,
+  ) => formats.where((format) => format.supports(fieldType)).toList();
 
   bool supportsFontType({required bool isGenericPrinter}) =>
       !isGenericPrinter && usesTextCharacterOptions;
