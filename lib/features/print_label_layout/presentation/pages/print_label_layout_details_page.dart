@@ -5,6 +5,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +22,15 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-      appBar: BaseAppBar(title: 'Detalhes do leiaute'.hardcoded),
+      appBar: Consumer(
+        builder: (_, ref, _) {
+          final layoutName = ref.watch(provider.select((s) => s.value?.name));
+
+          return BaseAppBar(
+            title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
+          );
+        },
+      ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
@@ -44,6 +53,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                     ),
                     child: PrintLabelLayoutPreview(layout: layout),
                   ),
+                  gapH8,
                   Expanded(
                     child: CustomScrollView(
                       slivers: [
@@ -84,7 +94,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                             ],
                           ),
                         ),
-
+                        gapSliverH8,
                         if (layout.fields.isEmpty)
                           SliverToBoxAdapter(
                             child: BaseText.caption(
@@ -98,12 +108,46 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                             itemBuilder: (context, index) {
                               final field = layout.fields[index];
 
-                              return PrintLabelLayoutFieldItem(
-                                key: ValueKey(index),
-                                layoutCode: layout.code,
-                                fieldIndex: index,
-                                field: field,
-                                coordinateUnit: coordinateUnit,
+                              return ExpansionTile(
+                                title: BaseText.title(field.field?.name ?? ''),
+                                subtitle:
+                                    field.previewValue?.isNotEmpty == true ||
+                                        field.field?.content.isNotEmpty == true
+                                    ? BaseText.caption(
+                                        field.previewValue ??
+                                            field.field!.content,
+                                      )
+                                    : null,
+                                trailing: IconButton(
+                                  onPressed: () => ref
+                                      .read(
+                                        printLabelLayoutDetailsControllerProvider(
+                                          layout.code,
+                                        ).notifier,
+                                      )
+                                      .toggleFieldVisibility(index),
+                                  tooltip: field.isVisible
+                                      ? 'Ocultar do preview'.hardcoded
+                                      : 'Exibir no preview'.hardcoded,
+                                  icon: PlatformIcon(
+                                    cupertinoIcon: field.isVisible
+                                        ? CupertinoIcons.eye
+                                        : CupertinoIcons.eye_slash,
+                                    materialIcon: field.isVisible
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                  ),
+                                ),
+                                children: [
+                                  PrintLabelLayoutFieldItem(
+                                    key: ValueKey(index),
+                                    showVisibilityButton: false,
+                                    layoutCode: layout.code,
+                                    fieldIndex: index,
+                                    field: field,
+                                    coordinateUnit: coordinateUnit,
+                                  ),
+                                ],
                               );
                             },
                           ),

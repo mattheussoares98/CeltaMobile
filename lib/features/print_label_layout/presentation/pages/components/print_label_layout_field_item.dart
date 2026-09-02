@@ -13,6 +13,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
   final int fieldIndex;
   final BSFPrintLabelLayoutFieldEntity field;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
+  final bool showVisibilityButton;
 
   const PrintLabelLayoutFieldItem({
     super.key,
@@ -20,6 +21,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
     required this.fieldIndex,
     required this.field,
     required this.coordinateUnit,
+    this.showVisibilityButton = true,
   });
 
   @override
@@ -46,20 +48,22 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                     emptyMessage: 'Não informado'.hardcoded,
                   ),
                 ),
-                IconButton(
-                  onPressed: () => controller.toggleFieldVisibility(fieldIndex),
-                  tooltip: field.isVisible
-                      ? 'Ocultar do preview'.hardcoded
-                      : 'Exibir no preview'.hardcoded,
-                  icon: PlatformIcon(
-                    cupertinoIcon: field.isVisible
-                        ? CupertinoIcons.eye
-                        : CupertinoIcons.eye_slash,
-                    materialIcon: field.isVisible
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
+                if (showVisibilityButton)
+                  IconButton(
+                    onPressed: () =>
+                        controller.toggleFieldVisibility(fieldIndex),
+                    tooltip: field.isVisible
+                        ? 'Ocultar do preview'.hardcoded
+                        : 'Exibir no preview'.hardcoded,
+                    icon: PlatformIcon(
+                      cupertinoIcon: field.isVisible
+                          ? CupertinoIcons.eye
+                          : CupertinoIcons.eye_slash,
+                      materialIcon: field.isVisible
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
                   ),
-                ),
               ],
             ),
             PrintLabelLayoutFieldEditor(
