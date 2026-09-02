@@ -29,7 +29,7 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
     final coordinateUnit = ref.watch(
       printLabelLayoutDetailsControllerProvider(
         layoutCode,
-      ).select((s) => s.value?.labelPrinter?.coordinateUnit),
+      ).select((s) => s.value?.coordinateUnit),
     );
 
     return Padding(
@@ -200,21 +200,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
       (value + delta).clamp(0, 2147483647);
 
   String _initialFontType(WidgetRef ref, BSFPrintLabelLayoutFieldEntity field) {
-    final isGenericPrinter = ref
+    final layout = ref
         .read(printLabelLayoutDetailsControllerProvider(layoutCode))
-        .value
-        ?.labelPrinter
-        ?.isGeneric;
-    final supportsFontType =
-        isGenericPrinter == false &&
-        switch (field.field?.fieldType) {
-          BSFPrintLabelFieldType.string ||
-          BSFPrintLabelFieldType.integer ||
-          BSFPrintLabelFieldType.float ||
-          BSFPrintLabelFieldType.dateTime => field.format?.qrCodeType != true,
-          _ => false,
-        };
-    if (!supportsFontType) return field.fontType;
+        .value;
+    if (layout?.supportsFontType(field) != true) return field.fontType;
 
     const supportedFontTypes = {'1', '2', '3', '4', '5', '6'};
     return supportedFontTypes.contains(field.fontType) ? field.fontType : '1';

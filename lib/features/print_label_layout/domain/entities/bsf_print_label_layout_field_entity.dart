@@ -60,6 +60,31 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
     this.isVisible = true,
   });
 
+  BSFPrintLabelFieldType? get fieldType => field?.fieldType;
+
+  bool get isBarcode => fieldType == BSFPrintLabelFieldType.barcode;
+
+  bool get isQrCode =>
+      (isBarcode && barcodeSimbologyType == BSFBarcodeSimbologyType.qrCode) ||
+      format?.qrCodeType == true;
+
+  bool get isBoxOrLine => fieldType == BSFPrintLabelFieldType.boxOrLine;
+
+  bool get isTextField => switch (fieldType) {
+    BSFPrintLabelFieldType.string ||
+    BSFPrintLabelFieldType.integer ||
+    BSFPrintLabelFieldType.float ||
+    BSFPrintLabelFieldType.dateTime => true,
+    _ => false,
+  };
+
+  int get fontTypeNumber => int.tryParse(fontType) ?? 1;
+
+  bool get usesTextCharacterOptions => isTextField && !isQrCode;
+
+  bool supportsFontType({required bool isGenericPrinter}) =>
+      !isGenericPrinter && usesTextCharacterOptions;
+
   BSFPrintLabelLayoutFieldEntity copyWith({
     int? code,
     int? quantityDecimalPlaces,

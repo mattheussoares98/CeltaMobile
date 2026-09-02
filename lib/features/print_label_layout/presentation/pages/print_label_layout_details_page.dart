@@ -28,7 +28,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
         data: (layout) {
-          final coordinateUnit = layout.labelPrinter?.coordinateUnit;
+          final coordinateUnit = layout.coordinateUnit;
           List<Widget> items = [
             PrintLabelLayoutGeneralInformation(layout: layout),
             PrintLabelLayoutPrinterParameters(layout: layout),

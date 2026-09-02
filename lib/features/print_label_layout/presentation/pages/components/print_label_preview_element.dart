@@ -168,7 +168,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
         height: previewMetrics.isRabbitOS214 ? 1 : null,
         fontWeight: field.isBold
             ? FontWeight.bold
-            : previewMetrics.isRabbitOS214 && field.fontType == '6'
+            : previewMetrics.isRabbitOS214 && field.fontTypeNumber == 6
             ? FontWeight.w600
             : FontWeight.normal,
       ),
@@ -251,19 +251,12 @@ class PrintLabelPreviewElement extends StatelessWidget {
   BSFPrintLabelFieldType get _fieldType =>
       field.field?.fieldType ?? BSFPrintLabelFieldType.string;
 
-  bool get _isQrCode =>
-      field.barcodeSimbologyType == BSFBarcodeSimbologyType.qrCode ||
-      field.format?.qrCodeType == true;
+  bool get _isQrCode => field.isQrCode;
 
-  bool get _isText =>
-      _fieldType != BSFPrintLabelFieldType.barcode &&
-      _fieldType != BSFPrintLabelFieldType.logo &&
-      _fieldType != BSFPrintLabelFieldType.boxOrLine;
+  bool get _isText => field.isTextField;
 
   bool get _usesRabbitRenderedDimensions =>
-      _isText ||
-      _fieldType == BSFPrintLabelFieldType.barcode ||
-      _fieldType == BSFPrintLabelFieldType.boxOrLine;
+      _isText || field.isBarcode || field.isBoxOrLine;
 
   double get _fontSize {
     if (previewMetrics.isRabbitOS214) {

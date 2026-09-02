@@ -17,8 +17,7 @@ class PrintLabelPreviewMetrics {
   static const _rabbitPplaBarcodeWidthScale = 0.30625;
   static const _rabbitPplaBoxCanvasExpansionScale = 1.85;
 
-  bool get isRabbitOS214 =>
-      layout.labelPrinter?.modelType == BSFLabelPrinterModelType.rabbitOS214;
+  bool get isRabbitOS214 => layout.isRabbitOS214;
 
   double get canvasWidth {
     if (!isRabbitOS214) {
@@ -121,7 +120,7 @@ class PrintLabelPreviewMetrics {
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return math.max(field.width, field.ratioBarCode);
     }
-    if (!_isText(field)) return field.width;
+    if (!field.isTextField) return field.width;
 
     return rabbitGlyphWidth(field) *
         _horizontalMultiplier(field) *
@@ -137,7 +136,7 @@ class PrintLabelPreviewMetrics {
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return math.max(field.height, field.ratioBarCode);
     }
-    if (!_isText(field)) return field.height;
+    if (!field.isTextField) return field.height;
 
     return rabbitGlyphHeight(field) * _verticalMultiplier(field);
   }
@@ -161,7 +160,7 @@ class PrintLabelPreviewMetrics {
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       return renderedWidth(field);
     }
-    if (!_isText(field)) return field.width;
+    if (!field.isTextField) return field.width;
 
     // Text may intentionally overflow. One native glyph is sufficient to find
     // the configured label edge without expanding the canvas to fit the value.
@@ -313,15 +312,8 @@ class PrintLabelPreviewMetrics {
         final length => math.max(1, length * 11),
       };
 
-  bool _isText(BSFPrintLabelLayoutFieldEntity field) {
-    final type = _fieldType(field);
-    return type != BSFPrintLabelFieldType.barcode &&
-        type != BSFPrintLabelFieldType.logo &&
-        type != BSFPrintLabelFieldType.boxOrLine;
-  }
-
   bool _usesTextCharacterOptions(BSFPrintLabelLayoutFieldEntity field) =>
-      _isText(field) && field.format?.qrCodeType != true;
+      field.usesTextCharacterOptions;
 
   BSFPrintLabelFieldType _fieldType(BSFPrintLabelLayoutFieldEntity field) =>
       field.field?.fieldType ?? BSFPrintLabelFieldType.string;

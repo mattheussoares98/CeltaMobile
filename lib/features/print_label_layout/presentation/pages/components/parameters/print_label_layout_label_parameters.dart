@@ -17,7 +17,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layout.code).notifier,
     );
-    final unit = layout.labelPrinter?.coordinateUnit;
+    final unit = layout.coordinateUnit;
     final step = unit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
         ? 'cm'

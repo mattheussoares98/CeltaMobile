@@ -27,8 +27,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         previewLabelWidth > 0 &&
         previewLabelHeight > 0;
     final coordinateUnit =
-        layout.labelPrinter?.coordinateUnit ??
-        BSFPrintLabelCoordinateUnit.centimeter;
+        layout.coordinateUnit ?? BSFPrintLabelCoordinateUnit.centimeter;
 
     return Column(
       mainAxisSize: .min,

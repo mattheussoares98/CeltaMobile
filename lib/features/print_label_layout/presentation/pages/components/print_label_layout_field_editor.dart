@@ -50,10 +50,10 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
     final prefixController = useTextEditingController(text: field.prefix);
-    final isGenericPrinter = ref.watch(
+    final supportsFontType = ref.watch(
       printLabelLayoutDetailsControllerProvider(
         layoutCode,
-      ).select((state) => state.value?.labelPrinter?.isGeneric ?? true),
+      ).select((state) => state.value?.supportsFontType(field) ?? false),
     );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,7 +126,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               ),
             ],
           ),
-          if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine) ...[
+          if (field.isBoxOrLine) ...[
             gapH4,
             PrintLabelLayoutValueAdjuster(
               label: 'Espessura do traço'.hardcoded,
@@ -149,7 +149,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onRotationChanged,
           ),
         ],
-        if (_isBarcode && !_isQrCode) ...[
+        if (field.isBarcode && !field.isQrCode) ...[
           gapH8,
           BaseSwitch(
             title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
@@ -157,7 +157,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onDrawLabelBelowBarcodeChanged,
           ),
         ],
-        if (_isTextField) ...[
+        if (field.isTextField) ...[
           gapH8,
           BaseDropDown<BSFPrintLabelFieldFormatEntity>(
             label: 'Formato'.hardcoded,
@@ -174,7 +174,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onFormatChanged,
           ),
         ],
-        if (_showsFontType(isGenericPrinter)) ...[
+        if (supportsFontType) ...[
           gapH8,
           PrintLabelLayoutValueAdjuster(
             label: 'Tipo da fonte'.hardcoded,
@@ -257,8 +257,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   };
 
   double get _minWidth {
-    if (field.field?.fieldType == BSFPrintLabelFieldType.boxOrLine &&
-        field.ratioBarCode > 0) {
+    if (field.isBoxOrLine && field.ratioBarCode > 0) {
       return field.ratioBarCode;
     }
     return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
@@ -266,38 +265,15 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         : 1.0;
   }
 
-  BSFPrintLabelFieldType? get _fieldType => field.field?.fieldType;
+  bool get _showsRotation => !field.isBoxOrLine;
 
-  bool get _isBarcode => _fieldType == BSFPrintLabelFieldType.barcode;
+  bool get _showsTextCharacterOptions => field.usesTextCharacterOptions;
 
-  bool get _isQrCode =>
-      _isBarcode &&
-      field.barcodeSimbologyType == BSFBarcodeSimbologyType.qrCode;
-
-  bool get _isTextField => switch (_fieldType) {
-    BSFPrintLabelFieldType.string ||
-    BSFPrintLabelFieldType.integer ||
-    BSFPrintLabelFieldType.float ||
-    BSFPrintLabelFieldType.dateTime => true,
-    _ => false,
-  };
-
-  bool get _showsRotation => _fieldType != BSFPrintLabelFieldType.boxOrLine;
-
-  bool get _showsTextCharacterOptions =>
-      _isTextField && field.format?.qrCodeType != true;
-
-  bool _showsFontType(bool isGenericPrinter) =>
-      _isTextField && !isGenericPrinter && field.format?.qrCodeType != true;
-
-  int get _fontType {
-    final fontType = int.tryParse(field.fontType);
-    return fontType != null && fontType >= 1 && fontType <= 6 ? fontType : 1;
-  }
+  int get _fontType => field.fontTypeNumber.clamp(1, 6);
 
   List<BSFPrintLabelFieldFormatEntity> get _applicableFormats => formats
       .where(
-        (format) => switch (_fieldType) {
+        (format) => switch (field.fieldType) {
           BSFPrintLabelFieldType.string => format.stringType,
           BSFPrintLabelFieldType.integer => format.integerType,
           BSFPrintLabelFieldType.float => format.floatType,

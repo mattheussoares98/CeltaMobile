@@ -58,6 +58,17 @@ class BSFPrintLabelLayoutEntity extends Equatable {
     required this.fields,
   });
 
+  bool get isGenericPrinter => labelPrinter?.isGeneric ?? true;
+
+  bool get isRabbitOS214 =>
+      labelPrinter?.modelType == BSFLabelPrinterModelType.rabbitOS214;
+
+  BSFPrintLabelCoordinateUnit? get coordinateUnit =>
+      labelPrinter?.coordinateUnit;
+
+  bool supportsFontType(BSFPrintLabelLayoutFieldEntity field) =>
+      field.supportsFontType(isGenericPrinter: isGenericPrinter);
+
   BSFPrintLabelLayoutEntity copyWith({
     int? code,
     String? name,
