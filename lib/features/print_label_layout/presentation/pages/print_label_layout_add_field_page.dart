@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/print_label_layout/domain/entities/ent
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -40,6 +41,18 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
           gapH16,
           DropdownMenu<PrintLabelFieldEditorOptionEntity>(
             label: BaseText('Campo'.hardcoded),
+            leadingIcon: const PlatformIcon(
+              materialIcon: Icons.search,
+              cupertinoIcon: CupertinoIcons.search,
+            ),
+            trailingIcon: const PlatformIcon(
+              materialIcon: Icons.keyboard_arrow_down,
+              cupertinoIcon: CupertinoIcons.chevron_down,
+            ),
+            selectedTrailingIcon: const PlatformIcon(
+              materialIcon: Icons.keyboard_arrow_up,
+              cupertinoIcon: CupertinoIcons.chevron_up,
+            ),
             initialSelection: selectedOption.value,
             enableFilter: true,
             requestFocusOnTap: true,
