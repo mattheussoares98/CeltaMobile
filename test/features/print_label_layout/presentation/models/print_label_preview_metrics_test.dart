@@ -1,10 +1,74 @@
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../mocks/mocks.dart';
 
 void main() {
+  group('date-time preview format', () {
+    const formats = {
+      7: 'dd/MM/yy',
+      8: 'dd/MM/yyyy',
+      9: 'MM/dd/yy',
+      10: 'MM/dd/yyyy',
+      11: 'yy/MM/dd',
+      12: 'yyyy/MM/dd',
+      13: 'ddMMyy',
+      14: 'ddMMyyyy',
+      15: 'MMddyy',
+      16: 'MMddyyyy',
+      17: 'yyMMdd',
+      18: 'yyyyMMdd',
+      19: 'HH:mm:ss',
+      20: 'HH:mm',
+      21: 'HHmmss',
+      22: 'HHmm',
+    };
+
+    for (final entry in formats.entries) {
+      test('should apply format code ${entry.key}', () {
+        final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+          previewValue: '2026-09-02T14:05:09',
+          field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            fieldType: BSFPrintLabelFieldType.dateTime,
+          ),
+          format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+            code: entry.key,
+            dateTimeType: true,
+          ),
+        );
+        final metrics = PrintLabelPreviewMetrics(
+          EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+        );
+
+        final before = DateFormat(entry.value).format(DateTime.now());
+        final previewText = metrics.previewText(field);
+        final after = DateFormat(entry.value).format(DateTime.now());
+
+        expect(previewText, anyOf(before, after));
+      });
+    }
+
+    test('should preserve the preview value for an unsupported format', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        previewValue: 'invalid date',
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.dateTime,
+        ),
+        format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+          code: 1,
+          dateTimeType: true,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.previewText(field), 'invalid date');
+    });
+  });
+
   group('PrintLabelPreviewMetrics', () {
     test('should derive Rabbit canvas size from field extents', () {
       final box = _rabbitField(

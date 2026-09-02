@@ -2524,13 +2524,15 @@ class EntityFactory {
       );
 
   static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity({
+    int? code,
+    bool? dateTimeType,
     bool? qrCodeType,
   }) => BSFPrintLabelFieldFormatEntity(
-    code: faker.randomGenerator.integer(100, min: 1),
+    code: code ?? faker.randomGenerator.integer(100, min: 1),
     stringType: true,
     integerType: false,
     floatType: false,
-    dateTimeType: false,
+    dateTimeType: dateTimeType ?? false,
     qrCodeType: qrCodeType ?? false,
     name: faker.lorem.word(),
     description: faker.lorem.sentence(),
@@ -2563,6 +2565,7 @@ class EntityFactory {
     bool? drawLabelBelowBarcode,
     String? previewValue,
     BSFPrintLabelFieldDefinitionEntity? field,
+    BSFPrintLabelFieldFormatEntity? format,
     bool? isVisible,
   }) => BSFPrintLabelLayoutFieldEntity(
     code: code ?? faker.randomGenerator.integer(100, min: 1),
@@ -2591,7 +2594,7 @@ class EntityFactory {
     previewImage: const [1, 2, 3, 4],
     field: field ?? makeBSFPrintLabelFieldDefinitionEntity(),
     fieldForDataBarcode: makeBSFPrintLabelFieldDefinitionEntity(),
-    format: makeBSFPrintLabelFieldFormatEntity(),
+    format: format ?? makeBSFPrintLabelFieldFormatEntity(),
     isVisible: isVisible ?? true,
   );
 

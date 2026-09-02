@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:intl/intl.dart';
 
 class PrintLabelPreviewMetrics {
   final BSFPrintLabelLayoutEntity layout;
@@ -319,7 +320,7 @@ class PrintLabelPreviewMetrics {
   }
 
   String previewText(BSFPrintLabelLayoutFieldEntity field) {
-    if (field.previewValue != null) return field.previewValue!;
+    if (field.previewValue != null) return _formatPreviewValue(field);
 
     final definition = field.fieldForDataBarcode ?? field.field;
     final value = definition?.content.isNotEmpty == true
@@ -335,7 +336,7 @@ class PrintLabelPreviewMetrics {
     final definition = field.fieldForDataBarcode ?? field.field;
     final hasPreviewValue = field.previewValue != null;
     final value =
-        field.previewValue ??
+        (hasPreviewValue ? _formatPreviewValue(field) : null) ??
         (definition?.content.isNotEmpty == true
             ? definition!.content
             : definition?.name ?? fallback);
@@ -349,6 +350,16 @@ class PrintLabelPreviewMetrics {
         : value.length;
     final visibleValue = value.substring(start, end);
     return hasPreviewValue ? visibleValue : '${field.prefix}$visibleValue';
+  }
+
+  String _formatPreviewValue(BSFPrintLabelLayoutFieldEntity field) {
+    final value = field.previewValue!;
+    if (field.fieldType != BSFPrintLabelFieldType.dateTime) return value;
+
+    final dateTime = DateTime.now();
+    final pattern = field.format?.dateTimePattern;
+    if (pattern == null) return value;
+    return DateFormat(pattern).format(dateTime);
   }
 
   double rabbitGlyphWidth(BSFPrintLabelLayoutFieldEntity field) =>
