@@ -47,6 +47,13 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (field.previewValue?.isNotEmpty == true ||
+            field.field?.content.isNotEmpty == true)
+          TitleAndSubTitle(
+            title: 'Conteúdo'.hardcoded,
+            subTitle: field.previewValue ?? field.field!.content,
+          ),
+
         BaseTextFormField(
           controller: prefixController,
           labelText: 'Prefixo'.hardcoded,
