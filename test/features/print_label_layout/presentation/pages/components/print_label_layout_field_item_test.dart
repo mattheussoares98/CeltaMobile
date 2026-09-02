@@ -24,6 +24,9 @@ void main() {
   testWidgets('should render field item adjusters and update coordinates', (
     tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(800, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
       code: 1,
       coordinateX: 2.0,
@@ -82,10 +85,11 @@ void main() {
     expect(find.text('4.0'), findsOneWidget);
     expect(find.text('Altura'), findsOneWidget);
     expect(find.text('5.0'), findsOneWidget);
+    expect(find.text('Tipo da fonte'), findsOneWidget);
 
     // Tap increase on X (first add button)
     final addButtons = find.byIcon(Icons.add_circle_outline);
-    expect(addButtons, findsNWidgets(6));
+    expect(addButtons, findsNWidgets(7));
 
     await tester.tap(addButtons.at(0));
     await tester.pumpAndSettle();
@@ -184,6 +188,7 @@ void main() {
 
     expect(find.text('Rotação'), findsNothing);
     expect(find.text('90°'), findsNothing);
+    expect(find.text('Tipo da fonte'), findsNothing);
   });
 
   testWidgets(

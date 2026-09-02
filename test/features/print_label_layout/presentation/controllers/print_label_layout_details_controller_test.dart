@@ -308,6 +308,49 @@ void main() {
     );
   });
 
+  test('updateFieldFontType should clamp font type between 1 and 6', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      fontType: '1',
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldFontType(0, 0);
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!
+          .fields
+          .first
+          .fontType,
+      '1',
+    );
+
+    notifier.updateFieldFontType(0, 7);
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!
+          .fields
+          .first
+          .fontType,
+      '6',
+    );
+  });
+
   test(
     'updateFieldDrawLabelBelowBarcode should update drawLabelBelowBarcode',
     () async {

@@ -69,7 +69,9 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
             onSelected: (value) {
               if (value == null) return;
               selectedOption.value = value;
-              draft.value = value.draft;
+              draft.value = value.draft.copyWith(
+                fontType: _initialFontType(ref, value.draft),
+              );
             },
           ),
           if (selectedOption.value != null && draft.value != null) ...[
@@ -77,6 +79,7 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
             Expanded(
               child: SingleChildScrollView(
                 child: PrintLabelLayoutFieldEditor(
+                  layoutCode: layoutCode,
                   field: draft.value!,
                   formats: formats,
                   coordinateUnit: coordinateUnit,
@@ -125,6 +128,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                   onFormatChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(format: value),
+                  ),
+                  onFontTypeChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(fontType: value.toString()),
                   ),
                   onPositionStartCharacterChanged: (delta) => _updateDraft(
                     draft,
@@ -191,4 +198,25 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
 
   int _updatedIntValue(int value, int delta) =>
       (value + delta).clamp(0, 2147483647);
+
+  String _initialFontType(WidgetRef ref, BSFPrintLabelLayoutFieldEntity field) {
+    final isGenericPrinter = ref
+        .read(printLabelLayoutDetailsControllerProvider(layoutCode))
+        .value
+        ?.labelPrinter
+        ?.isGeneric;
+    final supportsFontType =
+        isGenericPrinter == false &&
+        switch (field.field?.fieldType) {
+          BSFPrintLabelFieldType.string ||
+          BSFPrintLabelFieldType.integer ||
+          BSFPrintLabelFieldType.float ||
+          BSFPrintLabelFieldType.dateTime => field.format?.qrCodeType != true,
+          _ => false,
+        };
+    if (!supportsFontType) return field.fontType;
+
+    const supportedFontTypes = {'1', '2', '3', '4', '5', '6'};
+    return supportedFontTypes.contains(field.fontType) ? field.fontType : '1';
+  }
 }

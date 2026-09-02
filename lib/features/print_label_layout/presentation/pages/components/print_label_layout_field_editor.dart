@@ -1,12 +1,15 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class PrintLabelLayoutFieldEditor extends HookWidget {
+class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
+  final int layoutCode;
   final BSFPrintLabelLayoutFieldEntity field;
   final List<BSFPrintLabelFieldFormatEntity> formats;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
@@ -21,9 +24,11 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
   final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
   final ValueChanged<int> onPositionStartCharacterChanged;
   final ValueChanged<int> onMaxCharacterSizeChanged;
+  final ValueChanged<int> onFontTypeChanged;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
+    required this.layoutCode,
     required this.field,
     required this.formats,
     required this.coordinateUnit,
@@ -38,12 +43,18 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
     required this.onFormatChanged,
     required this.onPositionStartCharacterChanged,
     required this.onMaxCharacterSizeChanged,
+    required this.onFontTypeChanged,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
     final prefixController = useTextEditingController(text: field.prefix);
+    final isGenericPrinter = ref.watch(
+      printLabelLayoutDetailsControllerProvider(
+        layoutCode,
+      ).select((state) => state.value?.labelPrinter?.isGeneric ?? true),
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -163,6 +174,19 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
             onChanged: onFormatChanged,
           ),
         ],
+        if (_showsFontType(isGenericPrinter)) ...[
+          gapH8,
+          PrintLabelLayoutValueAdjuster(
+            label: 'Tipo da fonte'.hardcoded,
+            value: _fontType.toString(),
+            onDecrease: _fontType > 1
+                ? () => onFontTypeChanged(_fontType - 1)
+                : null,
+            onIncrease: _fontType < 6
+                ? () => onFontTypeChanged(_fontType + 1)
+                : null,
+          ),
+        ],
         if (_showsTextCharacterOptions) ...[
           gapH4,
           Wrap(
@@ -262,6 +286,14 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
 
   bool get _showsTextCharacterOptions =>
       _isTextField && field.format?.qrCodeType != true;
+
+  bool _showsFontType(bool isGenericPrinter) =>
+      _isTextField && !isGenericPrinter && field.format?.qrCodeType != true;
+
+  int get _fontType {
+    final fontType = int.tryParse(field.fontType);
+    return fontType != null && fontType >= 1 && fontType <= 6 ? fontType : 1;
+  }
 
   List<BSFPrintLabelFieldFormatEntity> get _applicableFormats => formats
       .where(

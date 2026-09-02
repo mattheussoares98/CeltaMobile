@@ -89,6 +89,13 @@ class PrintLabelLayoutDetailsController
     _updateField(fieldIndex, (field) => field.copyWith(format: format));
   }
 
+  void updateFieldFontType(int fieldIndex, int fontType) {
+    _updateField(
+      fieldIndex,
+      (field) => field.copyWith(fontType: fontType.clamp(1, 6).toString()),
+    );
+  }
+
   void updateFieldPositionStartCharacter(int fieldIndex, int delta) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(

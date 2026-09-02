@@ -67,6 +67,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
               ],
             ),
             PrintLabelLayoutFieldEditor(
+              layoutCode: layoutCode,
               field: field,
               formats: formats ?? [if (field.format != null) field.format!],
               coordinateUnit: coordinateUnit,
@@ -88,6 +89,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldPrefix(fieldIndex, value),
               onFormatChanged: (value) =>
                   controller.updateFieldFormat(fieldIndex, value),
+              onFontTypeChanged: (value) =>
+                  controller.updateFieldFontType(fieldIndex, value),
               onPositionStartCharacterChanged: (delta) => controller
                   .updateFieldPositionStartCharacter(fieldIndex, delta),
               onMaxCharacterSizeChanged: (delta) =>
