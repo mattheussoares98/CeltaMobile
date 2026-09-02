@@ -30,34 +30,37 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         layout.labelPrinter?.coordinateUnit ??
         BSFPrintLabelCoordinateUnit.centimeter;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(Sizes.p8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            BaseText.title('Pré-visualização (APROXIMADA)'.hardcoded),
-            gapH8,
-            if (!hasValidLabelSize)
-              BaseText.caption(
-                'Informe uma largura e altura válidas para visualizar a etiqueta.'
-                    .hardcoded,
-                color: context.theme.colorScheme.error,
-              )
-            else
-              LayoutBuilder(
-                builder: (context, constraints) => _buildPreview(
-                  context,
-                  constraints,
-                  previewMetrics: previewMetrics,
-                  previewLabelWidth: previewLabelWidth,
-                  previewLabelHeight: previewLabelHeight,
-                  coordinateUnit: coordinateUnit,
-                ),
-              ),
+    return Column(
+      mainAxisSize: .min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        BaseRichText(
+          texts: [
+            BaseText.title('Pré-visualização '.hardcoded),
+            BaseText.title('(APROXIMADA)'.hardcoded, color: Colors.red),
           ],
         ),
-      ),
+        gapH4,
+        if (!hasValidLabelSize)
+          BaseText.caption(
+            'Informe uma largura e altura válidas para visualizar a etiqueta.'
+                .hardcoded,
+            color: context.theme.colorScheme.error,
+          )
+        else
+          Flexible(
+            child: LayoutBuilder(
+              builder: (context, constraints) => _buildPreview(
+                context,
+                constraints,
+                previewMetrics: previewMetrics,
+                previewLabelWidth: previewLabelWidth,
+                previewLabelHeight: previewLabelHeight,
+                coordinateUnit: coordinateUnit,
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -69,11 +72,11 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     required double previewLabelHeight,
     required BSFPrintLabelCoordinateUnit coordinateUnit,
   }) {
-    final availableWidth = math.max(0.0, constraints.maxWidth - Sizes.p48);
+    final availableWidth = math.max(0.0, constraints.maxWidth);
     final aspectRatio = previewLabelWidth / previewLabelHeight;
     final canvasHeight = math.min(
-      availableWidth / aspectRatio,
-      _maximumPreviewHeight,
+      math.min(availableWidth / aspectRatio, _maximumPreviewHeight),
+      constraints.maxHeight,
     );
     final previewScale = canvasHeight / previewLabelHeight;
     final drawableLabelWidth = previewMetrics.drawableCanvasWidth;

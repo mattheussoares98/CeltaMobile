@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
@@ -18,6 +20,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
+      padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(title: 'Detalhes do leiaute'.hardcoded),
       body: AsyncValueWidget(
         value: ref.watch(provider),
@@ -31,63 +34,85 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
             PrintLabelLayoutLabelParameters(layout: layout),
           ];
 
-          return Column(
-            children: [
-              PrintLabelLayoutPreview(layout: layout),
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    gapSliverH8,
-                    ResponsiveListFlow(
-                      isSliver: true,
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-                        return item;
-                      },
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: min(constraints.maxHeight * 0.3, 250),
                     ),
-                    SliverToBoxAdapter(
-                      child: Row(
-                        mainAxisAlignment: .spaceBetween,
-                        children: [
-                          BaseText.title(
-                            'Campos (${layout.fields.length})'.hardcoded,
-                          ),
-                          Flexible(
-                            child: PrintLabelLayoutAddFieldButton(
-                              layoutCode: layout.code,
+                    child: PrintLabelLayoutPreview(layout: layout),
+                  ),
+                  Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        gapSliverH8,
+                        SliverToBoxAdapter(
+                          child: ExpansionTile(
+                            title: BaseText.title('Configurações'.hardcoded),
+                            subtitle: BaseText.caption(
+                              'Impressora, formulário e etiqueta'.hardcoded,
                             ),
+                            tilePadding: const .symmetric(horizontal: Sizes.p8),
+                            children: [
+                              Wrap(
+                                spacing: Sizes.p8,
+                                runSpacing: Sizes.p8,
+                                children: [
+                                  ...items.map(
+                                    (e) => SizedBox(width: 380, child: e),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-
-                    if (layout.fields.isEmpty)
-                      SliverToBoxAdapter(
-                        child: BaseText.caption(
-                          'Nenhum campo configurado'.hardcoded,
                         ),
-                      )
-                    else
-                      ResponsiveListFlow(
-                        isSliver: true,
-                        itemCount: layout.fields.length,
-                        itemBuilder: (context, index) {
-                          final field = layout.fields[index];
+                        gapSliverH8,
+                        SliverToBoxAdapter(
+                          child: Row(
+                            mainAxisAlignment: .spaceBetween,
+                            children: [
+                              BaseText.title(
+                                'Campos (${layout.fields.length})'.hardcoded,
+                              ),
+                              Flexible(
+                                child: PrintLabelLayoutAddFieldButton(
+                                  layoutCode: layout.code,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
-                          return PrintLabelLayoutFieldItem(
-                            key: ValueKey(index),
-                            layoutCode: layout.code,
-                            fieldIndex: index,
-                            field: field,
-                            coordinateUnit: coordinateUnit,
-                          );
-                        },
-                      ),
-                  ],
-                ),
-              ),
-            ],
+                        if (layout.fields.isEmpty)
+                          SliverToBoxAdapter(
+                            child: BaseText.caption(
+                              'Nenhum campo configurado'.hardcoded,
+                            ),
+                          )
+                        else
+                          ResponsiveListFlow(
+                            isSliver: true,
+                            itemCount: layout.fields.length,
+                            itemBuilder: (context, index) {
+                              final field = layout.fields[index];
+
+                              return PrintLabelLayoutFieldItem(
+                                key: ValueKey(index),
+                                layoutCode: layout.code,
+                                fieldIndex: index,
+                                field: field,
+                                coordinateUnit: coordinateUnit,
+                              );
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
