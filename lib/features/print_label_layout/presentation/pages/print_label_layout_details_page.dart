@@ -17,20 +17,13 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = printLabelLayoutDetailsControllerProvider(labelCode);
+    final layoutName = ref.watch(provider.select((s) => s.value?.name));
 
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-      appBar: Consumer(
-        builder: (_, ref, _) {
-          final layoutName = ref.watch(provider.select((s) => s.value?.name));
-
-          return BaseAppBar(
-            title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
-          );
-        },
-      ),
+      appBar: BaseAppBar(title: layoutName ?? 'Detalhes do leiaute'.hardcoded),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
