@@ -72,6 +72,16 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateFieldAlignmentType(
+    int fieldIndex,
+    BSFPrintElementAlignmentType alignmentType,
+  ) {
+    _updateField(
+      fieldIndex,
+      (field) => field.copyWith(alignmentType: alignmentType),
+    );
+  }
+
   void updateFieldDrawLabelBelowBarcode(int fieldIndex, bool drawLabel) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(drawLabelBelowBarcode: drawLabel);

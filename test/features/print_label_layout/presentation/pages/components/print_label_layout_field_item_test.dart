@@ -86,6 +86,13 @@ void main() {
     expect(find.text('Altura'), findsOneWidget);
     expect(find.text('5.0'), findsOneWidget);
     expect(find.text('Tipo da fonte'), findsOneWidget);
+    expect(find.text('Alinhamento'), findsOneWidget);
+    expect(find.text('Esquerda'), findsOneWidget);
+    expect(find.text('Centro'), findsOneWidget);
+    expect(find.text('Direita'), findsOneWidget);
+
+    await tester.tap(find.text('Direita'));
+    await tester.pumpAndSettle();
 
     // Tap increase on X (first add button)
     final addButtons = find.byIcon(Icons.add_circle_outline);

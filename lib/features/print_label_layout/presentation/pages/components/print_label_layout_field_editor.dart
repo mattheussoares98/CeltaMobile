@@ -19,6 +19,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<double> onHeightChanged;
   final ValueChanged<double> onRatioBarCodeChanged;
   final ValueChanged<BSFPrintElementRotationType> onRotationChanged;
+  final ValueChanged<BSFPrintElementAlignmentType> onAlignmentChanged;
   final ValueChanged<bool> onDrawLabelBelowBarcodeChanged;
   final ValueChanged<String> onPrefixChanged;
   final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
@@ -38,6 +39,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onHeightChanged,
     required this.onRatioBarCodeChanged,
     required this.onRotationChanged,
+    required this.onAlignmentChanged,
     required this.onDrawLabelBelowBarcodeChanged,
     required this.onPrefixChanged,
     required this.onFormatChanged,
@@ -158,6 +160,19 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           ),
         ],
         if (field.isTextField) ...[
+          gapH8,
+          BaseText.title('Alinhamento'.hardcoded),
+          gapH4,
+          BaseSegmentedButtons<BSFPrintElementAlignmentType>(
+            items: BSFPrintElementAlignmentType.values,
+            selectedValue: field.alignmentType,
+            itemLabelBuilder: (item) => switch (item) {
+              .left => 'Esquerda'.hardcoded,
+              .middle => 'Centro'.hardcoded,
+              .right => 'Direita'.hardcoded,
+            },
+            onChanged: onAlignmentChanged,
+          ),
           gapH8,
           BaseDropDown<BSFPrintLabelFieldFormatEntity>(
             label: 'Formato'.hardcoded,

@@ -71,6 +71,7 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
               selectedOption.value = value;
               draft.value = value.draft.copyWith(
                 fontType: _initialFontType(ref, value.draft),
+                alignmentType: BSFPrintElementAlignmentType.middle,
               );
             },
           ),
@@ -116,6 +117,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                   onRotationChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(rotateType: value),
+                  ),
+                  onAlignmentChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(alignmentType: value),
                   ),
                   onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
                     draft,

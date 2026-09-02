@@ -308,6 +308,36 @@ void main() {
     );
   });
 
+  test('updateFieldAlignmentType should update field alignment', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 1);
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
+
+    notifier.updateFieldAlignmentType(0, BSFPrintElementAlignmentType.middle);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!
+          .fields
+          .first
+          .alignmentType,
+      BSFPrintElementAlignmentType.middle,
+    );
+  });
+
   test('updateFieldFontType should clamp font type between 1 and 6', () async {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
       code: 1,

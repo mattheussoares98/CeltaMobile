@@ -83,6 +83,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldRatioBarCode(fieldIndex, delta),
               onRotationChanged: (value) =>
                   controller.updateFieldRotateType(fieldIndex, value),
+              onAlignmentChanged: (value) =>
+                  controller.updateFieldAlignmentType(fieldIndex, value),
               onDrawLabelBelowBarcodeChanged: (value) => controller
                   .updateFieldDrawLabelBelowBarcode(fieldIndex, value),
               onPrefixChanged: (value) =>
