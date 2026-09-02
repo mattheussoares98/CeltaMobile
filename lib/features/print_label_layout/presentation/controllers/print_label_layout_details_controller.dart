@@ -106,6 +106,17 @@ class PrintLabelLayoutDetailsController
     );
   }
 
+  void changeFieldFontSize(int fieldIndex, bool advance) {
+    _updateField(
+      fieldIndex,
+      (field) =>
+          field.copyWith(fontSize: changedFontSize(field.fontSize, advance)),
+    );
+  }
+
+  static int changedFontSize(int fontSize, bool advance) =>
+      (fontSize + (advance ? 1 : -1)).clamp(0, 216);
+
   void updateFieldPositionStartCharacter(int fieldIndex, int delta) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(

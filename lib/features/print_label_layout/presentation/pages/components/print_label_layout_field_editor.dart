@@ -26,6 +26,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<int> onPositionStartCharacterChanged;
   final ValueChanged<int> onMaxCharacterSizeChanged;
   final ValueChanged<int> onFontTypeChanged;
+  final ValueChanged<bool> onFontSizeChange;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
@@ -46,17 +47,20 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onPositionStartCharacterChanged,
     required this.onMaxCharacterSizeChanged,
     required this.onFontTypeChanged,
+    required this.onFontSizeChange,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
     final prefixController = useTextEditingController(text: field.prefix);
-    final supportsFontType = ref.watch(
+    final layout = ref.watch(
       printLabelLayoutDetailsControllerProvider(
         layoutCode,
-      ).select((state) => state.value?.supportsFontType(field) ?? false),
+      ).select((state) => state.value),
     );
+    final supportsFontType = layout?.supportsFontType(field) ?? false;
+    final supportsFontSize = layout?.supportsFontSize(field) ?? false;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -202,19 +206,37 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 : null,
           ),
         ],
-        if (_showsTextCharacterOptions) ...[
-          gapH4,
-          Wrap(
-            alignment: .spaceEvenly,
-            runAlignment: .spaceEvenly,
-            children: [
-              PrintLabelLayoutValueAdjuster(
-                label: 'Posição inicial'.hardcoded,
-                value: field.positionStartCharacter.toString(),
-                onDecrease: field.positionStartCharacter > 1
-                    ? () => onPositionStartCharacterChanged(-1)
-                    : null,
-                onIncrease: () => onPositionStartCharacterChanged(1),
+        gapH4,
+        Wrap(
+          alignment: .spaceEvenly,
+          runAlignment: .spaceEvenly,
+          children: [
+            if (supportsFontSize) ...[
+              Padding(
+                padding: const .only(right: Sizes.p8),
+                child: PrintLabelLayoutValueAdjuster(
+                  label: 'Tamanho da fonte'.hardcoded,
+                  value: field.fontSize.toString(),
+                  onDecrease: field.fontSize > 0
+                      ? () => onFontSizeChange(false)
+                      : null,
+                  onIncrease: field.fontSize < 216
+                      ? () => onFontSizeChange(true)
+                      : null,
+                ),
+              ),
+            ],
+            if (_showsTextCharacterOptions) ...[
+              Padding(
+                padding: const .only(right: Sizes.p8),
+                child: PrintLabelLayoutValueAdjuster(
+                  label: 'Posição inicial'.hardcoded,
+                  value: field.positionStartCharacter.toString(),
+                  onDecrease: field.positionStartCharacter > 1
+                      ? () => onPositionStartCharacterChanged(-1)
+                      : null,
+                  onIncrease: () => onPositionStartCharacterChanged(1),
+                ),
               ),
               PrintLabelLayoutValueAdjuster(
                 label: 'Máximo de caracteres'.hardcoded,
@@ -225,8 +247,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 onIncrease: () => onMaxCharacterSizeChanged(1),
               ),
             ],
-          ),
-        ],
+          ],
+        ),
       ],
     );
   }

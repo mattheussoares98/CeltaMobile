@@ -382,6 +382,58 @@ void main() {
   });
 
   test(
+    'changeFieldFontSize should clamp font size between 0 and 216',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        fontSize: 10,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      for (var count = 0; count < 11; count++) {
+        notifier.changeFieldFontSize(0, false);
+      }
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .fields
+            .first
+            .fontSize,
+        0,
+      );
+
+      for (var count = 0; count < 217; count++) {
+        notifier.changeFieldFontSize(0, true);
+      }
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .fields
+            .first
+            .fontSize,
+        216,
+      );
+    },
+  );
+
+  test(
     'updateFieldDrawLabelBelowBarcode should update drawLabelBelowBarcode',
     () async {
       final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(

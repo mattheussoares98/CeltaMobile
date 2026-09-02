@@ -138,6 +138,16 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                     draft,
                     (field) => field.copyWith(fontType: value.toString()),
                   ),
+                  onFontSizeChange: (advance) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(
+                      fontSize:
+                          PrintLabelLayoutDetailsController.changedFontSize(
+                            field.fontSize,
+                            advance,
+                          ),
+                    ),
+                  ),
                   onPositionStartCharacterChanged: (delta) => _updateDraft(
                     draft,
                     (field) => field.copyWith(

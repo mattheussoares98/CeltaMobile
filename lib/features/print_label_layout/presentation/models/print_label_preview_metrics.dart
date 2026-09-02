@@ -170,6 +170,8 @@ class PrintLabelPreviewMetrics {
   double rabbitFontSize(BSFPrintLabelLayoutFieldEntity field, double scaleY) =>
       renderedHeight(field) * scaleY;
 
+  // TODO: Test the fontSize property in canvas metrics.
+
   double rabbitBarcodeCaptionFontSize(double scaleY) =>
       _rabbitBarcodeCaptionHeight * scaleY;
 

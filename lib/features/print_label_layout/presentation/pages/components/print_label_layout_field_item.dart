@@ -93,6 +93,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldFormat(fieldIndex, value),
               onFontTypeChanged: (value) =>
                   controller.updateFieldFontType(fieldIndex, value),
+              onFontSizeChange: (advance) =>
+                  controller.changeFieldFontSize(fieldIndex, advance),
               onPositionStartCharacterChanged: (delta) => controller
                   .updateFieldPositionStartCharacter(fieldIndex, delta),
               onMaxCharacterSizeChanged: (delta) =>
