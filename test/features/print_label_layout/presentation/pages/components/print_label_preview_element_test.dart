@@ -10,7 +10,10 @@ void main() {
   testWidgets('should show the formatted preview value from the API', (
     tester,
   ) async {
-    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity();
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity().copyWith(
+      positionStartCharacter: 1,
+      maxCharacterSize: 2147483647,
+    );
     final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
 
     await tester.pumpWidget(
@@ -27,8 +30,123 @@ void main() {
       ),
     );
 
-    expect(find.text(field.previewValue!), findsOneWidget);
+    final start = (field.positionStartCharacter - 1).clamp(
+      0,
+      field.previewValue!.length,
+    );
+    final end = (start + field.maxCharacterSize).clamp(
+      start,
+      field.previewValue!.length,
+    );
+    expect(
+      find.text(field.previewValue!.substring(start, end)),
+      findsOneWidget,
+    );
     expect(find.text('${field.prefix}${field.field!.content}'), findsNothing);
+  });
+
+  testWidgets('should apply initial position and maximum characters', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      previewValue: 'ABCDEFG',
+    ).copyWith(positionStartCharacter: 2, maxCharacterSize: 3);
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.rabbitOS214,
+      ),
+      fields: [field],
+    );
+    final metrics = PrintLabelPreviewMetrics(layout);
+    final fullField = field.copyWith(
+      positionStartCharacter: 1,
+      maxCharacterSize: 7,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
+          previewMetrics: metrics,
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    expect(find.text('BCD'), findsOneWidget);
+    expect(
+      metrics.renderedWidth(field, text: metrics.visiblePreviewText(field)),
+      closeTo(
+        metrics.renderedWidth(
+              fullField,
+              text: metrics.visiblePreviewText(fullField),
+            ) *
+            3 /
+            7,
+        0.001,
+      ),
+    );
+  });
+
+  testWidgets('should show the remaining text when maximum is zero', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      previewValue: 'ABCDEFG',
+    ).copyWith(positionStartCharacter: 2, maxCharacterSize: 0);
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    expect(find.text('BCDEFG'), findsOneWidget);
+  });
+
+  testWidgets('should not apply the character range to QR-code formats', (
+    tester,
+  ) async {
+    final field =
+        EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+          previewValue: 'ABCDEFG',
+        ).copyWith(
+          positionStartCharacter: 5,
+          maxCharacterSize: 1,
+          format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+            qrCodeType: true,
+          ),
+        );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    expect(find.text('ABCDEFG'), findsOneWidget);
   });
 
   testWidgets('should render Rabbit native font magnification', (tester) async {
@@ -39,7 +157,7 @@ void main() {
       fontType: '3',
       fontSize: 0,
       previewValue: '2,45',
-    );
+    ).copyWith(positionStartCharacter: 1, maxCharacterSize: 4);
     final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
       modelType: BSFLabelPrinterModelType.rabbitOS214,
     );
@@ -78,7 +196,7 @@ void main() {
       fontSize: 0,
       isBold: false,
       previewValue: '0,00',
-    );
+    ).copyWith(positionStartCharacter: 1, maxCharacterSize: 4);
     final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
       modelType: BSFLabelPrinterModelType.rabbitOS214,
     );

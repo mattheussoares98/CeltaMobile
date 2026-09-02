@@ -93,8 +93,8 @@ class PrintLabelLayoutDetailsController
     _updateField(fieldIndex, (field) {
       return field.copyWith(
         positionStartCharacter: (field.positionStartCharacter + delta).clamp(
-          0,
-          2147483647,
+          1,
+          9999,
         ),
       );
     });
@@ -103,7 +103,7 @@ class PrintLabelLayoutDetailsController
   void updateFieldMaxCharacterSize(int fieldIndex, int delta) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(
-        maxCharacterSize: (field.maxCharacterSize + delta).clamp(0, 2147483647),
+        maxCharacterSize: (field.maxCharacterSize + delta).clamp(0, 9999),
       );
     });
   }

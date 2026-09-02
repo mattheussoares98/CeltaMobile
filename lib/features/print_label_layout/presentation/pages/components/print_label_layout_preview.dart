@@ -141,11 +141,11 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     if (field.coordinateX < 0 || field.coordinateY < 0) return true;
 
     if (isRabbitOS214) {
-      return previewMetrics.horizontalPosition(field) +
-                  previewMetrics.renderedWidth(field) >
-              drawableLabelWidth ||
-          field.coordinateY + previewMetrics.renderedHeight(field) >
-              previewLabelHeight;
+      return previewMetrics.exceedsRabbitBounds(
+        field,
+        drawableWidth: drawableLabelWidth,
+        previewHeight: previewLabelHeight,
+      );
     }
 
     final hasPhysicalDimensions =

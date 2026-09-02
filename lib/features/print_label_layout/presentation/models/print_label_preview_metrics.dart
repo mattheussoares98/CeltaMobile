@@ -109,7 +109,7 @@ class PrintLabelPreviewMetrics {
     return contentBottom + leadingMargin;
   }
 
-  double renderedWidth(BSFPrintLabelLayoutFieldEntity field) {
+  double renderedWidth(BSFPrintLabelLayoutFieldEntity field, {String? text}) {
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       final baseModuleWidth = field.ratioBarCode > 0
@@ -125,7 +125,7 @@ class PrintLabelPreviewMetrics {
 
     return rabbitGlyphWidth(field) *
         _horizontalMultiplier(field) *
-        math.max(1, previewText(field).length);
+        math.max(1, (text ?? previewText(field)).length);
   }
 
   double renderedHeight(BSFPrintLabelLayoutFieldEntity field) {
@@ -141,6 +141,16 @@ class PrintLabelPreviewMetrics {
 
     return rabbitGlyphHeight(field) * _verticalMultiplier(field);
   }
+
+  bool exceedsRabbitBounds(
+    BSFPrintLabelLayoutFieldEntity field, {
+    required double drawableWidth,
+    required double previewHeight,
+  }) =>
+      horizontalPosition(field) +
+              renderedWidth(field, text: visiblePreviewText(field)) >
+          drawableWidth ||
+      field.coordinateY + renderedHeight(field) > previewHeight;
 
   double horizontalCanvasFootprint(BSFPrintLabelLayoutFieldEntity field) {
     if (!isRabbitOS214) return field.width;
@@ -239,6 +249,29 @@ class PrintLabelPreviewMetrics {
     return '${field.prefix}$value';
   }
 
+  String visiblePreviewText(
+    BSFPrintLabelLayoutFieldEntity field, {
+    String fallback = '',
+  }) {
+    final definition = field.fieldForDataBarcode ?? field.field;
+    final hasPreviewValue = field.previewValue != null;
+    final value =
+        field.previewValue ??
+        (definition?.content.isNotEmpty == true
+            ? definition!.content
+            : definition?.name ?? fallback);
+    if (!_usesTextCharacterOptions(field)) {
+      return hasPreviewValue ? value : '${field.prefix}$value';
+    }
+
+    final start = (field.positionStartCharacter - 1).clamp(0, value.length);
+    final end = field.maxCharacterSize > 0
+        ? (start + field.maxCharacterSize).clamp(start, value.length)
+        : value.length;
+    final visibleValue = value.substring(start, end);
+    return hasPreviewValue ? visibleValue : '${field.prefix}$visibleValue';
+  }
+
   double rabbitGlyphWidth(BSFPrintLabelLayoutFieldEntity field) =>
       switch (field.fontType) {
         '1' => 3,
@@ -286,6 +319,9 @@ class PrintLabelPreviewMetrics {
         type != BSFPrintLabelFieldType.logo &&
         type != BSFPrintLabelFieldType.boxOrLine;
   }
+
+  bool _usesTextCharacterOptions(BSFPrintLabelLayoutFieldEntity field) =>
+      _isText(field) && field.format?.qrCodeType != true;
 
   BSFPrintLabelFieldType _fieldType(BSFPrintLabelLayoutFieldEntity field) =>
       field.field?.fieldType ?? BSFPrintLabelFieldType.string;

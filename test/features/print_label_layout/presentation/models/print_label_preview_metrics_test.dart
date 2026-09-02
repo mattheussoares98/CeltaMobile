@@ -38,6 +38,27 @@ void main() {
       expect(metrics.rabbitFontSize(field, 0.5), 18);
     });
 
+    test('should use visible characters for Rabbit bounds', () {
+      final field = _rabbitField(
+        coordinateX: 100,
+        previewValue: 'ABCDEFG',
+      ).copyWith(positionStartCharacter: 2, maxCharacterSize: 3);
+      final metrics = _metrics([field]);
+
+      expect(
+        metrics.exceedsRabbitBounds(
+          field,
+          drawableWidth: 130,
+          previewHeight: 100,
+        ),
+        isFalse,
+      );
+      expect(
+        metrics.horizontalPosition(field) + metrics.renderedWidth(field),
+        greaterThan(130),
+      );
+    });
+
     test('should use Rabbit EAN modules and configured barcode height', () {
       final field = _rabbitField(
         coordinateX: 40,

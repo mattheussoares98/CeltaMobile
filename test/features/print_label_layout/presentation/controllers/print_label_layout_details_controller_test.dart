@@ -560,33 +560,59 @@ void main() {
     },
   );
 
-  test(
-    'addField should append the unchanged server draft',
-    () async {
-      final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 0);
-      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
-        code: 10,
-        fields: [EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: -1)],
-      );
-      when(
-        () => repository.getDetails(params, 10),
-      ).thenAnswer((_) async => initialLayout);
-      final container = makeContainer();
-      addTearDown(container.dispose);
+  test('character positions should not decrease below one', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+    ).copyWith(positionStartCharacter: 1, maxCharacterSize: 1);
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
 
-      await container.read(
-        printLabelLayoutDetailsControllerProvider(10).future,
-      );
-      container
-          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
-          .addField(draft);
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    final notifier = container.read(
+      printLabelLayoutDetailsControllerProvider(10).notifier,
+    );
 
-      final added = container
-          .read(printLabelLayoutDetailsControllerProvider(10))
-          .requireValue
-          .fields
-          .last;
-      expect(added, draft);
-    },
-  );
+    notifier.updateFieldPositionStartCharacter(0, -1);
+    notifier.updateFieldMaxCharacterSize(0, -1);
+
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .requireValue
+        .fields
+        .first;
+    expect(updated.positionStartCharacter, 1);
+    expect(updated.maxCharacterSize, 1);
+  });
+
+  test('addField should append the unchanged server draft', () async {
+    final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 0);
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: -1)],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .addField(draft);
+
+    final added = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .requireValue
+        .fields
+        .last;
+    expect(added, draft);
+  });
 }

@@ -196,7 +196,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
 
   double? get _previewWidth {
     if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
-      return previewMetrics.renderedWidth(field) * scaleX;
+      return previewMetrics.renderedWidth(field, text: _previewText) * scaleX;
     }
 
     if (_hasPhysicalDimensions && field.width > 0) {
@@ -282,15 +282,8 @@ class PrintLabelPreviewElement extends StatelessWidget {
     return scaledSize.clamp(4, 72);
   }
 
-  String get _previewText {
-    if (field.previewValue != null) return field.previewValue!;
-
-    final definition = field.fieldForDataBarcode ?? field.field;
-    final value = definition?.content.isNotEmpty == true
-        ? definition!.content
-        : definition?.name ?? 'Campo'.hardcoded;
-    return '${field.prefix}$value';
-  }
+  String get _previewText =>
+      previewMetrics.visiblePreviewText(field, fallback: 'Campo'.hardcoded);
 
   Alignment get _alignment => switch (field.alignmentType) {
     BSFPrintElementAlignmentType.left => Alignment.topLeft,

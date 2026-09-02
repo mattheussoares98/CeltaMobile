@@ -2523,17 +2523,18 @@ class EntityFactory {
         applyToSaleRequestProduct: false,
       );
 
-  static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity() =>
-      BSFPrintLabelFieldFormatEntity(
-        code: faker.randomGenerator.integer(100, min: 1),
-        stringType: true,
-        integerType: false,
-        floatType: false,
-        dateTimeType: false,
-        qrCodeType: false,
-        name: faker.lorem.word(),
-        description: faker.lorem.sentence(),
-      );
+  static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity({
+    bool? qrCodeType,
+  }) => BSFPrintLabelFieldFormatEntity(
+    code: faker.randomGenerator.integer(100, min: 1),
+    stringType: true,
+    integerType: false,
+    floatType: false,
+    dateTimeType: false,
+    qrCodeType: qrCodeType ?? false,
+    name: faker.lorem.word(),
+    description: faker.lorem.sentence(),
+  );
 
   static BSFPrintLabelFieldEditorOptionsEntity
   makeBSFPrintLabelFieldEditorOptionsEntity() =>

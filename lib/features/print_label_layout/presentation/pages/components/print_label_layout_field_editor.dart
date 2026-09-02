@@ -172,7 +172,7 @@ class PrintLabelLayoutFieldEditor extends HookWidget {
               PrintLabelLayoutValueAdjuster(
                 label: 'Posição inicial'.hardcoded,
                 value: field.positionStartCharacter.toString(),
-                onDecrease: field.positionStartCharacter > 0
+                onDecrease: field.positionStartCharacter > 1
                     ? () => onPositionStartCharacterChanged(-1)
                     : null,
                 onIncrease: () => onPositionStartCharacterChanged(1),
