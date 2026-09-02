@@ -38,18 +38,23 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
         children: [
           BaseText.title('Adicionar campo ao leiaute'.hardcoded),
           gapH16,
-          BaseDropDown<PrintLabelFieldEditorOptionEntity>(
-            label: 'Campo'.hardcoded,
-            selectedItem: selectedOption.value,
-            items: fieldOptions
+          DropdownMenu<PrintLabelFieldEditorOptionEntity>(
+            label: BaseText('Campo'.hardcoded),
+            initialSelection: selectedOption.value,
+            enableFilter: true,
+            requestFocusOnTap: true,
+            menuHeight: MediaQuery.sizeOf(context).height * 0.5,
+            expandedInsets: EdgeInsets.zero,
+            dropdownMenuEntries: fieldOptions
                 .map(
-                  (option) => DropdownMenuItem(
+                  (option) => DropdownMenuEntry(
                     value: option,
-                    child: BaseText(option.definition.name),
+                    label: option.definition.name,
                   ),
                 )
                 .toList(),
-            onChanged: (value) {
+            onSelected: (value) {
+              if (value == null) return;
               selectedOption.value = value;
               draft.value = value.draft;
             },
