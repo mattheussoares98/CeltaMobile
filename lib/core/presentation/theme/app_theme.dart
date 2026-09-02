@@ -21,7 +21,7 @@ class AppTheme {
     const disabledColor = Colors.grey;
     const primaryColor = Colors.green;
     const primaryColorLight = Colors.lightGreenAccent;
-    final primaryColorDark = Colors.green[900]!;
+    const primaryColorDark = Color.fromARGB(255, 27, 94, 32);
     const secondaryColor = Colors.blueAccent;
     const scaffoldBackgroundColor = Colors.white;
 
@@ -51,7 +51,7 @@ class AppTheme {
         secondary: secondaryColor,
         error: Colors.red,
       ),
-      progressIndicatorTheme: ProgressIndicatorThemeData(
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: primaryColorDark,
         refreshBackgroundColor: Colors.transparent,
         strokeWidth: 2,
@@ -66,6 +66,36 @@ class AppTheme {
         ),
         titleSmall: theme.textTheme.titleSmall!.copyWith(
           fontWeight: FontWeight.bold,
+        ),
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: theme.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: disabledColor.withValues(alpha: .1),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+            borderSide: BorderSide(color: primaryColor),
+          ),
+        ),
+        menuStyle: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(theme.colorScheme.surface),
+          elevation: const WidgetStatePropertyAll(3),
+          shape: const WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(Sizes.p8)),
+            ),
+          ),
         ),
       ),
       appBarTheme: const AppBarTheme(
@@ -99,7 +129,7 @@ class AppTheme {
         margin: const EdgeInsets.symmetric(vertical: Sizes.p8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: primaryColorDark),
+          side: const BorderSide(color: primaryColorDark),
         ),
         elevation: 2,
       ),
