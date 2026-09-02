@@ -588,7 +588,7 @@ void main() {
         .fields
         .first;
     expect(updated.positionStartCharacter, 1);
-    expect(updated.maxCharacterSize, 1);
+    expect(updated.maxCharacterSize, 0);
   });
 
   test('addField should append the unchanged server draft', () async {

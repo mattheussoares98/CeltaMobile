@@ -2,6 +2,7 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
+import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
@@ -43,12 +44,19 @@ void main() {
     );
   });
 
+  setUpAll(() {
+    registerFallbackValue(
+      EntityFactory.makeExecuteManualScheduleParametersEntity(),
+    );
+  });
+
   ProviderContainer makeContainer() => ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [
       ecSynchronizerManualExecutionRepositoryProvider.overrideWithValue(
         repository,
       ),
+      ecRequestParamsProvider().overrideWith((ref) => params),
       validatedUserSessionProvider.overrideWith(
         () => FakeValidatedUserSession(session),
       ),
@@ -153,20 +161,17 @@ void main() {
         final container = makeContainer();
         addTearDown(container.dispose);
 
-        final result = await execute(container);
+        final provider = executeManualScheduleControllerProvider(
+          enterpriseCode: enterpriseCode,
+          scheduleCode: scheduleCode,
+        );
+        await container.read(provider.future);
+        final notifier = container.read(provider.notifier);
+
+        final result = await notifier.execute();
 
         expect(result, isFalse);
-        expect(
-          container
-              .read(
-                executeManualScheduleControllerProvider(
-                  enterpriseCode: enterpriseCode,
-                  scheduleCode: scheduleCode,
-                ),
-              )
-              .error,
-          same(exception),
-        );
+        expect(notifier.state.error, same(exception));
         verify(
           () => repository.executeManualSchedule(params, executeParamsEntity),
         ).called(1);

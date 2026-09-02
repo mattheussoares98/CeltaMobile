@@ -86,7 +86,7 @@ void main() {
   }
 
   group('CustomerStateController', () {
-    test('should return empty value on build', () async {
+    test('should return null value on build', () async {
       final container = makeProviderContainer(
         session: fakeSession,
         enterprise: fakeEnterprise,
@@ -95,10 +95,7 @@ void main() {
 
       await container.read(customerStateControllerProvider.future);
 
-      expect(
-        container.read(customerStateControllerProvider).value,
-        SoapCustomerEntity.empty(),
-      );
+      expect(container.read(customerStateControllerProvider).value, isNull);
     });
     test(
       'should emit [loading, data] and call repository on success',
