@@ -496,6 +496,35 @@ void main() {
     },
   );
 
+  test('updateFieldPrefix should replace the prefix in previewValue', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      previewValue: 'Old prefixValue',
+    ).copyWith(prefix: 'Old prefix');
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldPrefix(0, 'New prefix');
+
+    final updatedField = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .requireValue
+        .fields
+        .first;
+    expect(updatedField.prefix, 'New prefix');
+    expect(updatedField.previewValue, 'New prefixValue');
+  });
+
   test('updateName should update layout name', () async {
     final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       code: 10,

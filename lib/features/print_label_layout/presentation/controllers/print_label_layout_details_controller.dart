@@ -89,7 +89,19 @@ class PrintLabelLayoutDetailsController
   }
 
   void updateFieldPrefix(int fieldIndex, String prefix) {
-    _updateField(fieldIndex, (field) => field.copyWith(prefix: prefix));
+    _updateField(fieldIndex, (field) {
+      final previewValue = field.previewValue;
+      if (previewValue == null) return field.copyWith(prefix: prefix);
+
+      final valueWithoutPrefix =
+          field.prefix.isNotEmpty && previewValue.startsWith(field.prefix)
+          ? previewValue.substring(field.prefix.length)
+          : previewValue;
+      return field.copyWith(
+        prefix: prefix,
+        previewValue: '$prefix$valueWithoutPrefix',
+      );
+    });
   }
 
   void updateFieldFormat(
