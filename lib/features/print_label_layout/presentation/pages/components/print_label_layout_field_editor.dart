@@ -7,6 +7,7 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final int layoutCode;
@@ -64,6 +65,15 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsFontType = layout?.supportsFontType(field) ?? false;
     final supportsFontSize = layout?.supportsFontSize(field) ?? false;
     final supportsBold = layout?.supportsBold(field) ?? false;
+    final previewContent = switch ((
+      field.fieldType,
+      field.format?.dateTimePattern,
+    )) {
+      (BSFPrintLabelFieldType.dateTime, final String pattern) => DateFormat(
+        pattern,
+      ).format(DateTime.now()),
+      _ => field.previewValue ?? field.field?.content ?? '',
+    };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -71,7 +81,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             field.field?.content.isNotEmpty == true)
           TitleAndSubTitle(
             title: 'Conteúdo'.hardcoded,
-            subTitle: field.previewValue ?? field.field!.content,
+            subTitle: previewContent,
           ),
 
         BaseTextFormField(
