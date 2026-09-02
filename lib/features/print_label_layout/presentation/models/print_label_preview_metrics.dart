@@ -215,19 +215,7 @@ class PrintLabelPreviewMetrics {
     if (!isRabbitOS214) return field.coordinateY;
 
     if (field.rotateType == BSFPrintElementRotationType.rotate270) {
-      final bottomAnchor = _rightmostRotatedField;
-      if (bottomAnchor != null && !identical(field, bottomAnchor)) {
-        return verticalPosition(bottomAnchor);
-      }
-    }
-
-    if (field.rotateType == BSFPrintElementRotationType.rotate270 &&
-        field.coordinateX > drawableCanvasWidth / 2) {
-      final barcode = _nearestBarcode(field);
-      if (barcode != null) {
-        return verticalPosition(barcode) +
-            renderedWidth(field, text: visiblePreviewText(field));
-      }
+      return canvasHeight - field.coordinateY - (renderedHeight(field) / 4);
     }
 
     final isCurrencyIndicator =
@@ -235,49 +223,10 @@ class PrintLabelPreviewMetrics {
     final currencyCorrection = isCurrencyIndicator
         ? _rabbitCurrencyVerticalCorrection
         : 0;
-    final rotationCorrection =
-        field.rotateType == BSFPrintElementRotationType.rotate270
-        ? math.max(
-            0,
-            renderedWidth(field, text: visiblePreviewText(field)) -
-                renderedHeight(field),
-          )
-        : 0;
     return canvasHeight -
         field.coordinateY -
         renderedHeight(field) +
-        currencyCorrection +
-        rotationCorrection;
-  }
-
-  BSFPrintLabelLayoutFieldEntity? get _rightmostRotatedField {
-    BSFPrintLabelLayoutFieldEntity? rightmost;
-    for (final candidate in layout.fields) {
-      if (!candidate.isVisible ||
-          candidate.rotateType != BSFPrintElementRotationType.rotate270) {
-        continue;
-      }
-      if (rightmost == null || candidate.coordinateX > rightmost.coordinateX) {
-        rightmost = candidate;
-      }
-    }
-    return rightmost;
-  }
-
-  BSFPrintLabelLayoutFieldEntity? _nearestBarcode(
-    BSFPrintLabelLayoutFieldEntity field,
-  ) {
-    BSFPrintLabelLayoutFieldEntity? nearest;
-    var nearestDistance = double.infinity;
-    for (final candidate in layout.fields) {
-      if (!candidate.isVisible || !candidate.isBarcode) continue;
-      final distance = (candidate.coordinateX - field.coordinateX).abs();
-      if (distance < nearestDistance) {
-        nearest = candidate;
-        nearestDistance = distance;
-      }
-    }
-    return nearest;
+        currencyCorrection;
   }
 
   bool isFilledBox(BSFPrintLabelLayoutFieldEntity field) {

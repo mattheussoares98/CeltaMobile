@@ -291,7 +291,7 @@ void main() {
       },
     );
 
-    test('should compensate Rabbit 270-degree rotated text position', () {
+    test('should keep Rabbit 270-degree Y anchored across layouts', () {
       final date = _rabbitField(
         coordinateX: 5,
         coordinateY: 20,
@@ -316,20 +316,35 @@ void main() {
         previewValue: '7891000379103',
         fieldType: BSFPrintLabelFieldType.barcode,
       );
-      final metrics = _metrics([date, barcode, plu], labelWidth: 840);
+      final detailedMetrics = _metrics([date, barcode, plu], labelWidth: 840);
+      final reducedPlu = plu.copyWith(coordinateX: 5);
+      final reducedMetrics = _metrics([
+        reducedPlu,
+        _rabbitField(coordinateX: 15, coordinateY: 25, width: 2, height: 2),
+        _rabbitField(coordinateX: 15, coordinateY: 85),
+      ], labelWidth: 840);
 
-      expect(metrics.horizontalPosition(date), 0);
+      expect(detailedMetrics.horizontalPosition(date), 0);
       expect(
-        metrics.horizontalPosition(plu),
-        plu.coordinateX + metrics.renderedHeight(plu),
+        detailedMetrics.horizontalPosition(plu),
+        plu.coordinateX + detailedMetrics.renderedHeight(plu),
       );
-      expect(metrics.verticalPosition(date), metrics.verticalPosition(plu));
-      expect(metrics.drawableCanvasWidth, closeTo(436.8, 0.001));
       expect(
-        metrics.exceedsRabbitBounds(
+        detailedMetrics.canvasHeight - detailedMetrics.verticalPosition(plu),
+        plu.coordinateY + (detailedMetrics.renderedHeight(plu) / 4),
+      );
+      expect(
+        reducedMetrics.canvasHeight -
+            reducedMetrics.verticalPosition(reducedPlu),
+        reducedPlu.coordinateY +
+            (reducedMetrics.renderedHeight(reducedPlu) / 4),
+      );
+      expect(detailedMetrics.drawableCanvasWidth, closeTo(436.8, 0.001));
+      expect(
+        detailedMetrics.exceedsRabbitBounds(
           plu,
-          drawableWidth: metrics.drawableCanvasWidth,
-          previewHeight: metrics.canvasHeight,
+          drawableWidth: detailedMetrics.drawableCanvasWidth,
+          previewHeight: detailedMetrics.canvasHeight,
         ),
         isFalse,
       );
