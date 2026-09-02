@@ -174,6 +174,7 @@ class PrintLabelPreviewMetrics {
       _rabbitBarcodeCaptionHeight * scaleY;
 
   double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
+    // TODO: Verify whether the canvas preview should apply field alignment.
     final isCurrencyIndicator =
         isRabbitOS214 &&
         field.fontType == '1' &&
