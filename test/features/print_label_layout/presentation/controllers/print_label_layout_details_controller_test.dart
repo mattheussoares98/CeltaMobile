@@ -338,6 +338,54 @@ void main() {
     );
   });
 
+  test(
+    'updateFieldQuantityDecimalPlaces should update and clamp the value',
+    () async {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        quantityDecimalPlaces: 1,
+      );
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateFieldQuantityDecimalPlaces(0, -2);
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .fields
+            .first
+            .quantityDecimalPlaces,
+        0,
+      );
+
+      notifier.updateFieldQuantityDecimalPlaces(0, 10000);
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .fields
+            .first
+            .quantityDecimalPlaces,
+        9999,
+      );
+    },
+  );
+
   test('updateFieldFontType should clamp font type between 1 and 6', () async {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
       code: 1,
@@ -461,6 +509,37 @@ void main() {
           .first
           .isBold,
       true,
+    );
+  });
+
+  test('updateFieldIsReverseText should update reverse text', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 1,
+      isReverseText: false,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldIsReverseText(0, true);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields
+          .first
+          .isReverseText,
+      isTrue,
     );
   });
 

@@ -2556,6 +2556,7 @@ class EntityFactory {
 
   static BSFPrintLabelLayoutFieldEntity makeBSFPrintLabelLayoutFieldEntity({
     int? code,
+    int? quantityDecimalPlaces,
     double? coordinateX,
     double? coordinateY,
     double? width,
@@ -2564,6 +2565,7 @@ class EntityFactory {
     String? fontType,
     int? fontSize,
     bool? isBold,
+    bool? isReverseText,
     BSFPrintElementRotationType? rotateType,
     double? ratioBarCode,
     BSFBarcodeSimbologyType? barcodeSimbologyType,
@@ -2574,7 +2576,8 @@ class EntityFactory {
     bool? isVisible,
   }) => BSFPrintLabelLayoutFieldEntity(
     code: code ?? faker.randomGenerator.integer(100, min: 1),
-    quantityDecimalPlaces: faker.randomGenerator.integer(5),
+    quantityDecimalPlaces:
+        quantityDecimalPlaces ?? faker.randomGenerator.integer(5),
     coordinateX: coordinateX ?? faker.randomGenerator.decimal(),
     coordinateY: coordinateY ?? faker.randomGenerator.decimal(),
     alignmentType: BSFPrintElementAlignmentType.left,
@@ -2592,7 +2595,7 @@ class EntityFactory {
     maxCharacterSize: faker.randomGenerator.integer(100),
     drawLabelBelowBarcode:
         drawLabelBelowBarcode ?? faker.randomGenerator.boolean(),
-    isReverseText: faker.randomGenerator.boolean(),
+    isReverseText: isReverseText ?? faker.randomGenerator.boolean(),
     prefix: faker.lorem.word(),
     imageName: faker.lorem.word(),
     previewValue: previewValue ?? faker.lorem.sentence(),

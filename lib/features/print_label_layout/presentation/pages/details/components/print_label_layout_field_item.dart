@@ -86,6 +86,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldRotateType(fieldIndex, value),
               onAlignmentChanged: (value) =>
                   controller.updateFieldAlignmentType(fieldIndex, value),
+              onQuantityDecimalPlacesChanged: (delta) => controller
+                  .updateFieldQuantityDecimalPlaces(fieldIndex, delta),
               onDrawLabelBelowBarcodeChanged: (value) => controller
                   .updateFieldDrawLabelBelowBarcode(fieldIndex, value),
               onPrefixChanged: (value) =>
@@ -98,6 +100,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.changeFieldFontSize(fieldIndex, advance),
               onIsBoldChanged: (value) =>
                   controller.updateFieldIsBold(fieldIndex, value),
+              onIsReverseTextChanged: (value) =>
+                  controller.updateFieldIsReverseText(fieldIndex, value),
               onPositionStartCharacterChanged: (delta) => controller
                   .updateFieldPositionStartCharacter(fieldIndex, delta),
               onMaxCharacterSizeChanged: (delta) =>

@@ -21,6 +21,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<double> onRatioBarCodeChanged;
   final ValueChanged<BSFPrintElementRotationType> onRotationChanged;
   final ValueChanged<BSFPrintElementAlignmentType> onAlignmentChanged;
+  final ValueChanged<int> onQuantityDecimalPlacesChanged;
   final ValueChanged<bool> onDrawLabelBelowBarcodeChanged;
   final ValueChanged<String> onPrefixChanged;
   final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
@@ -29,6 +30,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<int> onFontTypeChanged;
   final ValueChanged<bool> onFontSizeChange;
   final ValueChanged<bool> onIsBoldChanged;
+  final ValueChanged<bool> onIsReverseTextChanged;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
@@ -43,6 +45,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onRatioBarCodeChanged,
     required this.onRotationChanged,
     required this.onAlignmentChanged,
+    required this.onQuantityDecimalPlacesChanged,
     required this.onDrawLabelBelowBarcodeChanged,
     required this.onPrefixChanged,
     required this.onFormatChanged,
@@ -51,6 +54,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onFontTypeChanged,
     required this.onFontSizeChange,
     required this.onIsBoldChanged,
+    required this.onIsReverseTextChanged,
   });
 
   @override
@@ -65,6 +69,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsFontType = layout?.supportsFontType(field) ?? false;
     final supportsFontSize = layout?.supportsFontSize(field) ?? false;
     final supportsBold = layout?.supportsBold(field) ?? false;
+    final supportsAlignment = layout?.supportsAlignment(field) ?? false;
+    final supportsReverseText = layout?.supportsReverseText(field) ?? false;
     final resolvedCoordinateUnit =
         coordinateUnit ?? BSFPrintLabelCoordinateUnit.printerDot;
     final previewContent = switch ((
@@ -188,7 +194,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onDrawLabelBelowBarcodeChanged,
           ),
         ],
-        if (field.isTextField) ...[
+        if (supportsAlignment) ...[
           gapH8,
           BaseText.title('Alinhamento'.hardcoded),
           gapH4,
@@ -198,6 +204,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             itemLabelBuilder: (item) => item.label.hardcoded,
             onChanged: onAlignmentChanged,
           ),
+        ],
+        if (field.isTextField) ...[
           gapH8,
           BaseDropDown<BSFPrintLabelFieldFormatEntity>(
             label: 'Formato'.hardcoded,
@@ -213,6 +221,19 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 )
                 .toList(),
             onChanged: onFormatChanged,
+          ),
+        ],
+        if (field.supportsDecimalPlaces) ...[
+          gapH8,
+          PrintLabelLayoutValueAdjuster(
+            label: 'Casas decimais'.hardcoded,
+            value: field.quantityDecimalPlaces.toString(),
+            onDecrease: field.quantityDecimalPlaces > 0
+                ? () => onQuantityDecimalPlacesChanged(-1)
+                : null,
+            onIncrease: field.quantityDecimalPlaces < 9999
+                ? () => onQuantityDecimalPlacesChanged(1)
+                : null,
           ),
         ],
         if (supportsFontType) ...[
@@ -278,6 +299,16 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             enabled: field.isBold,
             onChanged: (value) {
               if (value != null) onIsBoldChanged(value);
+            },
+          ),
+        ],
+        if (supportsReverseText) ...[
+          gapH8,
+          BaseCheckBox(
+            name: 'Imprimir texto reverso'.hardcoded,
+            enabled: field.isReverseText,
+            onChanged: (value) {
+              if (value != null) onIsReverseTextChanged(value);
             },
           ),
         ],

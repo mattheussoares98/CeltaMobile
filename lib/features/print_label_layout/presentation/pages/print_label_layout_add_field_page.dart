@@ -122,6 +122,16 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                     draft,
                     (field) => field.copyWith(alignmentType: value),
                   ),
+                  onQuantityDecimalPlacesChanged: (delta) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(
+                      quantityDecimalPlaces: _updatedIntValue(
+                        field.quantityDecimalPlaces,
+                        delta,
+                        maximum: 9999,
+                      ),
+                    ),
+                  ),
                   onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(drawLabelBelowBarcode: value),
@@ -151,6 +161,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                   onIsBoldChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(isBold: value),
+                  ),
+                  onIsReverseTextChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(isReverseText: value),
                   ),
                   onPositionStartCharacterChanged: (delta) => _updateDraft(
                     draft,
@@ -215,8 +229,8 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
     return (updatedValue * 100).roundToDouble() / 100;
   }
 
-  int _updatedIntValue(int value, int delta) =>
-      (value + delta).clamp(0, 2147483647);
+  int _updatedIntValue(int value, int delta, {int maximum = 2147483647}) =>
+      (value + delta).clamp(0, maximum);
 
   String _initialFontType(WidgetRef ref, BSFPrintLabelLayoutFieldEntity field) {
     final layout = ref

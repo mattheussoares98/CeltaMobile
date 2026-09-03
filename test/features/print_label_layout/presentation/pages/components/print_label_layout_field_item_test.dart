@@ -21,6 +21,156 @@ void main() {
     repository = MockEcPrintLabelLayoutRepository();
   });
 
+  final ordinaryTextCases =
+      <
+        ({
+          String name,
+          bool isGeneric,
+          BSFLabelPrinterModelType modelType,
+          BSFPrintLabelFieldType fieldType,
+          bool showsAlignment,
+          bool showsDecimalPlaces,
+          bool showsReverseText,
+        })
+      >[
+        (
+          name: 'generic string',
+          isGeneric: true,
+          modelType: BSFLabelPrinterModelType.generic,
+          fieldType: BSFPrintLabelFieldType.string,
+          showsAlignment: true,
+          showsDecimalPlaces: false,
+          showsReverseText: false,
+        ),
+        (
+          name: 'generic float',
+          isGeneric: true,
+          modelType: BSFLabelPrinterModelType.generic,
+          fieldType: BSFPrintLabelFieldType.float,
+          showsAlignment: true,
+          showsDecimalPlaces: true,
+          showsReverseText: false,
+        ),
+        (
+          name: 'specific string',
+          isGeneric: false,
+          modelType: BSFLabelPrinterModelType.zebraGC420t,
+          fieldType: BSFPrintLabelFieldType.string,
+          showsAlignment: false,
+          showsDecimalPlaces: false,
+          showsReverseText: true,
+        ),
+        (
+          name: 'specific float',
+          isGeneric: false,
+          modelType: BSFLabelPrinterModelType.zebraGC420t,
+          fieldType: BSFPrintLabelFieldType.float,
+          showsAlignment: false,
+          showsDecimalPlaces: true,
+          showsReverseText: true,
+        ),
+        (
+          name: 'OS214 Plus string',
+          isGeneric: false,
+          modelType: BSFLabelPrinterModelType.os214Plus,
+          fieldType: BSFPrintLabelFieldType.string,
+          showsAlignment: false,
+          showsDecimalPlaces: false,
+          showsReverseText: false,
+        ),
+        (
+          name: 'Rabbit OS214 string',
+          isGeneric: false,
+          modelType: BSFLabelPrinterModelType.rabbitOS214,
+          fieldType: BSFPrintLabelFieldType.string,
+          showsAlignment: false,
+          showsDecimalPlaces: false,
+          showsReverseText: false,
+        ),
+      ];
+
+  for (final testCase in ordinaryTextCases) {
+    testWidgets(
+      'should show supported ordinary-text controls for ${testCase.name}',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 1200));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final isFloat = testCase.fieldType == BSFPrintLabelFieldType.float;
+        final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+          quantityDecimalPlaces: 2,
+          field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            fieldType: testCase.fieldType,
+          ),
+          format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+            stringType: !isFloat,
+            floatType: isFloat,
+          ),
+        );
+        final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+          code: 10,
+          labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+            isGeneric: testCase.isGeneric,
+            modelType: testCase.modelType,
+          ),
+          fields: [field],
+        );
+        final params = EntityFactory.makeEcRequestParams();
+        when(
+          () => repository.getDetails(params, 10),
+        ).thenAnswer((_) async => layout);
+
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              ecRequestParamsProvider().overrideWith((ref) => params),
+              ecPrintLabelLayoutRepositoryProvider.overrideWithValue(
+                repository,
+              ),
+            ],
+            child: MaterialApp(
+              home: Scaffold(
+                body: Consumer(
+                  builder: (context, ref, child) {
+                    final value = ref.watch(
+                      printLabelLayoutDetailsControllerProvider(10),
+                    );
+                    return value.when(
+                      data: (currentLayout) => SingleChildScrollView(
+                        child: PrintLabelLayoutFieldItem(
+                          layoutCode: 10,
+                          fieldIndex: 0,
+                          field: currentLayout.fields.first,
+                          coordinateUnit: currentLayout.coordinateUnit,
+                        ),
+                      ),
+                      loading: () => const CircularProgressIndicator(),
+                      error: (error, stackTrace) => Text(error.toString()),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(
+          find.text('Alinhamento'),
+          testCase.showsAlignment ? findsOneWidget : findsNothing,
+        );
+        expect(
+          find.text('Casas decimais'),
+          testCase.showsDecimalPlaces ? findsOneWidget : findsNothing,
+        );
+        expect(
+          find.text('Imprimir texto reverso'),
+          testCase.showsReverseText ? findsOneWidget : findsNothing,
+        );
+      },
+    );
+  }
+
   testWidgets('should render field item adjusters and update coordinates', (
     tester,
   ) async {
@@ -37,6 +187,10 @@ void main() {
     );
     final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       code: 10,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        isGeneric: true,
+        modelType: BSFLabelPrinterModelType.generic,
+      ),
       fields: [field],
     );
 
@@ -85,7 +239,7 @@ void main() {
     expect(find.text('4.0'), findsOneWidget);
     expect(find.text('Altura'), findsOneWidget);
     expect(find.text('5.0'), findsOneWidget);
-    expect(find.text('Tipo da fonte'), findsOneWidget);
+    expect(find.text('Tipo da fonte'), findsNothing);
     expect(find.text('Alinhamento'), findsOneWidget);
     expect(find.text('Esquerda'), findsOneWidget);
     expect(find.text('Centro'), findsOneWidget);

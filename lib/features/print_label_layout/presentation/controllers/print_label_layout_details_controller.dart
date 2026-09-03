@@ -82,6 +82,17 @@ class PrintLabelLayoutDetailsController
     );
   }
 
+  void updateFieldQuantityDecimalPlaces(int fieldIndex, int delta) {
+    _updateField(fieldIndex, (field) {
+      return field.copyWith(
+        quantityDecimalPlaces: (field.quantityDecimalPlaces + delta).clamp(
+          0,
+          9999,
+        ),
+      );
+    });
+  }
+
   void updateFieldDrawLabelBelowBarcode(int fieldIndex, bool drawLabel) {
     _updateField(fieldIndex, (field) {
       return field.copyWith(drawLabelBelowBarcode: drawLabel);
@@ -131,6 +142,13 @@ class PrintLabelLayoutDetailsController
 
   void updateFieldIsBold(int fieldIndex, bool isBold) {
     _updateField(fieldIndex, (field) => field.copyWith(isBold: isBold));
+  }
+
+  void updateFieldIsReverseText(int fieldIndex, bool isReverseText) {
+    _updateField(
+      fieldIndex,
+      (field) => field.copyWith(isReverseText: isReverseText),
+    );
   }
 
   void updateFieldPositionStartCharacter(int fieldIndex, int delta) {
