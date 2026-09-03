@@ -752,10 +752,13 @@ void main() {
     expect(updated.name, 'New Name');
   });
 
-  test('updateTemperature should update temperature clamped at zero', () async {
+  test('updateTemperature should accept only supported values', () async {
     final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       code: 10,
-      temperature: 15,
+      temperature: 12,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        supportedTemperatures: const ['0', '12', '30'],
+      ),
     );
     when(
       () => repository.getDetails(params, 10),
@@ -768,23 +771,32 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.updateTemperature(2);
+    notifier.updateTemperature(30);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
-    expect(updated.temperature, 16);
+    expect(updated.temperature, 30);
 
-    notifier.updateTemperature(-30);
+    notifier.updateTemperature(16);
     updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
-    expect(updated.temperature, 1);
+    expect(updated.temperature, 30);
+
+    notifier.updateTemperature(0);
+    updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .value!;
+    expect(updated.temperature, 0);
   });
 
-  test('updatePrintSpeed should update printSpeed clamped at min', () async {
+  test('updatePrintSpeed should accept only supported values', () async {
     final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       code: 10,
-      printSpeed: 4,
+      printSpeed: 2,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        supportedPrintSpeeds: const ['2', '4', '6'],
+      ),
     );
     when(
       () => repository.getDetails(params, 10),
@@ -797,18 +809,55 @@ void main() {
       printLabelLayoutDetailsControllerProvider(10).notifier,
     );
 
-    notifier.updatePrintSpeed(1);
+    notifier.updatePrintSpeed(6);
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
-    expect(updated.printSpeed, 5);
+    expect(updated.printSpeed, 6);
 
-    notifier.updatePrintSpeed(-10);
+    notifier.updatePrintSpeed(5);
     updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .value!;
-    expect(updated.printSpeed, 1);
+    expect(updated.printSpeed, 6);
   });
+
+  test(
+    'printer values should remain unchanged for a generic printer',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        temperature: 12,
+        printSpeed: 2,
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          isGeneric: true,
+          modelType: BSFLabelPrinterModelType.generic,
+          supportedTemperatures: const ['12', '30'],
+          supportedPrintSpeeds: const ['2', '6'],
+        ),
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateTemperature(30);
+      notifier.updatePrintSpeed(6);
+
+      final updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue;
+      expect(updated.temperature, 12);
+      expect(updated.printSpeed, 2);
+    },
+  );
 
   test(
     'updateIntervalPrintPackage should update interval clamped at zero',
@@ -1032,26 +1081,52 @@ void main() {
     );
   });
 
-  test('updateDirectionLabelType should update directionLabelType', () async {
-    when(() => repository.getDetails(params, 10)).thenAnswer(
-      (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10),
-    );
-    final container = makeContainer();
-    addTearDown(container.dispose);
-    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+  test(
+    'updateDirectionLabelType should accept only supported values',
+    () async {
+      when(() => repository.getDetails(params, 10)).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(
+          code: 10,
+          labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+            modelType: BSFLabelPrinterModelType.zebraGC420t,
+            supportedDirections: const [
+              BSFPrintLabelDirectionType.top,
+              BSFPrintLabelDirectionType.bottom,
+            ],
+          ),
+        ),
+      );
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
 
-    container
-        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
-        .updateDirectionLabelType(BSFPrintLabelDirectionType.left);
-
-    expect(
       container
-          .read(printLabelLayoutDetailsControllerProvider(10))
-          .requireValue
-          .directionLabelType,
-      BSFPrintLabelDirectionType.left,
-    );
-  });
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateDirectionLabelType(BSFPrintLabelDirectionType.bottom);
+
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .directionLabelType,
+        BSFPrintLabelDirectionType.bottom,
+      );
+
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateDirectionLabelType(BSFPrintLabelDirectionType.left);
+
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .directionLabelType,
+        BSFPrintLabelDirectionType.bottom,
+      );
+    },
+  );
 
   test('updatePrintProductBySoldQuantity should update its flag', () async {
     when(() => repository.getDetails(params, 10)).thenAnswer(

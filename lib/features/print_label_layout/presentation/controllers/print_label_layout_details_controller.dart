@@ -224,17 +224,25 @@ class PrintLabelLayoutDetailsController
     _updateLayout((layout) => layout.copyWith(name: name));
   }
 
-  void updateTemperature(int delta) {
+  void updateTemperature(int value) {
     _updateLayout((layout) {
-      final updated = (layout.temperature + delta).clamp(1, 16);
-      return layout.copyWith(temperature: updated);
+      final capabilities = layout.capabilities;
+      if (!capabilities.canEditTemperature ||
+          !capabilities.supportedTemperatures.contains(value.toString())) {
+        return layout;
+      }
+      return layout.copyWith(temperature: value);
     });
   }
 
-  void updatePrintSpeed(int delta) {
+  void updatePrintSpeed(int value) {
     _updateLayout((layout) {
-      final updated = (layout.printSpeed + delta).clamp(1, 5);
-      return layout.copyWith(printSpeed: updated);
+      final capabilities = layout.capabilities;
+      if (!capabilities.canEditPrintSpeed ||
+          !capabilities.supportedPrintSpeeds.contains(value.toString())) {
+        return layout;
+      }
+      return layout.copyWith(printSpeed: value);
     });
   }
 
@@ -357,7 +365,14 @@ class PrintLabelLayoutDetailsController
   }
 
   void updateDirectionLabelType(BSFPrintLabelDirectionType value) {
-    _updateLayout((layout) => layout.copyWith(directionLabelType: value));
+    _updateLayout((layout) {
+      final capabilities = layout.capabilities;
+      if (!capabilities.canEditDirection ||
+          !capabilities.supportedDirections.contains(value)) {
+        return layout;
+      }
+      return layout.copyWith(directionLabelType: value);
+    });
   }
 
   void updateConsiderProductPacking(BSFProductPackingSelectionType value) {

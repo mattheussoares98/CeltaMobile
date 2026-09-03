@@ -28,32 +28,65 @@ class PrintLabelLayoutPrinterParameters extends ConsumerWidget {
             BaseText.title('Parâmetros da impressora'.hardcoded),
             gapH8,
             Wrap(
-              alignment: .spaceBetween,
-              runAlignment: .spaceBetween,
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
+              runSpacing: Sizes.p8,
+              spacing: Sizes.p8,
               children: [
-                PrintLabelLayoutValueAdjuster(
-                  label: 'Temperatura'.hardcoded,
-                  value: layout.temperature.toString(),
-                  onDecrease:
-                      capabilities.canEditTemperature && layout.temperature > 0
-                      ? () => controller.updateTemperature(-1)
-                      : null,
-                  onIncrease: capabilities.canEditTemperature
-                      ? () => controller.updateTemperature(1)
-                      : null,
+                SizedBox(
+                  width: 100,
+                  child: BaseDropDown<String>(
+                    key: const Key('print-label-layout-temperature'),
+                    label: 'Temperatura'.hardcoded,
+                    showLabelAtTopLeft: true,
+                    selectedItem:
+                        capabilities.supportedTemperatures.contains(
+                          layout.temperature.toString(),
+                        )
+                        ? layout.temperature.toString()
+                        : null,
+                    items: capabilities.supportedTemperatures
+                        .map(
+                          (value) => DropdownMenuItem(
+                            value: value,
+                            child: BaseText(value),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: capabilities.canEditTemperature
+                        ? (value) =>
+                              controller.updateTemperature(int.parse(value))
+                        : null,
+                  ),
+                ),
+                SizedBox(
+                  width: 100,
+                  child: BaseDropDown<String>(
+                    key: const Key('print-label-layout-print-speed'),
+                    label: 'Velocidade'.hardcoded,
+                    showLabelAtTopLeft: true,
+                    selectedItem:
+                        capabilities.supportedPrintSpeeds.contains(
+                          layout.printSpeed.toString(),
+                        )
+                        ? layout.printSpeed.toString()
+                        : null,
+                    items: capabilities.supportedPrintSpeeds
+                        .map(
+                          (value) => DropdownMenuItem(
+                            value: value,
+                            child: BaseText(value),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: capabilities.canEditPrintSpeed
+                        ? (value) =>
+                              controller.updatePrintSpeed(int.parse(value))
+                        : null,
+                  ),
                 ),
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Velocidade'.hardcoded,
-                  value: layout.printSpeed.toString(),
-                  onDecrease:
-                      capabilities.canEditPrintSpeed && layout.printSpeed > 0
-                      ? () => controller.updatePrintSpeed(-1)
-                      : null,
-                  onIncrease: capabilities.canEditPrintSpeed
-                      ? () => controller.updatePrintSpeed(1)
-                      : null,
-                ),
-                PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-package-interval'),
                   repeatInterval: const Duration(milliseconds: 25),
                   label: 'Intervalo do pacote'.hardcoded,
                   value: layout.intervalPrintPackage.toString(),

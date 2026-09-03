@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:flutter/material.dart';
@@ -92,6 +93,132 @@ void main() {
       }
     });
   }
+
+  final printerCases = [
+    (
+      name: 'generic',
+      isGeneric: true,
+      model: BSFLabelPrinterModelType.generic,
+      isEnabled: false,
+    ),
+    (
+      name: 'Zebra GC420t',
+      isGeneric: false,
+      model: BSFLabelPrinterModelType.zebraGC420t,
+      isEnabled: true,
+    ),
+    (
+      name: 'OS214 Plus',
+      isGeneric: false,
+      model: BSFLabelPrinterModelType.os214Plus,
+      isEnabled: true,
+    ),
+    (
+      name: 'Rabbit OS214',
+      isGeneric: false,
+      model: BSFLabelPrinterModelType.rabbitOS214,
+      isEnabled: true,
+    ),
+  ];
+
+  for (final testCase in printerCases) {
+    testWidgets('should use supported printer values for ${testCase.name}', (
+      tester,
+    ) async {
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        temperature: 0,
+        printSpeed: 6,
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          isGeneric: testCase.isGeneric,
+          modelType: testCase.model,
+          supportedTemperatures: const ['0', '12', '30'],
+          supportedPrintSpeeds: const ['2', '4', '6'],
+        ),
+      );
+      await _pump(tester, layout, (current) {
+        return PrintLabelLayoutPrinterParameters(layout: current);
+      });
+
+      final temperature = tester.widget<BaseDropDown<String>>(
+        find.byKey(const Key('print-label-layout-temperature')).first,
+      );
+      final speed = tester.widget<BaseDropDown<String>>(
+        find.byKey(const Key('print-label-layout-print-speed')).first,
+      );
+      expect(temperature.items!.map((item) => item.value), const [
+        '0',
+        '12',
+        '30',
+      ]);
+      expect(speed.items!.map((item) => item.value), const ['2', '4', '6']);
+      expect(temperature.selectedItem, '0');
+      expect(speed.selectedItem, '6');
+      expect(temperature.onChanged != null, testCase.isEnabled);
+      expect(speed.onChanged != null, testCase.isEnabled);
+      expect(
+        tester
+                .widget<PrintLabelLayoutValueAdjuster>(
+                  find
+                      .byKey(const Key('print-label-layout-package-interval'))
+                      .first,
+                )
+                .onIncrease !=
+            null,
+        testCase.isEnabled,
+      );
+    });
+  }
+
+  testWidgets('should not change preview metrics for printer-only values', (
+    tester,
+  ) async {
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      temperature: 12,
+      printSpeed: 2,
+      intervalPrintPackage: 3,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        supportedTemperatures: const ['0', '12', '30'],
+        supportedPrintSpeeds: const ['2', '4', '6'],
+      ),
+    );
+    final container = await _pump(tester, layout, (current) {
+      return PrintLabelLayoutPrinterParameters(layout: current);
+    });
+    final originalMetrics = PrintLabelPreviewMetrics(layout);
+
+    tester
+        .widget<BaseDropDown<String>>(
+          find.byKey(const Key('print-label-layout-temperature')).first,
+        )
+        .onChanged!('30');
+    tester
+        .widget<BaseDropDown<String>>(
+          find.byKey(const Key('print-label-layout-print-speed')).first,
+        )
+        .onChanged!('6');
+    tester
+        .widget<PrintLabelLayoutValueAdjuster>(
+          find.byKey(const Key('print-label-layout-package-interval')).first,
+        )
+        .onIncrease!();
+
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .requireValue;
+    expect(updated.temperature, 30);
+    expect(updated.printSpeed, 6);
+    expect(updated.intervalPrintPackage, 4);
+    expect(
+      PrintLabelPreviewMetrics(updated).canvasWidth,
+      originalMetrics.canvasWidth,
+    );
+    expect(
+      PrintLabelPreviewMetrics(updated).canvasHeight,
+      originalMetrics.canvasHeight,
+    );
+  });
 
   final formCases =
       <
