@@ -97,23 +97,26 @@ void main() {
         EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
       );
 
-      expect(metrics.previewText(field), r'R$ 5');
+      expect(metrics.previewText(field), r'R$ 5,55');
     });
 
-    test('should truncate instead of rounding when decimals are removed', () {
-      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
-        quantityDecimalPlaces: 0,
-        previewValue: '8,6',
-        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
-          fieldType: BSFPrintLabelFieldType.float,
-        ),
-      );
-      final metrics = PrintLabelPreviewMetrics(
-        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
-      );
+    test(
+      'should preserve supplied decimals when no reformatting is requested',
+      () {
+        final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+          quantityDecimalPlaces: 0,
+          previewValue: '8,6',
+          field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            fieldType: BSFPrintLabelFieldType.float,
+          ),
+        );
+        final metrics = PrintLabelPreviewMetrics(
+          EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+        );
 
-      expect(metrics.previewText(field), '8');
-    });
+        expect(metrics.previewText(field), '8,6');
+      },
+    );
   });
 
   group('QR-code preview size', () {
@@ -164,7 +167,76 @@ void main() {
   });
 
   group('PrintLabelPreviewMetrics', () {
-    test('should derive Rabbit canvas size from field extents', () {
+    test('should prefer configured label dimensions', () {
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(
+          labelWidth: 120,
+          labelHeight: 60,
+          formWidth: 300,
+          formHeight: 200,
+        ),
+      );
+
+      expect(metrics.effectiveLabelWidth, 120);
+      expect(metrics.effectiveLabelHeight, 60);
+      expect(metrics.canvasWidth, 120);
+      expect(metrics.canvasHeight, 60);
+    });
+
+    test(
+      'should fall back to form dimensions when label dimensions are zero',
+      () {
+        final metrics = PrintLabelPreviewMetrics(
+          EntityFactory.makeBSFPrintLabelLayoutEntity(
+            labelWidth: 0,
+            labelHeight: 0,
+            formWidth: 300,
+            formHeight: 200,
+          ),
+        );
+
+        expect(metrics.effectiveLabelWidth, 300);
+        expect(metrics.effectiveLabelHeight, 200);
+        expect(metrics.canvasWidth, 300);
+        expect(metrics.canvasHeight, 200);
+      },
+    );
+
+    test('should report zero canvas dimensions when no size is configured', () {
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(
+          labelWidth: 0,
+          labelHeight: 0,
+          formWidth: 0,
+          formHeight: 0,
+          fields: const [],
+        ),
+      );
+
+      expect(metrics.effectiveLabelWidth, 0);
+      expect(metrics.effectiveLabelHeight, 0);
+      expect(metrics.canvasWidth, 0);
+      expect(metrics.canvasHeight, 0);
+    });
+
+    test('should derive height when legacy dimensions are both absent', () {
+      final field = _rabbitField(coordinateY: 20, height: 2);
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(
+          labelWidth: 780,
+          labelHeight: 0,
+          formHeight: 0,
+          labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+            modelType: BSFLabelPrinterModelType.rabbitOS214,
+          ),
+          fields: [field],
+        ),
+      );
+
+      expect(metrics.canvasHeight, 76);
+    });
+
+    test('should preserve the configured Rabbit boundary for thin boxes', () {
       final box = _rabbitField(
         coordinateX: 20,
         coordinateY: 5,
@@ -207,7 +279,7 @@ void main() {
         metrics.exceedsRabbitBounds(
           field,
           drawableWidth: 130,
-          previewHeight: 100,
+          previewHeight: metrics.canvasHeight,
         ),
         isFalse,
       );
@@ -335,6 +407,38 @@ void main() {
       expect(hiddenMetrics.isInsideFilledBox(inside), isFalse);
     });
 
+    test(
+      'should move only a font-4 price inside a filled box to the right',
+      () {
+        final box = _rabbitField(
+          coordinateX: 210,
+          coordinateY: 40,
+          width: 190,
+          height: 150,
+          ratioBarCode: 75,
+          fieldType: BSFPrintLabelFieldType.boxOrLine,
+        );
+        final insidePrice = _rabbitField(
+          coordinateX: 275,
+          coordinateY: 80,
+          fontType: '4',
+          previewValue: '0,00',
+          fieldType: BSFPrintLabelFieldType.float,
+        );
+        final outsidePrice = _rabbitField(
+          coordinateX: 35,
+          coordinateY: 80,
+          fontType: '4',
+          previewValue: '0,19',
+          fieldType: BSFPrintLabelFieldType.float,
+        );
+        final metrics = _metrics([box, insidePrice, outsidePrice]);
+
+        expect(metrics.horizontalPosition(insidePrice), 285);
+        expect(metrics.horizontalPosition(outsidePrice), 35);
+      },
+    );
+
     test('should trim only the right edges of a full Rabbit box layout', () {
       final leadingText = _rabbitField(coordinateX: 20, coordinateY: 227);
       final box = _rabbitField(
@@ -347,11 +451,34 @@ void main() {
       );
       final metrics = _metrics([leadingText, box]);
 
-      expect(metrics.canvasWidth, closeTo(603.4, 0.001));
+      expect(metrics.canvasWidth, closeTo(429, 0.001));
       expect(metrics.drawableCanvasWidth, closeTo(420, 0.001));
       expect(metrics.renderedWidth(box), 190);
       expect(metrics.renderedHeight(box), 150);
       expect(metrics.horizontalPosition(box), 210);
+    });
+
+    test('should keep a shrunken Rabbit boundary and report overflow', () {
+      final box = _rabbitField(
+        coordinateX: 210,
+        coordinateY: 40,
+        width: 190,
+        height: 150,
+        ratioBarCode: 75,
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      );
+      final metrics = _metrics([box], labelWidth: 600);
+
+      expect(metrics.canvasWidth, 330);
+      expect(metrics.drawableCanvasWidth, 330);
+      expect(
+        metrics.exceedsRabbitBounds(
+          box,
+          drawableWidth: metrics.drawableCanvasWidth,
+          previewHeight: metrics.canvasHeight,
+        ),
+        isTrue,
+      );
     });
 
     test(
@@ -456,7 +583,7 @@ PrintLabelPreviewMetrics _metrics(
   );
   final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
     formWidth: 800,
-    formHeight: 0,
+    formHeight: 108,
     labelWidth: labelWidth,
     labelHeight: 0,
     labelPrinter: printer,

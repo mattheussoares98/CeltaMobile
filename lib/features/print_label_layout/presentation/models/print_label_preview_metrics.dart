@@ -10,16 +10,15 @@ class PrintLabelPreviewMetrics {
 
   static const _rabbitConfiguredWidthScale = 0.55;
   static const _rabbitDrawableWidthScale = 0.52;
-  static const _rabbitTrailingMarginRatio = 0.12;
   static const _rabbitDrawableTrailingMarginRatio = 0.04;
   static const _rabbitBarcodeCaptionHeight = 8.0;
   static const _rabbitCurrencyHorizontalCorrection = 12.0;
   static const _rabbitCurrencyVerticalCorrection = -4.0;
+  static const _rabbitFilledBoxPriceHorizontalCorrection = 10.0;
   static const _rabbitBarcodeRatioDivisor = 2.3;
   // Calibrates PPLA horizontal command values against the normalized preview
   // canvas while preserving the printer's configured proportions.
   static const _rabbitPplaBarcodeWidthScale = 0.30625;
-  static const _rabbitPplaBoxCanvasExpansionScale = 1.85;
   static const _centimetersPerInch = 2.54;
   static const _qrResolution = 96;
   static const _qrModuleDivisor = 29;
@@ -27,33 +26,21 @@ class PrintLabelPreviewMetrics {
 
   bool get isRabbitOS214 => layout.isRabbitOS214;
 
+  double get effectiveLabelWidth {
+    if (layout.labelWidth > 0) return layout.labelWidth;
+    if (layout.formWidth > 0) return layout.formWidth;
+    return 0;
+  }
+
+  double get effectiveLabelHeight {
+    if (layout.labelHeight > 0) return layout.labelHeight;
+    if (layout.formHeight > 0) return layout.formHeight;
+    return 0;
+  }
+
   double get canvasWidth {
-    if (!isRabbitOS214) {
-      return layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth;
-    }
-
-    if (layout.fields.isEmpty) return 0;
-
-    var leadingMargin = 0.0;
-    var contentRight = 0.0;
-    for (final field in layout.fields) {
-      if (field.coordinateX > 0) {
-        leadingMargin = leadingMargin == 0
-            ? field.coordinateX
-            : math.min(leadingMargin, field.coordinateX);
-      }
-      final right = field.coordinateX + horizontalCanvasFootprint(field);
-      if (right > contentRight) contentRight = right;
-    }
-
-    final trailingMargin = math.max(
-      leadingMargin,
-      contentRight * _rabbitTrailingMarginRatio,
-    );
-    final configuredWidth =
-        (layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth) *
-        _rabbitConfiguredWidthScale;
-    return math.max(configuredWidth, contentRight + trailingMargin);
+    if (!isRabbitOS214) return effectiveLabelWidth;
+    return effectiveLabelWidth * _rabbitConfiguredWidthScale;
   }
 
   double get drawableCanvasWidth {
@@ -69,10 +56,7 @@ class PrintLabelPreviewMetrics {
             ? field.coordinateX
             : math.min(leadingMargin, field.coordinateX);
       }
-      final footprint = _fieldType(field) == BSFPrintLabelFieldType.boxOrLine
-          ? math.max(field.width, field.ratioBarCode)
-          : horizontalCanvasFootprint(field);
-      final right = field.coordinateX + footprint;
+      final right = field.coordinateX + _rabbitDrawableFootprint(field);
       if (right > contentRight) contentRight = right;
     }
 
@@ -80,15 +64,15 @@ class PrintLabelPreviewMetrics {
       leadingMargin,
       contentRight * _rabbitDrawableTrailingMarginRatio,
     );
-    final configuredWidth =
-        (layout.labelWidth > 0 ? layout.labelWidth : layout.formWidth) *
-        _rabbitDrawableWidthScale;
-    return math.max(configuredWidth, contentRight + trailingMargin);
+    final calibratedWidth = math.max(
+      effectiveLabelWidth * _rabbitDrawableWidthScale,
+      contentRight + trailingMargin,
+    );
+    return math.min(canvasWidth, calibratedWidth);
   }
 
   double get canvasHeight {
-    if (layout.labelHeight > 0) return layout.labelHeight;
-    if (layout.formHeight > 0) return layout.formHeight;
+    if (effectiveLabelHeight > 0) return effectiveLabelHeight;
     if (layout.fields.isEmpty) return 0;
 
     if (!isRabbitOS214) {
@@ -196,19 +180,15 @@ class PrintLabelPreviewMetrics {
         bottom + height > previewHeight;
   }
 
-  double horizontalCanvasFootprint(BSFPrintLabelLayoutFieldEntity field) {
-    if (!isRabbitOS214) return field.width;
+  double _rabbitDrawableFootprint(BSFPrintLabelLayoutFieldEntity field) {
     if (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
-      final configuredWidth = math.max(field.width, field.ratioBarCode);
-      return configuredWidth + _rabbitBoxCanvasExpansion(field);
+      return math.max(field.width, field.ratioBarCode);
     }
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       return renderedWidth(field);
     }
     if (!field.isTextField) return field.width;
 
-    // Text may intentionally overflow. One native glyph is sufficient to find
-    // the configured label edge without expanding the canvas to fit the value.
     return rabbitGlyphWidth(field) * _horizontalMultiplier(field);
   }
 
@@ -221,7 +201,15 @@ class PrintLabelPreviewMetrics {
       _rabbitBarcodeCaptionHeight * scaleY;
 
   double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
-    // TODO: Verify whether the canvas preview should apply field alignment.
+    final isPriceInsideFilledBox =
+        isRabbitOS214 &&
+        field.fieldType == BSFPrintLabelFieldType.float &&
+        field.fontType == '4' &&
+        isInsideFilledBox(field);
+    if (isPriceInsideFilledBox) {
+      return field.coordinateX + _rabbitFilledBoxPriceHorizontalCorrection;
+    }
+
     final isCurrencyIndicator =
         isRabbitOS214 &&
         field.fontType == '1' &&
@@ -268,12 +256,6 @@ class PrintLabelPreviewMetrics {
     final smallestDimension = math.min(field.width, field.height);
     return smallestDimension > 0 &&
         field.ratioBarCode * 2 >= (smallestDimension - 1.0);
-  }
-
-  double _rabbitBoxCanvasExpansion(BSFPrintLabelLayoutFieldEntity field) {
-    return _hasTwoFullHorizontalEdges(field)
-        ? field.ratioBarCode * _rabbitPplaBoxCanvasExpansionScale
-        : 0;
   }
 
   bool _hasTwoFullHorizontalEdges(BSFPrintLabelLayoutFieldEntity field) =>
@@ -360,7 +342,7 @@ class PrintLabelPreviewMetrics {
     final parts = normalizedText.split('.');
     final integerPart = parts.first;
     final decimalPlaces = field.quantityDecimalPlaces;
-    if (decimalPlaces == 0) return '$prefix$integerPart';
+    if (decimalPlaces == 0) return value;
 
     final fraction = parts.length > 1 ? parts[1] : '';
     final paddedFraction = fraction.padRight(decimalPlaces, '0');

@@ -86,6 +86,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       height: canvasHeight,
       child: Center(
         child: SizedBox(
+          key: const ValueKey('print-label-preview-canvas'),
           width: canvasWidth,
           height: canvasHeight,
           child: DecoratedBox(
