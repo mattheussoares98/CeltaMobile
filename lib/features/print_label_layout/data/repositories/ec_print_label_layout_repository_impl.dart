@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/data/datasource/datasource.dart';
+import 'package:celta_inventario/features/print_label_layout/data/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
 
@@ -23,6 +24,18 @@ class EcPrintLabelLayoutRepositoryImpl
     int code,
   ) async {
     final model = await datasource.getDetails(params, code);
+    return model.toEntity();
+  }
+
+  @override
+  Future<BSFPrintLabelLayoutEntity> update(
+    EcRequestParams params,
+    BSFPrintLabelLayoutEntity layout,
+  ) async {
+    final model = await datasource.update(
+      params,
+      BSFPrintLabelLayoutModel.fromEntity(layout),
+    );
     return model.toEntity();
   }
 

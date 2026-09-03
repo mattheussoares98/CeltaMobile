@@ -120,4 +120,32 @@ void main() {
       verifyNoMoreInteractions(datasource);
     });
   });
+
+  group('update', () {
+    test('should return the server-updated entity', () async {
+      final updatedEntity = layoutEntity.copyWith(name: 'Updated');
+      final updatedModel = BSFPrintLabelLayoutModel.fromEntity(updatedEntity);
+      when(
+        () => datasource.update(params, layoutModel),
+      ).thenAnswer((_) async => updatedModel);
+
+      final result = await sut.update(params, layoutEntity);
+
+      expect(result, updatedEntity);
+      verify(() => datasource.update(params, layoutModel)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final exception = Exception('Failed to update label layout');
+      when(() => datasource.update(params, layoutModel)).thenThrow(exception);
+
+      await expectLater(
+        sut.update(params, layoutEntity),
+        throwsA(same(exception)),
+      );
+      verify(() => datasource.update(params, layoutModel)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
 }
