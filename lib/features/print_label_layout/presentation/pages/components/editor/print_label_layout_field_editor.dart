@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final int layoutCode;
   final BSFPrintLabelLayoutFieldEntity field;
+  final List<BSFPrintLabelFieldDefinitionEntity> fieldDefinitions;
   final List<BSFPrintLabelFieldFormatEntity> formats;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
   final ValueChanged<double> onCoordinateXChanged;
@@ -19,6 +20,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<double> onWidthChanged;
   final ValueChanged<double> onHeightChanged;
   final ValueChanged<double> onRatioBarCodeChanged;
+  final ValueChanged<BSFBarcodeSimbologyType> onBarcodeSimbologyTypeChanged;
+  final ValueChanged<BSFPrintLabelFieldDefinitionEntity>
+  onFieldForDataBarcodeChanged;
   final ValueChanged<BSFPrintElementRotationType> onRotationChanged;
   final ValueChanged<BSFPrintElementAlignmentType> onAlignmentChanged;
   final ValueChanged<int> onQuantityDecimalPlacesChanged;
@@ -36,6 +40,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     super.key,
     required this.layoutCode,
     required this.field,
+    required this.fieldDefinitions,
     required this.formats,
     required this.coordinateUnit,
     required this.onCoordinateXChanged,
@@ -43,6 +48,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onWidthChanged,
     required this.onHeightChanged,
     required this.onRatioBarCodeChanged,
+    required this.onBarcodeSimbologyTypeChanged,
+    required this.onFieldForDataBarcodeChanged,
     required this.onRotationChanged,
     required this.onAlignmentChanged,
     required this.onQuantityDecimalPlacesChanged,
@@ -71,6 +78,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsBold = layout?.supportsBold(field) ?? false;
     final supportsAlignment = layout?.supportsAlignment(field) ?? false;
     final supportsReverseText = layout?.supportsReverseText(field) ?? false;
+    final supportsBarcodeRatio = layout?.supportsBarcodeRatio(field) ?? false;
+    final supportsGenericBarcodeControls =
+        layout?.supportsGenericBarcodeControls(field) ?? false;
     final resolvedCoordinateUnit =
         coordinateUnit ?? BSFPrintLabelCoordinateUnit.printerDot;
     final previewContent = switch ((
@@ -161,10 +171,14 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               ),
             ],
           ),
-          if (field.isBoxOrLine) ...[
+          if (field.isBoxOrLine || supportsBarcodeRatio) ...[
             gapH4,
             PrintLabelLayoutValueAdjuster(
-              label: 'Espessura do traço'.hardcoded,
+              label:
+                  (field.isBoxOrLine
+                          ? 'Espessura do traço'
+                          : 'Proporção das barras')
+                      .hardcoded,
               value: field.dimensionType.format(field.ratioBarCode),
               onDecrease:
                   field.ratioBarCode > field.minimumEditorStrokeThickness
@@ -186,7 +200,39 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onRotationChanged,
           ),
         ],
-        if (field.isBarcode && !field.isQrCode) ...[
+        if (supportsGenericBarcodeControls) ...[
+          gapH8,
+          BaseDropDown<BSFBarcodeSimbologyType>(
+            label: 'Tipo do código de barras'.hardcoded,
+            selectedItem: field.barcodeSimbologyType,
+            showLabelAtTopLeft: true,
+            items: BSFBarcodeSimbologyType.values
+                .map(
+                  (type) => DropdownMenuItem(
+                    value: type,
+                    child: BaseText(type.apiValue.hardcoded),
+                  ),
+                )
+                .toList(),
+            onChanged: onBarcodeSimbologyTypeChanged,
+          ),
+          gapH8,
+          BaseDropDown<BSFPrintLabelFieldDefinitionEntity>(
+            label: 'Campo representante do dado'.hardcoded,
+            selectedItem: field.fieldForDataBarcode,
+            showLabelAtTopLeft: true,
+            items: fieldDefinitions
+                .map(
+                  (definition) => DropdownMenuItem(
+                    value: definition,
+                    child: BaseText(definition.name),
+                  ),
+                )
+                .toList(),
+            onChanged: onFieldForDataBarcodeChanged,
+          ),
+        ],
+        if (field.isBarcode) ...[
           gapH8,
           BaseSwitch(
             title: 'Imprimir o texto abaixo do código de barras'.hardcoded,

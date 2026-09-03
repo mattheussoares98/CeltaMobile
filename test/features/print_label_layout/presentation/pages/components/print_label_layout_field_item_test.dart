@@ -416,4 +416,125 @@ void main() {
       await tester.pumpAndSettle();
     },
   );
+
+  final barcodeCases = [
+    (
+      name: 'generic barcode',
+      isGeneric: true,
+      symbology: BSFBarcodeSimbologyType.code128,
+      showsGenericControls: true,
+      showsRatio: false,
+    ),
+    (
+      name: 'generic QR barcode',
+      isGeneric: true,
+      symbology: BSFBarcodeSimbologyType.qrCode,
+      showsGenericControls: true,
+      showsRatio: false,
+    ),
+    (
+      name: 'specific barcode',
+      isGeneric: false,
+      symbology: BSFBarcodeSimbologyType.code128,
+      showsGenericControls: false,
+      showsRatio: true,
+    ),
+  ];
+
+  for (final testCase in barcodeCases) {
+    testWidgets('should show supported barcode controls for ${testCase.name}', (
+      tester,
+    ) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1200));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      final representativeField =
+          EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            code: 90,
+            name: 'Preço de venda',
+          );
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        barcodeSimbologyType: testCase.symbology,
+        drawLabelBelowBarcode: true,
+        fieldForDataBarcode: representativeField,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.barcode,
+        ),
+      );
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          isGeneric: testCase.isGeneric,
+          modelType: testCase.isGeneric
+              ? BSFLabelPrinterModelType.generic
+              : BSFLabelPrinterModelType.zebraGC420t,
+        ),
+        fields: [field],
+      );
+      final options = EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(
+        fieldOptions: [
+          EntityFactory.makePrintLabelFieldEditorOptionEntity(
+            definition: representativeField,
+          ),
+        ],
+      );
+      final params = EntityFactory.makeEcRequestParams();
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => layout);
+      when(
+        () => repository.getFieldEditorOptions(params, 10),
+      ).thenAnswer((_) async => options);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            ecRequestParamsProvider().overrideWith((ref) => params),
+            ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: Consumer(
+                builder: (context, ref, child) {
+                  final value = ref.watch(
+                    printLabelLayoutDetailsControllerProvider(10),
+                  );
+                  return value.when(
+                    data: (currentLayout) => SingleChildScrollView(
+                      child: PrintLabelLayoutFieldItem(
+                        layoutCode: 10,
+                        fieldIndex: 0,
+                        field: currentLayout.fields.first,
+                        coordinateUnit: currentLayout.coordinateUnit,
+                      ),
+                    ),
+                    loading: () => const CircularProgressIndicator(),
+                    error: (error, stackTrace) => Text(error.toString()),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Tipo do código de barras'),
+        testCase.showsGenericControls ? findsOneWidget : findsNothing,
+      );
+      expect(
+        find.text('Campo representante do dado'),
+        testCase.showsGenericControls ? findsOneWidget : findsNothing,
+      );
+      expect(
+        find.text('Proporção das barras'),
+        testCase.showsRatio ? findsOneWidget : findsNothing,
+      );
+      expect(
+        find.text('Imprimir o texto abaixo do código de barras'),
+        findsOneWidget,
+      );
+    });
+  }
 }

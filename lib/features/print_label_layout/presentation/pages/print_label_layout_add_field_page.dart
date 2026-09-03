@@ -82,6 +82,9 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                 child: PrintLabelLayoutFieldEditor(
                   layoutCode: layoutCode,
                   field: draft.value!,
+                  fieldDefinitions: fieldOptions
+                      .map((option) => option.definition)
+                      .toList(),
                   formats: formats,
                   coordinateUnit: coordinateUnit,
                   onCoordinateXChanged: (delta) => _updateDraft(
@@ -113,6 +116,14 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                     (field) => field.copyWith(
                       ratioBarCode: _updatedValue(field.ratioBarCode, delta),
                     ),
+                  ),
+                  onBarcodeSimbologyTypeChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(barcodeSimbologyType: value),
+                  ),
+                  onFieldForDataBarcodeChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(fieldForDataBarcode: value),
                   ),
                   onRotationChanged: (value) => _updateDraft(
                     draft,

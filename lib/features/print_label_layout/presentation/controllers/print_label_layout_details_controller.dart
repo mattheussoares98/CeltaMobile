@@ -63,6 +63,26 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateFieldBarcodeSimbologyType(
+    int fieldIndex,
+    BSFBarcodeSimbologyType barcodeSimbologyType,
+  ) {
+    _updateField(
+      fieldIndex,
+      (field) => field.copyWith(barcodeSimbologyType: barcodeSimbologyType),
+    );
+  }
+
+  void updateFieldForDataBarcode(
+    int fieldIndex,
+    BSFPrintLabelFieldDefinitionEntity fieldForDataBarcode,
+  ) {
+    _updateField(
+      fieldIndex,
+      (field) => field.copyWith(fieldForDataBarcode: fieldForDataBarcode),
+    );
+  }
+
   void updateFieldRotateType(
     int fieldIndex,
     BSFPrintElementRotationType rotateType,

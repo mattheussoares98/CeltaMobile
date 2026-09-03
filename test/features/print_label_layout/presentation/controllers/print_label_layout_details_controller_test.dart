@@ -245,6 +245,71 @@ void main() {
     },
   );
 
+  test('updateFieldBarcodeSimbologyType should update symbology', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      barcodeSimbologyType: BSFBarcodeSimbologyType.none,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldBarcodeSimbologyType(0, BSFBarcodeSimbologyType.code128);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .value!
+          .fields
+          .first
+          .barcodeSimbologyType,
+      BSFBarcodeSimbologyType.code128,
+    );
+  });
+
+  test(
+    'updateFieldForDataBarcode should update representative field',
+    () async {
+      final representativeField =
+          EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(code: 90);
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity();
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [field],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateFieldForDataBarcode(0, representativeField);
+
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .value!
+            .fields
+            .first
+            .fieldForDataBarcode,
+        representativeField,
+      );
+    },
+  );
+
   test('toggleFieldVisibility should toggle field isVisible', () async {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
       code: 1,

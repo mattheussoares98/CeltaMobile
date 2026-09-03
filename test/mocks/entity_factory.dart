@@ -2505,24 +2505,27 @@ class EntityFactory {
   );
 
   static BSFPrintLabelFieldDefinitionEntity
-  makeBSFPrintLabelFieldDefinitionEntity({BSFPrintLabelFieldType? fieldType}) =>
-      BSFPrintLabelFieldDefinitionEntity(
-        code: faker.randomGenerator.integer(100, min: 1),
-        personalizedCode: faker.randomGenerator.integer(100, min: 1),
-        name: faker.lorem.word(),
-        content: faker.lorem.sentence(),
-        originType: BSFPrintLabelFieldOriginType.celtaBSDefined,
-        fieldType: fieldType ?? BSFPrintLabelFieldType.string,
-        logoExtensionType: BSFPrintLabelFieldImageExtensionType.notApplicable,
-        logo: const [1, 2, 3, 4],
-        applyToCustomer: false,
-        applyToCovenant: false,
-        applyToProduct: true,
-        applyToCustomerCard: false,
-        applyToSaleBilling: false,
-        applyToTransport: false,
-        applyToSaleRequestProduct: false,
-      );
+  makeBSFPrintLabelFieldDefinitionEntity({
+    int? code,
+    String? name,
+    BSFPrintLabelFieldType? fieldType,
+  }) => BSFPrintLabelFieldDefinitionEntity(
+    code: code ?? faker.randomGenerator.integer(100, min: 1),
+    personalizedCode: faker.randomGenerator.integer(100, min: 1),
+    name: name ?? faker.lorem.word(),
+    content: faker.lorem.sentence(),
+    originType: BSFPrintLabelFieldOriginType.celtaBSDefined,
+    fieldType: fieldType ?? BSFPrintLabelFieldType.string,
+    logoExtensionType: BSFPrintLabelFieldImageExtensionType.notApplicable,
+    logo: const [1, 2, 3, 4],
+    applyToCustomer: false,
+    applyToCovenant: false,
+    applyToProduct: true,
+    applyToCustomerCard: false,
+    applyToSaleBilling: false,
+    applyToTransport: false,
+    applyToSaleRequestProduct: false,
+  );
 
   static BSFPrintLabelFieldFormatEntity makeBSFPrintLabelFieldFormatEntity({
     int? code,
@@ -2543,16 +2546,29 @@ class EntityFactory {
   );
 
   static BSFPrintLabelFieldEditorOptionsEntity
-  makeBSFPrintLabelFieldEditorOptionsEntity() =>
-      BSFPrintLabelFieldEditorOptionsEntity(
-        fieldOptions: [
+  makeBSFPrintLabelFieldEditorOptionsEntity({
+    List<PrintLabelFieldEditorOptionEntity>? fieldOptions,
+    List<BSFPrintLabelFieldFormatEntity>? formats,
+  }) => BSFPrintLabelFieldEditorOptionsEntity(
+    fieldOptions:
+        fieldOptions ??
+        [
           PrintLabelFieldEditorOptionEntity(
             definition: makeBSFPrintLabelFieldDefinitionEntity(),
             draft: makeBSFPrintLabelLayoutFieldEntity(code: 0),
           ),
         ],
-        formats: [makeBSFPrintLabelFieldFormatEntity()],
-      );
+    formats: formats ?? [makeBSFPrintLabelFieldFormatEntity()],
+  );
+
+  static PrintLabelFieldEditorOptionEntity
+  makePrintLabelFieldEditorOptionEntity({
+    BSFPrintLabelFieldDefinitionEntity? definition,
+    BSFPrintLabelLayoutFieldEntity? draft,
+  }) => PrintLabelFieldEditorOptionEntity(
+    definition: definition ?? makeBSFPrintLabelFieldDefinitionEntity(),
+    draft: draft ?? makeBSFPrintLabelLayoutFieldEntity(code: 0),
+  );
 
   static BSFPrintLabelLayoutFieldEntity makeBSFPrintLabelLayoutFieldEntity({
     int? code,
@@ -2572,6 +2588,7 @@ class EntityFactory {
     bool? drawLabelBelowBarcode,
     String? previewValue,
     BSFPrintLabelFieldDefinitionEntity? field,
+    BSFPrintLabelFieldDefinitionEntity? fieldForDataBarcode,
     BSFPrintLabelFieldFormatEntity? format,
     bool? isVisible,
   }) => BSFPrintLabelLayoutFieldEntity(
@@ -2601,7 +2618,8 @@ class EntityFactory {
     previewValue: previewValue ?? faker.lorem.sentence(),
     previewImage: const [1, 2, 3, 4],
     field: field ?? makeBSFPrintLabelFieldDefinitionEntity(),
-    fieldForDataBarcode: makeBSFPrintLabelFieldDefinitionEntity(),
+    fieldForDataBarcode:
+        fieldForDataBarcode ?? makeBSFPrintLabelFieldDefinitionEntity(),
     format: format ?? makeBSFPrintLabelFieldFormatEntity(),
     isVisible: isVisible ?? true,
   );
