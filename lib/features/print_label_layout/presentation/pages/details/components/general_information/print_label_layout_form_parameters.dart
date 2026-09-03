@@ -45,7 +45,8 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
             ),
             gapH8,
             Wrap(
-              alignment: .spaceBetween,
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
               children: [
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-width'),
@@ -71,6 +72,12 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                       ? () => controller.updateFormHeight(step)
                       : null,
                 ),
+              ],
+            ),
+            Wrap(
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
+              children: [
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-top-margin'),
                   label: 'Mg superior'.hardcoded,
@@ -91,7 +98,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-quantity-columns'),
-                  label: 'Quantidade de colunas *'.hardcoded,
+                  label: 'Colunas'.hardcoded,
                   value: layout.quantityColumns.toString(),
                   onDecrease:
                       capabilities.canEditQuantityColumns &&

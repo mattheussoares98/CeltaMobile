@@ -33,10 +33,11 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
             BaseText.title('Parâmetros da etiqueta ($unitLabel)'.hardcoded),
             gapH8,
             Wrap(
-              alignment: .spaceBetween,
-              runAlignment: .spaceBetween,
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
               children: [
                 PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-label-width'),
                   repeatInterval: const Duration(milliseconds: 25),
                   label: 'Largura'.hardcoded,
                   value: _formatValue(layout.labelWidth, unit),
@@ -46,7 +47,27 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   onIncrease: () => controller.updateLabelWidth(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Margem direita'.hardcoded,
+                  key: const Key('print-label-layout-label-height'),
+                  label: 'Altura'.hardcoded,
+                  repeatInterval: const Duration(milliseconds: 25),
+                  value: _formatValue(layout.labelHeight, unit),
+                  onDecrease:
+                      capabilities.canEditLabelHeight && layout.labelHeight > 0
+                      ? () => controller.updateLabelHeight(-step)
+                      : null,
+                  onIncrease: capabilities.canEditLabelHeight
+                      ? () => controller.updateLabelHeight(step)
+                      : null,
+                ),
+              ],
+            ),
+            Wrap(
+              alignment: .spaceEvenly,
+              runAlignment: .spaceEvenly,
+              children: [
+                PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-label-right-margin'),
+                  label: 'Mg direita'.hardcoded,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelRightMargin, unit),
                   onDecrease: layout.labelRightMargin > 0
@@ -55,21 +76,41 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   onIncrease: () => controller.updateLabelRightMargin(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Margem inferior'.hardcoded,
+                  key: const Key('print-label-layout-label-bottom-margin'),
+                  label: 'Mg inferior'.hardcoded,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelBottomMargin, unit),
-                  onDecrease: layout.labelBottomMargin > 0
+                  onDecrease:
+                      capabilities.canEditLabelBottomMargin &&
+                          layout.labelBottomMargin > 0
                       ? () => controller.updateLabelBottomMargin(-step)
                       : null,
-                  onIncrease: () => controller.updateLabelBottomMargin(step),
+                  onIncrease: capabilities.canEditLabelBottomMargin
+                      ? () => controller.updateLabelBottomMargin(step)
+                      : null,
                 ),
               ],
             ),
+            if (capabilities.supportedDirections.isNotEmpty) ...[
+              gapH8,
+              BaseText.caption('Direção da etiqueta'.hardcoded),
+              gapH4,
+              BaseSegmentedButtons<BSFPrintLabelDirectionType>(
+                key: const Key('print-label-layout-direction'),
+                items: capabilities.supportedDirections,
+                selectedValue: layout.directionLabelType,
+                itemLabelBuilder: _directionLabel,
+                onChanged: capabilities.canEditDirection
+                    ? controller.updateDirectionLabelType
+                    : null,
+              ),
+            ],
             if (capabilities.showsProductPacking) ...[
               gapH8,
               BaseText.caption('Considerar embalagem do produto'.hardcoded),
               gapH4,
               BaseSegmentedButtons<BSFProductPackingSelectionType>(
+                key: const Key('print-label-layout-product-packing'),
                 items: BSFProductPackingSelectionType.values,
                 selectedValue: layout.considerProductPacking,
                 itemLabelBuilder: (item) => item.label,
@@ -80,10 +121,32 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
             if (capabilities.showsQuantityPerProduct) ...[
               gapH8,
               BaseSwitch(
+                key: const Key('print-label-layout-quantity-per-product'),
                 title: 'Informar quantidade de impressão por produto'.hardcoded,
                 value: layout.informPrintQuantityByProduct,
                 onChanged: (value) =>
                     controller.updateInformPrintQuantityByProduct(value),
+              ),
+            ],
+            if (capabilities.showsPrintBySoldQuantity) ...[
+              gapH8,
+              BaseSwitch(
+                key: const Key('print-label-layout-print-by-sold-quantity'),
+                title:
+                    'Imprimir uma etiqueta para cada unidade vendida'.hardcoded,
+                value: layout.printProductBySoldQuantity,
+                onChanged: controller.updatePrintProductBySoldQuantity,
+              ),
+            ],
+            if (capabilities.showsBalanceBehavior) ...[
+              gapH8,
+              BaseSwitch(
+                key: const Key('print-label-layout-balance-behavior'),
+                title:
+                    'Somente produtos enviados para balanço e que permitem quantidade no balanço'
+                        .hardcoded,
+                value: layout.goesForBalanceAndQuantityInBalance,
+                onChanged: controller.updateGoesForBalanceAndQuantityInBalance,
               ),
             ],
           ],
@@ -100,4 +163,12 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
         ? value.toStringAsFixed(0)
         : value.toStringAsFixed(1);
   }
+
+  String _directionLabel(BSFPrintLabelDirectionType direction) =>
+      switch (direction) {
+        BSFPrintLabelDirectionType.top => 'Superior'.hardcoded,
+        BSFPrintLabelDirectionType.left => 'Esquerda'.hardcoded,
+        BSFPrintLabelDirectionType.bottom => 'Inferior'.hardcoded,
+        BSFPrintLabelDirectionType.right => 'Direita'.hardcoded,
+      };
 }
