@@ -30,9 +30,9 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BaseTextFormField(
+              key: const Key('print-label-layout-name'),
               labelText: 'Nome do leiaute'.hardcoded,
               controller: nameController,
-              maxLength: 100,
               onChanged: (value) {
                 ref
                     .read(
@@ -48,10 +48,32 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
               title: 'Tipo'.hardcoded,
               subTitle: layout.layoutType.label.hardcoded,
             ),
-            TitleAndSubTitle(
-              title: 'Quantidade de colunas'.hardcoded,
-              subTitle: layout.quantityColumns,
-            ),
+            if (layout.capabilities.showsAddressType) ...[
+              gapH4,
+              BaseText.caption('Tipo de endereço'.hardcoded),
+              gapH4,
+              BaseSegmentedButtons<BSFPrintLabelAddressType>(
+                key: const Key('print-label-layout-address-type'),
+                items: BSFPrintLabelAddressType.values
+                    .where(
+                      (type) => type != BSFPrintLabelAddressType.notApplicable,
+                    )
+                    .toList(),
+                selectedValue: layout.addressType,
+                itemLabelBuilder: _addressTypeLabel,
+                onChanged: layout.capabilities.canEditAddressType
+                    ? (value) {
+                        ref
+                            .read(
+                              printLabelLayoutDetailsControllerProvider(
+                                layout.code,
+                              ).notifier,
+                            )
+                            .updateAddressType(value);
+                      }
+                    : null,
+              ),
+            ],
             TitleAndSubTitle(
               title: 'Impressora'.hardcoded,
               subTitle: layout.labelPrinter?.description,
@@ -62,4 +84,11 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
       ),
     );
   }
+
+  String _addressTypeLabel(BSFPrintLabelAddressType type) => switch (type) {
+    BSFPrintLabelAddressType.principal => 'Principal'.hardcoded,
+    BSFPrintLabelAddressType.collection => 'Cobrança'.hardcoded,
+    BSFPrintLabelAddressType.delivery => 'Entrega'.hardcoded,
+    BSFPrintLabelAddressType.notApplicable => 'Não se aplica'.hardcoded,
+  };
 }

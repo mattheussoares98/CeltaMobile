@@ -35,6 +35,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
             BaseText.caption('Tipo de formulário'.hardcoded),
             gapH4,
             BaseSegmentedButtons<BSFPrintLabelFormType>(
+              key: const Key('print-label-layout-form-type'),
               items: BSFPrintLabelFormType.values,
               selectedValue: layout.formType,
               itemLabelBuilder: (item) => item.description,
@@ -47,6 +48,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
               alignment: .spaceBetween,
               children: [
                 PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-form-width'),
                   repeatInterval: const Duration(milliseconds: 25),
                   label: 'Largura'.hardcoded,
                   value: _formatValue(layout.formWidth, unit),
@@ -56,6 +58,21 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   onIncrease: () => controller.updateFormWidth(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-form-height'),
+                  label: capabilities.isFormHeightRequired
+                      ? 'Altura *'.hardcoded
+                      : 'Altura'.hardcoded,
+                  value: _formatValue(layout.formHeight, unit),
+                  onDecrease:
+                      capabilities.canEditFormHeight && layout.formHeight > 0
+                      ? () => controller.updateFormHeight(-step)
+                      : null,
+                  onIncrease: capabilities.canEditFormHeight
+                      ? () => controller.updateFormHeight(step)
+                      : null,
+                ),
+                PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-form-top-margin'),
                   label: 'Mg superior'.hardcoded,
                   value: _formatValue(layout.formTopMargin, unit),
                   onDecrease: layout.formTopMargin > 0
@@ -64,6 +81,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   onIncrease: () => controller.updateFormTopMargin(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-form-left-margin'),
                   label: 'Mg esquerda'.hardcoded,
                   value: _formatValue(layout.formLeftMargin, unit),
                   onDecrease: layout.formLeftMargin > 0
@@ -71,10 +89,26 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                       : null,
                   onIncrease: () => controller.updateFormLeftMargin(step),
                 ),
+                PrintLabelLayoutValueAdjuster(
+                  key: const Key('print-label-layout-quantity-columns'),
+                  label: 'Quantidade de colunas *'.hardcoded,
+                  value: layout.quantityColumns.toString(),
+                  onDecrease:
+                      capabilities.canEditQuantityColumns &&
+                          layout.quantityColumns > 1
+                      ? () => controller.updateQuantityColumns(-1)
+                      : null,
+                  onIncrease:
+                      capabilities.canEditQuantityColumns &&
+                          layout.quantityColumns < 99
+                      ? () => controller.updateQuantityColumns(1)
+                      : null,
+                ),
               ],
             ),
             gapH8,
             BaseSwitch(
+              key: const Key('print-label-layout-apply-form-size'),
               title: 'Aplicar configuração do tamanho do formulário'.hardcoded,
               value: layout.applyFormSizeConfiguration,
               onChanged: capabilities.canEditFormSizeConfiguration
