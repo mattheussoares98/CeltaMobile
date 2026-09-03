@@ -17,6 +17,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layout.code).notifier,
     );
+    final capabilities = layout.capabilities;
     final unit = layout.coordinateUnit;
     final step = unit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
@@ -64,23 +65,27 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                 ),
               ],
             ),
-            gapH8,
-            BaseText.caption('Considerar embalagem do produto'.hardcoded),
-            gapH4,
-            BaseSegmentedButtons<BSFProductPackingSelectionType>(
-              items: BSFProductPackingSelectionType.values,
-              selectedValue: layout.considerProductPacking,
-              itemLabelBuilder: (item) => item.label,
-              onChanged: (value) =>
-                  controller.updateConsiderProductPacking(value),
-            ),
-            gapH8,
-            BaseSwitch(
-              title: 'Informar quantidade de impressão por produto'.hardcoded,
-              value: layout.informPrintQuantityByProduct,
-              onChanged: (value) =>
-                  controller.updateInformPrintQuantityByProduct(value),
-            ),
+            if (capabilities.showsProductPacking) ...[
+              gapH8,
+              BaseText.caption('Considerar embalagem do produto'.hardcoded),
+              gapH4,
+              BaseSegmentedButtons<BSFProductPackingSelectionType>(
+                items: BSFProductPackingSelectionType.values,
+                selectedValue: layout.considerProductPacking,
+                itemLabelBuilder: (item) => item.label,
+                onChanged: (value) =>
+                    controller.updateConsiderProductPacking(value),
+              ),
+            ],
+            if (capabilities.showsQuantityPerProduct) ...[
+              gapH8,
+              BaseSwitch(
+                title: 'Informar quantidade de impressão por produto'.hardcoded,
+                value: layout.informPrintQuantityByProduct,
+                onChanged: (value) =>
+                    controller.updateInformPrintQuantityByProduct(value),
+              ),
+            ],
           ],
         ),
       ),

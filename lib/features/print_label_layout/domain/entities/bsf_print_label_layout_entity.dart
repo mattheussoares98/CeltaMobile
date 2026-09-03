@@ -60,6 +60,9 @@ class BSFPrintLabelLayoutEntity extends Equatable {
 
   bool get isGenericPrinter => labelPrinter?.isGeneric ?? true;
 
+  PrintLabelLayoutCapabilities get capabilities =>
+      PrintLabelLayoutCapabilities(this);
+
   bool get isRabbitOS214 =>
       labelPrinter?.modelType == BSFLabelPrinterModelType.rabbitOS214;
 

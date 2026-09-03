@@ -17,6 +17,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layout.code).notifier,
     );
+    final capabilities = layout.capabilities;
     final unit = layout.coordinateUnit;
     final step = unit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
@@ -37,7 +38,9 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
               items: BSFPrintLabelFormType.values,
               selectedValue: layout.formType,
               itemLabelBuilder: (item) => item.description,
-              onChanged: (value) => controller.updateFormType(value),
+              onChanged: capabilities.canEditFormType
+                  ? (value) => controller.updateFormType(value)
+                  : null,
             ),
             gapH8,
             Wrap(
@@ -74,8 +77,10 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
             BaseSwitch(
               title: 'Aplicar configuração do tamanho do formulário'.hardcoded,
               value: layout.applyFormSizeConfiguration,
-              onChanged: (value) =>
-                  controller.updateApplyFormSizeConfiguration(value),
+              onChanged: capabilities.canEditFormSizeConfiguration
+                  ? (value) =>
+                        controller.updateApplyFormSizeConfiguration(value)
+                  : null,
             ),
           ],
         ),

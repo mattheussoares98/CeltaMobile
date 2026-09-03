@@ -2488,6 +2488,9 @@ class EntityFactory {
     BSFLabelPrinterModelType? modelType,
     BSFPrintLabelCoordinateUnit? coordinateUnit,
     bool? isGeneric,
+    List<String>? supportedPrintSpeeds,
+    List<String>? supportedTemperatures,
+    List<BSFPrintLabelDirectionType>? supportedDirections,
   }) => BSFPrintLabelPrinterEntity(
     code: faker.randomGenerator.integer(100, min: 1),
     description: faker.lorem.sentence(),
@@ -2496,12 +2499,14 @@ class EntityFactory {
     coordinateUnit: coordinateUnit ?? BSFPrintLabelCoordinateUnit.printerDot,
     supportedFontTypes: const ['A', 'B'],
     supportedFontSizes: const [8, 10],
-    supportedPrintSpeeds: const ['2', '3'],
-    supportedTemperatures: const ['10', '15'],
-    supportedDirections: const [
-      BSFPrintLabelDirectionType.top,
-      BSFPrintLabelDirectionType.bottom,
-    ],
+    supportedPrintSpeeds: supportedPrintSpeeds ?? const ['2', '3'],
+    supportedTemperatures: supportedTemperatures ?? const ['10', '15'],
+    supportedDirections:
+        supportedDirections ??
+        const [
+          BSFPrintLabelDirectionType.top,
+          BSFPrintLabelDirectionType.bottom,
+        ],
   );
 
   static BSFPrintLabelFieldDefinitionEntity

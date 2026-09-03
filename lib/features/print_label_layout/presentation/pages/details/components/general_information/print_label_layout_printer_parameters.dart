@@ -17,6 +17,7 @@ class PrintLabelLayoutPrinterParameters extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layout.code).notifier,
     );
+    final capabilities = layout.capabilities;
 
     return Card(
       child: Padding(
@@ -33,27 +34,37 @@ class PrintLabelLayoutPrinterParameters extends ConsumerWidget {
                 PrintLabelLayoutValueAdjuster(
                   label: 'Temperatura'.hardcoded,
                   value: layout.temperature.toString(),
-                  onDecrease: layout.temperature > 0
+                  onDecrease:
+                      capabilities.canEditTemperature && layout.temperature > 0
                       ? () => controller.updateTemperature(-1)
                       : null,
-                  onIncrease: () => controller.updateTemperature(1),
+                  onIncrease: capabilities.canEditTemperature
+                      ? () => controller.updateTemperature(1)
+                      : null,
                 ),
                 PrintLabelLayoutValueAdjuster(
                   label: 'Velocidade'.hardcoded,
                   value: layout.printSpeed.toString(),
-                  onDecrease: layout.printSpeed > 0
+                  onDecrease:
+                      capabilities.canEditPrintSpeed && layout.printSpeed > 0
                       ? () => controller.updatePrintSpeed(-1)
                       : null,
-                  onIncrease: () => controller.updatePrintSpeed(1),
+                  onIncrease: capabilities.canEditPrintSpeed
+                      ? () => controller.updatePrintSpeed(1)
+                      : null,
                 ),
                 PrintLabelLayoutValueAdjuster(
                   repeatInterval: const Duration(milliseconds: 25),
                   label: 'Intervalo do pacote'.hardcoded,
                   value: layout.intervalPrintPackage.toString(),
-                  onDecrease: layout.intervalPrintPackage > 0
+                  onDecrease:
+                      capabilities.canEditPackageInterval &&
+                          layout.intervalPrintPackage > 0
                       ? () => controller.updateIntervalPrintPackage(-1)
                       : null,
-                  onIncrease: () => controller.updateIntervalPrintPackage(1),
+                  onIncrease: capabilities.canEditPackageInterval
+                      ? () => controller.updateIntervalPrintPackage(1)
+                      : null,
                 ),
               ],
             ),
