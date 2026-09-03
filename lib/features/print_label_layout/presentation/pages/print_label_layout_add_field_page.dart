@@ -116,6 +116,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                       height: _updatedValue(field.height, delta),
                     ),
                   ),
+                  onSizeChanged: (delta) => _updateDraft(draft, (field) {
+                    final size = _updatedValue(field.width, delta);
+                    return field.copyWith(width: size, height: size);
+                  }),
                   onRatioBarCodeChanged: (delta) => _updateDraft(
                     draft,
                     (field) => field.copyWith(
@@ -155,6 +159,10 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                   onPrefixChanged: (value) => _updateDraft(
                     draft,
                     (field) => field.copyWith(prefix: value),
+                  ),
+                  onImageNameChanged: (value) => _updateDraft(
+                    draft,
+                    (field) => field.copyWith(imageName: value),
                   ),
                   onFormatChanged: (value) => _updateDraft(
                     draft,

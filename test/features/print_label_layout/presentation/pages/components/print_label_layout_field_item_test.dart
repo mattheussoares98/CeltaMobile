@@ -327,9 +327,9 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('X'), findsOneWidget);
+    expect(find.text('Eixo X'), findsOneWidget);
     expect(find.text('2.0'), findsOneWidget);
-    expect(find.text('Y'), findsOneWidget);
+    expect(find.text('Eixo Y'), findsOneWidget);
     expect(find.text('3.0'), findsOneWidget);
     expect(find.text('Largura'), findsOneWidget);
     expect(find.text('4.0'), findsOneWidget);
@@ -520,6 +520,7 @@ void main() {
       symbology: BSFBarcodeSimbologyType.code128,
       showsGenericControls: true,
       showsRatio: false,
+      modelType: BSFLabelPrinterModelType.generic,
     ),
     (
       name: 'generic QR barcode',
@@ -527,6 +528,7 @@ void main() {
       symbology: BSFBarcodeSimbologyType.qrCode,
       showsGenericControls: true,
       showsRatio: false,
+      modelType: BSFLabelPrinterModelType.generic,
     ),
     (
       name: 'specific barcode',
@@ -534,6 +536,23 @@ void main() {
       symbology: BSFBarcodeSimbologyType.code128,
       showsGenericControls: false,
       showsRatio: true,
+      modelType: BSFLabelPrinterModelType.zebraGC420t,
+    ),
+    (
+      name: 'specific QR barcode',
+      isGeneric: false,
+      symbology: BSFBarcodeSimbologyType.qrCode,
+      showsGenericControls: false,
+      showsRatio: true,
+      modelType: BSFLabelPrinterModelType.zebraGC420t,
+    ),
+    (
+      name: 'OS214 Plus QR barcode',
+      isGeneric: false,
+      symbology: BSFBarcodeSimbologyType.qrCode,
+      showsGenericControls: false,
+      showsRatio: true,
+      modelType: BSFLabelPrinterModelType.os214Plus,
     ),
   ];
 
@@ -561,9 +580,7 @@ void main() {
         code: 10,
         labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
           isGeneric: testCase.isGeneric,
-          modelType: testCase.isGeneric
-              ? BSFLabelPrinterModelType.generic
-              : BSFLabelPrinterModelType.zebraGC420t,
+          modelType: testCase.modelType,
         ),
         fields: [field],
       );
@@ -631,6 +648,113 @@ void main() {
         find.text('Imprimir o texto abaixo do código de barras'),
         findsOneWidget,
       );
+      final isQrCode = testCase.symbology == BSFBarcodeSimbologyType.qrCode;
+      expect(find.text('Tamanho'), isQrCode ? findsOneWidget : findsNothing);
+      expect(find.text('Largura'), isQrCode ? findsNothing : findsOneWidget);
+      expect(find.text('Altura'), isQrCode ? findsNothing : findsOneWidget);
+      expect(
+        find.text('Nome da imagem'),
+        isQrCode && !testCase.isGeneric ? findsOneWidget : findsNothing,
+      );
+      expect(
+        find.text('Rotação'),
+        testCase.modelType == BSFLabelPrinterModelType.os214Plus
+            ? findsNothing
+            : findsOneWidget,
+      );
     });
   }
+
+  testWidgets('should apply QR controls to an ordinary QR format', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.string,
+      ),
+      format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+        qrCodeType: true,
+      ),
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        isGeneric: true,
+        modelType: BSFLabelPrinterModelType.generic,
+      ),
+      fields: [field],
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: PrintLabelLayoutFieldItem(
+              layoutCode: 10,
+              fieldIndex: 0,
+              field: field,
+              coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tamanho'), findsOneWidget);
+    expect(find.text('Largura'), findsNothing);
+    expect(find.text('Altura'), findsNothing);
+    expect(find.text('Nome da imagem'), findsNothing);
+  });
+
+  testWidgets('should keep ordinary image name read-only', (tester) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.logo,
+      ),
+    ).copyWith(imageName: 'logo');
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        isGeneric: false,
+        modelType: BSFLabelPrinterModelType.os214Plus,
+      ),
+      fields: [field],
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: PrintLabelLayoutFieldItem(
+              layoutCode: 10,
+              fieldIndex: 0,
+              field: field,
+              coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Nome da imagem'), findsNothing);
+    expect(find.text('Rotação'), findsNothing);
+  });
 }

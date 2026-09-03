@@ -207,6 +207,35 @@ void main() {
     expect(updated.fields.first.height, 0.0);
   });
 
+  test('updateFieldSize should update width and height together', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 4.0,
+      height: 7.0,
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldSize(0, 1.0);
+
+    final updated = container
+        .read(printLabelLayoutDetailsControllerProvider(10))
+        .requireValue
+        .fields
+        .first;
+    expect(updated.width, 5.0);
+    expect(updated.height, 5.0);
+  });
+
   test(
     'updateFieldRatioBarCode should update ratioBarCode and clamp at zero',
     () async {
@@ -667,6 +696,36 @@ void main() {
         .first;
     expect(updatedField.prefix, 'New prefix');
     expect(updatedField.previewValue, 'New prefixValue');
+  });
+
+  test('updateFieldImageName should update the QR image name', () async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity().copyWith(
+      imageName: 'old-name',
+    );
+    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => initialLayout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateFieldImageName(0, 'new-name');
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields
+          .first
+          .imageName,
+      'new-name',
+    );
   });
 
   test('updateName should update layout name', () async {

@@ -63,6 +63,13 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateFieldSize(int fieldIndex, double delta) {
+    _updateField(fieldIndex, (field) {
+      final size = _round((field.width + delta).clamp(0.0, double.infinity));
+      return field.copyWith(width: size, height: size);
+    });
+  }
+
   void updateFieldBarcodeSimbologyType(
     int fieldIndex,
     BSFBarcodeSimbologyType barcodeSimbologyType,
@@ -133,6 +140,10 @@ class PrintLabelLayoutDetailsController
         previewValue: '$prefix$valueWithoutPrefix',
       );
     });
+  }
+
+  void updateFieldImageName(int fieldIndex, String imageName) {
+    _updateField(fieldIndex, (field) => field.copyWith(imageName: imageName));
   }
 
   void updateFieldFormat(

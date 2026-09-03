@@ -86,6 +86,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   controller.updateFieldWidth(fieldIndex, delta),
               onHeightChanged: (delta) =>
                   controller.updateFieldHeight(fieldIndex, delta),
+              onSizeChanged: (delta) =>
+                  controller.updateFieldSize(fieldIndex, delta),
               onRatioBarCodeChanged: (delta) =>
                   controller.updateFieldRatioBarCode(fieldIndex, delta),
               onBarcodeSimbologyTypeChanged: (value) =>
@@ -102,6 +104,8 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
                   .updateFieldDrawLabelBelowBarcode(fieldIndex, value),
               onPrefixChanged: (value) =>
                   controller.updateFieldPrefix(fieldIndex, value),
+              onImageNameChanged: (value) =>
+                  controller.updateFieldImageName(fieldIndex, value),
               onFormatChanged: (value) =>
                   controller.updateFieldFormat(fieldIndex, value),
               onFontTypeChanged: (value) =>

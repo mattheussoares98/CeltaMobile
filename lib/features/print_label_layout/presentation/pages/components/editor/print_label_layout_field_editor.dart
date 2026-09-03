@@ -20,6 +20,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<double> onCoordinateYChanged;
   final ValueChanged<double> onWidthChanged;
   final ValueChanged<double> onHeightChanged;
+  final ValueChanged<double> onSizeChanged;
   final ValueChanged<double> onRatioBarCodeChanged;
   final ValueChanged<BSFBarcodeSimbologyType> onBarcodeSimbologyTypeChanged;
   final ValueChanged<BSFPrintLabelFieldDefinitionEntity>
@@ -29,6 +30,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final ValueChanged<int> onQuantityDecimalPlacesChanged;
   final ValueChanged<bool> onDrawLabelBelowBarcodeChanged;
   final ValueChanged<String> onPrefixChanged;
+  final ValueChanged<String> onImageNameChanged;
   final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
   final ValueChanged<int> onPositionStartCharacterChanged;
   final ValueChanged<int> onMaxCharacterSizeChanged;
@@ -48,6 +50,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onCoordinateYChanged,
     required this.onWidthChanged,
     required this.onHeightChanged,
+    required this.onSizeChanged,
     required this.onRatioBarCodeChanged,
     required this.onBarcodeSimbologyTypeChanged,
     required this.onFieldForDataBarcodeChanged,
@@ -56,6 +59,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.onQuantityDecimalPlacesChanged,
     required this.onDrawLabelBelowBarcodeChanged,
     required this.onPrefixChanged,
+    required this.onImageNameChanged,
     required this.onFormatChanged,
     required this.onPositionStartCharacterChanged,
     required this.onMaxCharacterSizeChanged,
@@ -69,6 +73,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
     final prefixController = useTextEditingController(text: field.prefix);
+    final imageNameController = useTextEditingController(text: field.imageName);
     final layout = ref.watch(
       printLabelLayoutDetailsControllerProvider(
         layoutCode,
@@ -82,6 +87,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsBarcodeRatio = layout?.supportsBarcodeRatio(field) ?? false;
     final supportsGenericBarcodeControls =
         layout?.supportsGenericBarcodeControls(field) ?? false;
+    final supportsRotation = layout?.supportsRotation(field) ?? false;
+    final supportsQrImageName =
+        layout != null && !layout.isGenericPrinter && field.isQrCode;
     final resolvedCoordinateUnit =
         coordinateUnit ?? BSFPrintLabelCoordinateUnit.printerDot;
     final previewContent = switch ((
@@ -147,26 +155,39 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             alignment: .spaceEvenly,
             runAlignment: .spaceEvenly,
             children: [
-              PrintLabelLayoutValueAdjuster(
-                label: 'Largura'.hardcoded,
-                repeatInterval: fastRepeatInterval,
-                value: field.dimensionType.format(field.width),
-                onDecrease: field.width > field.minimumEditorWidth
-                    ? () => onWidthChanged(-field.dimensionType.editorStep)
-                    : null,
-                onIncrease: () =>
-                    onWidthChanged(field.dimensionType.editorStep),
-              ),
-              PrintLabelLayoutValueAdjuster(
-                label: 'Altura'.hardcoded,
-                repeatInterval: fastRepeatInterval,
-                value: field.dimensionType.format(field.height),
-                onDecrease: field.height > field.minimumEditorHeight
-                    ? () => onHeightChanged(-field.dimensionType.editorStep)
-                    : null,
-                onIncrease: () =>
-                    onHeightChanged(field.dimensionType.editorStep),
-              ),
+              if (field.usesSingleSizeEditor)
+                PrintLabelLayoutValueAdjuster(
+                  label: 'Tamanho'.hardcoded,
+                  repeatInterval: fastRepeatInterval,
+                  value: field.dimensionType.format(field.width),
+                  onDecrease: field.width > field.minimumEditorWidth
+                      ? () => onSizeChanged(-field.dimensionType.editorStep)
+                      : null,
+                  onIncrease: () =>
+                      onSizeChanged(field.dimensionType.editorStep),
+                )
+              else ...[
+                PrintLabelLayoutValueAdjuster(
+                  label: 'Largura'.hardcoded,
+                  repeatInterval: fastRepeatInterval,
+                  value: field.dimensionType.format(field.width),
+                  onDecrease: field.width > field.minimumEditorWidth
+                      ? () => onWidthChanged(-field.dimensionType.editorStep)
+                      : null,
+                  onIncrease: () =>
+                      onWidthChanged(field.dimensionType.editorStep),
+                ),
+                PrintLabelLayoutValueAdjuster(
+                  label: 'Altura'.hardcoded,
+                  repeatInterval: fastRepeatInterval,
+                  value: field.dimensionType.format(field.height),
+                  onDecrease: field.height > field.minimumEditorHeight
+                      ? () => onHeightChanged(-field.dimensionType.editorStep)
+                      : null,
+                  onIncrease: () =>
+                      onHeightChanged(field.dimensionType.editorStep),
+                ),
+              ],
             ],
           ),
           if (field.isBoxOrLine || supportsBarcodeRatio) ...[
@@ -187,7 +208,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             ),
           ],
         ],
-        if (field.showsRotationEditor) ...[
+        if (supportsRotation) ...[
           gapH8,
           BaseText.title('Rotação'.hardcoded),
           gapH4,
@@ -196,6 +217,14 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             selectedValue: field.rotateType,
             itemLabelBuilder: (item) => item.name,
             onChanged: onRotationChanged,
+          ),
+        ],
+        if (supportsQrImageName) ...[
+          gapH8,
+          BaseTextFormField(
+            controller: imageNameController,
+            labelText: 'Nome da imagem'.hardcoded,
+            onChanged: onImageNameChanged,
           ),
         ],
         if (supportsGenericBarcodeControls) ...[
