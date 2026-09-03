@@ -20,6 +20,10 @@ class PrintLabelPreviewMetrics {
   // canvas while preserving the printer's configured proportions.
   static const _rabbitPplaBarcodeWidthScale = 0.30625;
   static const _rabbitPplaBoxCanvasExpansionScale = 1.85;
+  static const _centimetersPerInch = 2.54;
+  static const _qrResolution = 96;
+  static const _qrModuleDivisor = 29;
+  static const _qrReferenceModuleCount = 45;
 
   bool get isRabbitOS214 => layout.isRabbitOS214;
 
@@ -113,6 +117,7 @@ class PrintLabelPreviewMetrics {
   }
 
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field, {String? text}) {
+    if (field.isQrCode) return qrCodeRenderedSize(field);
     if (!isRabbitOS214) return field.width;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       final baseModuleWidth = field.ratioBarCode > 0
@@ -132,6 +137,7 @@ class PrintLabelPreviewMetrics {
   }
 
   double renderedHeight(BSFPrintLabelLayoutFieldEntity field) {
+    if (field.isQrCode) return qrCodeRenderedSize(field);
     if (!isRabbitOS214) return field.height;
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       return field.height +
@@ -143,6 +149,30 @@ class PrintLabelPreviewMetrics {
     if (!field.isTextField) return field.height;
 
     return rabbitGlyphHeight(field) * _verticalMultiplier(field);
+  }
+
+  double qrCodeRenderedSize(BSFPrintLabelLayoutFieldEntity field) {
+    final configuredSize = _roundToEven(field.height);
+    if (configuredSize <= 0) return 0;
+
+    final pixels = _roundToEven(
+      configuredSize * _qrResolution / _centimetersPerInch,
+    );
+    final pixelsPerModule = pixels ~/ _qrModuleDivisor;
+    final renderedPixels = (_qrReferenceModuleCount * pixelsPerModule)
+        .toDouble();
+
+    return field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter
+        ? renderedPixels * _centimetersPerInch / _qrResolution
+        : renderedPixels;
+  }
+
+  int _roundToEven(double value) {
+    final lower = value.floor();
+    final fraction = value - lower;
+    if (fraction < 0.5) return lower;
+    if (fraction > 0.5) return lower + 1;
+    return lower.isEven ? lower : lower + 1;
   }
 
   bool exceedsRabbitBounds(

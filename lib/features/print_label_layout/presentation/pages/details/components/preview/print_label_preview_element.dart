@@ -1,11 +1,13 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrintLabelPreviewElement extends StatelessWidget {
@@ -62,6 +64,8 @@ class PrintLabelPreviewElement extends StatelessWidget {
     required double? width,
     required double? height,
   }) {
+    if (_isQrCode) return _qrCode(context);
+
     return switch (_fieldType) {
       BSFPrintLabelFieldType.barcode => _barcode(context),
       BSFPrintLabelFieldType.logo => _logo(context),
@@ -70,17 +74,16 @@ class PrintLabelPreviewElement extends StatelessWidget {
     };
   }
 
-  Widget _barcode(BuildContext context) {
-    if (_isQrCode) {
-      return FittedBox(
-        alignment: Alignment.topLeft,
-        child: Icon(
-          Icons.qr_code_2,
-          color: context.theme.colorScheme.onSurface,
-        ),
-      );
-    }
+  Widget _qrCode(BuildContext context) => FittedBox(
+    alignment: Alignment.topLeft,
+    child: PlatformIcon(
+      materialIcon: Icons.qr_code_2,
+      cupertinoIcon: CupertinoIcons.qrcode,
+      color: context.theme.colorScheme.onSurface,
+    ),
+  );
 
+  Widget _barcode(BuildContext context) {
     return Semantics(
       image: true,
       label: field.drawLabelBelowBarcode ? _previewText : null,
@@ -196,6 +199,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   double? get _previewWidth {
+    if (_isQrCode) {
+      return previewMetrics.qrCodeRenderedSize(field) * scaleX;
+    }
+
     if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
       return previewMetrics.renderedWidth(field, text: _previewText) * scaleX;
     }
@@ -218,6 +225,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
   }
 
   double? get _previewHeight {
+    if (_isQrCode) {
+      return previewMetrics.qrCodeRenderedSize(field) * scaleY;
+    }
+
     if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
       return previewMetrics.renderedHeight(field) * scaleY;
     }

@@ -116,6 +116,53 @@ void main() {
     });
   });
 
+  group('QR-code preview size', () {
+    test('should reproduce the UI size for generic printers', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        height: 1,
+        dimensionType: BSFPrintLabelFieldDimensionType.centimeter,
+        format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+          qrCodeType: true,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.qrCodeRenderedSize(field), closeTo(1.190625, 0.000001));
+    });
+
+    test('should reproduce the UI size for specific printers', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        height: 2,
+        dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+        format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+          qrCodeType: true,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.qrCodeRenderedSize(field), 90);
+    });
+
+    test('should use UI midpoint-to-even rounding', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        height: 2.5,
+        dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+        format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+          qrCodeType: true,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.qrCodeRenderedSize(field), 90);
+    });
+  });
+
   group('PrintLabelPreviewMetrics', () {
     test('should derive Rabbit canvas size from field extents', () {
       final box = _rabbitField(

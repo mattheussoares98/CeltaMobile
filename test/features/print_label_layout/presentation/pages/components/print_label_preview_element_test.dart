@@ -117,9 +117,7 @@ void main() {
     expect(find.text('BCDEFG'), findsOneWidget);
   });
 
-  testWidgets('should not apply the character range to QR-code formats', (
-    tester,
-  ) async {
+  testWidgets('should render QR-code formats as a sized icon', (tester) async {
     final field =
         EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
           previewValue: 'ABCDEFG',
@@ -146,7 +144,8 @@ void main() {
       ),
     );
 
-    expect(find.text('ABCDEFG'), findsOneWidget);
+    expect(find.byIcon(Icons.qr_code_2), findsOneWidget);
+    expect(find.text('ABCDEFG'), findsNothing);
   });
 
   testWidgets('should render Rabbit native font magnification', (tester) async {
