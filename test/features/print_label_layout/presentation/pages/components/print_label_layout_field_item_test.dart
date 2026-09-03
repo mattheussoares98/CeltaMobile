@@ -887,4 +887,126 @@ void main() {
     expect(find.text('Nome da imagem'), findsNothing);
     expect(find.text('Rotação'), findsNothing);
   });
+
+  testWidgets('should keep the field when removal is canceled', (tester) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity();
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, child) {
+                final current = ref.watch(
+                  printLabelLayoutDetailsControllerProvider(10),
+                );
+                return current.when(
+                  data: (value) => value.fields.isEmpty
+                      ? const SizedBox.shrink()
+                      : SingleChildScrollView(
+                          child: PrintLabelLayoutFieldItem(
+                            layoutCode: 10,
+                            fieldIndex: 0,
+                            field: value.fields.first,
+                            coordinateUnit: value.coordinateUnit,
+                          ),
+                        ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stackTrace) => Text(error.toString()),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.delete));
+    await tester.pumpAndSettle();
+    expect(find.text('Remover item?'), findsOneWidget);
+
+    await tester.tap(find.text('Cancelar'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PrintLabelLayoutFieldItem), findsOneWidget);
+  });
+
+  testWidgets('should remove the confirmed field from the editor and preview', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      previewValue: 'REMOVE-ME',
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: [field],
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(
+              builder: (context, ref, child) {
+                final current = ref.watch(
+                  printLabelLayoutDetailsControllerProvider(10),
+                );
+                return current.when(
+                  data: (value) => Column(
+                    children: [
+                      Expanded(child: PrintLabelLayoutPreview(layout: value)),
+                      if (value.fields.isNotEmpty)
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: PrintLabelLayoutFieldItem(
+                              layoutCode: 10,
+                              fieldIndex: 0,
+                              field: value.fields.first,
+                              coordinateUnit: value.coordinateUnit,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stackTrace) => Text(error.toString()),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PrintLabelPreviewElement), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.delete));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Remover'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PrintLabelLayoutFieldItem), findsNothing);
+    expect(find.byType(PrintLabelPreviewElement), findsNothing);
+  });
 }

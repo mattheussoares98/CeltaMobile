@@ -397,6 +397,14 @@ class PrintLabelLayoutDetailsController
     );
   }
 
+  void removeField(int fieldIndex) {
+    _updateLayout((layout) {
+      if (fieldIndex < 0 || fieldIndex >= layout.fields.length) return layout;
+      final updatedFields = [...layout.fields]..removeAt(fieldIndex);
+      return layout.copyWith(fields: updatedFields);
+    });
+  }
+
   void _updateLayout(
     BSFPrintLabelLayoutEntity Function(BSFPrintLabelLayoutEntity) updater,
   ) {

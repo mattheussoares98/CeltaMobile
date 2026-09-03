@@ -1352,4 +1352,89 @@ void main() {
         .last;
     expect(added, draft);
   });
+
+  final removalCases = <({String name, int index, List<String> remaining})>[
+    (name: 'first', index: 0, remaining: ['middle', 'last']),
+    (name: 'middle', index: 1, remaining: ['first', 'last']),
+    (name: 'last', index: 2, remaining: ['first', 'middle']),
+  ];
+
+  for (final testCase in removalCases) {
+    test(
+      'removeField should remove the ${testCase.name} field by index',
+      () async {
+        final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+          code: 10,
+          fields: [
+            EntityFactory.makeBSFPrintLabelLayoutFieldEntity().copyWith(
+              prefix: 'first',
+            ),
+            EntityFactory.makeBSFPrintLabelLayoutFieldEntity().copyWith(
+              prefix: 'middle',
+            ),
+            EntityFactory.makeBSFPrintLabelLayoutFieldEntity().copyWith(
+              prefix: 'last',
+            ),
+          ],
+        );
+        when(
+          () => repository.getDetails(params, 10),
+        ).thenAnswer((_) async => initialLayout);
+        final container = makeContainer();
+        addTearDown(container.dispose);
+
+        await container.read(
+          printLabelLayoutDetailsControllerProvider(10).future,
+        );
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+            .removeField(testCase.index);
+
+        final remainingPrefixes = container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .fields
+            .map((field) => field.prefix)
+            .toList();
+        expect(remainingPrefixes, testCase.remaining);
+      },
+    );
+  }
+
+  test(
+    'removeField should distinguish duplicate code-zero fields by index',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [
+          EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+            code: 0,
+          ).copyWith(prefix: 'keep'),
+          EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+            code: 0,
+          ).copyWith(prefix: 'remove'),
+        ],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .removeField(1);
+
+      final fields = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields;
+      expect(fields, hasLength(1));
+      expect(fields.single.prefix, 'keep');
+      expect(fields.single.code, 0);
+    },
+  );
 }
