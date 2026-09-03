@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
@@ -7,6 +9,82 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../../../mocks/mocks.dart';
 
 void main() {
+  testWidgets('should render logo width and height independently', (
+    tester,
+  ) async {
+    final field =
+        EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+          width: 40,
+          height: 20,
+          dimensionType: BSFPrintLabelFieldDimensionType.printerCommandValue,
+          field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            fieldType: BSFPrintLabelFieldType.logo,
+          ),
+        ).copyWith(
+          previewImage: base64Decode(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScL7WQAAAABJRU5ErkJggg==',
+          ),
+        );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Align(
+          child: PrintLabelPreviewElement(
+            field: field,
+            coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+            previewMetrics: PrintLabelPreviewMetrics(layout),
+            scaleX: 2,
+            scaleY: 3,
+            isOutsideLabel: false,
+            isInsideFilledBox: false,
+          ),
+        ),
+      ),
+    );
+
+    final image = tester.widget<Image>(find.byType(Image));
+    expect(image.fit, BoxFit.fill);
+    expect(tester.getSize(find.byType(Image)), const Size(80, 60));
+  });
+
+  testWidgets('should identify a missing logo without forcing square bounds', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 30,
+      height: 10,
+      dimensionType: BSFPrintLabelFieldDimensionType.printerCommandValue,
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.logo,
+      ),
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Align(
+          child: PrintLabelPreviewElement(
+            field: field,
+            coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+            previewMetrics: PrintLabelPreviewMetrics(layout),
+            scaleX: 1,
+            scaleY: 1,
+            isOutsideLabel: false,
+            isInsideFilledBox: false,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final placeholder = find.byWidgetPredicate(
+      (widget) => widget is Semantics && widget.properties.label == 'Logotipo',
+    );
+    expect(find.byIcon(Icons.image_outlined), findsOneWidget);
+    expect(tester.getSize(placeholder), const Size(30, 10));
+  });
+
   testWidgets('should show the formatted preview value from the API', (
     tester,
   ) async {

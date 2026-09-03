@@ -107,7 +107,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       final bytes = logo is Uint8List ? logo : Uint8List.fromList(logo);
       return Image.memory(
         bytes,
-        fit: BoxFit.contain,
+        fit: BoxFit.fill,
         alignment: Alignment.topLeft,
         errorBuilder: (_, _, _) => _logoPlaceholder(context),
       );
@@ -116,12 +116,19 @@ class PrintLabelPreviewElement extends StatelessWidget {
     return _logoPlaceholder(context);
   }
 
-  Widget _logoPlaceholder(BuildContext context) => FittedBox(
-    alignment: Alignment.topLeft,
-    child: Icon(
-      Icons.image_outlined,
-      color: context.theme.colorScheme.onSurface,
-      semanticLabel: 'Logotipo'.hardcoded,
+  Widget _logoPlaceholder(BuildContext context) => Semantics(
+    image: true,
+    label: 'Logotipo'.hardcoded,
+    child: ColoredBox(
+      color: context.theme.colorScheme.onSurface.withAlpha(48),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: PlatformIcon(
+          materialIcon: Icons.image_outlined,
+          cupertinoIcon: CupertinoIcons.photo,
+          color: context.theme.colorScheme.onSurface,
+        ),
+      ),
     ),
   );
 
@@ -207,6 +214,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
       return previewMetrics.renderedWidth(field, text: _previewText) * scaleX;
     }
 
+    if (_fieldType == BSFPrintLabelFieldType.logo && field.width > 0) {
+      return field.width * scaleX;
+    }
+
     if (_hasPhysicalDimensions && field.width > 0) {
       return field.width * scaleX;
     }
@@ -231,6 +242,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
 
     if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
       return previewMetrics.renderedHeight(field) * scaleY;
+    }
+
+    if (_fieldType == BSFPrintLabelFieldType.logo && field.height > 0) {
+      return field.height * scaleY;
     }
 
     if (_hasPhysicalDimensions && field.height > 0) {
