@@ -43,10 +43,10 @@ class BSFPrintLabelFieldFormatEntity extends Equatable {
   };
 
   bool supports(BSFPrintLabelFieldType? fieldType) => switch (fieldType) {
-    BSFPrintLabelFieldType.string => stringType,
-    BSFPrintLabelFieldType.integer => integerType,
-    BSFPrintLabelFieldType.float => floatType,
-    BSFPrintLabelFieldType.dateTime => dateTimeType,
+    BSFPrintLabelFieldType.string => stringType || qrCodeType,
+    BSFPrintLabelFieldType.integer => integerType || qrCodeType,
+    BSFPrintLabelFieldType.float => floatType || qrCodeType,
+    BSFPrintLabelFieldType.dateTime => dateTimeType || qrCodeType,
     _ => false,
   };
 

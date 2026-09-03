@@ -50,4 +50,23 @@ void main() {
     expect(format.supports(BSFPrintLabelFieldType.barcode), isFalse);
     expect(format.supports(null), isFalse);
   });
+
+  test('should support every text field type when format is QR code', () {
+    final format = EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+      stringType: false,
+      integerType: false,
+      floatType: false,
+      dateTimeType: false,
+      qrCodeType: true,
+    );
+
+    expect(format.supports(BSFPrintLabelFieldType.string), isTrue);
+    expect(format.supports(BSFPrintLabelFieldType.integer), isTrue);
+    expect(format.supports(BSFPrintLabelFieldType.float), isTrue);
+    expect(format.supports(BSFPrintLabelFieldType.dateTime), isTrue);
+    expect(format.supports(BSFPrintLabelFieldType.barcode), isFalse);
+    expect(format.supports(BSFPrintLabelFieldType.boxOrLine), isFalse);
+    expect(format.supports(BSFPrintLabelFieldType.logo), isFalse);
+    expect(format.supports(null), isFalse);
+  });
 }
