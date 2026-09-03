@@ -118,7 +118,6 @@ class PrintLabelLayoutPreview extends StatelessWidget {
                       previewLabelWidth: previewLabelWidth,
                       previewLabelHeight: previewLabelHeight,
                     ),
-                    isInsideFilledBox: previewMetrics.isInsideFilledBox(field),
                   ),
                 );
               }).toList(),
