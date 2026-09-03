@@ -5,6 +5,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,13 +18,58 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = printLabelLayoutDetailsControllerProvider(labelCode);
+    final saveProvider = printLabelLayoutSaveControllerProvider(labelCode);
     final layoutName = ref.watch(provider.select((s) => s.value?.name));
+
+    ref.observeLoading([saveProvider]);
+
+    ref.listen(saveProvider, (p, n) {
+      n.showAlertDialogOnError(context);
+      n.showToastOnSuccess(
+        context,
+        previous: p,
+        message: 'Leiaute salvo com sucesso'.hardcoded,
+      );
+    });
 
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
-      appBar: BaseAppBar(title: layoutName ?? 'Detalhes do leiaute'.hardcoded),
+      appBar: BaseAppBar(
+        title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
+        actions: [
+          Consumer(
+            builder: (_, ref, _) {
+              final isSaving = ref.watch(
+                saveProvider.select((s) => s.isLoading),
+              );
+
+              return IconButton(
+                key: const Key('save-print-label-layout'),
+                tooltip: 'Salvar'.hardcoded,
+                onPressed: isSaving
+                    ? null
+                    : () {
+                        showAlertDialog(
+                          context: context,
+                          title: 'Salvar alterações'.hardcoded,
+                          content: 'Deseja realmente salvar as alterações?'
+                              .hardcoded,
+                          defaultActionText: 'Sim'.hardcoded,
+                          cancelActionText: 'Não'.hardcoded,
+                          onOkPressed: ref.read(saveProvider.notifier).save,
+                        );
+                      },
+                icon: const PlatformIcon(
+                  cupertinoIcon: CupertinoIcons.check_mark,
+                  materialIcon: Icons.save_outlined,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
