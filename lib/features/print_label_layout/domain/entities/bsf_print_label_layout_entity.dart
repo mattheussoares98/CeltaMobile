@@ -88,10 +88,13 @@ class BSFPrintLabelLayoutEntity extends Equatable {
       labelPrinter?.modelType != BSFLabelPrinterModelType.rabbitOS214;
 
   bool supportsBarcodeRatio(BSFPrintLabelLayoutFieldEntity field) =>
-      !isGenericPrinter && field.isBarcode;
+      !isGenericPrinter && field.isBarcode && !field.isQrCode;
 
   bool supportsGenericBarcodeControls(BSFPrintLabelLayoutFieldEntity field) =>
-      isGenericPrinter && field.isBarcode;
+      isGenericPrinter && field.isBarcode && !field.isQrCode;
+
+  bool supportsDrawLabelBelowBarcode(BSFPrintLabelLayoutFieldEntity field) =>
+      field.isBarcode && !field.isQrCode;
 
   bool supportsRotation(BSFPrintLabelLayoutFieldEntity field) =>
       field.showsRotationEditor &&

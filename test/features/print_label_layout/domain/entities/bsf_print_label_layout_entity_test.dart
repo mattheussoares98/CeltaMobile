@@ -65,6 +65,10 @@ void main() {
     });
 
     test('should support barcode ratio only for specific printers', () {
+      final qrBarcode = barcodeField.copyWith(
+        barcodeSimbologyType: BSFBarcodeSimbologyType.qrCode,
+      );
+
       expect(
         layout(isGeneric: false).supportsBarcodeRatio(barcodeField),
         isTrue,
@@ -74,6 +78,7 @@ void main() {
         isFalse,
       );
       expect(layout(isGeneric: false).supportsBarcodeRatio(textField), isFalse);
+      expect(layout(isGeneric: false).supportsBarcodeRatio(qrBarcode), isFalse);
     });
 
     test(
@@ -89,7 +94,7 @@ void main() {
         );
         expect(
           layout(isGeneric: true).supportsGenericBarcodeControls(qrBarcode),
-          isTrue,
+          isFalse,
         );
         expect(
           layout(isGeneric: false).supportsGenericBarcodeControls(barcodeField),
@@ -101,6 +106,25 @@ void main() {
         );
       },
     );
+
+    test('should support text below barcode only for non-QR barcodes', () {
+      final qrBarcode = barcodeField.copyWith(
+        barcodeSimbologyType: BSFBarcodeSimbologyType.qrCode,
+      );
+
+      expect(
+        layout(isGeneric: true).supportsDrawLabelBelowBarcode(barcodeField),
+        isTrue,
+      );
+      expect(
+        layout(isGeneric: true).supportsDrawLabelBelowBarcode(qrBarcode),
+        isFalse,
+      );
+      expect(
+        layout(isGeneric: false).supportsDrawLabelBelowBarcode(textField),
+        isFalse,
+      );
+    });
 
     test('should restrict OS214 Plus image and QR rotation', () {
       final os214PlusLayout = layout(

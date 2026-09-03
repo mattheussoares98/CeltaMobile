@@ -635,7 +635,7 @@ void main() {
       name: 'generic QR barcode',
       isGeneric: true,
       symbology: BSFBarcodeSimbologyType.qrCode,
-      showsGenericControls: true,
+      showsGenericControls: false,
       showsRatio: false,
       modelType: BSFLabelPrinterModelType.generic,
     ),
@@ -652,7 +652,7 @@ void main() {
       isGeneric: false,
       symbology: BSFBarcodeSimbologyType.qrCode,
       showsGenericControls: false,
-      showsRatio: true,
+      showsRatio: false,
       modelType: BSFLabelPrinterModelType.zebraGC420t,
     ),
     (
@@ -660,7 +660,7 @@ void main() {
       isGeneric: false,
       symbology: BSFBarcodeSimbologyType.qrCode,
       showsGenericControls: false,
-      showsRatio: true,
+      showsRatio: false,
       modelType: BSFLabelPrinterModelType.os214Plus,
     ),
   ];
@@ -774,7 +774,9 @@ void main() {
       }
       expect(
         find.text('Imprimir o texto abaixo do código de barras'),
-        findsOneWidget,
+        testCase.symbology == BSFBarcodeSimbologyType.qrCode
+            ? findsNothing
+            : findsOneWidget,
       );
       final isQrCode = testCase.symbology == BSFBarcodeSimbologyType.qrCode;
       expect(find.text('Tamanho'), isQrCode ? findsOneWidget : findsNothing);

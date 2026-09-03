@@ -133,6 +133,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     final supportsBarcodeRatio = layout?.supportsBarcodeRatio(field) ?? false;
     final supportsGenericBarcodeControls =
         layout?.supportsGenericBarcodeControls(field) ?? false;
+    final supportsDrawLabelBelowBarcode =
+        layout?.supportsDrawLabelBelowBarcode(field) ?? false;
     final supportsRotation = layout?.supportsRotation(field) ?? false;
     final supportsQrImageName =
         layout != null && !layout.isGenericPrinter && field.isQrCode;
@@ -320,7 +322,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onFieldForDataBarcodeChanged,
           ),
         ],
-        if (field.isBarcode) ...[
+        if (supportsDrawLabelBelowBarcode) ...[
           gapH8,
           BaseSwitch(
             title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
