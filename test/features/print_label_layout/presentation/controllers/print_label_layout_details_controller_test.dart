@@ -3,6 +3,7 @@ import 'package:celta_inventario/core/providers/ec_request_params/ec_request_par
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -843,28 +844,261 @@ void main() {
     },
   );
 
-  test('updateFormType should update formType', () async {
-    final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
-      code: 10,
-      formType: BSFPrintLabelFormType.continuous,
+  test('updateFormType should apply legacy compatibility rules', () async {
+    final cases = [
+      (
+        printer: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.generic,
+          isGeneric: true,
+        ),
+        formType: BSFPrintLabelFormType.paginated,
+        keepsHeight: true,
+        keepsDirection: false,
+        keepsFormSizeConfiguration: true,
+      ),
+      (
+        printer: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.zebraGC420t,
+        ),
+        formType: BSFPrintLabelFormType.paginated,
+        keepsHeight: true,
+        keepsDirection: true,
+        keepsFormSizeConfiguration: false,
+      ),
+      (
+        printer: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.os214Plus,
+        ),
+        formType: BSFPrintLabelFormType.paginated,
+        keepsHeight: false,
+        keepsDirection: false,
+        keepsFormSizeConfiguration: false,
+      ),
+      (
+        printer: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.rabbitOS214,
+        ),
+        formType: BSFPrintLabelFormType.continuous,
+        keepsHeight: true,
+        keepsDirection: false,
+        keepsFormSizeConfiguration: false,
+      ),
+    ];
+
+    for (final testCase in cases) {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        formType: testCase.formType == BSFPrintLabelFormType.paginated
+            ? BSFPrintLabelFormType.continuous
+            : BSFPrintLabelFormType.paginated,
+        formHeight: 40,
+        labelHeight: 30,
+        labelBottomMargin: 2,
+        directionLabelType: BSFPrintLabelDirectionType.bottom,
+        applyFormSizeConfiguration: false,
+        labelPrinter: testCase.printer,
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateFormType(testCase.formType);
+      final updated = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue;
+
+      expect(updated.formType, testCase.formType);
+      expect(updated.formHeight, testCase.keepsHeight ? 40 : 0);
+      expect(updated.labelHeight, testCase.keepsHeight ? 30 : 0);
+      expect(updated.labelBottomMargin, testCase.keepsHeight ? 2 : 0);
+      expect(
+        updated.directionLabelType,
+        testCase.keepsDirection
+            ? BSFPrintLabelDirectionType.bottom
+            : BSFPrintLabelDirectionType.top,
+      );
+      expect(
+        updated.applyFormSizeConfiguration,
+        testCase.keepsFormSizeConfiguration ? false : true,
+      );
+      container.dispose();
+    }
+  });
+
+  test(
+    'updateFormHeight should resize the preview with a new layout',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        formHeight: 30,
+        labelHeight: 0,
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final before = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue;
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateFormHeight(5);
+      final after = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue;
+
+      expect(identical(after, before), isFalse);
+      expect(after.formHeight, 35);
+      expect(PrintLabelPreviewMetrics(after).canvasHeight, 35);
+    },
+  );
+
+  test(
+    'updateQuantityColumns should update and clamp between 1 and 99',
+    () async {
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        quantityColumns: 2,
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      final notifier = container.read(
+        printLabelLayoutDetailsControllerProvider(10).notifier,
+      );
+
+      notifier.updateQuantityColumns(1);
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .quantityColumns,
+        3,
+      );
+      notifier.updateQuantityColumns(-100);
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .quantityColumns,
+        1,
+      );
+      notifier.updateQuantityColumns(100);
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .quantityColumns,
+        99,
+      );
+    },
+  );
+
+  test('updateAddressType should update addressType', () async {
+    when(() => repository.getDetails(params, 10)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10),
     );
-    when(
-      () => repository.getDetails(params, 10),
-    ).thenAnswer((_) async => initialLayout);
     final container = makeContainer();
     addTearDown(container.dispose);
-
     await container.read(printLabelLayoutDetailsControllerProvider(10).future);
-    final notifier = container.read(
-      printLabelLayoutDetailsControllerProvider(10).notifier,
-    );
 
-    notifier.updateFormType(BSFPrintLabelFormType.paginated);
-    final updated = container
-        .read(printLabelLayoutDetailsControllerProvider(10))
-        .value!;
-    expect(updated.formType, BSFPrintLabelFormType.paginated);
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateAddressType(BSFPrintLabelAddressType.delivery);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .addressType,
+      BSFPrintLabelAddressType.delivery,
+    );
   });
+
+  test('updateDirectionLabelType should update directionLabelType', () async {
+    when(() => repository.getDetails(params, 10)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10),
+    );
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updateDirectionLabelType(BSFPrintLabelDirectionType.left);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .directionLabelType,
+      BSFPrintLabelDirectionType.left,
+    );
+  });
+
+  test('updatePrintProductBySoldQuantity should update its flag', () async {
+    when(() => repository.getDetails(params, 10)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10),
+    );
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    await container.read(printLabelLayoutDetailsControllerProvider(10).future);
+
+    container
+        .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+        .updatePrintProductBySoldQuantity(true);
+
+    expect(
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .printProductBySoldQuantity,
+      isTrue,
+    );
+  });
+
+  test(
+    'updateGoesForBalanceAndQuantityInBalance should update its flag',
+    () async {
+      when(() => repository.getDetails(params, 10)).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10),
+      );
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .updateGoesForBalanceAndQuantityInBalance(true);
+
+      expect(
+        container
+            .read(printLabelLayoutDetailsControllerProvider(10))
+            .requireValue
+            .goesForBalanceAndQuantityInBalance,
+        isTrue,
+      );
+    },
+  );
 
   test('updateFormWidth and margins should update form dimensions', () async {
     final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(

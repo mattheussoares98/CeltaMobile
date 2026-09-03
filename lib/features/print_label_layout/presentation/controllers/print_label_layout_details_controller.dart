@@ -246,7 +246,25 @@ class PrintLabelLayoutDetailsController
   }
 
   void updateFormType(BSFPrintLabelFormType formType) {
-    _updateLayout((layout) => layout.copyWith(formType: formType));
+    _updateLayout((layout) {
+      final keepsHeight =
+          formType == BSFPrintLabelFormType.continuous ||
+          layout.capabilities.isGenericPrinter ||
+          layout.capabilities.isZebraGC420t;
+
+      return layout.copyWith(
+        formType: formType,
+        formHeight: keepsHeight ? layout.formHeight : 0,
+        labelHeight: keepsHeight ? layout.labelHeight : 0,
+        labelBottomMargin: keepsHeight ? layout.labelBottomMargin : 0,
+        directionLabelType: layout.capabilities.isZebraGC420t
+            ? layout.directionLabelType
+            : BSFPrintLabelDirectionType.top,
+        applyFormSizeConfiguration: layout.capabilities.isGenericPrinter
+            ? layout.applyFormSizeConfiguration
+            : true,
+      );
+    });
   }
 
   void updateFormWidth(double delta) {
@@ -255,6 +273,15 @@ class PrintLabelLayoutDetailsController
         (layout.formWidth + delta).clamp(0.0, double.infinity),
       );
       return layout.copyWith(formWidth: updated);
+    });
+  }
+
+  void updateFormHeight(double delta) {
+    _updateLayout((layout) {
+      final updated = _round(
+        (layout.formHeight + delta).clamp(0.0, double.infinity),
+      );
+      return layout.copyWith(formHeight: updated);
     });
   }
 
@@ -276,10 +303,21 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateQuantityColumns(int delta) {
+    _updateLayout((layout) {
+      final updated = (layout.quantityColumns + delta).clamp(1, 99);
+      return layout.copyWith(quantityColumns: updated);
+    });
+  }
+
   void updateApplyFormSizeConfiguration(bool value) {
     _updateLayout(
       (layout) => layout.copyWith(applyFormSizeConfiguration: value),
     );
+  }
+
+  void updateAddressType(BSFPrintLabelAddressType value) {
+    _updateLayout((layout) => layout.copyWith(addressType: value));
   }
 
   void updateLabelWidth(double delta) {
@@ -318,6 +356,10 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void updateDirectionLabelType(BSFPrintLabelDirectionType value) {
+    _updateLayout((layout) => layout.copyWith(directionLabelType: value));
+  }
+
   void updateConsiderProductPacking(BSFProductPackingSelectionType value) {
     _updateLayout((layout) => layout.copyWith(considerProductPacking: value));
   }
@@ -325,6 +367,18 @@ class PrintLabelLayoutDetailsController
   void updateInformPrintQuantityByProduct(bool value) {
     _updateLayout(
       (layout) => layout.copyWith(informPrintQuantityByProduct: value),
+    );
+  }
+
+  void updatePrintProductBySoldQuantity(bool value) {
+    _updateLayout(
+      (layout) => layout.copyWith(printProductBySoldQuantity: value),
+    );
+  }
+
+  void updateGoesForBalanceAndQuantityInBalance(bool value) {
+    _updateLayout(
+      (layout) => layout.copyWith(goesForBalanceAndQuantityInBalance: value),
     );
   }
 
