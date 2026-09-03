@@ -1437,4 +1437,19 @@ void main() {
       expect(fields.single.code, 0);
     },
   );
+
+  test('replaceWithSavedLayout should apply refreshed server state', () async {
+    final updated = layout.copyWith(name: 'Server name');
+    when(
+      () => repository.getDetails(params, layout.code),
+    ).thenAnswer((_) async => layout);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    final provider = printLabelLayoutDetailsControllerProvider(layout.code);
+    await container.read(provider.future);
+
+    container.read(provider.notifier).replaceWithSavedLayout(updated);
+
+    expect(container.read(provider).requireValue, updated);
+  });
 }

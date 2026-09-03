@@ -405,6 +405,10 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void replaceWithSavedLayout(BSFPrintLabelLayoutEntity layout) {
+    state = AsyncData(layout);
+  }
+
   void _updateLayout(
     BSFPrintLabelLayoutEntity Function(BSFPrintLabelLayoutEntity) updater,
   ) {
