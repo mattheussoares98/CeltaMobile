@@ -569,6 +569,8 @@ void main() {
             name: 'Preço de venda',
           );
       final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        dimensionType: BSFPrintLabelFieldDimensionType.printerCommandValue,
+        ratioBarCode: 2.0,
         barcodeSimbologyType: testCase.symbology,
         drawLabelBelowBarcode: true,
         fieldForDataBarcode: representativeField,
@@ -644,6 +646,23 @@ void main() {
         find.text('Proporção das barras'),
         testCase.showsRatio ? findsOneWidget : findsNothing,
       );
+      if (testCase.showsRatio) {
+        final ratioAdjuster = find.ancestor(
+          of: find.text('Proporção das barras'),
+          matching: find.byType(PrintLabelLayoutValueAdjuster),
+        );
+        expect(find.text('2.0'), findsOneWidget);
+
+        await tester.tap(
+          find.descendant(
+            of: ratioAdjuster,
+            matching: find.byIcon(Icons.add_circle_outline),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('2.1'), findsOneWidget);
+      }
       expect(
         find.text('Imprimir o texto abaixo do código de barras'),
         findsOneWidget,

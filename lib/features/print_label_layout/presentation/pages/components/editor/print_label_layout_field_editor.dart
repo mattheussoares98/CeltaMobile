@@ -72,6 +72,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
+    const barcodeRatioStep = 0.1;
     final prefixController = useTextEditingController(text: field.prefix);
     final imageNameController = useTextEditingController(text: field.imageName);
     final layout = ref.watch(
@@ -198,13 +199,22 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                           ? 'Espessura do traço'
                           : 'Proporção das barras')
                       .hardcoded,
-              value: field.dimensionType.format(field.ratioBarCode),
+              value: supportsBarcodeRatio
+                  ? field.ratioBarCode.toStringAsFixed(1)
+                  : field.dimensionType.format(field.ratioBarCode),
               onDecrease:
                   field.ratioBarCode > field.minimumEditorStrokeThickness
-                  ? () => onRatioBarCodeChanged(-field.dimensionType.editorStep)
+                  ? () => onRatioBarCodeChanged(
+                      supportsBarcodeRatio
+                          ? -barcodeRatioStep
+                          : -field.dimensionType.editorStep,
+                    )
                   : null,
-              onIncrease: () =>
-                  onRatioBarCodeChanged(field.dimensionType.editorStep),
+              onIncrease: () => onRatioBarCodeChanged(
+                supportsBarcodeRatio
+                    ? barcodeRatioStep
+                    : field.dimensionType.editorStep,
+              ),
             ),
           ],
         ],
