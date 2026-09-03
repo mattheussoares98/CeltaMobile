@@ -34,6 +34,10 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
         layoutCode,
       ).select((s) => s.value),
     );
+    final fieldOptions = options?.fieldOptions;
+    final selectedOption = fieldOptions
+        ?.where((option) => option.definition == field.field)
+        .firstOrNull;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -70,6 +74,10 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
             PrintLabelLayoutFieldEditor(
               layoutCode: layoutCode,
               field: field,
+              fieldOptions: fieldOptions,
+              selectedFieldOption: selectedOption,
+              onFieldOptionChanged: (option) =>
+                  controller.replaceFieldDefinition(fieldIndex, option.draft),
               fieldDefinitions:
                   options?.fieldOptions
                       .map((option) => option.definition)

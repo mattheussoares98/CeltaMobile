@@ -372,6 +372,115 @@ void main() {
     expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
   });
 
+  testWidgets(
+    'should replace an existing definition and keep its selection while editing',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 1200));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      final originalDefinition =
+          EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            code: 1,
+            name: 'Descrição',
+          );
+      final replacementDefinition =
+          EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+            code: 2,
+            name: 'Preço de venda',
+            fieldType: BSFPrintLabelFieldType.float,
+          );
+      final originalFormat = EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+        stringType: true,
+      );
+      final replacementFormat =
+          EntityFactory.makeBSFPrintLabelFieldFormatEntity(floatType: true);
+      final original = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 7,
+        field: originalDefinition,
+        format: originalFormat,
+      ).copyWith(prefix: 'Oferta: ');
+      final replacement = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 0,
+        quantityDecimalPlaces: 3,
+        field: replacementDefinition,
+        format: replacementFormat,
+      ).copyWith(prefix: 'server-prefix');
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [original],
+      );
+      final options = EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(
+        formats: [originalFormat, replacementFormat],
+        fieldOptions: [
+          EntityFactory.makePrintLabelFieldEditorOptionEntity(
+            definition: originalDefinition,
+            draft: original,
+          ),
+          EntityFactory.makePrintLabelFieldEditorOptionEntity(
+            definition: replacementDefinition,
+            draft: replacement,
+          ),
+        ],
+      );
+      final params = EntityFactory.makeEcRequestParams();
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => layout);
+      when(
+        () => repository.getFieldEditorOptions(params, 10),
+      ).thenAnswer((_) async => options);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            ecRequestParamsProvider().overrideWith((ref) => params),
+            ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: Consumer(
+                builder: (context, ref, child) {
+                  final value = ref.watch(
+                    printLabelLayoutDetailsControllerProvider(10),
+                  );
+                  return value.when(
+                    data: (currentLayout) => SingleChildScrollView(
+                      child: PrintLabelLayoutFieldItem(
+                        layoutCode: 10,
+                        fieldIndex: 0,
+                        field: currentLayout.fields.first,
+                        coordinateUnit: currentLayout.coordinateUnit,
+                      ),
+                    ),
+                    loading: () => const CircularProgressIndicator(),
+                    error: (error, stackTrace) => Text(error.toString()),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(
+        find.byType(DropdownMenu<PrintLabelFieldEditorOptionEntity>),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Preço de venda').last);
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.widgetWithText(BaseTextFormField, 'Prefixo'),
+        'Promoção: ',
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Preço de venda'), findsOneWidget);
+      expect(find.text('Casas decimais'), findsOneWidget);
+      expect(find.text('3'), findsOneWidget);
+    },
+  );
+
   testWidgets('should render stroke thickness adjuster for boxOrLine field', (
     tester,
   ) async {

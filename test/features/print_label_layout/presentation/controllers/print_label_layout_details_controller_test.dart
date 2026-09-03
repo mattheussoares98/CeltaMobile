@@ -979,6 +979,46 @@ void main() {
     expect(updated.maxCharacterSize, 0);
   });
 
+  test(
+    'replaceFieldDefinition should replace by index and preserve only prefix',
+    () async {
+      final first = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 0,
+      ).copyWith(prefix: 'first', imageName: 'old-image');
+      final second = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 0,
+      ).copyWith(prefix: 'second');
+      final replacement = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 0,
+      ).copyWith(prefix: 'server-prefix', imageName: 'server-image');
+      final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 10,
+        fields: [first, second],
+      );
+      when(
+        () => repository.getDetails(params, 10),
+      ).thenAnswer((_) async => initialLayout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+
+      await container.read(
+        printLabelLayoutDetailsControllerProvider(10).future,
+      );
+      container
+          .read(printLabelLayoutDetailsControllerProvider(10).notifier)
+          .replaceFieldDefinition(1, replacement);
+
+      final fields = container
+          .read(printLabelLayoutDetailsControllerProvider(10))
+          .requireValue
+          .fields;
+      expect(fields.first, first);
+      expect(fields.last.code, 0);
+      expect(fields.last.prefix, 'second');
+      expect(fields.last.imageName, 'server-image');
+    },
+  );
+
   test('addField should append the unchanged server draft', () async {
     final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 0);
     final initialLayout = EntityFactory.makeBSFPrintLabelLayoutEntity(

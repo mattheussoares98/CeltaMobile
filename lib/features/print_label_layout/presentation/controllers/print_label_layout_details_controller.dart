@@ -213,6 +213,13 @@ class PrintLabelLayoutDetailsController
     });
   }
 
+  void replaceFieldDefinition(
+    int fieldIndex,
+    BSFPrintLabelLayoutFieldEntity draft,
+  ) {
+    _updateField(fieldIndex, (field) => draft.copyWith(prefix: field.prefix));
+  }
+
   void updateName(String name) {
     _updateLayout((layout) => layout.copyWith(name: name));
   }

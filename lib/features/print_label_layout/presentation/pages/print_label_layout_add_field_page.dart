@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/print_label_layout/domain/entities/ent
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -41,178 +40,145 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
         children: [
           BaseText.title('Adicionar campo ao leiaute'.hardcoded),
           gapH16,
-          DropdownMenu<PrintLabelFieldEditorOptionEntity>(
-            label: BaseText('Campo'.hardcoded),
-            leadingIcon: const PlatformIcon(
-              materialIcon: Icons.search,
-              cupertinoIcon: CupertinoIcons.search,
-            ),
-            trailingIcon: const PlatformIcon(
-              materialIcon: Icons.keyboard_arrow_down,
-              cupertinoIcon: CupertinoIcons.chevron_down,
-            ),
-            selectedTrailingIcon: const PlatformIcon(
-              materialIcon: Icons.keyboard_arrow_up,
-              cupertinoIcon: CupertinoIcons.chevron_up,
-            ),
-            initialSelection: selectedOption.value,
-            enableFilter: true,
-            requestFocusOnTap: true,
-            menuHeight: MediaQuery.sizeOf(context).height * 0.5,
-            expandedInsets: EdgeInsets.zero,
-            dropdownMenuEntries: fieldOptions
-                .map(
-                  (option) => DropdownMenuEntry(
-                    value: option,
-                    label: option.definition.name,
+          Expanded(
+            child: SingleChildScrollView(
+              child: PrintLabelLayoutFieldEditor(
+                layoutCode: layoutCode,
+                field: draft.value,
+                fieldOptions: fieldOptions,
+                selectedFieldOption: selectedOption.value,
+                onFieldOptionChanged: (value) {
+                  selectedOption.value = value;
+                  draft.value = value.draft.copyWith(
+                    fontType: _initialFontType(ref, value.draft),
+                    alignmentType: BSFPrintElementAlignmentType.middle,
+                    quantityDecimalPlaces: value.draft.supportsDecimalPlaces
+                        ? _defaultFloatDecimalPlaces
+                        : value.draft.quantityDecimalPlaces,
+                  );
+                },
+                fieldDefinitions: fieldOptions
+                    .map((option) => option.definition)
+                    .toList(),
+                formats: formats,
+                coordinateUnit: coordinateUnit,
+                onCoordinateXChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    coordinateX: _updatedValue(field.coordinateX, delta),
                   ),
-                )
-                .toList(),
-            onSelected: (value) {
-              if (value == null) return;
-              selectedOption.value = value;
-              draft.value = value.draft.copyWith(
-                fontType: _initialFontType(ref, value.draft),
-                alignmentType: BSFPrintElementAlignmentType.middle,
-                quantityDecimalPlaces: value.draft.supportsDecimalPlaces
-                    ? _defaultFloatDecimalPlaces
-                    : value.draft.quantityDecimalPlaces,
-              );
-            },
-          ),
-          if (selectedOption.value != null && draft.value != null) ...[
-            gapH16,
-            Expanded(
-              child: SingleChildScrollView(
-                child: PrintLabelLayoutFieldEditor(
-                  layoutCode: layoutCode,
-                  field: draft.value!,
-                  fieldDefinitions: fieldOptions
-                      .map((option) => option.definition)
-                      .toList(),
-                  formats: formats,
-                  coordinateUnit: coordinateUnit,
-                  onCoordinateXChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      coordinateX: _updatedValue(field.coordinateX, delta),
+                ),
+                onCoordinateYChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    coordinateY: _updatedValue(field.coordinateY, delta),
+                  ),
+                ),
+                onWidthChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) =>
+                      field.copyWith(width: _updatedValue(field.width, delta)),
+                ),
+                onHeightChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    height: _updatedValue(field.height, delta),
+                  ),
+                ),
+                onSizeChanged: (delta) => _updateDraft(draft, (field) {
+                  final size = _updatedValue(field.width, delta);
+                  return field.copyWith(width: size, height: size);
+                }),
+                onRatioBarCodeChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    ratioBarCode: _updatedValue(field.ratioBarCode, delta),
+                  ),
+                ),
+                onBarcodeSimbologyTypeChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(barcodeSimbologyType: value),
+                ),
+                onFieldForDataBarcodeChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(fieldForDataBarcode: value),
+                ),
+                onRotationChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(rotateType: value),
+                ),
+                onAlignmentChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(alignmentType: value),
+                ),
+                onQuantityDecimalPlacesChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    quantityDecimalPlaces: _updatedIntValue(
+                      field.quantityDecimalPlaces,
+                      delta,
+                      maximum: 9999,
                     ),
                   ),
-                  onCoordinateYChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      coordinateY: _updatedValue(field.coordinateY, delta),
+                ),
+                onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(drawLabelBelowBarcode: value),
+                ),
+                onPrefixChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(prefix: value),
+                ),
+                onImageNameChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(imageName: value),
+                ),
+                onFormatChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(format: value),
+                ),
+                onFontTypeChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(fontType: value.toString()),
+                ),
+                onFontSizeChange: (advance) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    fontSize: PrintLabelLayoutDetailsController.changedFontSize(
+                      field.fontSize,
+                      advance,
                     ),
                   ),
-                  onWidthChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      width: _updatedValue(field.width, delta),
+                ),
+                onIsBoldChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(isBold: value),
+                ),
+                onIsReverseTextChanged: (value) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(isReverseText: value),
+                ),
+                onPositionStartCharacterChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    positionStartCharacter: _updatedIntValue(
+                      field.positionStartCharacter,
+                      delta,
                     ),
                   ),
-                  onHeightChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      height: _updatedValue(field.height, delta),
-                    ),
-                  ),
-                  onSizeChanged: (delta) => _updateDraft(draft, (field) {
-                    final size = _updatedValue(field.width, delta);
-                    return field.copyWith(width: size, height: size);
-                  }),
-                  onRatioBarCodeChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      ratioBarCode: _updatedValue(field.ratioBarCode, delta),
-                    ),
-                  ),
-                  onBarcodeSimbologyTypeChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(barcodeSimbologyType: value),
-                  ),
-                  onFieldForDataBarcodeChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(fieldForDataBarcode: value),
-                  ),
-                  onRotationChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(rotateType: value),
-                  ),
-                  onAlignmentChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(alignmentType: value),
-                  ),
-                  onQuantityDecimalPlacesChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      quantityDecimalPlaces: _updatedIntValue(
-                        field.quantityDecimalPlaces,
-                        delta,
-                        maximum: 9999,
-                      ),
-                    ),
-                  ),
-                  onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(drawLabelBelowBarcode: value),
-                  ),
-                  onPrefixChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(prefix: value),
-                  ),
-                  onImageNameChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(imageName: value),
-                  ),
-                  onFormatChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(format: value),
-                  ),
-                  onFontTypeChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(fontType: value.toString()),
-                  ),
-                  onFontSizeChange: (advance) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      fontSize:
-                          PrintLabelLayoutDetailsController.changedFontSize(
-                            field.fontSize,
-                            advance,
-                          ),
-                    ),
-                  ),
-                  onIsBoldChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(isBold: value),
-                  ),
-                  onIsReverseTextChanged: (value) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(isReverseText: value),
-                  ),
-                  onPositionStartCharacterChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      positionStartCharacter: _updatedIntValue(
-                        field.positionStartCharacter,
-                        delta,
-                      ),
-                    ),
-                  ),
-                  onMaxCharacterSizeChanged: (delta) => _updateDraft(
-                    draft,
-                    (field) => field.copyWith(
-                      maxCharacterSize: _updatedIntValue(
-                        field.maxCharacterSize,
-                        delta,
-                      ),
+                ),
+                onMaxCharacterSizeChanged: (delta) => _updateDraft(
+                  draft,
+                  (field) => field.copyWith(
+                    maxCharacterSize: _updatedIntValue(
+                      field.maxCharacterSize,
+                      delta,
                     ),
                   ),
                 ),
               ),
             ),
-          ],
-          if (selectedOption.value == null) const Spacer(),
+          ),
           PrimaryButton(
             text: 'Adicionar'.hardcoded,
             onPressed: draft.value == null

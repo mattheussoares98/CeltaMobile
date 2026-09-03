@@ -5,6 +5,7 @@ import 'package:celta_inventario/features/print_label_layout/presentation/contro
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/editor/editor.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,7 +13,10 @@ import 'package:intl/intl.dart';
 
 class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final int layoutCode;
-  final BSFPrintLabelLayoutFieldEntity field;
+  final BSFPrintLabelLayoutFieldEntity? field;
+  final List<PrintLabelFieldEditorOptionEntity>? fieldOptions;
+  final PrintLabelFieldEditorOptionEntity? selectedFieldOption;
+  final ValueChanged<PrintLabelFieldEditorOptionEntity> onFieldOptionChanged;
   final List<BSFPrintLabelFieldDefinitionEntity> fieldDefinitions;
   final List<BSFPrintLabelFieldFormatEntity> formats;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
@@ -43,6 +47,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     super.key,
     required this.layoutCode,
     required this.field,
+    required this.fieldOptions,
+    required this.selectedFieldOption,
+    required this.onFieldOptionChanged,
     required this.fieldDefinitions,
     required this.formats,
     required this.coordinateUnit,
@@ -73,6 +80,44 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 25);
     const barcodeRatioStep = 0.1;
+    final field = this.field;
+    final fieldSelector = fieldOptions == null
+        ? null
+        : DropdownMenu<PrintLabelFieldEditorOptionEntity>(
+            key: ValueKey(selectedFieldOption?.definition),
+            label: BaseText('Campo'.hardcoded),
+            leadingIcon: const PlatformIcon(
+              materialIcon: Icons.search,
+              cupertinoIcon: CupertinoIcons.search,
+            ),
+            trailingIcon: const PlatformIcon(
+              materialIcon: Icons.keyboard_arrow_down,
+              cupertinoIcon: CupertinoIcons.chevron_down,
+            ),
+            selectedTrailingIcon: const PlatformIcon(
+              materialIcon: Icons.keyboard_arrow_up,
+              cupertinoIcon: CupertinoIcons.chevron_up,
+            ),
+            initialSelection: selectedFieldOption,
+            enableFilter: true,
+            requestFocusOnTap: true,
+            menuHeight: MediaQuery.sizeOf(context).height * 0.5,
+            expandedInsets: EdgeInsets.zero,
+            dropdownMenuEntries: fieldOptions!
+                .map(
+                  (option) => DropdownMenuEntry(
+                    value: option,
+                    label: option.definition.name,
+                  ),
+                )
+                .toList(),
+            onSelected: (option) {
+              if (option == null || option == selectedFieldOption) return;
+              onFieldOptionChanged(option);
+            },
+          );
+    if (field == null) return fieldSelector ?? const SizedBox.shrink();
+
     final prefixController = useTextEditingController(text: field.prefix);
     final imageNameController = useTextEditingController(text: field.imageName);
     final layout = ref.watch(
@@ -108,6 +153,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (fieldSelector != null) ...[fieldSelector, gapH16],
         if (field.previewValue?.isNotEmpty == true ||
             field.field?.content.isNotEmpty == true)
           TitleAndSubTitle(
