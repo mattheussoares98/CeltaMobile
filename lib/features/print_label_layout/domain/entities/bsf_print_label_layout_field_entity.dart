@@ -97,6 +97,11 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
 
   bool get usesTextCharacterOptions => isTextField && !isQrCode;
 
+  bool get supportsDecimalPlaces =>
+      fieldType == BSFPrintLabelFieldType.float && !isQrCode;
+
+  bool get usesSingleSizeEditor => isQrCode;
+
   List<BSFPrintLabelFieldFormatEntity> applicableFormats(
     Iterable<BSFPrintLabelFieldFormatEntity> formats,
   ) => formats.where((format) => format.supports(fieldType)).toList();

@@ -50,4 +50,42 @@ void main() {
       integerFormat,
     ]);
   });
+
+  test('should support decimal places only for non-QR float fields', () {
+    final floatField = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.float,
+      ),
+    );
+    final qrFloatField = floatField.copyWith(
+      format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+        floatType: true,
+        qrCodeType: true,
+      ),
+    );
+    final stringField = EntityFactory.makeBSFPrintLabelLayoutFieldEntity();
+
+    expect(floatField.supportsDecimalPlaces, isTrue);
+    expect(qrFloatField.supportsDecimalPlaces, isFalse);
+    expect(stringField.supportsDecimalPlaces, isFalse);
+  });
+
+  test('should use one size control only for QR fields', () {
+    final qrBarcode = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      barcodeSimbologyType: BSFBarcodeSimbologyType.qrCode,
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.barcode,
+      ),
+    );
+    final qrFormat = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(
+        qrCodeType: true,
+      ),
+    );
+    final ordinaryField = EntityFactory.makeBSFPrintLabelLayoutFieldEntity();
+
+    expect(qrBarcode.usesSingleSizeEditor, isTrue);
+    expect(qrFormat.usesSingleSizeEditor, isTrue);
+    expect(ordinaryField.usesSingleSizeEditor, isFalse);
+  });
 }

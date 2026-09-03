@@ -78,6 +78,26 @@ class BSFPrintLabelLayoutEntity extends Equatable {
   bool supportsBold(BSFPrintLabelLayoutFieldEntity field) =>
       isGenericPrinter && field.usesTextCharacterOptions;
 
+  bool supportsAlignment(BSFPrintLabelLayoutFieldEntity field) =>
+      isGenericPrinter && field.usesTextCharacterOptions;
+
+  bool supportsReverseText(BSFPrintLabelLayoutFieldEntity field) =>
+      !isGenericPrinter &&
+      field.usesTextCharacterOptions &&
+      labelPrinter?.modelType != BSFLabelPrinterModelType.os214Plus &&
+      labelPrinter?.modelType != BSFLabelPrinterModelType.rabbitOS214;
+
+  bool supportsBarcodeRatio(BSFPrintLabelLayoutFieldEntity field) =>
+      !isGenericPrinter && field.isBarcode;
+
+  bool supportsGenericBarcodeControls(BSFPrintLabelLayoutFieldEntity field) =>
+      isGenericPrinter && field.isBarcode;
+
+  bool supportsRotation(BSFPrintLabelLayoutFieldEntity field) =>
+      field.showsRotationEditor &&
+      !(labelPrinter?.modelType == BSFLabelPrinterModelType.os214Plus &&
+          (field.fieldType == BSFPrintLabelFieldType.logo || field.isQrCode));
+
   BSFPrintLabelLayoutEntity copyWith({
     int? code,
     String? name,
