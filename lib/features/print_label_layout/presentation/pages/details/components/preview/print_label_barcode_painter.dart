@@ -1,4 +1,4 @@
-import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:flutter/material.dart';
 
 class PrintLabelBarcodePainter extends CustomPainter {

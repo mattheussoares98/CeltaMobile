@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
-import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
   final double scaleX;
   final double scaleY;
   final bool isOutsideLabel;
+  final bool isInsideFilledBox;
 
   const PrintLabelPreviewElement({
     super.key,
@@ -24,6 +25,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
     required this.scaleX,
     required this.scaleY,
     required this.isOutsideLabel,
+    required this.isInsideFilledBox,
   });
 
   static const _minimumSymbolSize = 24.0;
@@ -141,8 +143,8 @@ class PrintLabelPreviewElement extends StatelessWidget {
     required double? width,
     required double? height,
   }) {
-    final reverseText =
-        field.isReverseText || previewMetrics.isInsideFilledBox(field);
+    final reverseText = field.isReverseText || isInsideFilledBox;
+
     final foregroundColor = reverseText
         ? context.theme.colorScheme.surface
         : context.theme.colorScheme.onSurface;

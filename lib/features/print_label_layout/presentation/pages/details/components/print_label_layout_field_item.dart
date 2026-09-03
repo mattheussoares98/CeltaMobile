@@ -29,10 +29,11 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
     final controller = ref.read(
       printLabelLayoutDetailsControllerProvider(layoutCode).notifier,
     );
-    final formats = ref
-        .watch(printLabelFieldEditorOptionsControllerProvider(layoutCode))
-        .value
-        ?.formats;
+    final formats = ref.watch(
+      printLabelFieldEditorOptionsControllerProvider(
+        layoutCode,
+      ).select((s) => s.value?.formats),
+    );
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
