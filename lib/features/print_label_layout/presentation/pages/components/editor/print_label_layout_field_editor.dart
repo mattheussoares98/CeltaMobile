@@ -112,16 +112,12 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           onChanged: onPrefixChanged,
         ),
         gapH4,
-        BaseText.title(
-          'Coordenadas (${resolvedCoordinateUnit.label})'.hardcoded,
-        ),
-        gapH4,
         Wrap(
           alignment: .spaceEvenly,
           runAlignment: .spaceEvenly,
           children: [
             PrintLabelLayoutValueAdjuster(
-              label: 'X'.hardcoded,
+              label: 'Eixo X'.hardcoded,
               repeatInterval: fastRepeatInterval,
               value: resolvedCoordinateUnit.format(field.coordinateX),
               onDecrease: field.coordinateX > 0
@@ -132,7 +128,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   onCoordinateXChanged(resolvedCoordinateUnit.editorStep),
             ),
             PrintLabelLayoutValueAdjuster(
-              label: 'Y'.hardcoded,
+              label: 'Eixo Y'.hardcoded,
               repeatInterval: fastRepeatInterval,
               value: resolvedCoordinateUnit.format(field.coordinateY),
               onDecrease: field.coordinateY > 0
@@ -146,8 +142,6 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         ),
         if (field.dimensionType !=
             BSFPrintLabelFieldDimensionType.notApplicable) ...[
-          gapH8,
-          BaseText.title('Dimensões (${field.dimensionType.label})'.hardcoded),
           gapH4,
           Wrap(
             alignment: .spaceEvenly,
@@ -273,38 +267,43 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             onChanged: onFormatChanged,
           ),
         ],
-        if (field.supportsDecimalPlaces) ...[
-          gapH8,
-          PrintLabelLayoutValueAdjuster(
-            label: 'Casas decimais'.hardcoded,
-            value: field.quantityDecimalPlaces.toString(),
-            onDecrease: field.quantityDecimalPlaces > 0
-                ? () => onQuantityDecimalPlacesChanged(-1)
-                : null,
-            onIncrease: field.quantityDecimalPlaces < 9999
-                ? () => onQuantityDecimalPlacesChanged(1)
-                : null,
-          ),
-        ],
-        if (supportsFontType) ...[
-          gapH8,
-          PrintLabelLayoutValueAdjuster(
-            label: 'Tipo da fonte'.hardcoded,
-            value: field.editorFontType.toString(),
-            onDecrease: field.editorFontType > 1
-                ? () => onFontTypeChanged(field.editorFontType - 1)
-                : null,
-            onIncrease: field.editorFontType < 6
-                ? () => onFontTypeChanged(field.editorFontType + 1)
-                : null,
-          ),
-        ],
+
         gapH4,
         Wrap(
           alignment: .spaceEvenly,
           runAlignment: .spaceEvenly,
           children: [
-            if (supportsFontSize) ...[
+            if (field.supportsDecimalPlaces) ...[
+              Padding(
+                padding: const .only(right: Sizes.p8),
+                child: PrintLabelLayoutValueAdjuster(
+                  label: 'Casas decimais'.hardcoded,
+                  value: field.quantityDecimalPlaces.toString(),
+                  onDecrease: field.quantityDecimalPlaces > 0
+                      ? () => onQuantityDecimalPlacesChanged(-1)
+                      : null,
+                  onIncrease: field.quantityDecimalPlaces < 9999
+                      ? () => onQuantityDecimalPlacesChanged(1)
+                      : null,
+                ),
+              ),
+            ],
+            if (supportsFontType) ...[
+              Padding(
+                padding: const .only(right: Sizes.p8),
+                child: PrintLabelLayoutValueAdjuster(
+                  label: 'Tipo da fonte'.hardcoded,
+                  value: field.editorFontType.toString(),
+                  onDecrease: field.editorFontType > 1
+                      ? () => onFontTypeChanged(field.editorFontType - 1)
+                      : null,
+                  onIncrease: field.editorFontType < 6
+                      ? () => onFontTypeChanged(field.editorFontType + 1)
+                      : null,
+                ),
+              ),
+            ],
+            if (supportsFontSize)
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
@@ -318,7 +317,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                       : null,
                 ),
               ),
-            ],
+
             if (field.usesTextCharacterOptions) ...[
               Padding(
                 padding: const .only(right: Sizes.p8),
