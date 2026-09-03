@@ -69,6 +69,53 @@ void main() {
     });
   });
 
+  group('float preview format', () {
+    test('should apply the configured decimal places', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        quantityDecimalPlaces: 3,
+        previewValue: '5,55',
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.float,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.previewText(field), '5,550');
+    });
+
+    test('should preserve the prefix while applying decimal places', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        quantityDecimalPlaces: 0,
+        previewValue: r'R$ 5,55',
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.float,
+        ),
+      ).copyWith(prefix: r'R$ ');
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.previewText(field), r'R$ 5');
+    });
+
+    test('should truncate instead of rounding when decimals are removed', () {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        quantityDecimalPlaces: 0,
+        previewValue: '8,6',
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.float,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]),
+      );
+
+      expect(metrics.previewText(field), '8');
+    });
+  });
+
   group('PrintLabelPreviewMetrics', () {
     test('should derive Rabbit canvas size from field extents', () {
       final box = _rabbitField(

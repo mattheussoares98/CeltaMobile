@@ -11,6 +11,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
+  static const _defaultFloatDecimalPlaces = 2;
+
   final int layoutCode;
   final List<PrintLabelFieldEditorOptionEntity> fieldOptions;
   final List<BSFPrintLabelFieldFormatEntity> formats;
@@ -72,6 +74,9 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
               draft.value = value.draft.copyWith(
                 fontType: _initialFontType(ref, value.draft),
                 alignmentType: BSFPrintElementAlignmentType.middle,
+                quantityDecimalPlaces: value.draft.supportsDecimalPlaces
+                    ? _defaultFloatDecimalPlaces
+                    : value.draft.quantityDecimalPlaces,
               );
             },
           ),

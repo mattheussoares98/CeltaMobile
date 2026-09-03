@@ -1,8 +1,11 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/editor/editor.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,6 +102,7 @@ void main() {
         final isFloat = testCase.fieldType == BSFPrintLabelFieldType.float;
         final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
           quantityDecimalPlaces: 2,
+          previewValue: isFloat ? '5,55' : 'Texto',
           field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
             fieldType: testCase.fieldType,
           ),
@@ -167,9 +171,101 @@ void main() {
           find.text('Imprimir texto reverso'),
           testCase.showsReverseText ? findsOneWidget : findsNothing,
         );
+        if (isFloat) {
+          expect(
+            tester
+                .widgetList<TitleAndSubTitle>(find.byType(TitleAndSubTitle))
+                .any((widget) => widget.subTitle == '5,55'),
+            isTrue,
+          );
+          final decimalAdjuster = find.ancestor(
+            of: find.text('Casas decimais'),
+            matching: find.byType(PrintLabelLayoutValueAdjuster),
+          );
+          await tester.tap(
+            find.descendant(
+              of: decimalAdjuster,
+              matching: find.byIcon(Icons.add_circle_outline),
+            ),
+          );
+          await tester.pumpAndSettle();
+
+          expect(
+            tester
+                .widgetList<TitleAndSubTitle>(find.byType(TitleAndSubTitle))
+                .any((widget) => widget.subTitle == '5,550'),
+            isTrue,
+          );
+        }
       },
     );
   }
+
+  testWidgets('should initialize a new float field with two decimal places', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final definition = EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+      name: 'Preço de venda',
+      fieldType: BSFPrintLabelFieldType.float,
+    );
+    final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 0,
+      quantityDecimalPlaces: 0,
+      previewValue: '5,55',
+      field: definition,
+      format: EntityFactory.makeBSFPrintLabelFieldFormatEntity(floatType: true),
+    );
+    final option = EntityFactory.makePrintLabelFieldEditorOptionEntity(
+      definition: definition,
+      draft: draft,
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: const [],
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: PrintLabelLayoutAddFieldPage(
+              layoutCode: 10,
+              fieldOptions: [option],
+              formats: [draft.format!],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byType(DropdownMenu<PrintLabelFieldEditorOptionEntity>),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Preço de venda').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Casas decimais'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
+    expect(
+      tester
+          .widgetList<TitleAndSubTitle>(find.byType(TitleAndSubTitle))
+          .any((widget) => widget.subTitle == '5,55'),
+      isTrue,
+    );
+  });
 
   testWidgets('should render field item adjusters and update coordinates', (
     tester,

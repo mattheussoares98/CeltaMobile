@@ -303,12 +303,38 @@ class PrintLabelPreviewMetrics {
 
   String _formatPreviewValue(BSFPrintLabelLayoutFieldEntity field) {
     final value = field.previewValue!;
+    if (field.fieldType == BSFPrintLabelFieldType.float) {
+      return _formatFloatPreviewValue(field, value);
+    }
     if (field.fieldType != BSFPrintLabelFieldType.dateTime) return value;
 
     final dateTime = DateTime.now();
     final pattern = field.format?.dateTimePattern;
     if (pattern == null) return value;
     return DateFormat(pattern).format(dateTime);
+  }
+
+  String _formatFloatPreviewValue(
+    BSFPrintLabelLayoutFieldEntity field,
+    String value,
+  ) {
+    final prefix = field.prefix.isNotEmpty && value.startsWith(field.prefix)
+        ? field.prefix
+        : '';
+    final numericText = value.substring(prefix.length).trim();
+    final normalizedText = numericText.contains(',')
+        ? numericText.replaceAll('.', '').replaceAll(',', '.')
+        : numericText;
+    if (double.tryParse(normalizedText) == null) return value;
+
+    final parts = normalizedText.split('.');
+    final integerPart = parts.first;
+    final decimalPlaces = field.quantityDecimalPlaces;
+    if (decimalPlaces == 0) return '$prefix$integerPart';
+
+    final fraction = parts.length > 1 ? parts[1] : '';
+    final paddedFraction = fraction.padRight(decimalPlaces, '0');
+    return '$prefix$integerPart,${paddedFraction.substring(0, decimalPlaces)}';
   }
 
   double rabbitGlyphWidth(BSFPrintLabelLayoutFieldEntity field) =>

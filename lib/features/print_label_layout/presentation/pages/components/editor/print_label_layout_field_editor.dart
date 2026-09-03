@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/editor/editor.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
       (BSFPrintLabelFieldType.dateTime, final String pattern) => DateFormat(
         pattern,
       ).format(DateTime.now()),
+      _ when layout != null => PrintLabelPreviewMetrics(
+        layout,
+      ).previewText(field),
       _ => field.previewValue ?? field.field?.content ?? '',
     };
     return Column(
