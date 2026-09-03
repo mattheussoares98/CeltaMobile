@@ -192,4 +192,54 @@ void main() {
     ).called(1);
     verifyNoMoreInteractions(httpClient);
   });
+
+  test('should update and map the complete label layout', () async {
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}',
+        method: 'put',
+        headers: params.toHeaders(),
+        body: layoutModel.toJson(),
+      ),
+    ).thenAnswer((_) async => layoutModel.toJson());
+
+    final result = await sut.update(params, layoutModel);
+
+    expect(result, layoutModel);
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}',
+        method: 'put',
+        headers: params.toHeaders(),
+        body: layoutModel.toJson(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
+  test('should propagate update request errors', () async {
+    final exception = Exception('Failed to update label layout');
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}',
+        method: 'put',
+        headers: params.toHeaders(),
+        body: layoutModel.toJson(),
+      ),
+    ).thenAnswer((_) async => throw exception);
+
+    await expectLater(
+      sut.update(params, layoutModel),
+      throwsA(same(exception)),
+    );
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/${layoutModel.code}',
+        method: 'put',
+        headers: params.toHeaders(),
+        body: layoutModel.toJson(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
 }
