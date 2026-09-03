@@ -127,7 +127,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           children: [
             PrintLabelLayoutValueAdjuster(
               label: 'Eixo X'.hardcoded,
-              repeatInterval: fastRepeatInterval,
+              repeatInterval:
+                  fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateX),
               onDecrease: field.coordinateX > 0
                   ? () =>
@@ -138,7 +139,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             ),
             PrintLabelLayoutValueAdjuster(
               label: 'Eixo Y'.hardcoded,
-              repeatInterval: fastRepeatInterval,
+              repeatInterval:
+                  fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateY),
               onDecrease: field.coordinateY > 0
                   ? () =>
@@ -159,7 +161,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               if (field.usesSingleSizeEditor)
                 PrintLabelLayoutValueAdjuster(
                   label: 'Tamanho'.hardcoded,
-                  repeatInterval: fastRepeatInterval,
+                  repeatInterval:
+                      fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
                   onDecrease: field.width > field.minimumEditorWidth
                       ? () => onSizeChanged(-field.dimensionType.editorStep)
@@ -170,7 +173,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               else ...[
                 PrintLabelLayoutValueAdjuster(
                   label: 'Largura'.hardcoded,
-                  repeatInterval: fastRepeatInterval,
+                  repeatInterval:
+                      fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
                   onDecrease: field.width > field.minimumEditorWidth
                       ? () => onWidthChanged(-field.dimensionType.editorStep)
@@ -180,7 +184,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   label: 'Altura'.hardcoded,
-                  repeatInterval: fastRepeatInterval,
+                  repeatInterval:
+                      fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.height),
                   onDecrease: field.height > field.minimumEditorHeight
                       ? () => onHeightChanged(-field.dimensionType.editorStep)
