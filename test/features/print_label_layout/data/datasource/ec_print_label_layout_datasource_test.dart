@@ -217,6 +217,59 @@ void main() {
     verifyNoMoreInteractions(httpClient);
   });
 
+  test('should create and map the complete label layout', () async {
+    final draftModel = BSFPrintLabelLayoutModel.fromEntity(
+      EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0),
+    );
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draftModel.toJson(),
+      ),
+    ).thenAnswer((_) async => layoutModel.toJson());
+
+    final result = await sut.create(params, draftModel);
+
+    expect(result, layoutModel);
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draftModel.toJson(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
+  test('should propagate create request errors', () async {
+    final draftModel = BSFPrintLabelLayoutModel.fromEntity(
+      EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0),
+    );
+    final exception = Exception('Failed to create label layout');
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draftModel.toJson(),
+      ),
+    ).thenThrow(exception);
+
+    await expectLater(sut.create(params, draftModel), throwsA(same(exception)));
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draftModel.toJson(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
   test('should propagate update request errors', () async {
     final exception = Exception('Failed to update label layout');
     when(
