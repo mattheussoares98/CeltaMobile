@@ -148,4 +148,34 @@ void main() {
       verifyNoMoreInteractions(datasource);
     });
   });
+
+  group('create', () {
+    test('should return the server-created entity', () async {
+      final draftEntity = EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0);
+      final draftModel = BSFPrintLabelLayoutModel.fromEntity(draftEntity);
+      when(
+        () => datasource.create(params, draftModel),
+      ).thenAnswer((_) async => layoutModel);
+
+      final result = await sut.create(params, draftEntity);
+
+      expect(result, layoutEntity);
+      verify(() => datasource.create(params, draftModel)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate datasource errors', () async {
+      final draftEntity = EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0);
+      final draftModel = BSFPrintLabelLayoutModel.fromEntity(draftEntity);
+      final exception = Exception('Failed to create label layout');
+      when(() => datasource.create(params, draftModel)).thenThrow(exception);
+
+      await expectLater(
+        sut.create(params, draftEntity),
+        throwsA(same(exception)),
+      );
+      verify(() => datasource.create(params, draftModel)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
 }
