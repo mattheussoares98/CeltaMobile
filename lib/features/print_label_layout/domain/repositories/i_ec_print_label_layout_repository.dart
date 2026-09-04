@@ -27,6 +27,6 @@ abstract class IEcPrintLabelLayoutRepository {
 
   Future<BSFPrintLabelFieldEditorOptionsEntity> getFieldEditorOptions(
     EcRequestParams params,
-    int layoutCode,
+    BSFPrintLabelLayoutEntity layout,
   );
 }

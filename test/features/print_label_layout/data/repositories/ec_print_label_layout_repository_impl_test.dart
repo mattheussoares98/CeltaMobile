@@ -121,7 +121,7 @@ void main() {
         () => datasource.getFieldEditorOptions(params, layoutEntity.code),
       ).thenAnswer((_) async => fieldEditorOptionsModel);
 
-      final result = await sut.getFieldEditorOptions(params, layoutEntity.code);
+      final result = await sut.getFieldEditorOptions(params, layoutEntity);
 
       expect(result, fieldEditorOptionsEntity);
       verify(
@@ -136,12 +136,29 @@ void main() {
         () => datasource.getFieldEditorOptions(params, layoutEntity.code),
       ).thenThrow(exception);
 
-      final call = sut.getFieldEditorOptions(params, layoutEntity.code);
+      final call = sut.getFieldEditorOptions(params, layoutEntity);
 
       await expectLater(call, throwsA(same(exception)));
       verify(
         () => datasource.getFieldEditorOptions(params, layoutEntity.code),
       ).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should use the draft operation for a code-zero layout', () async {
+      final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0);
+      final draftModel = BSFPrintLabelLayoutModel.fromEntity(draft);
+      when(
+        () => datasource.getDraftFieldEditorOptions(params, draftModel),
+      ).thenAnswer((_) async => fieldEditorOptionsModel);
+
+      final result = await sut.getFieldEditorOptions(params, draft);
+
+      expect(result, fieldEditorOptionsEntity);
+      verify(
+        () => datasource.getDraftFieldEditorOptions(params, draftModel),
+      ).called(1);
+      verifyNever(() => datasource.getFieldEditorOptions(params, 0));
       verifyNoMoreInteractions(datasource);
     });
   });

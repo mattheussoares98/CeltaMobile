@@ -17,6 +17,7 @@ void main() {
   late MockEcPrintLabelLayoutRepository repository;
   late EcRequestParams params;
   late BSFPrintLabelFieldEditorOptionsEntity options;
+  late BSFPrintLabelLayoutEntity layout;
   late int layoutCode;
 
   ProviderContainer makeContainer() {
@@ -34,12 +35,16 @@ void main() {
     params = EntityFactory.makeEcRequestParams();
     options = EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity();
     layoutCode = 42;
+    layout = EntityFactory.makeBSFPrintLabelLayoutEntity(code: layoutCode);
   });
 
   test('build should load all editor options for the layout', () async {
     when(
-      () => repository.getFieldEditorOptions(params, layoutCode),
+      () => repository.getFieldEditorOptions(params, layout),
     ).thenAnswer((_) async => options);
+    when(
+      () => repository.getDetails(params, layoutCode),
+    ).thenAnswer((_) async => layout);
     final container = makeContainer();
     addTearDown(container.dispose);
 
@@ -48,17 +53,19 @@ void main() {
     );
 
     expect(result, options);
-    verify(
-      () => repository.getFieldEditorOptions(params, layoutCode),
-    ).called(1);
+    verify(() => repository.getFieldEditorOptions(params, layout)).called(1);
+    verify(() => repository.getDetails(params, layoutCode)).called(1);
     verifyNoMoreInteractions(repository);
   });
 
   test('build should propagate repository errors', () async {
     final exception = Exception('Failed to load field editor options');
     when(
-      () => repository.getFieldEditorOptions(params, layoutCode),
+      () => repository.getFieldEditorOptions(params, layout),
     ).thenThrow(exception);
+    when(
+      () => repository.getDetails(params, layoutCode),
+    ).thenAnswer((_) async => layout);
     final container = makeContainer();
     addTearDown(container.dispose);
 
@@ -67,9 +74,8 @@ void main() {
     );
 
     await expectLater(call, throwsA(same(exception)));
-    verify(
-      () => repository.getFieldEditorOptions(params, layoutCode),
-    ).called(1);
+    verify(() => repository.getFieldEditorOptions(params, layout)).called(1);
+    verify(() => repository.getDetails(params, layoutCode)).called(1);
     verifyNoMoreInteractions(repository);
   });
 }
