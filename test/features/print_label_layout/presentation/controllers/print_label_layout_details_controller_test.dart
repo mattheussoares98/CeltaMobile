@@ -99,6 +99,7 @@ void main() {
         fields: const [],
         temperature: 99,
         printSpeed: 99,
+        applyFormSizeConfiguration: false,
       );
       final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
         supportedTemperatures: const ['10', '15'],
@@ -123,6 +124,7 @@ void main() {
       expect(updated.temperature, 10);
       expect(updated.printSpeed, 2);
       expect(updated.directionLabelType, BSFPrintLabelDirectionType.bottom);
+      expect(updated.applyFormSizeConfiguration, isTrue);
       verify(() => repository.getCreateOptions(params)).called(1);
     },
   );

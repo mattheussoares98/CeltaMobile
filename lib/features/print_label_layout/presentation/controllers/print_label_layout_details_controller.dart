@@ -299,6 +299,9 @@ class PrintLabelLayoutDetailsController
         intervalPrintPackage: printer.isGeneric
             ? 0
             : layout.intervalPrintPackage,
+        applyFormSizeConfiguration: printer.isGeneric
+            ? layout.applyFormSizeConfiguration
+            : true,
       );
     });
     ref.invalidate(printLabelFieldEditorOptionsControllerProvider(code));
