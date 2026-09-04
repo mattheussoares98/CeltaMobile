@@ -9,10 +9,21 @@ part 'print_label_layout_details_controller.g.dart';
 @riverpod
 class PrintLabelLayoutDetailsController
     extends _$PrintLabelLayoutDetailsController {
+  List<BSFPrintLabelPrinterEntity> _printers = const [];
+
+  List<BSFPrintLabelPrinterEntity> get printers => _printers;
+
   @override
   FutureOr<BSFPrintLabelLayoutEntity> build(int code) async {
     ref.cache(60);
     final params = await ref.watch(ecRequestParamsProvider().future);
+    if (code == 0) {
+      final options = await ref
+          .read(ecPrintLabelLayoutRepositoryProvider)
+          .getCreateOptions(params);
+      _printers = options.printers;
+      return options.draft;
+    }
     return ref
         .read(ecPrintLabelLayoutRepositoryProvider)
         .getDetails(params, code);
@@ -224,6 +235,53 @@ class PrintLabelLayoutDetailsController
     _updateLayout((layout) => layout.copyWith(name: name));
   }
 
+  void updateLayoutType(BSFPrintLabelLayoutType value) {
+    _updateLayout((layout) {
+      if (!layout.capabilities.canEditLayoutType) return layout;
+      final requiresAddress =
+          value == BSFPrintLabelLayoutType.customer ||
+          value == BSFPrintLabelLayoutType.customerCard;
+      return layout.copyWith(
+        layoutType: value,
+        addressType: requiresAddress
+            ? BSFPrintLabelAddressType.principal
+            : BSFPrintLabelAddressType.notApplicable,
+      );
+    });
+  }
+
+  void updatePrinter(BSFPrintLabelPrinterEntity printer) {
+    _updateLayout((layout) {
+      if (!layout.capabilities.canEditPrinter || !_printers.contains(printer)) {
+        return layout;
+      }
+
+      final temperature = _supportedIntValue(
+        current: layout.temperature,
+        supported: printer.supportedTemperatures,
+      );
+      final printSpeed = _supportedIntValue(
+        current: layout.printSpeed,
+        supported: printer.supportedPrintSpeeds,
+      );
+      final direction =
+          printer.supportedDirections.contains(layout.directionLabelType)
+          ? layout.directionLabelType
+          : printer.supportedDirections.firstOrNull ??
+                BSFPrintLabelDirectionType.top;
+
+      return layout.copyWith(
+        labelPrinter: printer,
+        temperature: printer.isGeneric ? 0 : temperature,
+        printSpeed: printer.isGeneric ? 0 : printSpeed,
+        directionLabelType: direction,
+        intervalPrintPackage: printer.isGeneric
+            ? 0
+            : layout.intervalPrintPackage,
+      );
+    });
+  }
+
   void updateTemperature(int value) {
     _updateLayout((layout) {
       final capabilities = layout.capabilities;
@@ -431,4 +489,12 @@ class PrintLabelLayoutDetailsController
   }
 
   double _round(num value) => (value * 100).round() / 100;
+
+  static int _supportedIntValue({
+    required int current,
+    required List<String> supported,
+  }) {
+    if (supported.contains(current.toString())) return current;
+    return supported.map(int.tryParse).whereType<int>().firstOrNull ?? 0;
+  }
 }

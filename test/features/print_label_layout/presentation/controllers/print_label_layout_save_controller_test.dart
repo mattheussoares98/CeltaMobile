@@ -97,8 +97,12 @@ void main() {
       );
       final created = draft.copyWith(code: 42);
       when(
-        () => repository.getDetails(params, 0),
-      ).thenAnswer((_) async => draft);
+        () => repository.getCreateOptions(params),
+      ).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
+          draft: draft,
+        ),
+      );
       when(
         () => repository.create(params, draft),
       ).thenAnswer((_) async => created);

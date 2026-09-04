@@ -66,6 +66,67 @@ void main() {
     verifyNoMoreInteractions(repository);
   });
 
+  test('build should load create options for code zero', () async {
+    final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 0,
+      fields: const [],
+    );
+    final printer = EntityFactory.makeBSFPrintLabelPrinterEntity();
+    final options = EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
+      draft: draft,
+      printers: [printer],
+    );
+    when(
+      () => repository.getCreateOptions(params),
+    ).thenAnswer((_) async => options);
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    final provider = printLabelLayoutDetailsControllerProvider(0);
+
+    final result = await container.read(provider.future);
+
+    expect(result, draft);
+    expect(container.read(provider.notifier).printers, [printer]);
+    verify(() => repository.getCreateOptions(params)).called(1);
+    verifyNever(() => repository.getDetails(params, 0));
+  });
+
+  test(
+    'updatePrinter should apply supported values without reloading',
+    () async {
+      final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 0,
+        fields: const [],
+        temperature: 99,
+        printSpeed: 99,
+      );
+      final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
+        supportedTemperatures: const ['10', '15'],
+        supportedPrintSpeeds: const ['2', '4'],
+        supportedDirections: const [BSFPrintLabelDirectionType.bottom],
+      );
+      when(() => repository.getCreateOptions(params)).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
+          draft: draft,
+          printers: [printer],
+        ),
+      );
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      final provider = printLabelLayoutDetailsControllerProvider(0);
+      await container.read(provider.future);
+
+      container.read(provider.notifier).updatePrinter(printer);
+
+      final updated = container.read(provider).requireValue;
+      expect(updated.labelPrinter, printer);
+      expect(updated.temperature, 10);
+      expect(updated.printSpeed, 2);
+      expect(updated.directionLabelType, BSFPrintLabelDirectionType.bottom);
+      verify(() => repository.getCreateOptions(params)).called(1);
+    },
+  );
+
   test(
     'updateFieldCoordinateX should update coordinateX and clamp at zero',
     () async {

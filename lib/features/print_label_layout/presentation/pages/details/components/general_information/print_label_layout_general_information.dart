@@ -15,6 +15,9 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nameController = useTextEditingController(text: layout.name);
+    final controller = ref.read(
+      printLabelLayoutDetailsControllerProvider(layout.code).notifier,
+    );
 
     useEffect(() {
       if (nameController.text != layout.name) {
@@ -43,11 +46,31 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                     .updateName(value);
               },
             ),
-            gapH4,
-            TitleAndSubTitle(
-              title: 'Tipo'.hardcoded,
-              subTitle: layout.layoutType.label.hardcoded,
-            ),
+            gapH8,
+            if (layout.capabilities.canEditLayoutType)
+              Padding(
+                padding: const .only(bottom: Sizes.p8),
+                child: BaseDropDown<BSFPrintLabelLayoutType>(
+                  key: const Key('print-label-layout-type'),
+                  label: 'Tipo'.hardcoded,
+                  showLabelAtTopLeft: true,
+                  selectedItem: layout.layoutType,
+                  items: BSFPrintLabelLayoutType.values
+                      .map(
+                        (type) => DropdownMenuItem(
+                          value: type,
+                          child: BaseText(type.label.hardcoded),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: controller.updateLayoutType,
+                ),
+              )
+            else
+              TitleAndSubTitle(
+                title: 'Tipo'.hardcoded,
+                subTitle: layout.layoutType.label.hardcoded,
+              ),
             if (layout.capabilities.showsAddressType) ...[
               gapH4,
               BaseText.caption('Tipo de endereço'.hardcoded),
@@ -74,11 +97,30 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                     : null,
               ),
             ],
-            TitleAndSubTitle(
-              title: 'Impressora'.hardcoded,
-              subTitle: layout.labelPrinter?.description,
-              emptyMessage: 'Não informada'.hardcoded,
-            ),
+            if (layout.capabilities.canEditPrinter)
+              BaseDropDown<BSFPrintLabelPrinterEntity>(
+                key: const Key('print-label-layout-printer'),
+                label: 'Impressora'.hardcoded,
+                showLabelAtTopLeft: true,
+                selectedItem: controller.printers.contains(layout.labelPrinter)
+                    ? layout.labelPrinter
+                    : null,
+                items: controller.printers
+                    .map(
+                      (printer) => DropdownMenuItem(
+                        value: printer,
+                        child: BaseText(printer.description),
+                      ),
+                    )
+                    .toList(),
+                onChanged: controller.updatePrinter,
+              )
+            else
+              TitleAndSubTitle(
+                title: 'Impressora'.hardcoded,
+                subTitle: layout.labelPrinter?.description,
+                emptyMessage: 'Não informada'.hardcoded,
+              ),
           ],
         ),
       ),
