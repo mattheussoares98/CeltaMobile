@@ -218,6 +218,33 @@ void main() {
     verifyNoMoreInteractions(httpClient);
   });
 
+  test('should post the draft to get field editor options', () async {
+    final draft = BSFPrintLabelLayoutModel.fromEntity(
+      EntityFactory.makeBSFPrintLabelLayoutEntity(code: 0),
+    );
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/FieldEditorOptions',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draft.toJson(),
+      ),
+    ).thenAnswer((_) async => fieldEditorOptionsModel.toJson());
+
+    final result = await sut.getDraftFieldEditorOptions(params, draft);
+
+    expect(result, fieldEditorOptionsModel);
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/FieldEditorOptions',
+        method: 'post',
+        headers: params.toHeaders(),
+        body: draft.toJson(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
   test('should update and map the complete label layout', () async {
     when(
       () => httpClient.request(

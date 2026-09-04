@@ -26,4 +26,9 @@ abstract class IEcPrintLabelLayoutDatasource {
     EcRequestParams params,
     int layoutCode,
   );
+
+  Future<BSFPrintLabelFieldEditorOptionsModel> getDraftFieldEditorOptions(
+    EcRequestParams params,
+    BSFPrintLabelLayoutModel draft,
+  );
 }
