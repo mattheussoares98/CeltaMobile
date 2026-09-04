@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -248,6 +249,7 @@ class PrintLabelLayoutDetailsController
             : BSFPrintLabelAddressType.notApplicable,
       );
     });
+    ref.invalidate(printLabelFieldEditorOptionsControllerProvider(code));
   }
 
   void updatePrinter(BSFPrintLabelPrinterEntity printer) {
@@ -280,6 +282,7 @@ class PrintLabelLayoutDetailsController
             : layout.intervalPrintPackage,
       );
     });
+    ref.invalidate(printLabelFieldEditorOptionsControllerProvider(code));
   }
 
   void updateTemperature(int value) {
