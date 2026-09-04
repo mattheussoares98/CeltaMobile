@@ -2,7 +2,9 @@ import 'package:celta_inventario/core/providers/http/http.dart';
 import 'package:celta_inventario/core/providers/supabase/supabase.dart';
 import 'package:celta_inventario/features/print_label_layout/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/print_label_layout/data/repositories/repositories.dart';
+import 'package:celta_inventario/features/print_label_layout/data/services/services.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
+import 'package:celta_inventario/features/print_label_layout/domain/services/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'providers.g.dart';
@@ -32,4 +34,11 @@ IPrintLabelProblemReportRepository printLabelProblemReportRepository(Ref ref) {
   return PrintLabelProblemReportRepositoryImpl(
     ref.watch(supabasePrintLabelProblemReportDatasourceProvider),
   );
+}
+
+@riverpod
+IPrintLabelProblemReportImageService printLabelProblemReportImageService(
+  Ref ref,
+) {
+  return PrintLabelProblemReportImageService();
 }
