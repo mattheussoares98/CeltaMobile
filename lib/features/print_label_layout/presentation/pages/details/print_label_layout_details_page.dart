@@ -9,6 +9,7 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class PrintLabelLayoutDetailsPage extends ConsumerWidget {
   final int labelCode;
@@ -34,6 +35,22 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
+      onPopInvokedWithResult: () {
+        if (labelCode == 0) {
+          showAlertDialog(
+            context: context,
+            title: "Atenção".hardcoded,
+            content:
+                'Todas alterações realizadas serão perdidas. Deseja realmente fechar a tela?'
+                    .hardcoded,
+            cancelActionText: 'Não'.hardcoded,
+            defaultActionText: 'Descartar alterações'.hardcoded,
+            onOkPressed: context.pop,
+          );
+        } else {
+          context.pop();
+        }
+      },
       refreshProvider: provider,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
