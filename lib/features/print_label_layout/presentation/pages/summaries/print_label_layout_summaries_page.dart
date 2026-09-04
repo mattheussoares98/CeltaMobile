@@ -2,8 +2,11 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/summaries/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class PrintLabelLayoutSummariesPage extends ConsumerWidget {
   final int enterpriseCode;
@@ -19,7 +22,24 @@ class PrintLabelLayoutSummariesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
-      appBar: BaseAppBar(title: 'Leiautes de etiquetas'.hardcoded),
+      appBar: BaseAppBar(
+        title: 'Leiautes de etiquetas'.hardcoded,
+        actions: [
+          IconButton(
+            onPressed: () => context.goNamed(
+              Routes.printLabelLayoutDetails.name,
+              pathParameters: {
+                'enterpriseCode': enterpriseCode.toString(),
+                'labelCode': '0',
+              },
+            ),
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.add,
+              materialIcon: Icons.add,
+            ),
+          ),
+        ],
+      ),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
