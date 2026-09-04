@@ -33,10 +33,11 @@ class PrintLabelLayoutSaveController extends _$PrintLabelLayoutSaveController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final params = await ref.read(ecRequestParamsProvider().future);
-      final updated = await ref
-          .read(ecPrintLabelLayoutRepositoryProvider)
-          .update(params, draft);
-      ref.read(detailsProvider.notifier).replaceWithSavedLayout(updated);
+      final repository = ref.read(ecPrintLabelLayoutRepositoryProvider);
+      final saved = draft.code == 0
+          ? await repository.create(params, draft)
+          : await repository.update(params, draft);
+      ref.read(detailsProvider.notifier).replaceWithSavedLayout(saved);
     });
   }
 }

@@ -79,6 +79,44 @@ void main() {
   );
 
   test(
+    'save should create a code-zero draft and use the server result',
+    () async {
+      final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 0,
+        formWidth: 100,
+        formHeight: 50,
+        quantityColumns: 1,
+        labelWidth: 90,
+        labelHeight: 40,
+        labelRightMargin: 0,
+        labelBottomMargin: 0,
+        temperature: 10,
+        printSpeed: 2,
+        intervalPrintPackage: 1,
+        applyFormSizeConfiguration: true,
+      );
+      final created = draft.copyWith(code: 42);
+      when(
+        () => repository.getDetails(params, 0),
+      ).thenAnswer((_) async => draft);
+      when(
+        () => repository.create(params, draft),
+      ).thenAnswer((_) async => created);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      final detailsProvider = printLabelLayoutDetailsControllerProvider(0);
+      final saveProvider = printLabelLayoutSaveControllerProvider(0);
+      await container.read(detailsProvider.future);
+
+      await container.read(saveProvider.notifier).save();
+
+      expect(container.read(detailsProvider).requireValue, created);
+      verify(() => repository.create(params, draft)).called(1);
+      verifyNever(() => repository.update(params, draft));
+    },
+  );
+
+  test(
     'save should expose validation errors without calling the repository',
     () async {
       final container = makeContainer();
