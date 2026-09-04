@@ -20,7 +20,20 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final repository = MockEcPrintLabelLayoutRepository();
     final params = EntityFactory.makeEcRequestParams();
-    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(code: 10);
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      formWidth: 100,
+      formHeight: 50,
+      quantityColumns: 1,
+      labelWidth: 90,
+      labelHeight: 40,
+      labelRightMargin: 0,
+      labelBottomMargin: 0,
+      temperature: 10,
+      printSpeed: 2,
+      intervalPrintPackage: 1,
+      applyFormSizeConfiguration: true,
+    );
     final options = EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity();
     final exception = Exception('Update failed');
     when(
@@ -45,6 +58,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('save-print-label-layout')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Sim'));
     await tester.pumpAndSettle();
 
     expect(find.text('Erro'), findsOneWidget);

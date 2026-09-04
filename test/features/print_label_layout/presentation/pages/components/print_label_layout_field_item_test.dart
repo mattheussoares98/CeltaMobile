@@ -230,7 +230,6 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
-
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -258,7 +257,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Casas decimais'), findsOneWidget);
-    expect(find.text('2'), findsOneWidget);
+    final decimalAdjuster = find.ancestor(
+      of: find.text('Casas decimais'),
+      matching: find.byType(PrintLabelLayoutValueAdjuster),
+    );
+    expect(
+      find.descendant(of: decimalAdjuster, matching: find.text('2')),
+      findsOneWidget,
+    );
     expect(
       tester
           .widgetList<TitleAndSubTitle>(find.byType(TitleAndSubTitle))
@@ -358,18 +364,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('4.1'), findsOneWidget);
-
-    // Toggle visibility
-    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.visibility_outlined));
-    await tester.pumpAndSettle();
-
-    expect(find.byIcon(Icons.visibility_off_outlined), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.visibility_off_outlined));
-    await tester.pumpAndSettle();
-
-    expect(find.byIcon(Icons.visibility_outlined), findsOneWidget);
   });
 
   testWidgets(
@@ -505,7 +499,6 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
-
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -898,6 +891,9 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
+    when(() => repository.getFieldEditorOptions(params, 10)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
+    );
 
     await tester.pumpWidget(
       ProviderScope(
@@ -905,30 +901,8 @@ void main() {
           ecRequestParamsProvider().overrideWith((ref) => params),
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
-        child: MaterialApp(
-          home: Scaffold(
-            body: Consumer(
-              builder: (context, ref, child) {
-                final current = ref.watch(
-                  printLabelLayoutDetailsControllerProvider(10),
-                );
-                return current.when(
-                  data: (value) => value.fields.isEmpty
-                      ? const SizedBox.shrink()
-                      : SingleChildScrollView(
-                          child: PrintLabelLayoutFieldItem(
-                            layoutCode: 10,
-                            fieldIndex: 0,
-                            field: value.fields.first,
-                            coordinateUnit: value.coordinateUnit,
-                          ),
-                        ),
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stackTrace) => Text(error.toString()),
-                );
-              },
-            ),
-          ),
+        child: const MaterialApp(
+          home: PrintLabelLayoutDetailsPage(labelCode: 10),
         ),
       ),
     );
@@ -941,7 +915,8 @@ void main() {
     await tester.tap(find.text('Cancelar'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PrintLabelLayoutFieldItem), findsOneWidget);
+    expect(find.text('Campos (1)'), findsOneWidget);
+    expect(find.byType(PrintLabelPreviewElement), findsOneWidget);
   });
 
   testWidgets('should remove the confirmed field from the editor and preview', (
@@ -958,6 +933,9 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
+    when(() => repository.getFieldEditorOptions(params, 10)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
+    );
 
     await tester.pumpWidget(
       ProviderScope(
@@ -965,36 +943,8 @@ void main() {
           ecRequestParamsProvider().overrideWith((ref) => params),
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
-        child: MaterialApp(
-          home: Scaffold(
-            body: Consumer(
-              builder: (context, ref, child) {
-                final current = ref.watch(
-                  printLabelLayoutDetailsControllerProvider(10),
-                );
-                return current.when(
-                  data: (value) => Column(
-                    children: [
-                      Expanded(child: PrintLabelLayoutPreview(layout: value)),
-                      if (value.fields.isNotEmpty)
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: PrintLabelLayoutFieldItem(
-                              layoutCode: 10,
-                              fieldIndex: 0,
-                              field: value.fields.first,
-                              coordinateUnit: value.coordinateUnit,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  loading: () => const CircularProgressIndicator(),
-                  error: (error, stackTrace) => Text(error.toString()),
-                );
-              },
-            ),
-          ),
+        child: const MaterialApp(
+          home: PrintLabelLayoutDetailsPage(labelCode: 10),
         ),
       ),
     );

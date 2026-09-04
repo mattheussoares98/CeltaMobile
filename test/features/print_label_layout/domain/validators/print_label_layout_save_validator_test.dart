@@ -62,7 +62,7 @@ void main() {
     );
   });
 
-  test('should preserve valid zero margins and package interval', () {
+  test('should preserve valid zero margins', () {
     final layout = validLayout().copyWith(
       formTopMargin: 0,
       formLeftMargin: 0,

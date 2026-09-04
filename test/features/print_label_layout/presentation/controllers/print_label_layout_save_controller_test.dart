@@ -42,7 +42,7 @@ void main() {
       labelBottomMargin: 0,
       temperature: 10,
       printSpeed: 2,
-      intervalPrintPackage: 0,
+      intervalPrintPackage: 1,
       applyFormSizeConfiguration: true,
     );
     when(
