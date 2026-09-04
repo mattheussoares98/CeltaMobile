@@ -357,4 +357,55 @@ void main() {
     expect(painter.drawValue, isTrue);
     expect(painter.captionHeight, 8);
   });
+
+  testWidgets('should configure OS214 Plus fallback barcode caption', (
+    tester,
+  ) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 2,
+      height: 60,
+      dimensionType: BSFPrintLabelFieldDimensionType.printerCommandValue,
+      fontType: '4',
+      drawLabelBelowBarcode: true,
+      previewValue: '00000017',
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.barcode,
+      ),
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.os214Plus,
+      ),
+      fields: [field],
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: false,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    final painter =
+        tester
+                .widget<CustomPaint>(
+                  find.descendant(
+                    of: find.byType(PrintLabelPreviewElement),
+                    matching: find.byType(CustomPaint),
+                  ),
+                )
+                .painter
+            as PrintLabelBarcodePainter;
+
+    expect(painter.value, '00000017');
+    expect(painter.drawValue, isTrue);
+    expect(painter.captionHeight, 32.5);
+  });
 }

@@ -19,12 +19,19 @@ class PrintLabelPreviewMetrics {
   // Calibrates PPLA horizontal command values against the normalized preview
   // canvas while preserving the printer's configured proportions.
   static const _rabbitPplaBarcodeWidthScale = 0.30625;
+  static const _os214PlusHorizontalOriginCorrection = 20.0;
+  static const _os214PlusBarcodeVerticalCorrection = 5.0;
   static const _centimetersPerInch = 2.54;
   static const _qrResolution = 96;
   static const _qrModuleDivisor = 29;
   static const _qrReferenceModuleCount = 45;
 
   bool get isRabbitOS214 => layout.isRabbitOS214;
+
+  bool get isOS214Plus =>
+      layout.labelPrinter?.modelType == BSFLabelPrinterModelType.os214Plus;
+
+  bool get usesNativePplaMetrics => isRabbitOS214 || isOS214Plus;
 
   double get effectiveLabelWidth {
     if (layout.labelWidth > 0) return layout.labelWidth;
@@ -75,7 +82,7 @@ class PrintLabelPreviewMetrics {
     if (effectiveLabelHeight > 0) return effectiveLabelHeight;
     if (layout.fields.isEmpty) return 0;
 
-    if (!isRabbitOS214) {
+    if (!usesNativePplaMetrics) {
       var greatestCoordinateY = 0.0;
       for (final field in layout.fields) {
         if (field.coordinateY > greatestCoordinateY) {
@@ -102,7 +109,16 @@ class PrintLabelPreviewMetrics {
 
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field, {String? text}) {
     if (field.isQrCode) return qrCodeRenderedSize(field);
-    if (!isRabbitOS214) return field.width;
+    if (!usesNativePplaMetrics) return field.width;
+    if (isOS214Plus) {
+      if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+        return _pplaBarcodeModuleCount(field) * math.max(1, field.width);
+      }
+      if (!field.isTextField) return field.width;
+      return _os214PlusGlyphWidth(field) *
+          math.max(1, field.width) *
+          math.max(1, (text ?? previewText(field)).length);
+    }
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       final baseModuleWidth = field.ratioBarCode > 0
           ? field.ratioBarCode / _rabbitBarcodeRatioDivisor
@@ -122,7 +138,15 @@ class PrintLabelPreviewMetrics {
 
   double renderedHeight(BSFPrintLabelLayoutFieldEntity field) {
     if (field.isQrCode) return qrCodeRenderedSize(field);
-    if (!isRabbitOS214) return field.height;
+    if (!usesNativePplaMetrics) return field.height;
+    if (isOS214Plus) {
+      if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+        return field.height +
+            (field.drawLabelBelowBarcode ? _os214PlusGlyphHeight(field) : 0);
+      }
+      if (!field.isTextField) return field.height;
+      return _os214PlusGlyphHeight(field) * math.max(1, field.height);
+    }
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
       return field.height +
           (field.drawLabelBelowBarcode ? _rabbitBarcodeCaptionHeight : 0);
@@ -195,12 +219,24 @@ class PrintLabelPreviewMetrics {
   double rabbitFontSize(BSFPrintLabelLayoutFieldEntity field, double scaleY) =>
       renderedHeight(field) * scaleY;
 
+  double os214PlusFontSize(
+    BSFPrintLabelLayoutFieldEntity field,
+    double scaleY,
+  ) => _os214PlusGlyphHeight(field) * scaleY;
+
   // TODO: Test the fontSize property in canvas metrics.
 
   double rabbitBarcodeCaptionFontSize(double scaleY) =>
       _rabbitBarcodeCaptionHeight * scaleY;
 
   double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
+    if (isOS214Plus) {
+      return math.max(
+        0,
+        field.coordinateX - _os214PlusHorizontalOriginCorrection,
+      );
+    }
+
     final isPriceInsideFilledBox =
         isRabbitOS214 &&
         field.fieldType == BSFPrintLabelFieldType.float &&
@@ -230,7 +266,17 @@ class PrintLabelPreviewMetrics {
   }
 
   double verticalPosition(BSFPrintLabelLayoutFieldEntity field) {
-    if (!isRabbitOS214) return field.coordinateY;
+    if (!usesNativePplaMetrics) return field.coordinateY;
+
+    if (isOS214Plus) {
+      final barcodeCorrection = field.isBarcode
+          ? _os214PlusBarcodeVerticalCorrection
+          : 0;
+      return canvasHeight -
+          field.coordinateY -
+          renderedHeight(field) +
+          barcodeCorrection;
+    }
 
     if (field.rotateType == BSFPrintElementRotationType.rotate270) {
       return canvasHeight - field.coordinateY - (renderedHeight(field) / 4);
@@ -248,7 +294,7 @@ class PrintLabelPreviewMetrics {
   }
 
   bool isFilledBox(BSFPrintLabelLayoutFieldEntity field) {
-    if (!isRabbitOS214 ||
+    if (!usesNativePplaMetrics ||
         _fieldType(field) != BSFPrintLabelFieldType.boxOrLine) {
       return false;
     }
@@ -262,7 +308,7 @@ class PrintLabelPreviewMetrics {
       field.ratioBarCode > 0 && field.height >= field.ratioBarCode * 2;
 
   bool isInsideFilledBox(BSFPrintLabelLayoutFieldEntity field) {
-    if (!isRabbitOS214 ||
+    if (!usesNativePplaMetrics ||
         _fieldType(field) == BSFPrintLabelFieldType.boxOrLine) {
       return false;
     }
@@ -389,6 +435,64 @@ class PrintLabelPreviewMetrics {
         8 => 67,
         final length => math.max(1, length * 11),
       };
+
+  double _os214PlusGlyphWidth(BSFPrintLabelLayoutFieldEntity field) {
+    if (field.fontType == '9') {
+      return math.max(1, field.fontSize * 0.75);
+    }
+    return switch (field.fontType) {
+      '1' => 6.25,
+      '2' => 12.5,
+      '3' => 17.5,
+      '4' => 22.5,
+      '5' => 37.5,
+      '6' => 21.25,
+      '7' => 25,
+      '8' => 35,
+      ':' => 35,
+      _ => 10,
+    };
+  }
+
+  double _os214PlusGlyphHeight(BSFPrintLabelLayoutFieldEntity field) {
+    if (field.fontType == '9') {
+      return math.max(1, field.fontSize * 1.25);
+    }
+    return switch (field.fontType) {
+      '1' => 8.75,
+      '2' => 15,
+      '3' => 25,
+      '4' => 32.5,
+      '5' => 57.5,
+      '6' => 30,
+      '7' => 37.5,
+      '8' => 52.5,
+      ':' => 52.5,
+      _ => 15,
+    };
+  }
+
+  double _pplaBarcodeModuleCount(BSFPrintLabelLayoutFieldEntity field) {
+    final value = previewText(field);
+    if (_hasValidEanChecksum(value, 13)) return 117;
+    if (_hasValidEanChecksum(value, 8)) return 81;
+
+    final dataSymbols = int.tryParse(value) != null && value.length.isEven
+        ? value.length / 2
+        : value.length.toDouble();
+    return 11 * (dataSymbols + 3) + 13 + 20;
+  }
+
+  bool _hasValidEanChecksum(String value, int length) {
+    if (value.length != length || int.tryParse(value) == null) return false;
+
+    var sum = 0;
+    for (var index = 0; index < length - 1; index++) {
+      final digit = int.parse(value[index]);
+      sum += digit * ((length - index).isEven ? 3 : 1);
+    }
+    return (10 - (sum % 10)) % 10 == int.parse(value[length - 1]);
+  }
 
   bool _usesTextCharacterOptions(BSFPrintLabelLayoutFieldEntity field) =>
       field.usesTextCharacterOptions;

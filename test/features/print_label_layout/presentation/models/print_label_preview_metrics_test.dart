@@ -167,6 +167,80 @@ void main() {
   });
 
   group('PrintLabelPreviewMetrics', () {
+    test('should reproduce OS214 Plus native layout metrics', () {
+      final bottomText = _os214PlusField(
+        coordinateX: 40,
+        coordinateY: 20,
+        previewValue: 'POTE:',
+      );
+      final barcode = _os214PlusField(
+        coordinateX: 600,
+        coordinateY: 20,
+        width: 2,
+        height: 60,
+        fontType: '4',
+        previewValue: '00000017',
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final description = _os214PlusField(
+        coordinateX: 40,
+        coordinateY: 240,
+        fontType: '4',
+        previewValue: 'Descrição Completa do',
+      );
+      final metrics = _os214PlusMetrics([bottomText, barcode, description]);
+
+      expect(metrics.canvasHeight, 292.5);
+      expect(metrics.verticalPosition(description), 20);
+      expect(metrics.verticalPosition(bottomText), 257.5);
+      expect(metrics.verticalPosition(barcode), 185);
+      expect(metrics.horizontalPosition(bottomText), 20);
+      expect(metrics.horizontalPosition(barcode), 580);
+      expect(metrics.renderedWidth(barcode), 162);
+      expect(metrics.renderedWidth(bottomText), 62.5);
+    });
+
+    test('should apply OS214 Plus scalable font-size changes', () {
+      final small = _os214PlusField(fontType: '9', fontSize: 6);
+      final large = _os214PlusField(fontType: '9', fontSize: 18);
+      final metrics = _os214PlusMetrics([small]);
+
+      expect(
+        metrics.renderedHeight(large),
+        greaterThan(metrics.renderedHeight(small)),
+      );
+      expect(
+        metrics.renderedWidth(large),
+        greaterThan(metrics.renderedWidth(small)),
+      );
+    });
+
+    test('should identify text inside an OS214 Plus filled box', () {
+      final box = _os214PlusField(
+        coordinateX: 20,
+        coordinateY: 40,
+        width: 500,
+        height: 450,
+        ratioBarCode: 225,
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      );
+      final inside = _os214PlusField(
+        coordinateX: 65,
+        coordinateY: 130,
+        previewValue: '5,55',
+      );
+      final outside = _os214PlusField(
+        coordinateX: 600,
+        coordinateY: 130,
+        previewValue: '0,19',
+      );
+      final metrics = _os214PlusMetrics([box, inside, outside]);
+
+      expect(metrics.isFilledBox(box), isTrue);
+      expect(metrics.isInsideFilledBox(inside), isTrue);
+      expect(metrics.isInsideFilledBox(outside), isFalse);
+    });
+
     test('should prefer configured label dimensions', () {
       final metrics = PrintLabelPreviewMetrics(
         EntityFactory.makeBSFPrintLabelLayoutEntity(
@@ -572,6 +646,48 @@ void main() {
     });
   });
 }
+
+PrintLabelPreviewMetrics _os214PlusMetrics(
+  List<BSFPrintLabelLayoutFieldEntity> fields,
+) => PrintLabelPreviewMetrics(
+  EntityFactory.makeBSFPrintLabelLayoutEntity(
+    formWidth: 800,
+    formHeight: 0,
+    labelWidth: 800,
+    labelHeight: 0,
+    labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+      modelType: BSFLabelPrinterModelType.os214Plus,
+      coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+    ),
+    fields: fields,
+  ),
+);
+
+BSFPrintLabelLayoutFieldEntity _os214PlusField({
+  double coordinateX = 0,
+  double coordinateY = 0,
+  double width = 1,
+  double height = 1,
+  double ratioBarCode = 0,
+  String fontType = '2',
+  int fontSize = 0,
+  String previewValue = 'Texto',
+  BSFPrintLabelFieldType fieldType = BSFPrintLabelFieldType.string,
+}) => EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+  coordinateX: coordinateX,
+  coordinateY: coordinateY,
+  width: width,
+  height: height,
+  ratioBarCode: ratioBarCode,
+  dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+  fontType: fontType,
+  fontSize: fontSize,
+  previewValue: previewValue,
+  drawLabelBelowBarcode: fieldType == BSFPrintLabelFieldType.barcode,
+  field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+    fieldType: fieldType,
+  ),
+);
 
 PrintLabelPreviewMetrics _metrics(
   List<BSFPrintLabelLayoutFieldEntity> fields, {

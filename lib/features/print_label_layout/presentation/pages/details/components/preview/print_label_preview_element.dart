@@ -170,13 +170,13 @@ class PrintLabelPreviewElement extends StatelessWidget {
       textAlign: _textAlign,
       style: TextStyle(
         color: foregroundColor,
-        fontFamily: previewMetrics.isRabbitOS214
+        fontFamily: previewMetrics.usesNativePplaMetrics
             ? 'monospace'
             : field.fontType.isEmpty
             ? null
             : field.fontType,
         fontSize: _fontSize,
-        height: previewMetrics.isRabbitOS214 ? 1 : null,
+        height: previewMetrics.usesNativePplaMetrics ? 1 : null,
         fontWeight: field.isBold
             ? FontWeight.bold
             : previewMetrics.isRabbitOS214 && field.fontTypeNumber == 6
@@ -185,7 +185,9 @@ class PrintLabelPreviewElement extends StatelessWidget {
       ),
     );
 
-    if (previewMetrics.isRabbitOS214 && width != null && height != null) {
+    if (previewMetrics.usesNativePplaMetrics &&
+        width != null &&
+        height != null) {
       final fittedText = FittedBox(
         fit: BoxFit.fill,
         alignment: _alignment,
@@ -210,7 +212,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       return previewMetrics.qrCodeRenderedSize(field) * scaleX;
     }
 
-    if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
+    if (previewMetrics.usesNativePplaMetrics && _usesNativeRenderedDimensions) {
       return previewMetrics.renderedWidth(field, text: _previewText) * scaleX;
     }
 
@@ -240,7 +242,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       return previewMetrics.qrCodeRenderedSize(field) * scaleY;
     }
 
-    if (previewMetrics.isRabbitOS214 && _usesRabbitRenderedDimensions) {
+    if (previewMetrics.usesNativePplaMetrics && _usesNativeRenderedDimensions) {
       return previewMetrics.renderedHeight(field) * scaleY;
     }
 
@@ -282,7 +284,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
 
   bool get _isText => field.isTextField;
 
-  bool get _usesRabbitRenderedDimensions =>
+  bool get _usesNativeRenderedDimensions =>
       _isText || field.isBarcode || field.isBoxOrLine;
 
   double get _fontSize {
@@ -291,6 +293,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
         return previewMetrics.rabbitBarcodeCaptionFontSize(scaleY);
       }
       return previewMetrics.rabbitFontSize(field, scaleY);
+    }
+
+    if (previewMetrics.isOS214Plus) {
+      return previewMetrics.os214PlusFontSize(field, scaleY);
     }
 
     if (field.fontSize <= 0) return 10;

@@ -106,6 +106,10 @@ class PrintLabelBarcodePainter extends CustomPainter {
   void _paintFallback(Canvas canvas, Size size) {
     final paint = Paint()..color = color;
     const pattern = <double>[1, 2, 1, 1, 3, 1, 2, 2, 1, 3];
+    final effectiveCaptionHeight = drawValue
+        ? captionHeight.clamp(0.0, size.height).toDouble()
+        : 0.0;
+    final barHeight = size.height - effectiveCaptionHeight;
     final unit = size.width / 24;
     var x = 0.0;
 
@@ -113,11 +117,20 @@ class PrintLabelBarcodePainter extends CustomPainter {
       final width = pattern[index % pattern.length] * unit;
       if (index.isEven) {
         canvas.drawRect(
-          Rect.fromLTWH(x, 0, width.clamp(0, size.width - x), size.height),
+          Rect.fromLTWH(x, 0, width.clamp(0, size.width - x), barHeight),
           paint,
         );
       }
       x += width;
+    }
+
+    if (drawValue) {
+      _paintCenteredText(
+        canvas,
+        value,
+        Rect.fromLTWH(0, barHeight, size.width, effectiveCaptionHeight),
+        effectiveCaptionHeight,
+      );
     }
   }
 
