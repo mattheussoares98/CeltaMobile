@@ -70,13 +70,13 @@ void main() {
 
       expect(
         find.text(
-          'Adicione campos para determinar a altura da pré-visualização.',
+          'Adicione campos para determinar a altura da pré-visualização',
         ),
         findsOneWidget,
       );
       expect(
         find.text(
-          'Informe uma largura e altura válidas para visualizar a etiqueta.',
+          'Informe uma largura e altura válidas para visualizar a etiqueta',
         ),
         findsNothing,
       );

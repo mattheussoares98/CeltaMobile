@@ -59,6 +59,63 @@ void main() {
     expect(updated.addressType, BSFPrintLabelAddressType.delivery);
   });
 
+  testWidgets(
+    'should confirm type changes and remove only incompatible fields',
+    (tester) async {
+      final compatibleField = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          applyToCustomer: true,
+        ),
+      );
+      final incompatibleField =
+          EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 2);
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 0,
+        layoutType: BSFPrintLabelLayoutType.product,
+        fields: [compatibleField, incompatibleField],
+      );
+      final container = await _pump(tester, layout, (current) {
+        return PrintLabelLayoutGeneralInformation(layout: current);
+      });
+
+      tester
+          .widget<BaseDropDown<BSFPrintLabelLayoutType>>(
+            find.byKey(const Key('print-label-layout-type')).first,
+          )
+          .onChanged!(BSFPrintLabelLayoutType.customer);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Os campos incompatíveis com o novo tipo serão removidos.'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Cancelar'));
+      await tester.pumpAndSettle();
+
+      var current = container
+          .read(printLabelLayoutDetailsControllerProvider(0))
+          .requireValue;
+      expect(current.layoutType, BSFPrintLabelLayoutType.product);
+      expect(current.fields, [compatibleField, incompatibleField]);
+
+      tester
+          .widget<BaseDropDown<BSFPrintLabelLayoutType>>(
+            find.byKey(const Key('print-label-layout-type')).first,
+          )
+          .onChanged!(BSFPrintLabelLayoutType.customer);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Continuar'));
+      await tester.pumpAndSettle();
+
+      current = container
+          .read(printLabelLayoutDetailsControllerProvider(0))
+          .requireValue;
+      expect(current.layoutType, BSFPrintLabelLayoutType.customer);
+      expect(current.fields, [compatibleField]);
+    },
+  );
+
   for (final layoutType in BSFPrintLabelLayoutType.values) {
     testWidgets('should show address type only for $layoutType', (
       tester,
@@ -376,7 +433,7 @@ Future<ProviderContainer> _pump(
   final container = ProviderContainer(
     overrides: [
       printLabelLayoutDetailsControllerProvider(
-        10,
+        layout.code,
       ).overrideWith(() => TestPrintLabelLayoutDetailsController(layout)),
     ],
   );
@@ -389,7 +446,7 @@ Future<ProviderContainer> _pump(
           body: Consumer(
             builder: (context, ref, child) {
               final value = ref.watch(
-                printLabelLayoutDetailsControllerProvider(10),
+                printLabelLayoutDetailsControllerProvider(layout.code),
               );
               return value.when(
                 data: (current) =>

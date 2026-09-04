@@ -236,14 +236,33 @@ class PrintLabelLayoutDetailsController
     _updateLayout((layout) => layout.copyWith(name: name));
   }
 
-  void updateLayoutType(BSFPrintLabelLayoutType value) {
+  bool hasIncompatibleFieldsForLayoutType(BSFPrintLabelLayoutType value) =>
+      state.value?.fields.any(
+        (field) => field.field?.appliesTo(value) != true,
+      ) ??
+      false;
+
+  void updateLayoutType(
+    BSFPrintLabelLayoutType value, {
+    bool removeIncompatibleFields = false,
+  }) {
     _updateLayout((layout) {
       if (!layout.capabilities.canEditLayoutType) return layout;
+      final hasIncompatibleFields = layout.fields.any(
+        (field) => field.field?.appliesTo(value) != true,
+      );
+      if (hasIncompatibleFields && !removeIncompatibleFields) return layout;
+
       final requiresAddress =
           value == BSFPrintLabelLayoutType.customer ||
           value == BSFPrintLabelLayoutType.customerCard;
       return layout.copyWith(
         layoutType: value,
+        fields: removeIncompatibleFields
+            ? layout.fields
+                  .where((field) => field.field?.appliesTo(value) == true)
+                  .toList()
+            : layout.fields,
         addressType: requiresAddress
             ? BSFPrintLabelAddressType.principal
             : BSFPrintLabelAddressType.notApplicable,

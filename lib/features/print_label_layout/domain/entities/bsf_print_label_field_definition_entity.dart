@@ -36,6 +36,16 @@ class BSFPrintLabelFieldDefinitionEntity extends Equatable {
     required this.applyToSaleRequestProduct,
   });
 
+  bool appliesTo(BSFPrintLabelLayoutType layoutType) => switch (layoutType) {
+    BSFPrintLabelLayoutType.customer => applyToCustomer,
+    BSFPrintLabelLayoutType.covenant => applyToCovenant,
+    BSFPrintLabelLayoutType.product => applyToProduct,
+    BSFPrintLabelLayoutType.customerCard => applyToCustomerCard,
+    BSFPrintLabelLayoutType.saleBilling => applyToSaleBilling,
+    BSFPrintLabelLayoutType.transport => applyToTransport,
+    BSFPrintLabelLayoutType.saleRequestProduct => applyToSaleRequestProduct,
+  };
+
   @override
   List<Object?> get props => [
     code,

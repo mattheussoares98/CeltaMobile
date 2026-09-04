@@ -128,6 +128,78 @@ void main() {
   );
 
   test(
+    'hasIncompatibleFieldsForLayoutType should detect unsupported fields',
+    () async {
+      final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 0,
+        fields: [
+          EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+            field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+              applyToCustomer: false,
+            ),
+          ),
+        ],
+      );
+      when(() => repository.getCreateOptions(params)).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
+          draft: draft,
+        ),
+      );
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      final provider = printLabelLayoutDetailsControllerProvider(0);
+      await container.read(provider.future);
+
+      final result = container
+          .read(provider.notifier)
+          .hasIncompatibleFieldsForLayoutType(BSFPrintLabelLayoutType.customer);
+
+      expect(result, isTrue);
+    },
+  );
+
+  test(
+    'updateLayoutType should require confirmation and remove unsupported fields',
+    () async {
+      final compatibleField = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 1,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          applyToCustomer: true,
+        ),
+      );
+      final incompatibleField =
+          EntityFactory.makeBSFPrintLabelLayoutFieldEntity(code: 2);
+      final draft = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        code: 0,
+        layoutType: BSFPrintLabelLayoutType.product,
+        fields: [compatibleField, incompatibleField],
+      );
+      when(() => repository.getCreateOptions(params)).thenAnswer(
+        (_) async => EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
+          draft: draft,
+        ),
+      );
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      final provider = printLabelLayoutDetailsControllerProvider(0);
+      await container.read(provider.future);
+      final controller = container.read(provider.notifier);
+
+      controller.updateLayoutType(BSFPrintLabelLayoutType.customer);
+      expect(container.read(provider).requireValue, draft);
+
+      controller.updateLayoutType(
+        BSFPrintLabelLayoutType.customer,
+        removeIncompatibleFields: true,
+      );
+
+      final updated = container.read(provider).requireValue;
+      expect(updated.layoutType, BSFPrintLabelLayoutType.customer);
+      expect(updated.fields, [compatibleField]);
+    },
+  );
+
+  test(
     'updateFieldCoordinateX should update coordinateX and clamp at zero',
     () async {
       final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(

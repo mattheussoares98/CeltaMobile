@@ -63,8 +63,7 @@ abstract final class PrintLabelLayoutSaveValidator {
       errors.add('Informe pelo menos um campo para o leiaute');
     } else if (layout.fields.any(
       (field) =>
-          field.field == null ||
-          !_fieldAppliesToLayout(field.field!, layout.layoutType),
+          field.field == null || !field.field!.appliesTo(layout.layoutType),
     )) {
       errors.add(
         'Existe pelo menos um campo que não se aplica ao tipo de leiaute informado',
@@ -82,18 +81,4 @@ abstract final class PrintLabelLayoutSaveValidator {
 
     return errors;
   }
-
-  static bool _fieldAppliesToLayout(
-    BSFPrintLabelFieldDefinitionEntity field,
-    BSFPrintLabelLayoutType layoutType,
-  ) => switch (layoutType) {
-    BSFPrintLabelLayoutType.customer => field.applyToCustomer,
-    BSFPrintLabelLayoutType.covenant => field.applyToCovenant,
-    BSFPrintLabelLayoutType.product => field.applyToProduct,
-    BSFPrintLabelLayoutType.customerCard => field.applyToCustomerCard,
-    BSFPrintLabelLayoutType.saleBilling => field.applyToSaleBilling,
-    BSFPrintLabelLayoutType.transport => field.applyToTransport,
-    BSFPrintLabelLayoutType.saleRequestProduct =>
-      field.applyToSaleRequestProduct,
-  };
 }

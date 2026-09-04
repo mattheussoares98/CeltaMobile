@@ -63,7 +63,26 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                         ),
                       )
                       .toList(),
-                  onChanged: controller.updateLayoutType,
+                  onChanged: (value) async {
+                    final hasIncompatibleFields = controller
+                        .hasIncompatibleFieldsForLayoutType(value);
+                    if (hasIncompatibleFields) {
+                      final confirmed = await showAlertDialog(
+                        context: context,
+                        title: 'Atenção!'.hardcoded,
+                        cancelActionText: 'Cancelar'.hardcoded,
+                        defaultActionText: 'Continuar'.hardcoded,
+                        content:
+                            'Os campos incompatíveis com o novo tipo serão removidos.'
+                                .hardcoded,
+                      );
+                      if (confirmed != true || !context.mounted) return;
+                    }
+                    controller.updateLayoutType(
+                      value,
+                      removeIncompatibleFields: hasIncompatibleFields,
+                    );
+                  },
                 ),
               )
             else
