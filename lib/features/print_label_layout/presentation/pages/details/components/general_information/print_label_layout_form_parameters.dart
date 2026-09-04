@@ -50,7 +50,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
               children: [
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-width'),
-                  repeatInterval: const Duration(milliseconds: 25),
+                  repeatInterval: const Duration(milliseconds: 5),
                   label: 'Largura'.hardcoded,
                   value: _formatValue(layout.formWidth, unit),
                   onDecrease: layout.formWidth > 0
@@ -60,6 +60,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-height'),
+                  repeatInterval: const Duration(milliseconds: 5),
                   label: capabilities.isFormHeightRequired
                       ? 'Altura *'.hardcoded
                       : 'Altura'.hardcoded,
