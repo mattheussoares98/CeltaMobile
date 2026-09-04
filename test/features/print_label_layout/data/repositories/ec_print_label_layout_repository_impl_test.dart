@@ -90,6 +90,31 @@ void main() {
     });
   });
 
+  group('getCreateOptions', () {
+    test('should return the server draft and printer catalog', () async {
+      final entity = EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity();
+      final model = BSFPrintLabelLayoutCreateOptionsModel.fromEntity(entity);
+      when(
+        () => datasource.getCreateOptions(params),
+      ).thenAnswer((_) async => model);
+
+      final result = await sut.getCreateOptions(params);
+
+      expect(result, entity);
+      verify(() => datasource.getCreateOptions(params)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+
+    test('should propagate create-options errors', () async {
+      final exception = Exception('Failed to get create options');
+      when(() => datasource.getCreateOptions(params)).thenThrow(exception);
+
+      await expectLater(sut.getCreateOptions(params), throwsA(same(exception)));
+      verify(() => datasource.getCreateOptions(params)).called(1);
+      verifyNoMoreInteractions(datasource);
+    });
+  });
+
   group('getFieldEditorOptions', () {
     test('should return an entity from the datasource model', () async {
       when(

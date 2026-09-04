@@ -28,6 +28,14 @@ class EcPrintLabelLayoutRepositoryImpl
   }
 
   @override
+  Future<BSFPrintLabelLayoutCreateOptionsEntity> getCreateOptions(
+    EcRequestParams params,
+  ) async {
+    final model = await datasource.getCreateOptions(params);
+    return model.toEntity();
+  }
+
+  @override
   Future<BSFPrintLabelLayoutEntity> create(
     EcRequestParams params,
     BSFPrintLabelLayoutEntity layout,
