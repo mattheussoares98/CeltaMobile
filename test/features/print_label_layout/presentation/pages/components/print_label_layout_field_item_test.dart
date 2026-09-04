@@ -273,6 +273,82 @@ void main() {
     );
   });
 
+  testWidgets('should initialize new field dimensions at their minimums', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    final definition = EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+      name: 'EAN',
+      fieldType: BSFPrintLabelFieldType.barcode,
+    );
+    final draft = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      code: 0,
+      width: 0,
+      height: 0,
+      field: definition,
+    );
+    final option = EntityFactory.makePrintLabelFieldEditorOptionEntity(
+      definition: definition,
+      draft: draft,
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      fields: const [],
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        isGeneric: false,
+        modelType: BSFLabelPrinterModelType.os214Plus,
+      ),
+    );
+    final params = EntityFactory.makeEcRequestParams();
+    when(
+      () => repository.getDetails(params, 10),
+    ).thenAnswer((_) async => layout);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          ecRequestParamsProvider().overrideWith((ref) => params),
+          ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: PrintLabelLayoutAddFieldPage(
+              layoutCode: 10,
+              fieldOptions: [option],
+              formats: const [],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byType(DropdownMenu<PrintLabelFieldEditorOptionEntity>),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('EAN').last);
+    await tester.pumpAndSettle();
+
+    final widthAdjuster = find.ancestor(
+      of: find.text('Largura'),
+      matching: find.byType(PrintLabelLayoutValueAdjuster),
+    );
+    expect(
+      tester.widget<PrintLabelLayoutValueAdjuster>(widthAdjuster).value,
+      '1',
+    );
+    final heightAdjuster = find.ancestor(
+      of: find.text('Altura'),
+      matching: find.byType(PrintLabelLayoutValueAdjuster),
+    );
+    expect(
+      tester.widget<PrintLabelLayoutValueAdjuster>(heightAdjuster).value,
+      '1',
+    );
+  });
+
   testWidgets('should render field item adjusters and update coordinates', (
     tester,
   ) async {

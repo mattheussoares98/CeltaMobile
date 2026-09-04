@@ -49,12 +49,13 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
                 selectedFieldOption: selectedOption.value,
                 onFieldOptionChanged: (value) {
                   selectedOption.value = value;
-                  draft.value = value.draft.copyWith(
-                    fontType: _initialFontType(ref, value.draft),
+                  final initialDraft = _withMinimumDimensions(value.draft);
+                  draft.value = initialDraft.copyWith(
+                    fontType: _initialFontType(ref, initialDraft),
                     alignmentType: BSFPrintElementAlignmentType.middle,
-                    quantityDecimalPlaces: value.draft.supportsDecimalPlaces
+                    quantityDecimalPlaces: initialDraft.supportsDecimalPlaces
                         ? _defaultFloatDecimalPlaces
-                        : value.draft.quantityDecimalPlaces,
+                        : initialDraft.quantityDecimalPlaces,
                   );
                 },
                 fieldDefinitions: fieldOptions
@@ -230,5 +231,18 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
 
     const supportedFontTypes = {'1', '2', '3', '4', '5', '6'};
     return supportedFontTypes.contains(field.fontType) ? field.fontType : '1';
+  }
+
+  BSFPrintLabelLayoutFieldEntity _withMinimumDimensions(
+    BSFPrintLabelLayoutFieldEntity field,
+  ) {
+    if (field.dimensionType == BSFPrintLabelFieldDimensionType.notApplicable) {
+      return field;
+    }
+
+    return field.copyWith(
+      width: field.width.clamp(field.minimumEditorWidth, double.infinity),
+      height: field.height.clamp(field.minimumEditorHeight, double.infinity),
+    );
   }
 }
