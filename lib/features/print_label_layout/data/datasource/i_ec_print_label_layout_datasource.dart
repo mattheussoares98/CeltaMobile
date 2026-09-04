@@ -8,6 +8,10 @@ abstract class IEcPrintLabelLayoutDatasource {
 
   Future<BSFPrintLabelLayoutModel> getDetails(EcRequestParams params, int code);
 
+  Future<BSFPrintLabelLayoutCreateOptionsModel> getCreateOptions(
+    EcRequestParams params,
+  );
+
   Future<BSFPrintLabelLayoutModel> create(
     EcRequestParams params,
     BSFPrintLabelLayoutModel layout,

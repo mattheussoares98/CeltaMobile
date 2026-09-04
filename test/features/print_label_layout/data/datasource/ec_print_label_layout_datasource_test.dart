@@ -144,6 +144,31 @@ void main() {
     verifyNoMoreInteractions(httpClient);
   });
 
+  test('should get the create draft and printer catalog', () async {
+    final model = BSFPrintLabelLayoutCreateOptionsModel.fromEntity(
+      EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(),
+    );
+    when(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/CreateOptions',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).thenAnswer((_) async => model.toJson());
+
+    final result = await sut.getCreateOptions(params);
+
+    expect(result, model);
+    verify(
+      () => httpClient.request(
+        url: '${params.workingUrl}/api/PrintLabelLayouts/CreateOptions',
+        method: 'get',
+        headers: params.toHeaders(),
+      ),
+    ).called(1);
+    verifyNoMoreInteractions(httpClient);
+  });
+
   test('should get all field editor options in one request', () async {
     when(
       () => httpClient.request(
