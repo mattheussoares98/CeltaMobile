@@ -14,6 +14,7 @@ export 'bsf_print_label_field_origin_type.dart';
 export 'bsf_print_label_field_type.dart';
 export 'bsf_print_label_form_type.dart';
 export 'bsf_print_label_layout_entity.dart';
+export 'bsf_print_label_layout_create_options_entity.dart';
 export 'bsf_print_label_layout_field_entity.dart';
 export 'bsf_print_label_layout_summary_entity.dart';
 export 'bsf_print_label_layout_type.dart';

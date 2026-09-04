@@ -2692,6 +2692,15 @@ class EntityFactory {
     fields: fields ?? [makeBSFPrintLabelLayoutFieldEntity()],
   );
 
+  static BSFPrintLabelLayoutCreateOptionsEntity
+  makeBSFPrintLabelLayoutCreateOptionsEntity({
+    BSFPrintLabelLayoutEntity? draft,
+    List<BSFPrintLabelPrinterEntity>? printers,
+  }) => BSFPrintLabelLayoutCreateOptionsEntity(
+    draft: draft ?? makeBSFPrintLabelLayoutEntity(code: 0, fields: const []),
+    printers: printers ?? [makeBSFPrintLabelPrinterEntity()],
+  );
+
   static EcGetCustomersParams makeEcGetCustomersParams({String? searchValue}) =>
       EcGetCustomersParams(
         params: makeEcRequestParams(),
