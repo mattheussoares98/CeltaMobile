@@ -98,22 +98,26 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
               ),
             ],
             if (layout.capabilities.canEditPrinter)
-              BaseDropDown<BSFPrintLabelPrinterEntity>(
-                key: const Key('print-label-layout-printer'),
-                label: 'Impressora'.hardcoded,
-                showLabelAtTopLeft: true,
-                selectedItem: controller.printers.contains(layout.labelPrinter)
-                    ? layout.labelPrinter
-                    : null,
-                items: controller.printers
-                    .map(
-                      (printer) => DropdownMenuItem(
-                        value: printer,
-                        child: BaseText(printer.description),
-                      ),
-                    )
-                    .toList(),
-                onChanged: controller.updatePrinter,
+              Padding(
+                padding: const EdgeInsets.only(top: Sizes.p8),
+                child: BaseDropDown<BSFPrintLabelPrinterEntity>(
+                  key: const Key('print-label-layout-printer'),
+                  label: 'Impressora'.hardcoded,
+                  showLabelAtTopLeft: true,
+                  selectedItem:
+                      controller.printers.contains(layout.labelPrinter)
+                      ? layout.labelPrinter
+                      : null,
+                  items: controller.printers
+                      .map(
+                        (printer) => DropdownMenuItem(
+                          value: printer,
+                          child: BaseText(printer.description),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: controller.updatePrinter,
+                ),
               )
             else
               TitleAndSubTitle(
