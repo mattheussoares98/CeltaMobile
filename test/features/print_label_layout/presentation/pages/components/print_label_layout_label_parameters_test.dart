@@ -209,6 +209,9 @@ void main() {
       formType: BSFPrintLabelFormType.continuous,
       labelWidth: 50,
       labelHeight: 30,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.eltron,
+      ),
     );
     final container = await _pump(tester, layout);
     final originalMetrics = PrintLabelPreviewMetrics(layout);

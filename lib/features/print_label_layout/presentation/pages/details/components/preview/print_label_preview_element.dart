@@ -170,13 +170,13 @@ class PrintLabelPreviewElement extends StatelessWidget {
       textAlign: _textAlign,
       style: TextStyle(
         color: foregroundColor,
-        fontFamily: previewMetrics.usesNativePplaMetrics
+        fontFamily: previewMetrics.usesNativeElementMetrics
             ? 'monospace'
             : field.fontType.isEmpty
             ? null
             : field.fontType,
         fontSize: _fontSize,
-        height: previewMetrics.usesNativePplaMetrics ? 1 : null,
+        height: previewMetrics.usesNativeElementMetrics ? 1 : null,
         fontWeight: field.isBold
             ? FontWeight.bold
             : previewMetrics.isRabbitOS214 && field.fontTypeNumber == 6
@@ -185,7 +185,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       ),
     );
 
-    if (previewMetrics.usesNativePplaMetrics &&
+    if (previewMetrics.usesNativeElementMetrics &&
         width != null &&
         height != null) {
       final fittedText = FittedBox(
@@ -212,7 +212,14 @@ class PrintLabelPreviewElement extends StatelessWidget {
       return previewMetrics.qrCodeRenderedSize(field) * scaleX;
     }
 
-    if (previewMetrics.usesNativePplaMetrics && _usesNativeRenderedDimensions) {
+    if (previewMetrics.isZebraGC420t &&
+        _fieldType == BSFPrintLabelFieldType.logo) {
+      final width = previewMetrics.zebraLogoWidth(field);
+      if (width != null) return width * scaleX;
+    }
+
+    if (previewMetrics.usesNativeElementMetrics &&
+        _usesNativeRenderedDimensions) {
       return previewMetrics.renderedWidth(field, text: _previewText) * scaleX;
     }
 
@@ -242,7 +249,14 @@ class PrintLabelPreviewElement extends StatelessWidget {
       return previewMetrics.qrCodeRenderedSize(field) * scaleY;
     }
 
-    if (previewMetrics.usesNativePplaMetrics && _usesNativeRenderedDimensions) {
+    if (previewMetrics.isZebraGC420t &&
+        _fieldType == BSFPrintLabelFieldType.logo) {
+      final height = previewMetrics.zebraLogoHeight(field);
+      if (height != null) return height * scaleY;
+    }
+
+    if (previewMetrics.usesNativeElementMetrics &&
+        _usesNativeRenderedDimensions) {
       return previewMetrics.renderedHeight(field) * scaleY;
     }
 
@@ -288,6 +302,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
       _isText || field.isBarcode || field.isBoxOrLine;
 
   double get _fontSize {
+    if (previewMetrics.isZebraGC420t) {
+      return previewMetrics.zebraFontSize(field, scaleY);
+    }
+
     if (previewMetrics.isRabbitOS214) {
       if (_fieldType == BSFPrintLabelFieldType.barcode) {
         return previewMetrics.rabbitBarcodeCaptionFontSize(scaleY);

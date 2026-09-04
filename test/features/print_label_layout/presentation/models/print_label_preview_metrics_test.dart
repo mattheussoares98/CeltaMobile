@@ -248,6 +248,9 @@ void main() {
           labelHeight: 60,
           formWidth: 300,
           formHeight: 200,
+          labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+            modelType: BSFLabelPrinterModelType.eltron,
+          ),
         ),
       );
 
@@ -645,7 +648,111 @@ void main() {
       );
     });
   });
+
+  group('Zebra GC420t metrics', () {
+    test('uses EPL form width instead of the unused label width', () {
+      final metrics = _zebraMetrics(const []);
+
+      expect(metrics.canvasWidth, 880);
+      expect(metrics.canvasHeight, 220);
+    });
+
+    test('uses built-in EPL font dimensions and multipliers', () {
+      final field = _zebraField(
+        fontType: '4',
+        width: 4,
+        height: 3,
+        previewValue: '0,00',
+      );
+      final metrics = _zebraMetrics([field]);
+
+      expect(metrics.renderedWidth(field), 224);
+      expect(metrics.renderedHeight(field), 72);
+    });
+
+    test('uses the EPL EAN-13 module width and caption height', () {
+      final field = _zebraField(
+        width: 2,
+        height: 50,
+        previewValue: '7891000379103',
+        fieldType: BSFPrintLabelFieldType.barcode,
+        drawLabelBelowBarcode: true,
+      );
+      final metrics = _zebraMetrics([field]);
+
+      expect(metrics.renderedWidth(field), 190);
+      expect(metrics.renderedHeight(field), 70);
+    });
+
+    test('applies Zebra logo scale factors to bitmap dimensions', () {
+      final bitmapHeader = List<int>.filled(26, 0)
+        ..[0] = 0x42
+        ..[1] = 0x4D
+        ..[18] = 189
+        ..[22] = 201;
+      final field = _zebraField(
+        width: 0.5,
+        height: 0.5,
+        fieldType: BSFPrintLabelFieldType.logo,
+      ).copyWith(previewImage: bitmapHeader);
+      final metrics = _zebraMetrics([field]);
+
+      expect(metrics.zebraLogoWidth(field), 94.5);
+      expect(metrics.zebraLogoHeight(field), 100.5);
+    });
+
+    test('does not apply Zebra dimensions to another printer model', () {
+      final field = _zebraField(width: 4, height: 3, previewValue: '0,00');
+      final layout = _zebraMetrics([field]).layout.copyWith(
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.eltron,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+        ),
+      );
+      final metrics = PrintLabelPreviewMetrics(layout);
+
+      expect(metrics.canvasWidth, 600);
+      expect(metrics.renderedWidth(field), 4);
+      expect(metrics.renderedHeight(field), 3);
+    });
+  });
 }
+
+PrintLabelPreviewMetrics _zebraMetrics(
+  List<BSFPrintLabelLayoutFieldEntity> fields,
+) => PrintLabelPreviewMetrics(
+  EntityFactory.makeBSFPrintLabelLayoutEntity(
+    formWidth: 880,
+    formHeight: 220,
+    labelWidth: 600,
+    labelHeight: 0,
+    labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+      modelType: BSFLabelPrinterModelType.zebraGC420t,
+      coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+    ),
+    fields: fields,
+  ),
+);
+
+BSFPrintLabelLayoutFieldEntity _zebraField({
+  double width = 1,
+  double height = 1,
+  String fontType = '3',
+  String previewValue = 'Texto',
+  BSFPrintLabelFieldType fieldType = BSFPrintLabelFieldType.string,
+  bool drawLabelBelowBarcode = false,
+}) => EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+  width: width,
+  height: height,
+  dimensionType: BSFPrintLabelFieldDimensionType.scaleFactor,
+  fontType: fontType,
+  fontSize: 0,
+  previewValue: previewValue,
+  drawLabelBelowBarcode: drawLabelBelowBarcode,
+  field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+    fieldType: fieldType,
+  ),
+);
 
 PrintLabelPreviewMetrics _os214PlusMetrics(
   List<BSFPrintLabelLayoutFieldEntity> fields,

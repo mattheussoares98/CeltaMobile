@@ -14,6 +14,9 @@ void main() {
     final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       labelWidth: 100,
       labelHeight: 50,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.eltron,
+      ),
     );
 
     await _pumpPreview(tester, layout);
@@ -33,6 +36,9 @@ void main() {
     final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
       labelWidth: 100,
       labelHeight: 100,
+      labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.eltron,
+      ),
     );
 
     await _pumpPreview(tester, layout);

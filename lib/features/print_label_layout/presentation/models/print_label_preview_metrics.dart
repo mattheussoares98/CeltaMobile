@@ -31,9 +31,15 @@ class PrintLabelPreviewMetrics {
   bool get isOS214Plus =>
       layout.labelPrinter?.modelType == BSFLabelPrinterModelType.os214Plus;
 
+  bool get isZebraGC420t =>
+      layout.labelPrinter?.modelType == BSFLabelPrinterModelType.zebraGC420t;
+
   bool get usesNativePplaMetrics => isRabbitOS214 || isOS214Plus;
 
+  bool get usesNativeElementMetrics => usesNativePplaMetrics || isZebraGC420t;
+
   double get effectiveLabelWidth {
+    if (isZebraGC420t && layout.formWidth > 0) return layout.formWidth;
     if (layout.labelWidth > 0) return layout.labelWidth;
     if (layout.formWidth > 0) return layout.formWidth;
     return 0;
@@ -109,6 +115,15 @@ class PrintLabelPreviewMetrics {
 
   double renderedWidth(BSFPrintLabelLayoutFieldEntity field, {String? text}) {
     if (field.isQrCode) return qrCodeRenderedSize(field);
+    if (isZebraGC420t) {
+      if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+        return _rabbitBarcodeModuleCount(field) * math.max(1, field.width);
+      }
+      if (!field.isTextField) return field.width;
+      return zebraGlyphWidth(field) *
+          math.max(1, field.width) *
+          math.max(1, (text ?? previewText(field)).trimRight().length);
+    }
     if (!usesNativePplaMetrics) return field.width;
     if (isOS214Plus) {
       if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
@@ -138,6 +153,14 @@ class PrintLabelPreviewMetrics {
 
   double renderedHeight(BSFPrintLabelLayoutFieldEntity field) {
     if (field.isQrCode) return qrCodeRenderedSize(field);
+    if (isZebraGC420t) {
+      if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
+        return field.height +
+            (field.drawLabelBelowBarcode ? zebraGlyphHeight(field) : 0);
+      }
+      if (!field.isTextField) return field.height;
+      return zebraGlyphHeight(field) * math.max(1, field.height);
+    }
     if (!usesNativePplaMetrics) return field.height;
     if (isOS214Plus) {
       if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
@@ -228,6 +251,19 @@ class PrintLabelPreviewMetrics {
 
   double rabbitBarcodeCaptionFontSize(double scaleY) =>
       _rabbitBarcodeCaptionHeight * scaleY;
+
+  double zebraFontSize(BSFPrintLabelLayoutFieldEntity field, double scaleY) =>
+      zebraGlyphHeight(field) * scaleY;
+
+  double? zebraLogoWidth(BSFPrintLabelLayoutFieldEntity field) {
+    final width = _bitmapDimension(field.previewImage, 18);
+    return width == null ? null : width * math.max(0, field.width);
+  }
+
+  double? zebraLogoHeight(BSFPrintLabelLayoutFieldEntity field) {
+    final height = _bitmapDimension(field.previewImage, 22);
+    return height == null ? null : height * math.max(0, field.height);
+  }
 
   double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
     if (isOS214Plus) {
@@ -423,6 +459,30 @@ class PrintLabelPreviewMetrics {
         _ => 12,
       };
 
+  double zebraGlyphWidth(BSFPrintLabelLayoutFieldEntity field) =>
+      switch (field.fontType) {
+        '1' => 8,
+        '2' => 10,
+        '3' => 12,
+        '4' => 14,
+        '5' => 32,
+        '6' => 14,
+        '7' => 21,
+        _ => 8,
+      };
+
+  double zebraGlyphHeight(BSFPrintLabelLayoutFieldEntity field) =>
+      switch (field.fontType) {
+        '1' => 12,
+        '2' => 16,
+        '3' => 20,
+        '4' => 24,
+        '5' => 48,
+        '6' => 19,
+        '7' => 27,
+        _ => 12,
+      };
+
   double _horizontalMultiplier(BSFPrintLabelLayoutFieldEntity field) =>
       field.fontType == '9' ? 1 : math.max(1, field.width);
 
@@ -492,6 +552,18 @@ class PrintLabelPreviewMetrics {
       sum += digit * ((length - index).isEven ? 3 : 1);
     }
     return (10 - (sum % 10)) % 10 == int.parse(value[length - 1]);
+  }
+
+  int? _bitmapDimension(List<int>? bytes, int offset) {
+    if (bytes == null || bytes.length < offset + 4) return null;
+    if (bytes[0] != 0x42 || bytes[1] != 0x4D) return null;
+
+    final value =
+        bytes[offset] |
+        (bytes[offset + 1] << 8) |
+        (bytes[offset + 2] << 16) |
+        (bytes[offset + 3] << 24);
+    return value.abs();
   }
 
   bool _usesTextCharacterOptions(BSFPrintLabelLayoutFieldEntity field) =>
