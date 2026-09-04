@@ -61,12 +61,7 @@ void main() {
         ).capabilities.showsAddressType,
         isTrue,
       );
-      expect(
-        layout(
-          layoutType: BSFPrintLabelLayoutType.product,
-        ).capabilities.showsAddressType,
-        isFalse,
-      );
+      expect(layout().capabilities.showsAddressType, isFalse);
     });
   });
 
