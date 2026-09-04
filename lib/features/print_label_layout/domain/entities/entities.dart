@@ -22,3 +22,8 @@ export 'bsf_print_label_printer_entity.dart';
 export 'bsf_product_packing_selection_type.dart';
 export 'print_label_field_editor_option_entity.dart';
 export 'print_label_layout_capabilities.dart';
+export 'print_label_problem_report_attachment_metadata_entity.dart';
+export 'print_label_problem_report_capture_confirmation_entity.dart';
+export 'print_label_problem_report_entity.dart';
+export 'print_label_problem_report_environment_entity.dart';
+export 'print_label_problem_report_submission_result_entity.dart';

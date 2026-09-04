@@ -2708,6 +2708,86 @@ class EntityFactory {
     printers: printers ?? [makeBSFPrintLabelPrinterEntity()],
   );
 
+  static PrintLabelProblemReportAttachmentMetadataEntity
+  makePrintLabelProblemReportAttachmentMetadataEntity({
+    int? byteLength,
+    int? width,
+    int? height,
+  }) => PrintLabelProblemReportAttachmentMetadataEntity(
+    byteLength: byteLength ?? 1024,
+    width: width ?? 800,
+    height: height ?? 600,
+  );
+
+  static PrintLabelProblemReportEnvironmentEntity
+  makePrintLabelProblemReportEnvironmentEntity({
+    String? appVersion,
+    String? operatingSystem,
+    String? operatingSystemVersion,
+    String? deviceModel,
+  }) => PrintLabelProblemReportEnvironmentEntity(
+    appVersion: appVersion ?? '1.0.0',
+    operatingSystem: operatingSystem ?? 'Android',
+    operatingSystemVersion: operatingSystemVersion ?? '15',
+    deviceModel: deviceModel ?? 'Device',
+  );
+
+  static PrintLabelProblemReportCaptureConfirmationEntity
+  makePrintLabelProblemReportCaptureConfirmationEntity({
+    bool? physicalLabelWasPrintedFromSavedLayout,
+    bool? canvasPreviewRepresentsSavedLayout,
+  }) => PrintLabelProblemReportCaptureConfirmationEntity(
+    physicalLabelWasPrintedFromSavedLayout:
+        physicalLabelWasPrintedFromSavedLayout ?? true,
+    canvasPreviewRepresentsSavedLayout:
+        canvasPreviewRepresentsSavedLayout ?? true,
+  );
+
+  static PrintLabelProblemReportEntity makePrintLabelProblemReportEntity({
+    int? schemaVersion,
+    String? idempotencyKey,
+    int? supabaseEnterpriseId,
+    int? erpEnterpriseCode,
+    String? erpUserName,
+    String? erpEnterpriseName,
+    String? description,
+    BSFPrintLabelLayoutEntity? savedLayout,
+    PrintLabelProblemReportEnvironmentEntity? environment,
+    PrintLabelProblemReportAttachmentMetadataEntity? physicalLabel,
+    PrintLabelProblemReportAttachmentMetadataEntity? canvasPreview,
+    PrintLabelProblemReportCaptureConfirmationEntity? captureConfirmation,
+  }) => PrintLabelProblemReportEntity(
+    schemaVersion: schemaVersion ?? 1,
+    idempotencyKey: idempotencyKey ?? '123e4567-e89b-42d3-a456-426614174000',
+    supabaseEnterpriseId: supabaseEnterpriseId ?? 1,
+    erpEnterpriseCode: erpEnterpriseCode ?? 1,
+    erpUserName: erpUserName ?? faker.person.name(),
+    erpEnterpriseName: erpEnterpriseName ?? faker.company.name(),
+    description: description ?? faker.lorem.sentence(),
+    savedLayout: savedLayout ?? makeBSFPrintLabelLayoutEntity(),
+    environment: environment ?? makePrintLabelProblemReportEnvironmentEntity(),
+    physicalLabel:
+        physicalLabel ?? makePrintLabelProblemReportAttachmentMetadataEntity(),
+    canvasPreview:
+        canvasPreview ?? makePrintLabelProblemReportAttachmentMetadataEntity(),
+    captureConfirmation:
+        captureConfirmation ??
+        makePrintLabelProblemReportCaptureConfirmationEntity(),
+  );
+
+  static PrintLabelProblemReportSubmissionResultEntity
+  makePrintLabelProblemReportSubmissionResultEntity({
+    int? schemaVersion,
+    String? reportId,
+    DateTime? createdAt,
+    bool? idempotentReplay,
+  }) => PrintLabelProblemReportSubmissionResultEntity(
+    schemaVersion: schemaVersion ?? 1,
+    reportId: reportId ?? '123e4567-e89b-42d3-a456-426614174000',
+    createdAt: createdAt ?? DateTime.utc(2026),
+    idempotentReplay: idempotentReplay ?? false,
+  );
+
   static EcGetCustomersParams makeEcGetCustomersParams({String? searchValue}) =>
       EcGetCustomersParams(
         params: makeEcRequestParams(),
