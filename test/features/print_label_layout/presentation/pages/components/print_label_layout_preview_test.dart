@@ -51,6 +51,37 @@ void main() {
     expect(resized.height, lessThan(initialSize.height));
     expect(resized.aspectRatio, 2);
   });
+
+  testWidgets(
+    'should not request a height when paginated layout height is undefined',
+    (tester) async {
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        formType: BSFPrintLabelFormType.paginated,
+        labelWidth: 100,
+        labelHeight: 0,
+        formHeight: 0,
+        fields: const [],
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.eltron,
+        ),
+      );
+
+      await _pumpPreview(tester, layout);
+
+      expect(
+        find.text(
+          'Adicione campos para determinar a altura da pré-visualização.',
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'Informe uma largura e altura válidas para visualizar a etiqueta.',
+        ),
+        findsNothing,
+      );
+    },
+  );
 }
 
 Future<void> _pumpPreview(

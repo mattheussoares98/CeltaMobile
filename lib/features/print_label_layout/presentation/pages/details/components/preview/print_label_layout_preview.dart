@@ -26,6 +26,11 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         previewLabelHeight.isFinite &&
         previewLabelWidth > 0 &&
         previewLabelHeight > 0;
+    final isUndefinedPaginatedHeight =
+        !layout.capabilities.isLabelHeightRequired &&
+        previewLabelWidth.isFinite &&
+        previewLabelWidth > 0 &&
+        (!previewLabelHeight.isFinite || previewLabelHeight <= 0);
     final coordinateUnit =
         layout.coordinateUnit ?? BSFPrintLabelCoordinateUnit.centimeter;
 
@@ -40,9 +45,15 @@ class PrintLabelLayoutPreview extends StatelessWidget {
           ],
         ),
         gapH4,
-        if (!hasValidLabelSize)
+        if (isUndefinedPaginatedHeight)
           BaseText.caption(
-            'Informe uma largura e altura válidas para visualizar a etiqueta.'
+            'Adicione campos para determinar a altura da pré-visualização'
+                .hardcoded,
+            color: context.theme.colorScheme.error,
+          )
+        else if (!hasValidLabelSize)
+          BaseText.caption(
+            'Informe uma largura e altura válidas para visualizar a etiqueta'
                 .hardcoded,
             color: context.theme.colorScheme.error,
           )
