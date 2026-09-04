@@ -1621,5 +1621,37 @@ void main() {
     container.read(provider.notifier).replaceWithSavedLayout(updated);
 
     expect(container.read(provider).requireValue, updated);
+    expect(container.read(provider.notifier).savedLayout, updated);
+    expect(container.read(provider.notifier).hasUnsavedChanges, isFalse);
+    expect(container.read(provider.notifier).shouldConfirmPop, isFalse);
   });
+
+  test(
+    'editing and restoring an existing layout should derive dirty state',
+    () async {
+      when(
+        () => repository.getDetails(params, layout.code),
+      ).thenAnswer((_) async => layout);
+      final container = makeContainer();
+      addTearDown(container.dispose);
+      final provider = printLabelLayoutDetailsControllerProvider(layout.code);
+      await container.read(provider.future);
+      final notifier = container.read(provider.notifier);
+
+      expect(notifier.savedLayout, layout);
+      expect(notifier.hasUnsavedChanges, isFalse);
+      expect(notifier.shouldConfirmPop, isFalse);
+
+      notifier.updateName('Changed');
+
+      expect(notifier.savedLayout, layout);
+      expect(notifier.hasUnsavedChanges, isTrue);
+      expect(notifier.shouldConfirmPop, isTrue);
+
+      notifier.updateName(layout.name);
+
+      expect(notifier.hasUnsavedChanges, isFalse);
+      expect(notifier.shouldConfirmPop, isFalse);
+    },
+  );
 }

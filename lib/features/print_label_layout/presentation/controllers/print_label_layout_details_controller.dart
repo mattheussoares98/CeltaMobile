@@ -11,8 +11,14 @@ part 'print_label_layout_details_controller.g.dart';
 class PrintLabelLayoutDetailsController
     extends _$PrintLabelLayoutDetailsController {
   List<BSFPrintLabelPrinterEntity> _printers = const [];
+  BSFPrintLabelLayoutEntity? _savedLayout;
 
   List<BSFPrintLabelPrinterEntity> get printers => _printers;
+  BSFPrintLabelLayoutEntity? get savedLayout => _savedLayout;
+  bool get hasUnsavedChanges =>
+      state.value != null && state.value != _savedLayout;
+  bool get shouldConfirmPop =>
+      state.value != null && (_savedLayout?.code == 0 || hasUnsavedChanges);
 
   @override
   FutureOr<BSFPrintLabelLayoutEntity> build(int code) async {
@@ -23,11 +29,14 @@ class PrintLabelLayoutDetailsController
           .read(ecPrintLabelLayoutRepositoryProvider)
           .getCreateOptions(params);
       _printers = options.printers;
+      _savedLayout = options.draft;
       return options.draft;
     }
-    return ref
+    final layout = await ref
         .read(ecPrintLabelLayoutRepositoryProvider)
         .getDetails(params, code);
+    _savedLayout = layout;
+    return layout;
   }
 
   void updateFieldCoordinateX(int fieldIndex, double delta) {
@@ -493,6 +502,7 @@ class PrintLabelLayoutDetailsController
   }
 
   void replaceWithSavedLayout(BSFPrintLabelLayoutEntity layout) {
+    _savedLayout = layout;
     state = AsyncData(layout);
   }
 

@@ -36,7 +36,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       onPopInvokedWithResult: () {
-        if (labelCode == 0) {
+        if (ref.read(provider.notifier).shouldConfirmPop) {
           showAlertDialog(
             context: context,
             title: "Atenção".hardcoded,
@@ -45,7 +45,10 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                     .hardcoded,
             cancelActionText: 'Não'.hardcoded,
             defaultActionText: 'Descartar alterações'.hardcoded,
-            onOkPressed: context.pop,
+            onOkPressed: () {
+              ref.invalidate(provider);
+              context.pop();
+            },
           );
         } else {
           context.pop();
