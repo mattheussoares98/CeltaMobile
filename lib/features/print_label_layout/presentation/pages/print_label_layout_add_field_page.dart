@@ -5,13 +5,10 @@ import 'package:celta_inventario/features/print_label_layout/presentation/contro
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
-  static const _defaultFloatDecimalPlaces = 2;
-
+class PrintLabelLayoutAddFieldPage extends ConsumerWidget {
   final int layoutCode;
   final List<PrintLabelFieldEditorOptionEntity> fieldOptions;
   final List<BSFPrintLabelFieldFormatEntity> formats;
@@ -25,8 +22,11 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedOption = useState<PrintLabelFieldEditorOptionEntity?>(null);
-    final draft = useState<BSFPrintLabelLayoutFieldEntity?>(null);
+    final addFieldProvider = printLabelLayoutAddFieldControllerProvider(
+      layoutCode,
+    );
+    final addFieldState = ref.watch(addFieldProvider);
+    final controller = ref.read(addFieldProvider.notifier);
     final coordinateUnit = ref.watch(
       printLabelLayoutDetailsControllerProvider(
         layoutCode,
@@ -44,205 +44,30 @@ class PrintLabelLayoutAddFieldPage extends HookConsumerWidget {
             child: SingleChildScrollView(
               child: PrintLabelLayoutFieldEditor(
                 layoutCode: layoutCode,
-                field: draft.value,
+                field: addFieldState.draft,
                 fieldOptions: fieldOptions,
-                selectedFieldOption: selectedOption.value,
-                onFieldOptionChanged: (value) {
-                  selectedOption.value = value;
-                  final initialDraft = _withMinimumDimensions(value.draft);
-                  draft.value = initialDraft.copyWith(
-                    fontType: _initialFontType(ref, initialDraft),
-                    alignmentType: BSFPrintElementAlignmentType.middle,
-                    quantityDecimalPlaces: initialDraft.supportsDecimalPlaces
-                        ? _defaultFloatDecimalPlaces
-                        : initialDraft.quantityDecimalPlaces,
-                  );
-                },
+                selectedFieldOption: addFieldState.selectedOption,
+                onFieldOptionChanged: controller.selectFieldOption,
                 fieldDefinitions: fieldOptions
                     .map((option) => option.definition)
                     .toList(),
                 formats: formats,
                 coordinateUnit: coordinateUnit,
-                onCoordinateXChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    coordinateX: _updatedValue(field.coordinateX, delta),
-                  ),
-                ),
-                onCoordinateYChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    coordinateY: _updatedValue(field.coordinateY, delta),
-                  ),
-                ),
-                onWidthChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) =>
-                      field.copyWith(width: _updatedValue(field.width, delta)),
-                ),
-                onHeightChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    height: _updatedValue(field.height, delta),
-                  ),
-                ),
-                onSizeChanged: (delta) => _updateDraft(draft, (field) {
-                  final size = _updatedValue(field.width, delta);
-                  return field.copyWith(width: size, height: size);
-                }),
-                onRatioBarCodeChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    ratioBarCode: _updatedValue(field.ratioBarCode, delta),
-                  ),
-                ),
-                onBarcodeSimbologyTypeChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(barcodeSimbologyType: value),
-                ),
-                onFieldForDataBarcodeChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(fieldForDataBarcode: value),
-                ),
-                onRotationChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(rotateType: value),
-                ),
-                onAlignmentChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(alignmentType: value),
-                ),
-                onQuantityDecimalPlacesChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    quantityDecimalPlaces: _updatedIntValue(
-                      field.quantityDecimalPlaces,
-                      delta,
-                      maximum: 9999,
-                    ),
-                  ),
-                ),
-                onDrawLabelBelowBarcodeChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(drawLabelBelowBarcode: value),
-                ),
-                onPrefixChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(prefix: value),
-                ),
-                onImageNameChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(imageName: value),
-                ),
-                onFormatChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(format: value),
-                ),
-                onFontTypeChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(fontType: value.toString()),
-                ),
-                onFontSizeChange: (advance) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    fontSize: PrintLabelLayoutDetailsController.changedFontSize(
-                      field.fontSize,
-                      advance,
-                    ),
-                  ),
-                ),
-                onIsBoldChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(isBold: value),
-                ),
-                onIsReverseTextChanged: (value) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(isReverseText: value),
-                ),
-                onPositionStartCharacterChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    positionStartCharacter: _updatedIntValue(
-                      field.positionStartCharacter,
-                      delta,
-                    ),
-                  ),
-                ),
-                onMaxCharacterSizeChanged: (delta) => _updateDraft(
-                  draft,
-                  (field) => field.copyWith(
-                    maxCharacterSize: _updatedIntValue(
-                      field.maxCharacterSize,
-                      delta,
-                    ),
-                  ),
-                ),
+                onFieldChanged: controller.updateField,
               ),
             ),
           ),
           PrimaryButton(
             text: 'Adicionar'.hardcoded,
-            onPressed: draft.value == null
+            onPressed: addFieldState.draft == null
                 ? null
-                : () => _addField(context, ref, draft.value!),
+                : () {
+                    controller.addField();
+                    context.pop();
+                  },
           ),
         ],
       ),
-    );
-  }
-
-  void _addField(
-    BuildContext context,
-    WidgetRef ref,
-    BSFPrintLabelLayoutFieldEntity draft,
-  ) {
-    ref
-        .read(printLabelLayoutDetailsControllerProvider(layoutCode).notifier)
-        .addField(draft);
-    context.pop();
-  }
-
-  void _updateDraft(
-    ValueNotifier<BSFPrintLabelLayoutFieldEntity?> draft,
-    BSFPrintLabelLayoutFieldEntity Function(
-      BSFPrintLabelLayoutFieldEntity field,
-    )
-    updater,
-  ) {
-    final currentDraft = draft.value;
-    if (currentDraft == null) return;
-
-    draft.value = updater(currentDraft);
-  }
-
-  double _updatedValue(double value, double delta) {
-    final updatedValue = (value + delta).clamp(0.0, double.infinity);
-    return (updatedValue * 100).roundToDouble() / 100;
-  }
-
-  int _updatedIntValue(int value, int delta, {int maximum = 2147483647}) =>
-      (value + delta).clamp(0, maximum);
-
-  String _initialFontType(WidgetRef ref, BSFPrintLabelLayoutFieldEntity field) {
-    final layout = ref
-        .read(printLabelLayoutDetailsControllerProvider(layoutCode))
-        .value;
-    if (layout?.supportsFontType(field) != true) return field.fontType;
-
-    const supportedFontTypes = {'1', '2', '3', '4', '5', '6'};
-    return supportedFontTypes.contains(field.fontType) ? field.fontType : '1';
-  }
-
-  BSFPrintLabelLayoutFieldEntity _withMinimumDimensions(
-    BSFPrintLabelLayoutFieldEntity field,
-  ) {
-    if (field.dimensionType == BSFPrintLabelFieldDimensionType.notApplicable) {
-      return field;
-    }
-
-    return field.copyWith(
-      width: field.width.clamp(field.minimumEditorWidth, double.infinity),
-      height: field.height.clamp(field.minimumEditorHeight, double.infinity),
     );
   }
 }

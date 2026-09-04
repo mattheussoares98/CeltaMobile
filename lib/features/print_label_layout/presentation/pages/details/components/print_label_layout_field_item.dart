@@ -53,48 +53,7 @@ class PrintLabelLayoutFieldItem extends ConsumerWidget {
           formats:
               options?.formats ?? [if (field.format != null) field.format!],
           coordinateUnit: coordinateUnit,
-          onCoordinateXChanged: (delta) =>
-              controller.updateFieldCoordinateX(fieldIndex, delta),
-          onCoordinateYChanged: (delta) =>
-              controller.updateFieldCoordinateY(fieldIndex, delta),
-          onWidthChanged: (delta) =>
-              controller.updateFieldWidth(fieldIndex, delta),
-          onHeightChanged: (delta) =>
-              controller.updateFieldHeight(fieldIndex, delta),
-          onSizeChanged: (delta) =>
-              controller.updateFieldSize(fieldIndex, delta),
-          onRatioBarCodeChanged: (delta) =>
-              controller.updateFieldRatioBarCode(fieldIndex, delta),
-          onBarcodeSimbologyTypeChanged: (value) =>
-              controller.updateFieldBarcodeSimbologyType(fieldIndex, value),
-          onFieldForDataBarcodeChanged: (value) =>
-              controller.updateFieldForDataBarcode(fieldIndex, value),
-          onRotationChanged: (value) =>
-              controller.updateFieldRotateType(fieldIndex, value),
-          onAlignmentChanged: (value) =>
-              controller.updateFieldAlignmentType(fieldIndex, value),
-          onQuantityDecimalPlacesChanged: (delta) =>
-              controller.updateFieldQuantityDecimalPlaces(fieldIndex, delta),
-          onDrawLabelBelowBarcodeChanged: (value) =>
-              controller.updateFieldDrawLabelBelowBarcode(fieldIndex, value),
-          onPrefixChanged: (value) =>
-              controller.updateFieldPrefix(fieldIndex, value),
-          onImageNameChanged: (value) =>
-              controller.updateFieldImageName(fieldIndex, value),
-          onFormatChanged: (value) =>
-              controller.updateFieldFormat(fieldIndex, value),
-          onFontTypeChanged: (value) =>
-              controller.updateFieldFontType(fieldIndex, value),
-          onFontSizeChange: (advance) =>
-              controller.changeFieldFontSize(fieldIndex, advance),
-          onIsBoldChanged: (value) =>
-              controller.updateFieldIsBold(fieldIndex, value),
-          onIsReverseTextChanged: (value) =>
-              controller.updateFieldIsReverseText(fieldIndex, value),
-          onPositionStartCharacterChanged: (delta) =>
-              controller.updateFieldPositionStartCharacter(fieldIndex, delta),
-          onMaxCharacterSizeChanged: (delta) =>
-              controller.updateFieldMaxCharacterSize(fieldIndex, delta),
+          onFieldChanged: (field) => controller.replaceField(fieldIndex, field),
         ),
       ),
     );

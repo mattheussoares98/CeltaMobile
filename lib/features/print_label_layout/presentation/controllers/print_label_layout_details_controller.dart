@@ -232,6 +232,10 @@ class PrintLabelLayoutDetailsController
     _updateField(fieldIndex, (field) => draft.copyWith(prefix: field.prefix));
   }
 
+  void replaceField(int fieldIndex, BSFPrintLabelLayoutFieldEntity field) {
+    _updateField(fieldIndex, (_) => field);
+  }
+
   void updateName(String name) {
     _updateLayout((layout) => layout.copyWith(name: name));
   }

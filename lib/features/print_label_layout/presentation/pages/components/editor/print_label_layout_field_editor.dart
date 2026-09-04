@@ -20,28 +20,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   final List<BSFPrintLabelFieldDefinitionEntity> fieldDefinitions;
   final List<BSFPrintLabelFieldFormatEntity> formats;
   final BSFPrintLabelCoordinateUnit? coordinateUnit;
-  final ValueChanged<double> onCoordinateXChanged;
-  final ValueChanged<double> onCoordinateYChanged;
-  final ValueChanged<double> onWidthChanged;
-  final ValueChanged<double> onHeightChanged;
-  final ValueChanged<double> onSizeChanged;
-  final ValueChanged<double> onRatioBarCodeChanged;
-  final ValueChanged<BSFBarcodeSimbologyType> onBarcodeSimbologyTypeChanged;
-  final ValueChanged<BSFPrintLabelFieldDefinitionEntity>
-  onFieldForDataBarcodeChanged;
-  final ValueChanged<BSFPrintElementRotationType> onRotationChanged;
-  final ValueChanged<BSFPrintElementAlignmentType> onAlignmentChanged;
-  final ValueChanged<int> onQuantityDecimalPlacesChanged;
-  final ValueChanged<bool> onDrawLabelBelowBarcodeChanged;
-  final ValueChanged<String> onPrefixChanged;
-  final ValueChanged<String> onImageNameChanged;
-  final ValueChanged<BSFPrintLabelFieldFormatEntity> onFormatChanged;
-  final ValueChanged<int> onPositionStartCharacterChanged;
-  final ValueChanged<int> onMaxCharacterSizeChanged;
-  final ValueChanged<int> onFontTypeChanged;
-  final ValueChanged<bool> onFontSizeChange;
-  final ValueChanged<bool> onIsBoldChanged;
-  final ValueChanged<bool> onIsReverseTextChanged;
+  final ValueChanged<BSFPrintLabelLayoutFieldEntity> onFieldChanged;
 
   const PrintLabelLayoutFieldEditor({
     super.key,
@@ -53,27 +32,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     required this.fieldDefinitions,
     required this.formats,
     required this.coordinateUnit,
-    required this.onCoordinateXChanged,
-    required this.onCoordinateYChanged,
-    required this.onWidthChanged,
-    required this.onHeightChanged,
-    required this.onSizeChanged,
-    required this.onRatioBarCodeChanged,
-    required this.onBarcodeSimbologyTypeChanged,
-    required this.onFieldForDataBarcodeChanged,
-    required this.onRotationChanged,
-    required this.onAlignmentChanged,
-    required this.onQuantityDecimalPlacesChanged,
-    required this.onDrawLabelBelowBarcodeChanged,
-    required this.onPrefixChanged,
-    required this.onImageNameChanged,
-    required this.onFormatChanged,
-    required this.onPositionStartCharacterChanged,
-    required this.onMaxCharacterSizeChanged,
-    required this.onFontTypeChanged,
-    required this.onFontSizeChange,
-    required this.onIsBoldChanged,
-    required this.onIsReverseTextChanged,
+    required this.onFieldChanged,
   });
 
   @override
@@ -166,7 +125,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         BaseTextFormField(
           controller: prefixController,
           labelText: 'Prefixo'.hardcoded,
-          onChanged: onPrefixChanged,
+          onChanged: (value) => onFieldChanged(_withPrefix(field, value)),
         ),
         gapH4,
         Wrap(
@@ -179,11 +138,23 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateX),
               onDecrease: field.coordinateX > 0
-                  ? () =>
-                        onCoordinateXChanged(-resolvedCoordinateUnit.editorStep)
+                  ? () => onFieldChanged(
+                      field.copyWith(
+                        coordinateX: _updatedValue(
+                          field.coordinateX,
+                          -resolvedCoordinateUnit.editorStep,
+                        ),
+                      ),
+                    )
                   : null,
-              onIncrease: () =>
-                  onCoordinateXChanged(resolvedCoordinateUnit.editorStep),
+              onIncrease: () => onFieldChanged(
+                field.copyWith(
+                  coordinateX: _updatedValue(
+                    field.coordinateX,
+                    resolvedCoordinateUnit.editorStep,
+                  ),
+                ),
+              ),
             ),
             PrintLabelLayoutValueAdjuster(
               label: 'Eixo Y'.hardcoded,
@@ -191,11 +162,23 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateY),
               onDecrease: field.coordinateY > 0
-                  ? () =>
-                        onCoordinateYChanged(-resolvedCoordinateUnit.editorStep)
+                  ? () => onFieldChanged(
+                      field.copyWith(
+                        coordinateY: _updatedValue(
+                          field.coordinateY,
+                          -resolvedCoordinateUnit.editorStep,
+                        ),
+                      ),
+                    )
                   : null,
-              onIncrease: () =>
-                  onCoordinateYChanged(resolvedCoordinateUnit.editorStep),
+              onIncrease: () => onFieldChanged(
+                field.copyWith(
+                  coordinateY: _updatedValue(
+                    field.coordinateY,
+                    resolvedCoordinateUnit.editorStep,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -213,10 +196,23 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
                   onDecrease: field.width > field.minimumEditorWidth
-                      ? () => onSizeChanged(-field.dimensionType.editorStep)
+                      ? () {
+                          final size = _updatedValue(
+                            field.width,
+                            -field.dimensionType.editorStep,
+                          );
+                          onFieldChanged(
+                            field.copyWith(width: size, height: size),
+                          );
+                        }
                       : null,
-                  onIncrease: () =>
-                      onSizeChanged(field.dimensionType.editorStep),
+                  onIncrease: () {
+                    final size = _updatedValue(
+                      field.width,
+                      field.dimensionType.editorStep,
+                    );
+                    onFieldChanged(field.copyWith(width: size, height: size));
+                  },
                 )
               else ...[
                 PrintLabelLayoutValueAdjuster(
@@ -225,10 +221,23 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
                   onDecrease: field.width > field.minimumEditorWidth
-                      ? () => onWidthChanged(-field.dimensionType.editorStep)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            width: _updatedValue(
+                              field.width,
+                              -field.dimensionType.editorStep,
+                            ),
+                          ),
+                        )
                       : null,
-                  onIncrease: () =>
-                      onWidthChanged(field.dimensionType.editorStep),
+                  onIncrease: () => onFieldChanged(
+                    field.copyWith(
+                      width: _updatedValue(
+                        field.width,
+                        field.dimensionType.editorStep,
+                      ),
+                    ),
+                  ),
                 ),
                 PrintLabelLayoutValueAdjuster(
                   label: 'Altura'.hardcoded,
@@ -236,10 +245,23 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.height),
                   onDecrease: field.height > field.minimumEditorHeight
-                      ? () => onHeightChanged(-field.dimensionType.editorStep)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            height: _updatedValue(
+                              field.height,
+                              -field.dimensionType.editorStep,
+                            ),
+                          ),
+                        )
                       : null,
-                  onIncrease: () =>
-                      onHeightChanged(field.dimensionType.editorStep),
+                  onIncrease: () => onFieldChanged(
+                    field.copyWith(
+                      height: _updatedValue(
+                        field.height,
+                        field.dimensionType.editorStep,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ],
@@ -257,16 +279,26 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   : field.dimensionType.format(field.ratioBarCode),
               onDecrease:
                   field.ratioBarCode > field.minimumEditorStrokeThickness
-                  ? () => onRatioBarCodeChanged(
-                      supportsBarcodeRatio
-                          ? -barcodeRatioStep
-                          : -field.dimensionType.editorStep,
+                  ? () => onFieldChanged(
+                      field.copyWith(
+                        ratioBarCode: _updatedValue(
+                          field.ratioBarCode,
+                          supportsBarcodeRatio
+                              ? -barcodeRatioStep
+                              : -field.dimensionType.editorStep,
+                        ),
+                      ),
                     )
                   : null,
-              onIncrease: () => onRatioBarCodeChanged(
-                supportsBarcodeRatio
-                    ? barcodeRatioStep
-                    : field.dimensionType.editorStep,
+              onIncrease: () => onFieldChanged(
+                field.copyWith(
+                  ratioBarCode: _updatedValue(
+                    field.ratioBarCode,
+                    supportsBarcodeRatio
+                        ? barcodeRatioStep
+                        : field.dimensionType.editorStep,
+                  ),
+                ),
               ),
             ),
           ],
@@ -279,7 +311,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             items: BSFPrintElementRotationType.values,
             selectedValue: field.rotateType,
             itemLabelBuilder: (item) => item.name,
-            onChanged: onRotationChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(rotateType: value)),
           ),
         ],
         if (supportsQrImageName) ...[
@@ -287,7 +320,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           BaseTextFormField(
             controller: imageNameController,
             labelText: 'Nome da imagem'.hardcoded,
-            onChanged: onImageNameChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(imageName: value)),
           ),
         ],
         if (supportsGenericBarcodeControls) ...[
@@ -304,7 +338,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   ),
                 )
                 .toList(),
-            onChanged: onBarcodeSimbologyTypeChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(barcodeSimbologyType: value)),
           ),
           gapH8,
           BaseDropDown<BSFPrintLabelFieldDefinitionEntity>(
@@ -319,7 +354,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   ),
                 )
                 .toList(),
-            onChanged: onFieldForDataBarcodeChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(fieldForDataBarcode: value)),
           ),
         ],
         if (supportsDrawLabelBelowBarcode) ...[
@@ -327,7 +363,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           BaseSwitch(
             title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
             value: field.drawLabelBelowBarcode,
-            onChanged: onDrawLabelBelowBarcodeChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(drawLabelBelowBarcode: value)),
           ),
         ],
         if (supportsAlignment) ...[
@@ -338,7 +375,8 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             items: BSFPrintElementAlignmentType.values,
             selectedValue: field.alignmentType,
             itemLabelBuilder: (item) => item.label.hardcoded,
-            onChanged: onAlignmentChanged,
+            onChanged: (value) =>
+                onFieldChanged(field.copyWith(alignmentType: value)),
           ),
         ],
         if (field.isTextField) ...[
@@ -356,7 +394,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   ),
                 )
                 .toList(),
-            onChanged: onFormatChanged,
+            onChanged: (value) => onFieldChanged(field.copyWith(format: value)),
           ),
         ],
 
@@ -372,10 +410,26 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   label: 'Casas decimais'.hardcoded,
                   value: field.quantityDecimalPlaces.toString(),
                   onDecrease: field.quantityDecimalPlaces > 0
-                      ? () => onQuantityDecimalPlacesChanged(-1)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            quantityDecimalPlaces: _updatedIntValue(
+                              field.quantityDecimalPlaces,
+                              -1,
+                              maximum: 9999,
+                            ),
+                          ),
+                        )
                       : null,
                   onIncrease: field.quantityDecimalPlaces < 9999
-                      ? () => onQuantityDecimalPlacesChanged(1)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            quantityDecimalPlaces: _updatedIntValue(
+                              field.quantityDecimalPlaces,
+                              1,
+                              maximum: 9999,
+                            ),
+                          ),
+                        )
                       : null,
                 ),
               ),
@@ -387,10 +441,18 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   label: 'Tipo da fonte'.hardcoded,
                   value: field.editorFontType.toString(),
                   onDecrease: field.editorFontType > 1
-                      ? () => onFontTypeChanged(field.editorFontType - 1)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            fontType: (field.editorFontType - 1).toString(),
+                          ),
+                        )
                       : null,
                   onIncrease: field.editorFontType < 6
-                      ? () => onFontTypeChanged(field.editorFontType + 1)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            fontType: (field.editorFontType + 1).toString(),
+                          ),
+                        )
                       : null,
                 ),
               ),
@@ -402,10 +464,26 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   label: 'Tamanho da fonte'.hardcoded,
                   value: field.fontSize.toString(),
                   onDecrease: field.fontSize > 0
-                      ? () => onFontSizeChange(false)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            fontSize:
+                                PrintLabelLayoutDetailsController.changedFontSize(
+                                  field.fontSize,
+                                  false,
+                                ),
+                          ),
+                        )
                       : null,
                   onIncrease: field.fontSize < 216
-                      ? () => onFontSizeChange(true)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            fontSize:
+                                PrintLabelLayoutDetailsController.changedFontSize(
+                                  field.fontSize,
+                                  true,
+                                ),
+                          ),
+                        )
                       : null,
                 ),
               ),
@@ -417,18 +495,46 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   label: 'Posição inicial'.hardcoded,
                   value: field.positionStartCharacter.toString(),
                   onDecrease: field.positionStartCharacter > 1
-                      ? () => onPositionStartCharacterChanged(-1)
+                      ? () => onFieldChanged(
+                          field.copyWith(
+                            positionStartCharacter: _updatedIntValue(
+                              field.positionStartCharacter,
+                              -1,
+                            ),
+                          ),
+                        )
                       : null,
-                  onIncrease: () => onPositionStartCharacterChanged(1),
+                  onIncrease: () => onFieldChanged(
+                    field.copyWith(
+                      positionStartCharacter: _updatedIntValue(
+                        field.positionStartCharacter,
+                        1,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               PrintLabelLayoutValueAdjuster(
                 label: 'Máximo de caracteres'.hardcoded,
                 value: field.maxCharacterSize.toString(),
                 onDecrease: field.maxCharacterSize > 0
-                    ? () => onMaxCharacterSizeChanged(-1)
+                    ? () => onFieldChanged(
+                        field.copyWith(
+                          maxCharacterSize: _updatedIntValue(
+                            field.maxCharacterSize,
+                            -1,
+                          ),
+                        ),
+                      )
                     : null,
-                onIncrease: () => onMaxCharacterSizeChanged(1),
+                onIncrease: () => onFieldChanged(
+                  field.copyWith(
+                    maxCharacterSize: _updatedIntValue(
+                      field.maxCharacterSize,
+                      1,
+                    ),
+                  ),
+                ),
               ),
             ],
           ],
@@ -439,7 +545,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             name: 'Imprimir texto em negrito'.hardcoded,
             enabled: field.isBold,
             onChanged: (value) {
-              if (value != null) onIsBoldChanged(value);
+              if (value != null) {
+                onFieldChanged(field.copyWith(isBold: value));
+              }
             },
           ),
         ],
@@ -449,11 +557,38 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             name: 'Imprimir texto reverso'.hardcoded,
             enabled: field.isReverseText,
             onChanged: (value) {
-              if (value != null) onIsReverseTextChanged(value);
+              if (value != null) {
+                onFieldChanged(field.copyWith(isReverseText: value));
+              }
             },
           ),
         ],
       ],
+    );
+  }
+
+  double _updatedValue(double value, double delta) {
+    final updatedValue = (value + delta).clamp(0.0, double.infinity);
+    return (updatedValue * 100).roundToDouble() / 100;
+  }
+
+  int _updatedIntValue(int value, int delta, {int maximum = 2147483647}) =>
+      (value + delta).clamp(0, maximum);
+
+  BSFPrintLabelLayoutFieldEntity _withPrefix(
+    BSFPrintLabelLayoutFieldEntity field,
+    String prefix,
+  ) {
+    final previewValue = field.previewValue;
+    if (previewValue == null) return field.copyWith(prefix: prefix);
+
+    final valueWithoutPrefix =
+        field.prefix.isNotEmpty && previewValue.startsWith(field.prefix)
+        ? previewValue.substring(field.prefix.length)
+        : previewValue;
+    return field.copyWith(
+      prefix: prefix,
+      previewValue: '$prefix$valueWithoutPrefix',
     );
   }
 }
