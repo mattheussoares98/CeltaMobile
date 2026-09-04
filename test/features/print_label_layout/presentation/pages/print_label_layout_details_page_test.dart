@@ -40,7 +40,7 @@ void main() {
       () => repository.getDetails(params, layout.code),
     ).thenAnswer((_) async => layout);
     when(
-      () => repository.getFieldEditorOptions(params, layout.code),
+      () => repository.getFieldEditorOptions(params, layout),
     ).thenAnswer((_) async => options);
     when(() => repository.update(params, layout)).thenThrow(exception);
 

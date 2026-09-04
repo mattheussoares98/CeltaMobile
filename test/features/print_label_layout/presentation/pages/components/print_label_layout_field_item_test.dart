@@ -421,7 +421,7 @@ void main() {
         () => repository.getDetails(params, 10),
       ).thenAnswer((_) async => layout);
       when(
-        () => repository.getFieldEditorOptions(params, 10),
+        () => repository.getFieldEditorOptions(params, layout),
       ).thenAnswer((_) async => options);
 
       await tester.pumpWidget(
@@ -700,7 +700,7 @@ void main() {
         () => repository.getDetails(params, 10),
       ).thenAnswer((_) async => layout);
       when(
-        () => repository.getFieldEditorOptions(params, 10),
+        () => repository.getFieldEditorOptions(params, layout),
       ).thenAnswer((_) async => options);
 
       await tester.pumpWidget(
@@ -891,7 +891,7 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
-    when(() => repository.getFieldEditorOptions(params, 10)).thenAnswer(
+    when(() => repository.getFieldEditorOptions(params, layout)).thenAnswer(
       (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
     );
 
@@ -933,7 +933,7 @@ void main() {
     when(
       () => repository.getDetails(params, 10),
     ).thenAnswer((_) async => layout);
-    when(() => repository.getFieldEditorOptions(params, 10)).thenAnswer(
+    when(() => repository.getFieldEditorOptions(params, layout)).thenAnswer(
       (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
     );
 

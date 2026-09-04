@@ -13,6 +13,22 @@ class PrintLabelLayoutAddFieldButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectedPrinter = ref.watch(
+      printLabelLayoutDetailsControllerProvider(
+        layoutCode,
+      ).select((state) => state.value?.labelPrinter),
+    );
+
+    if (layoutCode == 0 && selectedPrinter == null) {
+      return PrimaryButton(
+        text: 'Selecione a impressora'.hardcoded,
+        icon: const PlatformIcon(
+          cupertinoIcon: CupertinoIcons.add,
+          materialIcon: Icons.add,
+        ),
+      );
+    }
+
     final provider = printLabelFieldEditorOptionsControllerProvider(layoutCode);
 
     return AsyncValueWidget(
