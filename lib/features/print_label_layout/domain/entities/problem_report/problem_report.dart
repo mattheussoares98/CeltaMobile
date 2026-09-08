@@ -4,3 +4,4 @@ export 'print_label_problem_report_entity.dart';
 export 'print_label_problem_report_environment_entity.dart';
 export 'print_label_problem_report_prepared_image_entity.dart';
 export 'print_label_problem_report_submission_result_entity.dart';
+export 'reported_print_label_problem_entity.dart';
