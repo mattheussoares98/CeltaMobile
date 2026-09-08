@@ -3,3 +3,4 @@ export 'print_label_problem_report_capture_confirmation_model.dart';
 export 'print_label_problem_report_environment_model.dart';
 export 'print_label_problem_report_model.dart';
 export 'print_label_problem_report_submission_result_model.dart';
+export 'reported_print_label_problem_model.dart';
