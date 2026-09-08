@@ -37,7 +37,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const fastRepeatInterval = Duration(milliseconds: 25);
+    const fastRepeatInterval = Duration(milliseconds: 1);
     const barcodeRatioStep = 0.1;
     final field = this.field;
     final fieldSelector = fieldOptions == null
