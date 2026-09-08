@@ -78,24 +78,27 @@ class PrintLabelProblemReportCamera extends HookWidget {
     if (error.value != null) {
       final denied = cameraDelegate.isPermissionDenied(error.value!);
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BaseText.headline(
-              denied
-                  ? 'Permita o acesso à câmera nas configurações do dispositivo.'
-                        .hardcoded
-                  : 'Não foi possível abrir a câmera: ${error.value}'.hardcoded,
-              textAlign: TextAlign.center,
-            ),
-            if (denied) ...[
-              gapH8,
-              PrimaryTextButton(
-                text: 'Abrir configurações'.hardcoded,
-                onPressed: openAppSettings,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BaseText.headline(
+                denied
+                    ? 'Permita o acesso à câmera nas configurações do dispositivo.'
+                          .hardcoded
+                    : 'Não foi possível abrir a câmera: ${error.value}'
+                          .hardcoded,
+                textAlign: TextAlign.center,
               ),
+              if (denied) ...[
+                gapH8,
+                PrimaryTextButton(
+                  text: 'Abrir configurações'.hardcoded,
+                  onPressed: openAppSettings,
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       );
     }

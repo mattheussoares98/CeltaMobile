@@ -52,6 +52,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
     }
 
     return BaseScaffold(
+      isScrollable: false,
       appBar: BaseAppBar(title: 'Relatar problema de impressão'.hardcoded),
       padding: const EdgeInsets.all(Sizes.p8),
       body: AsyncValueWidget(
