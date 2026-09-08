@@ -4,6 +4,7 @@ import 'package:celta_inventario/features/print_label_layout/presentation/pages/
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,6 +26,18 @@ class PrintLabelLayoutSummariesPage extends ConsumerWidget {
       appBar: BaseAppBar(
         title: 'Leiautes de etiquetas'.hardcoded,
         actions: [
+          if (kDebugMode)
+            IconButton(
+              tooltip: 'Problemas reportados'.hardcoded,
+              onPressed: () => context.goNamed(
+                Routes.reportedPrintLabelProblems.name,
+                pathParameters: {'enterpriseCode': enterpriseCode.toString()},
+              ),
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.exclamationmark_bubble,
+                materialIcon: Icons.bug_report_outlined,
+              ),
+            ),
           IconButton(
             onPressed: () => context.goNamed(
               Routes.printLabelLayoutDetails.name,
