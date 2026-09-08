@@ -82,6 +82,53 @@ void main() {
       );
     },
   );
+
+  testWidgets(
+    'should paint filled boxes first without changing the field indexes',
+    (tester) async {
+      final text = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 16,
+        coordinateX: 78,
+        coordinateY: 159,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.string,
+        ),
+      );
+      final filledBox = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        code: 15,
+        coordinateX: 57,
+        coordinateY: 35,
+        width: 535,
+        height: 288,
+        ratioBarCode: 172,
+        dimensionType: BSFPrintLabelFieldDimensionType.printerDot,
+        field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+          fieldType: BSFPrintLabelFieldType.boxOrLine,
+        ),
+      );
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        formWidth: 767,
+        formHeight: 426,
+        labelWidth: 604,
+        labelHeight: 401,
+        fields: [text, filledBox],
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.os214Plus,
+        ),
+      );
+
+      await _pumpPreview(tester, layout);
+
+      final paintedFieldCodes = tester
+          .widgetList<PrintLabelPreviewElement>(
+            find.byType(PrintLabelPreviewElement),
+          )
+          .map((element) => element.field.code)
+          .toList();
+      expect(paintedFieldCodes, [15, 16]);
+      expect(layout.fields, [text, filledBox]);
+    },
+  );
 }
 
 Future<void> _pumpPreview(

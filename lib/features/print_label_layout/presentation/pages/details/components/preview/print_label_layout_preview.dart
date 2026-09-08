@@ -100,6 +100,12 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     final drawableLabelWidth = previewMetrics.drawableCanvasWidth;
     final canvasWidth = drawableLabelWidth * previewScale;
     final isRabbitOS214 = previewMetrics.isRabbitOS214;
+    final visibleFields = layout.fields.where((field) => field.isVisible);
+    final fieldsInPaintOrder = visibleFields
+        .where(previewMetrics.isFilledBox)
+        .followedBy(
+          visibleFields.where((field) => !previewMetrics.isFilledBox(field)),
+        );
 
     return SizedBox(
       height: canvasHeight,
@@ -115,9 +121,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
             ),
             child: Stack(
               clipBehavior: Clip.none,
-              children: layout.fields.where((field) => field.isVisible).map((
-                field,
-              ) {
+              children: fieldsInPaintOrder.map((field) {
                 final scaleX = previewScale;
                 final scaleY = previewScale;
 
