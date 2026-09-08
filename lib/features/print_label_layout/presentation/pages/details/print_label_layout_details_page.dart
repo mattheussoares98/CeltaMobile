@@ -65,34 +65,35 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       appBar: BaseAppBar(
         title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
         actions: [
-          IconButton(
-            key: const Key('report-print-label-problem'),
-            tooltip: 'Relatar problema'.hardcoded,
-            onPressed: () {
-              if (ref.read(provider.notifier).shouldConfirmPop) {
-                showAlertDialog(
-                  context: context,
-                  title: 'Salve o leiaute'.hardcoded,
-                  content:
-                      'Salve ou descarte as alterações antes de relatar um problema.'
-                          .hardcoded,
-                  defaultActionText: 'OK'.hardcoded,
+          if (PlatformUtil.isMobile)
+            IconButton(
+              key: const Key('report-print-label-problem'),
+              tooltip: 'Relatar problema'.hardcoded,
+              onPressed: () {
+                if (ref.read(provider.notifier).shouldConfirmPop) {
+                  showAlertDialog(
+                    context: context,
+                    title: 'Salve o leiaute'.hardcoded,
+                    content:
+                        'Salve ou descarte as alterações antes de relatar um problema.'
+                            .hardcoded,
+                    defaultActionText: 'OK'.hardcoded,
+                  );
+                  return;
+                }
+                context.pushNamed(
+                  Routes.printLabelProblemReport.name,
+                  pathParameters: {
+                    'enterpriseCode': enterpriseCode.toString(),
+                    'labelCode': labelCode.toString(),
+                  },
                 );
-                return;
-              }
-              context.pushNamed(
-                Routes.printLabelProblemReport.name,
-                pathParameters: {
-                  'enterpriseCode': enterpriseCode.toString(),
-                  'labelCode': labelCode.toString(),
-                },
-              );
-            },
-            icon: const PlatformIcon(
-              cupertinoIcon: CupertinoIcons.exclamationmark_bubble,
-              materialIcon: Icons.report_problem_outlined,
+              },
+              icon: const PlatformIcon(
+                cupertinoIcon: CupertinoIcons.exclamationmark_bubble,
+                materialIcon: Icons.report_problem_outlined,
+              ),
             ),
-          ),
           Consumer(
             builder: (_, ref, _) {
               final isSaving = ref.watch(

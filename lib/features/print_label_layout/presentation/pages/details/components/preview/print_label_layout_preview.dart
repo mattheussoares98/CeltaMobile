@@ -11,8 +11,13 @@ import 'package:flutter/material.dart';
 
 class PrintLabelLayoutPreview extends StatelessWidget {
   final BSFPrintLabelLayoutEntity layout;
+  final bool showPreviewMessage;
 
-  const PrintLabelLayoutPreview({super.key, required this.layout});
+  const PrintLabelLayoutPreview({
+    super.key,
+    required this.layout,
+    this.showPreviewMessage = true,
+  });
 
   static const _maximumPreviewHeight = 400.0;
 
@@ -38,12 +43,15 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       mainAxisSize: .min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        BaseRichText(
-          texts: [
-            BaseText.title('Pré-visualização '.hardcoded),
-            BaseText.title('(APROXIMADA)'.hardcoded, color: Colors.red),
-          ],
-        ),
+        if (showPreviewMessage) ...[
+          BaseRichText(
+            texts: [
+              BaseText.title('Pré-visualização '.hardcoded),
+              BaseText.title('(APROXIMADA)'.hardcoded, color: Colors.red),
+            ],
+          ),
+          gapH4,
+        ],
         gapH4,
         if (isUndefinedPaginatedHeight)
           BaseText.caption(

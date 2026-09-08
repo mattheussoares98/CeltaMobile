@@ -71,7 +71,10 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                   Expanded(
                     child: RepaintBoundary(
                       key: previewKey,
-                      child: PrintLabelLayoutPreview(layout: state.savedLayout),
+                      child: PrintLabelLayoutPreview(
+                        layout: state.savedLayout,
+                        showPreviewMessage: false,
+                      ),
                     ),
                   ),
                   gapH8,
