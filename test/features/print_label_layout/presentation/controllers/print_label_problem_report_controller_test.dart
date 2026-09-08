@@ -32,6 +32,9 @@ class FakePrintLabelProblemReportRepository
   final List<PrintLabelProblemReportEntity> submittedReports = [];
 
   @override
+  Future<List<ReportedPrintLabelProblemEntity>> getAll() async => [];
+
+  @override
   Future<PrintLabelProblemReportSubmissionResultEntity> submit({
     required PrintLabelProblemReportEntity report,
     required List<int> physicalLabelWebp,
