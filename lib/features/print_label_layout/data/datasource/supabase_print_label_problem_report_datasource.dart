@@ -9,15 +9,87 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SupabasePrintLabelProblemReportDatasource
     implements ISupabasePrintLabelProblemReportDatasource {
   static const functionName = 'create-print-label-problem-report';
+  static const _bucketName = 'print-label-problem-reports';
+  static const _signedUrlDurationSeconds = 60 * 60;
   static const _defaultTimeout = Duration(seconds: 30);
 
+  final SupabaseClient? _supabaseClient;
   final FunctionsClient _functionsClient;
   final Duration _timeout;
 
   const SupabasePrintLabelProblemReportDatasource(
     this._functionsClient, {
+    SupabaseClient? supabaseClient,
     Duration timeout = _defaultTimeout,
-  }) : _timeout = timeout;
+  }) : _supabaseClient = supabaseClient,
+       _timeout = timeout;
+
+  @override
+  Future<List<ReportedPrintLabelProblemModel>> getAll() async {
+    final supabaseClient = _supabaseClient ?? Supabase.instance.client;
+    try {
+      if (supabaseClient.auth.currentSession != null) {
+        await supabaseClient.auth.refreshSession().timeout(_timeout);
+      }
+      final rows = await supabaseClient
+          .from('print_label_problem_reports')
+          .select()
+          .order('created_at', ascending: false)
+          .timeout(_timeout);
+
+      return Future.wait(
+        rows.map((row) async {
+          final model = ReportedPrintLabelProblemModel.fromJson(row);
+          final urls = await Future.wait([
+            supabaseClient.storage
+                .from(_bucketName)
+                .createSignedUrl(
+                  model.physicalLabelPath,
+                  _signedUrlDurationSeconds,
+                ),
+            supabaseClient.storage
+                .from(_bucketName)
+                .createSignedUrl(
+                  model.canvasPreviewPath,
+                  _signedUrlDurationSeconds,
+                ),
+          ]);
+          return ReportedPrintLabelProblemModel(
+            id: model.id,
+            createdAt: model.createdAt,
+            status: model.status,
+            report: model.report,
+            physicalLabelPath: urls[0],
+            canvasPreviewPath: urls[1],
+          );
+        }),
+      );
+    } on TimeoutException {
+      throw SupabasePrintLabelProblemReportDatasourceException(
+        code: 'request_timeout',
+        message: 'The report query timed out.',
+      );
+    } on PostgrestException catch (error) {
+      throw SupabasePrintLabelProblemReportDatasourceException(
+        code: error.code ?? 'database_error',
+        message: error.message,
+      );
+    } on AuthException catch (error) {
+      throw SupabasePrintLabelProblemReportDatasourceException(
+        statusCode: error.statusCode == null
+            ? null
+            : int.tryParse(error.statusCode!),
+        code: error.code ?? 'authentication_error',
+        message: error.message,
+      );
+    } on StorageException catch (error) {
+      throw SupabasePrintLabelProblemReportDatasourceException(
+        statusCode: int.tryParse(error.statusCode ?? ''),
+        code: error.error ?? 'storage_error',
+        message: error.message,
+      );
+    }
+  }
 
   @override
   Future<PrintLabelProblemReportSubmissionResultModel> submit({
