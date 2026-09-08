@@ -2,6 +2,7 @@ import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub
     if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -20,6 +21,7 @@ class BaseScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset = false,
     this.appBar,
     this.refreshProvider,
+    this.refreshConfirmationMessage,
     this.isScrollable = true,
     this.scrollPhysics,
     this.padding,
@@ -38,6 +40,7 @@ class BaseScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
   final Widget? appBar;
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
+  final String? refreshConfirmationMessage;
   final bool isScrollable;
   final ScrollPhysics? scrollPhysics;
   final EdgeInsets? padding;
@@ -87,6 +90,21 @@ class _BaseScaffold extends ConsumerWidget {
     ),
   );
 
+  Future<void> _refresh(BuildContext context, WidgetRef ref) async {
+    if (params.refreshConfirmationMessage != null) {
+      final confirmed = await showAlertDialog(
+        context: context,
+        title: 'Atenção!'.hardcoded,
+        content: params.refreshConfirmationMessage,
+        cancelActionText: 'Não'.hardcoded,
+        defaultActionText: 'Sim'.hardcoded,
+      );
+      if (confirmed != true) return;
+    }
+
+    ref.invalidate(params.refreshProvider!);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Widget newChild = params.body;
@@ -98,6 +116,7 @@ class _BaseScaffold extends ConsumerWidget {
       if (finalAppBar is BaseAppBar) {
         final refreshAction = ReloadIconButton(
           refreshProvider: params.refreshProvider,
+          onRefresh: () => _refresh(context, ref),
         );
         finalAppBar = finalAppBar.copyWith(
           actions: [
@@ -131,12 +150,7 @@ class _BaseScaffold extends ConsumerWidget {
       newChild = Consumer(
         builder: (context, ref, child) {
           return RefreshIndicator.adaptive(
-            onRefresh: () async {
-              ref.invalidate(params.refreshProvider!);
-              // try {
-              //   await ref.read((params.refreshProvider! as dynamic).future);
-              // } catch (_) {}
-            },
+            onRefresh: () => _refresh(context, ref),
             backgroundColor: context.theme.colorScheme.surface,
             strokeWidth: 2,
             child: child!,

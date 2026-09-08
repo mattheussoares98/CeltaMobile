@@ -6,7 +6,12 @@ import 'package:flutter_riverpod/misc.dart';
 
 class ReloadIconButton extends ConsumerStatefulWidget {
   final ProviderBase<AsyncValue<dynamic>>? refreshProvider;
-  const ReloadIconButton({super.key, required this.refreshProvider});
+  final Future<void> Function() onRefresh;
+  const ReloadIconButton({
+    super.key,
+    required this.refreshProvider,
+    required this.onRefresh,
+  });
 
   @override
   ConsumerState<ReloadIconButton> createState() => _ReloadIconButtonState();
@@ -69,7 +74,7 @@ class _ReloadIconButtonState extends ConsumerState<ReloadIconButton>
     });
 
     return IconButton(
-      onPressed: isLoading ? null : () => ref.invalidate(provider),
+      onPressed: isLoading ? null : widget.onRefresh,
       icon: SizedBox(
         width: 24,
         height: 24,
