@@ -26,8 +26,7 @@ class PrintLabelProblemReportCamera extends HookWidget {
     final isCapturing = useState(false);
     final confirmations = useState(<String, bool>{
       'A etiqueta inteira está visível'.hardcoded: false,
-      'A régua está acima ou abaixo da etiqueta'.hardcoded: false,
-      'A régua e a etiqueta estão no mesmo plano'.hardcoded: false,
+      'Há uma régua acima ou abaixo da etiqueta'.hardcoded: false,
       'A foto está focada e sem reflexo'.hardcoded: false,
     });
 
@@ -141,11 +140,13 @@ class PrintLabelProblemReportCamera extends HookWidget {
           BaseCheckBox(
             name: confirmation.key,
             enabled: confirmation.value,
-            onChanged: (value) {
-              final updated = {...confirmations.value};
-              updated[confirmation.key] = value ?? false;
-              confirmations.value = updated;
-            },
+            onChanged: isCapturing.value
+                ? null
+                : (value) {
+                    final updated = {...confirmations.value};
+                    updated[confirmation.key] = value ?? false;
+                    confirmations.value = updated;
+                  },
           ),
         gapH8,
         SizedBox(

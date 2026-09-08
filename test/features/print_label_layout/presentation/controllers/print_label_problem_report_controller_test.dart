@@ -136,11 +136,6 @@ void main() {
     controller.confirmSnapshot();
     await controller.preparePhysicalLabel('physical-source');
     await controller.prepareCanvasPreview('canvas-source');
-    controller.confirmImages();
-    controller.updateCaptureConfirmation(
-      physicalLabelWasPrintedFromSavedLayout: true,
-      canvasPreviewRepresentsSavedLayout: true,
-    );
     controller.updateCategory(PrintLabelProblemReportCategory.printQuality);
     controller.updateDescription(' Report description ');
     controller.updatePrivacyConsent(true);
@@ -201,7 +196,7 @@ void main() {
     },
   );
 
-  test('workflow reaches images, confirmations, and review states', () async {
+  test('workflow reaches images and review states', () async {
     final container = makeContainer();
     addTearDown(container.dispose);
     final provider = makeProvider();
@@ -216,16 +211,6 @@ void main() {
 
     await controller.preparePhysicalLabel('physical-source');
     await controller.prepareCanvasPreview('canvas-source');
-    controller.confirmImages();
-    expect(
-      container.read(provider).requireValue.stage,
-      PrintLabelProblemReportStage.confirmations,
-    );
-
-    controller.updateCaptureConfirmation(
-      physicalLabelWasPrintedFromSavedLayout: true,
-      canvasPreviewRepresentsSavedLayout: true,
-    );
     controller.updateDescription('Problem');
     controller.showReview();
     expect(
@@ -243,11 +228,6 @@ void main() {
     controller.confirmSnapshot();
     await controller.preparePhysicalLabel('physical-source');
     await controller.prepareCanvasPreview('canvas-source');
-    controller.confirmImages();
-    controller.updateCaptureConfirmation(
-      physicalLabelWasPrintedFromSavedLayout: true,
-      canvasPreviewRepresentsSavedLayout: true,
-    );
     controller.updateDescription('Problem');
     controller.showReview();
 
@@ -311,14 +291,14 @@ void main() {
     await tester.pump(const Duration(minutes: 1));
   });
 
-  test('incomplete images and confirmations expose failure state', () async {
+  test('incomplete images expose failure state', () async {
     final container = makeContainer();
     addTearDown(container.dispose);
     final provider = makeProvider();
     await container.read(provider.future);
     final controller = container.read(provider.notifier);
 
-    controller.confirmImages();
+    controller.showReview();
     expect(
       container.read(provider).requireValue.stage,
       PrintLabelProblemReportStage.failure,
@@ -328,15 +308,6 @@ void main() {
       contains('images'),
     );
 
-    controller.showReview();
-    expect(
-      container.read(provider).requireValue.stage,
-      PrintLabelProblemReportStage.failure,
-    );
-    expect(
-      container.read(provider).requireValue.error.toString(),
-      contains('confirmed'),
-    );
     expect(repository.submittedReports, isEmpty);
   });
 

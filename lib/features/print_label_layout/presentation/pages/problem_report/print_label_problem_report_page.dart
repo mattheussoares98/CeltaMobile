@@ -98,45 +98,8 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                 cameraDelegate: delegate,
                 onPhotoConfirmed: (path) async {
                   await controller.preparePhysicalLabel(path);
-                  controller.confirmImages();
+                  controller.showReview();
                 },
-              );
-            case PrintLabelProblemReportStage.confirmations:
-              final confirmation = state.captureConfirmation;
-              return Column(
-                children: [
-                  BaseText.titleLarge('Confirme as capturas'.hardcoded),
-                  BaseCheckBox(
-                    name: 'A etiqueta foi impressa com este leiaute salvo'
-                        .hardcoded,
-                    enabled:
-                        confirmation.physicalLabelWasPrintedFromSavedLayout,
-                    onChanged: (value) => controller.updateCaptureConfirmation(
-                      physicalLabelWasPrintedFromSavedLayout: value ?? false,
-                      canvasPreviewRepresentsSavedLayout:
-                          confirmation.canvasPreviewRepresentsSavedLayout,
-                    ),
-                  ),
-                  BaseCheckBox(
-                    name: 'A prévia representa este leiaute salvo'.hardcoded,
-                    enabled: confirmation.canvasPreviewRepresentsSavedLayout,
-                    onChanged: (value) => controller.updateCaptureConfirmation(
-                      physicalLabelWasPrintedFromSavedLayout:
-                          confirmation.physicalLabelWasPrintedFromSavedLayout,
-                      canvasPreviewRepresentsSavedLayout: value ?? false,
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: double.infinity,
-                    child: PrimaryButton(
-                      text: 'Revisar'.hardcoded,
-                      onPressed: confirmation.isConfirmed
-                          ? controller.showReview
-                          : null,
-                    ),
-                  ),
-                ],
               );
             case PrintLabelProblemReportStage.review:
               return PrintLabelProblemReportReview(layoutCode: labelCode);

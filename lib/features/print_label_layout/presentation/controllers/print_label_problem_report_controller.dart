@@ -103,36 +103,6 @@ class PrintLabelProblemReportController
     }
   }
 
-  void confirmImages() {
-    if (_value.physicalLabel == null || _value.canvasPreview == null) {
-      _setFailure(AppException('Both report images must be informed'));
-      return;
-    }
-    state = AsyncData(
-      _value.copyWith(
-        stage: PrintLabelProblemReportStage.confirmations,
-        clearError: true,
-      ),
-    );
-  }
-
-  void updateCaptureConfirmation({
-    required bool physicalLabelWasPrintedFromSavedLayout,
-    required bool canvasPreviewRepresentsSavedLayout,
-  }) {
-    state = AsyncData(
-      _value.copyWith(
-        captureConfirmation: PrintLabelProblemReportCaptureConfirmationEntity(
-          physicalLabelWasPrintedFromSavedLayout:
-              physicalLabelWasPrintedFromSavedLayout,
-          canvasPreviewRepresentsSavedLayout:
-              canvasPreviewRepresentsSavedLayout,
-        ),
-        clearError: true,
-      ),
-    );
-  }
-
   void updateDescription(String description) {
     state = AsyncData(
       _value.copyWith(description: description, clearError: true),
@@ -150,13 +120,18 @@ class PrintLabelProblemReportController
   }
 
   void showReview() {
-    if (!_value.captureConfirmation.isConfirmed) {
-      _setFailure(AppException('Both captures must be confirmed'));
+    if (_value.physicalLabel == null || _value.canvasPreview == null) {
+      _setFailure(AppException('Both report images must be informed'));
       return;
     }
     state = AsyncData(
       _value.copyWith(
         stage: PrintLabelProblemReportStage.review,
+        captureConfirmation:
+            const PrintLabelProblemReportCaptureConfirmationEntity(
+              physicalLabelWasPrintedFromSavedLayout: true,
+              canvasPreviewRepresentsSavedLayout: true,
+            ),
         clearError: true,
       ),
     );
