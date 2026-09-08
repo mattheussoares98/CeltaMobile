@@ -24,8 +24,10 @@ IEcPrintLabelLayoutRepository ecPrintLabelLayoutRepository(Ref ref) {
 @riverpod
 ISupabasePrintLabelProblemReportDatasource
 supabasePrintLabelProblemReportDatasource(Ref ref) {
+  final client = ref.watch(supabaseClientProvider);
   return SupabasePrintLabelProblemReportDatasource(
-    ref.watch(supabaseClientProvider).functions,
+    client.functions,
+    supabaseClient: client,
   );
 }
 
