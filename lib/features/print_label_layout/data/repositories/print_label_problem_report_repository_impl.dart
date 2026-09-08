@@ -10,6 +10,19 @@ class PrintLabelProblemReportRepositoryImpl
   const PrintLabelProblemReportRepositoryImpl(this.datasource);
 
   @override
+  Future<List<ReportedPrintLabelProblemEntity>> getAll() async {
+    final reports = await datasource.getAll();
+    return reports
+        .map(
+          (model) => model.toEntity(
+            physicalLabelUrl: model.physicalLabelPath,
+            canvasPreviewUrl: model.canvasPreviewPath,
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  @override
   Future<PrintLabelProblemReportSubmissionResultEntity> submit({
     required PrintLabelProblemReportEntity report,
     required List<int> physicalLabelWebp,
