@@ -20,6 +20,8 @@ void main() {
   late PrintLabelProblemReportSubmissionResultModel resultModel;
   late List<int> physicalLabelWebp;
   late List<int> canvasPreviewWebp;
+  late ReportedPrintLabelProblemEntity reportedProblem;
+  late ReportedPrintLabelProblemModel reportedProblemModel;
 
   setUp(() {
     datasource = MockSupabasePrintLabelProblemReportDatasource();
@@ -33,6 +35,22 @@ void main() {
     );
     physicalLabelWebp = [1, 2, 3];
     canvasPreviewWebp = [4, 5, 6];
+    reportedProblem = EntityFactory.makeReportedPrintLabelProblemEntity();
+    reportedProblemModel = ReportedPrintLabelProblemModel.fromEntity(
+      reportedProblem,
+    );
+  });
+
+  test('getAll returns the mapped reported problems', () async {
+    when(
+      () => datasource.getAll(),
+    ).thenAnswer((_) async => [reportedProblemModel]);
+
+    final result = await sut.getAll();
+
+    expect(result, [reportedProblem]);
+    verify(() => datasource.getAll()).called(1);
+    verifyNoMoreInteractions(datasource);
   });
 
   test('submit delegates exact values and returns the result entity', () async {

@@ -2799,6 +2799,22 @@ class EntityFactory {
     idempotentReplay: idempotentReplay ?? false,
   );
 
+  static ReportedPrintLabelProblemEntity makeReportedPrintLabelProblemEntity({
+    String? id,
+    DateTime? createdAt,
+    String? status,
+    PrintLabelProblemReportEntity? report,
+    String? physicalLabelUrl,
+    String? canvasPreviewUrl,
+  }) => ReportedPrintLabelProblemEntity(
+    id: id ?? '123e4567-e89b-42d3-a456-426614174000',
+    createdAt: createdAt ?? DateTime.utc(2026),
+    status: status ?? 'submitted',
+    report: report ?? makePrintLabelProblemReportEntity(),
+    physicalLabelUrl: physicalLabelUrl ?? 'https://example.com/physical.webp',
+    canvasPreviewUrl: canvasPreviewUrl ?? 'https://example.com/canvas.webp',
+  );
+
   static EcGetCustomersParams makeEcGetCustomersParams({String? searchValue}) =>
       EcGetCustomersParams(
         params: makeEcRequestParams(),
