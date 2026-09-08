@@ -5,6 +5,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,28 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       appBar: BaseAppBar(
         title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
         actions: [
+          IconButton(
+            key: const Key('report-print-label-problem'),
+            tooltip: 'Relatar problema'.hardcoded,
+            onPressed: () {
+              if (ref.read(provider.notifier).shouldConfirmPop) {
+                showAlertDialog(
+                  context: context,
+                  title: 'Salve o leiaute'.hardcoded,
+                  content:
+                      'Salve ou descarte as alterações antes de relatar um problema.'
+                          .hardcoded,
+                  defaultActionText: 'OK'.hardcoded,
+                );
+                return;
+              }
+              context.pushNamed(Routes.printLabelProblemReport.name);
+            },
+            icon: const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.exclamationmark_bubble,
+              materialIcon: Icons.report_problem_outlined,
+            ),
+          ),
           Consumer(
             builder: (_, ref, _) {
               final isSaving = ref.watch(

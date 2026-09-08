@@ -55,6 +55,7 @@ class PrintLabelProblemReportState extends Equatable {
     StackTrace? stackTrace,
     bool clearResult = false,
     bool clearError = false,
+    bool clearImages = false,
   }) => PrintLabelProblemReportState(
     stage: stage ?? this.stage,
     idempotencyKey: idempotencyKey,
@@ -65,8 +66,8 @@ class PrintLabelProblemReportState extends Equatable {
     savedLayout: savedLayout,
     environment: environment,
     description: description ?? this.description,
-    physicalLabel: physicalLabel ?? this.physicalLabel,
-    canvasPreview: canvasPreview ?? this.canvasPreview,
+    physicalLabel: clearImages ? null : physicalLabel ?? this.physicalLabel,
+    canvasPreview: clearImages ? null : canvasPreview ?? this.canvasPreview,
     captureConfirmation: captureConfirmation ?? this.captureConfirmation,
     result: clearResult ? null : result ?? this.result,
     error: clearError ? null : error ?? this.error,

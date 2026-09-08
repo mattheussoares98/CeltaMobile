@@ -152,6 +152,25 @@ class PrintLabelProblemReportController
     );
   }
 
+  Future<void> retakeImages() async {
+    if (_value.isSubmitting) return;
+    await ref
+        .read(printLabelProblemReportImageServiceProvider)
+        .cleanup(_value.temporaryFilePaths);
+    state = AsyncData(
+      _value.copyWith(
+        stage: PrintLabelProblemReportStage.snapshot,
+        captureConfirmation:
+            const PrintLabelProblemReportCaptureConfirmationEntity(
+              physicalLabelWasPrintedFromSavedLayout: false,
+              canvasPreviewRepresentsSavedLayout: false,
+            ),
+        clearImages: true,
+        clearError: true,
+      ),
+    );
+  }
+
   Future<void> submit() async {
     if (_value.isSubmitting ||
         _value.stage == PrintLabelProblemReportStage.result ||

@@ -356,6 +356,27 @@ void main() {
     );
   });
 
+  test('retake clears prepared images and their temporary files', () async {
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    final provider = makeProvider();
+    await container.read(provider.future);
+    final controller = container.read(provider.notifier);
+    controller.confirmSnapshot();
+    await controller.preparePhysicalLabel('physical-source');
+    await controller.prepareCanvasPreview('canvas-source');
+
+    await controller.retakeImages();
+
+    final state = container.read(provider).requireValue;
+    expect(state.stage, PrintLabelProblemReportStage.snapshot);
+    expect(state.physicalLabel, isNull);
+    expect(state.canvasPreview, isNull);
+    expect(imageService.cleanupCalls, [
+      [physicalLabel.filePath, canvasPreview.filePath],
+    ]);
+  });
+
   test(
     'explicit cancellation clears temporary files without submission',
     () async {
