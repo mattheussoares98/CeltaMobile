@@ -6,6 +6,7 @@ import 'package:celta_inventario/features/print_label_layout/presentation/servic
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PrintLabelProblemReportCamera extends HookWidget {
   final IPrintLabelCameraDelegate cameraDelegate;
@@ -77,12 +78,24 @@ class PrintLabelProblemReportCamera extends HookWidget {
     if (error.value != null) {
       final denied = cameraDelegate.isPermissionDenied(error.value!);
       return Center(
-        child: BaseText.headline(
-          denied
-              ? 'Permita o acesso à câmera nas configurações do dispositivo.'
-                    .hardcoded
-              : 'Não foi possível abrir a câmera: ${error.value}'.hardcoded,
-          textAlign: TextAlign.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BaseText.headline(
+              denied
+                  ? 'Permita o acesso à câmera nas configurações do dispositivo.'
+                        .hardcoded
+                  : 'Não foi possível abrir a câmera: ${error.value}'.hardcoded,
+              textAlign: TextAlign.center,
+            ),
+            if (denied) ...[
+              gapH8,
+              PrimaryTextButton(
+                text: 'Abrir configurações'.hardcoded,
+                onPressed: openAppSettings,
+              ),
+            ],
+          ],
         ),
       );
     }

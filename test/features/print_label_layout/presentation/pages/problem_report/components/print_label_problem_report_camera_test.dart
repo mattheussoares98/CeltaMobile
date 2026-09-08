@@ -57,6 +57,7 @@ void main() {
     await tester.pump();
 
     expect(find.textContaining('Permita o acesso'), findsOneWidget);
+    expect(find.text('Abrir configurações'), findsOneWidget);
 
     await tester.pumpWidget(const MaterialApp(home: SizedBox()));
     expect(delegate.disposeCalls, 1);
