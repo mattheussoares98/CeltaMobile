@@ -129,6 +129,47 @@ void main() {
       expect(layout.fields, [text, filledBox]);
     },
   );
+
+  testWidgets('should report every rotated field outside the canvas', (
+    tester,
+  ) async {
+    final rotations = {
+      BSFPrintElementRotationType.rotate90: (x: 5.0, y: 20.0),
+      BSFPrintElementRotationType.rotate180: (x: 10.0, y: 20.0),
+      BSFPrintElementRotationType.rotate270: (x: 20.0, y: 10.0),
+    };
+
+    for (final rotation in rotations.entries) {
+      final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+        coordinateX: rotation.value.x,
+        coordinateY: rotation.value.y,
+        width: 15,
+        height: 10,
+        rotateType: rotation.key,
+        dimensionType: BSFPrintLabelFieldDimensionType.centimeter,
+      );
+      final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+        labelWidth: 100,
+        labelHeight: 50,
+        fields: [field],
+        labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
+          modelType: BSFLabelPrinterModelType.eltron,
+        ),
+      );
+
+      await _pumpPreview(tester, layout);
+
+      expect(
+        tester
+            .widget<PrintLabelPreviewElement>(
+              find.byType(PrintLabelPreviewElement),
+            )
+            .isOutsideLabel,
+        isTrue,
+        reason: '${rotation.key.name} should exceed the canvas',
+      );
+    }
+  });
 }
 
 Future<void> _pumpPreview(

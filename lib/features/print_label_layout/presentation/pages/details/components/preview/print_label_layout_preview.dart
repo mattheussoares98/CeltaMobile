@@ -171,6 +171,14 @@ class PrintLabelLayoutPreview extends StatelessWidget {
       );
     }
 
+    if (previewMetrics.usesNativeElementMetrics) {
+      return previewMetrics.exceedsPreviewBounds(
+        field,
+        previewWidth: previewLabelWidth,
+        previewHeight: previewLabelHeight,
+      );
+    }
+
     final hasPhysicalDimensions =
         field.dimensionType == BSFPrintLabelFieldDimensionType.centimeter ||
         field.dimensionType == BSFPrintLabelFieldDimensionType.printerDot;
@@ -179,7 +187,10 @@ class PrintLabelLayoutPreview extends StatelessWidget {
           field.coordinateY > previewLabelHeight;
     }
 
-    return field.coordinateX + field.width > previewLabelWidth ||
-        field.coordinateY + field.height > previewLabelHeight;
+    return previewMetrics.exceedsPreviewBounds(
+      field,
+      previewWidth: previewLabelWidth,
+      previewHeight: previewLabelHeight,
+    );
   }
 }

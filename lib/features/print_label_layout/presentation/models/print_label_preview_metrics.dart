@@ -210,21 +210,44 @@ class PrintLabelPreviewMetrics {
     BSFPrintLabelLayoutFieldEntity field, {
     required double drawableWidth,
     required double previewHeight,
+  }) => exceedsPreviewBounds(
+    field,
+    previewWidth: drawableWidth,
+    previewHeight: previewHeight,
+  );
+
+  bool exceedsPreviewBounds(
+    BSFPrintLabelLayoutFieldEntity field, {
+    required double previewWidth,
+    required double previewHeight,
   }) {
     final width = renderedWidth(field, text: visiblePreviewText(field));
     final height = renderedHeight(field);
     final left = horizontalPosition(field);
-    final bottom = verticalPosition(field);
+    final top = verticalPosition(field);
 
-    if (field.rotateType == BSFPrintElementRotationType.rotate270) {
-      return left + height > drawableWidth ||
-          bottom - width < 0 ||
-          bottom > previewHeight;
-    }
-
-    return left + width > drawableWidth ||
-        bottom < 0 ||
-        bottom + height > previewHeight;
+    return switch (field.rotateType) {
+      BSFPrintElementRotationType.none =>
+        left < 0 ||
+            top < 0 ||
+            left + width > previewWidth ||
+            top + height > previewHeight,
+      BSFPrintElementRotationType.rotate90 =>
+        left - height < 0 ||
+            top < 0 ||
+            left > previewWidth ||
+            top + width > previewHeight,
+      BSFPrintElementRotationType.rotate180 =>
+        left - width < 0 ||
+            top - height < 0 ||
+            left > previewWidth ||
+            top > previewHeight,
+      BSFPrintElementRotationType.rotate270 =>
+        left < 0 ||
+            top - width < 0 ||
+            left + height > previewWidth ||
+            top > previewHeight,
+    };
   }
 
   double _rabbitDrawableFootprint(BSFPrintLabelLayoutFieldEntity field) {
