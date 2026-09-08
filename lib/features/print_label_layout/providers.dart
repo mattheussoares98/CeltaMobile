@@ -42,3 +42,9 @@ IPrintLabelProblemReportImageService printLabelProblemReportImageService(
 ) {
   return PrintLabelProblemReportImageService();
 }
+
+@riverpod
+IPrintLabelProblemReportEnvironmentService
+printLabelProblemReportEnvironmentService(Ref ref) {
+  return PrintLabelProblemReportEnvironmentService();
+}

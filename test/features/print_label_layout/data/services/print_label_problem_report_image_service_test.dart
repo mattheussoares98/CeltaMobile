@@ -114,6 +114,18 @@ void main() {
     },
   );
 
+  test('readBytes returns the prepared file contents', () async {
+    final service = PrintLabelProblemReportImageService(
+      temporaryDirectoryProvider: () async => temporaryDirectory,
+    );
+    final file = File(
+      '${temporaryDirectory.path}${Platform.pathSeparator}prepared.webp',
+    );
+    await file.writeAsBytes([1, 2, 3]);
+
+    expect(await service.readBytes(file.path), [1, 2, 3]);
+  });
+
   test('both preparation methods reject missing source files', () async {
     final service = PrintLabelProblemReportImageService(
       temporaryDirectoryProvider: () async => temporaryDirectory,

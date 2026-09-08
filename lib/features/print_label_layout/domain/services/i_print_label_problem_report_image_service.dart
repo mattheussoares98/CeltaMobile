@@ -9,5 +9,7 @@ abstract class IPrintLabelProblemReportImageService {
     String sourcePath,
   );
 
+  Future<List<int>> readBytes(String filePath);
+
   Future<void> cleanup(Iterable<String> filePaths);
 }

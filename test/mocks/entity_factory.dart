@@ -2732,6 +2732,17 @@ class EntityFactory {
     deviceModel: deviceModel ?? 'Device',
   );
 
+  static PrintLabelProblemReportPreparedImageEntity
+  makePrintLabelProblemReportPreparedImageEntity({
+    String? filePath,
+    String? sha256,
+    PrintLabelProblemReportAttachmentMetadataEntity? metadata,
+  }) => PrintLabelProblemReportPreparedImageEntity(
+    filePath: filePath ?? 'prepared-image.webp',
+    sha256: sha256 ?? List.filled(64, 'a').join(),
+    metadata: metadata ?? makePrintLabelProblemReportAttachmentMetadataEntity(),
+  );
+
   static PrintLabelProblemReportCaptureConfirmationEntity
   makePrintLabelProblemReportCaptureConfirmationEntity({
     bool? physicalLabelWasPrintedFromSavedLayout,

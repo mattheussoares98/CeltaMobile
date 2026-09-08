@@ -69,6 +69,9 @@ class PrintLabelProblemReportImageService
   }
 
   @override
+  Future<List<int>> readBytes(String filePath) => File(filePath).readAsBytes();
+
+  @override
   Future<void> cleanup(Iterable<String> filePaths) async {
     for (final filePath in filePaths.toSet()) {
       final file = File(filePath);
