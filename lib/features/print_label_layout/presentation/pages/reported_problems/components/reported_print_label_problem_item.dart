@@ -56,13 +56,6 @@ class ReportedPrintLabelProblemItem extends StatelessWidget {
             ),
             gapH16,
             TitleAndSubTitle(
-              title: 'Status'.hardcoded,
-              subTitle: report.status,
-            ),
-            gapH8,
-            TitleAndSubTitle(title: 'ID'.hardcoded, subTitle: report.id),
-            gapH8,
-            TitleAndSubTitle(
               title: 'Empresa'.hardcoded,
               subTitle:
                   '${value.erpEnterpriseCode} - ${value.erpEnterpriseName}',
@@ -87,16 +80,6 @@ class ReportedPrintLabelProblemItem extends StatelessWidget {
               title: 'Impressora'.hardcoded,
               subTitle: layout.labelPrinter?.description,
               emptyMessage: 'Não informada'.hardcoded,
-            ),
-            gapH8,
-            TitleAndSubTitle(
-              title: 'Campos'.hardcoded,
-              subTitle: layout.fields
-                  .map(
-                    (field) =>
-                        '${field.field?.name ?? field.imageName}: ${field.previewValue ?? '-'}',
-                  )
-                  .join('\n'),
             ),
             gapH8,
             TitleAndSubTitle(

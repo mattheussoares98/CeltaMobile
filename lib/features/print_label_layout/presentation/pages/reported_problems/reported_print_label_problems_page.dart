@@ -37,7 +37,7 @@ class ReportedPrintLabelProblemsPage extends ConsumerWidget {
             );
           }
 
-          return ResponsiveListFlow(
+          return ListView.builder(
             itemCount: reports.length,
             itemBuilder: (_, index) => ReportedPrintLabelProblemItem(
               key: ValueKey(reports[index].id),
