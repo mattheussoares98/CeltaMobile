@@ -209,69 +209,75 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                                 ).notifier,
                               );
 
-                              return ExpansionTile(
-                                title: BaseText.title(field.field?.name ?? ''),
-                                subtitle:
-                                    field.previewValue?.isNotEmpty == true ||
-                                        field.field?.content.isNotEmpty == true
-                                    ? BaseText.caption(
-                                        field.previewValue ??
-                                            field.field!.content,
-                                      )
-                                    : null,
-                                tilePadding: const .only(left: Sizes.p8),
-                                trailing: Row(
-                                  mainAxisSize: .min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => controller
-                                          .toggleFieldVisibility(index),
-                                      tooltip: field.isVisible
-                                          ? 'Ocultar do preview'.hardcoded
-                                          : 'Exibir no preview'.hardcoded,
-                                      icon: PlatformIcon(
-                                        cupertinoIcon: field.isVisible
-                                            ? CupertinoIcons.eye
-                                            : CupertinoIcons.eye_slash,
-                                        materialIcon: field.isVisible
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
+                              return Padding(
+                                padding: const .only(bottom: Sizes.p8),
+                                child: ExpansionTile(
+                                  title: BaseText.title(
+                                    field.field?.name ?? '',
+                                  ),
+                                  subtitle:
+                                      field.previewValue?.isNotEmpty == true ||
+                                          field.field?.content.isNotEmpty ==
+                                              true
+                                      ? BaseText.caption(
+                                          field.previewValue ??
+                                              field.field!.content,
+                                        )
+                                      : null,
+                                  tilePadding: const .only(left: Sizes.p8),
+                                  trailing: Row(
+                                    mainAxisSize: .min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () => controller
+                                            .toggleFieldVisibility(index),
+                                        tooltip: field.isVisible
+                                            ? 'Ocultar do preview'.hardcoded
+                                            : 'Exibir no preview'.hardcoded,
+                                        icon: PlatformIcon(
+                                          cupertinoIcon: field.isVisible
+                                              ? CupertinoIcons.eye
+                                              : CupertinoIcons.eye_slash,
+                                          materialIcon: field.isVisible
+                                              ? Icons.visibility_outlined
+                                              : Icons.visibility_off_outlined,
+                                        ),
                                       ),
-                                    ),
 
-                                    IconButton(
-                                      onPressed: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        showAlertDialog(
-                                          context: context,
-                                          title: 'Remover item?'.hardcoded,
-                                          onOkPressed: () =>
-                                              controller.removeField(index),
-                                          cancelActionText:
-                                              'Cancelar'.hardcoded,
-                                          defaultActionText:
-                                              'Remover'.hardcoded,
-                                        );
-                                      },
-                                      icon: const PlatformIcon(
-                                        cupertinoIcon: CupertinoIcons.delete,
-                                        materialIcon: Icons.delete,
-                                        color: Colors.red,
+                                      IconButton(
+                                        onPressed: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          showAlertDialog(
+                                            context: context,
+                                            title: 'Remover item?'.hardcoded,
+                                            onOkPressed: () =>
+                                                controller.removeField(index),
+                                            cancelActionText:
+                                                'Cancelar'.hardcoded,
+                                            defaultActionText:
+                                                'Remover'.hardcoded,
+                                          );
+                                        },
+                                        icon: const PlatformIcon(
+                                          cupertinoIcon: CupertinoIcons.delete,
+                                          materialIcon: Icons.delete,
+                                          color: Colors.red,
+                                        ),
                                       ),
+                                    ],
+                                  ),
+                                  children: [
+                                    PrintLabelLayoutFieldItem(
+                                      key: ValueKey(index),
+                                      showVisibilityButton: false,
+                                      layoutCode: layout.code,
+                                      fieldIndex: index,
+                                      field: field,
+                                      coordinateUnit: coordinateUnit,
                                     ),
                                   ],
                                 ),
-                                children: [
-                                  PrintLabelLayoutFieldItem(
-                                    key: ValueKey(index),
-                                    showVisibilityButton: false,
-                                    layoutCode: layout.code,
-                                    fieldIndex: index,
-                                    field: field,
-                                    coordinateUnit: coordinateUnit,
-                                  ),
-                                ],
                               );
                             },
                           ),
