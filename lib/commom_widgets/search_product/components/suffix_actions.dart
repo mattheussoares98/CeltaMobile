@@ -3,10 +3,12 @@ import 'package:celta_inventario/commom_widgets/search_product/components/compon
 import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/pages/pages.dart';
+import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SuffixActions extends ConsumerStatefulWidget {
   final bool isLoading;
@@ -30,6 +32,29 @@ class SuffixActions extends ConsumerStatefulWidget {
 
 class _SuffixActionsState extends ConsumerState<SuffixActions>
     with BaseSearchProductsMixin {
+  Future<void> _searchByCamera() async {
+    if (await Permission.camera.isGranted) {
+      onSearch(
+        widget.formKey,
+        searchByCamera: true,
+        controller: widget.searchValueController,
+        onProductSelected: widget.searchProducts,
+      );
+      return;
+    }
+
+    if (!mounted) return;
+    final openSettings = await showAlertDialog(
+      context: context,
+      title: 'Permissão da câmera'.hardcoded,
+      content: 'Permita o acesso à câmera nas configurações do dispositivo.'
+          .hardcoded,
+      cancelActionText: 'Cancelar'.hardcoded,
+      defaultActionText: 'Abrir configurações'.hardcoded,
+    );
+    if (openSettings == true) await openAppSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = PlatformUtil.isMobile;
@@ -52,14 +77,7 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
           ),
         if (isMobile)
           DefaultIcon(
-            onPress: widget.isLoading
-                ? null
-                : () => onSearch(
-                    widget.formKey,
-                    searchByCamera: true,
-                    controller: widget.searchValueController,
-                    onProductSelected: widget.searchProducts,
-                  ),
+            onPress: widget.isLoading ? null : _searchByCamera,
             materialIcon: Icons.camera_alt,
             cupertinoIcon: CupertinoIcons.camera_fill,
             iconColor: widget.isLoading ? context.theme.disabledColor : null,
