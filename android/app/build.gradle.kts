@@ -11,7 +11,7 @@ plugins {
 
 android {
     namespace = "br.com.celtaware.inventario"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
