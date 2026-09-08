@@ -1,5 +1,6 @@
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
 import 'package:celta_inventario/routing/routing.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 RouteBase printLabelLayoutDetailsRoute(List<RouteBase> routes) => GoRoute(
@@ -11,6 +12,7 @@ RouteBase printLabelLayoutDetailsRoute(List<RouteBase> routes) => GoRoute(
     return PrintLabelLayoutDetailsPage(
       enterpriseCode: enterpriseCode,
       labelCode: labelCode,
+      showProblemReportAction: PlatformUtil.isMobile,
     );
   },
   routes: routes,

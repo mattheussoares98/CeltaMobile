@@ -15,11 +15,13 @@ import 'package:go_router/go_router.dart';
 class PrintLabelLayoutDetailsPage extends ConsumerWidget {
   final int enterpriseCode;
   final int labelCode;
+  final bool showProblemReportAction;
 
   const PrintLabelLayoutDetailsPage({
     super.key,
     required this.enterpriseCode,
     required this.labelCode,
+    this.showProblemReportAction = false,
   });
 
   @override
@@ -65,7 +67,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       appBar: BaseAppBar(
         title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
         actions: [
-          if (PlatformUtil.isMobile)
+          if (showProblemReportAction)
             IconButton(
               key: const Key('report-print-label-problem'),
               tooltip: 'Relatar problema'.hardcoded,

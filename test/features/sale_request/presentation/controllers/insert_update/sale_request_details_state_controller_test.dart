@@ -169,10 +169,10 @@ void main() {
       final exception = Exception('Direct throw test');
       when(
         () => mockRepository.getComplete(
-          saleRequestCode: any(named: 'saleRequestCode'),
-          enterpriseCode: any(named: 'enterpriseCode'),
-          customerCode: any(named: 'customerCode'),
-          params: any(named: 'params'),
+          saleRequestCode: fakeArgs.saleRequestId,
+          enterpriseCode: fakeArgs.enterpriseCode,
+          customerCode: fakeArgs.customerCode,
+          params: params,
         ),
       ).thenThrow(exception);
 
@@ -186,6 +186,15 @@ void main() {
         ),
         throwsA(equals(exception)),
       );
+
+      verify(
+        () => mockRepository.getComplete(
+          saleRequestCode: fakeArgs.saleRequestId,
+          enterpriseCode: fakeArgs.enterpriseCode,
+          customerCode: fakeArgs.customerCode,
+          params: params,
+        ),
+      ).called(1);
     });
   });
 }

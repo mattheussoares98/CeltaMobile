@@ -100,13 +100,14 @@ void main() {
       (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
     );
     final router = GoRouter(
-      initialLocation: '/details',
+      initialLocation: '/details/1/10',
       routes: [
         GoRoute(
-          path: '/details',
+          path: '/details/:enterpriseCode/:labelCode',
           builder: (_, _) => const PrintLabelLayoutDetailsPage(
             labelCode: 10,
             enterpriseCode: 1,
+            showProblemReportAction: true,
           ),
           routes: [
             GoRoute(
