@@ -408,4 +408,42 @@ void main() {
     expect(painter.drawValue, isTrue);
     expect(painter.captionHeight, 32.5);
   });
+
+  testWidgets('should paint the outside indicator above a box', (tester) async {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      width: 100,
+      height: 50,
+      ratioBarCode: 25,
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      ),
+    );
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(fields: [field]);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PrintLabelPreviewElement(
+          field: field,
+          coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+          previewMetrics: PrintLabelPreviewMetrics(layout),
+          scaleX: 1,
+          scaleY: 1,
+          isOutsideLabel: true,
+          isInsideFilledBox: false,
+        ),
+      ),
+    );
+
+    final outsideIndicator = tester.widget<DecoratedBox>(
+      find
+          .descendant(
+            of: find.byType(Transform),
+            matching: find.byType(DecoratedBox),
+          )
+          .first,
+    );
+
+    expect(outsideIndicator.position, DecorationPosition.foreground);
+    expect((outsideIndicator.decoration as BoxDecoration).border, isNotNull);
+  });
 }

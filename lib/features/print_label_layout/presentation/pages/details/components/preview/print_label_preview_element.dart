@@ -49,6 +49,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
       angle: _rotationAngle,
       alignment: Alignment.topLeft,
       child: DecoratedBox(
+        position: DecorationPosition.foreground,
         decoration: BoxDecoration(
           border: isOutsideLabel
               ? Border.all(color: context.theme.colorScheme.error)
