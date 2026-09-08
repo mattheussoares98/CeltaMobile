@@ -54,7 +54,7 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
-          home: PrintLabelLayoutDetailsPage(labelCode: 10),
+          home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),
     );
@@ -104,7 +104,10 @@ void main() {
       routes: [
         GoRoute(
           path: '/details',
-          builder: (_, _) => const PrintLabelLayoutDetailsPage(labelCode: 10),
+          builder: (_, _) => const PrintLabelLayoutDetailsPage(
+            labelCode: 10,
+            enterpriseCode: 1,
+          ),
           routes: [
             GoRoute(
               path: 'problem-report',

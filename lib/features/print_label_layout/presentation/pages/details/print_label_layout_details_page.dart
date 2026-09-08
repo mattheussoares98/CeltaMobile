@@ -13,9 +13,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class PrintLabelLayoutDetailsPage extends ConsumerWidget {
+  final int enterpriseCode;
   final int labelCode;
 
-  const PrintLabelLayoutDetailsPage({super.key, required this.labelCode});
+  const PrintLabelLayoutDetailsPage({
+    super.key,
+    required this.enterpriseCode,
+    required this.labelCode,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -75,7 +80,13 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                 );
                 return;
               }
-              context.pushNamed(Routes.printLabelProblemReport.name);
+              context.pushNamed(
+                Routes.printLabelProblemReport.name,
+                pathParameters: {
+                  'enterpriseCode': enterpriseCode.toString(),
+                  'labelCode': labelCode.toString(),
+                },
+              );
             },
             icon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.exclamationmark_bubble,

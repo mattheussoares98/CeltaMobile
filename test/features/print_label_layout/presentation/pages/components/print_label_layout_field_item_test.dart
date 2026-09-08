@@ -3,8 +3,8 @@ import 'package:celta_inventario/core/providers/ec_request_params/ec_request_par
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/editor/editor.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
 import 'package:flutter/material.dart';
@@ -978,7 +978,7 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
-          home: PrintLabelLayoutDetailsPage(labelCode: 10),
+          home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),
     );
@@ -1020,7 +1020,7 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
-          home: PrintLabelLayoutDetailsPage(labelCode: 10),
+          home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),
     );

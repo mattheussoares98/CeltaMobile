@@ -6,8 +6,12 @@ RouteBase printLabelLayoutDetailsRoute(List<RouteBase> routes) => GoRoute(
   path: ':labelCode/details',
   name: Routes.printLabelLayoutDetails.name,
   builder: (context, state) {
+    final enterpriseCode = int.parse(state.pathParameters['enterpriseCode']!);
     final labelCode = int.parse(state.pathParameters['labelCode']!);
-    return PrintLabelLayoutDetailsPage(labelCode: labelCode);
+    return PrintLabelLayoutDetailsPage(
+      enterpriseCode: enterpriseCode,
+      labelCode: labelCode,
+    );
   },
   routes: routes,
 );
