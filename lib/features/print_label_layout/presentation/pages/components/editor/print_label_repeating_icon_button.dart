@@ -24,6 +24,8 @@ class PrintLabelRepeatingIconButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final timerRef = useRef<Timer?>(null);
+    final onPressedRef = useRef<VoidCallback?>(onPressed);
+    onPressedRef.value = onPressed;
     final isEnabled = onPressed != null;
 
     void stopRepeating() {
@@ -35,13 +37,13 @@ class PrintLabelRepeatingIconButton extends HookWidget {
       if (!isEnabled) return;
       stopRepeating();
 
-      onPressed?.call();
+      onPressedRef.value?.call();
       timerRef.value = Timer.periodic(repeatInterval, (_) {
-        if (!isEnabled) {
+        if (onPressedRef.value == null) {
           stopRepeating();
           return;
         }
-        onPressed?.call();
+        onPressedRef.value?.call();
       });
     }
 

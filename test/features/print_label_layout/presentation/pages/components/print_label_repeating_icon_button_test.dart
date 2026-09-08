@@ -63,6 +63,45 @@ void main() {
     expect(callCount, 3);
   });
 
+  testWidgets('should use the latest onPressed callback while repeating', (
+    tester,
+  ) async {
+    var value = 0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (context, setState) {
+              final currentValue = value;
+              return PrintLabelRepeatingIconButton(
+                onPressed: () => setState(() => value = currentValue + 1),
+                icon: const Icon(Icons.add),
+                repeatInterval: const Duration(milliseconds: 50),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.byType(PrintLabelRepeatingIconButton)),
+    );
+
+    await tester.pump(kLongPressTimeout);
+    expect(value, 1);
+
+    await tester.pump(const Duration(milliseconds: 50));
+    expect(value, 2);
+
+    await tester.pump(const Duration(milliseconds: 50));
+    expect(value, 3);
+
+    await gesture.up();
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('should not call onPressed when disabled', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
