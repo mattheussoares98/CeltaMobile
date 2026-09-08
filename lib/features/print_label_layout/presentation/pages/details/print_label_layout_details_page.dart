@@ -63,6 +63,10 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
         }
       },
       refreshProvider: provider,
+      refreshConfirmationMessage: ref.read(provider.notifier).shouldConfirmPop
+          ? 'Todas as alterações realizadas serão perdidas. Deseja realmente atualizar os dados?'
+                .hardcoded
+          : null,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
         title: layoutName ?? 'Detalhes do leiaute'.hardcoded,

@@ -159,4 +159,76 @@ void main() {
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(minutes: 1));
   });
+
+  testWidgets('refresh action confirms before discarding unsaved changes', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1200, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final repository = MockEcPrintLabelLayoutRepository();
+    final params = EntityFactory.makeEcRequestParams();
+    final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
+      code: 10,
+      name: 'Saved layout',
+      formWidth: 100,
+      formHeight: 50,
+      quantityColumns: 1,
+      labelWidth: 90,
+      labelHeight: 40,
+      labelRightMargin: 0,
+      labelBottomMargin: 0,
+      temperature: 10,
+      printSpeed: 2,
+      intervalPrintPackage: 1,
+      applyFormSizeConfiguration: true,
+    );
+    when(
+      () => repository.getDetails(params, layout.code),
+    ).thenAnswer((_) async => layout);
+    when(() => repository.getFieldEditorOptions(params, layout)).thenAnswer(
+      (_) async => EntityFactory.makeBSFPrintLabelFieldEditorOptionsEntity(),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        ecRequestParamsProvider().overrideWith((ref) => params),
+        ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const MaterialApp(
+          home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final detailsProvider = printLabelLayoutDetailsControllerProvider(
+      layout.code,
+    );
+    container.read(detailsProvider.notifier).updateName('Changed layout');
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.refresh_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Atenção!'), findsOneWidget);
+    expect(
+      find.text(
+        'Todas as alterações realizadas serão perdidas. Deseja realmente atualizar os dados?',
+      ),
+      findsOneWidget,
+    );
+    verify(() => repository.getDetails(params, layout.code)).called(1);
+
+    await tester.tap(find.text('Sim'));
+    await tester.pumpAndSettle();
+
+    verify(() => repository.getDetails(params, layout.code)).called(1);
+
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(minutes: 1));
+  });
 }
