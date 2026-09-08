@@ -116,6 +116,7 @@ GoRouter goRouter(Ref ref) {
         ]),
         printLabelLayoutSummariesRoute([
           printLabelLayoutDetailsRoute([printLabelProblemReportRoute()]),
+          if (kDebugMode) reportedPrintLabelProblemsRoute(),
         ]),
         productsRegisterSearchProductsRoute([
           productsRegisterCreateProductRoute(),

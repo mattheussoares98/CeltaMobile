@@ -37,6 +37,7 @@ enum Routes {
   printLabelLayoutDetails,
   printLabelProblemReport,
   printLabelLayoutSummaries,
+  reportedPrintLabelProblems,
   productsRegisterSearchProduct,
   productsRegisterCreateProduct,
   reports,
