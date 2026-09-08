@@ -11,7 +11,9 @@ class PrintLabelProblemReportState extends Equatable {
   final String erpEnterpriseName;
   final BSFPrintLabelLayoutEntity savedLayout;
   final PrintLabelProblemReportEnvironmentEntity environment;
+  final PrintLabelProblemReportCategory? category;
   final String description;
+  final bool privacyConsentAccepted;
   final PrintLabelProblemReportPreparedImageEntity? physicalLabel;
   final PrintLabelProblemReportPreparedImageEntity? canvasPreview;
   final PrintLabelProblemReportCaptureConfirmationEntity captureConfirmation;
@@ -28,7 +30,9 @@ class PrintLabelProblemReportState extends Equatable {
     required this.erpEnterpriseName,
     required this.savedLayout,
     required this.environment,
+    this.category,
     required this.description,
+    this.privacyConsentAccepted = false,
     required this.captureConfirmation,
     this.physicalLabel,
     this.canvasPreview,
@@ -46,7 +50,9 @@ class PrintLabelProblemReportState extends Equatable {
 
   PrintLabelProblemReportState copyWith({
     PrintLabelProblemReportStage? stage,
+    PrintLabelProblemReportCategory? category,
     String? description,
+    bool? privacyConsentAccepted,
     PrintLabelProblemReportPreparedImageEntity? physicalLabel,
     PrintLabelProblemReportPreparedImageEntity? canvasPreview,
     PrintLabelProblemReportCaptureConfirmationEntity? captureConfirmation,
@@ -65,7 +71,10 @@ class PrintLabelProblemReportState extends Equatable {
     erpEnterpriseName: erpEnterpriseName,
     savedLayout: savedLayout,
     environment: environment,
+    category: category ?? this.category,
     description: description ?? this.description,
+    privacyConsentAccepted:
+        privacyConsentAccepted ?? this.privacyConsentAccepted,
     physicalLabel: clearImages ? null : physicalLabel ?? this.physicalLabel,
     canvasPreview: clearImages ? null : canvasPreview ?? this.canvasPreview,
     captureConfirmation: captureConfirmation ?? this.captureConfirmation,
@@ -84,7 +93,9 @@ class PrintLabelProblemReportState extends Equatable {
     erpEnterpriseName,
     savedLayout,
     environment,
+    category,
     description,
+    privacyConsentAccepted,
     physicalLabel,
     canvasPreview,
     captureConfirmation,

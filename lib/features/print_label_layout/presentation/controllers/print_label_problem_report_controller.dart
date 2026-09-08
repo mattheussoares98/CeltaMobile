@@ -139,6 +139,16 @@ class PrintLabelProblemReportController
     );
   }
 
+  void updateCategory(PrintLabelProblemReportCategory category) {
+    state = AsyncData(_value.copyWith(category: category, clearError: true));
+  }
+
+  void updatePrivacyConsent(bool accepted) {
+    state = AsyncData(
+      _value.copyWith(privacyConsentAccepted: accepted, clearError: true),
+    );
+  }
+
   void showReview() {
     if (!_value.captureConfirmation.isConfirmed) {
       _setFailure(AppException('Both captures must be confirmed'));
@@ -181,9 +191,22 @@ class PrintLabelProblemReportController
     final physicalLabel = _value.physicalLabel;
     final canvasPreview = _value.canvasPreview;
     if (physicalLabel == null || canvasPreview == null) {
-      _setFailure(AppException('Both report images must be informed'));
+      _setReviewFailure(AppException('Both report images must be informed'));
       return;
     }
+    if (_value.category == null) {
+      _setReviewFailure(AppException('A categoria deve ser informada'));
+      return;
+    }
+    if (!_value.privacyConsentAccepted) {
+      _setReviewFailure(
+        AppException('O consentimento de privacidade é obrigatório'),
+      );
+      return;
+    }
+
+    final categorizedDescription =
+        '[${_value.category!.label}] ${_value.description.trim()}';
 
     final report = PrintLabelProblemReportEntity(
       schemaVersion: PrintLabelProblemReportValidator.schemaVersion,
@@ -192,7 +215,7 @@ class PrintLabelProblemReportController
       erpEnterpriseCode: _value.erpEnterpriseCode,
       erpUserName: _value.erpUserName,
       erpEnterpriseName: _value.erpEnterpriseName,
-      description: _value.description.trim(),
+      description: categorizedDescription,
       savedLayout: _value.savedLayout,
       environment: _value.environment,
       physicalLabel: physicalLabel.metadata,
@@ -201,7 +224,7 @@ class PrintLabelProblemReportController
     );
     final validationErrors = PrintLabelProblemReportValidator.validate(report);
     if (validationErrors.isNotEmpty) {
-      _setFailure(AppException(validationErrors.join('\n')));
+      _setReviewFailure(AppException(validationErrors.join('\n')));
       return;
     }
 
@@ -263,6 +286,16 @@ class PrintLabelProblemReportController
         stage: PrintLabelProblemReportStage.failure,
         error: error,
         stackTrace: stackTrace ?? StackTrace.current,
+      ),
+    );
+  }
+
+  void _setReviewFailure(Object error) {
+    state = AsyncData(
+      _value.copyWith(
+        stage: PrintLabelProblemReportStage.review,
+        error: error,
+        stackTrace: StackTrace.current,
       ),
     );
   }

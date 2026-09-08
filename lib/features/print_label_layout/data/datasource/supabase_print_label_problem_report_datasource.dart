@@ -35,6 +35,7 @@ class SupabasePrintLabelProblemReportDatasource
       'erp_enterprise_name': reportJson['erp_enterprise_name'],
       'description': reportJson['description'],
       'layout_snapshot': reportJson['layout_snapshot'],
+      'environment': reportJson['environment'],
     };
 
     try {

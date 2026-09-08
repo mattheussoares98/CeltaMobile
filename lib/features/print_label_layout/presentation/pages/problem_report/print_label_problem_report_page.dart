@@ -135,28 +135,25 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                 ],
               );
             case PrintLabelProblemReportStage.review:
-              return Column(
-                key: const Key('print-label-problem-report-review'),
-                children: [
-                  BaseText.titleLarge('Revise as imagens'.hardcoded),
-                  gapH8,
-                  Expanded(
-                    child: Image.file(
-                      File(state.physicalLabel!.filePath),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  PrimaryTextButton(
-                    text: 'Refazer capturas'.hardcoded,
-                    onPressed: controller.retakeImages,
-                  ),
-                ],
-              );
-            default:
+              return PrintLabelProblemReportReview(layoutCode: labelCode);
+            case PrintLabelProblemReportStage.submitting:
               return Center(
-                child: BaseText(
-                  state.error?.toString() ?? 'Preparando relatório'.hardcoded,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LoadingWidget(),
+                    gapH8,
+                    BaseText.bodyMedium('Enviando relatório...'.hardcoded),
+                  ],
                 ),
+              );
+            case PrintLabelProblemReportStage.result:
+              return PrintLabelProblemReportResult(layoutCode: labelCode);
+            case PrintLabelProblemReportStage.failure:
+              return PrintLabelProblemReportFailure(layoutCode: labelCode);
+            case PrintLabelProblemReportStage.cancelled:
+              return Center(
+                child: BaseText.bodyMedium('Relatório cancelado.'.hardcoded),
               );
           }
         },

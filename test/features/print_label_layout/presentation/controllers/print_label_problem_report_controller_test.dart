@@ -10,7 +10,9 @@ import 'package:celta_inventario/features/print_label_layout/domain/repositories
 import 'package:celta_inventario/features/print_label_layout/domain/services/services.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/print_label_layout/providers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -136,7 +138,9 @@ void main() {
       physicalLabelWasPrintedFromSavedLayout: true,
       canvasPreviewRepresentsSavedLayout: true,
     );
+    controller.updateCategory(PrintLabelProblemReportCategory.printQuality);
     controller.updateDescription(' Report description ');
+    controller.updatePrivacyConsent(true);
     controller.showReview();
     return controller;
   }
@@ -227,6 +231,83 @@ void main() {
     );
   });
 
+  test('submission requires category and privacy consent', () async {
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    final provider = makeProvider();
+    await container.read(provider.future);
+    final controller = container.read(provider.notifier);
+    controller.confirmSnapshot();
+    await controller.preparePhysicalLabel('physical-source');
+    await controller.prepareCanvasPreview('canvas-source');
+    controller.confirmImages();
+    controller.updateCaptureConfirmation(
+      physicalLabelWasPrintedFromSavedLayout: true,
+      canvasPreviewRepresentsSavedLayout: true,
+    );
+    controller.updateDescription('Problem');
+    controller.showReview();
+
+    await controller.submit();
+    expect(
+      container.read(provider).requireValue.stage,
+      PrintLabelProblemReportStage.review,
+    );
+    expect(
+      container.read(provider).requireValue.error.toString(),
+      contains('categoria'),
+    );
+
+    controller.updateCategory(PrintLabelProblemReportCategory.other);
+    await controller.submit();
+    expect(
+      container.read(provider).requireValue.stage,
+      PrintLabelProblemReportStage.review,
+    );
+    expect(
+      container.read(provider).requireValue.error.toString(),
+      contains('privacidade'),
+    );
+    expect(repository.submittedReports, isEmpty);
+  });
+
+  testWidgets('review shows submission fields and privacy consent', (
+    tester,
+  ) async {
+    final container = makeContainer();
+    addTearDown(container.dispose);
+    await prepareReview(container);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp(
+          home: PrintLabelProblemReportPage(labelCode: savedLayout.code),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('print-label-problem-report-category')),
+      findsWidgets,
+    );
+    expect(
+      find.byKey(const Key('print-label-problem-report-description')),
+      findsWidgets,
+    );
+    expect(
+      find.byKey(const Key('print-label-problem-report-privacy-consent')),
+      findsWidgets,
+    );
+    expect(
+      find.byKey(const Key('submit-print-label-problem-report')),
+      findsWidgets,
+    );
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(const Duration(minutes: 1));
+  });
+
   test('incomplete images and confirmations expose failure state', () async {
     final container = makeContainer();
     addTearDown(container.dispose);
@@ -309,7 +390,10 @@ void main() {
       final submittedReport = repository.submittedReports.single;
       expect(state.stage, PrintLabelProblemReportStage.result);
       expect(state.result, result);
-      expect(submittedReport.description, 'Report description');
+      expect(
+        submittedReport.description,
+        '[Qualidade da impressão] Report description',
+      );
       expect(submittedReport.idempotencyKey, state.idempotencyKey);
       expect(repository.submittedReports, [submittedReport]);
       expect(imageService.cleanupCalls, [
