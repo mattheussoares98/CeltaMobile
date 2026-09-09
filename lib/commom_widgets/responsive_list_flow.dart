@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ResponsiveListFlow extends StatelessWidget {
   final int itemCount;
   final Widget Function(BuildContext context, int index) itemBuilder;
-  final double? maxItemWidth;
+  final double maxItemWidth;
   final bool isSliver;
   final EdgeInsetsGeometry? padding;
   final ScrollPhysics? physics;
@@ -45,7 +45,7 @@ class ResponsiveListFlow extends StatelessWidget {
 
     final width = MediaQuery.of(context).size.width;
     // Calculate how many items fit in one row
-    final itemsPerRow = max((width / maxItemWidth!).floor(), 1);
+    final itemsPerRow = max((width / (maxItemWidth)).floor(), 1);
     // Calculate the total number of rows needed
     final rowCount = (itemCount / itemsPerRow).ceil();
 
