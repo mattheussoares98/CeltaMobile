@@ -270,8 +270,6 @@ class PrintLabelPreviewMetrics {
     double scaleY,
   ) => _os214PlusGlyphHeight(field) * scaleY;
 
-  // TODO: Test the fontSize property in canvas metrics.
-
   double rabbitBarcodeCaptionFontSize(double scaleY) =>
       _rabbitBarcodeCaptionHeight * scaleY;
 
