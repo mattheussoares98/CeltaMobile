@@ -53,6 +53,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
       Routes.buyMovementDetails => DateTime(2026, 7, 25),
       Routes.synchronizer => DateTime(2026, 8, 10),
       Routes.customerRegister => DateTime(2026, 8, 27),
+      Routes.printLabelLayoutSummaries => DateTime(2026, 9, 9),
       _ => null,
     };
 
