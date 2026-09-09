@@ -215,13 +215,12 @@ void main() {
       expect(speed.onChanged != null, testCase.isEnabled);
       expect(
         tester
-                .widget<PrintLabelLayoutValueAdjuster>(
-                  find
-                      .byKey(const Key('print-label-layout-package-interval'))
-                      .first,
-                )
-                .onIncrease !=
-            null,
+            .widget<PrintLabelLayoutValueAdjuster>(
+              find
+                  .byKey(const Key('print-label-layout-package-interval'))
+                  .first,
+            )
+            .enabled,
         testCase.isEnabled,
       );
     });
@@ -259,7 +258,7 @@ void main() {
         .widget<PrintLabelLayoutValueAdjuster>(
           find.byKey(const Key('print-label-layout-package-interval')).first,
         )
-        .onIncrease!();
+        .onIncrease();
 
     final updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
@@ -354,11 +353,10 @@ void main() {
       );
       expect(
         tester
-                .widget<PrintLabelLayoutValueAdjuster>(
-                  find.byKey(const Key('print-label-layout-form-height')).first,
-                )
-                .onIncrease !=
-            null,
+            .widget<PrintLabelLayoutValueAdjuster>(
+              find.byKey(const Key('print-label-layout-form-height')).first,
+            )
+            .enabled,
         testCase.canEditHeight,
       );
       expect(
@@ -403,7 +401,7 @@ void main() {
     ]) {
       tester
           .widget<PrintLabelLayoutValueAdjuster>(find.byKey(Key(key)).first)
-          .onIncrease!();
+          .onIncrease();
     }
     tester
         .widget<BaseSwitch>(

@@ -90,14 +90,14 @@ class PrintLabelLayoutPrinterParameters extends ConsumerWidget {
                   repeatInterval: const Duration(milliseconds: 25),
                   label: 'Intervalo do pacote'.hardcoded,
                   value: layout.intervalPrintPackage.toString(),
-                  onDecrease:
-                      capabilities.canEditPackageInterval &&
-                          layout.intervalPrintPackage > 0
-                      ? () => controller.updateIntervalPrintPackage(-1)
-                      : null,
-                  onIncrease: capabilities.canEditPackageInterval
-                      ? () => controller.updateIntervalPrintPackage(1)
-                      : null,
+                  currentValue: layout.intervalPrintPackage,
+                  min: 0,
+                  enabled: capabilities.canEditPackageInterval,
+                  onValueChanged: (val) => controller.updateIntervalPrintPackage(
+                    val.toInt() - layout.intervalPrintPackage,
+                  ),
+                  onDecrease: () => controller.updateIntervalPrintPackage(-1),
+                  onIncrease: () => controller.updateIntervalPrintPackage(1),
                 ),
               ],
             ),

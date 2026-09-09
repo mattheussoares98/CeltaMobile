@@ -41,9 +41,12 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   repeatInterval: const Duration(milliseconds: 5),
                   label: 'Largura'.hardcoded,
                   value: _formatValue(layout.labelWidth, unit),
-                  onDecrease: layout.labelWidth > 0
-                      ? () => controller.updateLabelWidth(-step)
-                      : null,
+                  currentValue: layout.labelWidth,
+                  min: 0,
+                  onValueChanged: (val) => controller.updateLabelWidth(
+                    val.toDouble() - layout.labelWidth,
+                  ),
+                  onDecrease: () => controller.updateLabelWidth(-step),
                   onIncrease: () => controller.updateLabelWidth(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
@@ -51,13 +54,14 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   label: 'Altura'.hardcoded,
                   repeatInterval: const Duration(milliseconds: 5),
                   value: _formatValue(layout.labelHeight, unit),
-                  onDecrease:
-                      capabilities.canEditLabelHeight && layout.labelHeight > 0
-                      ? () => controller.updateLabelHeight(-step)
-                      : null,
-                  onIncrease: capabilities.canEditLabelHeight
-                      ? () => controller.updateLabelHeight(step)
-                      : null,
+                  currentValue: layout.labelHeight,
+                  min: 0,
+                  enabled: capabilities.canEditLabelHeight,
+                  onValueChanged: (val) => controller.updateLabelHeight(
+                    val.toDouble() - layout.labelHeight,
+                  ),
+                  onDecrease: () => controller.updateLabelHeight(-step),
+                  onIncrease: () => controller.updateLabelHeight(step),
                 ),
               ],
             ),
@@ -70,9 +74,12 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   label: 'Mg direita'.hardcoded,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelRightMargin, unit),
-                  onDecrease: layout.labelRightMargin > 0
-                      ? () => controller.updateLabelRightMargin(-step)
-                      : null,
+                  currentValue: layout.labelRightMargin,
+                  min: 0,
+                  onValueChanged: (val) => controller.updateLabelRightMargin(
+                    val.toDouble() - layout.labelRightMargin,
+                  ),
+                  onDecrease: () => controller.updateLabelRightMargin(-step),
                   onIncrease: () => controller.updateLabelRightMargin(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
@@ -80,14 +87,14 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                   label: 'Mg inferior'.hardcoded,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelBottomMargin, unit),
-                  onDecrease:
-                      capabilities.canEditLabelBottomMargin &&
-                          layout.labelBottomMargin > 0
-                      ? () => controller.updateLabelBottomMargin(-step)
-                      : null,
-                  onIncrease: capabilities.canEditLabelBottomMargin
-                      ? () => controller.updateLabelBottomMargin(step)
-                      : null,
+                  currentValue: layout.labelBottomMargin,
+                  min: 0,
+                  enabled: capabilities.canEditLabelBottomMargin,
+                  onValueChanged: (val) => controller.updateLabelBottomMargin(
+                    val.toDouble() - layout.labelBottomMargin,
+                  ),
+                  onDecrease: () => controller.updateLabelBottomMargin(-step),
+                  onIncrease: () => controller.updateLabelBottomMargin(step),
                 ),
               ],
             ),

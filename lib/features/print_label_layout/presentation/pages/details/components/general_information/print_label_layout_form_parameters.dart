@@ -53,9 +53,12 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   repeatInterval: const Duration(milliseconds: 5),
                   label: 'Largura'.hardcoded,
                   value: _formatValue(layout.formWidth, unit),
-                  onDecrease: layout.formWidth > 0
-                      ? () => controller.updateFormWidth(-step)
-                      : null,
+                  currentValue: layout.formWidth,
+                  min: 0,
+                  onValueChanged: (val) => controller.updateFormWidth(
+                    val.toDouble() - layout.formWidth,
+                  ),
+                  onDecrease: () => controller.updateFormWidth(-step),
                   onIncrease: () => controller.updateFormWidth(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
@@ -65,13 +68,14 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                       ? 'Altura *'.hardcoded
                       : 'Altura'.hardcoded,
                   value: _formatValue(layout.formHeight, unit),
-                  onDecrease:
-                      capabilities.canEditFormHeight && layout.formHeight > 0
-                      ? () => controller.updateFormHeight(-step)
-                      : null,
-                  onIncrease: capabilities.canEditFormHeight
-                      ? () => controller.updateFormHeight(step)
-                      : null,
+                  currentValue: layout.formHeight,
+                  min: 0,
+                  enabled: capabilities.canEditFormHeight,
+                  onValueChanged: (val) => controller.updateFormHeight(
+                    val.toDouble() - layout.formHeight,
+                  ),
+                  onDecrease: () => controller.updateFormHeight(-step),
+                  onIncrease: () => controller.updateFormHeight(step),
                 ),
               ],
             ),
@@ -83,34 +87,39 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   key: const Key('print-label-layout-form-top-margin'),
                   label: 'Mg superior'.hardcoded,
                   value: _formatValue(layout.formTopMargin, unit),
-                  onDecrease: layout.formTopMargin > 0
-                      ? () => controller.updateFormTopMargin(-step)
-                      : null,
+                  currentValue: layout.formTopMargin,
+                  min: 0,
+                  onValueChanged: (val) => controller.updateFormTopMargin(
+                    val.toDouble() - layout.formTopMargin,
+                  ),
+                  onDecrease: () => controller.updateFormTopMargin(-step),
                   onIncrease: () => controller.updateFormTopMargin(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-left-margin'),
                   label: 'Mg esquerda'.hardcoded,
                   value: _formatValue(layout.formLeftMargin, unit),
-                  onDecrease: layout.formLeftMargin > 0
-                      ? () => controller.updateFormLeftMargin(-step)
-                      : null,
+                  currentValue: layout.formLeftMargin,
+                  min: 0,
+                  onValueChanged: (val) => controller.updateFormLeftMargin(
+                    val.toDouble() - layout.formLeftMargin,
+                  ),
+                  onDecrease: () => controller.updateFormLeftMargin(-step),
                   onIncrease: () => controller.updateFormLeftMargin(step),
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-quantity-columns'),
                   label: 'Colunas'.hardcoded,
                   value: layout.quantityColumns.toString(),
-                  onDecrease:
-                      capabilities.canEditQuantityColumns &&
-                          layout.quantityColumns > 1
-                      ? () => controller.updateQuantityColumns(-1)
-                      : null,
-                  onIncrease:
-                      capabilities.canEditQuantityColumns &&
-                          layout.quantityColumns < 99
-                      ? () => controller.updateQuantityColumns(1)
-                      : null,
+                  currentValue: layout.quantityColumns,
+                  min: 1,
+                  max: 99,
+                  enabled: capabilities.canEditQuantityColumns,
+                  onValueChanged: (val) => controller.updateQuantityColumns(
+                    val.toInt() - layout.quantityColumns,
+                  ),
+                  onDecrease: () => controller.updateQuantityColumns(-1),
+                  onIncrease: () => controller.updateQuantityColumns(1),
                 ),
               ],
             ),

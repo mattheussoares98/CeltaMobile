@@ -118,13 +118,10 @@ void main() {
 
       expect(
         tester
-                .widget<PrintLabelLayoutValueAdjuster>(
-                  find
-                      .byKey(const Key('print-label-layout-label-height'))
-                      .first,
-                )
-                .onIncrease !=
-            null,
+            .widget<PrintLabelLayoutValueAdjuster>(
+              find.byKey(const Key('print-label-layout-label-height')).first,
+            )
+            .enabled,
         testCase.editsHeight,
       );
       expect(
@@ -168,7 +165,7 @@ void main() {
     ]) {
       tester
           .widget<PrintLabelLayoutValueAdjuster>(find.byKey(Key(key)).first)
-          .onIncrease!();
+          .onIncrease();
     }
     tester
         .widget<BaseSegmentedButtons<BSFPrintLabelDirectionType>>(
@@ -220,12 +217,12 @@ void main() {
         .widget<PrintLabelLayoutValueAdjuster>(
           find.byKey(const Key('print-label-layout-label-width')).first,
         )
-        .onIncrease!();
+        .onIncrease();
     tester
         .widget<PrintLabelLayoutValueAdjuster>(
           find.byKey(const Key('print-label-layout-label-height')).first,
         )
-        .onIncrease!();
+        .onIncrease();
     var updated = container
         .read(printLabelLayoutDetailsControllerProvider(10))
         .requireValue;
@@ -243,7 +240,7 @@ void main() {
         .widget<PrintLabelLayoutValueAdjuster>(
           find.byKey(const Key('print-label-layout-label-right-margin')).first,
         )
-        .onIncrease!();
+        .onIncrease();
     tester
         .widget<BaseSegmentedButtons<BSFProductPackingSelectionType>>(
           find.byKey(const Key('print-label-layout-product-packing')).first,
