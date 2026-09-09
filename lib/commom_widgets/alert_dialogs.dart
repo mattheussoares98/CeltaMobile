@@ -18,6 +18,7 @@ Future<bool?> showAlertDialog({
   String defaultActionText = 'OK',
   VoidCallback? onOkPressed,
   List<Widget>? actions,
+  VoidCallback? onLongpressTitle,
 }) {
   return showDialog<bool>(
     context: context,
@@ -28,7 +29,12 @@ Future<bool?> showAlertDialog({
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: Text(title)),
+          Expanded(
+            child: GestureDetector(
+              onLongPress: onLongpressTitle,
+              child: Text(title),
+            ),
+          ),
           if (kDebugMode && (content?.isNotEmpty ?? false))
             IconButton(
               onPressed: () => Clipboard.setData(ClipboardData(text: content!)),
