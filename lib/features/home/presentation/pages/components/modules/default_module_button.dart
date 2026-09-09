@@ -28,6 +28,8 @@ class DefaultModuleButton extends HookConsumerWidget {
     this.passEnterpriseToNextRoute = true,
   });
 
+  DateTime get _now => DateTime.now();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final internalLoading = useState(false);
@@ -134,12 +136,15 @@ class DefaultModuleButton extends HookConsumerWidget {
                 if ((module == Modules.productsRegister))
                   MessageBadge(message: 'Suspenso'.hardcoded),
                 if (module == Modules.processAuthorization &&
-                    DateTime.now().isBefore(DateTime(2026, 8, 13)))
+                    _now.isBefore(DateTime(2026, 8, 13)))
+                  MessageBadge(message: 'Novo'.hardcoded),
+                if (module == Modules.printLabel &&
+                    _now.isBefore(DateTime(2026, 10, 09)))
                   MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.synchronizer)
                   MessageBadge(message: 'Novo'.hardcoded),
                 if (module == Modules.buyMovement &&
-                    DateTime.now().isBefore(DateTime(2026, 9)))
+                    _now.isBefore(DateTime(2026, 9)))
                   MessageBadge(message: 'Novo'.hardcoded),
                 FavoriteIconButton(
                   module: module,
