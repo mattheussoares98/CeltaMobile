@@ -52,7 +52,9 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Este aplicativo não utiliza sua localização diretamente, mas a permissão é obrigatória para o bom funcionamento de alguns recursos.</string>
+	<string>Uma ou mais dependências dependem dessa permissão para funcionar corretamente.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Uma ou mais dependências dependem dessa permissão para funcionar corretamente.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
