@@ -583,9 +583,12 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
     if (previewValue == null) return field.copyWith(prefix: prefix);
 
     final valueWithoutPrefix =
-        field.prefix.isNotEmpty && previewValue.startsWith(field.prefix)
+        field.field?.fieldType == BSFPrintLabelFieldType.string
+        ? ""
+        : field.prefix.isNotEmpty && previewValue.startsWith(field.prefix)
         ? previewValue.substring(field.prefix.length)
         : previewValue;
+
     return field.copyWith(
       prefix: prefix,
       previewValue: '$prefix$valueWithoutPrefix',
