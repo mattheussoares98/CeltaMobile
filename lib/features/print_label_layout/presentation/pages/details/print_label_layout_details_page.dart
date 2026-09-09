@@ -98,6 +98,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
               icon: const PlatformIcon(
                 cupertinoIcon: CupertinoIcons.exclamationmark_bubble,
                 materialIcon: Icons.report_problem_outlined,
+                color: Colors.red,
               ),
             ),
           Consumer(
