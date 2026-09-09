@@ -121,8 +121,13 @@ class TryAccessModuleController extends _$TryAccessModuleController {
           if (kDebugMode || ModuleIsFreeUntil.isFree(module)) {
             dev.log('Continuing because it is on debug mode');
           } else {
-            _showDisabledModuleMessage(context, module);
-            return;
+            final continueFlow = await _showDisabledModuleMessage(
+              context,
+              module,
+            );
+            if (!continueFlow) {
+              return;
+            }
           }
         }
 
@@ -185,14 +190,23 @@ class TryAccessModuleController extends _$TryAccessModuleController {
   }
 }
 
-void _showDisabledModuleMessage(BuildContext context, Modules module) {
-  showAlertDialog(
+Future<bool> _showDisabledModuleMessage(
+  BuildContext context,
+  Modules module,
+) async {
+  bool continueFlow = false;
+  await showAlertDialog(
     context: context,
     title: 'Módulo desabilitado'.hardcoded,
     content:
         'O módulo ${module.description.toUpperCase()} está desabilitado para essa empresa...'
             .hardcoded,
+    onLongpressTitle: () {
+      continueFlow = true;
+      Navigator.of(context).pop();
+    },
   );
+  return continueFlow;
 }
 
 void _showUserWithoutPermissionMessage(
