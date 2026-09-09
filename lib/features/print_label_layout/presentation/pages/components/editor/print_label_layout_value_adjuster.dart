@@ -88,9 +88,7 @@ class PrintLabelLayoutValueAdjuster extends HookWidget {
 
     void startEditing() {
       if (!enabled || onValueChanged == null) return;
-      textController.text = resolvedAcceptDecimal
-          ? currentValue.toString().toBrazilianNumber(2, true)
-          : currentValue.toInt().toString().toBrazilianNumber();
+      textController.text = currentValue.toString().toBrazilianNumber(2, true);
       textController.selection = TextSelection(
         baseOffset: 0,
         extentOffset: textController.text.length,
