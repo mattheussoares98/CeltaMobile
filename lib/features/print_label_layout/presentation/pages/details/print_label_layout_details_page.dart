@@ -181,16 +181,16 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                         ),
                         gapSliverH8,
                         SliverToBoxAdapter(
-                          child: Row(
-                            mainAxisAlignment: .spaceBetween,
+                          child: Wrap(
+                            runSpacing: Sizes.p8,
+                            spacing: Sizes.p8,
+                            alignment: .spaceBetween,
                             children: [
                               BaseText.title(
                                 'Campos (${layout.fields.length})'.hardcoded,
                               ),
-                              Flexible(
-                                child: PrintLabelLayoutAddFieldButton(
-                                  layoutCode: layout.code,
-                                ),
+                              PrintLabelLayoutAddFieldButton(
+                                layoutCode: layout.code,
                               ),
                             ],
                           ),
