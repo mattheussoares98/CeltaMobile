@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -9,9 +11,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DefaultModuleButton extends ConsumerWidget {
+class DefaultModuleButton extends HookConsumerWidget {
   final Routes route;
   final Modules module;
   final PlatformIcon platformIcon;
@@ -27,46 +30,64 @@ class DefaultModuleButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final internalLoading = useState(false);
+
     void accessModule() async {
-      Routes? selectedActionRoute;
-      if (const {
-        Routes.saleRequestActionSelector,
-        Routes.buyRequestActionSelector,
-      }.contains(route)) {
-        final List<PageActionSelectorModel> actions;
-        String title;
-        if (route == Routes.saleRequestActionSelector) {
-          actions = SaleRequestActions.get(context);
-          title = 'Pedido de vendas'.hardcoded;
-        } else {
-          actions = BuyRequestActions.get(context);
-          title = 'Pedido de compras'.hardcoded;
-        }
+      Timer? loadingTimer;
 
-        selectedActionRoute = await BaseActionSelector.show(
-          context,
-          actions: actions,
-          title: title,
-        );
-        if (selectedActionRoute == null) return;
-      }
-      final enterpriseCode = ref.read(
-        selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
-      );
+      try {
+        Routes? selectedActionRoute;
+        if (const {
+          Routes.saleRequestActionSelector,
+          Routes.buyRequestActionSelector,
+        }.contains(route)) {
+          final List<PageActionSelectorModel> actions;
+          String title;
+          if (route == Routes.saleRequestActionSelector) {
+            actions = SaleRequestActions.get(context);
+            title = 'Pedido de vendas'.hardcoded;
+          } else {
+            actions = BuyRequestActions.get(context);
+            title = 'Pedido de compras'.hardcoded;
+          }
 
-      if (!context.mounted) return;
-      ref
-          .read(tryAccessModuleControllerProvider.notifier)
-          .tryAccess(
-            context: context,
-            module: module,
-            route: selectedActionRoute ?? route,
-            enterpriseCode: enterpriseCode,
-            createSubRoute: true,
-            pathParameters: passEnterpriseToNextRoute
-                ? {'enterpriseCode': enterpriseCode.toString()}
-                : null,
+          selectedActionRoute = await BaseActionSelector.show(
+            context,
+            actions: actions,
+            title: title,
           );
+          if (selectedActionRoute == null) return;
+        }
+        final enterpriseCode = ref.read(
+          selectedEnterpriseStateControllerProvider.select((s) => s?.Code),
+        );
+
+        if (!context.mounted) return;
+
+        loadingTimer = Timer(const Duration(milliseconds: 250), () {
+          if (context.mounted) {
+            internalLoading.value = true;
+          }
+        });
+
+        await ref
+            .read(tryAccessModuleControllerProvider.notifier)
+            .tryAccess(
+              context: context,
+              module: module,
+              route: selectedActionRoute ?? route,
+              enterpriseCode: enterpriseCode,
+              createSubRoute: true,
+              pathParameters: passEnterpriseToNextRoute
+                  ? {'enterpriseCode': enterpriseCode.toString()}
+                  : null,
+            );
+      } finally {
+        loadingTimer?.cancel();
+        if (context.mounted) {
+          internalLoading.value = false;
+        }
+      }
     }
 
     return Material(
@@ -78,13 +99,14 @@ class DefaultModuleButton extends ConsumerWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final isLoading =
+              internalLoading.value ||
               (module == Modules.adjustPrice &&
-              ref.watch(
-                canAccessResourceStateControllerProvider(
-                  BsRoutine.adjustSalePrice,
-                  BsResource.adjustSalePrice,
-                ).select((s) => s.isLoading),
-              ));
+                  ref.watch(
+                    canAccessResourceStateControllerProvider(
+                      BsRoutine.adjustSalePrice,
+                      BsResource.adjustSalePrice,
+                    ).select((s) => s.isLoading),
+                  ));
 
           final hasSelectedEnterprise = ref.watch(
             selectedEnterpriseStateControllerProvider.select((s) => s != null),
