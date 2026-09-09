@@ -37,10 +37,12 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
 
     Future<String> capturePreview() async {
       if (captureCanvasPreview != null) return captureCanvasPreview!();
-      final boundary =
-          previewKey.currentContext!.findRenderObject()!
-              as RenderRepaintBoundary;
-      final image = await boundary.toImage();
+      final renderObject = previewKey.currentContext?.findRenderObject();
+      if (renderObject is! RenderRepaintBoundary) {
+        throw StateError('The preview boundary could not be found');
+      }
+      final pixelRatio = View.of(context).devicePixelRatio.clamp(1.0, 2.0);
+      final image = await renderObject.toImage(pixelRatio: pixelRatio);
       final data = await image.toByteData(format: ui.ImageByteFormat.png);
       if (data == null) throw StateError('The preview could not be captured');
       final directory = await getTemporaryDirectory();
@@ -84,10 +86,9 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                       key: const Key('start-print-label-report-capture'),
                       text: 'Continuar'.hardcoded,
                       onPressed: () async {
+                        final previewPath = await capturePreview();
                         controller.confirmSnapshot();
-                        await controller.prepareCanvasPreview(
-                          await capturePreview(),
-                        );
+                        await controller.prepareCanvasPreview(previewPath);
                       },
                     ),
                   ),
