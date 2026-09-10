@@ -5,7 +5,10 @@
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--dart-define-from-file=local.json"
+            ]
         },
         {
             "name": "Run all Tests",
@@ -17,14 +20,20 @@
             "name": "Debug",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart"
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define-from-file=local.json"
+            ]
         },
         {
             "name": "Release",
             "type": "dart",
             "request": "launch",
             "program": "lib/main.dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--dart-define-from-file=local.json"
+            ]
         },
     ]
 }

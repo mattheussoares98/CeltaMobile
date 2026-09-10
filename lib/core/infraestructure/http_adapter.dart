@@ -35,35 +35,35 @@ class HttpAdapter implements HttpClient {
     try {
       if (cancelToken?.isCancelled == true) return null;
 
-      String applyedUrl = url;
+      String appliedUrl = url;
 
-      //! replace easily when testing the API
-      if (kDebugMode && 1 == 2) {
-        applyedUrl = url.replaceFirstMapped(
+      const localApiHost = String.fromEnvironment('LOCAL_API_HOST');
+      if (kDebugMode && localApiHost.isNotEmpty) {
+        appliedUrl = url.replaceFirstMapped(
           RegExp(r'(https?://)[^/]+/api'),
-          (match) => '${match[1]}localhost:58915',
+          (match) => '${match[1]}$localApiHost',
         );
       }
 
       if (method == 'post') {
         futureResponse = client.post(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
       } else if (method == 'get') {
         futureResponse = client.get(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
         );
       } else if (method == 'delete') {
         futureResponse = client.delete(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
         );
       } else if (method == 'put') {
         futureResponse = client.put(
-          Uri.parse(applyedUrl),
+          Uri.parse(appliedUrl),
           headers: defaultHeaders,
           body: jsonBody,
         );
