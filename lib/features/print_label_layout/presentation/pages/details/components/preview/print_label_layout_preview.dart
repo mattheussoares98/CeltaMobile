@@ -12,11 +12,13 @@ import 'package:flutter/material.dart';
 class PrintLabelLayoutPreview extends StatelessWidget {
   final BSFPrintLabelLayoutEntity layout;
   final bool showPreviewMessage;
+  final GlobalKey? canvasKey;
 
   const PrintLabelLayoutPreview({
     super.key,
     required this.layout,
     this.showPreviewMessage = true,
+    this.canvasKey,
   });
 
   static const _maximumPreviewHeight = 400.0;
@@ -110,42 +112,45 @@ class PrintLabelLayoutPreview extends StatelessWidget {
     return SizedBox(
       height: canvasHeight,
       child: Center(
-        child: SizedBox(
-          key: const ValueKey('print-label-preview-canvas'),
-          width: canvasWidth,
-          height: canvasHeight,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: context.theme.colorScheme.surface,
-              border: Border.all(color: context.theme.colorScheme.outline),
-            ),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: fieldsInPaintOrder.map((field) {
-                final scaleX = previewScale;
-                final scaleY = previewScale;
+        child: RepaintBoundary(
+          key: canvasKey,
+          child: SizedBox(
+            key: const ValueKey('print-label-preview-canvas'),
+            width: canvasWidth,
+            height: canvasHeight,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.theme.colorScheme.surface,
+                border: Border.all(color: context.theme.colorScheme.outline),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: fieldsInPaintOrder.map((field) {
+                  final scaleX = previewScale;
+                  final scaleY = previewScale;
 
-                return Positioned(
-                  left: previewMetrics.horizontalPosition(field) * scaleX,
-                  top: previewMetrics.verticalPosition(field) * scaleY,
-                  child: PrintLabelPreviewElement(
-                    field: field,
-                    coordinateUnit: coordinateUnit,
-                    previewMetrics: previewMetrics,
-                    scaleX: scaleX,
-                    scaleY: scaleY,
-                    isOutsideLabel: _isOutsideLabel(
-                      field,
+                  return Positioned(
+                    left: previewMetrics.horizontalPosition(field) * scaleX,
+                    top: previewMetrics.verticalPosition(field) * scaleY,
+                    child: PrintLabelPreviewElement(
+                      field: field,
+                      coordinateUnit: coordinateUnit,
                       previewMetrics: previewMetrics,
-                      isRabbitOS214: isRabbitOS214,
-                      drawableLabelWidth: drawableLabelWidth,
-                      previewLabelWidth: previewLabelWidth,
-                      previewLabelHeight: previewLabelHeight,
+                      scaleX: scaleX,
+                      scaleY: scaleY,
+                      isOutsideLabel: _isOutsideLabel(
+                        field,
+                        previewMetrics: previewMetrics,
+                        isRabbitOS214: isRabbitOS214,
+                        drawableLabelWidth: drawableLabelWidth,
+                        previewLabelWidth: previewLabelWidth,
+                        previewLabelHeight: previewLabelHeight,
+                      ),
+                      isInsideFilledBox: previewMetrics.isInsideFilledBox(field),
                     ),
-                    isInsideFilledBox: previewMetrics.isInsideFilledBox(field),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),

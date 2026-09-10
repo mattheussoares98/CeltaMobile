@@ -37,10 +37,22 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
 
     Future<String> capturePreview() async {
       if (captureCanvasPreview != null) return captureCanvasPreview!();
+
+      // Allow any microtasks or frame schedules triggered by button press to register.
+      await Future<void>.delayed(Duration.zero);
+      if (WidgetsBinding.instance.hasScheduledFrame) {
+        await WidgetsBinding.instance.endOfFrame;
+      }
+
       final renderObject = previewKey.currentContext?.findRenderObject();
       if (renderObject is! RenderRepaintBoundary) {
         throw StateError('The preview boundary could not be found');
       }
+      if (renderObject.debugNeedsPaint) {
+        await WidgetsBinding.instance.endOfFrame;
+      }
+
+      // ignore: use_build_context_synchronously
       final pixelRatio = View.of(context).devicePixelRatio.clamp(1.0, 2.0);
       final image = await renderObject.toImage(pixelRatio: pixelRatio);
       final data = await image.toByteData(format: ui.ImageByteFormat.png);
@@ -71,12 +83,10 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                   ),
                   gapH8,
                   Expanded(
-                    child: RepaintBoundary(
-                      key: previewKey,
-                      child: PrintLabelLayoutPreview(
-                        layout: state.savedLayout,
-                        showPreviewMessage: false,
-                      ),
+                    child: PrintLabelLayoutPreview(
+                      layout: state.savedLayout,
+                      showPreviewMessage: false,
+                      canvasKey: previewKey,
                     ),
                   ),
                   gapH8,

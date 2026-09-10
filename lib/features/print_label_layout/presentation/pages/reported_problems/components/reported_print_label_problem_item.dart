@@ -1,6 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/reported_problems/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -27,17 +28,36 @@ class ReportedPrintLabelProblemItem extends StatelessWidget {
             gapH12,
             LayoutBuilder(
               builder: (context, constraints) {
+                final physicalAspectRatio = value.physicalLabel.height > 0
+                    ? value.physicalLabel.width / value.physicalLabel.height
+                    : 1.0;
+                final previewMetrics = PrintLabelPreviewMetrics(layout);
+                final canvasWidth = previewMetrics.canvasWidth;
+                final canvasHeight = previewMetrics.canvasHeight;
+                final hasValidCanvasSize =
+                    canvasWidth.isFinite &&
+                    canvasHeight.isFinite &&
+                    canvasWidth > 0 &&
+                    canvasHeight > 0;
+                final canvasAspectRatio = hasValidCanvasSize
+                    ? canvasWidth / canvasHeight
+                    : (value.canvasPreview.height > 0 &&
+                              value.canvasPreview.width >
+                                  value.canvasPreview.height
+                          ? value.canvasPreview.width /
+                                value.canvasPreview.height
+                          : 16 / 9);
+
                 final images = [
                   ReportedProblemImage(
                     title: 'Foto da etiqueta'.hardcoded,
                     url: report.physicalLabelUrl,
-                    aspectRatio:
-                        value.physicalLabel.width / value.physicalLabel.height,
+                    aspectRatio: physicalAspectRatio,
                   ),
                   ReportedProblemImage(
                     title: 'Imagem do canvas'.hardcoded,
                     url: report.canvasPreviewUrl,
-                    aspectRatio: 16 / 9,
+                    aspectRatio: canvasAspectRatio,
                     alignment: Alignment.topCenter,
                   ),
                 ];
