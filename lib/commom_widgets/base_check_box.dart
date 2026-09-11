@@ -97,7 +97,7 @@ class BaseCheckBox extends StatelessWidget {
                     horizontal: Sizes.p12,
                     vertical: Sizes.p4,
                   ),
-                  title: BaseText(name),
+                  title: BaseText(name, maxLines: 5),
                   subtitle: subtitle,
                   trailing: CupertinoSwitch(
                     value: enabled,
