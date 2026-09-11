@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
@@ -34,35 +33,27 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
     final delegate = useMemoized(
       () => cameraDelegate ?? PrintLabelCameraDelegate(),
     );
+    const canvasCaptureService = PrintLabelCanvasCaptureService();
 
     Future<String> capturePreview() async {
       if (captureCanvasPreview != null) return captureCanvasPreview!();
-
-      // Ensure any pending touch-up or ripple microtasks are dispatched.
-      await Future<void>.delayed(const Duration(milliseconds: 30));
-      if (WidgetsBinding.instance.hasScheduledFrame) {
-        await WidgetsBinding.instance.endOfFrame;
-      }
 
       final renderObject = previewKey.currentContext?.findRenderObject();
       if (renderObject is! RenderRepaintBoundary) {
         throw StateError('The preview boundary could not be found');
       }
 
-      // Mark needs paint and wait for next frame to guarantee raster cache is completely populated.
-      renderObject.markNeedsPaint();
-      await WidgetsBinding.instance.endOfFrame;
-
       // ignore: use_build_context_synchronously
       final pixelRatio = View.of(context).devicePixelRatio.clamp(1.0, 3.0);
-      final image = await renderObject.toImage(pixelRatio: pixelRatio);
-      final data = await image.toByteData(format: ui.ImageByteFormat.png);
-      if (data == null) throw StateError('The preview could not be captured');
+      final data = await canvasCaptureService.capture(
+        boundary: renderObject,
+        pixelRatio: pixelRatio,
+      );
       final directory = await getTemporaryDirectory();
       final file = File(
         '${directory.path}${Platform.pathSeparator}print-label-preview-$labelCode.png',
       );
-      await file.writeAsBytes(data.buffer.asUint8List(), flush: true);
+      await file.writeAsBytes(data, flush: true);
       return file.path;
     }
 
