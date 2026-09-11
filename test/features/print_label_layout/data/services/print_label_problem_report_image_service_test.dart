@@ -93,6 +93,23 @@ void main() {
   );
 
   test(
+    'prepareCanvas rejects an encoded image without visible content',
+    () async {
+      final uniform = image.Image(width: 20, height: 20)
+        ..clear(image.ColorRgb8(255, 255, 255));
+      await sourceFile.writeAsBytes(image.encodePng(uniform));
+      final service = PrintLabelProblemReportImageService(
+        temporaryDirectoryProvider: () async => temporaryDirectory,
+      );
+
+      await expectLater(
+        service.prepareCanvas(sourceFile.path),
+        throwsA(isA<PrintLabelProblemReportImageException>()),
+      );
+    },
+  );
+
+  test(
     'cleanup deletes unique existing files and ignores missing files',
     () async {
       final service = PrintLabelProblemReportImageService(
@@ -147,6 +164,9 @@ void main() {
 Uint8List _makePng() {
   final source = image.Image(width: 8, height: 4);
   source.clear(image.ColorRgb8(30, 80, 130));
+  for (var x = 1; x < 7; x++) {
+    source.setPixelRgb(x, 1, 0, 0, 0);
+  }
   return image.encodePng(source);
 }
 

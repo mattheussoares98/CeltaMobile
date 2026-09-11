@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-import 'print_label_canvas_image_validator.dart';
+import '../../domain/services/services.dart';
 
 class PrintLabelCanvasCaptureService {
   static const _maximumAttempts = 3;
@@ -27,7 +27,11 @@ class PrintLabelCanvasCaptureService {
         final rawData = await image.toByteData();
         final hasVisibleContent =
             rawData != null &&
-            const PrintLabelCanvasImageValidator().hasVisibleContent(rawData);
+            const PrintLabelCanvasImageValidator().hasVisibleContent(
+              rawData,
+              width: image.width,
+              height: image.height,
+            );
         if (!hasVisibleContent) {
           diagnostics.add(
             _attemptDiagnostics(

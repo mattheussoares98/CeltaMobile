@@ -129,6 +129,16 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                           final previewPath = await capturePreview();
                           controller.confirmSnapshot();
                           await controller.prepareCanvasPreview(previewPath);
+                          final preparedState = ref.read(provider).requireValue;
+                          if (preparedState.stage ==
+                                  PrintLabelProblemReportStage.failure &&
+                              preparedState.error != null &&
+                              context.mounted) {
+                            await showCaptureError(
+                              preparedState.error!,
+                              preparedState.stackTrace ?? StackTrace.current,
+                            );
+                          }
                         } catch (error, stackTrace) {
                           if (!context.mounted) return;
                           await showCaptureError(error, stackTrace);

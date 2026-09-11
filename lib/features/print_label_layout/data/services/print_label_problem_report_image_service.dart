@@ -136,7 +136,30 @@ class PrintLabelProblemReportImageService
         'The canvas preview is not a readable image.',
       );
     }
-    return image.encodeWebP(image.bakeOrientation(decoded));
+    final encoded = image.encodeWebP(image.bakeOrientation(decoded));
+    final encodedCanvas = image.decodeWebP(encoded);
+    if (encodedCanvas == null) {
+      throw const PrintLabelProblemReportImageException(
+        'The encoded canvas preview is not a readable WebP image.',
+      );
+    }
+
+    final pixels = encodedCanvas.getBytes(order: image.ChannelOrder.rgba);
+    final hasVisibleContent = const PrintLabelCanvasImageValidator()
+        .hasVisibleContent(
+          ByteData.sublistView(pixels),
+          width: encodedCanvas.width,
+          height: encodedCanvas.height,
+        );
+    if (!hasVisibleContent) {
+      throw PrintLabelProblemReportImageException(
+        'The encoded canvas preview has no visible content '
+        '(${encodedCanvas.width} x ${encodedCanvas.height}, '
+        '${encoded.lengthInBytes} bytes).',
+      );
+    }
+
+    return encoded;
   }
 
   static (int, int) _readWebpDimensions(Uint8List bytes) {
