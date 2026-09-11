@@ -35,13 +35,16 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
         ),
         gapSliverH8,
         SliverToBoxAdapter(
-          child: Wrap(
-            runSpacing: Sizes.p8,
-            spacing: Sizes.p8,
-            alignment: .spaceBetween,
+          child: Row(
             children: [
-              BaseText.title('Campos (${layout.fields.length})'.hardcoded),
-              PrintLabelLayoutAddFieldButton(layoutCode: layout.code),
+              Expanded(
+                child: BaseText.title(
+                  'Campos (${layout.fields.length})'.hardcoded,
+                ),
+              ),
+              Flexible(
+                child: PrintLabelLayoutAddFieldButton(layoutCode: layout.code),
+              ),
             ],
           ),
         ),
