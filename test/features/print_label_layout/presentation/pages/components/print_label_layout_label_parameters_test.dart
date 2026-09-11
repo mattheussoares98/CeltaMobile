@@ -145,8 +145,8 @@ void main() {
       formType: BSFPrintLabelFormType.continuous,
       labelWidth: 50,
       labelHeight: 30,
-      labelRightMargin: 2,
-      labelBottomMargin: 3,
+      labelRightMargin: 0.3,
+      labelBottomMargin: 0.3,
       considerProductPacking: BSFProductPackingSelectionType.onlyUnitary,
       informPrintQuantityByProduct: false,
       printProductBySoldQuantity: false,
@@ -190,8 +190,8 @@ void main() {
         .requireValue;
     expect(updated.labelWidth, 51);
     expect(updated.labelHeight, 31);
-    expect(updated.labelRightMargin, 3);
-    expect(updated.labelBottomMargin, 4);
+    expect(updated.labelRightMargin, closeTo(0.4, 0.0001));
+    expect(updated.labelBottomMargin, closeTo(0.4, 0.0001));
     expect(updated.directionLabelType, BSFPrintLabelDirectionType.bottom);
     expect(updated.considerProductPacking, BSFProductPackingSelectionType.both);
     expect(updated.informPrintQuantityByProduct, isTrue);

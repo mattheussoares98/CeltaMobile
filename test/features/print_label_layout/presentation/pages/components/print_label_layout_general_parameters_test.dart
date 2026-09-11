@@ -379,8 +379,8 @@ void main() {
       formType: BSFPrintLabelFormType.continuous,
       formWidth: 10,
       formHeight: 20,
-      formTopMargin: 1,
-      formLeftMargin: 2,
+      formTopMargin: 0.3,
+      formLeftMargin: 0.3,
       quantityColumns: 1,
       applyFormSizeConfiguration: false,
       labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
@@ -414,8 +414,8 @@ void main() {
         .requireValue;
     expect(updated.formWidth, 11);
     expect(updated.formHeight, 21);
-    expect(updated.formTopMargin, 2);
-    expect(updated.formLeftMargin, 3);
+    expect(updated.formTopMargin, closeTo(0.4, 0.0001));
+    expect(updated.formLeftMargin, closeTo(0.4, 0.0001));
     expect(updated.quantityColumns, 2);
     expect(updated.applyFormSizeConfiguration, isTrue);
   });

@@ -10,6 +10,7 @@ class PrintLabelPreviewMetrics {
 
   static const _rabbitConfiguredWidthScale = 0.55;
   static const _rabbitDrawableWidthScale = 0.52;
+  static const _rabbitMultiColumnDrawableWidthScale = 0.92;
   static const _rabbitDrawableTrailingMarginRatio = 0.04;
   static const _rabbitBarcodeCaptionHeight = 8.0;
   static const _rabbitCurrencyHorizontalCorrection = 12.0;
@@ -53,11 +54,16 @@ class PrintLabelPreviewMetrics {
 
   double get canvasWidth {
     if (!isRabbitOS214) return effectiveLabelWidth;
+    if (layout.quantityColumns > 1) return effectiveLabelWidth;
     return effectiveLabelWidth * _rabbitConfiguredWidthScale;
   }
 
   double get drawableCanvasWidth {
-    if (!isRabbitOS214 || !layout.fields.any(_hasTwoFullHorizontalEdges)) {
+    if (!isRabbitOS214) return canvasWidth;
+    if (layout.quantityColumns > 1) {
+      return canvasWidth * _rabbitMultiColumnDrawableWidthScale;
+    }
+    if (!layout.fields.any(_hasTwoFullHorizontalEdges)) {
       return canvasWidth;
     }
 
@@ -135,7 +141,9 @@ class PrintLabelPreviewMetrics {
           math.max(1, (text ?? previewText(field)).length);
     }
     if (_fieldType(field) == BSFPrintLabelFieldType.barcode) {
-      final baseModuleWidth = field.ratioBarCode > 0
+      final baseModuleWidth = layout.quantityColumns > 1
+          ? _rabbitConfiguredWidthScale
+          : field.ratioBarCode > 0
           ? field.ratioBarCode / _rabbitBarcodeRatioDivisor
           : _rabbitPplaBarcodeWidthScale;
       final moduleWidth = math.max(0.5, field.width * baseModuleWidth);
@@ -362,7 +370,11 @@ class PrintLabelPreviewMetrics {
   }
 
   bool _hasTwoFullHorizontalEdges(BSFPrintLabelLayoutFieldEntity field) =>
-      field.ratioBarCode > 0 && field.height >= field.ratioBarCode * 2;
+      (_fieldType(field) == BSFPrintLabelFieldType.boxOrLine ||
+          (_fieldType(field) == BSFPrintLabelFieldType.barcode &&
+              layout.quantityColumns == 1)) &&
+      field.ratioBarCode > 0 &&
+      field.height >= field.ratioBarCode * 2;
 
   bool isInsideFilledBox(BSFPrintLabelLayoutFieldEntity field) {
     if (!usesNativePplaMetrics ||

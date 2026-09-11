@@ -20,6 +20,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
     final capabilities = layout.capabilities;
     final unit = layout.coordinateUnit;
     final step = unit == BSFPrintLabelCoordinateUnit.centimeter ? 0.1 : 1.0;
+    const marginStep = 0.1;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
         ? 'cm'
         : 'pontos'.hardcoded;
@@ -92,8 +93,8 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   onValueChanged: (val) => controller.updateFormTopMargin(
                     val.toDouble() - layout.formTopMargin,
                   ),
-                  onDecrease: () => controller.updateFormTopMargin(-step),
-                  onIncrease: () => controller.updateFormTopMargin(step),
+                  onDecrease: () => controller.updateFormTopMargin(-marginStep),
+                  onIncrease: () => controller.updateFormTopMargin(marginStep),
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-left-margin'),
@@ -104,8 +105,9 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   onValueChanged: (val) => controller.updateFormLeftMargin(
                     val.toDouble() - layout.formLeftMargin,
                   ),
-                  onDecrease: () => controller.updateFormLeftMargin(-step),
-                  onIncrease: () => controller.updateFormLeftMargin(step),
+                  onDecrease: () =>
+                      controller.updateFormLeftMargin(-marginStep),
+                  onIncrease: () => controller.updateFormLeftMargin(marginStep),
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-quantity-columns'),

@@ -384,6 +384,45 @@ void main() {
       expect(metrics.rabbitBarcodeCaptionFontSize(1), 8);
     });
 
+    test('should preserve Rabbit multi-column label and barcode widths', () {
+      final barcode = _rabbitField(
+        coordinateX: 5,
+        coordinateY: 5,
+        width: 2,
+        height: 10,
+        ratioBarCode: 4,
+        previewValue: '00000017',
+        fieldType: BSFPrintLabelFieldType.barcode,
+      );
+      final printer = EntityFactory.makeBSFPrintLabelPrinterEntity(
+        modelType: BSFLabelPrinterModelType.rabbitOS214,
+        coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+      );
+      final metrics = PrintLabelPreviewMetrics(
+        EntityFactory.makeBSFPrintLabelLayoutEntity(
+          formWidth: 500,
+          formHeight: 0,
+          quantityColumns: 3,
+          labelWidth: 140,
+          labelHeight: 0,
+          labelPrinter: printer,
+          fields: [barcode],
+        ),
+      );
+
+      expect(metrics.canvasWidth, 140);
+      expect(metrics.drawableCanvasWidth, closeTo(128.8, 0.001));
+      expect(metrics.renderedWidth(barcode), closeTo(73.7, 0.001));
+      expect(
+        metrics.exceedsRabbitBounds(
+          barcode,
+          drawableWidth: metrics.drawableCanvasWidth,
+          previewHeight: metrics.canvasHeight,
+        ),
+        isFalse,
+      );
+    });
+
     test(
       'should dynamically scale barcode renderedWidth when width changes',
       () {
@@ -807,6 +846,7 @@ PrintLabelPreviewMetrics _metrics(
   final layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
     formWidth: 800,
     formHeight: 108,
+    quantityColumns: 1,
     labelWidth: labelWidth,
     labelHeight: 0,
     labelPrinter: printer,
