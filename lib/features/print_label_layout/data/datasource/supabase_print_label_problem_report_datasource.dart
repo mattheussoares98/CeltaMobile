@@ -37,7 +37,7 @@ class SupabasePrintLabelProblemReportDatasource
           .order('created_at', ascending: false)
           .timeout(_timeout);
 
-      return Future.wait(
+      return await Future.wait(
         rows.map((row) async {
           final model = ReportedPrintLabelProblemModel.fromJson(row);
           final urls = await Future.wait([
