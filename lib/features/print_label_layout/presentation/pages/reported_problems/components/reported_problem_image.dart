@@ -28,10 +28,14 @@ class ReportedProblemImage extends StatelessWidget {
         gapH8,
         AspectRatio(
           aspectRatio: aspectRatio,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(Sizes.p8),
-            child: ColoredBox(
+          child: Container(
+            decoration: BoxDecoration(
               color: context.theme.colorScheme.surface,
+              borderRadius: BorderRadius.circular(Sizes.p8),
+              border: Border.all(color: context.theme.colorScheme.outlineVariant),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(Sizes.p8),
               child: Image.network(
                 url,
                 fit: fit,
