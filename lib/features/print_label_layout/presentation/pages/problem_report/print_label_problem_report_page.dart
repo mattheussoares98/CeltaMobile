@@ -10,6 +10,7 @@ import 'package:celta_inventario/features/print_label_layout/presentation/servic
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
@@ -34,6 +35,42 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
       () => cameraDelegate ?? PrintLabelCameraDelegate(),
     );
     const canvasCaptureService = PrintLabelCanvasCaptureService();
+
+    Future<void> showCaptureError(Object error, StackTrace stackTrace) async {
+      //TODO delete this method
+      final diagnostics = <String>[
+        'Timestamp: ${DateTime.now().toUtc().toIso8601String()}',
+        'Platform: ${Platform.operatingSystem}',
+        'OS version: ${Platform.operatingSystemVersion}',
+        'Label code: $labelCode',
+        '',
+        'Error: $error',
+        '',
+        'Stack trace:',
+        stackTrace.toString(),
+      ].join('\n');
+
+      await showAlertDialog(
+        context: context,
+        title: 'Falha ao capturar o canvas'.hardcoded,
+        contentWidget: SingleChildScrollView(
+          child: SelectableText(diagnostics),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: diagnostics));
+              if (context.mounted) Navigator.of(context).pop();
+            },
+            child: Text('Copiar diagnóstico'.hardcoded),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Fechar'.hardcoded),
+          ),
+        ],
+      );
+    }
 
     Future<String> capturePreview() async {
       if (captureCanvasPreview != null) return captureCanvasPreview!();
@@ -88,9 +125,14 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                       key: const Key('start-print-label-report-capture'),
                       text: 'Continuar'.hardcoded,
                       onPressed: () async {
-                        final previewPath = await capturePreview();
-                        controller.confirmSnapshot();
-                        await controller.prepareCanvasPreview(previewPath);
+                        try {
+                          final previewPath = await capturePreview();
+                          controller.confirmSnapshot();
+                          await controller.prepareCanvasPreview(previewPath);
+                        } catch (error, stackTrace) {
+                          if (!context.mounted) return;
+                          await showCaptureError(error, stackTrace);
+                        }
                       },
                     ),
                   ),
