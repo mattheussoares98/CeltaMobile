@@ -28,7 +28,7 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
       );
     }
 
-    return response;
+    return response?.path;
   }
 
   @override

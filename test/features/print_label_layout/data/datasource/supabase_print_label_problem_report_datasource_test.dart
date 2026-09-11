@@ -24,6 +24,7 @@ class _FunctionsClientSpy extends Fake implements FunctionsClient {
     Map<String, dynamic>? queryParameters,
     HttpMethod method = HttpMethod.post,
     String? region,
+    Future<void>? abortSignal,
   }) {
     this.functionName = functionName;
     this.body = body;
