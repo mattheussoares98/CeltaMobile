@@ -558,10 +558,10 @@ void main() {
       code: 2,
       coordinateX: 20.0,
       coordinateY: 5.0,
-      width: 190.0,
-      height: 150.0,
-      ratioBarCode: 75.0,
-      dimensionType: BSFPrintLabelFieldDimensionType.printerDot,
+      width: 6.6,
+      height: 3.5,
+      ratioBarCode: 0.3,
+      dimensionType: BSFPrintLabelFieldDimensionType.centimeter,
       field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
         fieldType: BSFPrintLabelFieldType.boxOrLine,
       ),
@@ -593,7 +593,7 @@ void main() {
                     layoutCode: 10,
                     fieldIndex: 0,
                     field: l.fields.first,
-                    coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
+                    coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
                   ),
                   loading: () => const CircularProgressIndicator(),
                   error: (e, st) => Text(e.toString()),
@@ -607,19 +607,22 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('190'), findsOneWidget);
-    expect(find.text('150'), findsOneWidget);
+    expect(find.text('6.6'), findsOneWidget);
+    expect(find.text('3.5'), findsOneWidget);
     expect(find.text('Espessura do traço'), findsOneWidget);
-    expect(find.text('75'), findsOneWidget);
+    expect(find.text('0.3'), findsOneWidget);
 
     final addButtons = find.byIcon(Icons.add_circle_outline);
     expect(addButtons, findsNWidgets(5));
 
-    // Tap increase on Espessura do traço (fifth add button)
-    await tester.tap(addButtons.at(4));
+    final removeButtons = find.byIcon(Icons.remove_circle_outline);
+    expect(removeButtons, findsNWidgets(5));
+
+    // Decrease Espessura do traço from the incoming decimal value.
+    await tester.tap(removeButtons.at(4));
     await tester.pumpAndSettle();
 
-    expect(find.text('76'), findsOneWidget);
+    expect(find.text('0.2'), findsOneWidget);
 
     expect(find.text('Rotação'), findsNothing);
     expect(find.text('90°'), findsNothing);

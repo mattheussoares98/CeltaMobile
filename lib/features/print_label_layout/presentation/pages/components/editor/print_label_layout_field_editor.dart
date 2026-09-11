@@ -38,7 +38,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const fastRepeatInterval = Duration(milliseconds: 1);
-    const barcodeRatioStep = 0.1;
+    const ratioStep = 0.1;
     final field = this.field;
     final fieldSelector = fieldOptions == null
         ? null
@@ -293,22 +293,12 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   onFieldChanged(field.copyWith(ratioBarCode: val.toDouble())),
               onDecrease: () => onFieldChanged(
                 field.copyWith(
-                  ratioBarCode: _updatedValue(
-                    field.ratioBarCode,
-                    supportsBarcodeRatio
-                        ? -barcodeRatioStep
-                        : -field.dimensionType.editorStep,
-                  ),
+                  ratioBarCode: _updatedValue(field.ratioBarCode, -ratioStep),
                 ),
               ),
               onIncrease: () => onFieldChanged(
                 field.copyWith(
-                  ratioBarCode: _updatedValue(
-                    field.ratioBarCode,
-                    supportsBarcodeRatio
-                        ? barcodeRatioStep
-                        : field.dimensionType.editorStep,
-                  ),
+                  ratioBarCode: _updatedValue(field.ratioBarCode, ratioStep),
                 ),
               ),
             ),

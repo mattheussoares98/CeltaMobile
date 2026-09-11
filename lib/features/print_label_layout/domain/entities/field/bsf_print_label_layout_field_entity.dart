@@ -91,7 +91,7 @@ class BSFPrintLabelLayoutFieldEntity extends Equatable {
 
   double get minimumEditorHeight => minimumEditorWidth;
 
-  double get minimumEditorStrokeThickness => 1.0;
+  double get minimumEditorStrokeThickness => 0.1;
 
   bool get showsRotationEditor => !isBoxOrLine;
 

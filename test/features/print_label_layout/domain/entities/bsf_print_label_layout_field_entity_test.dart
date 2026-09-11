@@ -15,7 +15,7 @@ void main() {
 
     expect(field.minimumEditorWidth, 0.1);
     expect(field.minimumEditorHeight, 0.1);
-    expect(field.minimumEditorStrokeThickness, 1);
+    expect(field.minimumEditorStrokeThickness, 0.1);
     expect(field.showsRotationEditor, isTrue);
     expect(field.usesTextCharacterOptions, isTrue);
     expect(field.editorFontType, 6);
@@ -23,15 +23,29 @@ void main() {
 
   test('should use stroke thickness as the box or line minimum size', () {
     final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
-      ratioBarCode: 3,
+      ratioBarCode: 0.3,
+      dimensionType: BSFPrintLabelFieldDimensionType.centimeter,
       field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
         fieldType: BSFPrintLabelFieldType.boxOrLine,
       ),
     );
 
-    expect(field.minimumEditorWidth, 3);
-    expect(field.minimumEditorHeight, 3);
+    expect(field.minimumEditorWidth, 0.3);
+    expect(field.minimumEditorHeight, 0.3);
+    expect(field.minimumEditorStrokeThickness, 0.1);
     expect(field.showsRotationEditor, isFalse);
+  });
+
+  test('should keep decimal stroke minimum for printer-dot fields', () {
+    final field = EntityFactory.makeBSFPrintLabelLayoutFieldEntity(
+      ratioBarCode: 0.3,
+      dimensionType: BSFPrintLabelFieldDimensionType.printerDot,
+      field: EntityFactory.makeBSFPrintLabelFieldDefinitionEntity(
+        fieldType: BSFPrintLabelFieldType.boxOrLine,
+      ),
+    );
+
+    expect(field.minimumEditorStrokeThickness, 0.1);
   });
 
   test('should return only formats applicable to the field type', () {
