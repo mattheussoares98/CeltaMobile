@@ -303,6 +303,7 @@ void main() {
           labelWidth: 780,
           labelHeight: 0,
           formHeight: 0,
+          quantityColumns: 1,
           labelPrinter: EntityFactory.makeBSFPrintLabelPrinterEntity(
             modelType: BSFLabelPrinterModelType.rabbitOS214,
           ),
@@ -402,16 +403,23 @@ void main() {
         EntityFactory.makeBSFPrintLabelLayoutEntity(
           formWidth: 500,
           formHeight: 0,
+          formTopMargin: 0.3,
+          formLeftMargin: 0.3,
           quantityColumns: 3,
           labelWidth: 140,
           labelHeight: 0,
+          labelRightMargin: 0.3,
+          labelBottomMargin: 0,
           labelPrinter: printer,
           fields: [barcode],
         ),
       );
 
-      expect(metrics.canvasWidth, 140);
-      expect(metrics.drawableCanvasWidth, closeTo(128.8, 0.001));
+      expect(metrics.canvasWidth, closeTo(140.6, 0.001));
+      expect(metrics.canvasHeight, closeTo(20.3, 0.001));
+      expect(metrics.drawableCanvasWidth, closeTo(129.4, 0.001));
+      expect(metrics.horizontalPosition(barcode), closeTo(5.3, 0.001));
+      expect(metrics.verticalPosition(barcode), closeTo(5.3, 0.001));
       expect(metrics.renderedWidth(barcode), closeTo(73.7, 0.001));
       expect(
         metrics.exceedsRabbitBounds(
@@ -421,6 +429,21 @@ void main() {
         ),
         isFalse,
       );
+
+      final changedMetrics = PrintLabelPreviewMetrics(
+        metrics.layout.copyWith(
+          formTopMargin: 0.4,
+          formLeftMargin: 0.4,
+          labelRightMargin: 0.4,
+          labelBottomMargin: 0.1,
+        ),
+      );
+
+      expect(changedMetrics.canvasWidth, closeTo(140.8, 0.001));
+      expect(changedMetrics.canvasHeight, closeTo(20.5, 0.001));
+      expect(changedMetrics.drawableCanvasWidth, closeTo(129.6, 0.001));
+      expect(changedMetrics.horizontalPosition(barcode), closeTo(5.4, 0.001));
+      expect(changedMetrics.verticalPosition(barcode), closeTo(5.4, 0.001));
     });
 
     test(

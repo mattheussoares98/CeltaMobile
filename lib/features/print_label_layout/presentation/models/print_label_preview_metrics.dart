@@ -39,6 +39,9 @@ class PrintLabelPreviewMetrics {
 
   bool get usesNativeElementMetrics => usesNativePplaMetrics || isZebraGC420t;
 
+  bool get _usesRabbitMultiColumnMargins =>
+      isRabbitOS214 && layout.quantityColumns > 1;
+
   double get effectiveLabelWidth {
     if (isZebraGC420t && layout.formWidth > 0) return layout.formWidth;
     if (layout.labelWidth > 0) return layout.labelWidth;
@@ -54,14 +57,20 @@ class PrintLabelPreviewMetrics {
 
   double get canvasWidth {
     if (!isRabbitOS214) return effectiveLabelWidth;
-    if (layout.quantityColumns > 1) return effectiveLabelWidth;
+    if (_usesRabbitMultiColumnMargins) {
+      return effectiveLabelWidth +
+          layout.formLeftMargin +
+          layout.labelRightMargin;
+    }
     return effectiveLabelWidth * _rabbitConfiguredWidthScale;
   }
 
   double get drawableCanvasWidth {
     if (!isRabbitOS214) return canvasWidth;
-    if (layout.quantityColumns > 1) {
-      return canvasWidth * _rabbitMultiColumnDrawableWidthScale;
+    if (_usesRabbitMultiColumnMargins) {
+      return effectiveLabelWidth * _rabbitMultiColumnDrawableWidthScale +
+          layout.formLeftMargin +
+          layout.labelRightMargin;
     }
     if (!layout.fields.any(_hasTwoFullHorizontalEdges)) {
       return canvasWidth;
@@ -91,6 +100,12 @@ class PrintLabelPreviewMetrics {
   }
 
   double get canvasHeight {
+    final contentHeight = _contentCanvasHeight;
+    if (!_usesRabbitMultiColumnMargins) return contentHeight;
+    return contentHeight + layout.formTopMargin + layout.labelBottomMargin;
+  }
+
+  double get _contentCanvasHeight {
     if (effectiveLabelHeight > 0) return effectiveLabelHeight;
     if (layout.fields.isEmpty) return 0;
 
@@ -295,6 +310,7 @@ class PrintLabelPreviewMetrics {
   }
 
   double horizontalPosition(BSFPrintLabelLayoutFieldEntity field) {
+    final margin = _usesRabbitMultiColumnMargins ? layout.formLeftMargin : 0.0;
     if (isOS214Plus) {
       return math.max(
         0,
@@ -308,7 +324,9 @@ class PrintLabelPreviewMetrics {
         field.fontType == '4' &&
         isInsideFilledBox(field);
     if (isPriceInsideFilledBox) {
-      return field.coordinateX + _rabbitFilledBoxPriceHorizontalCorrection;
+      return margin +
+          field.coordinateX +
+          _rabbitFilledBoxPriceHorizontalCorrection;
     }
 
     final isCurrencyIndicator =
@@ -316,18 +334,19 @@ class PrintLabelPreviewMetrics {
         field.fontType == '1' &&
         previewText(field).trim() == r'R$';
     if (isCurrencyIndicator) {
-      return field.coordinateX + _rabbitCurrencyHorizontalCorrection;
+      return margin + field.coordinateX + _rabbitCurrencyHorizontalCorrection;
     }
 
     if (isRabbitOS214 &&
         field.rotateType == BSFPrintElementRotationType.rotate270) {
       if (field.coordinateX > drawableCanvasWidth / 2) {
-        return field.coordinateX + renderedHeight(field);
+        return margin + field.coordinateX + renderedHeight(field);
       }
-      return math.max(0, field.coordinateX - (renderedHeight(field) / 2));
+      return margin +
+          math.max(0, field.coordinateX - (renderedHeight(field) / 2));
     }
 
-    return field.coordinateX;
+    return margin + field.coordinateX;
   }
 
   double verticalPosition(BSFPrintLabelLayoutFieldEntity field) {
@@ -344,7 +363,10 @@ class PrintLabelPreviewMetrics {
     }
 
     if (field.rotateType == BSFPrintElementRotationType.rotate270) {
-      return canvasHeight - field.coordinateY - (renderedHeight(field) / 4);
+      return _rabbitPositioningHeight -
+          field.coordinateY -
+          (renderedHeight(field) / 4) +
+          _rabbitTopMargin;
     }
 
     final isCurrencyIndicator =
@@ -352,11 +374,18 @@ class PrintLabelPreviewMetrics {
     final currencyCorrection = isCurrencyIndicator
         ? _rabbitCurrencyVerticalCorrection
         : 0;
-    return canvasHeight -
+    return _rabbitPositioningHeight -
         field.coordinateY -
         renderedHeight(field) +
-        currencyCorrection;
+        currencyCorrection +
+        _rabbitTopMargin;
   }
+
+  double get _rabbitPositioningHeight =>
+      _usesRabbitMultiColumnMargins ? _contentCanvasHeight : canvasHeight;
+
+  double get _rabbitTopMargin =>
+      _usesRabbitMultiColumnMargins ? layout.formTopMargin : 0;
 
   bool isFilledBox(BSFPrintLabelLayoutFieldEntity field) {
     if (!usesNativePplaMetrics ||
