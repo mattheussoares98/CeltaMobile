@@ -2,15 +2,15 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
-
-import 'package:crypto/crypto.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image/image.dart' as image;
-import 'package:path_provider/path_provider.dart';
+import 'dart:ui' as ui;
 
 import 'package:celta_inventario/features/print_label_layout/data/services/services.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/services/services.dart';
+import 'package:crypto/crypto.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image/image.dart' as image;
+import 'package:path_provider/path_provider.dart';
 
 typedef PhysicalPhotoEncoder =
     Future<Uint8List?> Function(String sourcePath, int quality);
@@ -58,7 +58,10 @@ class PrintLabelProblemReportImageService
     String sourcePath,
   ) async {
     await _requireReadableFile(sourcePath);
-    final encoded = await Isolate.run(() => _encodeCanvas(sourcePath));
+    final decoded = await _decodeCanvasPixels(sourcePath);
+    final encoded = await Isolate.run(
+      () => _encodeCanvas(decoded.$1, decoded.$2, decoded.$3),
+    );
     if (encoded.lengthInBytes > maximumByteLength) {
       throw const PrintLabelProblemReportImageException(
         'The canvas preview exceeds the upload limit.',
@@ -129,14 +132,53 @@ class PrintLabelProblemReportImageService
     );
   }
 
-  static Uint8List _encodeCanvas(String sourcePath) {
-    final decoded = image.decodeImage(File(sourcePath).readAsBytesSync());
-    if (decoded == null) {
+  static Future<(Uint8List, int, int)> _decodeCanvasPixels(
+    String sourcePath,
+  ) async {
+    ui.Codec? codec;
+    ui.Image? decoded;
+
+    try {
+      codec = await ui.instantiateImageCodec(
+        await File(sourcePath).readAsBytes(),
+      );
+      final frame = await codec.getNextFrame();
+      decoded = frame.image;
+      final data = await decoded.toByteData(
+        format: ui.ImageByteFormat.rawStraightRgba,
+      );
+      if (data == null) {
+        throw const PrintLabelProblemReportImageException(
+          'The canvas preview pixels could not be decoded.',
+        );
+      }
+
+      return (
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+        decoded.width,
+        decoded.height,
+      );
+    } catch (error) {
+      if (error is PrintLabelProblemReportImageException) rethrow;
       throw const PrintLabelProblemReportImageException(
         'The canvas preview is not a readable image.',
       );
+    } finally {
+      decoded?.dispose();
+      codec?.dispose();
     }
-    final encoded = image.encodeWebP(image.bakeOrientation(decoded));
+  }
+
+  static Uint8List _encodeCanvas(Uint8List pixels, int width, int height) {
+    final source = image.Image.fromBytes(
+      width: width,
+      height: height,
+      bytes: pixels.buffer,
+      bytesOffset: pixels.offsetInBytes,
+      numChannels: 4,
+      order: image.ChannelOrder.rgba,
+    );
+    final encoded = image.encodeWebP(source);
     final encodedCanvas = image.decodeWebP(encoded);
     if (encodedCanvas == null) {
       throw const PrintLabelProblemReportImageException(
@@ -144,10 +186,12 @@ class PrintLabelProblemReportImageService
       );
     }
 
-    final pixels = encodedCanvas.getBytes(order: image.ChannelOrder.rgba);
+    final encodedPixels = encodedCanvas.getBytes(
+      order: image.ChannelOrder.rgba,
+    );
     final hasVisibleContent = const PrintLabelCanvasImageValidator()
         .hasVisibleContent(
-          ByteData.sublistView(pixels),
+          ByteData.sublistView(encodedPixels),
           width: encodedCanvas.width,
           height: encodedCanvas.height,
         );
