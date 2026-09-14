@@ -37,7 +37,6 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
     const canvasCaptureService = PrintLabelCanvasCaptureService();
 
     Future<void> showCaptureError(Object error, StackTrace stackTrace) async {
-      //TODO delete this method
       final diagnostics = <String>[
         'Timestamp: ${DateTime.now().toUtc().toIso8601String()}',
         'Platform: ${Platform.operatingSystem}',
