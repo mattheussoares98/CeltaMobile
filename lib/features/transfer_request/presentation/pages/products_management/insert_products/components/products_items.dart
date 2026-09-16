@@ -28,6 +28,16 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
   final quantityFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  late final UiStateControllerProvider uiProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    uiProvider = uiStateControllerProvider(
+      widget.draftKey.requestTypeCode,
+      widget.draftKey.enterpriseOrigin,
+    );
+  }
 
   @override
   void dispose() {
@@ -50,26 +60,12 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
             .hardcoded,
         type: ToastType.error,
       );
-      ref
-          .read(
-            uiStateControllerProvider(
-              widget.draftKey.requestTypeCode,
-              widget.draftKey.enterpriseOrigin,
-            ).notifier,
-          )
-          .updateSelectedInsertProductIndex(null);
+      ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
       return;
     }
 
     FocusManager.instance.primaryFocus?.unfocus();
-    ref
-        .read(
-          uiStateControllerProvider(
-            widget.draftKey.requestTypeCode,
-            widget.draftKey.enterpriseOrigin,
-          ).notifier,
-        )
-        .updateSelectedInsertProductIndex(index);
+    ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(index);
 
     priceController.clear();
     quantityController.clear();
@@ -110,24 +106,21 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
           CartAdditionStrategy.increase,
         );
 
-    ref
-        .read(
-          uiStateControllerProvider(
-            widget.draftKey.requestTypeCode,
-            widget.draftKey.enterpriseOrigin,
-          ).notifier,
-        )
-        .updateSelectedInsertProductIndex(null);
+    ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
   }
 
   @override
   Widget build(BuildContext context) {
     final requestTypeAllowChangePrice = ref.watch(
-      uiStateControllerProvider(
-        widget.draftKey.requestTypeCode,
-        widget.draftKey.enterpriseOrigin,
-      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
+      uiProvider.select((s) => s.value?.requestTypeAllowChangePrice ?? false),
     );
+
+    ref.listen(searchProductsStateControllerProvider(widget.searchProductKey), (
+      p,
+      n,
+    ) {
+      ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
+    });
 
     return AsyncValueWidget(
       isSliver: true,
