@@ -100,7 +100,7 @@ class ProcessesItems extends ConsumerWidget {
           (process) => process.authorizationProcessItem?.typeAccordingToTheCode,
         );
 
-        return ResponsiveListFlow(
+        return ListView.builder(
           itemCount: groupedByType.keys.length,
           itemBuilder: (context, index) {
             final type = groupedByType.keys.elementAt(index);
