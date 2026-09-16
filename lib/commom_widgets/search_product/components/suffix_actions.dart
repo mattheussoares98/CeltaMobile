@@ -33,7 +33,8 @@ class SuffixActions extends ConsumerStatefulWidget {
 class _SuffixActionsState extends ConsumerState<SuffixActions>
     with BaseSearchProductsMixin {
   Future<void> _searchByCamera() async {
-    if (await Permission.camera.isGranted) {
+    final permission = await Permission.camera.request();
+    if (permission.isGranted) {
       onSearch(
         widget.formKey,
         searchByCamera: true,
