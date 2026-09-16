@@ -3,8 +3,8 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showModalPage(Widget body, BuildContext context) async {
-  await showModalBottomSheet(
+Future<T?> showModalPage<T>(Widget body, BuildContext context) {
+  return showModalBottomSheet<T>(
     context: context,
     isScrollControlled: true, // Allows the modal to be full-screen
     backgroundColor: Colors.transparent,
