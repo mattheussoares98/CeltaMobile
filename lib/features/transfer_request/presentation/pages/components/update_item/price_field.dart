@@ -1,35 +1,25 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PriceField extends ConsumerWidget {
+class PriceField extends StatelessWidget {
   final TextEditingController priceController;
   final FocusNode priceFocusNode;
   final VoidCallback update;
-  final int requestTypeCode;
-  final int enterpriseCode;
+  final bool requestTypeAllowChangePrice;
   const PriceField({
     super.key,
     required this.priceController,
     required this.priceFocusNode,
     required this.update,
-    required this.requestTypeCode,
-    required this.enterpriseCode,
+    required this.requestTypeAllowChangePrice,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final requestTypeAllowChangePrice = ref.watch(
-      uiStateControllerProvider(
-        requestTypeCode,
-        enterpriseCode,
-      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
-    );
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         BaseTextFormField(

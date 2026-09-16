@@ -5,103 +5,73 @@ import 'package:celta_inventario/features/transfer_request/presentation/pages/co
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/cart/components/components.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProductItem extends ConsumerStatefulWidget {
+class ProductItem extends HookConsumerWidget {
   final TransferRequestProductItemEntity item;
-  final int index;
   final DraftKey draftKey;
+  final bool requestTypeAllowChangePrice;
+  final bool isSelected;
+  final VoidCallback onSelectionChanged;
+  final VoidCallback onUpdated;
   const ProductItem({
     super.key,
     required this.item,
-    required this.index,
     required this.draftKey,
+    required this.requestTypeAllowChangePrice,
+    required this.isSelected,
+    required this.onSelectionChanged,
+    required this.onUpdated,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductItemState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quantityController = useTextEditingController();
+    final quantityFocusNode = useFocusNode();
+    final priceController = useTextEditingController();
+    final priceFocusNode = useFocusNode();
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+    void changeSelectedIndex() {
+      onSelectionChanged();
 
-class _ProductItemState extends ConsumerState<ProductItem> {
-  final quantityController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-  final priceController = TextEditingController();
-  final priceFocusNode = FocusNode();
-  final formKey = GlobalKey<FormState>();
+      quantityController.text = item.quantity
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
 
-  @override
-  void dispose() {
-    super.dispose();
-    quantityController.dispose();
-    quantityFocusNode.dispose();
-    priceController.dispose();
-    priceFocusNode.dispose();
-  }
-
-  void changeSelectedIndex() {
-    ref
-        .read(
-          uiStateControllerProvider(
-            widget.draftKey.requestTypeCode,
-            widget.draftKey.enterpriseOrigin,
-          ).notifier,
-        )
-        .updateSelectedCartProductIndex(widget.index);
-
-    quantityController.text = widget.item.quantity
-        .toString()
-        .toBrazilianNumber()
-        .replaceAll(RegExp(r'\.'), '');
-
-    priceController.text = widget.item.value
-        .toString()
-        .toBrazilianNumber()
-        .replaceAll(RegExp(r'\.'), '');
-    Future.delayed(const Duration(milliseconds: 100), () {
-      quantityFocusNode.requestFocus();
-      quantityController.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: quantityController.text.length,
-      );
-    });
-  }
-
-  void update() async {
-    if (formKey.currentState?.validate() != true) {
-      return;
+      priceController.text = item.value
+          .toString()
+          .toBrazilianNumber()
+          .replaceAll(RegExp(r'\.'), '');
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (!context.mounted) return;
+        quantityFocusNode.requestFocus();
+        quantityController.selection = TextSelection(
+          baseOffset: 0,
+          extentOffset: quantityController.text.length,
+        );
+      });
     }
 
-    final uiState = await ref.read(
-      uiStateControllerProvider(
-        widget.draftKey.requestTypeCode,
-        widget.draftKey.enterpriseOrigin,
-      ).future,
-    );
+    void update() {
+      if (formKey.currentState?.validate() != true) return;
 
-    ref
-        .read(cartProductsStateControllerProvider(widget.draftKey).notifier)
-        .addItem(
-          widget.item.copyWith(
-            quantity: quantityController.text.toDouble() ?? 0,
-            value: uiState.requestTypeAllowChangePrice
-                ? priceController.text.toDouble() ?? 0
-                : null,
-          ),
-          CartAdditionStrategy.overwrite,
-        );
+      ref
+          .read(cartProductsStateControllerProvider(draftKey).notifier)
+          .addItem(
+            item.copyWith(
+              quantity: quantityController.text.toDouble() ?? 0,
+              value: requestTypeAllowChangePrice
+                  ? priceController.text.toDouble() ?? 0
+                  : null,
+            ),
+            CartAdditionStrategy.overwrite,
+          );
 
-    ref
-        .read(
-          uiStateControllerProvider(
-            widget.draftKey.requestTypeCode,
-            widget.draftKey.enterpriseOrigin,
-          ).notifier,
-        )
-        .updateSelectedCartProductIndex(null);
-  }
+      onUpdated();
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -117,54 +87,39 @@ class _ProductItemState extends ConsumerState<ProductItem> {
               ),
               child: Row(
                 children: [
-                  Expanded(child: ProductInformations(item: widget.item)),
+                  Expanded(child: ProductInformations(item: item)),
                   RemoveAndEditIcons(
-                    draftKey: widget.draftKey,
-                    item: widget.item,
+                    draftKey: draftKey,
+                    item: item,
                     changeSelectedIndex: changeSelectedIndex,
                   ),
                 ],
               ),
             ),
           ),
-          Consumer(
-            builder: (_, ref, _) {
-              final bool isSelected =
-                  ref.watch(
-                    uiStateControllerProvider(
-                      widget.draftKey.requestTypeCode,
-                      widget.draftKey.enterpriseOrigin,
-                    ).select((s) => s.value?.selectedCartProductIndex),
-                  ) ==
-                  widget.index;
-
-              if (!isSelected) {
-                return const SizedBox.shrink();
-              }
-
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Sizes.p8,
-                  0,
-                  Sizes.p8,
-                  Sizes.p8,
+          if (isSelected)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Sizes.p8,
+                0,
+                Sizes.p8,
+                Sizes.p8,
+              ),
+              child: Form(
+                key: formKey,
+                child: UpdateItemWidget(
+                  update: update,
+                  draftKey: draftKey,
+                  price: item.value,
+                  requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+                  quantityController: quantityController,
+                  priceController: priceController,
+                  quantityFocusNode: quantityFocusNode,
+                  priceFocusNode: priceFocusNode,
+                  isCartPage: true,
                 ),
-                child: Form(
-                  key: formKey,
-                  child: UpdateItemWidget(
-                    update: update,
-                    draftKey: widget.draftKey,
-                    price: widget.item.value,
-                    quantityController: quantityController,
-                    priceController: priceController,
-                    quantityFocusNode: quantityFocusNode,
-                    priceFocusNode: priceFocusNode,
-                    isCartPage: true,
-                  ),
-                ),
-              );
-            },
-          ),
+              ),
+            ),
         ],
       ),
     );

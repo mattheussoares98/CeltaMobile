@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
-import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/update_item/update_item.dart';
 
-class UpdateItemWidget extends ConsumerWidget {
+class UpdateItemWidget extends StatelessWidget {
   final VoidCallback update;
   final DraftKey draftKey;
   final double price;
@@ -19,6 +17,7 @@ class UpdateItemWidget extends ConsumerWidget {
   final FocusNode quantityFocusNode;
   final FocusNode priceFocusNode;
   final bool isCartPage;
+  final bool requestTypeAllowChangePrice;
   const UpdateItemWidget({
     super.key,
     required this.update,
@@ -29,17 +28,11 @@ class UpdateItemWidget extends ConsumerWidget {
     required this.quantityFocusNode,
     required this.priceFocusNode,
     required this.isCartPage,
+    required this.requestTypeAllowChangePrice,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final requestTypeAllowChangePrice = ref.watch(
-      uiStateControllerProvider(
-        draftKey.requestTypeCode,
-        draftKey.enterpriseOrigin,
-      ).select((s) => s.value?.requestTypeAllowChangePrice ?? false),
-    );
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -63,8 +56,7 @@ class UpdateItemWidget extends ConsumerWidget {
                 priceController: priceController,
                 priceFocusNode: priceFocusNode,
                 update: update,
-                requestTypeCode: draftKey.requestTypeCode,
-                enterpriseCode: draftKey.enterpriseOrigin,
+                requestTypeAllowChangePrice: requestTypeAllowChangePrice,
               ),
             ),
             gapW4,

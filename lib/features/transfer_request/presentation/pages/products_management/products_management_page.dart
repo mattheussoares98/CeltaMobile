@@ -9,9 +9,10 @@ import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProductsManagementPage extends ConsumerWidget {
+class ProductsManagementPage extends HookConsumerWidget {
   final int enterpriseOriginCode;
   final int enterpriseDestinyCode;
   final int requestTypeCode;
@@ -28,6 +29,7 @@ class ProductsManagementPage extends ConsumerWidget {
       enterpriseOrigin: enterpriseOriginCode,
       enterpriseDestinyCode: enterpriseDestinyCode,
     );
+    final pageIndex = useState(0);
 
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
       n.showAlertDialogOnError(context);
@@ -84,20 +86,14 @@ class ProductsManagementPage extends ConsumerWidget {
           if (MediaQuery.sizeOf(context).width > 250)
             ClearCartButton(draftKey: draftKey),
           CartQuantityPriceBadge(
-            requestTypeCode: requestTypeCode,
             draftKey: draftKey,
+            onTap: () => pageIndex.value = 1,
           ),
         ],
       ),
       body: Consumer(
         builder: (_, ref, _) {
-          final pageIndex = ref.watch(
-            uiStateControllerProvider(
-              requestTypeCode,
-              enterpriseOriginCode,
-            ).select((s) => s.value?.pageIndex ?? 0),
-          );
-          return IndexedStack(index: pageIndex, children: pages);
+          return IndexedStack(index: pageIndex.value, children: pages);
         },
       ),
       floatingActionButton: Consumer(
@@ -108,12 +104,7 @@ class ProductsManagementPage extends ConsumerWidget {
 
           if (keyboardIsOpen) return const SizedBox.shrink();
 
-          final isOnInsertPage = ref.watch(
-            uiStateControllerProvider(
-              requestTypeCode,
-              enterpriseOriginCode,
-            ).select((s) => s.value?.pageIndex == 0),
-          );
+          final isOnInsertPage = pageIndex.value == 0;
 
           if (isOnInsertPage) return const SizedBox.shrink();
 
@@ -122,13 +113,6 @@ class ProductsManagementPage extends ConsumerWidget {
       ),
       bottomNavigationBar: Consumer(
         builder: (_, ref, _) {
-          final pageIndex = ref.watch(
-            uiStateControllerProvider(
-              requestTypeCode,
-              enterpriseOriginCode,
-            ).select((s) => s.value?.pageIndex ?? 0),
-          );
-
           final productsLength = ref.watch(
             cartProductsStateControllerProvider(
               draftKey,
@@ -136,15 +120,8 @@ class ProductsManagementPage extends ConsumerWidget {
           );
 
           return BaseBottomNavigationBar(
-            currentIndex: pageIndex,
-            onTap: ref
-                .read(
-                  uiStateControllerProvider(
-                    requestTypeCode,
-                    enterpriseOriginCode,
-                  ).notifier,
-                )
-                .updatePageIndex,
+            currentIndex: pageIndex.value,
+            onTap: (index) => pageIndex.value = index,
             items: [
               BaseBottomNavigationBarItem(
                 label: 'Inserir'.hardcoded,

@@ -10,10 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ProductItem extends ConsumerWidget {
   final ProductEntity product;
   final DraftKey draftKey;
-  final int index;
+  final bool isSelected;
   final bool requestTypeAllowChangePrice;
   final void Function(TransferRequestProductItemEntity? requestItem) onTap;
-  final void Function(double? quantityInCart) update;
+  final void Function() update;
   final TextEditingController quantityController;
   final TextEditingController priceController;
   final FocusNode quantityFocusNode;
@@ -24,7 +24,7 @@ class ProductItem extends ConsumerWidget {
     super.key,
     required this.product,
     required this.draftKey,
-    required this.index,
+    required this.isSelected,
     required this.requestTypeAllowChangePrice,
     required this.onTap,
     required this.quantityController,
@@ -37,13 +37,6 @@ class ProductItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(
-      uiStateControllerProvider(
-        draftKey.requestTypeCode,
-        draftKey.enterpriseOrigin,
-      ).select((s) => s.value?.selectedInsertProductIndex == index),
-    );
-
     final transferRequestProductItem = ref.watch(
       cartProductsStateControllerProvider(draftKey).select(
         (s) => s.value?.firstWhereOrNull(
@@ -77,7 +70,8 @@ class ProductItem extends ConsumerWidget {
               key: formKey,
               child: UpdateItemWidget(
                 isCartPage: false,
-                update: () => update(transferRequestProductItem?.quantity),
+                requestTypeAllowChangePrice: requestTypeAllowChangePrice,
+                update: update,
                 draftKey: draftKey,
                 price: product.Value ?? 0,
                 quantityController: quantityController,

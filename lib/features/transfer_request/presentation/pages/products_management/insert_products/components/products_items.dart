@@ -1,15 +1,18 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
+import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/insert_products/components/product_item.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProductsItems extends ConsumerStatefulWidget {
+class ProductsItems extends HookConsumerWidget {
   final DraftKey draftKey;
   final SearchProductKey searchProductKey;
   const ProductsItems({
@@ -19,114 +22,89 @@ class ProductsItems extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ProductsItemsState();
-}
-
-class _ProductsItemsState extends ConsumerState<ProductsItems> {
-  final quantityController = TextEditingController();
-  final priceController = TextEditingController();
-  final quantityFocusNode = FocusNode();
-  final priceFocusNode = FocusNode();
-  final formKey = GlobalKey<FormState>();
-  late final UiStateControllerProvider uiProvider;
-
-  @override
-  void initState() {
-    super.initState();
-    uiProvider = uiStateControllerProvider(
-      widget.draftKey.requestTypeCode,
-      widget.draftKey.enterpriseOrigin,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quantityController = useTextEditingController();
+    final priceController = useTextEditingController();
+    final quantityFocusNode = useFocusNode();
+    final priceFocusNode = useFocusNode();
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final selectedProductIndex = useState<int?>(null);
+    final requests = ref.watch(
+      requestTypeStateControllerProvider(
+        Modules.transferRequest,
+        draftKey.enterpriseOrigin,
+      ),
     );
-  }
+    final requestTypeAllowChangePrice =
+        requests.value
+            ?.firstWhereOrNull(
+              (request) => request.code == draftKey.requestTypeCode,
+            )
+            ?.allowAlterCostOrSalePrice ==
+        true;
 
-  @override
-  void dispose() {
-    super.dispose();
-    quantityController.dispose();
-    priceController.dispose();
-    quantityFocusNode.dispose();
-    priceFocusNode.dispose();
-  }
-
-  void onTapProductItem({
-    required int index,
-    required ProductEntity product,
-    required TransferRequestProductItemEntity? transferRequestProductItem,
-    required bool requestTypeAllowChangePrice,
-  }) {
-    if (product.Value == 0 && !requestTypeAllowChangePrice) {
-      showToastMessage(
-        'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
-            .hardcoded,
-        type: ToastType.error,
-      );
-      ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
-      return;
-    }
-
-    FocusManager.instance.primaryFocus?.unfocus();
-    ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(index);
-
-    priceController.clear();
-    quantityController.clear();
-
-    if (product.Value! > 0 || transferRequestProductItem?.value != null) {
-      final price = transferRequestProductItem?.value ?? product.Value;
-      priceController.text = price.toString().toBrazilianNumber().replaceAll(
-        RegExp(r'\.'),
-        '',
-      );
-    }
-
-    quantityFocusNode.unfocus();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      quantityFocusNode.requestFocus();
+    ref.listen(searchProductsStateControllerProvider(searchProductKey), (p, n) {
+      selectedProductIndex.value = null;
     });
-  }
 
-  void update({
-    required ProductEntity product,
-    required double? quantityInCart,
-  }) {
-    if (formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    final newQuantity = quantityController.text.toDouble() ?? 0;
-    final value = priceController.text.toDouble() ?? product.Value;
-
-    ref
-        .read(cartProductsStateControllerProvider(widget.draftKey).notifier)
-        .addItem(
-          TransferRequestProductItemEntity(
-            product: product,
-            quantity: newQuantity,
-            value: value!,
-          ),
-          CartAdditionStrategy.increase,
-        );
-
-    ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final requestTypeAllowChangePrice = ref.watch(
-      uiProvider.select((s) => s.value?.requestTypeAllowChangePrice ?? false),
-    );
-
-    ref.listen(searchProductsStateControllerProvider(widget.searchProductKey), (
-      p,
-      n,
+    void onTap(
+      TransferRequestProductItemEntity? transferRequestItem,
+      ProductEntity product,
+      int index,
     ) {
-      ref.read(uiProvider.notifier).updateSelectedInsertProductIndex(null);
-    });
+      if (product.Value == 0 && !requestTypeAllowChangePrice) {
+        showToastMessage(
+          'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
+              .hardcoded,
+          type: ToastType.error,
+        );
+        selectedProductIndex.value = null;
+        return;
+      }
+
+      FocusManager.instance.primaryFocus?.unfocus();
+      selectedProductIndex.value = selectedProductIndex.value == index
+          ? null
+          : index;
+      priceController.clear();
+      quantityController.clear();
+
+      if (product.Value! > 0 || transferRequestItem?.value != null) {
+        final price = transferRequestItem?.value ?? product.Value;
+        priceController.text = price.toString().toBrazilianNumber().replaceAll(
+          RegExp(r'\.'),
+          '',
+        );
+      }
+
+      quantityFocusNode.unfocus();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!context.mounted) return;
+        quantityFocusNode.requestFocus();
+      });
+    }
+
+    void update(ProductEntity product) {
+      if (formKey.currentState?.validate() != true) return;
+
+      final newQuantity = quantityController.text.toDouble() ?? 0;
+      final value = priceController.text.toDouble() ?? product.Value;
+      ref
+          .read(cartProductsStateControllerProvider(draftKey).notifier)
+          .addItem(
+            TransferRequestProductItemEntity(
+              product: product,
+              quantity: newQuantity,
+              value: value!,
+            ),
+            CartAdditionStrategy.increase,
+          );
+      selectedProductIndex.value = null;
+    }
 
     return AsyncValueWidget(
       isSliver: true,
-      value: ref.watch(
-        searchProductsStateControllerProvider(widget.searchProductKey),
-      ),
+      value: ref.watch(searchProductsStateControllerProvider(searchProductKey)),
       tryAgain: null,
       data: (products) {
         return ResponsiveListFlow(
@@ -140,22 +118,17 @@ class _ProductsItemsState extends ConsumerState<ProductsItems> {
                 '${product.ProductPackingCode}${product.EnterpriseCode}',
               ),
               product: product,
-              draftKey: widget.draftKey,
-              index: index,
+              draftKey: draftKey,
+              isSelected: selectedProductIndex.value == index,
               requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-              onTap: (transferRequestItem) => onTapProductItem(
-                index: index,
-                product: product,
-                transferRequestProductItem: transferRequestItem,
-                requestTypeAllowChangePrice: requestTypeAllowChangePrice,
-              ),
+              onTap: (transferRequestItem) =>
+                  onTap(transferRequestItem, product, index),
               quantityController: quantityController,
               priceController: priceController,
               quantityFocusNode: quantityFocusNode,
               priceFocusNode: priceFocusNode,
               formKey: formKey,
-              update: (quantityInCart) =>
-                  update(product: product, quantityInCart: quantityInCart),
+              update: () => update(product),
             );
           },
         );

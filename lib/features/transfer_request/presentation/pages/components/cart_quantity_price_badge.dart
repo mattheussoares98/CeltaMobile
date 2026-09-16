@@ -7,12 +7,12 @@ import 'package:celta_inventario/features/transfer_request/domain/entities/entit
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 
 class CartQuantityPriceBadge extends ConsumerWidget {
-  final int requestTypeCode;
   final DraftKey draftKey;
+  final VoidCallback onTap;
   const CartQuantityPriceBadge({
     super.key,
-    required this.requestTypeCode,
     required this.draftKey,
+    required this.onTap,
   });
 
   @override
@@ -29,16 +29,7 @@ class CartQuantityPriceBadge extends ConsumerWidget {
     );
 
     return GestureDetector(
-      onTap: () {
-        ref
-            .read(
-              uiStateControllerProvider(
-                requestTypeCode,
-                draftKey.enterpriseOrigin,
-              ).notifier,
-            )
-            .updatePageIndex(1);
-      },
+      onTap: onTap,
       child: QuantityBadge(
         quantity: productsQuantity,
         platformIcon: const PlatformIcon(
