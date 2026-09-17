@@ -12,28 +12,31 @@ class SynchronizerEmptyErrors extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: .center,
-        children: [
-          const PlatformIcon(
-            cupertinoIcon: CupertinoIcons.checkmark_seal,
-            materialIcon: Icons.check_circle_outline,
-            size: 60,
-          ),
-          gapH16,
-          BaseText.headline(
-            'Nenhum erro foi encontrado'.hardcoded,
-            color: Colors.green,
-          ),
-          if (detailsProvider != null) ...[
-            gapH32,
-            PrimaryButton(
-              text: 'Recarregar'.hardcoded,
-              onPressed: () => ref.invalidate(detailsProvider!),
+    return Padding(
+      padding: const .all(Sizes.p12),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: .center,
+          children: [
+            const PlatformIcon(
+              cupertinoIcon: CupertinoIcons.checkmark_seal,
+              materialIcon: Icons.check_circle_outline,
+              size: 60,
             ),
+            gapH16,
+            BaseText.headline(
+              'Nenhum erro foi encontrado'.hardcoded,
+              color: Colors.green,
+            ),
+            if (detailsProvider != null) ...[
+              gapH32,
+              PrimaryButton(
+                text: 'Recarregar'.hardcoded,
+                onPressed: () => ref.invalidate(detailsProvider!),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
