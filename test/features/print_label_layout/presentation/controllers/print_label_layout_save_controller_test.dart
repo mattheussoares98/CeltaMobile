@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
@@ -20,16 +21,19 @@ void main() {
   late MockEcPrintLabelLayoutRepository repository;
   late EcRequestParams params;
   late BSFPrintLabelLayoutEntity layout;
+  late FakeAppUsageStateController fakeAppUsage;
 
   ProviderContainer makeContainer() => ProviderContainer(
     retry: (retryCount, error) => null,
     overrides: [
       ecRequestParamsProvider().overrideWith((ref) => params),
       ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
+      appUsageStateControllerProvider.overrideWith(() => fakeAppUsage),
     ],
   );
 
   setUp(() {
+    fakeAppUsage = FakeAppUsageStateController();
     repository = MockEcPrintLabelLayoutRepository();
     params = EntityFactory.makeEcRequestParams();
     layout = EntityFactory.makeBSFPrintLabelLayoutEntity(
@@ -51,7 +55,7 @@ void main() {
   });
 
   test(
-    'save should load separately and refresh details after success',
+    'save should load separately, refresh details after success and add app usage',
     () async {
       final updated = layout.copyWith(name: 'Server name');
       final completer = Completer<BSFPrintLabelLayoutEntity>();
@@ -75,6 +79,7 @@ void main() {
       expect(container.read(saveProvider).hasValue, isTrue);
       expect(container.read(detailsProvider).requireValue, updated);
       verify(() => repository.update(params, layout)).called(1);
+      expect(fakeAppUsage.lastUsageType, UsageType.printLabelCreateUpdate);
     },
   );
 
@@ -96,9 +101,7 @@ void main() {
         applyFormSizeConfiguration: true,
       );
       final created = draft.copyWith(code: 42);
-      when(
-        () => repository.getCreateOptions(params),
-      ).thenAnswer(
+      when(() => repository.getCreateOptions(params)).thenAnswer(
         (_) async => EntityFactory.makeBSFPrintLabelLayoutCreateOptionsEntity(
           draft: draft,
         ),

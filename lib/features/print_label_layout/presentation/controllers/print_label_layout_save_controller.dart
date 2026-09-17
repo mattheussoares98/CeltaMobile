@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/validators/validators.dart';
@@ -37,7 +38,9 @@ class PrintLabelLayoutSaveController extends _$PrintLabelLayoutSaveController {
       final saved = draft.code == 0
           ? await repository.create(params, draft)
           : await repository.update(params, draft);
-      //TODO add appUsage
+      ref
+          .read(appUsageStateControllerProvider.notifier)
+          .addUsage(.printLabelCreateUpdate);
       ref.read(detailsProvider.notifier).replaceWithSavedLayout(saved);
     });
   }
