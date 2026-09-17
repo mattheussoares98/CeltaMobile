@@ -140,8 +140,8 @@ class _FinishOffer extends ConsumerWidget {
                         materialIcon: Icons.close,
                         color: Colors.red,
                       ),
-                onPressed: () {
-                  showAlertDialog(
+                onPressed: () async {
+                  final confirmed = await showAlertDialog(
                     context: context,
                     title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
                         .hardcoded,
@@ -150,21 +150,21 @@ class _FinishOffer extends ConsumerWidget {
                     content:
                         'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
                             .hardcoded,
-                    onOkPressed: () {
-                      ref
-                          .read(
-                            finishOfferControllerProvider(
-                              product.ProductPackingCode!,
-                              product.EnterpriseCode!,
-                            ).notifier,
-                          )
-                          .finish(
-                            product: product,
-                            saleType: saleType,
-                            now: DateTime.now(),
-                          );
-                    },
                   );
+
+                  if (confirmed != true || !context.mounted) return;
+                  ref
+                      .read(
+                        finishOfferControllerProvider(
+                          product.ProductPackingCode!,
+                          product.EnterpriseCode!,
+                        ).notifier,
+                      )
+                      .finish(
+                        product: product,
+                        saleType: saleType,
+                        now: DateTime.now(),
+                      );
                 },
               );
             },

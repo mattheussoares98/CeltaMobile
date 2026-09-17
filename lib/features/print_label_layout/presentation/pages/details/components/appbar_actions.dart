@@ -57,16 +57,19 @@ class _AppbarActions extends ConsumerWidget {
               tooltip: 'Salvar'.hardcoded,
               onPressed: isSaving
                   ? null
-                  : () {
-                      showAlertDialog(
+                  : () async {
+                      final result = await showAlertDialog(
                         context: context,
                         title: 'Salvar alterações'.hardcoded,
                         content:
                             'Deseja realmente salvar as alterações?'.hardcoded,
                         defaultActionText: 'Sim'.hardcoded,
                         cancelActionText: 'Não'.hardcoded,
-                        onOkPressed: ref.read(saveProvider.notifier).save,
                       );
+
+                      if (result == true && context.mounted) {
+                        ref.read(saveProvider.notifier).save();
+                      }
                     },
               icon: const PlatformIcon(
                 cupertinoIcon: CupertinoIcons.check_mark,

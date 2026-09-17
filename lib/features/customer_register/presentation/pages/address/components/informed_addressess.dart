@@ -69,14 +69,16 @@ class _AddressItem extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {
-                    showAlertDialog(
+                  onPressed: () async {
+                    final confirmed = await showAlertDialog(
                       context: context,
                       title: 'Excluir endereço?'.hardcoded,
-                      onOkPressed: removeAddress,
                       cancelActionText: 'Não'.hardcoded,
                       defaultActionText: 'Sim'.hardcoded,
                     );
+
+                    if (confirmed != true || !context.mounted) return;
+                    removeAddress();
                   },
                   icon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.delete,

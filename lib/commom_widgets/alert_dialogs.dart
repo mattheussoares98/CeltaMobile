@@ -16,7 +16,6 @@ Future<bool?> showAlertDialog({
   Widget? contentWidget,
   String? cancelActionText,
   String defaultActionText = 'OK',
-  VoidCallback? onOkPressed,
   List<Widget>? actions,
   VoidCallback? onLongpressTitle,
 }) {
@@ -63,7 +62,6 @@ Future<bool?> showAlertDialog({
                     child: Text(defaultActionText),
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      onOkPressed?.call();
                     },
                   ),
                 ]
@@ -77,7 +75,6 @@ Future<bool?> showAlertDialog({
                     child: Text(defaultActionText),
                     onPressed: () {
                       Navigator.of(context).pop(true);
-                      onOkPressed?.call();
                     },
                   ),
                 ]),

@@ -58,14 +58,16 @@ class _EmailItem extends StatelessWidget {
           children: [
             Expanded(child: BaseText(email)),
             IconButton(
-              onPressed: () {
-                showAlertDialog(
+              onPressed: () async {
+                final confirmed = await showAlertDialog(
                   context: context,
                   title: 'Remover e-mail?'.hardcoded,
-                  onOkPressed: removeEmail,
                   defaultActionText: 'Sim'.hardcoded,
                   cancelActionText: 'Não'.hardcoded,
                 );
+
+                if (confirmed != true || !context.mounted) return;
+                removeEmail();
               },
               icon: const PlatformIcon(
                 cupertinoIcon: CupertinoIcons.delete,

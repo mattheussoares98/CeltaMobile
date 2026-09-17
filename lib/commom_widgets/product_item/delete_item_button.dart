@@ -13,15 +13,17 @@ class DeleteItemButton extends StatelessWidget {
       child: IconButton(
         onPressed: onDelete == null
             ? null
-            : () {
+            : () async {
                 FocusManager.instance.primaryFocus?.unfocus();
-                showAlertDialog(
+                final result = await showAlertDialog(
                   context: context,
                   title: 'Remover item?'.hardcoded,
-                  onOkPressed: onDelete,
                   cancelActionText: 'Cancelar'.hardcoded,
                   defaultActionText: 'Remover'.hardcoded,
                 );
+                if (result == true && context.mounted) {
+                  onDelete?.call();
+                }
               },
         icon: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.delete,

@@ -34,28 +34,29 @@ class FloatingSaveButton extends ConsumerWidget {
       child: FloatingActionButton(
         onPressed: cartIsEmpty
             ? null
-            : () {
-                showAlertDialog(
+            : () async {
+                final result = await showAlertDialog(
                   context: context,
                   title: 'Salvar pedido?'.hardcoded,
                   cancelActionText: 'Cancelar'.hardcoded,
                   defaultActionText: 'Sim'.hardcoded,
-                  onOkPressed: () async {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    final succeeds = await ref
-                        .read(
-                          insertBuyRequestControllerProvider(
-                            enterpriseCode,
-                          ).notifier,
-                        )
-                        .insert(observationsController.text);
-
-                    if (succeeds && context.mounted) {
-                      showToastMessage('Pedido salvo com sucesso'.hardcoded);
-                      observationsController.clear();
-                    }
-                  },
                 );
+
+                if (result == true && context.mounted) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  final succeeds = await ref
+                      .read(
+                        insertBuyRequestControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
+                      .insert(observationsController.text);
+
+                  if (succeeds && context.mounted) {
+                    showToastMessage('Pedido salvo com sucesso'.hardcoded);
+                    observationsController.clear();
+                  }
+                }
               },
         backgroundColor: cartIsEmpty
             ? Colors.grey

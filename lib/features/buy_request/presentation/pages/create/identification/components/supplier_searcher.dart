@@ -54,7 +54,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
         .load(supplierController.text);
   }
 
-  void onSubmit() {
+  void onSubmit() async {
     final (hasSelectedEnterprisesOrProducts, selectedSupplier) = ref.read(
       pendingBuyRequestStateControllerProvider(widget.enterpriseCode).select(
         (s) => (
@@ -66,7 +66,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     );
 
     if (selectedSupplier != null && hasSelectedEnterprisesOrProducts) {
-      showAlertDialog(
+      final result = await showAlertDialog(
         context: context,
         title: 'Consultar fornecedores?'.hardcoded,
         content:
@@ -74,8 +74,10 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                 .hardcoded,
         cancelActionText: 'Cancelar'.hardcoded,
         defaultActionText: 'Consultar'.hardcoded,
-        onOkPressed: loadSuppliers,
       );
+      if (result == true && context.mounted) {
+        loadSuppliers();
+      }
     } else {
       loadSuppliers();
     }

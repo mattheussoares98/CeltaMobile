@@ -23,20 +23,18 @@ class RemoveAndEditIcons extends ConsumerWidget {
     return Column(
       children: [
         IconButton(
-          onPressed: () {
-            showAlertDialog(
+          onPressed: () async {
+            final confirmed = await showAlertDialog(
               context: context,
               title: 'Remover item?'.hardcoded,
               cancelActionText: 'Cancelar'.hardcoded,
               defaultActionText: 'Remover'.hardcoded,
-              onOkPressed: () {
-                ref
-                    .read(
-                      cartProductsStateControllerProvider(draftKey).notifier,
-                    )
-                    .removeItem(item);
-              },
             );
+
+            if (confirmed != true || !context.mounted) return;
+            ref
+                .read(cartProductsStateControllerProvider(draftKey).notifier)
+                .removeItem(item);
           },
           icon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.delete,

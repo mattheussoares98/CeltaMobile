@@ -51,13 +51,15 @@ class _ConfirmOrRequestButton extends StatelessWidget {
     return PrimaryButton(
       text: isRequest ? 'Solicitar'.hardcoded : 'Confirmar'.hardcoded,
       onPressed: () async {
-        showAlertDialog(
+        final confirmed = await showAlertDialog(
           context: context,
           title: isRequest ? 'Solicitar?'.hardcoded : 'Confirmar?'.hardcoded,
           cancelActionText: 'Cancelar'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
-          onOkPressed: () => confirmRequest(isRequest),
         );
+
+        if (confirmed != true || !context.mounted) return;
+        confirmRequest(isRequest);
       },
     );
   }

@@ -62,29 +62,28 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
     FocusScope.of(context).unfocus();
     FocusManager.instance.primaryFocus?.unfocus();
 
-    showAlertDialog(
+    final confirmed = await showAlertDialog(
       context: context,
       title: 'Salvar alterações?'.hardcoded,
       defaultActionText: 'Sim'.hardcoded,
       cancelActionText: 'Cancelar'.hardcoded,
-      onOkPressed: () {
-        ref
-            .read(updatePricesControllerProvider.notifier)
-            .insertUpdate(
-              enterpriseCode: widget.enterpriseCode,
-              researchCode: widget.researchCode,
-              concurrentCode: widget.concurrentCode,
-              priceRetail: widget.retailController.text.toDouble() ?? 0,
-              offerRetail: widget.retailOfferController.text.toDouble() ?? 0,
-              priceWhole: widget.wholeController.text.toDouble() ?? 0,
-              offerWhole: widget.wholeOfferController.text.toDouble() ?? 0,
-              priceECommerce: widget.ecommerceController.text.toDouble() ?? 0,
-              offerECommerce:
-                  widget.ecommerceOfferController.text.toDouble() ?? 0,
-              product: widget.product,
-            );
-      },
     );
+
+    if (confirmed != true || !mounted) return;
+    ref
+        .read(updatePricesControllerProvider.notifier)
+        .insertUpdate(
+          enterpriseCode: widget.enterpriseCode,
+          researchCode: widget.researchCode,
+          concurrentCode: widget.concurrentCode,
+          priceRetail: widget.retailController.text.toDouble() ?? 0,
+          offerRetail: widget.retailOfferController.text.toDouble() ?? 0,
+          priceWhole: widget.wholeController.text.toDouble() ?? 0,
+          offerWhole: widget.wholeOfferController.text.toDouble() ?? 0,
+          priceECommerce: widget.ecommerceController.text.toDouble() ?? 0,
+          offerECommerce: widget.ecommerceOfferController.text.toDouble() ?? 0,
+          product: widget.product,
+        );
   }
 
   bool get hasChangedAnyValue {

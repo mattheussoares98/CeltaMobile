@@ -57,7 +57,7 @@ class EnterprisesPage extends ConsumerWidget {
 
         if (hasProductFromThisEnterpriseInserted) {
           if (!context.mounted) return;
-          await showAlertDialog(
+          final result = await showAlertDialog(
             context: context,
             title: 'Remover empresa?'.hardcoded,
             content:
@@ -65,13 +65,14 @@ class EnterprisesPage extends ConsumerWidget {
                     .hardcoded,
             defaultActionText: 'Remover'.hardcoded,
             cancelActionText: 'Cancelar'.hardcoded,
-            onOkPressed: () {
-              updatedEnterprises.remove(enterprise);
-              updatedProducts.removeWhere((key, value) {
-                return key.enterpriseCode == enterprise.Code;
-              });
-            },
           );
+
+          if (result == true && context.mounted) {
+            updatedEnterprises.remove(enterprise);
+            updatedProducts.removeWhere((key, value) {
+              return key.enterpriseCode == enterprise.Code;
+            });
+          }
         } else {
           updatedEnterprises.remove(enterprise);
         }

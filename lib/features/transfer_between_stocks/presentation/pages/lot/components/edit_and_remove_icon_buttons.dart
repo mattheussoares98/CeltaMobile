@@ -28,18 +28,18 @@ class EditAndRemoveIconButtons extends ConsumerWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {
-            showAlertDialog(
+          onPressed: () async {
+            final confirmed = await showAlertDialog(
               context: context,
               title: 'Remover item?'.hardcoded,
               cancelActionText: 'Cancelar'.hardcoded,
               defaultActionText: 'Remover'.hardcoded,
-              onOkPressed: () {
-                ref
-                    .read(lotStateControllerProvider(enterpriseCode).notifier)
-                    .removeItem(item.product.ProductPackingCode!);
-              },
             );
+
+            if (confirmed != true || !context.mounted) return;
+            ref
+                .read(lotStateControllerProvider(enterpriseCode).notifier)
+                .removeItem(item.product.ProductPackingCode!);
           },
           icon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.delete,

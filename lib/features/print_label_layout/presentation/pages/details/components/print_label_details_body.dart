@@ -96,15 +96,17 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
                       ),
 
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          showAlertDialog(
+                          final confirmed = await showAlertDialog(
                             context: context,
                             title: 'Remover item?'.hardcoded,
-                            onOkPressed: () => controller.removeField(index),
                             cancelActionText: 'Cancelar'.hardcoded,
                             defaultActionText: 'Remover'.hardcoded,
                           );
+
+                          if (confirmed != true || !context.mounted) return;
+                          controller.removeField(index);
                         },
                         icon: const PlatformIcon(
                           cupertinoIcon: CupertinoIcons.delete,

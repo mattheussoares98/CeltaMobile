@@ -31,20 +31,20 @@ class ClearCartButton extends ConsumerWidget {
       color: Colors.red,
       onPressed: cartIsEmpty
           ? null
-          : () {
-              showAlertDialog(
+          : () async {
+              final result = await showAlertDialog(
                 context: context,
                 title: 'Limpar carrinho?'.hardcoded,
                 defaultActionText: 'Limpar'.hardcoded,
                 cancelActionText: 'Cancelar'.hardcoded,
-                onOkPressed: () {
-                  ref
-                      .read(
-                        cartProductsStateControllerProvider(draftKey).notifier,
-                      )
-                      .clearLot();
-                },
               );
+              if (result == true && context.mounted) {
+                ref
+                    .read(
+                      cartProductsStateControllerProvider(draftKey).notifier,
+                    )
+                    .clearLot();
+              }
             },
     );
   }

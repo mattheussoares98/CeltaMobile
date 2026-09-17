@@ -25,20 +25,20 @@ class SaveFloatingButton extends ConsumerWidget {
           : context.theme.primaryColor.withAlpha(170),
       onPressed: cartIsEmpty
           ? null
-          : () {
-              showAlertDialog(
+          : () async {
+              final confirmed = await showAlertDialog(
                 context: context,
                 title: 'Salvar pedido?'.hardcoded,
                 cancelActionText: 'Cancelar'.hardcoded,
                 defaultActionText: 'Sim'.hardcoded,
-                onOkPressed: ref
-                    .read(
-                      insertTransferRequestControllerProvider(
-                        draftKey,
-                      ).notifier,
-                    )
-                    .insert,
               );
+
+              if (confirmed != true || !context.mounted) return;
+              ref
+                  .read(
+                    insertTransferRequestControllerProvider(draftKey).notifier,
+                  )
+                  .insert();
             },
       child: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.check_mark,

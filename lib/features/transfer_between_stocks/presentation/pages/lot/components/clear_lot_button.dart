@@ -30,18 +30,18 @@ class ClearLotButton extends ConsumerWidget {
         color: hasProductsInCart ? Colors.red : context.theme.disabledColor,
       ),
       onPressed: hasProductsInCart
-          ? () {
-              showAlertDialog(
+          ? () async {
+              final confirmed = await showAlertDialog(
                 context: context,
                 title: 'Limpar lote?'.hardcoded,
                 cancelActionText: 'Cancelar'.hardcoded,
                 defaultActionText: 'Limpar'.hardcoded,
-                onOkPressed: () {
-                  ref
-                      .read(lotStateControllerProvider(enterpriseCode).notifier)
-                      .clearLot(enterpriseCode);
-                },
               );
+
+              if (confirmed != true || !context.mounted) return;
+              ref
+                  .read(lotStateControllerProvider(enterpriseCode).notifier)
+                  .clearLot(enterpriseCode);
             }
           : null,
     );

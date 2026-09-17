@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
+import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
-import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
-import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class LiberateAndConferButtons extends ConsumerWidget {
   final ReceiptEntity receipt;
@@ -54,7 +53,7 @@ class LiberateAndConferButtons extends ConsumerWidget {
                                     .hardcoded,
                           );
                         } else {
-                          showAlertDialog(
+                          final result = await showAlertDialog(
                             context: context,
                             title: 'Liberar?'.hardcoded,
                             defaultActionText: 'Liberar'.hardcoded,
@@ -62,16 +61,16 @@ class LiberateAndConferButtons extends ConsumerWidget {
                             content:
                                 'Tem certeza que deseja liberar esse documento?'
                                     .hardcoded,
-                            onOkPressed: () {
-                              ref
-                                  .read(
-                                    liberateDocumentControllerProvider(
-                                      receipt.CodigoInterno_ProcRecebDoc,
-                                    ).notifier,
-                                  )
-                                  .liberate();
-                            },
                           );
+                          if (result == true && context.mounted) {
+                            ref
+                                .read(
+                                  liberateDocumentControllerProvider(
+                                    receipt.CodigoInterno_ProcRecebDoc,
+                                  ).notifier,
+                                )
+                                .liberate();
+                          }
                         }
                       },
               );

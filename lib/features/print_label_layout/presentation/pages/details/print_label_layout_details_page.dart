@@ -45,9 +45,9 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       );
     });
 
-    void onPop() {
+    void onPop() async {
       if (ref.read(provider.notifier).shouldConfirmPop) {
-        showAlertDialog(
+        final confirmed = await showAlertDialog(
           context: context,
           title: "Atenção".hardcoded,
           content:
@@ -55,11 +55,11 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
                   .hardcoded,
           cancelActionText: 'Não'.hardcoded,
           defaultActionText: 'Descartar alterações'.hardcoded,
-          onOkPressed: () {
-            ref.invalidate(provider);
-            context.pop();
-          },
         );
+
+        if (confirmed != true || !context.mounted) return;
+        ref.invalidate(provider);
+        context.pop();
       } else {
         context.pop();
       }

@@ -34,8 +34,8 @@ class ClearRequestButton extends ConsumerWidget {
       child: PrimaryTextButton(
         text: isDesktop ? 'Limpar pedido'.hardcoded : '',
         onPressed: hasSelectedValues
-            ? () {
-                showAlertDialog(
+            ? () async {
+                final result = await showAlertDialog(
                   context: context,
                   title: 'Apagar dados'.hardcoded,
                   content:
@@ -43,17 +43,18 @@ class ClearRequestButton extends ConsumerWidget {
                           .hardcoded,
                   cancelActionText: 'Cancelar'.hardcoded,
                   defaultActionText: 'Confirmar'.hardcoded,
-                  onOkPressed: () {
-                    ref
-                        .read(
-                          pendingBuyRequestStateControllerProvider(
-                            enterpriseCode,
-                          ).notifier,
-                        )
-                        .clearState(null);
-                    observationsController.clear();
-                  },
                 );
+
+                if (result == true && context.mounted) {
+                  ref
+                      .read(
+                        pendingBuyRequestStateControllerProvider(
+                          enterpriseCode,
+                        ).notifier,
+                      )
+                      .clearState(null);
+                  observationsController.clear();
+                }
               }
             : null,
         platformIcon: PlatformIcon(

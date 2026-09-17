@@ -107,18 +107,18 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
               child: PrimaryButton(
                 text: 'Anular'.hardcoded,
                 onPressed: hasInsertedQuantity
-                    ? () {
-                        showAlertDialog(
+                    ? () async {
+                        final confirmed = await showAlertDialog(
                           context: context,
                           title: 'Anular'.hardcoded,
                           content: 'Tem certeza que deseja anular a contagem?'
                               .hardcoded,
-                          onOkPressed: () {
-                            update(isAnnul: true);
-                          },
                           defaultActionText: 'Sim'.hardcoded,
                           cancelActionText: 'Não'.hardcoded,
                         );
+
+                        if (confirmed != true || !context.mounted) return;
+                        update(isAnnul: true);
                       }
                     : null,
                 backgroundColor: hasInsertedQuantity

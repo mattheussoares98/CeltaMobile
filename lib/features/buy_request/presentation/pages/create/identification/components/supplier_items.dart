@@ -32,7 +32,7 @@ class SupplierItems extends ConsumerWidget {
 
       if (hasSelectedEnterprisesOrProducts) {
         if (!context.mounted) return;
-        showAlertDialog(
+        final result = await showAlertDialog(
           context: context,
           title: 'Alterar fornecedor?'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
@@ -40,21 +40,22 @@ class SupplierItems extends ConsumerWidget {
           content:
               'Ao alterar o fornecedor, todas empresas e produtos selecionados serão removidos'
                   .hardcoded,
-          onOkPressed: () {
-            ref
-                .read(
-                  pendingBuyRequestStateControllerProvider(
-                    enterpriseCode,
-                  ).notifier,
-                )
-                .updatePending(
-                  selectedSupplier: supplier,
-                  annulSelectedEnterprises: true,
-                  annulProducts: true,
-                  annulSelectedSupplier: selectedSupplier == supplier,
-                );
-          },
         );
+
+        if (result == true && context.mounted) {
+          ref
+              .read(
+                pendingBuyRequestStateControllerProvider(
+                  enterpriseCode,
+                ).notifier,
+              )
+              .updatePending(
+                selectedSupplier: supplier,
+                annulSelectedEnterprises: true,
+                annulProducts: true,
+                annulSelectedSupplier: selectedSupplier == supplier,
+              );
+        }
       } else {
         ref
             .read(

@@ -14,14 +14,16 @@ class ExitDrawerItem extends ConsumerWidget {
     return DrawerItem(
       message: 'Sair',
       onTap: () async {
-        await showAlertDialog(
+        final confirmed = await showAlertDialog(
           context: context,
           title: 'Sair'.hardcoded,
           content: 'Tem certeza que deseja sair?'.hardcoded,
           cancelActionText: 'Cancelar'.hardcoded,
           defaultActionText: 'Sim'.hardcoded,
-          onOkPressed: () => ref.read(userSessionProvider.notifier).logout(),
         );
+
+        if (confirmed != true || !context.mounted) return;
+        ref.read(userSessionProvider.notifier).logout();
       },
       platformIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.power,

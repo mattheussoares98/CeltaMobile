@@ -30,7 +30,7 @@ class GRJudgmentButtons extends ConsumerWidget {
       ),
     );
 
-    void judge(BsfGRProductJudgmentStatus judgmentStatus) {
+    void judge(BsfGRProductJudgmentStatus judgmentStatus) async {
       final content = switch (judgmentStatus) {
         BsfGRProductJudgmentStatus.devolveAll =>
           "Deseja devolver todas as quantidades dos produtos selecionados?"
@@ -43,22 +43,22 @@ class GRJudgmentButtons extends ConsumerWidget {
         BsfGRProductJudgmentStatus.withoutJudge =>
           "Deseja anular os julgamentos dos produtos selecionados?".hardcoded,
       };
-      showAlertDialog(
+      final confirmed = await showAlertDialog(
         context: context,
         title: "Atenção".hardcoded,
         content: content,
         defaultActionText: 'Sim'.hardcoded,
         cancelActionText: 'Cancelar'.hardcoded,
-        onOkPressed: () {
-          final controller = ref.read(controllerProvider.notifier);
-          judgmentStatus == BsfGRProductJudgmentStatus.withoutJudge
-              ? controller.annulStatus()
-              : controller.judgeStatus(
-                  judgmentStatus,
-                  areJudgedItems: areJudgedItems,
-                );
-        },
       );
+
+      if (confirmed != true || !context.mounted) return;
+      final controller = ref.read(controllerProvider.notifier);
+      judgmentStatus == BsfGRProductJudgmentStatus.withoutJudge
+          ? controller.annulStatus()
+          : controller.judgeStatus(
+              judgmentStatus,
+              areJudgedItems: areJudgedItems,
+            );
     }
 
     final onPressed = hasSelectedProducts ? judge : null;

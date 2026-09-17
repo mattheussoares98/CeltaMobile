@@ -81,16 +81,18 @@ class _CovenantItem extends ConsumerWidget {
               bottom: 0,
               right: 0,
               child: IconButton(
-                onPressed: () {
-                  showAlertDialog(
+                onPressed: () async {
+                  final confirmed = await showAlertDialog(
                     context: context,
                     title: 'Remover convênio'.hardcoded,
                     content: 'Tem certeza que deseja remover esse convênio?'
                         .hardcoded,
-                    onOkPressed: removeCovenant,
                     cancelActionText: 'Não'.hardcoded,
                     defaultActionText: 'Sim'.hardcoded,
                   );
+
+                  if (confirmed != true || !context.mounted) return;
+                  removeCovenant();
                 },
                 icon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.delete,

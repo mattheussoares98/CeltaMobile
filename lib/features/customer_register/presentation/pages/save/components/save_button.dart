@@ -13,17 +13,17 @@ class SaveButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       onPressed: () async {
-        showAlertDialog(
+        final confirmed = await showAlertDialog(
           context: context,
           title: 'Salvar dados?'.hardcoded,
-          onOkPressed: () {
-            ref
-                .read(insertUpdateCustomerControllerProvider.notifier)
-                .insertUpdate();
-          },
           cancelActionText: 'Cancelar'.hardcoded,
           defaultActionText: 'Salvar'.hardcoded,
         );
+
+        if (confirmed != true || !context.mounted) return;
+        ref
+            .read(insertUpdateCustomerControllerProvider.notifier)
+            .insertUpdate();
       },
       icon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.checkmark,

@@ -68,14 +68,16 @@ class _TelephoneItem extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  showAlertDialog(
+                onPressed: () async {
+                  final confirmed = await showAlertDialog(
                     context: context,
                     title: 'Remover telefone?'.hardcoded,
                     defaultActionText: 'Sim'.hardcoded,
                     cancelActionText: 'Cancelar'.hardcoded,
-                    onOkPressed: removeTelephone,
                   );
+
+                  if (confirmed != true || !context.mounted) return;
+                  removeTelephone();
                 },
                 icon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.delete,

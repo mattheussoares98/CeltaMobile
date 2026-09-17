@@ -13,18 +13,18 @@ class LogoutButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
-      onPressed: () {
-        showAlertDialog(
+      onPressed: () async {
+        final confirmed = await showAlertDialog(
           context: context,
           title: "Sair".hardcoded,
           cancelActionText: "Cancelar".hardcoded,
           defaultActionText: "Sair".hardcoded,
           content: "Tem certeza que deseja sair?".hardcoded,
-          onOkPressed: () {
-            ref.read(authManagerControllerProvider.notifier).logout();
-            context.pop();
-          },
         );
+
+        if (confirmed != true || !context.mounted) return;
+        ref.read(authManagerControllerProvider.notifier).logout();
+        context.pop();
       },
       icon: Icon(
         PlatformUtil.isCupertino
