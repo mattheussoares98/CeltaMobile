@@ -156,7 +156,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
         }
 
         if (!context.mounted) return;
-        if (createSubRoute == true) {
+        if (kIsWeb && createSubRoute) {
           context.goNamed(
             route.name,
             pathParameters: pathParameters ?? {},
