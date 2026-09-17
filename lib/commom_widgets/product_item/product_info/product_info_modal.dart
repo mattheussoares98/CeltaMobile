@@ -1,10 +1,9 @@
+import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
+import 'package:celta_inventario/constants/constants.dart';
+import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class ProductInfoModal extends StatefulWidget {
   final ProductEntity product;
@@ -66,6 +65,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
