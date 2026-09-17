@@ -2,7 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/features/process_authorization/presentation/pages/pages.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/models/models.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
@@ -20,20 +20,8 @@ class ProcessesItems extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     void onTap(BSFProcessAuthorizationJudgmentEntity process) async {
       final type = process.authorizationProcessItem?.typeAccordingToTheCode;
-      final Routes? nextRoute = switch (type) {
-        TypeAccordingToTheCode.saleRequestDiscount ||
-        TypeAccordingToTheCode.saleRequestLucrativity =>
-          Routes.processAuthorizationSaleRequest,
-        TypeAccordingToTheCode.goodsReceivingLiberateDocument ||
-        TypeAccordingToTheCode.goodsReceivingCancelDocument =>
-          Routes.processAuthorizationGR,
-        TypeAccordingToTheCode.goodsReceivingValidateDocumentXml =>
-          Routes.processAuthorizationGRValidateDocumentXml,
-        TypeAccordingToTheCode.goodsReceivingValueDocument ||
-        TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition => null,
-        null => null,
-      };
-      if (nextRoute == null) {
+      final destination = ProcessAuthorizationDestination.fromJudgment(process);
+      if (destination == null) {
         showToastMessage(
           'O processo de autorização de tipo "${type?.label}" ainda não foi implementado para ser julgado através do aplicativo',
           type: ToastType.error,
@@ -41,21 +29,11 @@ class ProcessesItems extends ConsumerWidget {
         return;
       }
 
-      final pathParams = {
-        'enterpriseCode': process.enterprise!.code.toString(),
-        'processCode': process.code.toString(),
-      };
-
-      if (nextRoute == Routes.processAuthorizationSaleRequest) {
-        pathParams['pageType'] =
-            process.authorizationProcessItem?.typeAccordingToTheCode ==
-                TypeAccordingToTheCode.saleRequestDiscount
-            ? PageType.discount.name
-            : PageType.lucrativity.name;
-      }
-
       if (context.mounted) {
-        context.goNamed(nextRoute.name, pathParameters: pathParams);
+        context.goNamed(
+          destination.route.name,
+          pathParameters: destination.pathParameters,
+        );
       }
     }
 
@@ -95,26 +73,48 @@ class ProcessesItems extends ConsumerWidget {
           return timeB.compareTo(timeA);
         });
 
-        final groupedByType = groupBy(
-          filteredData,
-          (process) => process.authorizationProcessItem?.typeAccordingToTheCode,
-        );
+        final groupedProcesses = groupBy(filteredData, (process) {
+          final destination = ProcessAuthorizationDestination.fromJudgment(
+            process,
+          );
+          if (destination?.route == Routes.processAuthorizationSaleRequest &&
+              destination?.saleRequestCode != null) {
+            return (
+              'saleRequest',
+              destination!.enterpriseCode,
+              destination.saleRequestCode,
+            );
+          }
+          return (
+            'type',
+            process.authorizationProcessItem?.typeAccordingToTheCode,
+          );
+        });
 
         return ListView.builder(
-          itemCount: groupedByType.keys.length,
+          itemCount: groupedProcesses.keys.length,
           itemBuilder: (context, index) {
-            final type = groupedByType.keys.elementAt(index);
-            final processes = groupedByType[type];
+            final processes = groupedProcesses.values.elementAt(index);
+            final firstProcess = processes.first;
+            final type =
+                firstProcess.authorizationProcessItem?.typeAccordingToTheCode;
+            final destination = ProcessAuthorizationDestination.fromJudgment(
+              firstProcess,
+            );
+            final title = destination?.saleRequestCode != null
+                ? 'Pedido de venda ${destination?.saleRequestNumber ?? destination?.saleRequestCode}'
+                      .hardcoded
+                : type?.label;
             return Padding(
               padding: const EdgeInsets.only(bottom: Sizes.p8),
               child: ExpansionTile(
                 title: BaseRichText(
                   texts: [
-                    BaseText.title('${type?.label} '),
-                    BaseText("(${processes?.length})", color: Colors.red),
+                    BaseText.title('$title '),
+                    BaseText("(${processes.length})", color: Colors.red),
                   ],
                 ),
-                children: processes!
+                children: processes
                     .map(
                       (process) => Card(
                         clipBehavior: Clip.hardEdge,

@@ -1247,6 +1247,12 @@ class EntityFactory {
         seller: makeBSFEmployeeEntity(),
       );
 
+  static BSFSaleRequestDefendantEntity makeBSFSaleRequestDefendantEntity({
+    BSFSaleRequestEntity? saleRequest,
+  }) => BSFSaleRequestDefendantEntity(
+    saleRequest: saleRequest ?? makeBSFSaleRequestEntity(),
+  );
+
   static BSFEmployeeEntity makeBSFEmployeeEntity() => BSFEmployeeEntity(
     code: faker.randomGenerator.integer(100),
     personalizedCode: faker.randomGenerator.numberOfLength(6),
@@ -1959,7 +1965,9 @@ class EntityFactory {
   );
 
   static BSFProcessAuthorizationItemEntity
-  makeBSFProcessAuthorizationItemEntity() => BSFProcessAuthorizationItemEntity(
+  makeBSFProcessAuthorizationItemEntity({
+    TypeAccordingToTheCode? typeAccordingToTheCode,
+  }) => BSFProcessAuthorizationItemEntity(
     code: faker.randomGenerator.integer(100),
     name: faker.lorem.word(),
     description: faker.lorem.sentence(),
@@ -1967,25 +1975,38 @@ class EntityFactory {
         BSFProcessAuthorizationItemType.values[faker.randomGenerator.integer(
           BSFProcessAuthorizationItemType.values.length,
         )],
+    typeAccordingToTheCode: typeAccordingToTheCode,
   );
 
   static BSFProcessAuthorizationJudgmentEntity
-  makeBSFProcessAuthorizationJudgmentEntity() =>
-      BSFProcessAuthorizationJudgmentEntity(
-        code: faker.randomGenerator.integer(100),
-        status:
-            BSFProcessAuthorizationJudgementStatus.values[faker.randomGenerator
-                .integer(BSFProcessAuthorizationJudgementStatus.values.length)],
-        statusString: faker.lorem.word(),
-        observationsVotes: faker.lorem.sentence(),
-        dateTimeOfCreation: faker.date.dateTime(),
-        wasSawByOwner: faker.randomGenerator.boolean(),
-        authorizationProcessConfigItemType: faker.randomGenerator.integer(100),
-        user: makeBSFUserEntity(),
-        enterprise: makeBSFEnterpriseEntity(),
-        authorizationProcessItem: makeBSFProcessAuthorizationItemEntity(),
-        authorizators: [makeBSFUserEntity(), makeBSFUserEntity()],
-      );
+  makeBSFProcessAuthorizationJudgmentEntity({
+    int? code,
+    BSFProcessAuthorizationJudgementStatus? status,
+    int? saleRequestCode,
+    String? saleRequestNumber,
+    BSFEnterpriseEntity? enterprise,
+    BSFProcessAuthorizationItemEntity? authorizationProcessItem,
+    List<BSFDefendantEntity>? defendants,
+  }) => BSFProcessAuthorizationJudgmentEntity(
+    code: code ?? faker.randomGenerator.integer(100),
+    status:
+        status ??
+        BSFProcessAuthorizationJudgementStatus.values[faker.randomGenerator
+            .integer(BSFProcessAuthorizationJudgementStatus.values.length)],
+    statusString: faker.lorem.word(),
+    observationsVotes: faker.lorem.sentence(),
+    dateTimeOfCreation: faker.date.dateTime(),
+    wasSawByOwner: faker.randomGenerator.boolean(),
+    authorizationProcessConfigItemType: faker.randomGenerator.integer(100),
+    saleRequestCode: saleRequestCode,
+    saleRequestNumber: saleRequestNumber,
+    user: makeBSFUserEntity(),
+    enterprise: enterprise ?? makeBSFEnterpriseEntity(),
+    authorizationProcessItem:
+        authorizationProcessItem ?? makeBSFProcessAuthorizationItemEntity(),
+    authorizators: [makeBSFUserEntity(), makeBSFUserEntity()],
+    defendants: defendants,
+  );
 
   static BSFSaleRequestErrorEntity makeBSFSaleRequestErrorEntity() =>
       BSFSaleRequestErrorEntity(

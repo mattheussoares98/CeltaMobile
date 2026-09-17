@@ -10,6 +10,8 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
   final DateTime? dateTimeOfCreation;
   final bool? wasSawByOwner;
   final int? authorizationProcessConfigItemType;
+  final int? saleRequestCode;
+  final String? saleRequestNumber;
   final BSFUserEntity? user;
   final BSFEnterpriseEntity? enterprise;
   final BSFProcessAuthorizationItemEntity? authorizationProcessItem;
@@ -25,6 +27,8 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     this.dateTimeOfCreation,
     this.wasSawByOwner,
     this.authorizationProcessConfigItemType,
+    this.saleRequestCode,
+    this.saleRequestNumber,
     this.user,
     this.enterprise,
     this.authorizationProcessItem,
@@ -42,6 +46,8 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     dateTimeOfCreation,
     wasSawByOwner,
     authorizationProcessConfigItemType,
+    saleRequestCode,
+    saleRequestNumber,
     user,
     enterprise,
     authorizationProcessItem,
@@ -58,6 +64,8 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
     DateTime? dateTimeOfCreation,
     bool? wasSawByOwner,
     int? authorizationProcessConfigItemType,
+    int? saleRequestCode,
+    String? saleRequestNumber,
     BSFUserEntity? user,
     BSFEnterpriseEntity? enterprise,
     BSFProcessAuthorizationItemEntity? authorizationProcessItem,
@@ -76,6 +84,8 @@ class BSFProcessAuthorizationJudgmentEntity extends Equatable {
       authorizationProcessConfigItemType:
           authorizationProcessConfigItemType ??
           this.authorizationProcessConfigItemType,
+      saleRequestCode: saleRequestCode ?? this.saleRequestCode,
+      saleRequestNumber: saleRequestNumber ?? this.saleRequestNumber,
       user: user ?? this.user,
       enterprise: enterprise ?? this.enterprise,
       authorizationProcessItem:

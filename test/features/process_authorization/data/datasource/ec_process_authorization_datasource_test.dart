@@ -60,8 +60,14 @@ void main() {
 
     setUp(() {
       entities = [
-        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
-        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(),
+        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(
+          saleRequestCode: faker.randomGenerator.integer(100, min: 1),
+          saleRequestNumber: faker.randomGenerator.numberOfLength(12),
+        ),
+        EntityFactory.makeBSFProcessAuthorizationJudgmentEntity(
+          saleRequestCode: faker.randomGenerator.integer(100, min: 1),
+          saleRequestNumber: faker.randomGenerator.numberOfLength(12),
+        ),
       ];
     });
 

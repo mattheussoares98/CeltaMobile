@@ -2,13 +2,16 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
+import 'package:celta_inventario/features/process_authorization/presentation/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/vote.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class OpenVotePageButton extends ConsumerWidget {
   final int processCode;
@@ -34,7 +37,10 @@ class OpenVotePageButton extends ConsumerWidget {
     }
 
     Future<void> onTap() async {
-      if (process?.status != BSFProcessAuthorizationJudgementStatus.awaiting) {
+      final currentProcess = process;
+      if (currentProcess == null ||
+          currentProcess.status !=
+              BSFProcessAuthorizationJudgementStatus.awaiting) {
         showToastMessage(
           'Esse processo já foi julgado'.hardcoded,
           type: .error,
@@ -59,7 +65,35 @@ class OpenVotePageButton extends ConsumerWidget {
         return;
       }
       if (context.mounted) {
-        showModalPage(VotePage(processCode: processCode), context);
+        final judgments = ref.read(judgmentsStateControllerProvider).value;
+        final nextDestination =
+            loggedUser?.user.name == null || judgments == null
+            ? null
+            : ProcessAuthorizationDestination.nextSaleRequestJudgment(
+                current: currentProcess,
+                judgments: judgments,
+                authorizatorIdentification: loggedUser!.user.name!,
+              );
+        final router = GoRouter.of(context);
+        final didVote = await showModalPage<bool>(
+          VotePage(processCode: processCode),
+          context,
+        );
+        if (didVote != true) return;
+
+        if (nextDestination != null) {
+          router.goNamed(
+            nextDestination.route.name,
+            pathParameters: nextDestination.pathParameters,
+          );
+        } else if (currentProcess.enterprise?.code != null) {
+          router.goNamed(
+            Routes.processAuthorization.name,
+            pathParameters: {
+              'enterpriseCode': currentProcess.enterprise!.code.toString(),
+            },
+          );
+        }
       }
     }
 

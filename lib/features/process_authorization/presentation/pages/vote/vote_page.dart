@@ -3,10 +3,10 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
 import 'package:celta_inventario/localization/string_hardcoded.dart';
-import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class VotePage extends ConsumerStatefulWidget {
   final int processCode;
@@ -32,9 +32,7 @@ class _VotePageState extends ConsumerState<VotePage> {
     ref.listen(voteControllerProvider(widget.processCode), (p, n) {
       n.showToastOnError(context, p);
       n.doOnSuccess(p, () {
-        Navigator.of(context).popUntil(
-          (route) => route.settings.name == Routes.processAuthorization.name,
-        );
+        context.pop(true);
       });
     });
     return Padding(
@@ -71,7 +69,7 @@ class _VotePageState extends ConsumerState<VotePage> {
                 child: PrimaryTextButton(
                   text: 'Cancelar'.hardcoded,
                   color: Colors.red,
-                  onPressed: Navigator.of(context).pop,
+                  onPressed: context.pop,
                 ),
               ),
               const Spacer(),

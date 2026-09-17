@@ -13,6 +13,8 @@ class BSFProcessAuthorizationJudgmentModel
     super.dateTimeOfCreation,
     super.wasSawByOwner,
     super.authorizationProcessConfigItemType,
+    super.saleRequestCode,
+    super.saleRequestNumber,
     super.user,
     super.enterprise,
     super.authorizationProcessItem,
@@ -38,6 +40,8 @@ class BSFProcessAuthorizationJudgmentModel
       wasSawByOwner: json['WasSawByOwner'],
       authorizationProcessConfigItemType:
           json['AuthorizationProcessConfigItemType'],
+      saleRequestCode: json['SaleRequestCode'],
+      saleRequestNumber: json['SaleRequestNumber']?.toString(),
       user: json['User'] != null ? BSFUserModel.fromJson(json['User']) : null,
       enterprise: json['Enterprise'] != null
           ? BSFEnterpriseModel.fromJson(json['Enterprise'])
@@ -75,6 +79,8 @@ class BSFProcessAuthorizationJudgmentModel
     'DateTimeOfCreation': dateTimeOfCreation?.toIso8601String(),
     'WasSawByOwner': wasSawByOwner,
     'AuthorizationProcessConfigItemType': authorizationProcessConfigItemType,
+    'SaleRequestCode': saleRequestCode,
+    'SaleRequestNumber': saleRequestNumber,
     'User': user != null ? BSFUserModel.fromEntity(user!).toJson() : null,
     'Enterprise': enterprise != null
         ? BSFEnterpriseModel.fromEntity(enterprise!).toJson()
@@ -109,6 +115,8 @@ class BSFProcessAuthorizationJudgmentModel
     wasSawByOwner: entity.wasSawByOwner,
     authorizationProcessConfigItemType:
         entity.authorizationProcessConfigItemType,
+    saleRequestCode: entity.saleRequestCode,
+    saleRequestNumber: entity.saleRequestNumber,
     user: entity.user,
     enterprise: entity.enterprise,
     authorizationProcessItem: entity.authorizationProcessItem,
@@ -126,6 +134,8 @@ class BSFProcessAuthorizationJudgmentModel
         dateTimeOfCreation: dateTimeOfCreation,
         wasSawByOwner: wasSawByOwner,
         authorizationProcessConfigItemType: authorizationProcessConfigItemType,
+        saleRequestCode: saleRequestCode,
+        saleRequestNumber: saleRequestNumber,
         user: user,
         enterprise: enterprise,
         authorizationProcessItem: authorizationProcessItem,
