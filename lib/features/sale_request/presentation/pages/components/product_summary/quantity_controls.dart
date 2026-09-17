@@ -69,6 +69,8 @@ class QuantityControlButton extends ConsumerWidget {
             ? (currentQuantity == 0
                   ? Colors.grey
                   : context.theme.colorScheme.error)
+            : item.hasNoPrice
+            ? context.theme.colorScheme.error
             : null,
       ),
       padding: const EdgeInsets.all(Sizes.p4),

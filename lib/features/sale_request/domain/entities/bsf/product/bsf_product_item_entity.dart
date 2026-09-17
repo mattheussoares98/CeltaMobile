@@ -179,6 +179,16 @@ class BSFProductItemEntity extends Equatable {
       (quantity ?? 0) *
       ((value ?? 0) - unitDiscountValue + unitDeliveryTax + unitIncrement);
 
+  double get wholePrice => (priceCost?.wholeSalePricePractice ?? 0) > 0
+      ? priceCost!.wholeSalePricePractice!
+      : priceCost?.salePracticedInWholeSale ?? 0;
+
+  double get retailPrice => (priceCost?.saleRetailPricePractice ?? 0) > 0
+      ? priceCost!.saleRetailPricePractice!
+      : priceCost?.salePracticedInSaleRetail ?? 0;
+
+  bool get hasNoPrice => (value ?? 0) <= 0 && retailPrice <= 0;
+
   PracticedPriceType get practicedPriceType {
     if (value == null || priceCost == null) {
       return PracticedPriceType.manual;
