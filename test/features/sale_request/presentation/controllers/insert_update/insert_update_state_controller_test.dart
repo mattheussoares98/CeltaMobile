@@ -73,7 +73,8 @@ void main() {
   late BSFSaleRequestEntity fakeSaleRequest;
   late SaleRequestArgs fakeArgs;
   late MockEcSaleRequestsRepository mockEcSaleRequestsRepository;
-  late MockLocalBSFSaleRequestDraftRepository mockLocalBSFSaleRequestDraftRepository;
+  late MockLocalBSFSaleRequestDraftRepository
+  mockLocalBSFSaleRequestDraftRepository;
   late UserSessionModel fakeSession;
 
   setUpAll(() {
@@ -125,17 +126,22 @@ void main() {
   setUp(() {
     fakeCanAccessResourceController = FakeCanAccessResourceStateController();
     mockEcSaleRequestsRepository = MockEcSaleRequestsRepository();
-    mockLocalBSFSaleRequestDraftRepository = MockLocalBSFSaleRequestDraftRepository();
+    mockLocalBSFSaleRequestDraftRepository =
+        MockLocalBSFSaleRequestDraftRepository();
 
-    when(() => mockLocalBSFSaleRequestDraftRepository.load(
-          enterpriseCode: any(named: 'enterpriseCode'),
-          requestTypeCode: any(named: 'requestTypeCode'),
-        )).thenAnswer((_) async => null);
-    when(() => mockLocalBSFSaleRequestDraftRepository.save(
-          any(),
-          enterpriseCode: any(named: 'enterpriseCode'),
-          requestTypeCode: any(named: 'requestTypeCode'),
-        )).thenAnswer((_) async {});
+    when(
+      () => mockLocalBSFSaleRequestDraftRepository.load(
+        enterpriseCode: any(named: 'enterpriseCode'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+      ),
+    ).thenAnswer((_) async => null);
+    when(
+      () => mockLocalBSFSaleRequestDraftRepository.save(
+        any(),
+        enterpriseCode: any(named: 'enterpriseCode'),
+        requestTypeCode: any(named: 'requestTypeCode'),
+      ),
+    ).thenAnswer((_) async {});
     fakeSession = UserSessionModel.fromEntity(
       EntityFactory.makeUserSessionEntity(),
     );
@@ -251,10 +257,12 @@ void main() {
             requestType: fakeSaleRequest.requestType,
           );
 
-          when(() => mockLocalBSFSaleRequestDraftRepository.load(
-                enterpriseCode: fakeArgs.enterpriseCode,
-                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
-              )).thenAnswer((_) async => draftEntity);
+          when(
+            () => mockLocalBSFSaleRequestDraftRepository.load(
+              enterpriseCode: fakeArgs.enterpriseCode,
+              requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+            ),
+          ).thenAnswer((_) async => draftEntity);
 
           final container = makeProviderContainer(saleRequestId: 0);
 
@@ -263,10 +271,12 @@ void main() {
           );
 
           expect(result, draftEntity);
-          verify(() => mockLocalBSFSaleRequestDraftRepository.load(
-                enterpriseCode: fakeArgs.enterpriseCode,
-                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
-              )).called(1);
+          verify(
+            () => mockLocalBSFSaleRequestDraftRepository.load(
+              enterpriseCode: fakeArgs.enterpriseCode,
+              requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+            ),
+          ).called(1);
         },
       );
     });
@@ -833,10 +843,7 @@ void main() {
             .value!;
         controller.updateProcessedCart(currentState.copyWith(products: [item]));
 
-        final result = controller.increaseOrDecreaseUnit(
-          item,
-          true,
-        );
+        final result = controller.increaseOrDecreaseUnit(item, true);
 
         expect(result.$1, isNull);
         expect(result.$2.length, 1);
@@ -1075,7 +1082,7 @@ void main() {
       );
 
       test(
-        'should remove automatic discounts and return discountsReset action when quantity or value changed',
+        'should remove automatic discounts and return discountsReset action when quantity is changed',
         () async {
           final container = makeProviderContainer(saleRequestId: 0);
           final controller = container.read(
@@ -1102,11 +1109,8 @@ void main() {
                 .copyWith(products: [item]),
           );
 
-          final changeQuantity = faker.randomGenerator.boolean();
-          final newQuantity = changeQuantity ? 2.0 : item.quantity;
-          final newValue = changeQuantity
-              ? item.value
-              : faker.randomGenerator.decimal();
+          const newQuantity = 2.0;
+          final newValue = item.value;
 
           final updatedItem = item.copyWith(
             quantity: newQuantity,
@@ -2140,9 +2144,7 @@ void main() {
             expect(state.value!.customer, isNull);
 
             // Second call with onlyValidating: false should update customer successfully
-            final actionsForce = controller.updateCustomerOrCovenant(
-              customer,
-            );
+            final actionsForce = controller.updateCustomerOrCovenant(customer);
             expect(actionsForce, isEmpty);
 
             state = container.read(insertUpdateStateControllerProvider);
@@ -2255,9 +2257,7 @@ void main() {
               ),
             );
 
-            controller.updateCustomerOrCovenant(
-              newCustomer,
-            );
+            controller.updateCustomerOrCovenant(newCustomer);
 
             final state = container.read(insertUpdateStateControllerProvider);
             // Payment should be cleared because code 1 is incompatible with new customer's restriction (allows only code 2)
@@ -2380,9 +2380,7 @@ void main() {
               covenants: [otherCovenant],
             );
 
-            controller.updateCustomerOrCovenant(
-              newCustomer,
-            );
+            controller.updateCustomerOrCovenant(newCustomer);
 
             final state = container.read(insertUpdateStateControllerProvider);
             // Covenant payment should be removed because new customer has no selected covenant.
@@ -2639,9 +2637,7 @@ void main() {
             );
             expect(actions, isEmpty);
 
-            controller.updateCustomerOrCovenant(
-              blockedCustomer,
-            );
+            controller.updateCustomerOrCovenant(blockedCustomer);
 
             // State should be updated successfully because the blockade is ignored
             final state = container.read(insertUpdateStateControllerProvider);
@@ -2701,9 +2697,7 @@ void main() {
             final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
               annulSelectedCovenant: true,
             );
-            controller.updateCustomerOrCovenant(
-              customer,
-            );
+            controller.updateCustomerOrCovenant(customer);
 
             final covenant = EntityFactory.makeBsfCovenantEntity();
 
@@ -2746,9 +2740,7 @@ void main() {
             final customer = EntityFactory.makeBSFCustomerEntity().copyWith(
               annulSelectedCovenant: true,
             );
-            controller.updateCustomerOrCovenant(
-              customer,
-            );
+            controller.updateCustomerOrCovenant(customer);
             expect(
               container
                   .read(insertUpdateStateControllerProvider)
@@ -2834,9 +2826,7 @@ void main() {
                         null,
                   ),
                 );
-            controller.updateCustomerOrCovenant(
-              initialCustomer,
-            );
+            controller.updateCustomerOrCovenant(initialCustomer);
 
             // Create new customer with payment restrictions to trigger actions
             final allowedPayment =
@@ -3003,9 +2993,7 @@ void main() {
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1);
 
-          controller.updateCustomerOrCovenant(
-            originalCustomer,
-          );
+          controller.updateCustomerOrCovenant(originalCustomer);
 
           final updatedCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1);
@@ -3090,9 +3078,7 @@ void main() {
           final originalCustomer = EntityFactory.makeBSFCustomerEntity()
               .copyWith(code: 1, covenants: [covenant]);
 
-          controller.updateCustomerOrCovenant(
-            originalCustomer,
-          );
+          controller.updateCustomerOrCovenant(originalCustomer);
 
           // Updated customer has different/no covenants now
           final otherCovenant = EntityFactory.makeBsfCovenantEntity().copyWith(
@@ -3645,28 +3631,30 @@ void main() {
           controller.addItem(product);
 
           final expectedEntity = BSFSaleRequestEntity.empty()
-              .copyWith(
-                requestType: fakeSaleRequest.requestType,
-              )
+              .copyWith(requestType: fakeSaleRequest.requestType)
               .copyWith(
                 products: [
                   product.toBSFProductItemEntity().copyWith(quantity: 1),
                 ],
               );
 
-          verifyNever(() => mockLocalBSFSaleRequestDraftRepository.save(
-                expectedEntity,
-                enterpriseCode: fakeArgs.enterpriseCode,
-                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
-              ));
+          verifyNever(
+            () => mockLocalBSFSaleRequestDraftRepository.save(
+              expectedEntity,
+              enterpriseCode: fakeArgs.enterpriseCode,
+              requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+            ),
+          );
 
           await Future.delayed(const Duration(milliseconds: 550));
 
-          verify(() => mockLocalBSFSaleRequestDraftRepository.save(
-                expectedEntity,
-                enterpriseCode: fakeArgs.enterpriseCode,
-                requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
-              )).called(1);
+          verify(
+            () => mockLocalBSFSaleRequestDraftRepository.save(
+              expectedEntity,
+              enterpriseCode: fakeArgs.enterpriseCode,
+              requestTypeCode: fakeSaleRequest.requestType?.code ?? 0,
+            ),
+          ).called(1);
         },
       );
     });

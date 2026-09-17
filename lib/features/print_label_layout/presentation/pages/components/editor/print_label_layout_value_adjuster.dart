@@ -56,18 +56,19 @@ class PrintLabelLayoutValueAdjuster extends HookWidget {
       debounceTimer.value = null;
     }
 
-    void submitText(String text) {
-      if (formKey.currentState?.validate() != true) return;
+    bool submitText(String text) {
+      if (formKey.currentState?.validate() != true) return false;
 
       final normalized = text.trim().replaceAll(',', '.');
       final parsed = num.tryParse(normalized);
-      if (parsed == null) return;
+      if (parsed == null) return false;
 
       final clamped = parsed.clamp(min, max);
       final finalValue = resolvedAcceptDecimal
           ? clamped.toDouble()
           : clamped.toInt();
       onValueChanged?.call(finalValue);
+      return true;
     }
 
     useEffect(() {
@@ -149,12 +150,12 @@ class PrintLabelLayoutValueAdjuster extends HookWidget {
                     onChanged: (text) {
                       cancelDebounce();
                       debounceTimer.value = Timer(debounceDuration, () {
-                        submitText(text);
+                        if (submitText(text)) isEditing.value = false;
                       });
                     },
                     validator: FormValidators.compose([
                       NumberValidator(
-                        allowDecimal: acceptDecimal == true,
+                        allowDecimal: resolvedAcceptDecimal,
                         allowEmptyValue: min == 0,
                         needsBeGreaterThanZero: min > 0,
                       ),
