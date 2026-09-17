@@ -92,6 +92,7 @@ class ProcessesItems extends ConsumerWidget {
         });
 
         return ListView.builder(
+          padding: .zero,
           itemCount: groupedProcesses.keys.length,
           itemBuilder: (context, index) {
             final processes = groupedProcesses.values.elementAt(index);
