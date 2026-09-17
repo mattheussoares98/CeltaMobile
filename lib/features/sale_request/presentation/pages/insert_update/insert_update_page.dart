@@ -80,6 +80,7 @@ class _InsertUpdateContent extends ConsumerWidget {
 
           return BaseScaffold(
             isScrollable: false,
+            resizeToAvoidBottomInset: true,
             padding: EdgeInsets.fromLTRB(
               Sizes.p8,
               0,
