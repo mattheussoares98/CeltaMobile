@@ -91,7 +91,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
         tryAgain: () => ref.invalidate(detailsProvider),
         data: (data) {
           if (data.items.isEmpty) {
-            return const SynchronizerEmptyErrors();
+            return SynchronizerEmptyErrors(detailsProvider: detailsProvider);
           }
 
           final selectableItems = data.items
