@@ -69,7 +69,7 @@ void main() {
     enterpriseId = faker.randomGenerator.integer(1000);
     recordsByPage = faker.randomGenerator.boolean()
         ? faker.randomGenerator.integer(100)
-        : null;
+        : 10;
   }
 
   setUp(() {
