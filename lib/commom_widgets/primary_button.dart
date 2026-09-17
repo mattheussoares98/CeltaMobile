@@ -32,48 +32,51 @@ class PrimaryButton extends ConsumerWidget {
     );
 
     const minimumIconSize = 150;
+    const loadingWidget = Center(child: FittedBox(child: LoadingWidget()));
+    const buttonHeight = Sizes.p40;
 
     final buttonColor = onPressed == null || isLoading
         ? context.theme.disabledColor.withAlpha(30)
         : backgroundColor ?? context.theme.primaryColor;
 
-    const loadingWidget = Center(child: FittedBox(child: LoadingWidget()));
+    void appliedOnPress() {
+      FocusManager.instance.primaryFocus?.unfocus();
+      onPressed?.call();
+    }
 
     if (isIOS) {
       return LayoutBuilder(
         builder: (context, constraints) {
           final canShowIcon = constraints.maxWidth > minimumIconSize;
 
-          return CupertinoButton.filled(
-            onPressed: onPressed == null || isLoading
-                ? null
-                : () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    onPressed?.call();
-                  },
-            sizeStyle: CupertinoButtonSize.medium,
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.p8,
-              horizontal: Sizes.p8,
-            ),
-            color: buttonColor,
-            child: Stack(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(child: textWidget),
-                    if (icon != null && canShowIcon)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Sizes.p16,
+          return SizedBox(
+            height: buttonHeight,
+            child: CupertinoButton.filled(
+              onPressed: onPressed == null || isLoading ? null : appliedOnPress,
+              sizeStyle: CupertinoButtonSize.medium,
+              padding: const EdgeInsets.symmetric(
+                vertical: Sizes.p8,
+                horizontal: Sizes.p8,
+              ),
+              color: buttonColor,
+              child: Stack(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(child: FittedBox(child: textWidget)),
+                      if (icon != null && canShowIcon)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Sizes.p16,
+                          ),
+                          child: icon!,
                         ),
-                        child: icon!,
-                      ),
-                  ],
-                ),
-                if (isLoading) loadingWidget,
-              ],
+                    ],
+                  ),
+                  if (isLoading) loadingWidget,
+                ],
+              ),
             ),
           );
         },
@@ -85,14 +88,9 @@ class PrimaryButton extends ConsumerWidget {
         final canShowIcon = constraints.maxWidth > minimumIconSize;
 
         return SizedBox(
-          height: Sizes.p40,
+          height: buttonHeight,
           child: ElevatedButton.icon(
-            onPressed: onPressed == null || isLoading
-                ? null
-                : () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    onPressed?.call();
-                  },
+            onPressed: onPressed == null || isLoading ? null : appliedOnPress,
             icon: canShowIcon ? icon : null,
             iconAlignment: iconAlignment,
             style: ButtonStyle(
