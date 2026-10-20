@@ -1,9 +1,8 @@
 import 'package:celta_inventario/core/presentation/theme/theme.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/routing/app_router.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toastification/toastification.dart';
 
@@ -16,6 +15,9 @@ class MyApp extends ConsumerWidget {
     debugPrint('${size.height.toInt()} x ${size.width.toInt()}');
 
     final goRouter = ref.watch(goRouterProvider);
+    final language =
+        ref.watch(languageControllerProvider).value ??
+        ref.read(languageControllerProvider.notifier).language;
     return ToastificationWrapper(
       config: const ToastificationConfig(maxTitleLines: 10),
       child: GestureDetector(
@@ -25,13 +27,10 @@ class MyApp extends ConsumerWidget {
           routerConfig: goRouter,
           debugShowCheckedModeBanner: false,
           restorationScopeId: 'app',
-          supportedLocales: const [Locale('pt', 'BR')],
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          onGenerateTitle: (BuildContext context) => 'Celta mobile'.hardcoded,
+          locale: Locale(language.code),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
           theme: AppTheme.themeData(context.theme),
         ),
       ),
