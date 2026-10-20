@@ -30,7 +30,7 @@ class MyApp extends ConsumerWidget {
           locale: Locale(language.code),
           supportedLocales: AppLocalizations.supportedLocales,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+          onGenerateTitle: (context) => context.l10n.appTitle,
           theme: AppTheme.themeData(context.theme),
         ),
       ),

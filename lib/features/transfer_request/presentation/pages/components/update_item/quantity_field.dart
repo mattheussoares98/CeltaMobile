@@ -49,7 +49,7 @@ class QuantityField extends StatelessWidget {
         }
       },
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
       ]),
     );

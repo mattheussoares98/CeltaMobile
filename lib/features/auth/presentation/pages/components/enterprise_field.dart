@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,7 @@ class EnterpriseField extends ConsumerWidget {
     return BaseTextFormField(
       controller: enterpriseController,
       enabled: !isLoading,
-      labelText: 'Empresa'.hardcoded,
+      labelText: context.l10n.enterprise,
       maxLength: 25,
       prefixIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.building_2_fill,
@@ -33,7 +32,9 @@ class EnterpriseField extends ConsumerWidget {
         color: isLoading ? context.theme.disabledColor : null,
       ),
       textInputAction: TextInputAction.next,
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([
+        NonEmptyValidator(errorMessage: context.l10n.requiredField),
+      ]),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) => userFocusNode.requestFocus(),
     );

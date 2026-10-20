@@ -84,7 +84,8 @@ class _SearchFieldState extends ConsumerState<SearchField>
               controller: widget.searchValueController,
               focusNode: widget.focusNode,
               validator: FormValidators.compose([
-                if (widget.allowEmptySearchValue != true) NonEmptyValidator(),
+                if (widget.allowEmptySearchValue != true)
+                  const NonEmptyValidator(),
                 if (pref == SearchProductTypePreference.ean)
                   NumberValidator(allowDecimal: false),
               ]),

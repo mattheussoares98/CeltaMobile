@@ -105,7 +105,7 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                 labelText: 'Fornecedor'.hardcoded,
                 hintText: 'Fornecedor'.hardcoded,
                 controller: supplierController,
-                validator: FormValidators.compose([NonEmptyValidator()]),
+                validator: FormValidators.compose([const   NonEmptyValidator()]),
                 onFieldSubmitted: (_) => onSubmit(),
                 prefixIcon: IconButton(
                   onPressed: supplierController.clear,

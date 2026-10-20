@@ -121,6 +121,54 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Inglês'**
   String get english;
+
+  /// No description provided for @signIn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrar'**
+  String get signIn;
+
+  /// No description provided for @enterprise.
+  ///
+  /// In pt, this message translates to:
+  /// **'Empresa'**
+  String get enterprise;
+
+  /// No description provided for @username.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usuário'**
+  String get username;
+
+  /// No description provided for @password.
+  ///
+  /// In pt, this message translates to:
+  /// **'Senha'**
+  String get password;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In pt, this message translates to:
+  /// **'Campo obrigatório'**
+  String get requiredField;
+
+  /// No description provided for @error.
+  ///
+  /// In pt, this message translates to:
+  /// **'Erro'**
+  String get error;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mostrar senha'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ocultar senha'**
+  String get hidePassword;
 }
 
 class _AppLocalizationsDelegate

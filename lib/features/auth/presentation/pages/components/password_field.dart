@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +44,11 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: isLoading ? null : (_) => widget.onSubmit.call(),
       textInputAction: TextInputAction.done,
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([
+        NonEmptyValidator(errorMessage: context.l10n.requiredField),
+      ]),
       maxLength: 30,
-      labelText: 'Senha'.hardcoded,
+      labelText: context.l10n.password,
       prefixIcon: Icon(
         PlatformUtil.isCupertino
             ? CupertinoIcons.lock_fill
@@ -55,6 +56,9 @@ class _PasswordFieldState extends ConsumerState<PasswordField> {
         color: isLoading ? context.theme.disabledColor : null,
       ),
       suffixIcon: IconButton(
+        tooltip: showPassword
+            ? context.l10n.hidePassword
+            : context.l10n.showPassword,
         onPressed: isLoading ? null : toggleShowPassword,
         icon: PlatformIcon(
           cupertinoIcon: showPassword

@@ -29,7 +29,7 @@ class PhoneField extends ConsumerWidget {
       hintText: 'Telefone'.hardcoded,
       onFieldSubmitted: (_) => addPhone(),
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         MinLengthValidator(9),
       ]),
     );

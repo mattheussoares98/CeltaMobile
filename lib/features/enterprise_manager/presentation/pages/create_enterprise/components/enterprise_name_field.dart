@@ -30,7 +30,7 @@ class EnterpriseNameField extends StatelessWidget {
       labelText: "Nome da empresa".hardcoded,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         MinLengthValidator(3),
       ]),
     );

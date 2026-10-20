@@ -72,7 +72,7 @@ class _EmailFieldState extends ConsumerState<EmailField> {
               ),
             ),
             validator: FormValidators.compose([
-              NonEmptyValidator(),
+              const NonEmptyValidator(),
               EmailValidator(),
             ]),
           ),

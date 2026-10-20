@@ -3,5 +3,13 @@
   "appTitle": "Celta mobile",
   "language": "Language",
   "portuguese": "Portuguese",
-  "english": "English"
+  "english": "English",
+  "signIn": "Sign in",
+  "enterprise": "Company",
+  "username": "Username",
+  "password": "Password",
+  "requiredField": "Required field",
+  "error": "Error",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password"
 }

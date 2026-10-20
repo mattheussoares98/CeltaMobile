@@ -33,7 +33,7 @@ class PasswordField extends StatelessWidget {
         onPress: isLoading ? null : passwordController.clear,
       ),
       obscureText: true,
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([const NonEmptyValidator()]),
     );
   }
 }

@@ -34,7 +34,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
             hintText: "Quantidade".hardcoded,
             labelText: "Quantidade".hardcoded,
             validator: FormValidators.compose([
-              NonEmptyValidator(),
+           const   NonEmptyValidator(),
               NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
             ]),
           ),

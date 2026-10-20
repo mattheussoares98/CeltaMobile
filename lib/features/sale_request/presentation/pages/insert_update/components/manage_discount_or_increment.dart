@@ -229,7 +229,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                         ),
                         onFieldSubmitted: (_) => _confirmChanges(),
                         validator: FormValidators.compose([
-                          NonEmptyValidator(),
+                          const NonEmptyValidator(),
                           NumberValidator(allowDecimal: true),
                         ]),
                       ),

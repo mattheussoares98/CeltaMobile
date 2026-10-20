@@ -153,10 +153,8 @@ class _CovenantItem extends StatelessWidget {
                         decimal: true,
                       ),
                       validator: FormValidators.compose([
-                        NonEmptyValidator(),
-                        NumberValidator(
-                          allowDecimal: true,
-                        ),
+                        const NonEmptyValidator(),
+                        NumberValidator(allowDecimal: true),
                       ]),
                       onFieldSubmitted: (_) {
                         bindCovenant(covenant);

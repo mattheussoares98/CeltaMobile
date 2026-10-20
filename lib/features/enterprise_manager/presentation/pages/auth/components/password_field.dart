@@ -23,7 +23,7 @@ class PasswordField extends StatelessWidget {
       enabled: !isLoading,
       focusNode: passwordFocusNode,
       controller: passwordController,
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([const NonEmptyValidator()]),
       onFieldSubmitted: (_) => onSubmit(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       labelText: 'Senha'.hardcoded,

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,4 +14,6 @@ extension BuildContextExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
 
   bool get isCupertino => PlatformUtil.isCupertino;
+
+  AppLocalizations get l10n => AppLocalizations.of(this);
 }

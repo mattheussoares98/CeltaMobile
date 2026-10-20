@@ -127,7 +127,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                         );
                       },
                       validator: FormValidators.compose([
-                        NonEmptyValidator(),
+                        const NonEmptyValidator(),
                         NumberValidator(
                           allowDecimal: true,
                           maxDecimalHouses: 3,

@@ -24,7 +24,7 @@ class NameField extends StatelessWidget {
       focusNode: nameFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const   NonEmptyValidator(),
         MinLengthValidator(3),
       ]),
       onFieldSubmitted: (_) {

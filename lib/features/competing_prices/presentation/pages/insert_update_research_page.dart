@@ -103,7 +103,7 @@ class _InsertUpdateResearchPageState
                 hintText: 'Nome'.hardcoded,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 maxLength: 100,
-                validator: FormValidators.compose([NonEmptyValidator()]),
+                validator: FormValidators.compose([const NonEmptyValidator()]),
                 onFieldSubmitted: (_) {
                   observationsFocusNode.requestFocus();
                 },

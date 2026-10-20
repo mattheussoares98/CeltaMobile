@@ -127,7 +127,7 @@ class _IpToPrintForm extends ConsumerWidget {
                   FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                 ],
                 validator: FormValidators.compose([
-                  NonEmptyValidator(),
+                  const NonEmptyValidator(),
                   IpValidator(),
                 ]),
                 keyboardType: TextInputType.datetime,

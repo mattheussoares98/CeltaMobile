@@ -44,7 +44,7 @@ class CpfCnpjField extends ConsumerWidget {
               allowRegisterWithoutCpfOrCnpj && cpfCnpjController.text.isEmpty
               ? null
               : FormValidators.compose([
-                  NonEmptyValidator(),
+                  const NonEmptyValidator(),
                   CpfCnpjValidator(),
                 ]),
           onChanged: (value) {

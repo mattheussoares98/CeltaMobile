@@ -88,7 +88,7 @@ class _PriceFieldAndConfirmButtonState
                   decimal: true,
                 ),
                 validator: FormValidators.compose([
-                  NonEmptyValidator(),
+                 const NonEmptyValidator(),
                   NumberValidator(
                     allowDecimal: true,
                     needsBeGreaterThanZero: false,

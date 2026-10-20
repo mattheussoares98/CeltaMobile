@@ -32,7 +32,7 @@ class UserNameField extends StatelessWidget {
       suffixIcon: DeleteIcon(
         onPress: isLoading ? null : userNameController.clear,
       ),
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([const NonEmptyValidator()]),
     );
   }
 }

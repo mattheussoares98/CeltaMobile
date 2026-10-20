@@ -103,7 +103,7 @@ class FieldsAndConfirm extends ConsumerWidget {
                   decimal: true,
                 ),
                 validator: FormValidators.compose([
-                  NonEmptyValidator(),
+                  const   NonEmptyValidator(),
                   NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
                 ]),
                 onFieldSubmitted: (_) {
@@ -141,7 +141,7 @@ class FieldsAndConfirm extends ConsumerWidget {
                 decimal: true,
               ),
               validator: FormValidators.compose([
-                NonEmptyValidator(),
+                const   NonEmptyValidator(),
                 NumberValidator(allowDecimal: true, maxDecimalHouses: 4),
               ]),
               maxLength: 13,

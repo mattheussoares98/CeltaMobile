@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +31,11 @@ class UserField extends ConsumerWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (_) => passwordFocusNode.requestFocus(),
-      validator: FormValidators.compose([NonEmptyValidator()]),
+      validator: FormValidators.compose([
+        NonEmptyValidator(errorMessage: context.l10n.requiredField),
+      ]),
       maxLength: 40,
-      labelText: 'Usuário'.hardcoded,
+      labelText: context.l10n.username,
       prefixIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.person,
         materialIcon: Icons.person,

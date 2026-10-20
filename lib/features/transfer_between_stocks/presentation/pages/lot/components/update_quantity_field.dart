@@ -62,7 +62,7 @@ class UpdateQuantityField extends ConsumerWidget {
                               onSubmit();
                             },
                             validator: FormValidators.compose([
-                              NonEmptyValidator(),
+                              const NonEmptyValidator(),
                               NumberValidator(
                                 allowDecimal: true,
                                 maxDecimalHouses: 3,

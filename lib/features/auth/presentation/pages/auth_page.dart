@@ -1,10 +1,9 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
-import 'package:celta_inventario/features/auth/presentation/controllers/login_controller.dart';
+import 'package:celta_inventario/features/auth/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/auth/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/home/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +112,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   Consumer(
                     builder: (context, ref, child) {
                       return PrimaryButton(
-                        text: 'Entrar'.hardcoded,
+                        text: context.l10n.signIn,
                         onPressed: onSubmit,
                         isLoading: ref.watch(loginControllerProvider).isLoading,
                       );

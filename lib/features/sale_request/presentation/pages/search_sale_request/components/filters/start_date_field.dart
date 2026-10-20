@@ -37,7 +37,7 @@ class StartDateField extends StatelessWidget {
         minimumDate: minimumDate,
       ),
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         DateValidator(minimumDate: minimumDate, maximumDate: now),
       ]),
     );

@@ -36,7 +36,7 @@ class QuantityField extends ConsumerWidget {
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: textInputAction,
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
       ]),
     );

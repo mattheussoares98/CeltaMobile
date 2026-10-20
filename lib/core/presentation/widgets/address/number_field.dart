@@ -26,7 +26,7 @@ class NumberField extends StatelessWidget {
       hintText: 'Número'.hardcoded,
       maxLength: 5,
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         MinLengthValidator(1),
         NumberValidator(allowDecimal: false),
       ]),

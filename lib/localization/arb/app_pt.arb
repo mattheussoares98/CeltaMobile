@@ -4,5 +4,13 @@
   "@appTitle": {"description": "Application title"},
   "language": "Idioma",
   "portuguese": "Português",
-  "english": "Inglês"
+  "english": "Inglês",
+  "signIn": "Entrar",
+  "enterprise": "Empresa",
+  "username": "Usuário",
+  "password": "Senha",
+  "requiredField": "Campo obrigatório",
+  "error": "Erro",
+  "showPassword": "Mostrar senha",
+  "hidePassword": "Ocultar senha"
 }

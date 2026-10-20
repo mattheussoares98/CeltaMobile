@@ -120,7 +120,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       hintText: 'Nova observação'.hardcoded,
                       labelText: 'Nova observação'.hardcoded,
                       validator: shouldInsertObservations
-                          ? FormValidators.compose([NonEmptyValidator()])
+                          ? FormValidators.compose([const NonEmptyValidator()])
                           : null,
                     ),
                   ),

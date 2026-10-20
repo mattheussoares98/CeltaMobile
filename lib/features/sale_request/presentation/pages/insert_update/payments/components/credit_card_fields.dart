@@ -75,7 +75,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           validator: FormValidators.compose([
-            NonEmptyValidator(),
+            const NonEmptyValidator(),
             NumberValidator(allowDecimal: false),
           ]),
         ),

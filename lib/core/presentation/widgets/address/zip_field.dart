@@ -56,7 +56,7 @@ class ZipField extends ConsumerWidget {
         seekAddress();
       },
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         NumberValidator(allowDecimal: false),
         MinLengthValidator(8),
       ]),

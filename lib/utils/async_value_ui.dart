@@ -1,6 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,7 +9,7 @@ extension AsyncValueUI on AsyncValue {
     if (!isLoading && hasError) {
       showExceptionAlertDialog(
         context: context,
-        title: 'Erro'.hardcoded,
+        title: context.l10n.error,
         exception: parseErrorMessage(error!),
       );
     }

@@ -36,20 +36,15 @@ class PriceField extends ConsumerWidget {
       controller: controller,
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,
-      labelText:
-          'Preço R\$ (${practicedPriceType.abbreviation})'.hardcoded,
+      labelText: 'Preço R\$ (${practicedPriceType.abbreviation})'.hardcoded,
       enabled: allowPriceChange,
       onChanged: (value) {
-        ref
-            .read(uiProvider.notifier)
-            .updatePrice(value.toDouble() ?? 0);
+        ref.read(uiProvider.notifier).updatePrice(value.toDouble() ?? 0);
       },
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: textInputAction,
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         NumberValidator(allowDecimal: true, maxDecimalHouses: 3),
       ]),
     );

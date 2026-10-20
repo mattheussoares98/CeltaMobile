@@ -26,7 +26,7 @@ class UpdateCostField extends ConsumerWidget {
       maxLength: 12,
       onFieldSubmitted: (_) => onSubmit(),
       validator: FormValidators.compose([
-        NonEmptyValidator(),
+        const NonEmptyValidator(),
         NumberValidator(
           allowDecimal: true,
           allowEmptyValue: false,

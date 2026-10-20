@@ -7,10 +7,19 @@ void main() {
   late NonEmptyValidator sut;
 
   setUp(() {
-    sut = NonEmptyValidator();
+    sut = const NonEmptyValidator();
   });
 
   group('NonEmptyValidator', () {
+    test('Uses the supplied localized message without changing validation', () {
+      final message = faker.lorem.sentence();
+      final validator = NonEmptyValidator(errorMessage: message);
+      expect(validator.errorMessage, message);
+      expect(validator.isValid(''), isFalse);
+      expect(validator.isValid(null), isFalse);
+      expect(validator.isValid(faker.lorem.word()), isTrue);
+    });
+
     test('Should return true for a non-empty string', () {
       // Use faker to generate a random non-empty string
       final nonEmptyString = faker.lorem.sentence();

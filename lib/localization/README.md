@@ -3,7 +3,7 @@ Edit `arb/app_pt.arb` (the template) and `arb/app_en.arb`, then run
 `flutter gen-l10n`. Only Portuguese and English are supported.
 
 Import `package:celta_inventario/localization/localization.dart` and read
-`AppLocalizations.of(context)` for translated strings. Existing `.hardcoded`
+`context.l10n` for translated strings. Existing `.hardcoded`
 strings still need to be migrated screen by screen. The old root `app_en.arb`
 is an unused tutorial catalog; generation reads only the `arb` directory.
 

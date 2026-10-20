@@ -89,7 +89,7 @@ class _InsertSaleRequestToReadAgainState
               controller: saleRequestIdController,
               hintText: 'ID do pedido'.hardcoded,
               labelText: 'ID do pedido'.hardcoded,
-              validator: FormValidators.compose([NonEmptyValidator()]),
+              validator: FormValidators.compose([const NonEmptyValidator()]),
               onFieldSubmitted: (_) => onSubmit(),
             ),
             gapH8,

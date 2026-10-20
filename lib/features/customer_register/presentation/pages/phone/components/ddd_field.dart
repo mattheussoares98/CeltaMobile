@@ -25,10 +25,13 @@ class DddField extends StatelessWidget {
       maxLength: 2,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: const TextInputType.numberWithOptions(),
-      validator: FormValidators.compose([NonEmptyValidator(), DddValidator()]),
+      validator: FormValidators.compose([
+        const NonEmptyValidator(),
+        DddValidator(),
+      ]),
       onChanged: (value) {
         if ([
-          NonEmptyValidator(),
+          const NonEmptyValidator(),
           DddValidator(),
         ].every((validator) => validator.isValid(value))) {
           phoneFocusNode.requestFocus();
