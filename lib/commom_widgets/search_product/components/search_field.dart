@@ -36,7 +36,7 @@ class _SearchFieldState extends ConsumerState<SearchField>
     with BaseSearchProductsMixin {
   final LayerLink _layerLink = LayerLink();
   final formKey = GlobalKey<FormState>();
-  final defaultHint = 'NOME-PLU-EAN-%-BALANÇA'.hardcoded;
+  String get defaultHint => context.l10n.namePluEanScale;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,9 @@ class _SearchFieldState extends ConsumerState<SearchField>
 
             final hint = (pref == SearchProductTypePreference.dynamic)
                 ? defaultHint
-                : (pref?.name ?? defaultHint);
+                : (pref == null
+                      ? defaultHint
+                      : context.l10n.searchPreferenceName(pref));
 
             return BaseTextFormField(
               key: const ValueKey('search_input_field'),
@@ -110,8 +112,11 @@ class _SearchFieldState extends ConsumerState<SearchField>
                 searchProducts: widget.searchProducts,
                 searchProductKey: widget.searchProductKey,
               ),
-              labelText:
-                  'Consultar produtos (${pref?.name ?? 'Dinâmico'})'.hardcoded,
+              labelText: context.l10n.searchProductsByType(
+                context.l10n.searchPreferenceName(
+                  pref ?? SearchProductTypePreference.dynamic,
+                ),
+              ),
               hintText: hint,
             );
           },

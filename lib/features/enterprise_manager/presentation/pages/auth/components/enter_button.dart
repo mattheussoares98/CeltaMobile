@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -20,7 +20,7 @@ class EnterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PrimaryButton(
-      text: 'Entrar'.hardcoded,
+      text: context.l10n.signIn,
       isLoading: isLoading,
       onPressed: onSubmit,
     );

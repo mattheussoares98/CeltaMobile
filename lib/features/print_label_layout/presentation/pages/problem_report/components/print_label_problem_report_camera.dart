@@ -1,9 +1,10 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:io';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/services/services.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,9 +26,9 @@ class PrintLabelProblemReportCamera extends HookWidget {
     final isReady = useState(false);
     final isCapturing = useState(false);
     final confirmations = useState(<String, bool>{
-      'A etiqueta inteira está visível'.hardcoded: false,
-      'Há uma régua acima ou abaixo da etiqueta'.hardcoded: false,
-      'A foto está focada e sem reflexo'.hardcoded: false,
+      context.l10n.theEntireLabelIsVisible: false,
+      context.l10n.thereIsARulerAboveOrBelowTheLabel: false,
+      context.l10n.thePhotoIsInFocusAndHasNoGlare: false,
     });
 
     useEffect(() {
@@ -83,16 +84,19 @@ class PrintLabelProblemReportCamera extends HookWidget {
             children: [
               BaseText.headline(
                 denied
-                    ? 'Permita o acesso à câmera nas configurações do dispositivo.'
-                          .hardcoded
-                    : 'Não foi possível abrir a câmera: ${error.value}'
-                          .hardcoded,
+                    ? context.l10n.allowCameraAccessInYourDeviceSettings
+                    : context.l10n.cameraOpenFailed(
+                        parseErrorMessage(
+                          error.value,
+                          translations: context.l10n,
+                        ),
+                      ),
                 textAlign: TextAlign.center,
               ),
               if (denied) ...[
                 gapH8,
                 PrimaryTextButton(
-                  text: 'Abrir configurações'.hardcoded,
+                  text: context.l10n.openSettings,
                   onPressed: openAppSettings,
                 ),
               ],
@@ -115,14 +119,14 @@ class PrintLabelProblemReportCamera extends HookWidget {
             children: [
               Expanded(
                 child: PrimaryTextButton(
-                  text: 'Tirar outra foto'.hardcoded,
+                  text: context.l10n.takeAnotherPhoto,
                   onPressed: () => photoPath.value = null,
                 ),
               ),
               gapW8,
               Expanded(
                 child: PrimaryButton(
-                  text: 'Usar esta foto'.hardcoded,
+                  text: context.l10n.useThisPhoto,
                   onPressed: () => onPhotoConfirmed(photoPath.value!),
                 ),
               ),
@@ -152,7 +156,7 @@ class PrintLabelProblemReportCamera extends HookWidget {
         SizedBox(
           width: double.infinity,
           child: PrimaryButton(
-            text: 'Fotografar'.hardcoded,
+            text: context.l10n.takePhoto,
             isLoading: isCapturing.value,
             onPressed: confirmations.value.values.every((value) => value)
                 ? takePicture

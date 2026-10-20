@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/sale_request/presentation/controllers/
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,8 +89,8 @@ class _InsertUpdateContent extends ConsumerWidget {
             appBar: BaseAppBar(
               selectedEnterpriseCode: enterpriseCode,
               title: saleRequestId == 0
-                  ? 'Inserindo pedido'.hardcoded
-                  : 'Alterando ($personalizedCode)'.hardcoded,
+                  ? context.l10n.creatingOrder
+                  : context.l10n.editingOrderCode(personalizedCode.toString()),
               actionsPadding: const EdgeInsets.fromLTRB(
                 0,
                 Sizes.p8,
@@ -134,12 +133,11 @@ class _InsertUpdateContent extends ConsumerWidget {
 
             final shouldPop = await showAlertDialog(
               context: context,
-              title: 'Alterações não salvas'.hardcoded,
+              title: context.l10n.unsavedChanges,
               content:
-                  'Existem alterações que não foram salvas. Deseja realmente sair?'
-                      .hardcoded,
-              cancelActionText: 'Não'.hardcoded,
-              defaultActionText: 'Sim'.hardcoded,
+                  context.l10n.thereAreUnsavedChangesDoYouReallyWantToLeave,
+              cancelActionText: context.l10n.no,
+              defaultActionText: context.l10n.yes,
             );
 
             if (shouldPop == true && context.mounted) {

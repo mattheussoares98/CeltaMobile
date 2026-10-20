@@ -1,3 +1,5 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 // lib/features/sale_request/presentation/controllers/insert_update/insert_update_process_cart_controller.dart
 
 import 'dart:async';
@@ -5,7 +7,6 @@ import 'dart:async';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'insert_update_process_cart_controller.g.dart';
@@ -23,21 +24,21 @@ class InsertUpdateProcessCartController
 
       final current = saleRequestState.value;
       if (current == null) {
-        throw Exception('Estado inválido'.hardcoded);
+        throw AppException.localized(CoreFailure.invalidState);
       }
 
       if (current.products?.isEmpty ?? true) {
-        throw Exception('Insira produtos no pedido'.hardcoded);
+        throw AppException.localized(CoreFailure.addProductsToTheOrder2);
       }
 
       final requestTypeCode = current.requestType?.code;
       if (requestTypeCode == null || requestTypeCode == 0) {
-        throw Exception('Informe o modelo de pedido'.hardcoded);
+        throw AppException.localized(CoreFailure.enterTheOrderTemplate);
       }
 
       final customerCode = current.customer?.code ?? 0;
       if (customerCode == 0) {
-        throw Exception('Informe o cliente'.hardcoded);
+        throw AppException.localized(CoreFailure.enterTheCustomer);
       }
 
       final saleRequestCode = current.code ?? 0;

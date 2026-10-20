@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/inventory/presentation/pages/countings/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,13 +29,12 @@ class CountingsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       appBar: BaseAppBar(
-        title: 'Contagens'.hardcoded,
+        title: context.l10n.counts,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: (countings == null || countings.isEmpty)
           ? BaseText(
-              'Não foram encontradas contagens para esse processe de inventário. Crie pelo menos uma contagem'
-                  .hardcoded,
+              context.l10n.noCountsFoundForThisInventoryProcessCreateAtLeast,
             )
           : CountingsItems(
               countings: countings,

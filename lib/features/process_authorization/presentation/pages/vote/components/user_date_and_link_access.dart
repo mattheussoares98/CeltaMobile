@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +26,7 @@ class UserDateAndLinkAccess extends ConsumerWidget {
               TypeAccordingToTheCode.saleRequestDiscount ||
               TypeAccordingToTheCode.saleRequestLucrativity =>
                 OpenSaleRequestDetailsPageButton(
-                  title: 'Visualizar pedido'.hardcoded,
+                  title: context.l10n.viewOrder,
                   processCode: processCode,
                 ), //*only sale request should have link to access the details
               _ => const SizedBox.shrink(),
@@ -42,13 +41,13 @@ class UserDateAndLinkAccess extends ConsumerWidget {
                     if (judgmentDetails.user?.crossIdentity?.identification !=
                         null)
                       TitleAndSubTitle(
-                        title: 'Iniciado por'.hardcoded,
+                        title: context.l10n.startedBy,
                         subTitle:
                             judgmentDetails.user?.crossIdentity?.identification,
                       ),
                     if (judgmentDetails.dateTimeOfCreation != null)
                       TitleAndSubTitle(
-                        title: 'Data'.hardcoded,
+                        title: context.l10n.date,
                         subTitle: judgmentDetails.dateTimeOfCreation
                             ?.formatDate(DateFormatType.ddMMyyyyHHmm),
                       ),

@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,14 +32,14 @@ class ProductSummary extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TitleAndSubTitle(
-            title: 'Quantidade'.hardcoded,
+            title: context.l10n.quantity,
             subTitle: item.quantity,
             titleStyle: labelStyle,
             subTitleStyle: valueStyle,
           ),
           gapH8,
           TitleAndSubTitle(
-            title: 'Preço Bruto'.hardcoded,
+            title: context.l10n.grossPrice,
             subTitle: (item.quantity ?? 0) * (item.value ?? 0),
             subTitleIsPrice: true,
             titleStyle: labelStyle,
@@ -49,7 +48,7 @@ class ProductSummary extends ConsumerWidget {
           if (item.totalDeliveryTax > 0) ...[
             gapH8,
             TitleAndSubTitle(
-              title: 'Frete'.hardcoded,
+              title: context.l10n.freight,
               subTitle: item.totalDeliveryTax,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
@@ -61,7 +60,7 @@ class ProductSummary extends ConsumerWidget {
           if (item.totalDiscountValue > 0) ...[
             gapH8,
             TitleAndSubTitle(
-              title: 'Total Descontos'.hardcoded,
+              title: context.l10n.totalDiscounts3,
               subTitle: item.totalDiscountValue,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
@@ -73,7 +72,7 @@ class ProductSummary extends ConsumerWidget {
           if (item.totalIncrement > 0) ...[
             gapH8,
             TitleAndSubTitle(
-              title: 'Acréscimo'.hardcoded,
+              title: context.l10n.surcharge,
               subTitle: item.totalIncrement,
               subTitleIsPrice: true,
               titleStyle: labelStyle,
@@ -82,7 +81,7 @@ class ProductSummary extends ConsumerWidget {
           ],
           const Divider(height: Sizes.p24),
           TitleAndSubTitle(
-            title: 'Total Líquido'.hardcoded,
+            title: context.l10n.netTotal2,
             subTitle: item.totalLiquid,
             subTitleIsPrice: true,
             titleStyle: context.theme.textTheme.titleMedium?.copyWith(

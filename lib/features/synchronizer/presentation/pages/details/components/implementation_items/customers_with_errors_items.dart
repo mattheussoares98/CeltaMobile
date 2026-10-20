@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -23,23 +22,23 @@ class CustomersWithErrorsItems extends StatelessWidget {
               crossAxisAlignment: .start,
               children: [
                 TitleAndSubTitle(
-                  title: 'Empresa'.hardcoded,
+                  title: context.l10n.enterprise,
                   subTitle: bleeding.enterprisePersonalizedCode,
                 ),
                 TitleAndSubTitle(
-                  title: 'Nome cliente'.hardcoded,
+                  title: context.l10n.customerName,
                   subTitle: bleeding.customerName,
                 ),
                 TitleAndSubTitle(
-                  title: 'Data erro'.hardcoded,
+                  title: context.l10n.errorDate,
                   subTitle: bleeding.creationDate.formatDate(.ddMMyyyyHHmm),
                 ),
                 TitleAndSubTitle(
-                  title: 'Data cadastro'.hardcoded,
+                  title: context.l10n.registrationDate,
                   subTitle: bleeding.cadasterDate.formatDate(.ddMMyyyyHHmm),
                 ),
                 TitleAndSubTitle(
-                  title: 'Cód cliente'.hardcoded,
+                  title: context.l10n.customerCode,
                   subTitle: bleeding.customerCode,
                 ),
               ],

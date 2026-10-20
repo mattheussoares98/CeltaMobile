@@ -1,8 +1,8 @@
+import 'package:celta_inventario/features/sale_request/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +41,12 @@ class QuantityControlButton extends ConsumerWidget {
         } else if (actions.isNotEmpty) {
           final confirmed = await showAlertDialog(
             context: context,
-            title: 'Atenção!'.hardcoded,
-            cancelActionText: 'Cancelar'.hardcoded,
-            defaultActionText: 'Continuar'.hardcoded,
-            content: actions.map((a) => a.message).join('\n'),
+            title: context.l10n.attention,
+            cancelActionText: context.l10n.cancel,
+            defaultActionText: context.l10n.continueAction,
+            content: actions
+                .map((a) => context.l10n.sanitizationActionMessage(a))
+                .join('\n'),
           );
           if (confirmed != true) {
             return;

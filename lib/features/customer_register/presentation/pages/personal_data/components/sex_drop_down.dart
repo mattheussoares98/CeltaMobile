@@ -21,12 +21,12 @@ class SexDropDown extends ConsumerWidget {
 
     return BaseDropDown<CustomerSexType?>(
       selectedItem: selectedSex,
-      label: 'Sexo'.hardcoded,
+      label: context.l10n.sex2,
       isSimple: true,
       onChanged: onChangeSex,
       validator: (sex) {
         if (sex == null) {
-          return 'Campo obrigatório'.hardcoded;
+          return context.l10n.requiredField;
         }
         return null;
       },

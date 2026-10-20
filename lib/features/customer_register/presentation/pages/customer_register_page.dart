@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/save/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
   Widget build(BuildContext context) {
     ref.listen(insertUpdateCustomerControllerProvider, (p, n) {
       n.doOnSuccess(p, () async {
-        showToastMessage('Cliente cadastrado/atualizado com sucesso'.hardcoded);
+        showToastMessage(context.l10n.customerSavedSuccessfully);
         ref.invalidate(customerStateControllerProvider);
         personalDataPageKey.currentState?.updateFields(clearCpf: true);
         ref.read(pageIndexStateControllerProvider.notifier).updateIndex(0);
@@ -61,12 +60,12 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
     ];
 
     final appBarsTitles = [
-      'Dados pessoais',
-      'Endereços',
-      'E-mails',
-      'Telefones',
-      'Convênios',
-      'Salvar',
+      context.l10n.personalDetails,
+      context.l10n.addresses,
+      context.l10n.emails,
+      context.l10n.phoneNumbers,
+      context.l10n.agreements,
+      context.l10n.save,
     ];
 
     final customer = ref.watch(customerStateControllerProvider).value;
@@ -100,14 +99,14 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
         },
         items: [
           BaseBottomNavigationBarItem(
-            label: 'Dados'.hardcoded,
+            label: context.l10n.details2,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.person,
               materialIcon: Icons.person,
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'Endereço'.hardcoded,
+            label: context.l10n.address,
             isValid:
                 customer?.Addresses != null && customer!.Addresses!.isNotEmpty,
             platformIcon: const PlatformIcon(
@@ -116,7 +115,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'E-mail'.hardcoded,
+            label: context.l10n.email,
             isValid: customer?.Emails != null && customer!.Emails!.isNotEmpty,
             platformIcon: const PlatformIcon(
               materialIcon: Icons.email,
@@ -124,7 +123,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'Telefone'.hardcoded,
+            label: context.l10n.phone,
             isValid: customer?.Telephones?.isNotEmpty ?? false,
             platformIcon: const PlatformIcon(
               materialIcon: Icons.phone,
@@ -132,7 +131,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'Convênios'.hardcoded,
+            label: context.l10n.agreements,
             isValid: customer?.CustomerCovenants?.isNotEmpty ?? false,
             platformIcon: const PlatformIcon(
               materialIcon: Icons.wallet,
@@ -140,7 +139,7 @@ class _CustomerRegisterPageState extends ConsumerState<CustomerRegisterPage> {
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'Salvar'.hardcoded,
+            label: context.l10n.save,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.check_mark,
               materialIcon: Icons.save,

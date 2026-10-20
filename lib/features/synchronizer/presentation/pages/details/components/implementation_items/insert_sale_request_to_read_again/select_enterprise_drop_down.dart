@@ -34,15 +34,15 @@ class _SelectEnterpriseDropDown extends ConsumerWidget {
 
         return BaseDropDown<EnterpriseEntity>(
           validator: (value) =>
-              value == null ? 'Selecione a empresa'.hardcoded : null,
+              value == null ? context.l10n.selectTheCompany : null,
           hint: Text(
             selectedEnterprise != null
                 ? '${selectedEnterprise!.PersonalizedCode} - ${selectedEnterprise!.name}'
-                : 'Selecione a empresa'.hardcoded,
+                : context.l10n.selectTheCompany,
           ),
           showLabelAtTopLeft: true,
           selectedItem: selectedEnterprise,
-          label: 'Empresa'.hardcoded,
+          label: context.l10n.enterprise,
           onChanged: onChangeEnterprise,
           items: items,
         );

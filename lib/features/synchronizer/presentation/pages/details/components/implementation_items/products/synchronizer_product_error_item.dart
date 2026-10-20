@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,7 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
                         selectedProvider.select((s) => s.contains(item.code)),
                       );
                       return BaseCheckBox(
-                        name: 'Selecionar produto'.hardcoded,
+                        name: context.l10n.selectProduct,
                         enabled: isSelected,
                         onChanged: (_) => onTap(item.code),
                         width: Sizes.p20,
@@ -66,19 +65,19 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
                 ],
               ),
               TitleAndSubTitle(
-                title: 'Site'.hardcoded,
+                title: context.l10n.website,
                 subTitle: item.commerceSite,
               ),
               if (item.productCommerceSiteId.isNotEmpty)
                 TitleAndSubTitle(
-                  title: 'ID do Produto no Site'.hardcoded,
+                  title: context.l10n.productIdOnWebsite,
                   subTitle: item.productCommerceSiteId,
                   copyableSubtitle: true,
                 ),
               if (item.errorDescription.isNotEmpty &&
                   item.errorDescription != item.errorMessage)
                 TitleAndSubTitle(
-                  title: 'Descrição do erro'.hardcoded,
+                  title: context.l10n.errorDescription,
                   subTitle: item.errorDescription,
                 ),
               Row(
@@ -91,7 +90,7 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
                       onPressed: () {
                         showAlertDialog(
                           context: context,
-                          title: 'Mais informações do erro'.hardcoded,
+                          title: context.l10n.moreErrorInformation,
                           content: item.moreInfo,
                         );
                       },
@@ -104,21 +103,21 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
               ),
               if (item.lastChargeOfProduct != null)
                 TitleAndSubTitle(
-                  title: 'Carga do produto'.hardcoded,
+                  title: context.l10n.productUpload,
                   subTitle: item.lastChargeOfProduct!.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
               if (item.lastChargeOfSalePrice != null)
                 TitleAndSubTitle(
-                  title: 'Carga de preços'.hardcoded,
+                  title: context.l10n.priceUpload,
                   subTitle: item.lastChargeOfSalePrice!.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
               if (item.lastChargeOfStock != null)
                 TitleAndSubTitle(
-                  title: 'Carga de estoques'.hardcoded,
+                  title: context.l10n.stockUpload,
                   subTitle: item.lastChargeOfStock!.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
@@ -141,8 +140,8 @@ class SynchronizerProductErrorItem extends ConsumerWidget {
                   Expanded(
                     child: BaseText(
                       item.hasSendingRestriction
-                          ? 'Não enviado ao site'.hardcoded
-                          : 'Enviado ao site'.hardcoded,
+                          ? context.l10n.notSentToWebsite
+                          : context.l10n.sentToWebsite,
                       color: item.hasSendingRestriction
                           ? Colors.orange
                           : Colors.green,

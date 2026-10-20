@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,8 +66,8 @@ class DropDowns extends ConsumerWidget {
         children: [
           BaseText(
             justification?.Descricao_JustMov == null
-                ? 'Sem justificativa'.hardcoded
-                : '${justification?.Descricao_JustMov}'.hardcoded,
+                ? context.l10n.noJustification
+                : '${justification?.Descricao_JustMov}',
             color: justification?.Descricao_JustMov == null
                 ? Colors.red
                 : context.theme.primaryColor,
@@ -75,8 +75,10 @@ class DropDowns extends ConsumerWidget {
           ),
           BaseText(
             selectedOritinStock?.Nome_TipoEstoque == null
-                ? 'Sem origem'.hardcoded
-                : 'De "${selectedOritinStock?.Nome_TipoEstoque}"'.hardcoded,
+                ? context.l10n.noOrigin
+                : context.l10n.fromStock(
+                    selectedOritinStock?.Nome_TipoEstoque ?? '',
+                  ),
             color: selectedOritinStock?.Nome_TipoEstoque == null
                 ? Colors.red
                 : context.theme.primaryColorDark,
@@ -84,8 +86,10 @@ class DropDowns extends ConsumerWidget {
           ),
           BaseText(
             selectedDestinyStock?.Nome_TipoEstoque == null
-                ? 'Sem destino'.hardcoded
-                : 'Para "${selectedDestinyStock?.Nome_TipoEstoque}"'.hardcoded,
+                ? context.l10n.noDestination
+                : context.l10n.toStock(
+                    selectedDestinyStock?.Nome_TipoEstoque ?? '',
+                  ),
             color: selectedDestinyStock?.Nome_TipoEstoque == null
                 ? Colors.red
                 : context.theme.colorScheme.secondary,

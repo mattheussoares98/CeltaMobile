@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/filters/filters.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -29,8 +28,8 @@ class StartDateField extends StatelessWidget {
           extentOffset: controller.text.length,
         );
       },
-      labelText: 'Data início'.hardcoded,
-      hintText: '00/00/0000'.hardcoded,
+      labelText: context.l10n.startDate2,
+      hintText: context.l10n.message00000000,
       keyboardType: TextInputType.datetime,
       inputFormatters: [DateInputFormatter()],
       suffixIcon: SelectDateIconButton(

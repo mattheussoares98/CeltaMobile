@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,7 +85,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
           children: [
             Expanded(
               child: PrimaryButton(
-                text: 'Subtrair'.hardcoded,
+                text: context.l10n.subtract,
                 onPressed: () => update(isSubtract: true),
               ),
             ),
@@ -94,7 +93,7 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
             Expanded(
               flex: 2,
               child: PrimaryButton(
-                text: 'Somar'.hardcoded,
+                text: context.l10n.add3,
                 onPressed: () => update(isSubtract: false),
               ),
             ),
@@ -105,16 +104,15 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
           children: [
             Expanded(
               child: PrimaryButton(
-                text: 'Anular'.hardcoded,
+                text: context.l10n.voidAction,
                 onPressed: hasInsertedQuantity
                     ? () async {
                         final confirmed = await showAlertDialog(
                           context: context,
-                          title: 'Anular'.hardcoded,
-                          content: 'Tem certeza que deseja anular a contagem?'
-                              .hardcoded,
-                          defaultActionText: 'Sim'.hardcoded,
-                          cancelActionText: 'Não'.hardcoded,
+                          title: context.l10n.voidAction,
+                          content: context.l10n.areYouSureYouWantToVoidTheCount,
+                          defaultActionText: context.l10n.yes,
+                          cancelActionText: context.l10n.no,
                         );
 
                         if (confirmed != true || !context.mounted) return;
@@ -133,8 +131,8 @@ class _UpdateValuesWidgetsState extends ConsumerState<UpdateValuesWidgets> {
                 child: Form(
                   key: formKey,
                   child: BaseTextFormField(
-                    hintText: 'Quantidade'.hardcoded,
-                    labelText: 'Quantidade'.hardcoded,
+                    hintText: context.l10n.quantity,
+                    labelText: context.l10n.quantity,
                     controller: widget.quantityController,
                     focusNode: widget.quantityFocusNode,
                     maxLength: 10,

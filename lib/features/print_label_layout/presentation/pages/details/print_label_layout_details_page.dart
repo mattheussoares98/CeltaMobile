@@ -5,7 +5,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,7 +40,7 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       n.showToastOnSuccess(
         context,
         previous: p,
-        message: 'Leiaute salvo com sucesso'.hardcoded,
+        message: context.l10n.layoutSavedSuccessfully,
       );
     });
 
@@ -49,12 +48,10 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       if (ref.read(provider.notifier).shouldConfirmPop) {
         final confirmed = await showAlertDialog(
           context: context,
-          title: "Atenção".hardcoded,
-          content:
-              'Todas alterações realizadas serão perdidas. Deseja realmente fechar a tela?'
-                  .hardcoded,
-          cancelActionText: 'Não'.hardcoded,
-          defaultActionText: 'Descartar alterações'.hardcoded,
+          title: context.l10n.attention2,
+          content: context.l10n.allChangesWillBeLostCloseThisScreen,
+          cancelActionText: context.l10n.no,
+          defaultActionText: context.l10n.discardChanges,
         );
 
         if (confirmed != true || !context.mounted) return;
@@ -70,12 +67,11 @@ class PrintLabelLayoutDetailsPage extends ConsumerWidget {
       onPopInvokedWithResult: onPop,
       refreshProvider: provider,
       refreshConfirmationMessage: ref.read(provider.notifier).shouldConfirmPop
-          ? 'Todas as alterações realizadas serão perdidas. Deseja realmente atualizar os dados?'
-                .hardcoded
+          ? context.l10n.allChangesWillBeLostRefreshTheData
           : null,
       padding: const .fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
-        title: layoutName ?? 'Detalhes do leiaute'.hardcoded,
+        title: layoutName ?? context.l10n.layoutDetails,
         actions: [
           _AppbarActions(
             showProblemReportAction: showProblemReportAction,

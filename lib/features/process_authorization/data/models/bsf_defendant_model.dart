@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 // lib/features/process_authorization/data/models/bsf_defendant_model.dart
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
@@ -20,7 +21,7 @@ sealed class BSFDefendantModel extends BSFDefendantEntity {
         return BSFGRDefendantModel.fromJson(json);
       case TypeAccordingToTheCode.goodsReceivingValueDocument:
       case TypeAccordingToTheCode.goodsReceivingValidatePaymentCondition:
-        return throw AppException('Process type not implemented');
+        return throw AppException.localized(CoreFailure.processTypeUnsupported);
       case null:
         return null;
     }

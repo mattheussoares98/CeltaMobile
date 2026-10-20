@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,8 +33,8 @@ class CpfCnpjField extends ConsumerWidget {
           controller: cpfCnpjController,
           focusNode: cpfCnpjFocusNode,
           maxLength: 14,
-          hintText: 'CPF/CNPJ'.hardcoded,
-          labelText: 'CPF/CNPJ'.hardcoded,
+          hintText: context.l10n.cpfCnpj,
+          labelText: context.l10n.cpfCnpj,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: const TextInputType.numberWithOptions(),
           onFieldSubmitted: (_) {

@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +29,8 @@ class BirthDateField extends ConsumerWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: TextInputType.datetime,
       focusNode: birthDateFocusNode,
-      hintText: 'Nascimento'.hardcoded,
-      labelText: 'Nascimento'.hardcoded,
+      hintText: context.l10n.birthDate2,
+      labelText: context.l10n.birthDate2,
       inputFormatters: [DateInputFormatter()],
       suffixIcon: Row(
         mainAxisAlignment: MainAxisAlignment.end,

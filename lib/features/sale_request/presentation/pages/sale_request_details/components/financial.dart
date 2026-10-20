@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +39,8 @@ class Financial extends ConsumerWidget {
                 Flexible(
                   child: Text(
                     isFinancialEmpty
-                        ? 'Sem financeiro'.hardcoded
-                        : 'Financeiro'.hardcoded,
+                        ? context.l10n.noPaymentDetails
+                        : context.l10n.paymentDetails,
                     style: context.theme.textTheme.bodyLarge?.copyWith(
                       fontWeight: isFinancialEmpty
                           ? FontWeight.bold
@@ -137,13 +136,13 @@ class Financial extends ConsumerWidget {
                                   ),
                                   if (discount > 0)
                                     TitleAndSubTitle(
-                                      title: 'Descontos'.hardcoded,
+                                      title: context.l10n.discounts,
                                       subTitle: discount,
                                       subTitleIsPrice: true,
                                     ),
                                   if (increment > 0)
                                     TitleAndSubTitle(
-                                      title: 'Acréscimos'.hardcoded,
+                                      title: context.l10n.surcharges,
                                       subTitle: increment,
                                       subTitleIsPrice: true,
                                     ),

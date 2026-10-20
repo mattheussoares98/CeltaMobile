@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
@@ -5,7 +6,6 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'vote_controller.g.dart';
@@ -37,16 +37,15 @@ class VoteController extends _$VoteController {
         );
 
         if (differences.productsWithoutCadaster?.isNotEmpty ?? true) {
-          throw AppException(
-            'Ainda existem produtos sem cadastros. Eles precisam ser vinculados'
-                .hardcoded,
+          throw AppException.localized(
+            CoreFailure.thereAreStillUnregisteredProductsTheyNeedToBeLinked,
           );
         } else if (differences
                 .productsWithoutJudgementStatusRequestForFiscalNote
                 ?.isNotEmpty ??
             true) {
-          throw AppException(
-            'Julgue todos os produtos antes de votar'.hardcoded,
+          throw AppException.localized(
+            CoreFailure.reviewAllProductsBeforeVoting,
           );
         }
       }

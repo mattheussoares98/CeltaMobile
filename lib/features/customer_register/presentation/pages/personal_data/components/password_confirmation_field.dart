@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
 class PasswordConfirmationField extends StatelessWidget {
@@ -20,8 +20,8 @@ class PasswordConfirmationField extends StatelessWidget {
     return BaseTextFormField(
       controller: passwordConfirmationController,
       maxLength: 20,
-      hintText: 'Confirmar senha'.hardcoded,
-      labelText: 'Confirmar senha'.hardcoded,
+      hintText: context.l10n.confirmPassword,
+      labelText: context.l10n.confirmPassword,
       obscureText: true,
       focusNode: passwordConfirmationFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -33,7 +33,7 @@ class PasswordConfirmationField extends StatelessWidget {
           return null;
         }
 
-        return 'As senhas não conferem'.hardcoded;
+        return context.l10n.passwordsDoNotMatch;
       },
       suffixIcon: DefaultDeleteIcon(controller: passwordConfirmationController),
     );

@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,12 +68,12 @@ class _CountingItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TitleAndSubTitle(
-                title: 'Número'.hardcoded,
+                title: context.l10n.number,
                 subTitle: counting.NumeroContagemInvCont.toString(),
               ),
               if (counting.ObsInvCont != null)
                 TitleAndSubTitle(
-                  title: 'Obs'.hardcoded,
+                  title: context.l10n.notes2,
                   subTitle: counting.ObsInvCont,
                 ),
             ],

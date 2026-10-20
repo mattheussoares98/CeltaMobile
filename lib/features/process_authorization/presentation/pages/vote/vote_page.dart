@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,13 +41,13 @@ class _VotePageState extends ConsumerState<VotePage> {
         children: [
           UserDateAndLinkAccess(processCode: widget.processCode),
           BaseRadio(
-            name: 'Autorizado'.hardcoded,
+            name: context.l10n.authorized,
             value: true,
             groupValue: authorized,
             onChanged: (value) => setState(() => authorized = value ?? false),
           ),
           BaseRadio(
-            name: 'Não autorizado'.hardcoded,
+            name: context.l10n.unauthorized,
             value: false,
             groupValue: authorized,
             activeColor: Colors.red,
@@ -57,8 +56,8 @@ class _VotePageState extends ConsumerState<VotePage> {
           gapH16,
           BaseTextFormField(
             controller: observationsController,
-            labelText: 'Observações'.hardcoded,
-            hintText: 'Observações'.hardcoded,
+            labelText: context.l10n.notes,
+            hintText: context.l10n.notes,
             maxLines: 5,
             maxLength: 300,
           ),
@@ -67,7 +66,7 @@ class _VotePageState extends ConsumerState<VotePage> {
             children: [
               Flexible(
                 child: PrimaryTextButton(
-                  text: 'Cancelar'.hardcoded,
+                  text: context.l10n.cancel,
                   color: Colors.red,
                   onPressed: context.pop,
                 ),
@@ -76,7 +75,7 @@ class _VotePageState extends ConsumerState<VotePage> {
               Expanded(
                 flex: 2,
                 child: PrimaryButton(
-                  text: 'Confirmar'.hardcoded,
+                  text: context.l10n.confirm,
                   onPressed: () {
                     ref
                         .read(

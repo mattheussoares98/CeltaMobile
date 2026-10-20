@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +36,7 @@ class SaleRequestMarkedItems extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Código'.hardcoded,
+                          title: context.l10n.code,
                           subTitle: item.personalizedCode,
                         ),
                       ),
@@ -46,7 +46,7 @@ class SaleRequestMarkedItems extends ConsumerWidget {
                             provider.select((s) => s.contains(item.code)),
                           );
                           return BaseCheckBox(
-                            name: 'Selecionar pedido'.hardcoded,
+                            name: context.l10n.selectOrder,
                             enabled: isSelected,
                             onChanged: (_) =>
                                 ref.read(provider.notifier).select(item.code),
@@ -58,17 +58,17 @@ class SaleRequestMarkedItems extends ConsumerWidget {
                     ],
                   ),
                   TitleAndSubTitle(
-                    title: 'Cliente'.hardcoded,
+                    title: context.l10n.customer,
                     subTitle: item.customer,
                   ),
                   TitleAndSubTitle(
-                    title: 'Valor'.hardcoded,
+                    title: context.l10n.amount,
                     subTitle: item.totalLiquid,
                   ),
                   Align(
                     alignment: .centerRight,
                     child: PrimaryTextButton(
-                      text: 'Visualizar pedido'.hardcoded,
+                      text: context.l10n.viewOrder,
                       onPressed: () {
                         ref
                             .read(tryAccessModuleControllerProvider.notifier)

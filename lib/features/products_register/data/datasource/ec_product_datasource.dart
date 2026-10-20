@@ -1,7 +1,8 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/data/models/models.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 import 'datasource.dart';
 
@@ -25,7 +26,7 @@ class EcProductDatasource implements IEcProductDatasource {
     );
 
     if (response == null) {
-      throw Exception('O produto não foi encontrado'.hardcoded);
+      throw AppException.localized(CoreFailure.theProductWasNotFound);
     }
     return BsfProductModel.fromJson(response);
   }

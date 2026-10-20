@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +16,7 @@ class Shopping extends StatelessWidget {
   Widget build(BuildContext context) {
     if (widget.product.LastBuyEntrances == null ||
         widget.product.LastBuyEntrances!.isEmpty) {
-      return Center(
-        child: BaseText.titleMedium('Nenhuma compra foi encontrada'.hardcoded),
-      );
+      return Center(child: BaseText.titleMedium(context.l10n.noPurchasesFound));
     }
     return CustomScrollView(
       physics: const ClampingScrollPhysics(),
@@ -28,7 +25,7 @@ class Shopping extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: BaseText.headline(
-              'Últimas compras'.hardcoded,
+              context.l10n.latestPurchases,
               textAlign: TextAlign.center,
             ),
           ),
@@ -43,29 +40,29 @@ class Shopping extends StatelessWidget {
               children: [
                 const Divider(),
                 TitleAndSubTitle(
-                  title: 'Fornecedor'.hardcoded,
+                  title: context.l10n.supplier,
                   subTitle: buy.Supplier,
                 ),
                 TitleAndSubTitle(
-                  title: 'Data'.hardcoded,
+                  title: context.l10n.date,
                   subTitle: DateTime.parse(
                     buy.EntranceDate,
                   ).formatDate(DateFormatType.ddMMyyyyHHmm),
                 ),
                 TitleAndSubTitle(
-                  title: 'CFOP'.hardcoded,
+                  title: context.l10n.cfop,
                   subTitle: buy.FiscalCode,
                 ),
                 TitleAndSubTitle(
-                  title: 'Número'.hardcoded,
+                  title: context.l10n.number,
                   subTitle: buy.Number,
                 ),
                 TitleAndSubTitle(
-                  title: 'Embalagem'.hardcoded,
+                  title: context.l10n.packaging,
                   subTitle: buy.Packing,
                 ),
                 TitleAndSubTitle(
-                  title: 'Quantidade'.hardcoded,
+                  title: context.l10n.quantity,
                   subTitle: buy.Quantity.toString().toBrazilianNumber(),
                 ),
                 if (buy.Code != null)
@@ -73,7 +70,7 @@ class Shopping extends StatelessWidget {
                     builder: (_, ref, _) {
                       return Align(
                         child: PrimaryTextButton(
-                          text: 'Detalhes da compra'.hardcoded,
+                          text: context.l10n.purchaseDetails,
                           platformIcon: const PlatformIcon(
                             cupertinoIcon: CupertinoIcons.arrow_up_right,
                             materialIcon: Icons.arrow_outward,

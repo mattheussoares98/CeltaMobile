@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +53,7 @@ class NotBindedCovenants extends ConsumerWidget {
       itemBuilder: (_, index) {
         if (index == 0) {
           return BaseText.headline(
-            'Convênios sem vínculo'.hardcoded,
+            context.l10n.unlinkedAgreements,
             textAlign: TextAlign.center,
           );
         }
@@ -112,14 +111,14 @@ class _CovenantItem extends StatelessWidget {
                 children: [
                   BaseText.titleMedium(covenant.Nome_Convenio ?? ''),
                   TitleAndSubTitle(
-                    title: 'CNPJ '.hardcoded,
+                    title: context.l10n.cnpj2,
                     subTitle: covenant.Cnpj_Convenio,
                   ),
                   Row(
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Endereço '.hardcoded,
+                          title: context.l10n.address2,
                           subTitle:
                               "${covenant.Logradouro_Convenio}, ${covenant.NumEndereco_Convenio}",
                         ),
@@ -145,8 +144,8 @@ class _CovenantItem extends StatelessWidget {
                     child: BaseTextFormField(
                       controller: limitController,
                       focusNode: limitFocusNode,
-                      labelText: 'Limite R\$'.hardcoded,
-                      hintText: 'Limite R\$'.hardcoded,
+                      labelText: context.l10n.limitR,
+                      hintText: context.l10n.limitR,
                       maxLength: 12,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: const TextInputType.numberWithOptions(
@@ -167,7 +166,7 @@ class _CovenantItem extends StatelessWidget {
                   gapW16,
                   Flexible(
                     child: PrimaryButton(
-                      text: 'Vincular'.hardcoded,
+                      text: context.l10n.link2,
                       onPressed: () => bindCovenant(covenant),
                     ),
                   ),

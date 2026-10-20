@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +90,7 @@ class _LoadingOverlayController extends Notifier<void> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        BaseText.titleMedium('Aguarde'.hardcoded),
+                        BaseText.titleMedium(context.l10n.pleaseWait),
                         const AnimatedEllipsis(),
                       ],
                     ),

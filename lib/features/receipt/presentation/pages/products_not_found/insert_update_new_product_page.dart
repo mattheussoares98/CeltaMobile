@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,8 +63,8 @@ class InsertUpdateProductPage extends ConsumerWidget {
                   ),
                   MinLengthValidator(8, translations: context.l10n),
                 ]),
-                labelText: 'EAN'.hardcoded,
-                hintText: 'EAN'.hardcoded,
+                labelText: context.l10n.coreSearchProductTypePreferenceEan,
+                hintText: context.l10n.coreSearchProductTypePreferenceEan,
                 maxLength: 22,
               ),
               BaseTextFormField(
@@ -80,8 +79,8 @@ class InsertUpdateProductPage extends ConsumerWidget {
                     allowDecimal: true,
                   ),
                 ]),
-                labelText: 'Quantidade'.hardcoded,
-                hintText: 'Quantidade'.hardcoded,
+                labelText: context.l10n.quantity,
+                hintText: context.l10n.quantity,
                 maxLength: 10,
               ),
               BaseTextFormField(
@@ -89,12 +88,12 @@ class InsertUpdateProductPage extends ConsumerWidget {
                 enabled: !isLoading,
                 focusNode: observationsFocusNode,
                 onFieldSubmitted: (_) => onSubmit(),
-                labelText: 'Observações'.hardcoded,
-                hintText: 'Observações'.hardcoded,
+                labelText: context.l10n.notes,
+                hintText: context.l10n.notes,
               ),
               gapH32,
               PrimaryButton(
-                text: 'Salvar',
+                text: context.l10n.save,
                 onPressed: onSubmit,
                 isLoading: isLoading,
               ),

@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class ReplacementCostProperty extends StatelessWidget {
@@ -12,9 +12,9 @@ class ReplacementCostProperty extends StatelessWidget {
     final bool hasPermission = widget.product.ReplacementCost != -1;
 
     return TitleAndSubTitle(
-      title: hasPermission ? "Custo de reposição " : null,
+      title: hasPermission ? context.l10n.replacementCostPrefix : null,
       subTitle: hasPermission ? widget.product.ReplacementCost : null,
-      emptyMessage: hasPermission ? 'Sem custo de reposição'.hardcoded : null,
+      emptyMessage: hasPermission ? context.l10n.noReplacementCost : null,
       subTitleIsPrice: true,
     );
   }

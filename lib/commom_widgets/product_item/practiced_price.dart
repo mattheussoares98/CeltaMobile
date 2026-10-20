@@ -1,10 +1,10 @@
+import 'package:celta_inventario/features/adjust_sale_price/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,14 +55,14 @@ class PracticedPrice extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TitleAndSubTitle(
-                    title: saleType.name,
+                    title: context.l10n.saleTypeName(saleType),
                     subTitle: salePrice,
                     subTitleIsPrice: true,
                   ),
                   if (offerPrice > 0)
                     TitleAndSubTitle(
                       title: null,
-                      subTitle: 'Em oferta'.hardcoded,
+                      subTitle: context.l10n.onOffer,
                       subTitleStyle: context.theme.textTheme.bodyMedium
                           ?.copyWith(
                             color: Colors.red,
@@ -72,7 +72,7 @@ class PracticedPrice extends ConsumerWidget {
                   if (saleType == SaleType.whole &&
                       (product.MinimumWholeQuantity ?? 0) > 0)
                     TitleAndSubTitle(
-                      title: 'Qtd mín atacado'.hardcoded,
+                      title: context.l10n.minimumWholesaleQuantity,
                       subTitle: product.MinimumWholeQuantity.toString()
                           .toBrazilianNumber(2, true),
                       subTitleStyle: context.theme.textTheme.bodyMedium
@@ -125,7 +125,7 @@ class _FinishOffer extends ConsumerWidget {
           child: Consumer(
             builder: (_, ref, _) {
               return PrimaryTextButton(
-                text: 'Encerrar'.hardcoded,
+                text: context.l10n.endOfferAction,
                 color: Colors.red,
                 isLoading: ref.watch(
                   finishOfferControllerProvider(
@@ -143,13 +143,14 @@ class _FinishOffer extends ConsumerWidget {
                 onPressed: () async {
                   final confirmed = await showAlertDialog(
                     context: context,
-                    title: 'Encerrar oferta ${saleType.name.toUpperCase()}'
-                        .hardcoded,
-                    cancelActionText: 'Cancelar'.hardcoded,
-                    defaultActionText: 'Sim'.hardcoded,
-                    content:
-                        'Tem certeza que deseja encerrar a oferta ${saleType.name.toUpperCase()}?'
-                            .hardcoded,
+                    title: context.l10n.endNamedOffer(
+                      context.l10n.saleTypeName(saleType).toUpperCase(),
+                    ),
+                    cancelActionText: context.l10n.cancel,
+                    defaultActionText: context.l10n.yes,
+                    content: context.l10n.confirmEndNamedOffer(
+                      context.l10n.saleTypeName(saleType).toUpperCase(),
+                    ),
                   );
 
                   if (confirmed != true || !context.mounted) return;

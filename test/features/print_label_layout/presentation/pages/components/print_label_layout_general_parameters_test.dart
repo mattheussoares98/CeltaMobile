@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
@@ -440,6 +441,9 @@ Future<ProviderContainer> _pump(
     UncontrolledProviderScope(
       container: container,
       child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Scaffold(
           body: Consumer(
             builder: (context, ref, child) {

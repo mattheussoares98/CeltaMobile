@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/summaries/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -24,11 +24,11 @@ class PrintLabelLayoutSummariesPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       appBar: BaseAppBar(
-        title: 'Leiautes de etiquetas'.hardcoded,
+        title: context.l10n.labelLayouts,
         actions: [
           if (kDebugMode)
             IconButton(
-              tooltip: 'Problemas reportados'.hardcoded,
+              tooltip: context.l10n.reportedIssues,
               onPressed: () => context.goNamed(
                 Routes.reportedPrintLabelProblems.name,
                 pathParameters: {'enterpriseCode': enterpriseCode.toString()},
@@ -59,7 +59,7 @@ class PrintLabelLayoutSummariesPage extends ConsumerWidget {
         data: (summaries) {
           if (summaries.isEmpty) {
             return EmptyPlaceholderWidget(
-              message: 'Nenhum leiaute de etiqueta encontrado'.hardcoded,
+              message: context.l10n.noLabelLayoutsFound,
             );
           }
 

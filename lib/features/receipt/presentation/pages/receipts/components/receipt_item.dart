@@ -1,10 +1,10 @@
+import 'package:celta_inventario/features/receipt/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,24 +67,26 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TitleAndSubTitle(
-                  title: 'Recebimento'.hardcoded,
+                  title: context.l10n.coreModulesReceipt,
                   subTitle: widget.receipt.Numero_ProcRecebDoc.toString(),
                 ),
                 TitleAndSubTitle(
                   title: null,
-                  subTitle: widget.receipt.status.description,
+                  subTitle: context.l10n.receiptStatusName(
+                    widget.receipt.status,
+                  ),
                   subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                     color: widget.receipt.status.color,
                   ),
                 ),
                 if (widget.receipt.EmitterName != null)
                   TitleAndSubTitle(
-                    title: 'Emitente'.hardcoded,
+                    title: context.l10n.issuer,
                     subTitle: widget.receipt.EmitterName,
                   ),
                 if (widget.receipt.Grupo != null)
                   TitleAndSubTitle(
-                    title: 'Grupo'.hardcoded,
+                    title: context.l10n.group,
                     subTitle: widget.receipt.Grupo,
                     subTitleStyle: context.theme.textTheme.titleMedium
                         ?.copyWith(color: Colors.amber),
@@ -117,8 +119,8 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       maxLines: 13,
                       maxLength: 500,
                       controller: widget.observationsController,
-                      hintText: 'Nova observação'.hardcoded,
-                      labelText: 'Nova observação'.hardcoded,
+                      hintText: context.l10n.newNote,
+                      labelText: context.l10n.newNote,
                       validator: shouldInsertObservations
                           ? FormValidators.compose([
                               NonEmptyValidator(translations: context.l10n),
@@ -150,7 +152,7 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                 const Divider(height: Sizes.p12, thickness: 2),
                 if (shouldInsertObservations)
                   Text(
-                    'Observação pendente'.hardcoded,
+                    context.l10n.pendingNote,
                     style: context.theme.textTheme.titleMedium?.copyWith(
                       fontStyle: FontStyle.italic,
                       color: Colors.red,

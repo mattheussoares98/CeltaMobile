@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
@@ -24,7 +25,7 @@ class SynchronizerDetailsPage extends ConsumerWidget {
       usePadding: false,
       floatingActionButton:
           (errorKey.toLowerCase().contains(
-            'pedidos de vendas com erros durante a leitura',
+            context.l10n.salesOrdersReadErrors,
             //! this errorKey should always be visible and should have this floating to add new sale requests
           ))
           ? FloatingActionButton(

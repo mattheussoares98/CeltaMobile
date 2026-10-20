@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +34,7 @@ class ScheduleItems extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Empresa'.hardcoded,
+                          title: context.l10n.enterprise,
                           subTitle: item.enterpriseName,
                         ),
                       ),
@@ -45,7 +44,7 @@ class ScheduleItems extends ConsumerWidget {
                             provider.select((s) => s.contains(item.code)),
                           );
                           return BaseCheckBox(
-                            name: 'Selecionar erro'.hardcoded,
+                            name: context.l10n.selectError,
                             enabled: isSelected,
                             onChanged: (_) =>
                                 ref.read(provider.notifier).select(item.code),
@@ -57,7 +56,7 @@ class ScheduleItems extends ConsumerWidget {
                     ],
                   ),
                   TitleAndSubTitle(
-                    title: 'Data'.hardcoded,
+                    title: context.l10n.date,
                     subTitle: item.executionDate.formatDate(
                       DateFormatType.ddMMyyyyHHmm,
                     ),

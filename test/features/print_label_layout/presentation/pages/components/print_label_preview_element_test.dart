@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'dart:convert';
 
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
@@ -29,6 +30,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Align(
           child: PrintLabelPreviewElement(
             field: field,
@@ -63,6 +67,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Align(
           child: PrintLabelPreviewElement(
             field: field,
@@ -96,6 +103,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
@@ -143,6 +153,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
@@ -180,6 +193,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
@@ -210,6 +226,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.centimeter,
@@ -245,6 +264,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
@@ -284,6 +306,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
@@ -324,6 +349,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
@@ -381,6 +409,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,
@@ -422,6 +453,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelPreviewElement(
           field: field,
           coordinateUnit: BSFPrintLabelCoordinateUnit.printerDot,

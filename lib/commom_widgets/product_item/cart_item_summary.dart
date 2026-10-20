@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -55,14 +54,14 @@ class CartItemSummary extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleAndSubTitle(
-          title: 'Qtd no carrinho'.hardcoded,
+          title: context.l10n.quantityInCart,
           subTitle: cartQuantity.toString().toBrazilianNumber(3, true),
           titleStyle: titleStyle,
           subTitleStyle: subtitleStyle,
         ),
         if (changedPrice)
           TitleAndSubTitle(
-            title: 'Preço digitado'.hardcoded,
+            title: context.l10n.enteredPrice,
             subTitle: itemPrice.toString().toBrazilianNumber(
               priceDecimalHouses,
             ),
@@ -72,14 +71,14 @@ class CartItemSummary extends StatelessWidget {
           ),
         if ((totalDiscount ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Desconto'.hardcoded,
+            title: context.l10n.discount,
             subTitle: totalDiscount.toString().toBrazilianNumber(),
             subTitleIsPrice: true,
             titleStyle: titleStyle,
             subTitleStyle: subtitleStyle,
           ),
         TitleAndSubTitle(
-          title: 'Total'.hardcoded,
+          title: context.l10n.total,
           subTitle: totalPrice.toString().toBrazilianNumber(),
           subTitleIsPrice: true,
           titleStyle: titleStyle,

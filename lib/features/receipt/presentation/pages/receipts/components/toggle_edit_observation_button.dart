@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,8 +26,8 @@ class ToggleUpdateObservationButton extends ConsumerWidget {
 
     return PrimaryTextButton(
       text: observations == null || observations.isEmpty
-          ? 'Inserir obs'.hardcoded
-          : 'Alterar obs'.hardcoded,
+          ? context.l10n.addNote
+          : context.l10n.editNote,
       isLoading: ref.watch(
         receiptsStateControllerProvider(
           enterpriseCode,

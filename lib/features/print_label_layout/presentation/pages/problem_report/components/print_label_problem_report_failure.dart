@@ -1,7 +1,7 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,17 +34,19 @@ class PrintLabelProblemReportFailure extends ConsumerWidget {
             ),
             gapH8,
             BaseText.titleMedium(
-              'Não foi possível concluir o relatório.'.hardcoded,
+              context.l10n.unableToCompleteTheReport,
               textAlign: TextAlign.center,
             ),
             if (state.error != null)
-              BaseText.error('${state.error?.toString()}'),
+              BaseText.error(
+                parseErrorMessage(state.error, translations: context.l10n),
+              ),
             gapH16,
             PrimaryButton(
               key: const Key('retry-print-label-problem-report'),
               text: canRetrySubmission
-                  ? 'Tentar novamente'.hardcoded
-                  : 'Refazer capturas'.hardcoded,
+                  ? context.l10n.tryAgain
+                  : context.l10n.retakeCaptures,
               onPressed: canRetrySubmission
                   ? controller.retry
                   : controller.retakeImages,

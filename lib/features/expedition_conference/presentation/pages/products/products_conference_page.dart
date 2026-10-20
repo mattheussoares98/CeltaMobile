@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/expedition_conference/presentation/con
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/mixins/mixins.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,10 +66,10 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
           if (!context.mounted) return;
           showAlertDialog(
             context: context,
-            title: 'Conferência concluída!'.hardcoded,
-            content:
-                'A conferência do documento ${widget.documentNumber} foi concluída com sucesso'
-                    .hardcoded,
+            title: context.l10n.verificationCompleted,
+            content: context.l10n.documentConferenceCompleted(
+              widget.documentNumber.toString(),
+            ),
           );
         });
       });
@@ -99,12 +98,11 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
         if (scannedProducts.any((x) => x.Quantity > 0)) {
           bool? pressed = await showAlertDialog(
             context: context,
-            title: 'Atenção!'.hardcoded,
+            title: context.l10n.attention,
             content:
-                'Ao sair, as quantidades contadas serão perdidas. Deseja sair mesmo assim?'
-                    .hardcoded,
-            cancelActionText: 'Cancelar'.hardcoded,
-            defaultActionText: 'Sim'.hardcoded,
+                context.l10n.leavingWillDiscardTheCountedQuantitiesLeaveAnyway,
+            cancelActionText: context.l10n.cancel,
+            defaultActionText: context.l10n.yes,
           );
 
           if (pressed == true && context.mounted) {
@@ -118,8 +116,7 @@ class _ProductsConferencePageState extends ConsumerState<ProductsConferencePage>
       },
       appBar: BaseAppBar(
         title:
-            '${ref.watch(pageIndexStateControllerProvider) == 0 ? 'Pendentes' : 'Conferidos'} (${widget.documentNumber})'
-                .hardcoded,
+            '${ref.watch(pageIndexStateControllerProvider) == 0 ? context.l10n.pending : context.l10n.verified} (${widget.documentNumber})',
       ),
       body: Consumer(
         builder: (_, ref, _) {

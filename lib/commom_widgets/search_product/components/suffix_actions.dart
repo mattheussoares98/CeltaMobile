@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/search_product/components/compon
 import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/pages/pages.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,11 +46,10 @@ class _SuffixActionsState extends ConsumerState<SuffixActions>
     if (!mounted) return;
     final openSettings = await showAlertDialog(
       context: context,
-      title: 'Permissão da câmera'.hardcoded,
-      content: 'Permita o acesso à câmera nas configurações do dispositivo.'
-          .hardcoded,
-      cancelActionText: 'Cancelar'.hardcoded,
-      defaultActionText: 'Abrir configurações'.hardcoded,
+      title: context.l10n.cameraPermission,
+      content: context.l10n.allowCameraAccessInYourDeviceSettings,
+      cancelActionText: context.l10n.cancel,
+      defaultActionText: context.l10n.openSettings,
     );
     if (openSettings == true) await openAppSettings();
   }

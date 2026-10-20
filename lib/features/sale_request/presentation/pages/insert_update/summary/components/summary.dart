@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,7 @@ class Summary extends ConsumerWidget {
     return ExpansionTile(
       title: Center(
         child: Text(
-          'Sumário'.hardcoded,
+          context.l10n.summary,
           style: context.theme.textTheme.titleMedium,
         ),
       ),
@@ -33,40 +33,40 @@ class Summary extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TitleAndSubTitle(
-              title: 'Total bruto'.hardcoded,
+              title: context.l10n.grossTotal,
               subTitle: saleRequest.totalProductsBrut,
               subTitleIsPrice: true,
             ),
             ManageDiscountOrIncrement(
               valueTypes: [saleRequest.increment],
               allowUpdate: saleRequest.requestType?.allowUseIncrement == true,
-              title: 'Acréscimo no pedido'.hardcoded,
+              title: context.l10n.orderSurcharge,
               onUpdate: notifier.updateIncrement,
               onRemove: notifier.removeIncrement,
-              notAllowedMessage: 'Não permitido'.hardcoded,
+              notAllowedMessage: context.l10n.notAllowed,
               liquidValue: saleRequest.saleRequestIncrement,
             ),
             ManageDiscountOrIncrement(
               valueTypes:
                   saleRequest.discounts?.map((e) => e.discount).toList() ?? [],
               allowUpdate: saleRequest.requestType?.allowUseDiscount == true,
-              title: 'Desconto no pedido'.hardcoded,
+              title: context.l10n.orderDiscount,
               onUpdate: notifier.updateDiscount,
               onRemove: notifier.removeDiscount,
-              notAllowedMessage: 'Não permitido'.hardcoded,
+              notAllowedMessage: context.l10n.notAllowed,
               liquidValue: saleRequest.saleRequestDiscount,
             ),
             ManageDiscountOrIncrement(
               valueTypes: [saleRequest.deliveryTax?.deliveryTax],
               allowUpdate: saleRequest.requestType?.allowUseDeliveryTax == true,
-              title: 'Entrega do pedido'.hardcoded,
+              title: context.l10n.orderDelivery,
               onUpdate: notifier.updateDeliveryTax,
               onRemove: notifier.removeDeliveryTax,
-              notAllowedMessage: 'Não permitido'.hardcoded,
+              notAllowedMessage: context.l10n.notAllowed,
               liquidValue: saleRequest.saleRequestDeliveryTax,
             ),
             TitleAndSubTitle(
-              title: 'Total dos acréscimos'.hardcoded,
+              title: context.l10n.totalSurcharges,
               subTitle: saleRequest.totalIncrement,
               subTitleIsPrice: true,
               subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
@@ -74,7 +74,7 @@ class Summary extends ConsumerWidget {
               ),
             ),
             TitleAndSubTitle(
-              title: 'Total dos descontos'.hardcoded,
+              title: context.l10n.totalDiscounts2,
               subTitle: saleRequest.totalDiscount,
               subTitleIsPrice: true,
               subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
@@ -82,7 +82,7 @@ class Summary extends ConsumerWidget {
               ),
             ),
             TitleAndSubTitle(
-              title: 'Total das taxas de entrega'.hardcoded,
+              title: context.l10n.totalDeliveryFees,
               subTitle: saleRequest.totalDeliveryTax,
               subTitleIsPrice: true,
               subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
@@ -90,7 +90,7 @@ class Summary extends ConsumerWidget {
               ),
             ),
             TitleAndSubTitle(
-              title: 'Total líquido'.hardcoded,
+              title: context.l10n.netTotal,
               subTitle: saleRequest.currentSaleRequestLiquid,
               subTitleIsPrice: true,
             ),

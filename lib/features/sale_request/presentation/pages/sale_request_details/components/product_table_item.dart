@@ -1,6 +1,5 @@
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +25,7 @@ class ProductTableItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _Cell(
-                label: 'Qtd'.hardcoded,
+                label: context.l10n.quantityShort,
                 value: cartProduct.quantity.toString().toBrazilianNumber(
                   3,
                   true,
@@ -36,14 +35,14 @@ class ProductTableItem extends StatelessWidget {
                 subtitleStyle: valueStyle,
               ),
               _Cell(
-                label: 'Preço'.hardcoded,
+                label: context.l10n.price,
                 value: cartProduct.value.toString().toBrazilianNumber(),
                 labelStyle: labelStyle,
                 subtitleStyle: valueStyle,
               ),
               if (cartProduct.totalDiscountValue > 0)
                 _Cell(
-                  label: 'Desc'.hardcoded,
+                  label: context.l10n.disc,
                   value: cartProduct.totalDiscountValue
                       .toString()
                       .toBrazilianNumber(),
@@ -52,7 +51,7 @@ class ProductTableItem extends StatelessWidget {
                 ),
               if (cartProduct.totalIncrement > 0)
                 _Cell(
-                  label: 'Acrésc'.hardcoded,
+                  label: context.l10n.surch,
                   value: cartProduct.totalIncrement
                       .toString()
                       .toBrazilianNumber(),
@@ -61,7 +60,7 @@ class ProductTableItem extends StatelessWidget {
                 ),
               if (cartProduct.totalDeliveryTax > 0)
                 _Cell(
-                  label: 'Frete'.hardcoded,
+                  label: context.l10n.freight,
                   value: cartProduct.totalDeliveryTax
                       .toString()
                       .toBrazilianNumber(),
@@ -71,7 +70,7 @@ class ProductTableItem extends StatelessWidget {
                   ),
                 ),
               _Cell(
-                label: 'Total'.hardcoded,
+                label: context.l10n.total,
                 value: cartProduct.totalLiquid.toString().toBrazilianNumber(),
                 labelStyle: labelStyle,
                 subtitleStyle: valueStyle?.copyWith(
@@ -114,7 +113,7 @@ class _Cell extends StatelessWidget {
                   children: [
                     if (isPrice && constraints.maxWidth > 50)
                       TextSpan(
-                        text: 'R\$ '.hardcoded,
+                        text: 'R\$ ',
                         style: subtitleStyle?.copyWith(fontSize: 9),
                       ),
                     TextSpan(text: value, style: subtitleStyle),

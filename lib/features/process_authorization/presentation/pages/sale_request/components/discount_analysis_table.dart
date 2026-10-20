@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +23,7 @@ class DiscountAnalysisTable extends StatelessWidget {
       refreshProvider: refreshProvider,
       columns: [
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Produto'.hardcoded,
+          headerTitle: context.l10n.product,
           minWidth: 170.0,
           cellBuilder: (item) => BaseRichText(
             texts: [
@@ -43,7 +42,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           sortValueMapper: (item) => item.product.name,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Qtd'.hardcoded,
+          headerTitle: context.l10n.quantityShort,
           minWidth: 50.0,
           cellBuilder: (item) =>
               BaseText(item.quantity.toString().toBrazilianNumber(3, true)),
@@ -58,7 +57,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Bruto'.hardcoded,
+          headerTitle: context.l10n.gross,
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
@@ -73,7 +72,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Desc'.hardcoded,
+          headerTitle: context.l10n.disc,
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
@@ -88,7 +87,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Desc'.hardcoded,
+          headerTitle: context.l10n.disc,
           isPercentage: true,
           minWidth: 60.0,
           cellBuilder: (item) => BaseText(
@@ -97,7 +96,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           sortValueMapper: (item) => item.discountPercentage,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Líquido'.hardcoded,
+          headerTitle: context.l10n.net2,
           isMoney: true,
           minWidth: 80.0,
           cellBuilder: (item) =>
@@ -112,7 +111,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           ),
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Máx'.hardcoded,
+          headerTitle: context.l10n.max,
           isPercentage: true,
           minWidth: 55.0,
           cellBuilder: (item) => BaseText(
@@ -124,7 +123,7 @@ class DiscountAnalysisTable extends StatelessWidget {
           sortValueMapper: (item) => item.discountConcessionLimitPercentage,
         ),
         ScrollableTableColumnSpec<BSFSaleRequestDiscountItemEntity>(
-          headerTitle: 'Diferença'.hardcoded,
+          headerTitle: context.l10n.difference,
           isPercentage: true,
           minWidth: 80.0,
           cellBuilder: (item) => BaseText(

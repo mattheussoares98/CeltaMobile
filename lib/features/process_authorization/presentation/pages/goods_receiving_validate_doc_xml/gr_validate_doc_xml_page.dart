@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/goods_receiving_validate_doc_xml.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class _GRValidateDocXmlPageState extends ConsumerState<GRValidateDocXmlPage> {
       refreshProvider: provider,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Diferenças de XML'.hardcoded,
+        title: context.l10n.xmlDifferences,
         actions: [OpenVotePageButton(processCode: widget.processCode)],
       ),
       bottomNavigationBar: Consumer(
@@ -99,7 +98,7 @@ class _GRValidateDocXmlPageState extends ConsumerState<GRValidateDocXmlPage> {
                   cupertinoIcon: CupertinoIcons.doc,
                   materialIcon: Icons.list,
                 ),
-                label: 'Não julgados'.hardcoded,
+                label: context.l10n.notReviewed,
                 badgeLabel: notJudgedQuantity.toString(),
               ),
               BaseBottomNavigationBarItem(
@@ -107,7 +106,7 @@ class _GRValidateDocXmlPageState extends ConsumerState<GRValidateDocXmlPage> {
                   cupertinoIcon: CupertinoIcons.doc_checkmark,
                   materialIcon: Icons.check_box,
                 ),
-                label: 'Julgados'.hardcoded,
+                label: context.l10n.reviewed,
                 badgeLabel: judgedQuantity.toString(),
               ),
               if (productsWithtoutRegister.isNotEmpty)
@@ -117,7 +116,7 @@ class _GRValidateDocXmlPageState extends ConsumerState<GRValidateDocXmlPage> {
                     materialIcon: Icons.question_mark_rounded,
                   ),
                   badgeLabel: productsWithtoutRegister.length.toString(),
-                  label: 'Sem cadastro'.hardcoded,
+                  label: context.l10n.notRegistered,
                 ),
             ],
             currentIndex: currentIndex,

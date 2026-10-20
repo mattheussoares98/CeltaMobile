@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -161,7 +160,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                           }),
                         TitleAndSubTitle(
                           title: showLiquidValue
-                              ? 'Valor líquido'.hardcoded
+                              ? context.l10n.netAmount
                               : widget.title,
                           subTitle: showLiquidValue ? widget.liquidValue : null,
                           subTitleIsPrice: showLiquidValue,
@@ -223,8 +222,9 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                       child: BaseTextFormField(
                         controller: _valueController,
                         focusNode: _focusNode,
-                        labelText:
-                            'Valor ${_selectedType?.symbol ?? ''}'.hardcoded,
+                        labelText: context.l10n.valueWithSymbol(
+                          _selectedType?.symbol ?? '',
+                        ),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                         ),
@@ -248,7 +248,7 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                           });
                         },
                         selectedItem: _selectedType,
-                        label: 'Tipo'.hardcoded,
+                        label: context.l10n.type,
                         isSimple: true,
                         dropdownHeight: 48,
                         items: [

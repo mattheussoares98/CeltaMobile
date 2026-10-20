@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/features/products_register/domain/entities/entities.dart';
 import 'package:celta_inventario/features/products_register/presentation/controllers/product_detail_controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,7 +40,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Detalhes do produto'.hardcoded,
+        title: context.l10n.productDetails2,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Consumer(
@@ -55,7 +55,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: 'Pesquisar propriedade...'.hardcoded,
+                      hintText: context.l10n.searchProperty,
                       prefixIcon: const Icon(Icons.search),
                     ),
                     onChanged: (_) => setState(() {}),
@@ -65,7 +65,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   child: _SearchResultList(
                     results: ref
                         .read(provider.notifier)
-                        .search(_searchController.text),
+                        .search(
+                          _searchController.text,
+                          translations: context.l10n,
+                        ),
                   ),
                 ),
               ],
@@ -85,7 +88,7 @@ class _SearchResultList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (results.isEmpty) {
-      return EmptyPlaceholderWidget(message: 'Implement it here'.hardcoded);
+      return EmptyPlaceholderWidget(message: context.l10n.noResultsFound);
     }
 
     return ListView.separated(

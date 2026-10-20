@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/controllers/enterprises/enter
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -87,8 +86,8 @@ class _InsertSaleRequestToReadAgainState
             gapH8,
             BaseTextFormField(
               controller: saleRequestIdController,
-              hintText: 'ID do pedido'.hardcoded,
-              labelText: 'ID do pedido'.hardcoded,
+              hintText: context.l10n.orderId,
+              labelText: context.l10n.orderId,
               validator: FormValidators.compose([
                 NonEmptyValidator(translations: context.l10n),
               ]),
@@ -99,7 +98,7 @@ class _InsertSaleRequestToReadAgainState
               animation: saleRequestIdController,
               builder: (context, _) {
                 return PrimaryButton(
-                  text: 'Inserir para releitura'.hardcoded,
+                  text: context.l10n.addForRereading,
                   onPressed:
                       selectedEnterprise == null ||
                           selectedCommerceSite == null ||

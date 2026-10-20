@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:flutter/material.dart';
@@ -177,6 +178,9 @@ Future<void> _pumpPreview(
   BSFPrintLabelLayoutEntity layout,
 ) => tester.pumpWidget(
   MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    locale: const Locale('pt'),
     home: Scaffold(
       body: SizedBox(
         width: 300,

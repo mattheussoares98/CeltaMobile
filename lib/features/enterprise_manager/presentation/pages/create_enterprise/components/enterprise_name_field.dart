@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class EnterpriseNameField extends StatelessWidget {
@@ -27,8 +26,8 @@ class EnterpriseNameField extends StatelessWidget {
       suffixIcon: DeleteIcon(
         onPress: isLoading ? null : enterpriseNameController.clear,
       ),
-      hintText: "Nome da empresa".hardcoded,
-      labelText: "Nome da empresa".hardcoded,
+      hintText: context.l10n.companyName,
+      labelText: context.l10n.companyName,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
         NonEmptyValidator(translations: context.l10n),

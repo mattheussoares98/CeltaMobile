@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class TechnologyAndSolutions extends StatelessWidget {
@@ -12,7 +12,7 @@ class TechnologyAndSolutions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final widget = Text(
-      'Tecnologia & Soluções'.hardcoded,
+      context.l10n.technologySolutions,
       style: const TextStyle(
         fontSize: 50,
         fontWeight: FontWeight.w500,

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
@@ -18,7 +19,7 @@ class RequestsItems extends ConsumerWidget {
       tryAgain: null,
       data: (saleRequests) {
         if (saleRequests?.collection.isEmpty == true) {
-          return const Center(child: Text('Nenhum pedido encontrado'));
+          return Center(child: Text(context.l10n.noOrdersFound));
         }
 
         return Expanded(

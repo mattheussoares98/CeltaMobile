@@ -1,9 +1,9 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class _ManualExecutionPageState
                                     );
                                 final (isLoading, errorMessage) = ref.watch(
                                   provider.select(
-                                    (s) => (s.isLoading, s.error?.toString()),
+                                    (s) => (s.isLoading, s.error),
                                   ),
                                 );
 
@@ -108,7 +108,7 @@ class _ManualExecutionPageState
                                           isLoading: ref.watch(
                                             provider.select((s) => s.isLoading),
                                           ),
-                                          text: 'Executar'.hardcoded,
+                                          text: context.l10n.run,
                                           onPressed: ref
                                               .read(provider.notifier)
                                               .execute,
@@ -116,7 +116,12 @@ class _ManualExecutionPageState
                                       ],
                                     ),
                                     if (errorMessage != null)
-                                      BaseText.error(errorMessage),
+                                      BaseText.error(
+                                        parseErrorMessage(
+                                          errorMessage,
+                                          translations: context.l10n,
+                                        ),
+                                      ),
                                   ],
                                 );
                               },

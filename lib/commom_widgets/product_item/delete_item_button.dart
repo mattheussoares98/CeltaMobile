@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +17,9 @@ class DeleteItemButton extends StatelessWidget {
                 FocusManager.instance.primaryFocus?.unfocus();
                 final result = await showAlertDialog(
                   context: context,
-                  title: 'Remover item?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Remover'.hardcoded,
+                  title: context.l10n.removeItem,
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.remove,
                 );
                 if (result == true && context.mounted) {
                   onDelete?.call();

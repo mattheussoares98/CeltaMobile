@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/phone/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,7 +46,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
         false) {
       if (!mounted) return;
       showToastMessage(
-        'Esse telefone já foi adicionado'.hardcoded,
+        context.l10n.thisPhoneNumberHasAlreadyBeenAdded,
         type: ToastType.error,
       );
       return;
@@ -99,7 +99,7 @@ class _PhonePageState extends ConsumerState<PhonePage> {
                 ),
                 gapH32,
                 PrimaryButton(
-                  text: 'Adicionar telefone'.hardcoded,
+                  text: context.l10n.addPhoneNumber,
                   onPressed: addPhone,
                 ),
               ],

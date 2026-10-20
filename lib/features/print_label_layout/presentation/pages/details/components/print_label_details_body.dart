@@ -19,10 +19,8 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
         gapSliverH8,
         SliverToBoxAdapter(
           child: ExpansionTile(
-            title: BaseText.title('Configurações'.hardcoded),
-            subtitle: BaseText.caption(
-              'Impressora, formulário e etiqueta'.hardcoded,
-            ),
+            title: BaseText.title(context.l10n.settings),
+            subtitle: BaseText.caption(context.l10n.printerFormAndLabel),
             tilePadding: const .symmetric(horizontal: Sizes.p8),
             children: [
               Wrap(
@@ -39,7 +37,7 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
             children: [
               Expanded(
                 child: BaseText.title(
-                  'Campos (${layout.fields.length})'.hardcoded,
+                  context.l10n.layoutFieldsCount(layout.fields.length),
                 ),
               ),
               Flexible(
@@ -51,7 +49,7 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
         gapSliverH8,
         if (layout.fields.isEmpty)
           SliverToBoxAdapter(
-            child: BaseText.caption('Nenhum campo configurado'.hardcoded),
+            child: BaseText.caption(context.l10n.noFieldsConfigured),
           )
         else
           ResponsiveListFlow(
@@ -83,8 +81,8 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
                         onPressed: () =>
                             controller.toggleFieldVisibility(index),
                         tooltip: field.isVisible
-                            ? 'Ocultar do preview'.hardcoded
-                            : 'Exibir no preview'.hardcoded,
+                            ? context.l10n.hideFromPreview
+                            : context.l10n.showInPreview,
                         icon: PlatformIcon(
                           cupertinoIcon: field.isVisible
                               ? CupertinoIcons.eye
@@ -100,9 +98,9 @@ class _PrintLabelDetailsBody extends ConsumerWidget {
                           FocusManager.instance.primaryFocus?.unfocus();
                           final confirmed = await showAlertDialog(
                             context: context,
-                            title: 'Remover item?'.hardcoded,
-                            cancelActionText: 'Cancelar'.hardcoded,
-                            defaultActionText: 'Remover'.hardcoded,
+                            title: context.l10n.removeItem,
+                            cancelActionText: context.l10n.cancel,
+                            defaultActionText: context.l10n.remove,
                           );
 
                           if (confirmed != true || !context.mounted) return;

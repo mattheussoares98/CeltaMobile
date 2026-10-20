@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 
 class ReducedNameField extends StatelessWidget {
@@ -19,8 +19,8 @@ class ReducedNameField extends StatelessWidget {
     return BaseTextFormField(
       controller: reducedNameController,
       maxLength: 30,
-      hintText: 'Nome reduzido'.hardcoded,
-      labelText: 'Nome reduzido'.hardcoded,
+      hintText: context.l10n.shortName2,
+      labelText: context.l10n.shortName2,
       focusNode: reducedNameFocusNode,
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();

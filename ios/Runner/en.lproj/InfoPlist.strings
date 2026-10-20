@@ -1,0 +1,6 @@
+"NSCameraUsageDescription" = "Allow camera access to scan barcodes";
+"NSLocalNetworkUsageDescription" = "Allow local network access to print sales orders";
+"NSPhotoLibraryUsageDescription" = "Allow access to your photo library";
+"NSLocationWhenInUseUsageDescription" = "One or more app components require this permission to work correctly.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "One or more app components require this permission to work correctly.";
+

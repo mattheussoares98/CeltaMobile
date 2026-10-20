@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/search_products/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,7 +52,7 @@ class _SearchProductsPageState extends ConsumerState<SearchProductsPage> {
       isScrollable: false,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
-        title: 'Pesquisar produtos'.hardcoded,
+        title: context.l10n.coreModulesSearchProducts,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Column(

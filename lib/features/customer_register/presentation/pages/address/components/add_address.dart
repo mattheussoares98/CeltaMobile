@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +13,7 @@ class AddAddress extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Future<bool> addAddress(AddressEntity newAddress) async {
       final customer = await ref.read(customerStateControllerProvider.future);
+      if (!context.mounted) return false;
       final addresses = customer?.Addresses;
 
       if (addresses?.any(
@@ -20,7 +21,7 @@ class AddAddress extends ConsumerWidget {
           ) ??
           false) {
         showToastMessage(
-          'Esse endereço já foi inserido'.hardcoded,
+          context.l10n.thisAddressHasAlreadyBeenAdded,
           type: ToastType.error,
         );
 

@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +42,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.list_bullet,
             materialIcon: Icons.list,
           ),
-          label: 'Produtos'.hardcoded,
+          label: context.l10n.products,
         ),
         BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
@@ -50,7 +50,7 @@ class BottomNavBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.shopping_cart,
           ),
           badgeLabel: quantityLength > 0 ? quantityLength.toString() : null,
-          label: 'Lote'.hardcoded,
+          label: context.l10n.batch,
         ),
       ],
     );

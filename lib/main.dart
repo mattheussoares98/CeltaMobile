@@ -1,6 +1,5 @@
 import 'package:celta_inventario/app.dart';
 import 'package:celta_inventario/exceptions/error_logger.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +62,9 @@ void registerErrorHandlers(ErrorLogger errorLogger) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text('An error occurred'.hardcoded),
+        title: Builder(
+          builder: (context) => Text(context.l10n.anErrorOccurred),
+        ),
       ),
       body: Center(child: Text(details.toString())),
     );

@@ -1,9 +1,9 @@
+import 'package:celta_inventario/features/process_authorization/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/models/models.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -23,7 +23,9 @@ class ProcessesItems extends ConsumerWidget {
       final destination = ProcessAuthorizationDestination.fromJudgment(process);
       if (destination == null) {
         showToastMessage(
-          'O processo de autorização de tipo "${type?.label}" ainda não foi implementado para ser julgado através do aplicativo',
+          context.l10n.unsupportedAuthorizationType(
+            type == null ? '' : context.l10n.authorizationProcessType(type),
+          ),
           type: ToastType.error,
         );
         return;
@@ -51,10 +53,10 @@ class ProcessesItems extends ConsumerWidget {
                 BaseRichText(
                   textAlign: .center,
                   texts: [
-                    BaseText.title(
-                      'Não foram encontrados processos com o status '.hardcoded,
+                    BaseText.title(context.l10n.noProcessesFoundWithStatus),
+                    BaseText.error(
+                      '${context.l10n.authorizationStatus(status).toLowerCase()} ',
                     ),
-                    BaseText.error('${status.label.toLowerCase()} '),
                   ],
                 ),
               ],
@@ -103,9 +105,14 @@ class ProcessesItems extends ConsumerWidget {
               firstProcess,
             );
             final title = destination?.saleRequestCode != null
-                ? 'Pedido de venda ${destination?.saleRequestNumber ?? destination?.saleRequestCode}'
-                      .hardcoded
-                : type?.label;
+                ? context.l10n.salesOrderWithCode(
+                    (destination?.saleRequestNumber ??
+                            destination?.saleRequestCode)
+                        .toString(),
+                  )
+                : type == null
+                ? null
+                : context.l10n.authorizationProcessType(type);
             return Padding(
               padding: const EdgeInsets.only(bottom: Sizes.p8),
               child: ExpansionTile(
@@ -135,19 +142,19 @@ class ProcessesItems extends ConsumerWidget {
                                 ),
                                 if (process.dateTimeOfCreation != null)
                                   TitleAndSubTitle(
-                                    title: 'Data'.hardcoded,
+                                    title: context.l10n.date,
                                     subTitle: process.dateTimeOfCreation!
                                         .formatDate(
                                           DateFormatType.ddMMyyyyHHmmss,
                                         ),
                                   ),
                                 TitleAndSubTitle(
-                                  title: 'Processo iniciado por'.hardcoded,
+                                  title: context.l10n.processStartedBy,
                                   subTitle: process.user?.identification,
                                 ),
                                 if (process.authorizators?.isNotEmpty ?? false)
                                   TitleAndSubTitle(
-                                    title: 'Autorizadores'.hardcoded,
+                                    title: context.l10n.authorizers,
                                     subTitle: process.authorizators
                                         ?.map((e) => e.identification)
                                         .join('; '),
@@ -155,7 +162,7 @@ class ProcessesItems extends ConsumerWidget {
                                 if (process.observationsVotes?.isNotEmpty ??
                                     false)
                                   TitleAndSubTitle(
-                                    title: 'Observações'.hardcoded,
+                                    title: context.l10n.notes,
                                     subTitle: process.observationsVotes,
                                   ),
                                 if (process.votes?.isNotEmpty ?? false) ...[
@@ -171,17 +178,17 @@ class ProcessesItems extends ConsumerWidget {
                                           const Divider(),
                                         if (index == 0)
                                           BaseText.titleMedium(
-                                            'Julgamentos'.hardcoded,
+                                            context.l10n.reviews,
                                             color: Colors.red,
                                           ),
                                         TitleAndSubTitle(
-                                          title: 'Usuário'.hardcoded,
+                                          title: context.l10n.username,
                                           subTitle: vote.user?.identification,
                                         ),
                                         if (vote.observations?.isNotEmpty ??
                                             false)
                                           TitleAndSubTitle(
-                                            title: 'Observações'.hardcoded,
+                                            title: context.l10n.notes,
                                             subTitle: vote.observations,
                                           ),
                                       ],

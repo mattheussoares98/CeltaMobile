@@ -1,14 +1,20 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'dart:convert';
 
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter_esc_pos_network/flutter_esc_pos_network.dart';
 
 class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
+  final AppLocalizations _l10n;
+
+  PrintBSFSaleRequestDatasource({AppLocalizations? translations})
+    : _l10n = translations ?? defaultLocalizations;
+
   CapabilityProfile? _cachedProfile;
 
   @override
@@ -27,10 +33,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     );
 
     if (res != PosPrintResult.success) {
-      throw Exception(
-        'Ocorreu um erro para conectar com a impressora\n\n"${res.msg}"\n\nConfirme se o IP da impressora está correto, se ela está com bobina e se ela está ligada. Caso não resolva, reinicie ela e tente novamente'
-            .hardcoded,
-      );
+      throw Exception(_l10n.printerConnectionFailure(res.msg));
     }
 
     try {
@@ -44,14 +47,16 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
       await printer.printTicket(bytes);
     } catch (e) {
-      throw Exception('Ocorreu um erro ao imprimir o pedido\n\n$e'.hardcoded);
+      throw Exception(
+        _l10n.orderPrintingFailure(parseErrorMessage(e, translations: _l10n)),
+      );
     } finally {
       await printer.disconnect();
     }
   }
 
-  static String _formatDate(DateTime? date) {
-    if (date == null) return 'Nao informada'.hardcoded;
+  String _formatDate(DateTime? date) {
+    if (date == null) return _l10n.notProvided;
     final day = date.day.toString().padLeft(2, '0');
     final month = date.month.toString().padLeft(2, '0');
     final year = date.year.toString();
@@ -72,18 +77,15 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
     final lastFourNumbers = saleRequestNumber?.substring(8);
 
     bytes += generator.text(
-      "PEDIDO DE VENDA $lastFourNumbers".hardcoded,
+      _l10n.printedSalesOrder(lastFourNumbers ?? ''),
       styles: const PosStyles(align: PosAlign.center),
     );
 
     bytes += generator.text(
-      "Impresso em ${DateTime.now().formatDate()}"
-          .hardcoded,
+      _l10n.printedAt(DateTime.now().formatDate()),
       styles: const PosStyles(align: PosAlign.center),
     );
-    bytes += generator.text(
-      'Pedido: $saleRequestNumber'.hardcoded,
-    );
+    bytes += generator.text(_l10n.printedOrder(saleRequestNumber ?? ''));
 
     // Request type
     final requestTypeName = saleRequest.requestType?.name;
@@ -92,23 +94,19 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       (final c?, final n?) => '$c - $n',
       (final c?, null) => c,
       (null, final n?) => n,
-      (null, null) => 'Nao informado'.hardcoded,
+      (null, null) => _l10n.notProvided2,
     };
-    bytes += generator.text(
-      'Modelo de Pedido: $requestTypeStr'.hardcoded,
-    );
+    bytes += generator.text(_l10n.printedOrderTemplate(requestTypeStr));
 
     // Date of emission
     bytes += generator.text(
-      'Data de Emissao: ${_formatDate(saleRequest.dateOfEmission)}'.hardcoded,
+      _l10n.printedIssueDate(_formatDate(saleRequest.dateOfEmission)),
     );
 
     bytes += generator.text(
-      'Cliente: ${saleRequest.customer?.name ?? "N/A"}'.hardcoded,
+      _l10n.printedCustomer(saleRequest.customer?.name ?? _l10n.notProvided2),
     );
-    bytes += generator.text(
-      'Usuario: $userName'.hardcoded,
-    );
+    bytes += generator.text(_l10n.printedUser(userName));
 
     // Sale-level increment
     final increment = saleRequest.increment;
@@ -117,9 +115,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       final incrementStr = increment.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
-      bytes += generator.text(
-        'Acrescimo: $incrementStr'.hardcoded,
-      );
+      bytes += generator.text(_l10n.printedSurcharge(incrementStr));
     }
 
     // Sale-level financial discount
@@ -129,23 +125,17 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       final discStr = financialDiscount.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
-      bytes += generator.text(
-        'Desconto Financeiro: $discStr'.hardcoded,
-      );
+      bytes += generator.text(_l10n.printedPaymentDiscount(discStr));
     }
 
     // Sale-level financial increment
     final financialIncrement = saleRequest.financialIncrement;
     if (financialIncrement?.value != null && financialIncrement!.value! > 0) {
-      final formatted = financialIncrement.value.toString().toBrazilianNumber(
-        
-      );
+      final formatted = financialIncrement.value.toString().toBrazilianNumber();
       final incStr = financialIncrement.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
-      bytes += generator.text(
-        'Acrescimo Financeiro: $incStr'.hardcoded,
-      );
+      bytes += generator.text(_l10n.printedPaymentSurcharge(incStr));
     }
 
     // Delivery tax
@@ -155,9 +145,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
       final freightStr = deliveryTax.type == PercentageOrValue.percentage
           ? '$formatted%'
           : 'R\$ $formatted';
-      bytes += generator.text(
-        'Frete: $freightStr'.hardcoded,
-      );
+      bytes += generator.text(_l10n.printedShipping(freightStr));
     }
 
     // Total Liquid
@@ -165,9 +153,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         ?.toStringAsFixed(2)
         .toBrazilianNumber();
     if (totalLiquidStr != null) {
-      bytes += generator.text(
-        'Total Liquido: R\$ $totalLiquidStr'.hardcoded,
-      );
+      bytes += generator.text(_l10n.printedNetTotal(totalLiquidStr));
     }
 
     bytes += generator.hr();
@@ -185,7 +171,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
       if (hasPayments) {
         bytes += generator.text(
-          'Formas de Pagamento'.hardcoded,
+          _l10n.paymentMethods,
           styles: const PosStyles(bold: true, align: PosAlign.center),
         );
 
@@ -204,22 +190,24 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
             final StringBuffer buffer = StringBuffer();
             buffer.write(name);
             buffer.write(' (R\$ $value)');
-            if (portions > 1) buffer.write(' em ${portions}x'.hardcoded);
+            if (portions > 1) {
+              buffer.write(_l10n.printedInstallments(portions.toString()));
+            }
 
-            bytes += generator.text(
-              buffer.toString().removeAccents(),
-            );
+            bytes += generator.text(buffer.toString().removeAccents());
 
             if (disc > 0) {
               bytes += generator.text(
-                "  (-) Desconto: R\$ ${disc.toString().toBrazilianNumber()}"
-                    .hardcoded,
+                _l10n.printedDiscountAmount(
+                  disc.toString().toBrazilianNumber(),
+                ),
               );
             }
             if (inc > 0) {
               bytes += generator.text(
-                "  (+) Acrescimo: R\$ ${inc.toString().toBrazilianNumber()}"
-                    .hardcoded,
+                _l10n.printedSurchargeAmount(
+                  inc.toString().toBrazilianNumber(),
+                ),
               );
             }
           }
@@ -286,28 +274,32 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
         if (productDiscount > 0) {
           bytes += generator.text(
-            "Desconto -${productDiscount.toString().toBrazilianNumber()}"
-                .hardcoded,
+            _l10n.printedItemDiscount(
+              productDiscount.toString().toBrazilianNumber(),
+            ),
             styles: const PosStyles(align: PosAlign.right),
           );
         }
         if (productIncrement > 0) {
           bytes += generator.text(
-            "Acrescimo +${productIncrement.toString().toBrazilianNumber()}"
-                .hardcoded,
+            _l10n.printedItemSurcharge(
+              productIncrement.toString().toBrazilianNumber(),
+            ),
             styles: const PosStyles(align: PosAlign.right),
           );
         }
         if (productFreight > 0) {
           bytes += generator.text(
-            "Frete +${productFreight.toString().toBrazilianNumber()}".hardcoded,
+            _l10n.printedItemShipping(
+              productFreight.toString().toBrazilianNumber(),
+            ),
             styles: const PosStyles(align: PosAlign.right),
           );
         }
         if (productIncrement > 0 || productDiscount > 0 || productFreight > 0) {
           bytes += generator.row([
             PosColumn(
-              textEncoded: latin1.encode('Total do item'.hardcoded),
+              textEncoded: latin1.encode(_l10n.itemTotal),
               width: 8,
               styles: const PosStyles(align: PosAlign.right),
             ),
@@ -334,10 +326,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
     if (totalDiscount > 0 || totalIncrement > 0 || totalFreight > 0) {
       bytes += generator.row([
-        PosColumn(
-          textEncoded: latin1.encode('Subtotal R\$'.hardcoded),
-          width: 6,
-        ),
+        PosColumn(textEncoded: latin1.encode(_l10n.subtotalR), width: 6),
         PosColumn(
           text: totalDiscount.toString().toBrazilianNumber(),
           width: 6,
@@ -345,10 +334,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         ),
       ]);
       bytes += generator.row([
-        PosColumn(
-          textEncoded: latin1.encode('Total descontos R\$'.hardcoded),
-          width: 6,
-        ),
+        PosColumn(textEncoded: latin1.encode(_l10n.totalDiscountsR), width: 6),
         PosColumn(
           text: totalDiscount.toStringAsFixed(2).toBrazilianNumber(),
           width: 6,
@@ -356,10 +342,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         ),
       ]);
       bytes += generator.row([
-        PosColumn(
-          textEncoded: latin1.encode('Total acrescimos R\$'.hardcoded),
-          width: 6,
-        ),
+        PosColumn(textEncoded: latin1.encode(_l10n.totalSurchargesR), width: 6),
         PosColumn(
           text: totalIncrement.toStringAsFixed(2).toBrazilianNumber(),
           width: 6,
@@ -367,10 +350,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
         ),
       ]);
       bytes += generator.row([
-        PosColumn(
-          textEncoded: latin1.encode('Total frete R\$'.hardcoded),
-          width: 6,
-        ),
+        PosColumn(textEncoded: latin1.encode(_l10n.totalShippingR), width: 6),
         PosColumn(
           text: totalFreight.toStringAsFixed(2).toBrazilianNumber(),
           width: 6,
@@ -381,7 +361,7 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
     bytes += generator.row([
       PosColumn(
-        textEncoded: latin1.encode('TOTAL R\$ '.hardcoded),
+        textEncoded: latin1.encode(_l10n.totalR),
         width: 6,
         styles: const PosStyles(bold: true, height: PosTextSize.size2),
       ),
@@ -405,21 +385,17 @@ class PrintBSFSaleRequestDatasource implements IPrintBSFSaleRequestDatasource {
 
     if (observations.isNotEmpty) {
       bytes += generator.text(
-        'Observacoes '.hardcoded,
+        _l10n.notes3,
         styles: const PosStyles(bold: true),
       );
-      bytes += generator.text(
-        observations.removeAccents(),
-      );
+      bytes += generator.text(observations.removeAccents());
     }
     if (instructions.isNotEmpty) {
       bytes += generator.text(
-        'Instrucoes '.hardcoded,
+        _l10n.instructions2,
         styles: const PosStyles(bold: true),
       );
-      bytes += generator.text(
-        instructions.removeAccents(),
-      );
+      bytes += generator.text(instructions.removeAccents());
     }
 
     bytes += generator.feed(2);

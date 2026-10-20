@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -16,13 +15,13 @@ class WholePriceAndMinQuantity extends StatelessWidget {
           children: [
             Flexible(
               child: TitleAndSubTitle(
-                title: 'Preço atacado',
+                title: context.l10n.wholesalePriceLabel,
                 subTitle: widget.product.WholePracticedPrice,
                 subTitleIsPrice: true,
               ),
             ),
             TitleAndSubTitle(
-              title: ' (mín'.hardcoded,
+              title: context.l10n.min,
               subTitle:
                   '${(widget.product.MinimumWholeQuantity ?? 0).toString().toBrazilianNumber(2, true)})',
               subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(

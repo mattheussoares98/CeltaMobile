@@ -1,50 +1,54 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 
 abstract final class PrintLabelLayoutSaveValidator {
-  static List<String> validate(BSFPrintLabelLayoutEntity layout) {
-    final errors = <String>[];
+  static List<String> validate(BSFPrintLabelLayoutEntity layout) =>
+      validateFailures(layout).map((failure) => failure.fallback).toList();
+
+  static List<CoreFailure> validateFailures(BSFPrintLabelLayoutEntity layout) {
+    final errors = <CoreFailure>[];
     final capabilities = layout.capabilities;
 
     if (layout.name.trim().isEmpty) {
-      errors.add('Nome: Este campo é de preenchimento obrigatório');
+      errors.add(CoreFailure.layoutNameRequired);
     }
     if (layout.labelPrinter == null) {
-      errors.add('Impressora: A impressora não foi informada');
+      errors.add(CoreFailure.layoutPrinterRequired);
     }
     if (layout.formWidth <= 0) {
-      errors.add('Largura do formulário: Informe um valor maior que zero');
+      errors.add(CoreFailure.layoutFormWidthInvalid);
     }
     if (capabilities.isFormHeightRequired && layout.formHeight <= 0) {
-      errors.add('Altura do formulário: Informe um valor maior que zero');
+      errors.add(CoreFailure.layoutFormHeightInvalid);
     }
     if (layout.quantityColumns <= 0) {
-      errors.add('Quantidade de colunas: Informe um valor maior que zero');
+      errors.add(CoreFailure.layoutColumnsInvalid);
     }
     if (layout.labelWidth <= 0) {
-      errors.add('Largura da etiqueta: Informe um valor maior que zero');
+      errors.add(CoreFailure.layoutWidthInvalid);
     }
     if (capabilities.isLabelHeightRequired && layout.labelHeight <= 0) {
-      errors.add('Altura da etiqueta: Informe um valor maior que zero');
+      errors.add(CoreFailure.layoutHeightInvalid);
     }
     if (layout.formTopMargin < 0 || layout.formLeftMargin < 0) {
-      errors.add('As margens do formulário não podem ser negativas');
+      errors.add(CoreFailure.layoutFormMarginsInvalid);
     }
     if (layout.labelRightMargin < 0 || layout.labelBottomMargin < 0) {
-      errors.add('As margens da etiqueta não podem ser negativas');
+      errors.add(CoreFailure.layoutLabelMarginsInvalid);
     }
 
     if (!capabilities.isGenericPrinter) {
       if (layout.temperature <= 0) {
-        errors.add('Temperatura de impressão: Selecione uma opção');
+        errors.add(CoreFailure.layoutTemperatureRequired);
       }
       if (layout.printSpeed <= 0) {
-        errors.add('Velocidade de impressão: Selecione uma opção');
+        errors.add(CoreFailure.layoutSpeedRequired);
       }
       if (layout.intervalPrintPackage <= 0) {
-        errors.add('Intervalo entre pacotes deve ser maior que zero');
+        errors.add(CoreFailure.layoutIntervalInvalid);
       }
       if (!layout.applyFormSizeConfiguration) {
-        errors.add('A configuração do tamanho do formulário deve ser aplicada');
+        errors.add(CoreFailure.layoutFormSizeRequired);
       }
     }
 
@@ -53,21 +57,19 @@ abstract final class PrintLabelLayoutSaveValidator {
         layout.layoutType == BSFPrintLabelLayoutType.customerCard;
     if (requiresAddress &&
         layout.addressType == BSFPrintLabelAddressType.notApplicable) {
-      errors.add('Tipo de endereço: Selecione uma opção');
+      errors.add(CoreFailure.layoutAddressRequired);
     } else if (!requiresAddress &&
         layout.addressType != BSFPrintLabelAddressType.notApplicable) {
-      errors.add('O tipo de endereço não se aplica ao tipo de leiaute');
+      errors.add(CoreFailure.layoutAddressInapplicable);
     }
 
     if (layout.fields.isEmpty) {
-      errors.add('Informe pelo menos um campo para o leiaute');
+      errors.add(CoreFailure.layoutFieldRequired);
     } else if (layout.fields.any(
       (field) =>
           field.field == null || !field.field!.appliesTo(layout.layoutType),
     )) {
-      errors.add(
-        'Existe pelo menos um campo que não se aplica ao tipo de leiaute informado',
-      );
+      errors.add(CoreFailure.layoutFieldInapplicable);
     }
 
     if (layout.quantityColumns > 0 && layout.formWidth > 0) {
@@ -75,7 +77,7 @@ abstract final class PrintLabelLayoutSaveValidator {
           (layout.labelWidth * layout.quantityColumns) +
           (layout.labelRightMargin * (layout.quantityColumns - 1));
       if (occupiedWidth > layout.formWidth) {
-        errors.add('As etiquetas não cabem na largura do formulário');
+        errors.add(CoreFailure.layoutLabelsExceedForm);
       }
     }
 

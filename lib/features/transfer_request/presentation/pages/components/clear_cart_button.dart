@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class ClearCartButton extends ConsumerWidget {
     final isDesktop = MediaQuery.sizeOf(context).width > Breakpoint.desktop;
 
     return PrimaryTextButton(
-      text: isDesktop ? 'Limpar carrinho'.hardcoded : '',
+      text: isDesktop ? context.l10n.clearCart : '',
       platformIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
         materialIcon: Icons.delete,
@@ -34,9 +33,9 @@ class ClearCartButton extends ConsumerWidget {
           : () async {
               final result = await showAlertDialog(
                 context: context,
-                title: 'Limpar carrinho?'.hardcoded,
-                defaultActionText: 'Limpar'.hardcoded,
-                cancelActionText: 'Cancelar'.hardcoded,
+                title: context.l10n.clearCart2,
+                defaultActionText: context.l10n.clear,
+                cancelActionText: context.l10n.cancel,
               );
               if (result == true && context.mounted) {
                 ref

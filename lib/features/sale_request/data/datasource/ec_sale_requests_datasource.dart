@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:convert';
 
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
@@ -5,15 +6,13 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 
 BSFSaleRequestModel _parseGetComplete(String response) {
   final decoded = json.decode(response) as List;
   if (decoded.isEmpty) {
-    throw AppException(
-      'Pedido de venda não encontrado. Consulte os pedidos novamente para confirmar se ele está disponível'
-          .hardcoded,
+    throw AppException.localized(
+      CoreFailure.salesOrderNotFoundSearchForOrdersAgainToCheck,
     );
   }
   return BSFSaleRequestModel.fromJson(decoded.first);

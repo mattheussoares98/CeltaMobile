@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -95,7 +95,7 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
             children: [
               Flexible(
                 child: BaseText.headline(
-                  'Pedidos de hoje'.hardcoded,
+                  context.l10n.todaySOrders,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -129,11 +129,9 @@ class _TodaySaleRequestsState extends State<_TodaySaleRequests> {
                           return SliverToBoxAdapter(
                             child: Column(
                               children: [
-                                BaseText.error(
-                                  'Nenhum pedido encontrado'.hardcoded,
-                                ),
+                                BaseText.error(context.l10n.noOrdersFound),
                                 PrimaryButton(
-                                  text: 'Pesquisar novamente'.hardcoded,
+                                  text: context.l10n.searchAgain,
                                   onPressed: widget.searchTodaySaleRequests,
                                 ),
                               ],

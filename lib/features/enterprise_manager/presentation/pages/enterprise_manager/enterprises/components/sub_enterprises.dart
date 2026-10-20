@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +32,8 @@ class SubEnterprises extends ConsumerWidget {
       } else {
         showAlertDialog(
           context: context,
-          title: 'Sem permissão'.hardcoded,
-          content:
-              'Somente administradores podem fazer essa alteração'.hardcoded,
+          title: context.l10n.noPermission,
+          content: context.l10n.onlyAdministratorsCanMakeThisChange,
         );
       }
     }

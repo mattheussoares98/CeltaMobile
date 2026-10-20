@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/filters/filters.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,7 +81,7 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
           controller: expansibleController,
           initiallyExpanded: true,
           title: Text(
-            'Filtros de busca'.hardcoded,
+            context.l10n.searchFilters,
             style: context.theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -124,15 +123,15 @@ class _SaleRequestFiltersState extends ConsumerState<SaleRequestFilters> {
                     BaseTextFormField(
                       controller: _codeController,
                       focusNode: _codFocusNode,
-                      labelText: 'Código Personalizado'.hardcoded,
-                      hintText: 'Digite o código...'.hardcoded,
+                      labelText: context.l10n.customCode2,
+                      hintText: context.l10n.enterTheCode,
                       onFieldSubmitted: (_) => _onSearch(),
                     ),
                     gapH20,
                     Consumer(
                       builder: (_, ref, child) {
                         return PrimaryButton(
-                          text: 'Pesquisar'.hardcoded,
+                          text: context.l10n.search,
                           onPressed: _onSearch,
                           isLoading: ref.watch(
                             saleRequestsStateControllerProvider(

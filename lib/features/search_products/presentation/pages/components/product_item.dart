@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/search_products/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +34,8 @@ class ProductItem extends ConsumerWidget {
 
               return PrimaryTextButton(
                 text: product.PendantPrintLabel!
-                    ? 'Desmarcar para impressão'.hardcoded
-                    : 'Marcar para impressão'.hardcoded,
+                    ? context.l10n.unmarkForPrinting
+                    : context.l10n.markForPrinting,
                 platformIcon: PlatformIcon(
                   cupertinoIcon: product.PendantPrintLabel!
                       ? CupertinoIcons.printer_fill
@@ -81,8 +80,9 @@ class ProductItem extends ConsumerWidget {
               return Padding(
                 padding: const EdgeInsets.only(bottom: Sizes.p8),
                 child: Text(
-                  'Erro ao atualizar impressão: ${parseErrorMessage(error, translations: context.l10n)}'
-                      .hardcoded,
+                  context.l10n.printingUpdateFailed(
+                    parseErrorMessage(error, translations: context.l10n),
+                  ),
                   textAlign: TextAlign.center,
                   style: context.theme.textTheme.titleSmall?.copyWith(
                     color: context.theme.colorScheme.error,

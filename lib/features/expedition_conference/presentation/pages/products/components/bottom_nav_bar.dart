@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +28,7 @@ class BottomNavBar extends ConsumerWidget {
       onTap: ref.read(pageIndexStateControllerProvider.notifier).updateIndex,
       items: [
         BaseBottomNavigationBarItem(
-          label: 'Pendentes'.hardcoded,
+          label: context.l10n.pending,
           badgeLabel: pendingCount.toString(),
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.exclamationmark_triangle,
@@ -36,7 +36,7 @@ class BottomNavBar extends ConsumerWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Conferidos'.hardcoded,
+          label: context.l10n.verified,
           badgeLabel: scannedCount.toString(),
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.checkmark_seal,

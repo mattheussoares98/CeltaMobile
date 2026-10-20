@@ -67,7 +67,7 @@ class Customer extends ConsumerWidget {
                   if (requestCustomer?.PersonType != null &&
                       !isInternalCustomer)
                     TitleAndSubTitle(
-                      title: 'Tipo'.hardcoded,
+                      title: context.l10n.type,
                       subTitle: requestCustomer?.PersonType == null
                           ? null
                           : context.l10n.personTypeName(
@@ -76,17 +76,17 @@ class Customer extends ConsumerWidget {
                     ),
                   if (cpfCnpj != null && !isInternalCustomer)
                     TitleAndSubTitle(
-                      title: 'CPF/CNPJ'.hardcoded,
+                      title: context.l10n.cpfCnpj,
                       subTitle: cpfCnpj,
                     ),
                   if (requestCustomer?.Emails?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'E-mails'.hardcoded,
+                      title: context.l10n.emails,
                       subTitle: requestCustomer?.Emails?.join(', '),
                     ),
                   if (requestCustomer?.Telephones?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Telefones'.hardcoded,
+                      title: context.l10n.phoneNumbers,
                       subTitle: requestCustomer?.Telephones
                           ?.map((e) => '(${e.AreaCode}) ${e.PhoneNumber}')
                           .join(', '),

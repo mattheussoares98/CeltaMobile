@@ -21,16 +21,15 @@ class _AppbarActions extends ConsumerWidget {
         if (showProblemReportAction)
           IconButton(
             key: const Key('report-print-label-problem'),
-            tooltip: 'Relatar problema'.hardcoded,
+            tooltip: context.l10n.reportIssue,
             onPressed: () {
               if (ref.read(provider.notifier).shouldConfirmPop) {
                 showAlertDialog(
                   context: context,
-                  title: 'Salve o leiaute'.hardcoded,
+                  title: context.l10n.saveTheLayout,
                   content:
-                      'Salve ou descarte as alterações antes de relatar um problema.'
-                          .hardcoded,
-                  defaultActionText: 'OK'.hardcoded,
+                      context.l10n.saveOrDiscardChangesBeforeReportingAnIssue,
+                  defaultActionText: context.l10n.ok,
                 );
                 return;
               }
@@ -54,17 +53,16 @@ class _AppbarActions extends ConsumerWidget {
 
             return IconButton(
               key: const Key('save-print-label-layout'),
-              tooltip: 'Salvar'.hardcoded,
+              tooltip: context.l10n.save,
               onPressed: isSaving
                   ? null
                   : () async {
                       final result = await showAlertDialog(
                         context: context,
-                        title: 'Salvar alterações'.hardcoded,
-                        content:
-                            'Deseja realmente salvar as alterações?'.hardcoded,
-                        defaultActionText: 'Sim'.hardcoded,
-                        cancelActionText: 'Não'.hardcoded,
+                        title: context.l10n.saveChanges,
+                        content: context.l10n.saveTheseChanges,
+                        defaultActionText: context.l10n.yes,
+                        cancelActionText: context.l10n.no,
                       );
 
                       if (result == true && context.mounted) {

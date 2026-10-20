@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:math';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
@@ -36,7 +37,7 @@ class CompleteDrawer extends ConsumerWidget {
                   tryAgain: () =>
                       ref.invalidate(appVersionStateControllerProvider),
                   data: (version) {
-                    return Text('Versão $version');
+                    return Text(context.l10n.appVersion(version));
                   },
                 );
               },

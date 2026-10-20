@@ -1,9 +1,9 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,8 +68,8 @@ class DefaultButton extends ConsumerWidget {
         if (filePath != null && context.mounted) {
           showAlertDialog(
             context: context,
-            title: 'Planilha baixada'.hardcoded,
-            content: 'Planilha baixada em "$filePath"'.hardcoded,
+            title: context.l10n.spreadsheetDownloaded,
+            content: context.l10n.spreadsheetDownloadedAt(filePath),
           );
         }
       }
@@ -102,11 +102,11 @@ class DefaultButton extends ConsumerWidget {
             textAlign: TextAlign.start,
             text: hasAttachment
                 ? (isXlsx
-                      ? 'Planilha baixada'.hardcoded
-                      : 'PDF baixado'.hardcoded)
+                      ? context.l10n.spreadsheetDownloaded
+                      : context.l10n.pdfDownloaded)
                 : (isXlsx
-                      ? 'Baixar planilha'.hardcoded
-                      : 'Baixar PDF'.hardcoded),
+                      ? context.l10n.downloadSpreadsheet
+                      : context.l10n.downloadPdf),
             isLoading: isLoading,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.cloud_download,
@@ -130,7 +130,7 @@ class DefaultButton extends ConsumerWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: Sizes.p8),
               child: Text(
-                error.toString(),
+                parseErrorMessage(error, translations: context.l10n),
                 style: context.theme.textTheme.bodySmall?.copyWith(
                   color: Colors.red,
                   fontStyle: FontStyle.italic,

@@ -1,3 +1,5 @@
+import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:developer' as dev;
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
@@ -9,7 +11,6 @@ import 'package:celta_inventario/core/presentation/controllers/user_session/user
 import 'package:celta_inventario/core/presentation/helpers/helpers.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
@@ -72,10 +73,8 @@ class TryAccessModuleController extends _$TryAccessModuleController {
               if (!context.mounted) return;
               showAlertDialog(
                 context: context,
-                title: 'Atualize o BS'.hardcoded,
-                content:
-                    'A versão do BS precisa ser atualizada para utilizar essa funcionalidade'
-                        .hardcoded,
+                title: context.l10n.updateBs,
+                content: context.l10n.updateBsToUseThisFeature,
               );
             }
           }
@@ -87,7 +86,7 @@ class TryAccessModuleController extends _$TryAccessModuleController {
             router.routerDelegate.currentConfiguration.last.route.name;
 
         if (currentRouteName == route.name) {
-          throw AppException('Você já está no módulo desejado');
+          throw AppException(context.l10n.alreadyInModule);
         }
 
         final enterpriseName = ref.read(
@@ -197,10 +196,10 @@ Future<bool> _showDisabledModuleMessage(
   bool continueFlow = false;
   await showAlertDialog(
     context: context,
-    title: 'Módulo desabilitado'.hardcoded,
-    content:
-        'O módulo ${module.description.toUpperCase()} está desabilitado para essa empresa...'
-            .hardcoded,
+    title: context.l10n.moduleDisabled,
+    content: context.l10n.moduleDisabledForCompany(
+      context.l10n.moduleName(module).toUpperCase(),
+    ),
     onLongpressTitle: () {
       continueFlow = true;
       Navigator.of(context).pop();
@@ -215,8 +214,9 @@ void _showUserWithoutPermissionMessage(
 ) {
   showAlertDialog(
     context: context,
-    title: 'Usuário sem permissão'.hardcoded,
-    content:
-        'Seu usuário não possui permissão para: ${resource.name}'.hardcoded,
+    title: context.l10n.userLacksPermission,
+    content: context.l10n.userMissingResource(
+      context.l10n.resourceName(resource),
+    ),
   );
 }

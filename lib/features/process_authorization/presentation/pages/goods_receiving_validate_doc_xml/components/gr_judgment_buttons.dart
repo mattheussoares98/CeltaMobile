@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,22 +33,20 @@ class GRJudgmentButtons extends ConsumerWidget {
     void judge(BsfGRProductJudgmentStatus judgmentStatus) async {
       final content = switch (judgmentStatus) {
         BsfGRProductJudgmentStatus.devolveAll =>
-          "Deseja devolver todas as quantidades dos produtos selecionados?"
-              .hardcoded,
+          context.l10n.returnAllQuantitiesOfTheSelectedProducts,
         BsfGRProductJudgmentStatus.devolveExcess =>
-          "Deseja devolver somente a quantidade excedente dos produtos selecionados?"
-              .hardcoded,
+          context.l10n.returnOnlyTheExcessQuantityOfTheSelectedProducts,
         BsfGRProductJudgmentStatus.accept =>
-          "Deseja aceitar as divergências dos produtos selecionados?".hardcoded,
+          context.l10n.acceptTheDiscrepanciesForTheSelectedProducts,
         BsfGRProductJudgmentStatus.withoutJudge =>
-          "Deseja anular os julgamentos dos produtos selecionados?".hardcoded,
+          context.l10n.voidTheReviewsOfTheSelectedProducts,
       };
       final confirmed = await showAlertDialog(
         context: context,
-        title: "Atenção".hardcoded,
+        title: context.l10n.attention2,
         content: content,
-        defaultActionText: 'Sim'.hardcoded,
-        cancelActionText: 'Cancelar'.hardcoded,
+        defaultActionText: context.l10n.yes,
+        cancelActionText: context.l10n.cancel,
       );
 
       if (confirmed != true || !context.mounted) return;
@@ -67,7 +65,7 @@ class GRJudgmentButtons extends ConsumerWidget {
       return Padding(
         padding: const EdgeInsets.all(Sizes.p4),
         child: PrimaryButton(
-          text: 'Anular julgamentos'.hardcoded,
+          text: context.l10n.voidReviews,
           onPressed: onPressed == null
               ? null
               : () => onPressed(BsfGRProductJudgmentStatus.withoutJudge),
@@ -82,7 +80,7 @@ class GRJudgmentButtons extends ConsumerWidget {
           Expanded(
             flex: 7,
             child: PrimaryButton(
-              text: 'Aceitar'.hardcoded,
+              text: context.l10n.accept,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.accept),
@@ -92,7 +90,7 @@ class GRJudgmentButtons extends ConsumerWidget {
           Expanded(
             flex: 8,
             child: PrimaryButton(
-              text: 'Devolver'.hardcoded,
+              text: context.l10n.returnAction,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.devolveAll),
@@ -102,7 +100,7 @@ class GRJudgmentButtons extends ConsumerWidget {
           Expanded(
             flex: 16,
             child: PrimaryButton(
-              text: 'Devolver excesso'.hardcoded,
+              text: context.l10n.returnExcess,
               onPressed: onPressed == null
                   ? null
                   : () => onPressed(BsfGRProductJudgmentStatus.devolveExcess),

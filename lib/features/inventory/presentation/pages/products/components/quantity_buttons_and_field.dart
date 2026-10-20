@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -45,7 +44,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                     flex: 4,
                     child: PrimaryButton(
                       text:
-                          '${'Subtrair'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
+                          '${context.l10n.subtract.toUpperCase()}${insertIndividually ? " 1" : ""}',
                       onPressed: () {
                         entryQuantity(true);
                       },
@@ -56,7 +55,7 @@ class QuantityButtonsAndField extends ConsumerWidget {
                     flex: 6,
                     child: PrimaryButton(
                       text:
-                          '${'Somar'.toUpperCase().hardcoded}${insertIndividually ? " 1" : ""}',
+                          '${context.l10n.add3.toUpperCase()}${insertIndividually ? " 1" : ""}',
                       onPressed: () {
                         entryQuantity(false);
                       },
@@ -71,17 +70,15 @@ class QuantityButtonsAndField extends ConsumerWidget {
             children: [
               Expanded(
                 child: PrimaryButton(
-                  text: 'Anular'.toUpperCase().hardcoded,
+                  text: context.l10n.voidAction.toUpperCase(),
                   backgroundColor: Colors.red,
                   onPressed: () async {
                     final pressed = await showAlertDialog(
                       context: context,
-                      title: 'Anular'.hardcoded,
-                      content:
-                          'Tem certeza que deseja anular a contagem desse produto?'
-                              .hardcoded,
-                      defaultActionText: 'Sim'.hardcoded,
-                      cancelActionText: 'Não'.hardcoded,
+                      title: context.l10n.voidAction,
+                      content: context.l10n.areYouSureYouWantToVoidThisProductS,
+                      defaultActionText: context.l10n.yes,
+                      cancelActionText: context.l10n.no,
                     );
 
                     if (pressed == true) {
@@ -118,8 +115,8 @@ class QuantityButtonsAndField extends ConsumerWidget {
                     child: BaseTextFormField(
                       focusNode: quantityFocusNode,
                       controller: quantityController,
-                      labelText: 'Quantidade'.hardcoded,
-                      hintText: 'Quantidade'.hardcoded,
+                      labelText: context.l10n.quantity,
+                      hintText: context.l10n.quantity,
                       onTap: () {
                         if (quantityFocusNode.hasFocus) return;
                         quantityController.selection = TextSelection(

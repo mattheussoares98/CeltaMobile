@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +31,7 @@ class IncrementAndDiscount extends ConsumerWidget {
             return ManageDiscountOrIncrement(
               valueTypes: [financialIncrement],
               allowUpdate: allowUpdate,
-              title: 'Acréscimo financeiro'.hardcoded,
+              title: context.l10n.paymentSurcharge,
               onUpdate: ref
                   .read(insertUpdateStateControllerProvider.notifier)
                   .updateFinancialIncrement,
@@ -39,8 +39,7 @@ class IncrementAndDiscount extends ConsumerWidget {
                   .read(insertUpdateStateControllerProvider.notifier)
                   .removeFinancialIncrement,
               notAllowedMessage:
-                  'Esse modelo de pedido não permite acréscimo financeiro.'
-                      .hardcoded,
+                  context.l10n.thisOrderTemplateDoesNotAllowPaymentSurcharges,
               liquidValue: financialIncrementValue,
             );
           },
@@ -61,7 +60,7 @@ class IncrementAndDiscount extends ConsumerWidget {
             return ManageDiscountOrIncrement(
               valueTypes: [financialDiscount],
               allowUpdate: allowUpdate,
-              title: 'Desconto financeiro'.hardcoded,
+              title: context.l10n.paymentDiscount,
               onUpdate: ref
                   .read(insertUpdateStateControllerProvider.notifier)
                   .updateFinancialDiscount,
@@ -69,8 +68,7 @@ class IncrementAndDiscount extends ConsumerWidget {
                   .read(insertUpdateStateControllerProvider.notifier)
                   .removeFinancialDiscount,
               notAllowedMessage:
-                  'Esse modelo de pedido não permite desconto financeiro.'
-                      .hardcoded,
+                  context.l10n.thisOrderTemplateDoesNotAllowPaymentDiscounts,
               liquidValue: financialDiscountValue,
             );
           },

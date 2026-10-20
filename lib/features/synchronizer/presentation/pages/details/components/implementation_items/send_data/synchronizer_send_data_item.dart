@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +33,7 @@ class SynchronizerSendDataItem extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: TitleAndSubTitle(
-                      title: 'Site'.hardcoded,
+                      title: context.l10n.website,
                       subTitle: item.commerceSite,
                     ),
                   ),
@@ -47,7 +46,7 @@ class SynchronizerSendDataItem extends ConsumerWidget {
                         ),
                       );
                       return BaseCheckBox(
-                        name: 'Selecionar'.hardcoded,
+                        name: context.l10n.select2,
                         enabled: isSelected,
                         onChanged: (_) => onTap(item.internalCode),
                         width: Sizes.p20,
@@ -58,17 +57,17 @@ class SynchronizerSendDataItem extends ConsumerWidget {
                 ],
               ),
               TitleAndSubTitle(
-                title: 'Descrição'.hardcoded,
+                title: context.l10n.description,
                 subTitle: item.description,
               ),
               if (item.siteCode.isNotEmpty)
                 TitleAndSubTitle(
-                  title: 'ID Site'.hardcoded,
+                  title: context.l10n.websiteId,
                   subTitle: item.siteCode,
                 ),
               if (item.sendDate != null)
                 TitleAndSubTitle(
-                  title: 'Data envio'.hardcoded,
+                  title: context.l10n.sentOn,
                   subTitle: item.sendDate?.formatDate(.ddMMyyyyHHmm),
                 ),
               if (item.error.isNotEmpty)

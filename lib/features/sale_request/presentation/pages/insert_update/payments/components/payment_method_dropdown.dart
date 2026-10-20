@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,16 +19,13 @@ class PaymentMethodDropdown extends ConsumerWidget {
         if (paymentFinalizations.isEmpty) {
           return Column(
             children: [
-              Text(
-                'Nenhuma forma de pagamento está disponível para este pedido.'
-                    .hardcoded,
-              ),
+              Text(context.l10n.noPaymentMethodsAreAvailableForThisOrder),
               gapH16,
               PrimaryButton(
                 onPressed: () => ref.invalidate(
                   filteredPaymentFinalizationsStateControllerProvider,
                 ),
-                text: 'Carregar novamente'.hardcoded,
+                text: context.l10n.reload,
               ),
             ],
           );
@@ -52,10 +49,10 @@ class PaymentMethodDropdown extends ConsumerWidget {
             return BaseDropDown<BSFPaymentFinalizationEntity>(
               selectedItem: selectedPayment,
               showLabelAtTopLeft: true,
-              label: 'Forma de pagamento'.hardcoded,
+              label: context.l10n.paymentMethod,
               validator: (_) {
                 if (selectedPayment == null) {
-                  return 'Selecione uma forma de pagamento'.hardcoded;
+                  return context.l10n.selectAPaymentMethod;
                 }
                 return null;
               },

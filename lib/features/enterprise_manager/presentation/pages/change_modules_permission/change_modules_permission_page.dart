@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/enterprise_manager/domain/entities/ent
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/change_modules_permission/components/components.dart';
 import 'package:celta_inventario/features/enterprise_manager/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,7 +98,7 @@ class _ChangeModulesPermissionPageState
       next.showToastOnSuccess(
         context,
         previous: previous,
-        message: 'Permissões alteradas com sucesso'.hardcoded,
+        message: context.l10n.permissionsChangedSuccessfully,
       );
       next.doOnSuccess(previous, () {
         ref.invalidate(enterprisePermissionsProvider);
@@ -113,8 +112,8 @@ class _ChangeModulesPermissionPageState
       isScrollable: false,
       appBar: BaseAppBar(
         title: isGlobalChange
-            ? 'Permissões globais'.hardcoded
-            : 'Permissões específicas'.hardcoded,
+            ? context.l10n.globalPermissions
+            : context.l10n.specificPermissions,
 
         actions: [
           if (enterpriseAsync.hasValue)
@@ -138,9 +137,7 @@ class _ChangeModulesPermissionPageState
             value: enterpriseAsync,
             data: (enterprise) {
               if (enterprise == null) {
-                return Center(
-                  child: BaseText('Empresa não encontrada.'.hardcoded),
-                );
+                return Center(child: BaseText(context.l10n.companyNotFound2));
               }
               final modulesToDisplay = _getModulesForScope(enterprise);
               final scopeName = getEnterpriseName(

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
@@ -54,6 +55,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('pt'),
           home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),
@@ -131,7 +135,12 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -200,6 +209,9 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('pt'),
           home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),

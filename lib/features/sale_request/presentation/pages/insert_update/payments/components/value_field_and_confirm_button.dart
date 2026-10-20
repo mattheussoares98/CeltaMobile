@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,7 +99,7 @@ class _ValueFieldAndConfirmButtonState
         updateMissingValue();
       } else {
         showToastMessage(
-          error ?? 'Erro ao adicionar pagamento'.hardcoded,
+          error ?? context.l10n.failedToAddPayment,
           type: ToastType.error,
         );
       }
@@ -123,7 +122,7 @@ class _ValueFieldAndConfirmButtonState
               return BaseTextFormField(
                 focusNode: valueFocusNode,
                 controller: valueController,
-                labelText: 'Valor'.hardcoded,
+                labelText: context.l10n.amount,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -150,10 +149,7 @@ class _ValueFieldAndConfirmButtonState
         ),
         gapW16,
         Expanded(
-          child: PrimaryButton(
-            onPressed: onSubmit,
-            text: 'ADICIONAR'.hardcoded,
-          ),
+          child: PrimaryButton(onPressed: onSubmit, text: context.l10n.add2),
         ),
       ],
     );

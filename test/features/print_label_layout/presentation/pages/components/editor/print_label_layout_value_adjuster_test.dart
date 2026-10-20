@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,9 @@ void main() {
     ValueChanged<num>? onValueChanged,
   }) {
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('pt'),
       home: Scaffold(
         body: Center(
           child: PrintLabelLayoutValueAdjuster(
@@ -145,6 +149,9 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: Column(
               children: [
@@ -183,38 +190,42 @@ void main() {
       expect(find.byType(TextField), findsOneWidget);
     });
 
-    testWidgets('clamps value between min and max and respects acceptDecimal: false', (
-      tester,
-    ) async {
-      num? updatedValue;
+    testWidgets(
+      'clamps value between min and max and respects acceptDecimal: false',
+      (tester) async {
+        num? updatedValue;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PrintLabelLayoutValueAdjuster(
-              label: 'Colunas',
-              value: '5',
-              currentValue: 5,
-              min: 1,
-              max: 99,
-              acceptDecimal: false,
-              onDecrease: () {},
-              onIncrease: () {},
-              onValueChanged: (val) => updatedValue = val,
+        await tester.pumpWidget(
+          MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('pt'),
+            home: Scaffold(
+              body: PrintLabelLayoutValueAdjuster(
+                label: 'Colunas',
+                value: '5',
+                currentValue: 5,
+                min: 1,
+                max: 99,
+                acceptDecimal: false,
+                onDecrease: () {},
+                onIncrease: () {},
+                onValueChanged: (val) => updatedValue = val,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.text('5'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('5'));
+        await tester.pumpAndSettle();
 
-      await tester.enterText(find.byType(TextField), '150');
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pumpAndSettle();
+        await tester.enterText(find.byType(TextField), '150');
+        await tester.testTextInput.receiveAction(TextInputAction.done);
+        await tester.pumpAndSettle();
 
-      expect(updatedValue, 99);
-      expect(find.byType(TextField), findsNothing);
-    });
+        expect(updatedValue, 99);
+        expect(find.byType(TextField), findsNothing);
+      },
+    );
   });
 }

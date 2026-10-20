@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/save_sale_request_controller.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +22,13 @@ class ProcessAndSaveButtons extends ConsumerWidget {
       if (errorMessage?.isNotEmpty == true && context.mounted) {
         final proceed = await showAlertDialog(
           context: context,
-          title: 'Atenção'.hardcoded,
+          title: context.l10n.attention2,
           content: errorMessage?.formatBreakLines(),
           defaultActionText: canSaveAndNeedProcessCart
-              ? 'Salvar'.hardcoded
-              : 'OK'.hardcoded,
+              ? context.l10n.save
+              : context.l10n.ok,
           cancelActionText: canSaveAndNeedProcessCart
-              ? 'Cancelar'.hardcoded
+              ? context.l10n.cancel
               : null,
         );
         if (proceed != true || !canSaveAndNeedProcessCart) {
@@ -44,13 +43,13 @@ class ProcessAndSaveButtons extends ConsumerWidget {
       if (failedMessage?.isNotEmpty == true && context.mounted) {
         showAlertDialog(
           context: context,
-          title: 'Atenção'.hardcoded,
+          title: context.l10n.attention2,
           content: failedMessage?.formatBreakLines(),
-          defaultActionText: 'OK'.hardcoded,
+          defaultActionText: context.l10n.ok,
         );
       } else {
         if (context.mounted) {
-          showToastMessage('O pedido foi salvo com sucesso'.hardcoded);
+          showToastMessage(context.l10n.theOrderWasSavedSuccessfully);
         }
       }
     }
@@ -75,7 +74,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
               Expanded(
                 flex: 6,
                 child: PrimaryButton(
-                  text: 'Calcular preços'.hardcoded,
+                  text: context.l10n.calculatePrices,
                   onPressed: needProcessingCart ? processCart : null,
                   iconAlignment: IconAlignment.end,
                   icon: const PlatformIcon(
@@ -93,7 +92,7 @@ class ProcessAndSaveButtons extends ConsumerWidget {
 
                     return PrimaryButton(
                       onPressed: hasChanges ? onSave : null,
-                      text: 'Salvar'.hardcoded,
+                      text: context.l10n.save,
                       iconAlignment: IconAlignment.end,
                       icon: const PlatformIcon(
                         cupertinoIcon: CupertinoIcons.check_mark,

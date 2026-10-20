@@ -1,3 +1,4 @@
+import 'package:celta_inventario/features/sale_request/presentation/localization/localization.dart';
 // lib/features/sale_request/presentation/pages/insert_update/insert_product/insert_product_page.dart
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
@@ -5,7 +6,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/insert_product/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -132,10 +132,12 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
               if (actions.isNotEmpty) {
                 final confirmed = await showAlertDialog(
                   context: context,
-                  title: 'Atenção!'.hardcoded,
-                  content: actions.map((e) => e.message).join('\n'),
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Continuar'.hardcoded,
+                  title: context.l10n.attention,
+                  content: actions
+                      .map((a) => context.l10n.sanitizationActionMessage(a))
+                      .join('\n'),
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.continueAction,
                 );
 
                 if (confirmed != true) {
@@ -143,10 +145,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
                 }
               }
 
-              notifier.updateItem(
-                widget.product,
-                updatedItem,
-              );
+              notifier.updateItem(widget.product, updatedItem);
 
               if (context.mounted) {
                 context.pop();
@@ -234,8 +233,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
               resizeToAvoidBottomInset: true,
               appBar: BaseAppBar(
                 title:
-                    widget.product.product?.name ??
-                    'Detalhe do Produto'.hardcoded,
+                    widget.product.product?.name ?? context.l10n.productDetails,
               ),
               body: ResponsiveCenter(
                 padding: const EdgeInsets.symmetric(horizontal: Sizes.p8),
@@ -342,7 +340,7 @@ class _InsertProductPageState extends ConsumerState<InsertProductPage> {
                     SliverToBoxAdapter(
                       child: ExcludeFocus(
                         child: PrimaryButton(
-                          text: 'CONFIRMAR'.hardcoded,
+                          text: context.l10n.confirm2,
                           onPressed: saveItem,
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -8,7 +9,6 @@ import 'package:celta_inventario/features/synchronizer/domain/entities/entities.
 import 'package:celta_inventario/features/synchronizer/domain/repositories/repositories.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'handle_selected_codes_controller.g.dart';
@@ -44,8 +44,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
             ecParams,
             codes,
           ),
-        _ => throw AppException(
-          'Tipo de detalhe para ler novamente não implementado'.hardcoded,
+        _ => throw AppException.localized(
+          CoreFailure.rereadingThisDetailTypeHasNotBeenImplemented,
         ),
       },
     );
@@ -68,8 +68,8 @@ class HandleSelectedCodesController extends _$HandleSelectedCodesController {
         ),
         SynchronizerErrorDetailType.saleRequestWithError =>
           repository.deleteSaleRequestsWithError(ecParams, codes),
-        _ => throw AppException(
-          'Tipo de detalhe para deletar não implementado'.hardcoded,
+        _ => throw AppException.localized(
+          CoreFailure.deletingThisDetailTypeHasNotBeenImplemented,
         ),
       },
     );

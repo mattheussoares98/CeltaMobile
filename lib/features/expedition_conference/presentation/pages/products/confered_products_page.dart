@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,9 +19,7 @@ class ConferedProductsPage extends ConsumerWidget {
     );
 
     if (scannedProducts == null || scannedProducts.isEmpty) {
-      return Center(
-        child: BaseText('Nenhum produto conferido até o momento'.hardcoded),
-      );
+      return Center(child: BaseText(context.l10n.noProductsVerifiedYet));
     }
 
     return CustomScrollView(

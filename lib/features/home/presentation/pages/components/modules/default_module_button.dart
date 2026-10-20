@@ -7,7 +7,6 @@ import 'package:celta_inventario/core/presentation/controllers/resource/resource
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/home/presentation/model/model.dart';
 import 'package:celta_inventario/features/home/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +46,10 @@ class DefaultModuleButton extends HookConsumerWidget {
           String title;
           if (route == Routes.saleRequestActionSelector) {
             actions = SaleRequestActions.get(context);
-            title = 'Pedido de vendas'.hardcoded;
+            title = context.l10n.coreModulesSaleRequest;
           } else {
             actions = BuyRequestActions.get(context);
-            title = 'Pedido de compras'.hardcoded;
+            title = context.l10n.coreModulesBuyRequest;
           }
 
           selectedActionRoute = await BaseActionSelector.show(
@@ -134,18 +133,18 @@ class DefaultModuleButton extends HookConsumerWidget {
                   ),
                 ),
                 if ((module == Modules.productsRegister))
-                  MessageBadge(message: 'Suspenso'.hardcoded),
+                  MessageBadge(message: context.l10n.suspended),
                 if (module == Modules.processAuthorization &&
                     _now.isBefore(DateTime(2026, 8, 13)))
-                  MessageBadge(message: 'Novo'.hardcoded),
+                  MessageBadge(message: context.l10n.newAction),
                 if (module == Modules.printLabel &&
                     _now.isBefore(DateTime(2026, 10, 09)))
-                  MessageBadge(message: 'Novo'.hardcoded),
+                  MessageBadge(message: context.l10n.newAction),
                 if (module == Modules.synchronizer)
-                  MessageBadge(message: 'Novo'.hardcoded),
+                  MessageBadge(message: context.l10n.newAction),
                 if (module == Modules.buyMovement &&
                     _now.isBefore(DateTime(2026, 9)))
-                  MessageBadge(message: 'Novo'.hardcoded),
+                  MessageBadge(message: context.l10n.newAction),
                 FavoriteIconButton(
                   module: module,
                   key: ValueKey('favorite_$module'),

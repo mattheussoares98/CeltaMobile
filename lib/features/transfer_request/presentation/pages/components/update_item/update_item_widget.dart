@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/update_item/update_item.dart';
@@ -79,8 +78,8 @@ class UpdateItemWidget extends StatelessWidget {
                       .addBrazilianCoin();
                   return PrimaryButton(
                     text: isCartPage
-                        ? 'Alterar $newValue'.hardcoded
-                        : 'Adicionar $newValue'.hardcoded,
+                        ? context.l10n.changeValue(newValue.toString())
+                        : context.l10n.addValue(newValue.toString()),
                     onPressed: update,
                   );
                 },

@@ -1,8 +1,9 @@
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,7 +35,7 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
           children: [
             BaseTextFormField(
               key: const Key('print-label-layout-name'),
-              labelText: 'Nome do leiaute'.hardcoded,
+              labelText: context.l10n.layoutName,
               controller: nameController,
               onChanged: (value) {
                 ref
@@ -52,14 +53,16 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                 padding: const .only(bottom: Sizes.p8),
                 child: BaseDropDown<BSFPrintLabelLayoutType>(
                   key: const Key('print-label-layout-type'),
-                  label: 'Tipo'.hardcoded,
+                  label: context.l10n.type,
                   showLabelAtTopLeft: true,
                   selectedItem: layout.layoutType,
                   items: BSFPrintLabelLayoutType.values
                       .map(
                         (type) => DropdownMenuItem(
                           value: type,
-                          child: BaseText(type.label.hardcoded),
+                          child: BaseText(
+                            context.l10n.labelLayoutTypeName(type),
+                          ),
                         ),
                       )
                       .toList(),
@@ -69,12 +72,12 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                     if (hasIncompatibleFields) {
                       final confirmed = await showAlertDialog(
                         context: context,
-                        title: 'Atenção!'.hardcoded,
-                        cancelActionText: 'Cancelar'.hardcoded,
-                        defaultActionText: 'Continuar'.hardcoded,
-                        content:
-                            'Os campos incompatíveis com o novo tipo serão removidos.'
-                                .hardcoded,
+                        title: context.l10n.attention,
+                        cancelActionText: context.l10n.cancel,
+                        defaultActionText: context.l10n.continueAction,
+                        content: context
+                            .l10n
+                            .fieldsIncompatibleWithTheNewTypeWillBeRemoved,
                       );
                       if (confirmed != true || !context.mounted) return;
                     }
@@ -87,12 +90,12 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
               )
             else
               TitleAndSubTitle(
-                title: 'Tipo'.hardcoded,
-                subTitle: layout.layoutType.label.hardcoded,
+                title: context.l10n.type,
+                subTitle: context.l10n.labelLayoutTypeName(layout.layoutType),
               ),
             if (layout.capabilities.showsAddressType) ...[
               gapH4,
-              BaseText.caption('Tipo de endereço'.hardcoded),
+              BaseText.caption(context.l10n.addressType),
               gapH4,
               BaseSegmentedButtons<BSFPrintLabelAddressType>(
                 key: const Key('print-label-layout-address-type'),
@@ -102,7 +105,7 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                     )
                     .toList(),
                 selectedValue: layout.addressType,
-                itemLabelBuilder: _addressTypeLabel,
+                itemLabelBuilder: (type) => _addressTypeLabel(context, type),
                 onChanged: layout.capabilities.canEditAddressType
                     ? (value) {
                         ref
@@ -121,7 +124,7 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
                 padding: const EdgeInsets.only(top: Sizes.p8),
                 child: BaseDropDown<BSFPrintLabelPrinterEntity>(
                   key: const Key('print-label-layout-printer'),
-                  label: 'Impressora'.hardcoded,
+                  label: context.l10n.printer,
                   showLabelAtTopLeft: true,
                   selectedItem:
                       controller.printers.contains(layout.labelPrinter)
@@ -140,9 +143,9 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
               )
             else
               TitleAndSubTitle(
-                title: 'Impressora'.hardcoded,
+                title: context.l10n.printer,
                 subTitle: layout.labelPrinter?.description,
-                emptyMessage: 'Não informada'.hardcoded,
+                emptyMessage: context.l10n.notProvided3,
               ),
           ],
         ),
@@ -150,10 +153,13 @@ class PrintLabelLayoutGeneralInformation extends HookConsumerWidget {
     );
   }
 
-  String _addressTypeLabel(BSFPrintLabelAddressType type) => switch (type) {
-    BSFPrintLabelAddressType.principal => 'Principal'.hardcoded,
-    BSFPrintLabelAddressType.collection => 'Cobrança'.hardcoded,
-    BSFPrintLabelAddressType.delivery => 'Entrega'.hardcoded,
-    BSFPrintLabelAddressType.notApplicable => 'Não se aplica'.hardcoded,
+  String _addressTypeLabel(
+    BuildContext context,
+    BSFPrintLabelAddressType type,
+  ) => switch (type) {
+    BSFPrintLabelAddressType.principal => context.l10n.main,
+    BSFPrintLabelAddressType.collection => context.l10n.billing,
+    BSFPrintLabelAddressType.delivery => context.l10n.delivery,
+    BSFPrintLabelAddressType.notApplicable => context.l10n.notApplicable,
   };
 }

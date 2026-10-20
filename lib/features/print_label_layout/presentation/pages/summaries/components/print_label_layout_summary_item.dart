@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -42,16 +41,16 @@ class PrintLabelLayoutSummaryItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TitleAndSubTitle(
-                title: 'Nome'.hardcoded,
+                title: context.l10n.name,
                 subTitle: summary.name,
                 subTitleStyle: context.theme.textTheme.titleMedium,
               ),
               TitleAndSubTitle(
-                title: 'Impressora'.hardcoded,
+                title: context.l10n.printer,
                 subTitle: _printerDescription,
               ),
               TitleAndSubTitle(
-                title: 'Tipo'.hardcoded,
+                title: context.l10n.type,
                 subTitle: summary.layoutTypeDescription,
               ),
             ],

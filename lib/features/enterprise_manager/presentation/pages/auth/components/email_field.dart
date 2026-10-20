@@ -1,7 +1,6 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -22,8 +21,8 @@ class EmailField extends StatelessWidget {
       enabled: !isLoading,
       controller: emailController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      labelText: 'E-mail'.hardcoded,
-      hintText: 'E-mail'.hardcoded,
+      labelText: context.l10n.email,
+      hintText: context.l10n.email,
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();
       },

@@ -1,3 +1,5 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
@@ -15,9 +17,7 @@ class HomeInitializationController extends _$HomeInitializationController {
     final enterpriseName = validatedUser?.enterprise?.name;
 
     if (enterpriseName == null) {
-      throw Exception(
-        'Nenhuma empresa selecionada. Carregue os dados novamente',
-      );
+      throw AppException.localized(CoreFailure.noSelectedCompany);
     }
 
     await Future.wait([

@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +77,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
       next.showToastOnSuccess(
         context,
         previous: previous,
-        message: "Empresa cadastrada com sucesso".hardcoded,
+        message: context.l10n.companyRegisteredSuccessfully,
       );
       next.doOnSuccess(previous, context.pop);
       ref.invalidate(enterpriseManagerControllerProvider);
@@ -86,7 +85,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
 
     return BaseScaffold(
       isScrollable: false,
-      appBar: BaseAppBar(title: 'Criar empresa'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.createCompany),
       body: ResponsiveScrollableWidget(
         child: Form(
           key: formKey,
@@ -142,7 +141,7 @@ class _CreateEnterprisePageState extends ConsumerState<CreateEnterprisePage> {
               ),
               gapH32,
               PrimaryButton(
-                text: "Adicionar".hardcoded,
+                text: context.l10n.add,
                 onPressed: onSubmit,
                 isLoading: isLoading,
               ),

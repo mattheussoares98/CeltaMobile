@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/inventory/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -40,26 +39,26 @@ class FrozenItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleAndSubTitle(
-                  title: 'Empresa'.hardcoded,
+                  title: context.l10n.enterprise,
                   subTitle:
                       '${frozenProcess.CodigoEmpresa} - ${frozenProcess.NomeEmpresa}',
                 ),
                 TitleAndSubTitle(
-                  title: 'Tipo de estoque'.hardcoded,
+                  title: context.l10n.stockType,
                   subTitle: frozenProcess.NomeTipoEstoque,
                 ),
                 TitleAndSubTitle(
-                  title: 'Responsável'.hardcoded,
+                  title: context.l10n.personResponsible,
                   subTitle: frozenProcess.NomeFuncionario,
                 ),
                 TitleAndSubTitle(
-                  title: 'Criado em'.hardcoded,
+                  title: context.l10n.createdOn,
                   subTitle: frozenProcess.CataCriacaoInventario.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
                 TitleAndSubTitle(
-                  title: 'Congelado em'.hardcoded,
+                  title: context.l10n.frozenOn,
                   subTitle: frozenProcess.DataCongelamentoInventario.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
@@ -67,8 +66,8 @@ class FrozenItem extends StatelessWidget {
 
                 TitleAndSubTitle(
                   title: frozenProcess.ObsInventario == null
-                      ? 'Sem observações'.hardcoded
-                      : 'Observações'.hardcoded,
+                      ? context.l10n.noNotes
+                      : context.l10n.notes,
                   subTitle: frozenProcess.ObsInventario,
                   removeColon: frozenProcess.ObsInventario?.isEmpty ?? true,
                 ),

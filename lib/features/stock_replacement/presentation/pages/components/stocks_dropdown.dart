@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,7 +35,7 @@ class StocksDropdown extends ConsumerWidget {
           },
           validator: (value) {
             if (value == null) {
-              return 'Estoque obrigatório'.hardcoded;
+              return context.l10n.stockRequired;
             }
             return null;
           },
@@ -46,7 +46,7 @@ class StocksDropdown extends ConsumerWidget {
             );
           }).toList(),
           selectedItem: selectedUIState.selectedStockType,
-          label: 'Estoque a ser substituído'.hardcoded,
+          label: context.l10n.stockToReplace,
           isSimple: true,
         );
       },

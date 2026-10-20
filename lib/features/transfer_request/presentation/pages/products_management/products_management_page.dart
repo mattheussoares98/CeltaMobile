@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/transfer_request/domain/entities/entit
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/products_management.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class ProductsManagementPage extends HookConsumerWidget {
     ref.listen(insertTransferRequestControllerProvider(draftKey), (p, n) {
       n.showAlertDialogOnError(context);
       n.doOnSuccess(p, () {
-        showToastMessage('Pedido salvo com sucesso'.hardcoded);
+        showToastMessage(context.l10n.orderSavedSuccessfully);
       });
     });
 
@@ -59,7 +58,7 @@ class ProductsManagementPage extends HookConsumerWidget {
             if (screenWidth > 250) ...[
               Row(
                 children: [
-                  BaseText.bodySmall('De '.hardcoded),
+                  BaseText.bodySmall(context.l10n.from),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseOriginCode,
@@ -69,7 +68,7 @@ class ProductsManagementPage extends HookConsumerWidget {
               ),
               Row(
                 children: [
-                  BaseText.bodySmall('Para '.hardcoded),
+                  BaseText.bodySmall(context.l10n.to),
                   Expanded(
                     child: CorrespondentEnterpriseByEnterpriseCode(
                       enterpriseCode: enterpriseDestinyCode,
@@ -124,14 +123,14 @@ class ProductsManagementPage extends HookConsumerWidget {
             onTap: (index) => pageIndex.value = index,
             items: [
               BaseBottomNavigationBarItem(
-                label: 'Inserir'.hardcoded,
+                label: context.l10n.insert,
                 platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.cart_badge_plus,
                   materialIcon: Icons.add_shopping_cart_outlined,
                 ),
               ),
               BaseBottomNavigationBarItem(
-                label: 'Carrinho'.hardcoded,
+                label: context.l10n.cart,
                 badgeLabel: productsLength != null && productsLength > 0
                     ? productsLength.toString()
                     : null,

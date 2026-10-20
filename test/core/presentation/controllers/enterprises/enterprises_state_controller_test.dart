@@ -31,9 +31,9 @@ void main() {
     enterpriseRepositorySpy = EnterpriseRepositorySpy();
     userSessionEntity = EntityFactory.makeUserSessionEntity();
     fakeEnterprises = [
-      EntityFactory.makeEnterpriseEntity(),
-      EntityFactory.makeEnterpriseEntity(),
-      EntityFactory.makeEnterpriseEntity(),
+      EntityFactory.makeEnterpriseEntity(code: 1),
+      EntityFactory.makeEnterpriseEntity(code: 2),
+      EntityFactory.makeEnterpriseEntity(code: 3),
     ];
     lastSelectedEnterpriseCodeRepository =
         FakeLastSelectedEnterpriseCodeRepository(fakeEnterprises.first.Code);

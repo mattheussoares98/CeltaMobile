@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/address/soap/address_entity.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +25,7 @@ class InformedAddressess extends ConsumerWidget {
       itemCount: addresses.length + 1,
       itemBuilder: (_, index) {
         if (index == 0) {
-          return const DefaultDivider('Endereços informados');
+          return DefaultDivider(context.l10n.enteredAddresses);
         }
 
         final address = addresses[index - 1];
@@ -64,7 +64,7 @@ class _AddressItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: TitleAndSubTitle(
-                    title: 'CEP '.hardcoded,
+                    title: context.l10n.postalCode2,
                     subTitle: address.Zip,
                   ),
                 ),
@@ -72,9 +72,9 @@ class _AddressItem extends StatelessWidget {
                   onPressed: () async {
                     final confirmed = await showAlertDialog(
                       context: context,
-                      title: 'Excluir endereço?'.hardcoded,
-                      cancelActionText: 'Não'.hardcoded,
-                      defaultActionText: 'Sim'.hardcoded,
+                      title: context.l10n.deleteAddress,
+                      cancelActionText: context.l10n.no,
+                      defaultActionText: context.l10n.yes,
                     );
 
                     if (confirmed != true || !context.mounted) return;
@@ -89,16 +89,22 @@ class _AddressItem extends StatelessWidget {
               ],
             ),
             BaseText(
-              '${address.Address}, número ${address.Number}. ${address.District}, ${address.City}, ${address.State?.name}',
+              context.l10n.formattedAddress(
+                address.Address,
+                address.Number ?? '',
+                address.District,
+                address.City,
+                address.State?.name ?? '',
+              ),
             ),
             if (address.Complement != null && address.Complement!.isNotEmpty)
               TitleAndSubTitle(
-                title: 'Complemento '.hardcoded,
+                title: context.l10n.addressComplement,
                 subTitle: address.Complement,
               ),
             if (address.Reference != null && address.Reference!.isNotEmpty)
               TitleAndSubTitle(
-                title: 'Referência '.hardcoded,
+                title: context.l10n.reference2,
                 subTitle: address.Reference,
               ),
           ],

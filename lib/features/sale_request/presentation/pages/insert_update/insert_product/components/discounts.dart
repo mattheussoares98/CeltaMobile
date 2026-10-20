@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
@@ -30,7 +31,7 @@ class Discounts extends ConsumerWidget {
 
         return Row(
           children: [
-            Expanded(child: Text(discount.formattedDescription)),
+            Expanded(child: Text(discount.formatDescription(context.l10n))),
             ExcludeFocus(
               child: IconButton(
                 onPressed: () => removeDiscount(index),

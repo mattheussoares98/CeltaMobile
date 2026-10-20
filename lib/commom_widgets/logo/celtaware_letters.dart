@@ -1,4 +1,3 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 import 'logo.dart';
@@ -22,9 +21,9 @@ class CeltawareLetters extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Celta'.hardcoded, style: celtaStyle),
+            Text('Celta', style: celtaStyle),
             CustomWAndAtWidget(style: textStyle),
-            Text('re'.hardcoded, style: textStyle),
+            Text('re', style: textStyle),
           ],
         ),
       );
@@ -39,31 +38,31 @@ class CeltawareLetters extends StatelessWidget {
             controller: _animationController,
             start: 0.30,
             end: 0.45,
-            child: Text('C'.hardcoded, style: celtaStyle),
+            child: Text('C', style: celtaStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
             start: 0.33,
             end: 0.48,
-            child: Text('e'.hardcoded, style: celtaStyle),
+            child: Text('e', style: celtaStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
             start: 0.36,
             end: 0.51,
-            child: Text('l'.hardcoded, style: celtaStyle),
+            child: Text('l', style: celtaStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
             start: 0.39,
             end: 0.54,
-            child: Text('t'.hardcoded, style: celtaStyle),
+            child: Text('t', style: celtaStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
             start: 0.42,
             end: 0.57,
-            child: Text('a'.hardcoded, style: celtaStyle),
+            child: Text('a', style: celtaStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
@@ -75,13 +74,13 @@ class CeltawareLetters extends StatelessWidget {
             controller: _animationController,
             start: 0.48,
             end: 0.63,
-            child: Text('r'.hardcoded, style: textStyle),
+            child: Text('r', style: textStyle),
           ),
           AnimatedLetterWidget(
             controller: _animationController,
             start: 0.51,
             end: 0.66,
-            child: Text('e'.hardcoded, style: textStyle),
+            child: Text('e', style: textStyle),
           ),
         ],
       ),

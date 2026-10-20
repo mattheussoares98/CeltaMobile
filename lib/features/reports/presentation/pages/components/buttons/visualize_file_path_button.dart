@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/reports/presentation/pages/components/buttons/buttons.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +14,7 @@ class VisualizeFilePathButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return PrimaryTextButton(
       isSmall: true,
-      text: 'Visualizar caminho'.hardcoded,
+      text: context.l10n.viewPath,
       platformIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.eye,
         materialIcon: Icons.remove_red_eye,
@@ -22,7 +22,7 @@ class VisualizeFilePathButton extends ConsumerWidget {
       onPressed: () {
         showAlertDialog(
           context: context,
-          title: 'Caminho do arquivo'.hardcoded,
+          title: context.l10n.filePath,
           content: ref.read(
             downloadStateControllerProvider(
               widget.report.Code,

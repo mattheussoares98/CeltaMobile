@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,7 +29,7 @@ class Stocks extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: BaseText.headline(
-              'Estoques'.hardcoded,
+              context.l10n.stocks,
               textAlign: TextAlign.center,
             ),
           ),

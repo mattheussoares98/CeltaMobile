@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Scaffold(
           body: PrintLabelRepeatingIconButton(
             onPressed: () => callCount++,
@@ -32,6 +36,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Scaffold(
           body: PrintLabelRepeatingIconButton(
             onPressed: () => callCount++,
@@ -70,6 +77,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Scaffold(
           body: StatefulBuilder(
             builder: (context, setState) {
@@ -105,6 +115,9 @@ void main() {
   testWidgets('should not call onPressed when disabled', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: Locale('pt'),
         home: Scaffold(
           body: PrintLabelRepeatingIconButton(
             onPressed: null,

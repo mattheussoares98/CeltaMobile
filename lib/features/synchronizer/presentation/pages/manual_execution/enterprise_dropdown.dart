@@ -43,7 +43,7 @@ class _EnterpriseDropdown extends ConsumerWidget {
         );
 
         return BaseDropDown<ManualExecutionEnterpriseEntity>(
-          hint: Text('Selecione a empresa'.hardcoded),
+          hint: Text(context.l10n.selectTheCompany),
           selectedItem: selectedEnterprise,
           label: selectedEnterprise?.name,
           onChanged: (enterprise) async {

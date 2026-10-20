@@ -1,7 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 /// PERFORMANCE: This manager uses the Overlay API to create an accessory bar
 /// that floats above the keyboard. It is isolated from the main widget tree
@@ -66,7 +65,7 @@ class OverlayManager {
                         onPressed: onDone,
                         // PERFORMANCE: Blue SF Pro style font for iOS consistency
                         child: Text(
-                          'OK'.hardcoded,
+                          context.l10n.ok,
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,

@@ -1,7 +1,7 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,34 +21,32 @@ class PersonalDataInformations extends ConsumerWidget {
             if (customer?.CpfCnpjNumber != null &&
                 customer?.CpfCnpjNumber?.isNotEmpty == true)
               TitleAndSubTitle(
-                title: 'CPF/CNPJ '.hardcoded,
+                title: context.l10n.cpfCnpj2,
                 subTitle: customer?.CpfCnpjNumber,
               ),
 
             if (customer?.Name != null && customer?.Name?.isNotEmpty == true)
               TitleAndSubTitle(
-                title: 'Nome '.hardcoded,
+                title: context.l10n.name2,
                 subTitle: customer?.Name,
               ),
 
             if (customer?.ReducedName != null &&
                 customer?.ReducedName?.isNotEmpty == true)
               TitleAndSubTitle(
-                title: 'Nome reduzido '.hardcoded,
+                title: context.l10n.shortName,
                 subTitle: customer?.ReducedName,
               ),
 
             if (customer?.DateOfBirth != null &&
                 customer!.DateOfBirth != DateTime(0001))
               TitleAndSubTitle(
-                title: 'Nascimento '.hardcoded,
-                subTitle: customer.DateOfBirth?.formatDate(
-                  
-                ),
+                title: context.l10n.birthDate,
+                subTitle: customer.DateOfBirth?.formatDate(),
               ),
             if (customer?.Password != null && customer!.Password!.isNotEmpty)
               TitleAndSubTitle(
-                title: 'Senha '.hardcoded,
+                title: context.l10n.password2,
                 subTitle: List.generate(
                   customer.Password!.length,
                   (index) => '*',
@@ -57,8 +55,10 @@ class PersonalDataInformations extends ConsumerWidget {
             if (customer?.SexType?.name != null &&
                 customer?.CpfCnpjNumber?.length == 11)
               TitleAndSubTitle(
-                title: 'Sexo '.hardcoded,
-                subTitle: customer?.SexType?.name,
+                title: context.l10n.sex,
+                subTitle: customer?.SexType == null
+                    ? null
+                    : context.l10n.sexName(customer!.SexType!),
               ),
           ],
         ),

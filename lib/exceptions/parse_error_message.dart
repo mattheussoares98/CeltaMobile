@@ -42,31 +42,27 @@ String parseErrorMessage(Object? error, {AppLocalizations? translations}) {
   final lowerMessage = message.toLowerCase();
 
   if (lowerMessage.contains('timed out') || lowerMessage.contains('timeout')) {
-    return 'Tempo limite atingido. Por favor, tente novamente.'.hardcoded;
+    return l10n.requestTimedOutPleaseTryAgain;
   } else if (lowerMessage.contains('failed host')) {
-    return 'Erro de conexão. Verifique a sua internet.'.hardcoded;
+    return l10n.connectionErrorCheckYourInternetConnection;
   } else if (lowerMessage.contains('invalid login credentials')) {
-    return 'Credenciais de login inválidas. Por favor, verifique seu e-mail e senha.'
-        .hardcoded;
+    return l10n.invalidLoginCredentialsCheckYourEmailAndPassword;
   } else if (lowerMessage.contains(
     'password should be at least 6 characters',
   )) {
-    return 'A senha deve ter pelo menos 6 caracteres.'.hardcoded;
+    return l10n.thePasswordMustContainAtLeast6Characters;
   } else if (lowerMessage.contains('user already registered')) {
-    return 'Este e-mail já está cadastrado.'.hardcoded;
+    return l10n.thisEmailIsAlreadyRegistered;
   } else if (lowerMessage.contains('unable to validate email address')) {
-    return 'Formato de e-mail inválido.'.hardcoded;
+    return l10n.invalidEmailFormat;
   } else if (lowerMessage.contains('you can only request this after')) {
-    return 'Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.'
-        .hardcoded;
+    return l10n.thisActionIsTemporarilyBlockedTryAgainLater;
   } else if (lowerMessage.contains('duplicate key value')) {
-    return 'Essa ação está duplicando dados que não podem ser duplicados. \n$supabaseDetails'
-        .hardcoded;
+    return l10n.duplicateDataDetails(supabaseDetails ?? '');
   } else if (lowerMessage.contains(
     "Closure: ([String?]) => HttpError from Function".toLowerCase(),
   )) {
-    return 'O método não foi encontrado. Informe o suporte técnico que a API não está funcionando ou deve ser atualizada'
-        .hardcoded;
+    return l10n.methodNotFoundTellTechnicalSupportThatTheApiIs;
   }
   return message.formatBreakLines();
 }

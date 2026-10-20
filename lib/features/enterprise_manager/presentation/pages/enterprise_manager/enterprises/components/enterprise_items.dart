@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/domain/entities/entities.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,8 +32,8 @@ class _EnterpriseItemsState extends ConsumerState<EnterpriseItems> {
             child: BaseTextFormField(
               controller: widget.filterEnterpriseNameController,
               onChanged: (_) {},
-              hintText: "Filtrar empresa".hardcoded,
-              labelText: 'Filtrar empresa'.hardcoded,
+              hintText: context.l10n.filterCompany,
+              labelText: context.l10n.filterCompany,
             ),
           ),
         ),

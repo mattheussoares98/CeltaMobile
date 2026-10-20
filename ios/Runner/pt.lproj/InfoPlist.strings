@@ -1,0 +1,6 @@
+"NSCameraUsageDescription" = "Libere o acesso da câmera para ler código de barras";
+"NSLocalNetworkUsageDescription" = "Libere o acesso para conseguir imprimir pedidos de vendas";
+"NSPhotoLibraryUsageDescription" = "Libere o acesso para acessar as imagens";
+"NSLocationWhenInUseUsageDescription" = "Uma ou mais dependências dependem dessa permissão para funcionar corretamente.";
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Uma ou mais dependências dependem dessa permissão para funcionar corretamente.";
+

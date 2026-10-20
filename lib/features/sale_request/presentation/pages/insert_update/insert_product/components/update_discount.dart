@@ -1,9 +1,9 @@
+import 'package:celta_inventario/features/sale_request/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,12 +36,10 @@ class AddDiscount extends ConsumerWidget {
 
     final proceed = await showAlertDialog(
       context: context,
-      title: 'Atenção'.hardcoded,
-      content:
-          'Esta ação irá remover todos os descontos automáticos. Deseja continuar?'
-              .hardcoded,
-      cancelActionText: 'Não'.hardcoded,
-      defaultActionText: 'Sim'.hardcoded,
+      title: context.l10n.attention2,
+      content: context.l10n.thisActionWillRemoveAllAutomaticDiscountsContinue,
+      cancelActionText: context.l10n.no,
+      defaultActionText: context.l10n.yes,
     );
 
     return proceed == true;
@@ -98,10 +96,10 @@ class AddDiscount extends ConsumerWidget {
           text: TextSpan(
             style: context.theme.textTheme.titleSmall,
             children: [
-              TextSpan(text: 'Descontos'.hardcoded),
+              TextSpan(text: context.l10n.discounts),
               TextSpan(
                 text:
-                    ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()}) ${item.discounts?.firstOrNull?.discountOrigin?.description ?? ''}',
+                    ' (${item.totalDiscountValue.toString().toBrazilianNumber().addBrazilianCoin()}) ${item.discounts?.firstOrNull?.discountOrigin == null ? '' : context.l10n.discountOriginName(item.discounts!.first.discountOrigin!)}',
                 style: context.theme.textTheme.labelMedium?.copyWith(
                   color: context.theme.colorScheme.error,
                   fontWeight: FontWeight.bold,
@@ -125,7 +123,9 @@ class AddDiscount extends ConsumerWidget {
 
                     return BaseTextFormField(
                       focusNode: focusNode,
-                      labelText: 'Desconto ${discountType.symbol}'.hardcoded,
+                      labelText: context.l10n.discountWithSymbol(
+                        discountType.symbol,
+                      ),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
@@ -162,7 +162,8 @@ class AddDiscount extends ConsumerWidget {
                     child: BaseSegmentedButtons<PercentageOrValue>(
                       items: PercentageOrValue.values,
                       selectedValue: discountType,
-                      itemLabelBuilder: (item) => item.name,
+                      itemLabelBuilder: (item) =>
+                          context.l10n.percentageOrValueName(item),
                       onChanged: (type) => _onTypeChanged(context, ref, type),
                     ),
                   );

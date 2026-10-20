@@ -28,16 +28,23 @@ class BsfProductEntity extends Equatable {
     );
   }
 
-  List<BsfProductPropertyEntity> toSearchIndex() {
+  List<BsfProductPropertyEntity> toSearchIndex({
+    String codeLabel = 'Código',
+    String nameLabel = 'Nome',
+    String deactivatedLabel = 'Desativado',
+    String fiscalClassificationLabel = 'Classificacao fiscal',
+    String yesLabel = 'Sim',
+    String noLabel = 'Não',
+  }) {
     return [
-      BsfProductPropertyEntity(labelPt: 'Código', displayValue: '$code'),
-      BsfProductPropertyEntity(labelPt: 'Nome', displayValue: name),
+      BsfProductPropertyEntity(labelPt: codeLabel, displayValue: '$code'),
+      BsfProductPropertyEntity(labelPt: nameLabel, displayValue: name),
       BsfProductPropertyEntity(
-        labelPt: 'Desativado',
-        displayValue: isDesativate ? 'Sim' : 'Não',
+        labelPt: deactivatedLabel,
+        displayValue: isDesativate ? yesLabel : noLabel,
       ),
       BsfProductPropertyEntity(
-        labelPt: 'Classificacao fiscal',
+        labelPt: fiscalClassificationLabel,
         displayValue: fiscalClassification.personalizedCode,
       ),
     ];

@@ -1,10 +1,9 @@
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,8 +51,8 @@ class UpdateQuantityField extends ConsumerWidget {
                             controller: quantityController,
                             focusNode: quantityFocusNode,
                             maxLength: 10,
-                            hintText: 'Nova qtd'.hardcoded,
-                            labelText: 'Nova qtd'.hardcoded,
+                            hintText: context.l10n.newQty,
+                            labelText: context.l10n.newQty,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             keyboardType: const TextInputType.numberWithOptions(
@@ -76,7 +75,7 @@ class UpdateQuantityField extends ConsumerWidget {
                       gapW8,
                       Expanded(
                         child: PrimaryButton(
-                          text: 'Alterar'.hardcoded,
+                          text: context.l10n.change,
                           onPressed: onSubmit,
                           icon: const PlatformIcon(
                             cupertinoIcon: CupertinoIcons.check_mark,

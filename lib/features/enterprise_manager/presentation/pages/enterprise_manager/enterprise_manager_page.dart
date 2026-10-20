@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/components/components.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/reports/reports.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +109,7 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Gerenciar módulos'.hardcoded,
+        title: context.l10n.manageModules,
 
         actions: const [LogoutButton()],
       ),
@@ -160,14 +160,14 @@ class _EnterpriseManagerPageState extends ConsumerState<EnterpriseManagerPage> {
         currentIndex: ref.watch(pageIndexStateControllerProvider),
         items: [
           BaseBottomNavigationBarItem(
-            label: 'Empresas'.hardcoded,
+            label: context.l10n.enterprises,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.list_bullet,
               materialIcon: Icons.list,
             ),
           ),
           BaseBottomNavigationBarItem(
-            label: 'Uso'.hardcoded,
+            label: context.l10n.usage,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.chart_bar,
               materialIcon: Icons.bar_chart,

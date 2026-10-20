@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,20 +34,18 @@ class ProductsItems extends ConsumerWidget {
       if (selectedUIState.selectedStockType == null) {
         showAlertDialog(
           context: context,
-          title: 'Atenção!'.hardcoded,
-          content: 'Você precisa selecionar o estoque!'.hardcoded,
+          title: context.l10n.attention,
+          content: context.l10n.selectTheStock,
         );
         return;
       }
 
       bool? pressed = await showAlertDialog(
         context: context,
-        title: 'Atenção!!!'.hardcoded,
-        content:
-            'Ao confirmar, o estoque do produto será atualizado para a quantidade que você informou!\n\nDeseja continuar?'
-                .hardcoded,
-        defaultActionText: 'Sim'.hardcoded,
-        cancelActionText: 'Cancelar'.hardcoded,
+        title: context.l10n.attention3,
+        content: context.l10n.confirmingWillUpdateTheProductSStockToTheQuantity,
+        defaultActionText: context.l10n.yes,
+        cancelActionText: context.l10n.cancel,
       );
 
       if (pressed != true) {
@@ -159,7 +156,7 @@ class _ProductItem extends ConsumerWidget {
       clickableBottom:
           lastConfirmedAdjust?.productPackingCode == product.ProductPackingCode
           ? TitleAndSubTitle(
-              title: 'Última qtd ASSUMIDA'.hardcoded,
+              title: context.l10n.lastAcceptedQty,
               subTitle: lastConfirmedAdjust?.quantity
                   .toString()
                   .toBrazilianNumber(3, true),

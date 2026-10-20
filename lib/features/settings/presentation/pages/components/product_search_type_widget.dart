@@ -18,7 +18,7 @@ class ProductSearchTypeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Tipo de pesquisa de produtos'.hardcoded,
+            context.l10n.productSearchType,
             textAlign: TextAlign.center,
             style: context.theme.textTheme.titleMedium,
           ),

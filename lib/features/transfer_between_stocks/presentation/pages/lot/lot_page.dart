@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,7 +64,7 @@ class _LotPageState extends ConsumerState<LotPage> {
     );
 
     if (productsAreEmpty) {
-      return Center(child: BaseText.error('Lote vazio'.hardcoded));
+      return Center(child: BaseText.error(context.l10n.emptyBatch));
     }
 
     return Column(

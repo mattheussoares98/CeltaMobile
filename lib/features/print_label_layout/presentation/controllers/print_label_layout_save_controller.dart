@@ -1,3 +1,5 @@
+import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/localization/providers.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -22,10 +24,19 @@ class PrintLabelLayoutSaveController extends _$PrintLabelLayoutSaveController {
     final draft = ref.read(detailsProvider).value;
     if (draft == null) return;
 
-    final validationErrors = PrintLabelLayoutSaveValidator.validate(draft);
+    final validationErrors = PrintLabelLayoutSaveValidator.validateFailures(
+      draft,
+    );
     if (validationErrors.isNotEmpty) {
       state = AsyncError(
-        AppException(validationErrors.join('\n')),
+        AppException(
+          validationErrors
+              .map(
+                (failure) =>
+                    ref.read(appLocalizationsProvider).coreFailure(failure),
+              )
+              .join('\n'),
+        ),
         StackTrace.current,
       );
       return;

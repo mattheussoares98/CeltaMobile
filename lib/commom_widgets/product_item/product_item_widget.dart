@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/product_item/properties/properti
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -130,10 +129,10 @@ class ProductItemWidget extends ConsumerWidget {
         n.showAlertDialogOnSuccess(
           context,
           previous: p,
-          title: 'Oferta encerrada'.hardcoded,
-          message:
-              'Oferta encerrada com sucesso. Consulte o produto novamente para atualizar as informações'
-                  .hardcoded,
+          title: context.l10n.offerEnded,
+          message: context
+              .l10n
+              .offerEndedSuccessfullySearchForTheProductAgainToRefresh,
         );
       },
     );

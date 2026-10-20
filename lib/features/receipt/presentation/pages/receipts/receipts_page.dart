@@ -1,8 +1,9 @@
+import 'package:celta_inventario/features/receipt/presentation/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +42,7 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
       padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       refreshProvider: receiptsStateControllerProvider(widget.enterpriseCode),
       appBar: BaseAppBar(
-        title: 'Recebimentos'.hardcoded,
+        title: context.l10n.goodsReceipts,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Consumer(
@@ -58,8 +59,8 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                     padding: const EdgeInsets.all(Sizes.p4),
                     child: BaseTextFormField(
                       controller: filterReceiptController,
-                      hintText: 'Número|Emitente|Status|Observação'.hardcoded,
-                      labelText: 'Filtrar'.hardcoded,
+                      hintText: context.l10n.numberIssuerStatusNote,
+                      labelText: context.l10n.filter,
                     ),
                   ),
                   Expanded(
@@ -74,9 +75,10 @@ class _ReceiptsPageState extends ConsumerState<ReceiptsPage> {
                                   e.Numero_ProcRecebDoc.toString().contains(
                                     lowerCaseController,
                                   ) ||
-                                  e.status.description.toLowerCase().contains(
-                                    lowerCaseController,
-                                  ) ||
+                                  context.l10n
+                                      .receiptStatusName(e.status)
+                                      .toLowerCase()
+                                      .contains(lowerCaseController) ||
                                   e.Observacoes_ProcRecebDoc.toString()
                                       .toLowerCase()
                                       .contains(lowerCaseController) ||

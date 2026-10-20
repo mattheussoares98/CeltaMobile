@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,11 +77,11 @@ class PaymentConditionDropdown extends ConsumerWidget {
                 selectedItem: selectedItem,
                 validator: (_) {
                   if (selectedItem == null) {
-                    return 'Selecione uma forma de pagamento'.hardcoded;
+                    return context.l10n.selectAPaymentMethod;
                   }
                   return null;
                 },
-                label: 'Condição de pagamento'.hardcoded,
+                label: context.l10n.paymentTerms,
                 items: items,
               );
             },
@@ -101,18 +100,20 @@ class _NotFoundPaymentConditions extends ConsumerWidget {
     return Column(
       children: [
         Text(
-          'Nenhuma condição de pagamento disponível. Somente condições de pagamento com composição fixas aparecerão'
-              .hardcoded,
+          context
+              .l10n
+              .noPaymentTermsAvailableOnlyPaymentTermsWithFixedInstallments,
           textAlign: TextAlign.center,
         ),
         gapH8,
         Text(
-          'Para cadastrar uma condição com composição fixa, acesse o CeltaBS e vá em "Cadastros > Financeiro > Condições de pagamento'
-              .hardcoded,
+          context
+              .l10n
+              .toRegisterPaymentTermsWithFixedInstallmentsOpenCeltabsAnd,
         ),
         gapH8,
         PrimaryButton(
-          text: 'Carregar novamente'.hardcoded,
+          text: context.l10n.reload,
           onPressed: () =>
               ref.invalidate(filteredPaymentConditionsStateControllerProvider),
         ),

@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,9 +50,9 @@ class ProductInformations extends ConsumerWidget {
                   return const SizedBox.shrink();
                 }
                 return TitleAndSubTitle(
-                  title:
-                      'Última quantidade alterada ${lastChangedProduct?.isSubtract == true ? " -" : ""}'
-                          .hardcoded,
+                  title: context.l10n.lastChangedQuantity(
+                    lastChangedProduct?.isSubtract == true ? ' -' : '',
+                  ),
                   subTitle: lastChangedProduct?.quantity
                       .toString()
                       .toBrazilianNumber(3),
@@ -75,12 +74,12 @@ class ProductInformations extends ConsumerWidget {
                   child: TitleAndSubTitle(
                     title: product.quantidadeInvContProEmb == null
                         ? null
-                        : 'Qtd contada'.hardcoded,
+                        : context.l10n.countedQty,
                     subTitleStyle: product.quantidadeInvContProEmb == null
                         ? const TextStyle(color: Colors.red)
                         : null,
                     subTitle: product.quantidadeInvContProEmb == null
-                        ? 'Sem quantidade contada'.hardcoded
+                        ? context.l10n.noCountedQuantity
                         : product.quantidadeInvContProEmb ?? 0,
                   ),
                 ),

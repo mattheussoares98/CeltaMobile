@@ -3,7 +3,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -70,7 +69,7 @@ class BSFProductItemSummary extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        'Qtd'.hardcoded,
+                        context.l10n.quantityShort,
                         style: context.theme.textTheme.labelSmall?.copyWith(
                           color: context.theme.primaryColor,
                           fontWeight: FontWeight.bold,

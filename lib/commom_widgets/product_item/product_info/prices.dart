@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/core/providers/resource/resource.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class Prices extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(child: BaseText.headline('Preços praticados'.hardcoded)),
+              Flexible(child: BaseText.headline(context.l10n.appliedPrices)),
               gapW12,
               IconButton(
                 onPressed: () {
@@ -78,7 +78,7 @@ class Prices extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.all(Sizes.p8),
                   child: PrimaryButton(
-                    text: 'Atualizar permissão para encerrar oferta'.hardcoded,
+                    text: context.l10n.refreshPermissionToEndOffers,
                     isLoading: isLoading,
                     onPressed: () =>
                         ref.invalidate(soapResourceDatasourceProvider),
@@ -97,23 +97,23 @@ class Prices extends ConsumerWidget {
               wholeSuggestion > 0 ||
               ecommerceSuggestion > 0) ...[
             gapH32,
-            BaseText.headline('Preços sugeridos'.hardcoded),
+            BaseText.headline(context.l10n.suggestedPrices),
             gapH8,
             if (retailSuggestion > 0)
               TitleAndSubTitle(
-                title: 'Venda '.hardcoded,
+                title: context.l10n.retail,
                 subTitle: retailSuggestion,
                 subTitleIsPrice: true,
               ),
             if (wholeSuggestion > 0)
               TitleAndSubTitle(
-                title: 'Atacado '.hardcoded,
+                title: context.l10n.wholesale,
                 subTitle: wholeSuggestion,
                 subTitleIsPrice: true,
               ),
             if (ecommerceSuggestion > 0)
               TitleAndSubTitle(
-                title: 'Ecommerce '.hardcoded,
+                title: context.l10n.eCommerce,
                 subTitle: ecommerceSuggestion,
                 subTitleIsPrice: true,
               ),
@@ -122,23 +122,23 @@ class Prices extends ConsumerWidget {
               retailMinimum > 0 ||
               ecommerceMinimum > 0) ...[
             gapH32,
-            BaseText.headline('Preços mínimos'.hardcoded),
+            BaseText.headline(context.l10n.minimumPrices),
             gapH8,
             if (retailMinimum > 0)
               TitleAndSubTitle(
-                title: 'Venda '.hardcoded,
+                title: context.l10n.retail,
                 subTitle: retailMinimum,
                 subTitleIsPrice: true,
               ),
             if (wholeMinimum > 0)
               TitleAndSubTitle(
-                title: 'Atacado '.hardcoded,
+                title: context.l10n.wholesale,
                 subTitle: wholeMinimum,
                 subTitleIsPrice: true,
               ),
             if (ecommerceMinimum > 0)
               TitleAndSubTitle(
-                title: 'Ecommerce '.hardcoded,
+                title: context.l10n.eCommerce,
                 subTitle: ecommerceMinimum,
                 subTitleIsPrice: true,
               ),

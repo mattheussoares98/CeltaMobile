@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/title_and_subtitle.dart';
 import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/insert_update/payments/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,9 +49,13 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
     if (totalLiquidAndPaidDifference < 0) {
       return SliverToBoxAdapter(
         child: Text(
-          'O total das formas de pagamento está maior que o total dos produtos!\n'
-                  'Diferença = ${totalLiquidAndPaidDifference.abs().toString().toBrazilianNumber()}'
-              .hardcoded,
+          context.l10n.paymentExceedsOrder +
+              context.l10n.paymentDifference(
+                totalLiquidAndPaidDifference
+                    .abs()
+                    .toString()
+                    .toBrazilianNumber(),
+              ),
           textAlign: TextAlign.center,
           style: context.theme.textTheme.titleSmall?.copyWith(
             color: Colors.red,
@@ -72,7 +76,7 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
                   Expanded(
                     flex: 6,
                     child: Text(
-                      'Nova forma de pagamento'.hardcoded,
+                      context.l10n.newPaymentMethod,
                       style: context.theme.textTheme.titleSmall?.copyWith(
                         fontStyle: FontStyle.italic,
                       ),
@@ -83,8 +87,8 @@ class _NewPaymentSectionState extends ConsumerState<NewPaymentSection> {
                     flex: 4,
                     child: TitleAndSubTitle(
                       title: totalLiquidAndPaidDifference > 0
-                          ? 'Faltando'.hardcoded
-                          : 'Sobrando'.hardcoded,
+                          ? context.l10n.missing
+                          : context.l10n.excess,
                       subTitle: totalLiquidAndPaidDifference.abs(),
                       subTitleIsPrice: true,
                       removeColon: true,

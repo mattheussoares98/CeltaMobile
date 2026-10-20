@@ -5,7 +5,6 @@ import 'package:celta_inventario/features/transfer_between_stocks/presentation/c
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/lot/components/components.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/pages.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/pages/transfer_between_stocks/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,7 +28,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       n.showToastOnSuccess(
         context,
         previous: p,
-        message: 'Lote enviado com sucesso'.hardcoded,
+        message: context.l10n.batchSentSuccessfully,
       );
       n.doOnSuccess(p, () {
         ref
@@ -46,7 +45,7 @@ class TransferBetweenStocksPage extends ConsumerWidget {
       resizeToAvoidBottomInset: true,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, 0),
       appBar: BaseAppBar(
-        title: "Transferência entre estoques".hardcoded,
+        title: context.l10n.coreTransferJustificationTypeTransferBetweenStocks,
         selectedEnterpriseCode: enterpriseCode,
         actions: [ClearLotButton(enterpriseCode: enterpriseCode)],
       ),

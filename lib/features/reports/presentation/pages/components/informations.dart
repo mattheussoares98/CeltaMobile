@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
 
@@ -15,21 +14,21 @@ class Informations extends StatelessWidget {
       children: [
         TitleAndSubTitle(title: null, subTitle: report.Name),
         TitleAndSubTitle(
-          title: 'Categoria'.hardcoded,
+          title: context.l10n.category,
           subTitle: report.CategoryName,
         ),
         TitleAndSubTitle(
-          title: 'Sub categoria'.hardcoded,
+          title: context.l10n.subcategory,
           subTitle: report.SubCategoryName,
         ),
         TitleAndSubTitle(
-          title: 'Relatório'.hardcoded,
+          title: context.l10n.report,
           subTitle: report.ReportModelName,
         ),
 
         if (report.LastExecutionContainsData == false)
           Text(
-            'Relatório SEM DADOS para exibir'.hardcoded,
+            context.l10n.reportHasNoDataToDisplay,
             style: context.theme.textTheme.titleMedium?.copyWith(
               color: Colors.red,
               fontStyle: FontStyle.italic,

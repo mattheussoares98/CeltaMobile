@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,7 +115,7 @@ class _IpToPrintForm extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               BaseTextFormField(
-                labelText: 'IP da impressora'.hardcoded,
+                labelText: context.l10n.printerIp,
                 hintText: '192.168.0.1',
                 maxLength: 15,
                 controller: ipController,
@@ -138,14 +137,14 @@ class _IpToPrintForm extends ConsumerWidget {
                 children: [
                   Flexible(
                     child: PrimaryTextButton(
-                      text: 'Cancelar'.hardcoded,
+                      text: context.l10n.cancel,
                       onPressed: context.pop,
                       color: Colors.red,
                     ),
                   ),
                   Flexible(
                     child: PrimaryButton(
-                      text: 'Imprimir'.hardcoded,
+                      text: context.l10n.print,
                       isLoading: isLoading,
                       onPressed: () => _print(ref),
                     ),

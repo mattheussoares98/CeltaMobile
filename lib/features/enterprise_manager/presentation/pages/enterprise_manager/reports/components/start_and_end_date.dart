@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,7 +27,7 @@ class _UpdateButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PrimaryButton(
-      text: 'Atualizar'.hardcoded,
+      text: context.l10n.update,
       isLoading: ref.watch(
         appUsageStateControllerProvider.select((s) => s.isLoading),
       ),
@@ -51,7 +51,7 @@ class _SelectPeriod extends ConsumerWidget {
 
     return Column(
       children: [
-        BaseText('Mês/ano'.hardcoded),
+        BaseText(context.l10n.monthYear),
         Row(
           children: [
             Flexible(

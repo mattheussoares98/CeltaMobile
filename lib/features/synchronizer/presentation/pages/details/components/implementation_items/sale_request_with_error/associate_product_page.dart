@@ -41,23 +41,23 @@ class _ProductsWithoutRegisterPageState
         children: [
           Align(
             child: BaseText.title(
-              'Pesquise e selecione o produto a ser associado'.hardcoded,
+              context.l10n.searchForAndSelectTheProductToLink,
             ),
           ),
           gapH16,
           TitleAndSubTitle(
-            title: 'Cód site'.hardcoded,
+            title: context.l10n.websiteCode,
             subTitle: widget.productNotFound.eCommerceCode,
           ),
           TitleAndSubTitle(
-            title: 'Produto'.hardcoded,
+            title: context.l10n.product,
             subTitle: widget.productNotFound.name,
           ),
           gapH16,
           BaseTextFormField(
             controller: searchController,
-            hintText: 'Nome'.hardcoded,
-            labelText: 'Consultar produto'.hardcoded,
+            hintText: context.l10n.name,
+            labelText: context.l10n.viewProduct,
             onFieldSubmitted: (value) => ref
                 .read(shallowProductsStateControllerProvider.notifier)
                 .load(value, recordsByPage: recordsByPage),
@@ -78,9 +78,7 @@ class _ProductsWithoutRegisterPageState
             data: (products) {
               if (products?.isEmpty ?? false) {
                 return Center(
-                  child: BaseText.error(
-                    'Nenhum produto foi encontrado'.hardcoded,
-                  ),
+                  child: BaseText.error(context.l10n.noProductsFound),
                 );
               }
               return Expanded(
@@ -95,15 +93,17 @@ class _ProductsWithoutRegisterPageState
                         onTap: () async {
                           final ok = await showAlertDialog(
                             context: context,
-                            title: 'Atenção'.hardcoded,
+                            title: context.l10n.attention2,
                             content:
-                                'Produto do site "${product.Name}"\n'
-                                    .hardcoded +
-                                'Produto a ser associado "${widget.productNotFound.name}"\n'
-                                    .hardcoded +
-                                'Deseja associar?'.hardcoded,
-                            defaultActionText: 'Sim'.hardcoded,
-                            cancelActionText: 'Não'.hardcoded,
+                                context.l10n.websiteProductToLink(
+                                  product.Name ?? '',
+                                ) +
+                                context.l10n.productToLink(
+                                  widget.productNotFound.name,
+                                ) +
+                                context.l10n.linkProduct,
+                            defaultActionText: context.l10n.yes,
+                            cancelActionText: context.l10n.no,
                           );
 
                           if (ok == true) {

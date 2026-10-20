@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +98,11 @@ class BasePaginationButtons<T> extends ConsumerWidget {
                           },
                         ),
                         BaseText.caption(
-                          '$startItem-$endItem de ${results.totalRecords}'
-                              .hardcoded,
+                          context.l10n.paginationRange(
+                            startItem,
+                            endItem,
+                            results.totalRecords,
+                          ),
                           color: context.theme.hintColor,
                         ),
                       ],

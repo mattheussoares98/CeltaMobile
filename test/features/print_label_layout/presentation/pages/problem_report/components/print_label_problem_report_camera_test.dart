@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'dart:io';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
@@ -48,6 +49,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: PrintLabelProblemReportCamera(
           cameraDelegate: delegate,
           onPhotoConfirmed: (_) {},
@@ -59,7 +63,14 @@ void main() {
     expect(find.textContaining('Permita o acesso'), findsOneWidget);
     expect(find.text('Abrir configurações'), findsOneWidget);
 
-    await tester.pumpWidget(const MaterialApp(home: SizedBox()));
+    await tester.pumpWidget(
+      const MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: Locale('pt'),
+        home: SizedBox(),
+      ),
+    );
     expect(delegate.disposeCalls, 1);
   });
 
@@ -74,6 +85,9 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('pt'),
         home: Scaffold(
           body: PrintLabelProblemReportCamera(
             cameraDelegate: delegate,

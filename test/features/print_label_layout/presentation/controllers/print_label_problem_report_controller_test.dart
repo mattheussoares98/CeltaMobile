@@ -1,3 +1,6 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/core/data/models/models.dart';
@@ -265,6 +268,9 @@ void main() {
       UncontrolledProviderScope(
         container: container,
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: PrintLabelProblemReportPage(labelCode: savedLayout.code),
         ),
       ),
@@ -304,8 +310,12 @@ void main() {
       PrintLabelProblemReportStage.failure,
     );
     expect(
-      container.read(provider).requireValue.error.toString(),
-      contains('images'),
+      container.read(provider).requireValue.error,
+      isA<AppException>().having(
+        (error) => error.failure,
+        'failure',
+        CoreFailure.reportImagesRequired,
+      ),
     );
 
     expect(repository.submittedReports, isEmpty);

@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,7 @@ class _ValidityState extends State<Validity> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: PrimaryTextButton(
-                text: 'Nova validade'.hardcoded,
+                text: context.l10n.newExpirationDate,
                 platformIcon: const PlatformIcon(
                   cupertinoIcon: CupertinoIcons.calendar,
                   materialIcon: Icons.calendar_month,
@@ -73,8 +72,7 @@ class _ValidityState extends State<Validity> {
             child: Align(
               alignment: Alignment.centerRight,
               child: Text(
-                newValidity?.formatDate() ??
-                    'Nenhuma'.hardcoded,
+                newValidity?.formatDate() ?? context.l10n.none2,
                 style: context.theme.textTheme.titleSmall?.copyWith(
                   fontStyle: FontStyle.italic,
                   color: newValidity == null

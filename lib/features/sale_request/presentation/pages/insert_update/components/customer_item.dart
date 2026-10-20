@@ -1,9 +1,9 @@
+import 'package:celta_inventario/features/sale_request/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,7 +63,7 @@ class CustomerItem extends ConsumerWidget {
                     gapH4,
                     TitleAndSubTitle(
                       title: null,
-                      subTitle: 'Convênios'.hardcoded,
+                      subTitle: context.l10n.agreements,
                       subTitleStyle: context.theme.textTheme.titleSmall
                           ?.copyWith(color: context.theme.primaryColorDark),
                     ),
@@ -93,30 +93,33 @@ class CustomerItem extends ConsumerWidget {
                           if (isBlocked) {
                             await showAlertDialog(
                               context: context,
-                              title: 'Cliente Bloqueado'.hardcoded,
-                              content: actions
-                                  .firstWhere(
-                                    (a) =>
-                                        a.type ==
-                                        BSFSaleRequestSanitizationType
-                                            .customerBlocked,
-                                  )
-                                  .message,
-                              defaultActionText: 'Entendido'.hardcoded,
+                              title: context.l10n.customerBlocked,
+                              content: context.l10n.sanitizationActionMessage(
+                                actions.firstWhere(
+                                  (a) =>
+                                      a.type ==
+                                      BSFSaleRequestSanitizationType
+                                          .customerBlocked,
+                                ),
+                              ),
+                              defaultActionText: context.l10n.understood,
                             );
                             return;
                           }
 
                           final confirmed = await showAlertDialog(
                             context: context,
-                            title: 'Alteração do cliente'.hardcoded,
-                            content:
-                                'Esta alteração terá os seguintes impactos no pedido:\n\n'
-                                        '${actions.map((a) => '• ${a.message}').join('\n')}\n\n'
-                                        'Deseja prosseguir?'
-                                    .hardcoded,
-                            cancelActionText: 'Cancelar'.hardcoded,
-                            defaultActionText: 'Confirmar'.hardcoded,
+                            title: context.l10n.customerChange,
+                            content: context.l10n.confirmOrderChangeImpacts(
+                              actions
+                                  .map(
+                                    (a) =>
+                                        '• ${context.l10n.sanitizationActionMessage(a)}',
+                                  )
+                                  .join('\n'),
+                            ),
+                            cancelActionText: context.l10n.cancel,
+                            defaultActionText: context.l10n.confirm,
                           );
 
                           if (confirmed != true) return;
@@ -157,29 +160,32 @@ class CustomerItem extends ConsumerWidget {
                 if (isBlocked) {
                   await showAlertDialog(
                     context: context,
-                    title: 'Cliente Bloqueado'.hardcoded,
-                    content: actions
-                        .firstWhere(
-                          (a) =>
-                              a.type ==
-                              BSFSaleRequestSanitizationType.customerBlocked,
-                        )
-                        .message,
-                    defaultActionText: 'Entendido'.hardcoded,
+                    title: context.l10n.customerBlocked,
+                    content: context.l10n.sanitizationActionMessage(
+                      actions.firstWhere(
+                        (a) =>
+                            a.type ==
+                            BSFSaleRequestSanitizationType.customerBlocked,
+                      ),
+                    ),
+                    defaultActionText: context.l10n.understood,
                   );
                   return;
                 }
 
                 final confirmed = await showAlertDialog(
                   context: context,
-                  title: 'Alteração do cliente'.hardcoded,
-                  content:
-                      'Esta alteração terá os seguintes impactos no pedido:\n\n'
-                              '${actions.map((a) => '• ${a.message}').join('\n')}\n\n'
-                              'Deseja prosseguir?'
-                          .hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Confirmar'.hardcoded,
+                  title: context.l10n.customerChange,
+                  content: context.l10n.confirmOrderChangeImpacts(
+                    actions
+                        .map(
+                          (a) =>
+                              '• ${context.l10n.sanitizationActionMessage(a)}',
+                        )
+                        .join('\n'),
+                  ),
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.confirm,
                 );
 
                 if (confirmed != true) return;

@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/enterprise_manager/reports/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,16 +31,16 @@ class _ReportsPageState extends ConsumerState<ReportsPage> {
       width: Breakpoint.tablet,
       child: BaseTextFormField(
         controller: enterpriseController,
-        hintText: 'Filtrar empresa'.hardcoded,
-        labelText: 'Filtrar empresa'.hardcoded,
+        hintText: context.l10n.filterCompany,
+        labelText: context.l10n.filterCompany,
       ),
     );
     final filterUsageType = SizedBox(
       width: Breakpoint.tablet,
       child: BaseTextFormField(
         controller: usageTypeController,
-        hintText: 'Filtrar tipo de uso'.hardcoded,
-        labelText: 'Filtrar tipo de uso'.hardcoded,
+        hintText: context.l10n.filterUsageType,
+        labelText: context.l10n.filterUsageType,
       ),
     );
 

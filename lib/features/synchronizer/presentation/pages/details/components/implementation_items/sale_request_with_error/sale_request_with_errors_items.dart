@@ -5,7 +5,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +44,7 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Empresa'.hardcoded,
+                          title: context.l10n.enterprise,
                           subTitle: item.enterprisePersonalizedCode,
                         ),
                       ),
@@ -55,7 +54,7 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                             provider.select((s) => s.contains(item.code)),
                           );
                           return BaseCheckBox(
-                            name: 'Selecionar pedido'.hardcoded,
+                            name: context.l10n.selectOrder,
                             enabled: isSelected,
                             onChanged: (_) =>
                                 ref.read(provider.notifier).select(item.code),
@@ -67,31 +66,31 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                     ],
                   ),
                   TitleAndSubTitle(
-                    title: 'Última leitura'.hardcoded,
+                    title: context.l10n.lastRead,
                     subTitle: item.creationDate.formatDate(
                       DateFormatType.ddMMyyyyHHmm,
                     ),
                   ),
                   TitleAndSubTitle(
-                    title: 'Criação do pedido'.hardcoded,
+                    title: context.l10n.orderCreation,
                     subTitle: item.cadasterDate.formatDate(
                       DateFormatType.ddMMyyyyHHmm,
                     ),
                   ),
                   if (item.commerceSite.isNotEmpty)
                     TitleAndSubTitle(
-                      title: 'Site'.hardcoded,
+                      title: context.l10n.website,
                       subTitle: item.commerceSite,
                     ),
                   if (item.saleRequestInvoiceCode.isNotEmpty)
                     TitleAndSubTitle(
-                      title: 'Fatura'.hardcoded,
+                      title: context.l10n.invoice,
                       subTitle: item.saleRequestInvoiceCode,
                       copyableSubtitle: true,
                     ),
                   if (item.saleRequestNumber.isNotEmpty)
                     TitleAndSubTitle(
-                      title: 'Pedido'.hardcoded,
+                      title: context.l10n.order,
                       subTitle: item.saleRequestNumber,
                       copyableSubtitle: true,
                     ),
@@ -100,7 +99,7 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                       children: [
                         if (i == 0 || i < item.details.length) const Divider(),
                         if (i == 0)
-                          Align(child: BaseText.error('Detalhes'.hardcoded)),
+                          Align(child: BaseText.error(context.l10n.details)),
                         BaseText.title(
                           item.details[i],
                           color: Colors.red,
@@ -118,16 +117,16 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                           if (i == 0)
                             Align(
                               child: BaseText.error(
-                                'Produtos não encontrados'.hardcoded,
+                                context.l10n.productsNotFound,
                               ),
                             ),
                           TitleAndSubTitle(
-                            title: 'Cód site'.hardcoded,
+                            title: context.l10n.websiteCode,
                             subTitle: item.productsNotFound[i].eCommerceCode,
                             copyableSubtitle: true,
                           ),
                           TitleAndSubTitle(
-                            title: 'Produto'.hardcoded,
+                            title: context.l10n.product,
                             subTitle: item.productsNotFound[i].name,
                             copyableSubtitle: true,
                           ),
@@ -143,7 +142,7 @@ class SaleRequestWithErrorsItems extends ConsumerWidget {
                                   context,
                                 );
                               },
-                              text: 'Associar'.hardcoded,
+                              text: context.l10n.link,
                             ),
                           ),
                         ],

@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/controllers/request_type/requ
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/insert_products/components/product_item.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +53,7 @@ class ProductsItems extends HookConsumerWidget {
     ) {
       if (product.Value == 0 && !requestTypeAllowChangePrice) {
         showToastMessage(
-          'O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço'
-              .hardcoded,
+          context.l10n.thisProductHasAZeroPriceAndTheSelectedOrder,
           type: ToastType.error,
         );
         selectedProductIndex.value = null;

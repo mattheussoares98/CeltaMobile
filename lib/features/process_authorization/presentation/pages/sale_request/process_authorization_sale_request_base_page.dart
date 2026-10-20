@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/sale_request/components/components.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,8 +84,8 @@ class _ProcessAuthorizationSaleRequestBasePageState
     );
 
     String title = widget.pageType == PageType.discount
-        ? 'Análise de descontos'.hardcoded
-        : 'Análise de lucratividade'.hardcoded;
+        ? context.l10n.discountAnalysis
+        : context.l10n.profitabilityAnalysis;
     if (personalizedCode != null) {
       title = "$title ($personalizedCode)";
     }
@@ -96,11 +96,11 @@ class _ProcessAuthorizationSaleRequestBasePageState
       usePadding: false,
       appBar: BaseAppBar(
         title: widget.pageType == PageType.discount
-            ? 'Análise de descontos'.hardcoded
-            : 'Análise de lucratividade'.hardcoded,
+            ? context.l10n.discountAnalysis
+            : context.l10n.profitabilityAnalysis,
         subtitle: OpenSaleRequestDetailsPageButton(
           processCode: widget.processCode,
-          title: 'Detalhes'.hardcoded,
+          title: context.l10n.details,
         ),
         actions: [OpenVotePageButton(processCode: widget.processCode)],
       ),
@@ -112,7 +112,7 @@ class _ProcessAuthorizationSaleRequestBasePageState
             final items = data.discount?.items ?? const [];
             if (items.isEmpty) {
               return EmptyPlaceholderWidget(
-                message: 'Nenhum desconto encontrado'.hardcoded,
+                message: context.l10n.noDiscountsFound,
               );
             }
             return DiscountAnalysisTable(
@@ -123,7 +123,7 @@ class _ProcessAuthorizationSaleRequestBasePageState
             final items = data.lucrativity?.items ?? const [];
             if (items.isEmpty) {
               return EmptyPlaceholderWidget(
-                message: 'Nenhuma lucratividade encontrada'.hardcoded,
+                message: context.l10n.noProfitabilityDataFound,
               );
             }
             return LucrativityAnalysisTable(

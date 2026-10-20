@@ -1,7 +1,6 @@
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class QuantityField extends StatelessWidget {
@@ -24,8 +23,8 @@ class QuantityField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseTextFormField(
-      labelText: 'Quantidade'.hardcoded,
-      hintText: 'Quantidade'.hardcoded,
+      labelText: context.l10n.quantity,
+      hintText: context.l10n.quantity,
       controller: quantityController,
       focusNode: quantityFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,

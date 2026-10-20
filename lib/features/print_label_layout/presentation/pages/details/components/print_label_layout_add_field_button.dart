@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/pages.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,7 @@ class PrintLabelLayoutAddFieldButton extends ConsumerWidget {
 
     if (layoutCode == 0 && selectedPrinter == null) {
       return PrimaryButton(
-        text: 'Selecione a impressora'.hardcoded,
+        text: context.l10n.selectThePrinter,
         icon: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.add,
           materialIcon: Icons.add,
@@ -35,7 +35,7 @@ class PrintLabelLayoutAddFieldButton extends ConsumerWidget {
       value: ref.watch(provider),
       tryAgain: () => ref.invalidate(provider),
       data: (options) => PrimaryButton(
-        text: 'Adicionar campo'.hardcoded,
+        text: context.l10n.addField,
         icon: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.add,
           materialIcon: Icons.add,

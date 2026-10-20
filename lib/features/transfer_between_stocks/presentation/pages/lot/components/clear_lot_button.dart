@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class ClearLotButton extends ConsumerWidget {
     );
 
     return PrimaryTextButton(
-      text: isDesktop ? 'Limpar lote'.hardcoded : '',
+      text: isDesktop ? context.l10n.clearBatch : '',
       color: Colors.red,
       platformIcon: PlatformIcon(
         cupertinoIcon: CupertinoIcons.delete,
@@ -33,9 +32,9 @@ class ClearLotButton extends ConsumerWidget {
           ? () async {
               final confirmed = await showAlertDialog(
                 context: context,
-                title: 'Limpar lote?'.hardcoded,
-                cancelActionText: 'Cancelar'.hardcoded,
-                defaultActionText: 'Limpar'.hardcoded,
+                title: context.l10n.clearBatch2,
+                cancelActionText: context.l10n.cancel,
+                defaultActionText: context.l10n.clear,
               );
 
               if (confirmed != true || !context.mounted) return;

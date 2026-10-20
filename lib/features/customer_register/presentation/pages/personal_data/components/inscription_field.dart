@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class InscriptionField extends StatelessWidget {
@@ -20,8 +20,8 @@ class InscriptionField extends StatelessWidget {
       controller: inscriptionController,
       focusNode: inscriptionFocusNode,
       maxLength: 9,
-      hintText: 'Inscrição estadual'.hardcoded,
-      labelText: 'Inscrição estadual'.hardcoded,
+      hintText: context.l10n.stateTaxRegistration,
+      labelText: context.l10n.stateTaxRegistration,
       keyboardType: const TextInputType.numberWithOptions(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onFieldSubmitted: (_) {

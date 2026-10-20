@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/helpers/helpers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,14 +26,16 @@ class SynchronizerPage extends ConsumerWidget {
             onLongPress: () =>
                 context.pushNamed(Routes.synchronizerManualExecution.name),
             child: BaseText.headline(
-              'Sincronismo'.hardcoded,
+              context.l10n.coreModulesSynchronizer,
               fontWeight: .bold,
             ),
           ),
         ),
         subtitle: ModuleIsFreeUntil.isFree(Modules.synchronizer)
             ? BaseText.caption(
-                'Grátis até ${ModuleIsFreeUntil.synchronizerLimit.formatDate()}',
+                context.l10n.freeUntilDate(
+                  ModuleIsFreeUntil.synchronizerLimit.formatDate(),
+                ),
                 fontStyle: .italic,
                 color: context.theme.primaryColor,
               )
@@ -49,7 +50,7 @@ class SynchronizerPage extends ConsumerWidget {
             (e) =>
                 e.count <= 0 &&
                 !e.errorKey.toLowerCase().contains(
-                  'pedidos de vendas com erros durante a leitura',
+                  context.l10n.salesOrdersReadErrors,
                   //! This error should always be displayed
                 ),
           );

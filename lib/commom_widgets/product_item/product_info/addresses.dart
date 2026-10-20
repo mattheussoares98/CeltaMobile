@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,7 @@ class Addresses extends StatelessWidget {
         (widget.product.StockByEnterpriseAssociateds?.length ?? 0) == 0) {
       return Center(
         child: BaseText.titleMedium(
-          'Não há endereços cadastrados para esse produto'.hardcoded,
+          context.l10n.noAddressesRegisteredForThisProduct,
         ),
       );
     }
@@ -27,7 +26,7 @@ class Addresses extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(bottom: Sizes.p8),
             child: BaseText.headline(
-              'Endereços'.hardcoded,
+              context.l10n.addresses,
               textAlign: TextAlign.center,
             ),
           ),
@@ -35,11 +34,11 @@ class Addresses extends StatelessWidget {
         SliverToBoxAdapter(
           child: Center(
             child: TitleAndSubTitle(
-              title: 'Endereço na empresa selecionada',
+              title: context.l10n.selectedCompanyAddress,
               subTitle:
                   widget.product.StorageAreaAddress == null ||
                       widget.product.StorageAreaAddress!.isEmpty
-                  ? 'Não há'
+                  ? context.l10n.none
                   : widget.product.StorageAreaAddress,
               subTitleStyle: context.theme.textTheme.titleSmall,
             ),
@@ -55,12 +54,12 @@ class Addresses extends StatelessWidget {
               children: [
                 const Divider(),
                 TitleAndSubTitle(
-                  title: 'Empresa'.hardcoded,
+                  title: context.l10n.enterprise,
                   subTitle: stock.Enterprise,
                 ),
                 TitleAndSubTitle(
-                  title: 'Endereço(s)'.hardcoded,
-                  subTitle: stock.StorageAreaAddress ?? 'Não há'.hardcoded,
+                  title: context.l10n.addressEs,
+                  subTitle: stock.StorageAreaAddress ?? context.l10n.none,
                 ),
               ],
             );

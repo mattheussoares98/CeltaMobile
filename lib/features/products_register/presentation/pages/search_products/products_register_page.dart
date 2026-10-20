@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/app_sizes.dart';
 import 'package:celta_inventario/features/products_register/presentation/pages/search_products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +15,7 @@ class SearchProductsPage extends ConsumerWidget {
       isScrollable: false,
       usePadding: false,
       appBar: BaseAppBar(
-        title: 'Cadastro de produtos'.hardcoded,
+        title: context.l10n.coreModulesProductsRegister,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: Padding(

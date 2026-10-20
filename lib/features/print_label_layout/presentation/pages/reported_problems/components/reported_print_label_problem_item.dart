@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/reported_problems/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -50,12 +49,12 @@ class ReportedPrintLabelProblemItem extends StatelessWidget {
 
                 final images = [
                   ReportedProblemImage(
-                    title: 'Foto da etiqueta'.hardcoded,
+                    title: context.l10n.labelPhoto,
                     url: report.physicalLabelUrl,
                     aspectRatio: physicalAspectRatio,
                   ),
                   ReportedProblemImage(
-                    title: 'Imagem do canvas'.hardcoded,
+                    title: context.l10n.canvasImage,
                     url: report.canvasPreviewUrl,
                     aspectRatio: canvasAspectRatio,
                     alignment: Alignment.topCenter,
@@ -76,34 +75,34 @@ class ReportedPrintLabelProblemItem extends StatelessWidget {
             ),
             gapH16,
             TitleAndSubTitle(
-              title: 'Empresa'.hardcoded,
+              title: context.l10n.enterprise,
               subTitle:
                   '${value.erpEnterpriseCode} - ${value.erpEnterpriseName}',
             ),
             gapH8,
             TitleAndSubTitle(
-              title: 'Usuário'.hardcoded,
+              title: context.l10n.username,
               subTitle: value.erpUserName,
             ),
             gapH8,
             TitleAndSubTitle(
-              title: 'Relato'.hardcoded,
+              title: context.l10n.issueReport,
               subTitle: value.description,
             ),
             gapH8,
             TitleAndSubTitle(
-              title: 'Leiaute'.hardcoded,
+              title: context.l10n.layout,
               subTitle: '${layout.code} - ${layout.name}',
             ),
             gapH8,
             TitleAndSubTitle(
-              title: 'Impressora'.hardcoded,
+              title: context.l10n.printer,
               subTitle: layout.labelPrinter?.description,
-              emptyMessage: 'Não informada'.hardcoded,
+              emptyMessage: context.l10n.notProvided3,
             ),
             gapH8,
             TitleAndSubTitle(
-              title: 'Ambiente'.hardcoded,
+              title: context.l10n.environment,
               subTitle:
                   '${environment.operatingSystem} ${environment.operatingSystemVersion} | ${environment.deviceModel} | App ${environment.appVersion}',
             ),

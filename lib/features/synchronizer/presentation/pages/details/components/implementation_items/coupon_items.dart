@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,7 +36,7 @@ class CouponItems extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Empresa'.hardcoded,
+                          title: context.l10n.enterprise,
                           subTitle: item.enterprisePersonalizedCode,
                         ),
                       ),
@@ -48,7 +47,7 @@ class CouponItems extends ConsumerWidget {
                               provider.select((s) => s.contains(item.code)),
                             );
                             return BaseCheckBox(
-                              name: 'Selecionar cupom'.hardcoded,
+                              name: context.l10n.selectReceipt,
                               enabled: isSelected,
                               onChanged: (_) =>
                                   ref.read(provider.notifier).select(item.code),
@@ -60,23 +59,23 @@ class CouponItems extends ConsumerWidget {
                     ],
                   ),
                   TitleAndSubTitle(
-                    title: 'Última leitura'.hardcoded,
+                    title: context.l10n.lastRead,
                     subTitle: item.creationDate.formatDate(
                       DateFormatType.ddMMyyyyHHmm,
                     ),
                   ),
                   TitleAndSubTitle(
-                    title: 'Dia da venda'.hardcoded,
+                    title: context.l10n.saleDate,
                     subTitle: item.deliveryDate.formatDate(
                       DateFormatType.ddMMyyyyHHmm,
                     ),
                   ),
                   TitleAndSubTitle(
-                    title: 'Cupom'.hardcoded,
+                    title: context.l10n.receipt,
                     subTitle: item.couponNumber,
                   ),
                   TitleAndSubTitle(
-                    title: 'PDV'.hardcoded,
+                    title: context.l10n.pos,
                     subTitle: item.cashRegisterNumber,
                   ),
                   for (var i = 0; i < item.details.length; i++)

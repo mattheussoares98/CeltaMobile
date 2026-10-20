@@ -7,7 +7,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/resource/resource.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -51,10 +50,9 @@ class SelectableActions extends ConsumerWidget {
       if (!canDelete) {
         showAlertDialog(
           context: context,
-          title: 'Atenção'.hardcoded,
+          title: context.l10n.attention2,
           content:
-              'Seu usuário não possui permissão para realizar esse procedimento'
-                  .hardcoded,
+              context.l10n.yourUserDoesNotHavePermissionToPerformThisAction,
         );
         return;
       }
@@ -74,13 +72,13 @@ class SelectableActions extends ConsumerWidget {
         case SynchronizerErrorDetailType.coupon:
           actions.addAll([
             SelectableAction(
-              label: 'Reler todos'.hardcoded,
+              label: context.l10n.rereadAll,
               onPressed: () => markToReadAgain(
                 selectableItems.expand((e) => e.selectableCodes).toSet(),
               ),
             ),
             SelectableAction(
-              label: 'Reler selecionados'.hardcoded,
+              label: context.l10n.rereadSelected,
               onPressed: hasSelected
                   ? () => markToReadAgain(selectedCodes)
                   : null,
@@ -89,13 +87,13 @@ class SelectableActions extends ConsumerWidget {
         case SynchronizerErrorDetailType.schedule:
           actions.addAll([
             SelectableAction(
-              label: 'Excluir todos'.hardcoded,
+              label: context.l10n.deleteAll,
               onPressed: () => deleteSelected(
                 selectableItems.expand((e) => e.selectableCodes).toSet(),
               ),
             ),
             SelectableAction(
-              label: 'Excluir selecionados'.hardcoded,
+              label: context.l10n.deleteSelected,
               onPressed: hasSelected
                   ? () => deleteSelected(selectedCodes)
                   : null,
@@ -104,19 +102,19 @@ class SelectableActions extends ConsumerWidget {
         case SynchronizerErrorDetailType.saleRequestWithError:
           actions.addAll([
             SelectableAction(
-              label: 'Reler todos'.hardcoded,
+              label: context.l10n.rereadAll,
               onPressed: () => markToReadAgain(
                 selectableItems.expand((e) => e.selectableCodes).toSet(),
               ),
             ),
             SelectableAction(
-              label: 'Reler selecionados'.hardcoded,
+              label: context.l10n.rereadSelected,
               onPressed: hasSelected
                   ? () => markToReadAgain(selectedCodes)
                   : null,
             ),
             SelectableAction(
-              label: 'Excluir selecionados'.hardcoded,
+              label: context.l10n.deleteSelected,
               onPressed: hasSelected && canDelete
                   ? () => deleteSelected(selectedCodes)
                   : null,
@@ -157,7 +155,7 @@ class SelectableActions extends ConsumerWidget {
           if (group != null && group.errors.isNotEmpty) {
             final ignoreButtons = [
               SelectableAction(
-                label: 'Ignorar todos'.hardcoded,
+                label: context.l10n.ignoreAll,
                 onPressed: () => notifier.markProductsToIgnoreError(
                   allCodesParams,
                   errorKey,
@@ -165,7 +163,7 @@ class SelectableActions extends ConsumerWidget {
                 color: Colors.red,
               ),
               SelectableAction(
-                label: 'Ignorar selecionados'.hardcoded,
+                label: context.l10n.ignoreSelected,
                 onPressed: hasSelected
                     ? () => notifier.markProductsToIgnoreError(
                         selectedCodesParams,
@@ -177,12 +175,12 @@ class SelectableActions extends ConsumerWidget {
             ];
             final sendProductsButtons = [
               SelectableAction(
-                label: 'Reenviar todos'.hardcoded,
+                label: context.l10n.resendAll,
                 onPressed: () =>
                     notifier.markProductsToSendAgain(allCodesParams, errorKey),
               ),
               SelectableAction(
-                label: 'Reenviar selecionados'.hardcoded,
+                label: context.l10n.resendSelected,
                 onPressed: hasSelected
                     ? () => notifier.markProductsToSendAgain(
                         selectedCodesParams,
@@ -197,14 +195,14 @@ class SelectableActions extends ConsumerWidget {
               case EcProductWithErrorType.markedToSendAgain:
                 actions.addAll([
                   SelectableAction(
-                    label: 'Desmarcar todos'.hardcoded,
+                    label: context.l10n.unmarkAll,
                     onPressed: () => notifier.unmarkProductsToSendAgain(
                       allCodesParams,
                       errorKey,
                     ),
                   ),
                   SelectableAction(
-                    label: 'Desmarcar selecionados'.hardcoded,
+                    label: context.l10n.unmarkSelected,
                     onPressed: hasSelected
                         ? () => notifier.unmarkProductsToSendAgain(
                             selectedCodesParams,
@@ -224,13 +222,13 @@ class SelectableActions extends ConsumerWidget {
           }
           actions.addAll([
             SelectableAction(
-              label: 'Desmarcar todos'.hardcoded,
+              label: context.l10n.unmarkAll,
               onPressed: () => unmarkSaleRequests(
                 selectableItems.expand((e) => e.selectableCodes).toSet(),
               ),
             ),
             SelectableAction(
-              label: 'Desmarcar selecionados'.hardcoded,
+              label: context.l10n.unmarkSelected,
               onPressed: hasSelected
                   ? () => unmarkSaleRequests(selectedCodes)
                   : null,
@@ -243,8 +241,8 @@ class SelectableActions extends ConsumerWidget {
           actions.addAll([
             SelectableAction(
               label: areMarked
-                  ? 'Desmarcar envio (todos)'
-                  : 'Reenviar todos'.hardcoded,
+                  ? context.l10n.unmarkSendingAll
+                  : context.l10n.resendAll,
               onPressed: () => notifier.markSendDataToSendAgain(
                 sendDataType: type,
                 codes: selectableItems
@@ -257,8 +255,8 @@ class SelectableActions extends ConsumerWidget {
             ),
             SelectableAction(
               label: areMarked
-                  ? 'Desmarcar envio (selecionados)'
-                  : 'Reenviar selecionados'.hardcoded,
+                  ? context.l10n.unmarkSendingSelected
+                  : context.l10n.resendSelected,
               onPressed: hasSelected
                   ? () => notifier.markSendDataToSendAgain(
                       sendDataType: type,
@@ -273,13 +271,13 @@ class SelectableActions extends ConsumerWidget {
           if (errorKey.toLowerCase().contains('marcadas') == false) {
             actions.addAll([
               SelectableAction(
-                label: 'Reler todas'.hardcoded,
+                label: context.l10n.rereadAll2,
                 onPressed: () => markToReadAgain(
                   selectableItems.expand((e) => e.selectableCodes).toSet(),
                 ),
               ),
               SelectableAction(
-                label: 'Reler selecionadas'.hardcoded,
+                label: context.l10n.rereadSelected2,
                 onPressed: hasSelected
                     ? () => markToReadAgain(selectedCodes)
                     : null,
@@ -290,13 +288,13 @@ class SelectableActions extends ConsumerWidget {
           if (errorKey.toLowerCase().contains('marcados') == false) {
             actions.addAll([
               SelectableAction(
-                label: 'Reler todos'.hardcoded,
+                label: context.l10n.rereadAll,
                 onPressed: () => markToReadAgain(
                   selectableItems.expand((e) => e.selectableCodes).toSet(),
                 ),
               ),
               SelectableAction(
-                label: 'Reler selecionados'.hardcoded,
+                label: context.l10n.rereadSelected,
                 onPressed: hasSelected
                     ? () => markToReadAgain(selectedCodes)
                     : null,

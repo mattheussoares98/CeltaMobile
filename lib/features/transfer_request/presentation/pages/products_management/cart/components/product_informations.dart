@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -19,27 +18,27 @@ class ProductInformations extends StatelessWidget {
           titleStyle: context.theme.textTheme.titleMedium,
           subTitleStyle: context.theme.textTheme.bodyMedium,
         ),
-        TitleAndSubTitle(title: 'PLU'.hardcoded, subTitle: item.product.PLU),
+        TitleAndSubTitle(title: context.l10n.plu, subTitle: item.product.PLU),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Flexible(
               child: _ColumnTitleAndValue(
-                title: 'Qtd'.hardcoded,
+                title: context.l10n.quantityShort,
                 value: item.quantity,
                 isPrice: false,
               ),
             ),
             Expanded(
               child: _ColumnTitleAndValue(
-                title: 'Preço'.hardcoded,
+                title: context.l10n.price,
                 value: item.value,
                 isPrice: true,
               ),
             ),
             Flexible(
               child: _ColumnTitleAndValue(
-                title: 'Total'.hardcoded,
+                title: context.l10n.total,
                 value: item.quantity * item.value,
                 isPrice: true,
               ),
@@ -76,7 +75,7 @@ class _ColumnTitleAndValue extends StatelessWidget {
             children: [
               if (isPrice)
                 TextSpan(
-                  text: "R\$ ".hardcoded,
+                  text: "R\$ ",
                   style: context.theme.textTheme.bodySmall?.copyWith(
                     fontSize: 10,
                   ),

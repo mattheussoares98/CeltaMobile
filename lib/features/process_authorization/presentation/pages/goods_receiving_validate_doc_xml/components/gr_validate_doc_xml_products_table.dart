@@ -1,10 +1,10 @@
+import 'package:celta_inventario/features/receipt/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/goods_receiving_validate_doc_xml/components/components.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -80,8 +80,8 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
       return Center(
         child: BaseText(
           areJudgedItems
-              ? 'Não há produtos julgados'.hardcoded
-              : 'Todos produtos já foram julgados'.hardcoded,
+              ? context.l10n.noReviewedProducts
+              : context.l10n.allProductsHaveAlreadyBeenReviewed,
         ),
       );
     }
@@ -96,7 +96,9 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
       onTapRow: processIsEntirelyJudged ? null : onTapItem,
       columns: [
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: areJudgedItems ? 'Status/Produto' : 'Produto'.hardcoded,
+          headerTitle: areJudgedItems
+              ? context.l10n.statusProduct
+              : context.l10n.product,
           minWidth: 200.0,
           cellBuilder: (item) {
             final texts = [
@@ -131,7 +133,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
                   if (areJudgedItems)
                     TextSpan(
                       text:
-                          "${item.judgementStatusRequestForFiscalNote.label} ",
+                          "${context.l10n.productJudgmentStatusName(item.judgementStatusRequestForFiscalNote)} ",
                       style: const TextStyle(color: Colors.orange),
                     ),
                   ...texts.map(_buildTextSpan),
@@ -143,13 +145,13 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.productString,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'CFOP'.hardcoded,
+          headerTitle: context.l10n.cfop,
           minWidth: 45,
           cellBuilder: (item) => BaseText(item.fiscalCode),
           sortValueMapper: (item) => item.fiscalCode,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Qtd NF'.hardcoded,
+          headerTitle: context.l10n.invoiceQty,
           minWidth: 55,
           cellBuilder: (item) => BaseText(
             item.quantityOfXml.toString().toBrazilianNumber(3, true),
@@ -164,7 +166,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.quantityOfXml,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Qtd ped'.hardcoded,
+          headerTitle: context.l10n.orderQty,
           minWidth: 60,
           cellBuilder: (item) => BaseText(
             item.availableQuantityInAssociatesBuyRequests
@@ -182,7 +184,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
               item.availableQuantityInAssociatesBuyRequests,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Qtd outr ped'.hardcoded,
+          headerTitle: context.l10n.otherOrderQty,
           minWidth: 95,
           cellBuilder: (item) => BaseText(
             item.availableQuantityInAnotherBuyRequests
@@ -199,7 +201,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.availableQuantityInAnotherBuyRequests,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Dif qtd'.hardcoded,
+          headerTitle: context.l10n.qtyDiff,
           minWidth: 60,
           cellBuilder: (item) => BaseText(
             item.divergenceQuantityRequestForFiscalNote
@@ -224,7 +226,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
               item.divergenceQuantityRequestForFiscalNote,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Vl líq NF'.hardcoded,
+          headerTitle: context.l10n.invoiceNetAmount,
           minWidth: 90,
           isMoney: true,
           cellBuilder: (item) =>
@@ -239,7 +241,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.unitLiquidValue,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Vl líq ped'.hardcoded,
+          headerTitle: context.l10n.orderNetAmount,
           minWidth: 90,
           isMoney: true,
           cellBuilder: (item) => BaseText(
@@ -255,7 +257,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.unitLiquidValueOnBuyRequests,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Dif vl líq'.hardcoded,
+          headerTitle: context.l10n.netAmountDiff,
           minWidth: 80,
           isMoney: true,
           cellBuilder: (item) => BaseText(
@@ -278,7 +280,7 @@ class GRValidateDocXmlProductsTable extends ConsumerWidget {
           sortValueMapper: (item) => item.divergencyUnitLiquidValue,
         ),
         ScrollableTableColumnSpec<BSFGRProductEntity>(
-          headerTitle: 'Tot dif vl líq'.hardcoded,
+          headerTitle: context.l10n.totalNetAmountDiff,
           minWidth: 100,
           isMoney: true,
           cellBuilder: (item) => BaseText(

@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +35,7 @@ class _EmailFieldState extends ConsumerState<EmailField> {
     if (currentEmails?.any((e) => e == emailController.text) ?? false) {
       if (!mounted) return;
       showToastMessage(
-        'Esse e-mail já foi adicionado'.hardcoded,
+        context.l10n.thisEmailHasAlreadyBeenAdded,
         type: ToastType.error,
       );
       return;
@@ -60,8 +59,8 @@ class _EmailFieldState extends ConsumerState<EmailField> {
           child: BaseTextFormField(
             controller: emailController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            hintText: 'E-mail'.hardcoded,
-            labelText: 'E-mail'.hardcoded,
+            hintText: context.l10n.email,
+            labelText: context.l10n.email,
             keyboardType: TextInputType.emailAddress,
             onFieldSubmitted: (_) => insertEmail(),
             suffixIcon: IconButton(
@@ -79,7 +78,7 @@ class _EmailFieldState extends ConsumerState<EmailField> {
           ),
         ),
         gapH32,
-        PrimaryButton(text: 'Inserir e-mail'.hardcoded, onPressed: insertEmail),
+        PrimaryButton(text: context.l10n.enterEmail, onPressed: insertEmail),
       ],
     );
   }

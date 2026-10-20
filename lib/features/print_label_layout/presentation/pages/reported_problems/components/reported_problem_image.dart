@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +31,9 @@ class ReportedProblemImage extends StatelessWidget {
             decoration: BoxDecoration(
               color: context.theme.colorScheme.surface,
               borderRadius: BorderRadius.circular(Sizes.p8),
-              border: Border.all(color: context.theme.colorScheme.outlineVariant),
+              border: Border.all(
+                color: context.theme.colorScheme.outlineVariant,
+              ),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Sizes.p8),
@@ -40,11 +41,8 @@ class ReportedProblemImage extends StatelessWidget {
                 url,
                 fit: fit,
                 alignment: alignment,
-                errorBuilder: (_, _, _) => Center(
-                  child: BaseText(
-                    'Não foi possível carregar a imagem'.hardcoded,
-                  ),
-                ),
+                errorBuilder: (_, _, _) =>
+                    Center(child: BaseText(context.l10n.unableToLoadTheImage)),
               ),
             ),
           ),

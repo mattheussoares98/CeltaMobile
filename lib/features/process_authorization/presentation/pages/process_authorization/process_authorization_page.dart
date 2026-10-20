@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/process_authorization/domain/entities/entities.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/process_authorization/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,13 +29,12 @@ class _ProcessAuthorizationPageState
     ),
   ];
 
-  final appBarTitles = [
-    'Aguardando autorização'.hardcoded,
-    'Não autorizados'.hardcoded,
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final appBarTitles = [
+      context.l10n.awaitingAuthorization,
+      context.l10n.unauthorized2,
+    ];
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: judgmentsStateControllerProvider,
@@ -84,7 +83,7 @@ class _ProcessAuthorizationPageState
                         cupertinoIcon: CupertinoIcons.hand_raised,
                         materialIcon: Icons.back_hand_outlined,
                       ),
-                label: 'Aguardando autorização'.hardcoded,
+                label: context.l10n.awaitingAuthorization,
               ),
               BaseBottomNavigationBarItem(
                 badgeLabel: notAuthorizedQuantity?.toString(),
@@ -97,7 +96,7 @@ class _ProcessAuthorizationPageState
                         cupertinoIcon: CupertinoIcons.padlock,
                         materialIcon: Icons.lock_outline,
                       ),
-                label: 'Não autorizados'.hardcoded,
+                label: context.l10n.unauthorized2,
               ),
             ],
             currentIndex: index,

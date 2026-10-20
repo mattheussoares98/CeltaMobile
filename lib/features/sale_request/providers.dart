@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/providers.dart';
 import 'package:celta_inventario/core/providers/hive/hive.dart';
 import 'package:celta_inventario/core/providers/http/http.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
@@ -48,12 +49,16 @@ IEcSaleRequestsRepository ecSaleRequestsRepository(Ref ref) {
 
 @riverpod
 IBSFGeneratePdfDatasource bSFGeneratePdfDatasource(Ref ref) {
-  return BSFGeneratePdfDatasource();
+  return BSFGeneratePdfDatasource(
+    translations: ref.watch(appLocalizationsProvider),
+  );
 }
 
 @riverpod
 IPrintBSFSaleRequestDatasource printBsfSaleRequestDatasource(Ref ref) {
-  return PrintBSFSaleRequestDatasource();
+  return PrintBSFSaleRequestDatasource(
+    translations: ref.watch(appLocalizationsProvider),
+  );
 }
 
 @riverpod

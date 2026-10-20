@@ -3,7 +3,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -112,14 +111,12 @@ class _ProductItem extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TitleAndSubTitle(
-              title: 'Validade'.hardcoded,
-              subTitle: product.DataValidade_ProcRecebDocProEmb?.formatDate(
-                
-              ),
-              emptyMessage: 'Sem validade'.hardcoded,
+              title: context.l10n.expiration,
+              subTitle: product.DataValidade_ProcRecebDocProEmb?.formatDate(),
+              emptyMessage: context.l10n.noExpirationDate,
             ),
             TitleAndSubTitle(
-              title: 'Quantidade contada'.hardcoded,
+              title: context.l10n.countedQuantity,
               titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
                 color: context.theme.colorScheme.secondary,
                 fontStyle: FontStyle.italic,
@@ -129,7 +126,7 @@ class _ProductItem extends ConsumerWidget {
                 fontStyle: FontStyle.italic,
               ),
               subTitle: product.Quantidade_ProcRecebDocProEmb,
-              emptyMessage: 'Sem quantidade contada'.hardcoded,
+              emptyMessage: context.l10n.noCountedQuantity,
             ),
           ],
         ),

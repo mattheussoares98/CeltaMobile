@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
@@ -45,8 +46,8 @@ class PrintLabelProblemReportImageService
     }
 
     if (encoded == null || encoded.lengthInBytes > maximumByteLength) {
-      throw const PrintLabelProblemReportImageException(
-        'The physical photo could not be converted within the upload limit.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelPhotoUploadTooLarge,
       );
     }
 
@@ -63,8 +64,8 @@ class PrintLabelProblemReportImageService
       () => _encodeCanvas(decoded.$1, decoded.$2, decoded.$3),
     );
     if (encoded.lengthInBytes > maximumByteLength) {
-      throw const PrintLabelProblemReportImageException(
-        'The canvas preview exceeds the upload limit.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelCanvasUploadTooLarge,
       );
     }
 
@@ -148,8 +149,8 @@ class PrintLabelProblemReportImageService
         format: ui.ImageByteFormat.rawStraightRgba,
       );
       if (data == null) {
-        throw const PrintLabelProblemReportImageException(
-          'The canvas preview pixels could not be decoded.',
+        throw const PrintLabelProblemReportImageException.localized(
+          CoreFailure.labelCanvasDecodeFailed,
         );
       }
 
@@ -160,8 +161,8 @@ class PrintLabelProblemReportImageService
       );
     } catch (error) {
       if (error is PrintLabelProblemReportImageException) rethrow;
-      throw const PrintLabelProblemReportImageException(
-        'The canvas preview is not a readable image.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelCanvasUnreadable,
       );
     } finally {
       decoded?.dispose();
@@ -181,8 +182,8 @@ class PrintLabelProblemReportImageService
     final encoded = image.encodeWebP(source);
     final encodedCanvas = image.decodeWebP(encoded);
     if (encodedCanvas == null) {
-      throw const PrintLabelProblemReportImageException(
-        'The encoded canvas preview is not a readable WebP image.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelCanvasWebpUnreadable,
       );
     }
 
@@ -196,10 +197,10 @@ class PrintLabelProblemReportImageService
           height: encodedCanvas.height,
         );
     if (!hasVisibleContent) {
-      throw PrintLabelProblemReportImageException(
-        'The encoded canvas preview has no visible content '
-        '(${encodedCanvas.width} x ${encodedCanvas.height}, '
-        '${encoded.lengthInBytes} bytes).',
+      throw PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelCanvasBlank,
+        details:
+            '(${encodedCanvas.width} x ${encodedCanvas.height}, ${encoded.lengthInBytes} bytes).',
       );
     }
 
@@ -209,8 +210,8 @@ class PrintLabelProblemReportImageService
   static (int, int) _readWebpDimensions(Uint8List bytes) {
     final info = image.WebPDecoder().startDecode(bytes);
     if (info == null || info.width <= 0 || info.height <= 0) {
-      throw const PrintLabelProblemReportImageException(
-        'The converted image is not a readable WebP file.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelImageWebpUnreadable,
       );
     }
     return (info.width, info.height);
@@ -219,8 +220,8 @@ class PrintLabelProblemReportImageService
   static Future<void> _requireReadableFile(String path) async {
     final file = File(path);
     if (!await file.exists() || await file.length() == 0) {
-      throw const PrintLabelProblemReportImageException(
-        'The source image file is missing or empty.',
+      throw const PrintLabelProblemReportImageException.localized(
+        CoreFailure.labelImageFileMissing,
       );
     }
   }

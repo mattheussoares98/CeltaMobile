@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/expedition_conference/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +27,7 @@ class SelectProductModalPage extends ConsumerWidget {
         slivers: [
           SliverToBoxAdapter(
             child: BaseText.titleMedium(
-              'Selecione o produto que deseja confirmar'.hardcoded,
+              context.l10n.selectTheProductToConfirm,
               textAlign: TextAlign.center,
             ),
           ),
@@ -84,7 +84,10 @@ class _ProductItem extends ConsumerWidget {
             child: Column(
               children: [
                 TitleAndSubTitle(title: null, subTitle: product.Name),
-                TitleAndSubTitle(title: 'PLU'.hardcoded, subTitle: product.PLU),
+                TitleAndSubTitle(
+                  title: context.l10n.plu,
+                  subTitle: product.PLU,
+                ),
               ],
             ),
           ),

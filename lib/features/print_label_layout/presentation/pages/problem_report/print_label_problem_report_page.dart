@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:io';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
@@ -7,7 +8,6 @@ import 'package:celta_inventario/features/print_label_layout/presentation/models
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/problem_report/components/components.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/services/services.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +51,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
 
       await showAlertDialog(
         context: context,
-        title: 'Falha ao capturar o canvas'.hardcoded,
+        title: context.l10n.failedToCaptureTheCanvas,
         contentWidget: SingleChildScrollView(
           child: SelectableText(diagnostics),
         ),
@@ -61,11 +61,11 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
               await Clipboard.setData(ClipboardData(text: diagnostics));
               if (context.mounted) Navigator.of(context).pop();
             },
-            child: Text('Copiar diagnóstico'.hardcoded),
+            child: Text(context.l10n.copyDiagnostics),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('Fechar'.hardcoded),
+            child: Text(context.l10n.close),
           ),
         ],
       );
@@ -95,7 +95,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
 
     return BaseScaffold(
       isScrollable: false,
-      appBar: BaseAppBar(title: 'Relatar problema de impressão'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.reportAPrintingIssue),
       padding: const EdgeInsets.all(Sizes.p8),
       body: AsyncValueWidget(
         value: ref.watch(provider),
@@ -107,7 +107,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
               return Column(
                 children: [
                   BaseText.titleLarge(
-                    'Confira o leiaute salvo antes de fotografar.'.hardcoded,
+                    context.l10n.checkTheSavedLayoutBeforeTakingAPhoto,
                   ),
                   gapH8,
                   Expanded(
@@ -122,7 +122,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                     width: double.infinity,
                     child: PrimaryButton(
                       key: const Key('start-print-label-report-capture'),
-                      text: 'Continuar'.hardcoded,
+                      text: context.l10n.continueAction,
                       onPressed: () async {
                         try {
                           final previewPath = await capturePreview();
@@ -164,7 +164,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
                   children: [
                     const LoadingWidget(),
                     gapH8,
-                    BaseText.bodyMedium('Enviando relatório...'.hardcoded),
+                    BaseText.bodyMedium(context.l10n.sendingReport),
                   ],
                 ),
               );
@@ -174,7 +174,7 @@ class PrintLabelProblemReportPage extends HookConsumerWidget {
               return PrintLabelProblemReportFailure(layoutCode: labelCode);
             case PrintLabelProblemReportStage.cancelled:
               return Center(
-                child: BaseText.bodyMedium('Relatório cancelado.'.hardcoded),
+                child: BaseText.bodyMedium(context.l10n.reportCanceled),
               );
           }
         },

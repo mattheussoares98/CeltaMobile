@@ -1,8 +1,7 @@
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,8 +35,8 @@ class AddInLot extends ConsumerWidget {
             onFieldSubmitted: (_) {
               addInLot();
             },
-            hintText: "Quantidade".hardcoded,
-            labelText: "Quantidade".hardcoded,
+            hintText: context.l10n.quantity,
+            labelText: context.l10n.quantity,
             validator: FormValidators.compose([
               NonEmptyValidator(translations: context.l10n),
               NumberValidator(
@@ -52,8 +51,8 @@ class AddInLot extends ConsumerWidget {
         Expanded(
           child: PrimaryButton(
             text: productIsAlreadyInLot
-                ? 'Alterar'.hardcoded
-                : 'Lote'.hardcoded,
+                ? context.l10n.change
+                : context.l10n.batch,
             icon: mediaSize.width < 300
                 ? null
                 : const PlatformIcon(

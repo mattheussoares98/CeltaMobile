@@ -1,9 +1,9 @@
+import 'package:celta_inventario/localization/presentation/widgets/widgets.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/settings/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,9 @@ class SettingsPage extends StatelessWidget {
     return BaseScaffold(
       body: Column(
         children: [
-          BaseText.headline('Configurações'.hardcoded),
+          BaseText.headline(context.l10n.settings),
+          gapH16,
+          const LanguageSelector(),
           gapH16,
           Consumer(
             builder: (_, ref, _) {
@@ -27,7 +29,7 @@ class SettingsPage extends StatelessWidget {
               if (hasError) {
                 return Center(
                   child: PrimaryTextButton(
-                    text: 'Recarregar configurações'.hardcoded,
+                    text: context.l10n.reloadSettings,
                     onPressed: () =>
                         ref.invalidate(appSettingsStateControllerProvider),
                   ),

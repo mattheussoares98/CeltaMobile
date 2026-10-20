@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +43,7 @@ class CashierMovementItems extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TitleAndSubTitle(
-                          title: 'Empresa'.hardcoded,
+                          title: context.l10n.enterprise,
                           subTitle: cashierMovement.enterprisePersonalizedCode,
                         ),
                       ),
@@ -57,7 +56,7 @@ class CashierMovementItems extends ConsumerWidget {
                               ),
                             );
                             return BaseCheckBox(
-                              name: 'Selecionar'.hardcoded,
+                              name: context.l10n.select2,
                               enabled: isSelected,
                               onChanged: (_) => ref
                                   .read(provider.notifier)
@@ -70,23 +69,23 @@ class CashierMovementItems extends ConsumerWidget {
                     ],
                   ),
                   TitleAndSubTitle(
-                    title: 'Caixa'.hardcoded,
+                    title: context.l10n.register,
                     subTitle: cashierMovement.cashRegisterPersonalizedCode,
                   ),
                   TitleAndSubTitle(
-                    title: 'Criação'.hardcoded,
+                    title: context.l10n.creation,
                     subTitle: cashierMovement.creationDate.formatDate(
                       .ddMMyyyyHHmm,
                     ),
                   ),
                   TitleAndSubTitle(
-                    title: 'Abertura/Fechamento'.hardcoded,
+                    title: context.l10n.openingClosing,
                     subTitle: cashierMovement.openOrCloseDate.formatDate(
                       .ddMMyyyyHHmm,
                     ),
                   ),
                   TitleAndSubTitle(
-                    title: 'Descrição'.hardcoded,
+                    title: context.l10n.description,
                     subTitle: null,
                     emptyMessage: cashierMovement.description,
                   ),

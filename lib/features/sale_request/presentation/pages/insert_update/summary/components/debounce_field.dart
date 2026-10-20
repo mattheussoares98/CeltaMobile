@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -61,11 +61,9 @@ class _DebounceFieldState extends ConsumerState<DebounceField> {
     return BaseTextFormField(
       controller: _controller,
       labelText: isInstructions
-          ? 'Instruções'.hardcoded
-          : 'Observações'.hardcoded,
-      hintText: isInstructions
-          ? 'Instruções'.hardcoded
-          : 'Observações'.hardcoded,
+          ? context.l10n.instructions
+          : context.l10n.notes,
+      hintText: isInstructions ? context.l10n.instructions : context.l10n.notes,
       maxLength: 400,
       maxLines: 5,
       textInputAction: isInstructions

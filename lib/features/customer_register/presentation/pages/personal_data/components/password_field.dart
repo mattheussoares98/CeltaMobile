@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class PasswordField extends StatelessWidget {
@@ -21,8 +20,8 @@ class PasswordField extends StatelessWidget {
     return BaseTextFormField(
       controller: passwordController,
       maxLength: 20,
-      hintText: 'Senha'.hardcoded,
-      labelText: 'Senha'.hardcoded,
+      hintText: context.l10n.password,
+      labelText: context.l10n.password,
       obscureText: true,
       focusNode: passwordFocusNode,
       onFieldSubmitted: (_) {

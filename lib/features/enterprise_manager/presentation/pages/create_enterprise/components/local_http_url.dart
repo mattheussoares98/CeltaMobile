@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class LocalHttpUrl extends StatelessWidget {
@@ -30,8 +29,8 @@ class LocalHttpUrl extends StatelessWidget {
       onFieldSubmitted: (_) {
         localHttpsUrlFocusNode.requestFocus();
       },
-      labelText: "HTTP local".hardcoded,
-      hintText: "HTTP local".hardcoded,
+      labelText: context.l10n.localHttp,
+      hintText: context.l10n.localHttp,
       suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
       validator: FormValidators.compose([
         UrlValidator(translations: context.l10n, allowEmptyValue: true),

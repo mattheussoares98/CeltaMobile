@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/presentation/widgets/widgets.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -92,6 +93,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const CeltaImage(),
+                  const LanguageSelector(),
+                  gapH16,
                   EnterpriseField(
                     enterpriseController: enterpriseController,
                     userFocusNode: userFocusNode,

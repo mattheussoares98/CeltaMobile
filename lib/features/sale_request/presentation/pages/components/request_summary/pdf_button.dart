@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +39,7 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
 
       if (bytes == null) {
         showToastMessage(
-          'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
+          context.l10n.unableToGenerateThePdfTryAgain,
           type: ToastType.error,
         );
       } else {
@@ -65,7 +65,7 @@ class _PdfButtonState extends ConsumerState<PdfButton> {
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      text: 'PDF'.hardcoded,
+      text: context.l10n.pdf,
       icon: _isLoading
           ? const LoadingWidget()
           : const PlatformIcon(

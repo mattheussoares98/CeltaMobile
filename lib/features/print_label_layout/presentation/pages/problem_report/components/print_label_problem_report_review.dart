@@ -1,8 +1,9 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -27,17 +28,19 @@ class PrintLabelProblemReportReview extends HookConsumerWidget {
         key: const Key('print-label-problem-report-review'),
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          BaseText.titleLarge('Detalhes do problema'.hardcoded),
+          BaseText.titleLarge(context.l10n.issueDetails),
           gapH8,
           BaseDropDown<PrintLabelProblemReportCategory>(
             key: const Key('print-label-problem-report-category'),
-            label: 'Categoria'.hardcoded,
+            label: context.l10n.category,
             selectedItem: state.category,
             items: PrintLabelProblemReportCategory.values
                 .map(
                   (category) => DropdownMenuItem(
                     value: category,
-                    child: BaseText(category.label.hardcoded),
+                    child: BaseText(
+                      context.l10n.problemReportCategoryName(category),
+                    ),
                   ),
                 )
                 .toList(),
@@ -47,9 +50,9 @@ class PrintLabelProblemReportReview extends HookConsumerWidget {
           BaseTextFormField(
             key: const Key('print-label-problem-report-description'),
             controller: descriptionController,
-            labelText: 'Descrição'.hardcoded,
-            hintText: 'Explique o resultado esperado e o problema encontrado'
-                .hardcoded,
+            labelText: context.l10n.description,
+            hintText:
+                context.l10n.describeTheExpectedResultAndTheIssueEncountered,
             maxLength: 1950,
             maxLines: 5,
             onChanged: controller.updateDescription,
@@ -57,9 +60,7 @@ class PrintLabelProblemReportReview extends HookConsumerWidget {
           gapH8,
           BaseCheckBox(
             key: const Key('print-label-problem-report-privacy-consent'),
-            name:
-                'Autorizo o envio das duas imagens, leiaute salvo, meu nome, empresa e dados seguros do app/dispositivo ao suporte técnico'
-                    .hardcoded,
+            name: context.l10n.iAuthorizeSendingBothImagesTheSavedLayoutMyName,
             enabled: state.privacyConsentAccepted,
             onChanged: (value) =>
                 controller.updatePrivacyConsent(value ?? false),
@@ -67,18 +68,18 @@ class PrintLabelProblemReportReview extends HookConsumerWidget {
           if (state.error != null) ...[
             gapH8,
             BaseText.bodyMedium(
-              state.error.toString(),
+              parseErrorMessage(state.error, translations: context.l10n),
               color: context.theme.colorScheme.error,
             ),
           ],
           gapH16,
           PrimaryButton(
             key: const Key('submit-print-label-problem-report'),
-            text: 'Enviar relatório'.hardcoded,
+            text: context.l10n.sendReport,
             onPressed: controller.submit,
           ),
           PrimaryTextButton(
-            text: 'Refazer capturas'.hardcoded,
+            text: context.l10n.retakeCaptures,
             onPressed: controller.retakeImages,
           ),
         ],

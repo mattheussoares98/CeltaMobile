@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:async';
 import 'dart:developer' as console;
 
@@ -9,7 +10,6 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -32,8 +32,8 @@ class SynchronizerDetailsStateController
     );
 
     if (canAccess.value != true) {
-      throw AppException(
-        'Usuário sem permissão para acessar este módulo'.hardcoded,
+      throw AppException.localized(
+        CoreFailure.userDoesNotHavePermissionToAccessThisModule,
       );
     }
 

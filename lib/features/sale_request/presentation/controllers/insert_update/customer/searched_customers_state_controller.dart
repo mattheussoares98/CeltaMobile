@@ -1,10 +1,12 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/localization/providers.dart';
 import 'package:celta_inventario/core/domain/entities/customer/customer.dart';
 import 'package:celta_inventario/core/providers/customer/customer.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/presentation/models/models.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,6 +15,8 @@ part 'searched_customers_state_controller.g.dart';
 @Riverpod(dependencies: [saleRequestArgs, InsertUpdateStateController])
 class SearchedCustomersStateController
     extends _$SearchedCustomersStateController {
+  AppLocalizations get _l10n => ref.read(appLocalizationsProvider);
+
   @override
   FutureOr<SearchedCustomersState> build() async {
     final insertUpdateState = await ref.read(
@@ -66,7 +70,7 @@ class SearchedCustomersStateController
             );
 
         if (customers.isEmpty) {
-          errorMessage = "Nenhum cliente foi encontrado".hardcoded;
+          errorMessage = _l10n.noCustomersFound;
         }
 
         final matchingCustomer = selectedCustomer != null
@@ -90,7 +94,7 @@ class SearchedCustomersStateController
           searchByPersonalizedCode: searchByPersonalizedCode,
         );
       } catch (e) {
-        errorMessage = e.toString();
+        errorMessage = parseErrorMessage(e, translations: _l10n);
 
         return SearchedCustomersState(
           customers: [?selectedCustomer],

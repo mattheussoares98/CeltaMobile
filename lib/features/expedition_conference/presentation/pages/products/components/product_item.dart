@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/expedition_conference/domain/entities/entities.dart';
 
@@ -30,11 +29,11 @@ class ProductItem extends ConsumerWidget {
           children: [
             TitleAndSubTitle(title: null, subTitle: product.Name),
             TitleAndSubTitle(
-              title: 'PLU'.hardcoded,
+              title: context.l10n.plu,
               subTitle: product.PriceLookUp,
             ),
             TitleAndSubTitle(
-              title: 'Quantidade'.hardcoded,
+              title: context.l10n.quantity,
               subTitle: product.Quantity.toString().toBrazilianNumber(),
             ),
           ],

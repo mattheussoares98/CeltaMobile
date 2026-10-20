@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/reports/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +19,7 @@ class ReportsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: reportsStateControllerProvider,
-      appBar: BaseAppBar(title: 'Relatórios'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.coreModulesReports),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(

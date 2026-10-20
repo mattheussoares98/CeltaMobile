@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +25,7 @@ class QuantityField extends ConsumerWidget {
     return BaseTextFormField(
       focusNode: focusNode,
       controller: controller,
-      labelText: 'Quantidade'.hardcoded,
+      labelText: context.l10n.quantity,
       onChanged: (value) {
         ref
             .read(insertProductUIControllerProvider(product).notifier)

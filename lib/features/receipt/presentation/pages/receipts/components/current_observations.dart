@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:celta_inventario/utils/utils.dart';
 
@@ -28,8 +27,8 @@ class CurrentObservations extends StatelessWidget {
       children: [
         TitleAndSubTitle(
           title: shouldInsertObservations
-              ? 'Observação padrão'.hardcoded
-              : 'Observações'.hardcoded,
+              ? context.l10n.defaultNote
+              : context.l10n.notes,
           titleStyle: context.theme.textTheme.bodyMedium?.copyWith(
             fontStyle: FontStyle.italic,
             color: observations == null || observations.isEmpty

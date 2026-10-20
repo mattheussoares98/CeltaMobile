@@ -1,9 +1,10 @@
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +24,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
     const marginStep = 0.1;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
         ? 'cm'
-        : 'pontos'.hardcoded;
+        : context.l10n.dots;
 
     return Card(
       child: Padding(
@@ -31,15 +32,15 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BaseText.title('Parâmetros do formulário ($unitLabel)'.hardcoded),
+            BaseText.title(context.l10n.formParametersWithUnit(unitLabel)),
             gapH8,
-            BaseText.caption('Tipo de formulário'.hardcoded),
+            BaseText.caption(context.l10n.formType),
             gapH4,
             BaseSegmentedButtons<BSFPrintLabelFormType>(
               key: const Key('print-label-layout-form-type'),
               items: BSFPrintLabelFormType.values,
               selectedValue: layout.formType,
-              itemLabelBuilder: (item) => item.description,
+              itemLabelBuilder: (item) => context.l10n.labelFormTypeName(item),
               onChanged: capabilities.canEditFormType
                   ? (value) => controller.updateFormType(value)
                   : null,
@@ -52,7 +53,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-width'),
                   repeatInterval: const Duration(milliseconds: 5),
-                  label: 'Largura'.hardcoded,
+                  label: context.l10n.width,
                   value: _formatValue(layout.formWidth, unit),
                   currentValue: layout.formWidth,
                   min: 0,
@@ -66,8 +67,8 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                   key: const Key('print-label-layout-form-height'),
                   repeatInterval: const Duration(milliseconds: 5),
                   label: capabilities.isFormHeightRequired
-                      ? 'Altura *'.hardcoded
-                      : 'Altura'.hardcoded,
+                      ? context.l10n.height2
+                      : context.l10n.height,
                   value: _formatValue(layout.formHeight, unit),
                   currentValue: layout.formHeight,
                   min: 0,
@@ -86,7 +87,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
               children: [
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-top-margin'),
-                  label: 'Mg superior'.hardcoded,
+                  label: context.l10n.topMargin,
                   value: _formatValue(layout.formTopMargin, unit),
                   currentValue: layout.formTopMargin,
                   min: 0,
@@ -98,7 +99,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-form-left-margin'),
-                  label: 'Mg esquerda'.hardcoded,
+                  label: context.l10n.leftMargin,
                   value: _formatValue(layout.formLeftMargin, unit),
                   currentValue: layout.formLeftMargin,
                   min: 0,
@@ -111,7 +112,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-quantity-columns'),
-                  label: 'Colunas'.hardcoded,
+                  label: context.l10n.columns,
                   value: layout.quantityColumns.toString(),
                   currentValue: layout.quantityColumns,
                   min: 1,
@@ -128,7 +129,7 @@ class PrintLabelLayoutFormParameters extends ConsumerWidget {
             gapH8,
             BaseSwitch(
               key: const Key('print-label-layout-apply-form-size'),
-              title: 'Aplicar configuração do tamanho do formulário'.hardcoded,
+              title: context.l10n.applyFormSizeSettings,
               value: layout.applyFormSizeConfiguration,
               onChanged: capabilities.canEditFormSizeConfiguration
                   ? (value) =>

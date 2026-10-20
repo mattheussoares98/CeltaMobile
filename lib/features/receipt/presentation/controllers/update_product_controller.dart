@@ -1,6 +1,6 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:async';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -31,9 +31,7 @@ class UpdateProductController extends _$UpdateProductController {
       );
 
       final products = await ref.read(
-        searchProductsStateControllerProvider(
-          searchProductKey,
-        ).future,
+        searchProductsStateControllerProvider(searchProductKey).future,
       );
       final product = products.elementAt(productIndex);
 
@@ -44,8 +42,8 @@ class UpdateProductController extends _$UpdateProductController {
       final newQuantity = oldQuantity + quantityToSendInRequest;
 
       if (newQuantity < 0) {
-        throw AppException(
-          'A nova quantidade não pode ser menor que zero'.hardcoded,
+        throw AppException.localized(
+          CoreFailure.theNewQuantityCannotBeLessThanZero,
         );
       }
 

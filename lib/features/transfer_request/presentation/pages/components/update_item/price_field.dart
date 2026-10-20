@@ -1,8 +1,7 @@
-import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,8 +23,8 @@ class PriceField extends StatelessWidget {
     return Stack(
       children: [
         BaseTextFormField(
-          labelText: 'Preço'.hardcoded,
-          hintText: 'Preço'.hardcoded,
+          labelText: context.l10n.price,
+          hintText: context.l10n.price,
           enabled: requestTypeAllowChangePrice,
           controller: priceController,
           focusNode: priceFocusNode,
@@ -60,8 +59,7 @@ class PriceField extends StatelessWidget {
               showDuration: const Duration(seconds: 5),
               triggerMode: TooltipTriggerMode.tap,
               message:
-                  'O modelo de pedido selecionado não permite alterar o preço'
-                      .hardcoded,
+                  context.l10n.theSelectedOrderTemplateDoesNotAllowPriceChanges,
               child: const PlatformIcon(
                 cupertinoIcon: CupertinoIcons.info_circle,
                 materialIcon: Icons.info,

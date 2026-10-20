@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class PaymentsList extends ConsumerWidget {
       data: (financials) {
         if (financials?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(child: Text('Nenhum pagamento adicionado'.hardcoded)),
+            child: Center(child: Text(context.l10n.noPaymentsAdded)),
           );
         }
 
@@ -59,7 +58,7 @@ class PaymentsList extends ConsumerWidget {
                           if (fIndex == 0 && pIndex == 0) ...[
                             if (missingPayment) const Divider(),
                             Text(
-                              'Pagamentos informados'.hardcoded,
+                              context.l10n.enteredPayments,
                               style: context.theme.textTheme.titleMedium,
                             ),
                           ],

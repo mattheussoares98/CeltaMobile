@@ -1,10 +1,11 @@
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/editor/editor.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -44,7 +45,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         ? null
         : DropdownMenu<PrintLabelFieldEditorOptionEntity>(
             key: ValueKey(selectedFieldOption?.definition),
-            label: BaseText('Campo'.hardcoded),
+            label: BaseText(context.l10n.field),
             leadingIcon: const PlatformIcon(
               materialIcon: Icons.search,
               cupertinoIcon: CupertinoIcons.search,
@@ -118,13 +119,13 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (field.previewValue?.isNotEmpty == true ||
             field.field?.content.isNotEmpty == true)
           TitleAndSubTitle(
-            title: 'Conteúdo'.hardcoded,
+            title: context.l10n.content,
             subTitle: previewContent,
           ),
 
         BaseTextFormField(
           controller: prefixController,
-          labelText: 'Prefixo'.hardcoded,
+          labelText: context.l10n.prefix,
           onChanged: (value) => onFieldChanged(_withPrefix(field, value)),
         ),
         gapH4,
@@ -133,7 +134,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           runAlignment: .spaceEvenly,
           children: [
             PrintLabelLayoutValueAdjuster(
-              label: 'Eixo X'.hardcoded,
+              label: context.l10n.xAxis,
               repeatInterval:
                   fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateX),
@@ -159,7 +160,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               ),
             ),
             PrintLabelLayoutValueAdjuster(
-              label: 'Eixo Y'.hardcoded,
+              label: context.l10n.yAxis,
               repeatInterval:
                   fastRepeatInterval * resolvedCoordinateUnit.editorStep,
               value: resolvedCoordinateUnit.format(field.coordinateY),
@@ -195,7 +196,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
             children: [
               if (field.usesSingleSizeEditor)
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Tamanho'.hardcoded,
+                  label: context.l10n.size,
                   repeatInterval:
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
@@ -222,7 +223,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 )
               else ...[
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Largura'.hardcoded,
+                  label: context.l10n.width,
                   repeatInterval:
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.width),
@@ -248,7 +249,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                   ),
                 ),
                 PrintLabelLayoutValueAdjuster(
-                  label: 'Altura'.hardcoded,
+                  label: context.l10n.height,
                   repeatInterval:
                       fastRepeatInterval * resolvedCoordinateUnit.editorStep,
                   value: field.dimensionType.format(field.height),
@@ -279,11 +280,9 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           if (field.isBoxOrLine || supportsBarcodeRatio) ...[
             gapH4,
             PrintLabelLayoutValueAdjuster(
-              label:
-                  (field.isBoxOrLine
-                          ? 'Espessura do traço'
-                          : 'Proporção das barras')
-                      .hardcoded,
+              label: (field.isBoxOrLine
+                  ? context.l10n.strokeThickness
+                  : context.l10n.barcodeRatio),
               value: supportsBarcodeRatio
                   ? field.ratioBarCode.toStringAsFixed(1)
                   : field.dimensionType.format(field.ratioBarCode),
@@ -306,7 +305,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         ],
         if (supportsRotation) ...[
           gapH8,
-          BaseText.title('Rotação'.hardcoded),
+          BaseText.title(context.l10n.rotation),
           gapH4,
           BaseSegmentedButtons<BSFPrintElementRotationType>(
             items: BSFPrintElementRotationType.values,
@@ -320,7 +319,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           gapH8,
           BaseTextFormField(
             controller: imageNameController,
-            labelText: 'Nome da imagem'.hardcoded,
+            labelText: context.l10n.imageName,
             onChanged: (value) =>
                 onFieldChanged(field.copyWith(imageName: value)),
           ),
@@ -328,14 +327,18 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (supportsGenericBarcodeControls) ...[
           gapH8,
           BaseDropDown<BSFBarcodeSimbologyType>(
-            label: 'Tipo do código de barras'.hardcoded,
+            label: context.l10n.barcodeType,
             selectedItem: field.barcodeSimbologyType,
             showLabelAtTopLeft: true,
             items: BSFBarcodeSimbologyType.values
                 .map(
                   (type) => DropdownMenuItem(
                     value: type,
-                    child: BaseText(type.apiValue.hardcoded),
+                    child: BaseText(
+                      type == BSFBarcodeSimbologyType.none
+                          ? context.l10n.noBlockade
+                          : type.apiValue,
+                    ),
                   ),
                 )
                 .toList(),
@@ -344,7 +347,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
           ),
           gapH8,
           BaseDropDown<BSFPrintLabelFieldDefinitionEntity>(
-            label: 'Campo representante do dado'.hardcoded,
+            label: context.l10n.dataField,
             selectedItem: field.fieldForDataBarcode,
             showLabelAtTopLeft: true,
             items: fieldDefinitions
@@ -362,7 +365,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (supportsDrawLabelBelowBarcode) ...[
           gapH8,
           BaseSwitch(
-            title: 'Imprimir o texto abaixo do código de barras'.hardcoded,
+            title: context.l10n.printTextBelowTheBarcode,
             value: field.drawLabelBelowBarcode,
             onChanged: (value) =>
                 onFieldChanged(field.copyWith(drawLabelBelowBarcode: value)),
@@ -370,12 +373,12 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         ],
         if (supportsAlignment) ...[
           gapH8,
-          BaseText.title('Alinhamento'.hardcoded),
+          BaseText.title(context.l10n.alignment),
           gapH4,
           BaseSegmentedButtons<BSFPrintElementAlignmentType>(
             items: BSFPrintElementAlignmentType.values,
             selectedValue: field.alignmentType,
-            itemLabelBuilder: (item) => item.label.hardcoded,
+            itemLabelBuilder: (item) => context.l10n.labelAlignmentName(item),
             onChanged: (value) =>
                 onFieldChanged(field.copyWith(alignmentType: value)),
           ),
@@ -383,7 +386,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (field.isTextField) ...[
           gapH8,
           BaseDropDown<BSFPrintLabelFieldFormatEntity>(
-            label: 'Formato'.hardcoded,
+            label: context.l10n.format,
             selectedItem: field.format,
             showLabelAtTopLeft: true,
             items: field
@@ -407,7 +410,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
-                  label: 'Casas decimais'.hardcoded,
+                  label: context.l10n.decimalPlaces,
                   value: field.quantityDecimalPlaces.toString(),
                   currentValue: field.quantityDecimalPlaces,
                   min: 0,
@@ -440,7 +443,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
-                  label: 'Tipo da fonte'.hardcoded,
+                  label: context.l10n.fontType,
                   value: field.editorFontType.toString(),
                   currentValue: field.editorFontType,
                   min: 1,
@@ -465,7 +468,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
-                  label: 'Tamanho da fonte'.hardcoded,
+                  label: context.l10n.fontSize,
                   value: field.fontSize.toString(),
                   currentValue: field.fontSize,
                   min: 0,
@@ -496,7 +499,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
               Padding(
                 padding: const .only(right: Sizes.p8),
                 child: PrintLabelLayoutValueAdjuster(
-                  label: 'Posição inicial'.hardcoded,
+                  label: context.l10n.startingPosition,
                   value: field.positionStartCharacter.toString(),
                   currentValue: field.positionStartCharacter,
                   min: 1,
@@ -522,7 +525,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
                 ),
               ),
               PrintLabelLayoutValueAdjuster(
-                label: 'Máximo de caracteres'.hardcoded,
+                label: context.l10n.maximumCharacters,
                 value: field.maxCharacterSize.toString(),
                 currentValue: field.maxCharacterSize,
                 min: 0,
@@ -552,7 +555,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (supportsBold) ...[
           gapH8,
           BaseCheckBox(
-            name: 'Imprimir texto em negrito'.hardcoded,
+            name: context.l10n.printBoldText,
             enabled: field.isBold,
             onChanged: (value) {
               if (value != null) {
@@ -564,7 +567,7 @@ class PrintLabelLayoutFieldEditor extends HookConsumerWidget {
         if (supportsReverseText) ...[
           gapH8,
           BaseCheckBox(
-            name: 'Imprimir texto reverso'.hardcoded,
+            name: context.l10n.printReverseText,
             enabled: field.isReverseText,
             onChanged: (value) {
               if (value != null) {

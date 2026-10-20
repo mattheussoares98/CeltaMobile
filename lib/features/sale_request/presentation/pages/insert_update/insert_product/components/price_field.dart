@@ -36,7 +36,9 @@ class PriceField extends ConsumerWidget {
       controller: controller,
       focusNode: focusNode,
       onFieldSubmitted: onFieldSubmitted,
-      labelText: 'Preço R\$ (${practicedPriceType.abbreviation})'.hardcoded,
+      labelText: context.l10n.priceWithTypeAbbreviation(
+        context.l10n.priceTypeName(practicedPriceType),
+      ),
       enabled: allowPriceChange,
       onChanged: (value) {
         ref.read(uiProvider.notifier).updatePrice(value.toDouble() ?? 0);

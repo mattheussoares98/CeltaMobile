@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
@@ -27,8 +26,8 @@ class PasswordField extends StatelessWidget {
       onFieldSubmitted: (_) {
         onSubmit();
       },
-      labelText: "Senha".hardcoded,
-      hintText: "Senha".hardcoded,
+      labelText: context.l10n.password,
+      hintText: context.l10n.password,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       suffixIcon: DeleteIcon(
         onPress: isLoading ? null : passwordController.clear,

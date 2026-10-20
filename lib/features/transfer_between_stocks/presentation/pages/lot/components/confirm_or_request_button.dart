@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,13 +49,15 @@ class _ConfirmOrRequestButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PrimaryButton(
-      text: isRequest ? 'Solicitar'.hardcoded : 'Confirmar'.hardcoded,
+      text: isRequest ? context.l10n.request : context.l10n.confirm,
       onPressed: () async {
         final confirmed = await showAlertDialog(
           context: context,
-          title: isRequest ? 'Solicitar?'.hardcoded : 'Confirmar?'.hardcoded,
-          cancelActionText: 'Cancelar'.hardcoded,
-          defaultActionText: 'Sim'.hardcoded,
+          title: isRequest
+              ? context.l10n.request2
+              : context.l10n.confirmQuestion,
+          cancelActionText: context.l10n.cancel,
+          defaultActionText: context.l10n.yes,
         );
 
         if (confirmed != true || !context.mounted) return;

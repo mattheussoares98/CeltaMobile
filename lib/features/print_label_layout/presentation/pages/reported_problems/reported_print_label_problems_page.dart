@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/reported_problems/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,7 +16,7 @@ class ReportedPrintLabelProblemsPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: provider,
-      appBar: BaseAppBar(title: 'Problemas reportados'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.reportedIssues),
       body: AsyncValueWidget(
         value: ref.watch(provider),
         tryAgain: () => ref.invalidate(provider),
@@ -26,10 +26,10 @@ class ReportedPrintLabelProblemsPage extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  BaseText('Nenhum problema reportado'.hardcoded),
+                  BaseText(context.l10n.noReportedIssues),
                   gapH16,
                   PrimaryButton(
-                    text: 'Carregar novamente'.hardcoded,
+                    text: context.l10n.reload,
                     onPressed: () => ref.invalidate(provider),
                   ),
                 ],

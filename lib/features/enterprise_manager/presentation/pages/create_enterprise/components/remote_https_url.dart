@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class RemoteHttpsUrl extends StatelessWidget {
@@ -29,8 +28,8 @@ class RemoteHttpsUrl extends StatelessWidget {
       onFieldSubmitted: (_) {
         localHttpUrlFocusNode.requestFocus();
       },
-      labelText: "HTTPS remota".hardcoded,
-      hintText: "HTTPS remota".hardcoded,
+      labelText: context.l10n.remoteHttps,
+      hintText: context.l10n.remoteHttps,
       keyboardType: TextInputType.url,
       suffixIcon: DeleteIcon(onPress: isLoading ? null : urlController.clear),
       validator: FormValidators.compose([

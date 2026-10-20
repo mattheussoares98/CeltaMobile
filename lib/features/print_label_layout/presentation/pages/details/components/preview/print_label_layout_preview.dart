@@ -5,7 +5,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -48,8 +47,8 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         if (showPreviewMessage) ...[
           BaseRichText(
             texts: [
-              BaseText.title('Pré-visualização '.hardcoded),
-              BaseText.title('(APROXIMADA)'.hardcoded, color: Colors.red),
+              BaseText.title(context.l10n.preview),
+              BaseText.title(context.l10n.approximate, color: Colors.red),
             ],
           ),
           gapH4,
@@ -57,14 +56,12 @@ class PrintLabelLayoutPreview extends StatelessWidget {
         gapH4,
         if (isUndefinedPaginatedHeight)
           BaseText.caption(
-            'Adicione campos para determinar a altura da pré-visualização'
-                .hardcoded,
+            context.l10n.addFieldsToDetermineThePreviewHeight,
             color: context.theme.colorScheme.error,
           )
         else if (!hasValidLabelSize)
           BaseText.caption(
-            'Informe uma largura e altura válidas para visualizar a etiqueta'
-                .hardcoded,
+            context.l10n.enterAValidWidthAndHeightToPreviewTheLabel,
             color: context.theme.colorScheme.error,
           )
         else
@@ -133,6 +130,7 @@ class PrintLabelLayoutPreview extends StatelessWidget {
                     left: previewMetrics.horizontalPosition(field) * scaleX,
                     top: previewMetrics.verticalPosition(field) * scaleY,
                     child: PrintLabelPreviewElement(
+                      fallbackText: context.l10n.field,
                       field: field,
                       coordinateUnit: coordinateUnit,
                       previewMetrics: previewMetrics,
@@ -146,7 +144,9 @@ class PrintLabelLayoutPreview extends StatelessWidget {
                         previewLabelWidth: previewLabelWidth,
                         previewLabelHeight: previewLabelHeight,
                       ),
-                      isInsideFilledBox: previewMetrics.isInsideFilledBox(field),
+                      isInsideFilledBox: previewMetrics.isInsideFilledBox(
+                        field,
+                      ),
                     ),
                   );
                 }).toList(),

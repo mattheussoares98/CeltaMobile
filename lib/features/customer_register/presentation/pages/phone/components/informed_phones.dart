@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +31,7 @@ class InformedPhones extends ConsumerWidget {
       itemCount: telephones.length + 1,
       itemBuilder: (_, index) {
         if (index == 0) {
-          return DefaultDivider('Telefones informados'.hardcoded);
+          return DefaultDivider(context.l10n.enteredPhoneNumbers);
         }
         final telephone = telephones[index - 1];
 
@@ -71,9 +71,9 @@ class _TelephoneItem extends StatelessWidget {
                 onPressed: () async {
                   final confirmed = await showAlertDialog(
                     context: context,
-                    title: 'Remover telefone?'.hardcoded,
-                    defaultActionText: 'Sim'.hardcoded,
-                    cancelActionText: 'Cancelar'.hardcoded,
+                    title: context.l10n.removePhoneNumber,
+                    defaultActionText: context.l10n.yes,
+                    cancelActionText: context.l10n.cancel,
                   );
 
                   if (confirmed != true || !context.mounted) return;

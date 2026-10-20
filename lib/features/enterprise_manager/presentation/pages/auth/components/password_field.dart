@@ -1,7 +1,6 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,8 +28,8 @@ class PasswordField extends StatelessWidget {
       ]),
       onFieldSubmitted: (_) => onSubmit(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      labelText: 'Senha'.hardcoded,
-      hintText: 'Senha'.hardcoded,
+      labelText: context.l10n.password,
+      hintText: context.l10n.password,
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.lock_fill,
         materialIcon: Icons.lock_outline,

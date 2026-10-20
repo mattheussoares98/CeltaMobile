@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +33,8 @@ class LiberateAndConferButtons extends ConsumerWidget {
             builder: (_, ref, _) {
               return PrimaryButton(
                 text: receipt.status == Status.liberatedForEntry
-                    ? 'Já liberado'.hardcoded
-                    : 'Liberar'.hardcoded,
+                    ? context.l10n.alreadyReleased
+                    : context.l10n.release,
                 isLoading: ref.watch(
                   liberateDocumentControllerProvider(
                     receipt.CodigoInterno_ProcRecebDoc,
@@ -47,20 +46,20 @@ class LiberateAndConferButtons extends ConsumerWidget {
                         if (receipt.status == Status.inProcessOfAuthorization) {
                           showAlertDialog(
                             context: context,
-                            title: 'Atenção'.hardcoded,
-                            content:
-                                'Esse documento está em processo de autorização e por isso não pode ser liberado'
-                                    .hardcoded,
+                            title: context.l10n.attention2,
+                            content: context
+                                .l10n
+                                .thisDocumentIsUndergoingAuthorizationAndCannotBeReleased,
                           );
                         } else {
                           final result = await showAlertDialog(
                             context: context,
-                            title: 'Liberar?'.hardcoded,
-                            defaultActionText: 'Liberar'.hardcoded,
-                            cancelActionText: 'Cancelar'.hardcoded,
-                            content:
-                                'Tem certeza que deseja liberar esse documento?'
-                                    .hardcoded,
+                            title: context.l10n.release2,
+                            defaultActionText: context.l10n.release,
+                            cancelActionText: context.l10n.cancel,
+                            content: context
+                                .l10n
+                                .areYouSureYouWantToReleaseThisDocument,
                           );
                           if (result == true && context.mounted) {
                             ref
@@ -80,7 +79,7 @@ class LiberateAndConferButtons extends ConsumerWidget {
         gapW8,
         Expanded(
           child: PrimaryButton(
-            text: 'Conferir produtos'.hardcoded,
+            text: context.l10n.verifyProducts,
             onPressed: () {
               context.goNamed(
                 Routes.receiptProducts.name,

@@ -1,3 +1,6 @@
+import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/localization/providers.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -7,7 +10,6 @@ import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/insert_update/insert_update.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,6 +25,8 @@ part 'insert_update_state_controller.g.dart';
   ],
 ) //It is invalidating when close the page
 class InsertUpdateStateController extends _$InsertUpdateStateController {
+  AppLocalizations get _l10n => ref.read(appLocalizationsProvider);
+
   BSFSaleRequestEntity? _lastProcessedSaleRequest;
   Timer? _debounceTimer;
 
@@ -63,7 +67,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         ),
       );
       if (selectedRequest == null) {
-        throw AppException('Modelo de pedido não encontrado'.hardcoded);
+        throw AppException.localized(CoreFailure.orderTemplateNotFound);
       }
       //!inserting
       initialValue = BSFSaleRequestEntity.empty().copyWith(
@@ -124,7 +128,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       return (null, const []);
     }
     if (product.getPrice <= 0) {
-      return ('Esse produto não possui preço'.hardcoded, const []);
+      return (_l10n.thisProductHasNoPrice, const []);
     }
 
     final (items, index) = _getItemsAndIndexByPlu(product.PLU);
@@ -139,10 +143,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
 
     if (targetItem.totalLiquid < 0) {
-      return (
-        'O valor líquido do produto não pode ser negativo.'.hardcoded,
-        const [],
-      );
+      return (_l10n.theProductSNetAmountCannotBeNegative, const []);
     }
 
     if (index != -1) {
@@ -185,7 +186,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     final retailPrice = item.retailPrice;
 
     if (item.hasNoPrice) {
-      return ('Esse produto não possui preço'.hardcoded, const []);
+      return (_l10n.thisProductHasNoPrice, const []);
     }
 
     final newQuantity = isAdding
@@ -210,10 +211,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         quantity: 1,
       );
       if (tempItem.totalLiquid <= 0) {
-        return (
-          'O valor líquido do produto deve ser maior que zero'.hardcoded,
-          const [],
-        );
+        return (_l10n.theProductSNetAmountMustBeGreaterThanZero, const []);
       }
       if (!onlyValidating) {
         addItem(productEntity);
@@ -238,10 +236,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
       );
 
       if (sanitizedItem.totalLiquid <= 0) {
-        return (
-          'O valor líquido do produto deve ser maior que zero.'.hardcoded,
-          const [],
-        );
+        return (_l10n.theProductSNetAmountMustBeGreaterThanZero2, const []);
       }
 
       if (!onlyValidating) {
@@ -287,10 +282,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     }
 
     if (sanitizedItem.totalLiquid <= 0) {
-      return (
-        'O valor líquido do produto deve ser maior que zero'.hardcoded,
-        const [],
-      );
+      return (_l10n.theProductSNetAmountMustBeGreaterThanZero, const []);
     }
 
     if (!onlyValidating) {
@@ -408,7 +400,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     CreditCardPropertiesEntity? creditCardProperties,
   }) {
     if (state is! AsyncData<BSFSaleRequestEntity>) {
-      return (false, 'Erro não esperado'.hardcoded);
+      return (false, _l10n.unexpectedError);
     }
 
     // Convert to cents (integers) to prevent double-precision floating-point inaccuracies in money comparison
@@ -417,7 +409,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
         ((state.value?.totalLiquidAndPaidDifference ?? 0) * 100).round();
 
     if (newPaymentCents > missingPaymentCents) {
-      return (false, 'Valor excede o disponível'.hardcoded);
+      return (false, _l10n.amountExceedsTheAvailableBalance);
     }
 
     final current = state.value!;
@@ -428,7 +420,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
     );
 
     if (isCovenant && selectedCovenant == null) {
-      return (false, 'Selecione um convênio'.hardcoded);
+      return (false, _l10n.selectAnAgreement);
     }
 
     final financials = List<BSFFinancialEntity>.from(current.financials ?? []);
@@ -514,11 +506,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   String? updateFinancialIncrement(BSFValueTypeEntity value) {
     if (state.value?.requestType?.allowFinancialIncrement != true) {
-      return 'O modelo de pedido não permite acréscimo financeiro'.hardcoded;
+      return _l10n.theOrderTemplateDoesNotAllowPaymentSurcharges;
     } else if ((value.value ?? 0) <= 0) {
-      return 'O valor deve ser maior que zero'.hardcoded;
+      return _l10n.theAmountMustBeGreaterThanZero;
     } else if (value.type == null) {
-      return 'Selecione o tipo de acréscimo'.hardcoded;
+      return _l10n.selectTheSurchargeType;
     }
 
     state = AsyncData(state.value!.copyWith(financialIncrement: value));
@@ -527,11 +519,11 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
 
   String? updateFinancialDiscount(BSFValueTypeEntity value) {
     if (state.value?.requestType?.allowFinancialDiscount != true) {
-      return 'O modelo de pedido não permite desconto financeiro'.hardcoded;
+      return _l10n.theOrderTemplateDoesNotAllowPaymentDiscounts;
     } else if ((value.value ?? 0) <= 0) {
-      return 'O valor deve ser maior que zero'.hardcoded;
+      return _l10n.theAmountMustBeGreaterThanZero;
     } else if (value.type == null) {
-      return 'Selecione o tipo de desconto'.hardcoded;
+      return _l10n.selectTheDiscountType;
     }
 
     state = AsyncData(state.value!.copyWith(financialDiscount: value));
@@ -615,7 +607,7 @@ class InsertUpdateStateController extends _$InsertUpdateStateController {
             order: 0,
             discountOrigin: DiscountOrigin.manual,
             user: null,
-            justification: 'Desconto manual'.hardcoded,
+            justification: 'Desconto manual',
             discount: value,
           ),
         ],

@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/transfer_between_stocks/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class NameAndJustification extends StatelessWidget {
           titleStyle: context.theme.textTheme.titleMedium?.copyWith(
             color: context.theme.colorScheme.secondary,
           ),
-          subTitle: ' (Justificativa)'.hardcoded,
+          subTitle: context.l10n.reason,
           subTitleStyle: context.theme.textTheme.bodyMedium?.copyWith(),
         ),
       ],

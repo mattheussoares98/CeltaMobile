@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class Costs extends ConsumerWidget {
             children: [
               Flexible(
                 child: BaseText.headline(
-                  'Custos'.hardcoded,
+                  context.l10n.costs,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -53,47 +53,47 @@ class Costs extends ConsumerWidget {
           ),
           gapH8,
           TitleAndSubTitle(
-            title: 'Líquido '.hardcoded,
+            title: context.l10n.net,
             subTitle: widget.product.LiquidCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Líquido médio '.hardcoded,
+            title: context.l10n.averageNet,
             subTitle: widget.product.LiquidCostMidle,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Fiscal '.hardcoded,
+            title: context.l10n.tax,
             subTitle: widget.product.FiscalCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Fiscal líquido '.hardcoded,
+            title: context.l10n.netTax,
             subTitle: widget.product.FiscalLiquidCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Operacional '.hardcoded,
+            title: context.l10n.operating,
             subTitle: widget.product.OperationalCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Real '.hardcoded,
+            title: context.l10n.actual,
             subTitle: widget.product.RealCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Real líquido '.hardcoded,
+            title: context.l10n.actualNet,
             subTitle: widget.product.RealLiquidCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Reposição '.hardcoded,
+            title: context.l10n.replacement,
             subTitle: widget.product.ReplacementCost,
             subTitleIsPrice: true,
           ),
           TitleAndSubTitle(
-            title: 'Reposição médio '.hardcoded,
+            title: context.l10n.averageReplacement,
             subTitle: widget.product.ReplacementCostMidle,
             subTitleIsPrice: true,
           ),

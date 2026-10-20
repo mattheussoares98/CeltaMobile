@@ -17,43 +17,43 @@ class CartSummaryTable extends StatelessWidget {
     return SummaryTable(
       items: [
         SummaryTableItem(
-          title: 'Preço'.hardcoded,
+          title: context.l10n.price,
           value: item.value,
           isPrice: true,
           trailing: SummaryTooltip(
-            message:
-                'Preço ${context.l10n.priceTypeName(practicedPrice).toLowerCase()}'
-                    .hardcoded,
+            message: context.l10n.priceWithType(
+              context.l10n.priceTypeName(practicedPrice).toLowerCase(),
+            ),
             text: practicedPrice.abbreviation,
           ),
         ),
         if (item.totalDeliveryTax > 0)
           SummaryTableItem(
-            title: 'Frete'.hardcoded,
+            title: context.l10n.freight,
             value: item.totalDeliveryTax,
             isPrice: true,
             color: context.theme.colorScheme.secondary,
           ),
         if (item.totalDiscountValue > 0)
           SummaryTableItem(
-            title: 'Desconto'.hardcoded,
+            title: context.l10n.discount,
             value: item.totalDiscountValue,
             isPrice: true,
             color: Colors.red,
             trailing: SummaryTooltip(
-              message: item.discounts.formattedDescription,
+              message: item.discounts.formatDescription(context.l10n),
               color: Colors.red,
             ),
           ),
         if (item.totalIncrement > 0)
           SummaryTableItem(
-            title: 'Acréscimo'.hardcoded,
+            title: context.l10n.surcharge,
             value: item.totalIncrement,
             isPrice: true,
             color: Colors.orange,
           ),
         SummaryTableItem(
-          title: 'Total'.hardcoded,
+          title: context.l10n.total,
           value: item.totalLiquid,
           isPrice: true,
           color: context.theme.primaryColor,

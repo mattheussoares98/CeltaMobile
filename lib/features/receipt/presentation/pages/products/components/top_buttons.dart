@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_version.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,10 +28,8 @@ class TopButtons extends ConsumerWidget {
           if (!context.mounted) return;
           showAlertDialog(
             context: context,
-            title: 'Atualização necesssária!'.hardcoded,
-            content:
-                'Para utilizar essa funcionalidade, peça para o suporte do BS atualizar o sistema'
-                    .hardcoded,
+            title: context.l10n.updateRequired,
+            content: context.l10n.askBsSupportToUpdateTheSystemToUseThis,
           );
           return;
         }
@@ -93,14 +91,14 @@ class _DefaultSearchProduct extends ConsumerWidget {
     required this.searchProduct,
   });
 
-  String get title {
+  String title(BuildContext context) {
     switch (searchType) {
       case SearchType.allProductsFromGRGoesForBalance:
-        return 'Pesáveis'.hardcoded;
+        return context.l10n.weighedProducts;
       case SearchType.allProductsFromGR:
-        return 'Sem EAN'.hardcoded;
+        return context.l10n.noEan;
       case SearchType.allCountedProductsFromGR:
-        return 'Já contados'.hardcoded;
+        return context.l10n.alreadyCounted;
       default:
         return '';
     }
@@ -116,7 +114,7 @@ class _DefaultSearchProduct extends ConsumerWidget {
 
     return FittedBox(
       child: PrimaryTextButton(
-        text: title,
+        text: title(context),
         isSmall: true,
         platformIcon: const PlatformIcon(
           cupertinoIcon: CupertinoIcons.search,

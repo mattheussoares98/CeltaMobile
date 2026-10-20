@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class UrlsFields extends StatelessWidget {
@@ -25,8 +24,8 @@ class UrlsFields extends StatelessWidget {
       child: Column(
         children: [
           BaseTextFormField(
-            labelText: 'HTTP remoto'.hardcoded,
-            hintText: 'HTTP remoto'.hardcoded,
+            labelText: context.l10n.remoteHttp2,
+            hintText: context.l10n.remoteHttp2,
             controller: remoteHttpUrlController,
             maxLength: 100,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -37,8 +36,8 @@ class UrlsFields extends StatelessWidget {
           ),
           gapH8,
           BaseTextFormField(
-            labelText: 'HTTPS remoto'.hardcoded,
-            hintText: 'HTTPS remoto'.hardcoded,
+            labelText: context.l10n.remoteHttps2,
+            hintText: context.l10n.remoteHttps2,
             controller: remoteHttpsUrlController,
             maxLength: 100,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -53,8 +52,8 @@ class UrlsFields extends StatelessWidget {
           ),
           gapH8,
           BaseTextFormField(
-            labelText: 'HTTP local'.hardcoded,
-            hintText: 'HTTP local'.hardcoded,
+            labelText: context.l10n.localHttp,
+            hintText: context.l10n.localHttp,
             controller: localHttpUrlController,
             maxLength: 100,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -65,8 +64,8 @@ class UrlsFields extends StatelessWidget {
           ),
           gapH8,
           BaseTextFormField(
-            labelText: 'HTTPS local'.hardcoded,
-            hintText: 'HTTPS local'.hardcoded,
+            labelText: context.l10n.localHttps,
+            hintText: context.l10n.localHttps,
             controller: localHttpsUrlController,
             maxLength: 100,
             autovalidateMode: AutovalidateMode.onUserInteraction,

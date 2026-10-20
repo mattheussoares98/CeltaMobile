@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 
 class CurrentAndSaleStocks extends StatelessWidget {
@@ -13,7 +13,7 @@ class CurrentAndSaleStocks extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentStockQuantity = _getStockQuantityByName(
       widget.product.Stocks,
-      'Estoque Atual'.hardcoded,
+      context.l10n.currentStock,
       widget.product.EnterpriseCode,
     );
 
@@ -32,18 +32,18 @@ class CurrentAndSaleStocks extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleAndSubTitle(
-          title: "Estoque atual ",
+          title: context.l10n.currentStockPrefix,
           emptyMessage: currentStockQuantity == -1
-              ? 'Sem permissão p/ ver estoque'.hardcoded
-              : 'Sem estoque atual'.hardcoded,
+              ? context.l10n.noPermissionToViewStock
+              : context.l10n.noCurrentStock,
           subTitle: currentStockQuantity,
         ),
         TitleAndSubTitle(
-          title: "Saldo de venda",
-          emptyMessage: 'Sem saldo de venda'.hardcoded,
+          title: context.l10n.availableForSale,
+          emptyMessage: context.l10n.noAvailableQuantityForSale,
           subTitle: _getStockQuantityByName(
             widget.product.Stocks,
-            'saldo'.hardcoded,
+            context.l10n.balance,
             widget.product.EnterpriseCode,
           ),
         ),

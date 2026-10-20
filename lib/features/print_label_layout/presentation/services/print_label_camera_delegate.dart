@@ -1,3 +1,5 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:camera/camera.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/services/services.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +10,9 @@ class PrintLabelCameraDelegate implements IPrintLabelCameraDelegate {
   @override
   Future<void> initialize() async {
     final cameras = await availableCameras();
-    if (cameras.isEmpty) throw StateError('No camera is available');
+    if (cameras.isEmpty) {
+      throw AppException.localized(CoreFailure.noCameraAvailableFailure);
+    }
     final controller = CameraController(
       cameras.first,
       ResolutionPreset.high,

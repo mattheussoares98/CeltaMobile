@@ -1211,4 +1211,2869 @@ class AppLocalizationsEn extends AppLocalizations {
   String purchaseOrderDetailsWithCode(String code) {
     return 'Order details ($code)';
   }
+
+  @override
+  String get updateBs => 'Update BS';
+
+  @override
+  String get updateBsToUseThisFeature => 'Update BS to use this feature';
+
+  @override
+  String get userLacksPermission => 'User lacks permission';
+
+  @override
+  String get start => 'Start ';
+
+  @override
+  String get end => 'End ';
+
+  @override
+  String get goToLogin => 'Go to login';
+
+  @override
+  String get goToHome => 'Go to home';
+
+  @override
+  String get cameraPermission => 'Camera permission';
+
+  @override
+  String get allowCameraAccessInYourDeviceSettings =>
+      'Allow camera access in your device settings.';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String get noProducts => 'No products';
+
+  @override
+  String get namePluEanScale => 'NAME-PLU-EAN-%-SCALE';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get min => ' (min';
+
+  @override
+  String get noReplacementCost => 'No replacement cost';
+
+  @override
+  String get noPrice => 'No price';
+
+  @override
+  String get eans => 'EANs';
+
+  @override
+  String get currentStock => 'Current stock';
+
+  @override
+  String get noPermissionToViewStock => 'No permission to view stock';
+
+  @override
+  String get noCurrentStock => 'No current stock';
+
+  @override
+  String get noAvailableQuantityForSale => 'No available quantity for sale';
+
+  @override
+  String get balance => 'balance';
+
+  @override
+  String get offerEnded => 'Offer ended';
+
+  @override
+  String get offerEndedSuccessfullySearchForTheProductAgainToRefresh =>
+      'Offer ended successfully. Search for the product again to refresh its information.';
+
+  @override
+  String get stocks => 'Stocks';
+
+  @override
+  String get latestPurchases => 'Latest purchases';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get packaging => 'Packaging';
+
+  @override
+  String get prices => 'Prices';
+
+  @override
+  String get addresses => 'Addresses';
+
+  @override
+  String get purchases => 'Purchases';
+
+  @override
+  String get costs => 'Costs';
+
+  @override
+  String get margins => 'Margins';
+
+  @override
+  String get appliedPrices => 'Applied prices';
+
+  @override
+  String get refreshPermissionToEndOffers => 'Refresh permission to end offers';
+
+  @override
+  String get suggestedPrices => 'Suggested prices';
+
+  @override
+  String get retail => 'Retail ';
+
+  @override
+  String get wholesale => 'Wholesale ';
+
+  @override
+  String get eCommerce => 'E-commerce ';
+
+  @override
+  String get minimumPrices => 'Minimum prices';
+
+  @override
+  String get info => 'Info';
+
+  @override
+  String get net => 'Net ';
+
+  @override
+  String get averageNet => 'Average net ';
+
+  @override
+  String get tax => 'Tax ';
+
+  @override
+  String get netTax => 'Net tax ';
+
+  @override
+  String get operating => 'Operating ';
+
+  @override
+  String get actual => 'Actual ';
+
+  @override
+  String get actualNet => 'Actual net ';
+
+  @override
+  String get replacement => 'Replacement ';
+
+  @override
+  String get averageReplacement => 'Average replacement ';
+
+  @override
+  String get noAddressesRegisteredForThisProduct =>
+      'No addresses registered for this product';
+
+  @override
+  String get addressEs => 'Address(es)';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get onOffer => 'On offer';
+
+  @override
+  String get minimumWholesaleQuantity => 'Minimum wholesale quantity';
+
+  @override
+  String get removeItem => 'Remove item?';
+
+  @override
+  String get quantityInCart => 'Quantity in cart';
+
+  @override
+  String get enteredPrice => 'Entered price';
+
+  @override
+  String get discount => 'Discount';
+
+  @override
+  String get technologySolutions => 'Technology & Solutions';
+
+  @override
+  String get pleaseWait => 'Please wait';
+
+  @override
+  String get timeNotUpdated => 'Time not updated';
+
+  @override
+  String get theTimeCannotBeEarlierThanTheMinimumDate =>
+      'The time cannot be earlier than the minimum date';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get select2 => 'Select';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get from => 'From ';
+
+  @override
+  String get to => 'To ';
+
+  @override
+  String get cart => 'Cart';
+
+  @override
+  String get thisProductHasAZeroPriceAndTheSelectedOrder =>
+      'This product has a zero price and the selected order template does not allow price changes';
+
+  @override
+  String get plu => 'PLU';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get noProductsAddedToTheCart => 'No products added to the cart';
+
+  @override
+  String get sourceCompany => 'Source company';
+
+  @override
+  String get destinationCompany => 'Destination company';
+
+  @override
+  String get theSelectedOrderTemplateDoesNotAllowPriceChanges =>
+      'The selected order template does not allow price changes';
+
+  @override
+  String get lastSavedOrder => 'Last saved order';
+
+  @override
+  String get clearCart => 'Clear cart';
+
+  @override
+  String get clearCart2 => 'Clear cart?';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get orderSearch => 'Order search';
+
+  @override
+  String get unmarkForPrinting => 'Unmark for printing';
+
+  @override
+  String get markForPrinting => 'Mark for printing';
+
+  @override
+  String get startDate2 => 'Start date';
+
+  @override
+  String get message00000000 => '00/00/0000';
+
+  @override
+  String get searchFilters => 'Search filters';
+
+  @override
+  String get customCode2 => 'Custom code';
+
+  @override
+  String get enterTheCode => 'Enter the code...';
+
+  @override
+  String get endDate2 => 'End date';
+
+  @override
+  String get printJobSentSuccessfully => 'Print job sent successfully';
+
+  @override
+  String get orderDetails => 'Order details';
+
+  @override
+  String get unableToGenerateThePdfTryAgain =>
+      'Unable to generate the PDF. Try again.';
+
+  @override
+  String get disc => 'Disc';
+
+  @override
+  String get surch => 'Surch';
+
+  @override
+  String get print => 'Print';
+
+  @override
+  String get noPaymentDetails => 'No payment details';
+
+  @override
+  String get paymentDetails => 'Payment details';
+
+  @override
+  String get discounts => 'Discounts';
+
+  @override
+  String get surcharges => 'Surcharges';
+
+  @override
+  String get type => 'Type';
+
+  @override
+  String get emails => 'Emails';
+
+  @override
+  String get phoneNumbers => 'Phone numbers';
+
+  @override
+  String get batchSentSuccessfully => 'Batch sent successfully';
+
+  @override
+  String get batch => 'Batch';
+
+  @override
+  String get sourceStock => 'Source stock';
+
+  @override
+  String get noDestination => 'No destination';
+
+  @override
+  String get sameStockAsTheSource => 'Same stock as the source';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get grossTotal => 'Gross total';
+
+  @override
+  String get orderSurcharge => 'Order surcharge';
+
+  @override
+  String get notAllowed => 'Not allowed';
+
+  @override
+  String get orderDiscount => 'Order discount';
+
+  @override
+  String get orderDelivery => 'Order delivery';
+
+  @override
+  String get totalSurcharges => 'Total surcharges';
+
+  @override
+  String get totalDiscounts2 => 'Total discounts';
+
+  @override
+  String get totalDeliveryFees => 'Total delivery fees';
+
+  @override
+  String get netTotal => 'Net total';
+
+  @override
+  String get salesperson => 'Salesperson';
+
+  @override
+  String get removeSalesperson => 'Remove salesperson';
+
+  @override
+  String get selectACustomer => 'Select a customer!';
+
+  @override
+  String get attention2 => 'Attention';
+
+  @override
+  String get theOrderWasSavedSuccessfully => 'The order was saved successfully';
+
+  @override
+  String get calculatePrices => 'Calculate prices';
+
+  @override
+  String get instructions => 'Instructions';
+
+  @override
+  String get emptyBatch => 'Empty batch';
+
+  @override
+  String get newQty => 'New qty';
+
+  @override
+  String get reason => ' (Reason)';
+
+  @override
+  String get request => 'Request';
+
+  @override
+  String get request2 => 'Request?';
+
+  @override
+  String get clearBatch => 'Clear batch';
+
+  @override
+  String get clearBatch2 => 'Clear batch?';
+
+  @override
+  String get searchForAProductToGetStarted =>
+      'Search for a product to get started';
+
+  @override
+  String get enterTheCustomer => 'Enter the customer';
+
+  @override
+  String get enterAtLeastOneProduct => 'Enter at least one product';
+
+  @override
+  String get quantityChangedSuccessfully => 'Quantity changed successfully';
+
+  @override
+  String get failedToAddPayment => 'Failed to add payment';
+
+  @override
+  String get add2 => 'ADD';
+
+  @override
+  String get noPaymentMethodsAreAvailableForThisOrder =>
+      'No payment methods are available for this order.';
+
+  @override
+  String get paymentMethod => 'Payment method';
+
+  @override
+  String get selectAPaymentMethod => 'Select a payment method';
+
+  @override
+  String get paymentTerms => 'Payment terms';
+
+  @override
+  String get noPaymentTermsAvailableOnlyPaymentTermsWithFixedInstallments =>
+      'No payment terms available. Only payment terms with fixed installments are shown.';
+
+  @override
+  String get toRegisterPaymentTermsWithFixedInstallmentsOpenCeltabsAnd =>
+      'To register payment terms with fixed installments, open CeltaBS and go to \"Registrations > Finance > Payment terms\".';
+
+  @override
+  String get noPaymentsAdded => 'No payments added';
+
+  @override
+  String get enteredPayments => 'Entered payments';
+
+  @override
+  String get newPaymentMethod => 'New payment method';
+
+  @override
+  String get missing => 'Missing';
+
+  @override
+  String get excess => 'Excess';
+
+  @override
+  String get paymentSurcharge => 'Payment surcharge';
+
+  @override
+  String get thisOrderTemplateDoesNotAllowPaymentSurcharges =>
+      'This order template does not allow payment surcharges.';
+
+  @override
+  String get paymentDiscount => 'Payment discount';
+
+  @override
+  String get thisOrderTemplateDoesNotAllowPaymentDiscounts =>
+      'This order template does not allow payment discounts.';
+
+  @override
+  String get cardNumber => 'Card number';
+
+  @override
+  String get numberOfInstallments => 'Number of installments';
+
+  @override
+  String get expiration => 'Expiration';
+
+  @override
+  String get selectTheCustomerSAgreementToUseThisPaymentMethod =>
+      'Select the customer\'s agreement to use this payment method!';
+
+  @override
+  String get customerAgreement => 'Customer agreement';
+
+  @override
+  String get addProductsToTheOrder => 'Add products to the order!';
+
+  @override
+  String get creatingOrder => 'Creating order';
+
+  @override
+  String get unsavedChanges => 'Unsaved changes';
+
+  @override
+  String get thereAreUnsavedChangesDoYouReallyWantToLeave =>
+      'There are unsaved changes. Do you really want to leave?';
+
+  @override
+  String get productDetails => 'Product details';
+
+  @override
+  String get confirm2 => 'CONFIRM';
+
+  @override
+  String get areYouSureYouWantToVoidThisProductS =>
+      'Are you sure you want to void this product\'s count?';
+
+  @override
+  String get countedQty => 'Counted qty';
+
+  @override
+  String get noCountedQuantity => 'No counted quantity';
+
+  @override
+  String get whenEnabledFindingASingleProductAutomaticallyAddsOneUnit =>
+      'When enabled, finding a single product automatically adds one unit to its count';
+
+  @override
+  String get insertIndividually => 'Insert individually';
+
+  @override
+  String get thisActionWillRemoveAllAutomaticDiscountsContinue =>
+      'This action will remove all automatic discounts. Continue?';
+
+  @override
+  String get grossPrice => 'Gross price';
+
+  @override
+  String get totalDiscounts3 => 'Total discounts';
+
+  @override
+  String get netTotal2 => 'Net total';
+
+  @override
+  String get searchByCustomCode => 'Search by custom code';
+
+  @override
+  String get frozenProcesses => 'Frozen processes';
+
+  @override
+  String get stockType => 'Stock type';
+
+  @override
+  String get personResponsible => 'Person responsible';
+
+  @override
+  String get frozenOn => 'Frozen on';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get items => 'Items';
+
+  @override
+  String get payment => 'Payment';
+
+  @override
+  String get summary2 => 'Summary';
+
+  @override
+  String get agreements => 'Agreements';
+
+  @override
+  String get customerBlocked => 'Customer blocked';
+
+  @override
+  String get understood => 'Understood';
+
+  @override
+  String get customerChange => 'Customer change';
+
+  @override
+  String get continue2 => 'Continue?';
+
+  @override
+  String get todaySOrders => 'Today\'s orders';
+
+  @override
+  String get noOrdersFound => 'No orders found';
+
+  @override
+  String get searchAgain => 'Search again';
+
+  @override
+  String get counts => 'Counts';
+
+  @override
+  String get noCountsFoundForThisInventoryProcessCreateAtLeast =>
+      'No counts found for this inventory process. Create at least one count.';
+
+  @override
+  String get notes2 => 'Notes';
+
+  @override
+  String get run => 'Run';
+
+  @override
+  String get selectTheCompany => 'Select the company';
+
+  @override
+  String get orderNo => 'Order no.';
+
+  @override
+  String get totalDelivery => 'Total delivery';
+
+  @override
+  String get totalSurcharges2 => 'Total surcharges';
+
+  @override
+  String get totalDiscounts4 => 'Total discounts';
+
+  @override
+  String get unableToLoadTheOrderTryAgain =>
+      'Unable to load the order. Try again.';
+
+  @override
+  String get pdf => 'PDF';
+
+  @override
+  String get theQuantityCannotBeNegative => 'The quantity cannot be negative';
+
+  @override
+  String get printerIp => 'Printer IP';
+
+  @override
+  String get yourUserDoesNotHavePermissionToPerformThisAction =>
+      'Your user does not have permission to perform this action';
+
+  @override
+  String get rereadAll => 'Reread all';
+
+  @override
+  String get rereadSelected => 'Reread selected';
+
+  @override
+  String get deleteAll => 'Delete all';
+
+  @override
+  String get deleteSelected => 'Delete selected';
+
+  @override
+  String get ignoreAll => 'Ignore all';
+
+  @override
+  String get ignoreSelected => 'Ignore selected';
+
+  @override
+  String get resendAll => 'Resend all';
+
+  @override
+  String get resendSelected => 'Resend selected';
+
+  @override
+  String get unmarkAll => 'Unmark all';
+
+  @override
+  String get unmarkSelected => 'Unmark selected';
+
+  @override
+  String get rereadAll2 => 'Reread all';
+
+  @override
+  String get rereadSelected2 => 'Reread selected';
+
+  @override
+  String get displayingThisTypeOfErrorHasNotBeenImplementedYet =>
+      'Displaying this type of error has not been implemented yet';
+
+  @override
+  String get pleaseSelectACustomerBeforeSaving =>
+      'Please select a customer before saving.';
+
+  @override
+  String get addAtLeastOneProductToTheOrder =>
+      'Add at least one product to the order.';
+
+  @override
+  String get noOrderTemplateSelectedThisIsAProgrammingErrorPlease =>
+      'No order template selected. This is a programming error. Please contact technical support.';
+
+  @override
+  String get thisOrderTemplateRequiresPaymentDetailsPleaseFillInThe =>
+      'This order template requires payment details. Please fill in the payment methods correctly.';
+
+  @override
+  String get thisOrderTemplateDoesNotAllowPriceChangesProcessThe =>
+      'This order template does not allow price changes. Process the cart to continue.';
+
+  @override
+  String get yourUserDoesNotHavePermissionToChangeOrderPrices =>
+      'Your user does not have permission to change order prices. Process the cart to continue.';
+
+  @override
+  String get thisOrderHasNotBeenProcessedToCalculatePricesBased =>
+      'This order has not been processed to calculate prices based on promotions, sales agreements, offers, wholesale prices, and the order template!\n\nSave anyway?';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get websiteId => 'Website ID';
+
+  @override
+  String get sentOn => 'Sent on';
+
+  @override
+  String get selectError => 'Select error';
+
+  @override
+  String get selectOrder => 'Select order';
+
+  @override
+  String get lastRead => 'Last read';
+
+  @override
+  String get orderCreation => 'Order creation';
+
+  @override
+  String get invoice => 'Invoice';
+
+  @override
+  String get order => 'Order';
+
+  @override
+  String get productsNotFound => 'Products not found';
+
+  @override
+  String get websiteCode => 'Website code';
+
+  @override
+  String get product => 'Product';
+
+  @override
+  String get link => 'Link';
+
+  @override
+  String get searchForAndSelectTheProductToLink =>
+      'Search for and select the product to link';
+
+  @override
+  String get viewProduct => 'View product';
+
+  @override
+  String get noProductsFound => 'No products found';
+
+  @override
+  String get linkProduct => 'Link product?';
+
+  @override
+  String get viewOrder => 'View order';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get errorDate => 'Error date';
+
+  @override
+  String get cashWithdrawalDate => 'Cash withdrawal date';
+
+  @override
+  String get selectProduct => 'Select product';
+
+  @override
+  String get productIdOnWebsite => 'Product ID on website';
+
+  @override
+  String get errorDescription => 'Error description';
+
+  @override
+  String get moreErrorInformation => 'More error information';
+
+  @override
+  String get productUpload => 'Product upload';
+
+  @override
+  String get priceUpload => 'Price upload';
+
+  @override
+  String get stockUpload => 'Stock upload';
+
+  @override
+  String get notSentToWebsite => 'Not sent to website';
+
+  @override
+  String get sentToWebsite => 'Sent to website';
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get ignored => 'Ignored';
+
+  @override
+  String get issueDate => 'Issue date';
+
+  @override
+  String get invoice2 => 'Invoice';
+
+  @override
+  String get series => 'Series';
+
+  @override
+  String get orderTemplateNotFound => 'Order template not found';
+
+  @override
+  String get thisProductHasNoPrice => 'This product has no price';
+
+  @override
+  String get theProductSNetAmountCannotBeNegative =>
+      'The product\'s net amount cannot be negative.';
+
+  @override
+  String get theProductSNetAmountMustBeGreaterThanZero =>
+      'The product\'s net amount must be greater than zero';
+
+  @override
+  String get theProductSNetAmountMustBeGreaterThanZero2 =>
+      'The product\'s net amount must be greater than zero.';
+
+  @override
+  String get unexpectedError => 'Unexpected error';
+
+  @override
+  String get amountExceedsTheAvailableBalance =>
+      'Amount exceeds the available balance';
+
+  @override
+  String get selectAnAgreement => 'Select an agreement';
+
+  @override
+  String get theOrderTemplateDoesNotAllowPaymentSurcharges =>
+      'The order template does not allow payment surcharges';
+
+  @override
+  String get theAmountMustBeGreaterThanZero =>
+      'The amount must be greater than zero';
+
+  @override
+  String get selectTheSurchargeType => 'Select the surcharge type';
+
+  @override
+  String get theOrderTemplateDoesNotAllowPaymentDiscounts =>
+      'The order template does not allow payment discounts';
+
+  @override
+  String get selectTheDiscountType => 'Select the discount type';
+
+  @override
+  String get manualDiscount => 'Manual discount';
+
+  @override
+  String get invalidState => 'Invalid state';
+
+  @override
+  String get addProductsToTheOrder2 => 'Add products to the order';
+
+  @override
+  String get enterTheOrderTemplate => 'Enter the order template';
+
+  @override
+  String get selectTheWebsite => 'Select the website';
+
+  @override
+  String get orderId => 'Order ID';
+
+  @override
+  String get addForRereading => 'Add for rereading';
+
+  @override
+  String get customerName => 'Customer name';
+
+  @override
+  String get registrationDate => 'Registration date';
+
+  @override
+  String get customerCode => 'Customer code';
+
+  @override
+  String get selectReceipt => 'Select receipt';
+
+  @override
+  String get saleDate => 'Sale date';
+
+  @override
+  String get receipt => 'Receipt';
+
+  @override
+  String get pos => 'POS';
+
+  @override
+  String get creation => 'Creation';
+
+  @override
+  String get openingClosing => 'Opening/Closing';
+
+  @override
+  String get noCustomersFound => 'No customers found';
+
+  @override
+  String get theEnteredDocumentNumberWasNotFound =>
+      'The entered document number was not found';
+
+  @override
+  String get noErrorsFound => 'No errors found';
+
+  @override
+  String get reload2 => 'Reload';
+
+  @override
+  String get message404PageNotFound => '404 - Page not found!';
+
+  @override
+  String get anErrorOccurred => 'An error occurred';
+
+  @override
+  String get userDoesNotHavePermissionToAccessThisModule =>
+      'User does not have permission to access this module';
+
+  @override
+  String get rereadingThisDetailTypeHasNotBeenImplemented =>
+      'Rereading this detail type has not been implemented';
+
+  @override
+  String get deletingThisDetailTypeHasNotBeenImplemented =>
+      'Deleting this detail type has not been implemented';
+
+  @override
+  String get productDetails2 => 'Product details';
+
+  @override
+  String get searchProperty => 'Search property...';
+
+  @override
+  String get notImplementedYet => 'Not implemented yet';
+
+  @override
+  String get theProductWasNotFound => 'The product was not found';
+
+  @override
+  String get notProvided => 'Not provided';
+
+  @override
+  String get notProvided2 => 'Not provided';
+
+  @override
+  String get notProvided3 => 'Not provided';
+
+  @override
+  String get notProvided4 => 'Not provided';
+
+  @override
+  String get paymentMethods => 'Payment methods';
+
+  @override
+  String get itemTotal => 'Item total';
+
+  @override
+  String get subtotalR => 'Subtotal R\$';
+
+  @override
+  String get totalDiscountsR => 'Total discounts R\$';
+
+  @override
+  String get totalSurchargesR => 'Total surcharges R\$';
+
+  @override
+  String get totalShippingR => 'Total shipping R\$';
+
+  @override
+  String get totalR => 'TOTAL R\$ ';
+
+  @override
+  String get notes3 => 'Notes ';
+
+  @override
+  String get instructions2 => 'Instructions ';
+
+  @override
+  String get salesOrderNotFoundSearchForOrdersAgainToCheck =>
+      'Sales order not found. Search for orders again to check its availability.';
+
+  @override
+  String get developedByCeltaware => 'Developed by Celtaware';
+
+  @override
+  String get orderTemplate => 'Order template:';
+
+  @override
+  String get issueDate2 => 'Issue date:';
+
+  @override
+  String get paymentDiscount2 => 'Payment discount:';
+
+  @override
+  String get paymentSurcharge2 => 'Payment surcharge:';
+
+  @override
+  String get discount2 => 'Discount:';
+
+  @override
+  String get surcharge2 => 'Surcharge:';
+
+  @override
+  String get shipping => 'Shipping:';
+
+  @override
+  String get netTotal3 => 'Net total:';
+
+  @override
+  String get instructions3 => 'Instructions:';
+
+  @override
+  String get notes4 => 'Notes:';
+
+  @override
+  String get surch2 => 'Surch';
+
+  @override
+  String get installments => 'Installments';
+
+  @override
+  String get immediatePayment => 'Immediate payment';
+
+  @override
+  String get suspended => 'Suspended';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get areYouSureYouWantToSignOut => 'Are you sure you want to sign out?';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get createSalesOrders => 'Create sales orders';
+
+  @override
+  String get searchSalesOrders => 'Search sales orders';
+
+  @override
+  String get createPurchaseOrders => 'Create purchase orders';
+
+  @override
+  String get searchPurchaseOrders => 'Search purchase orders';
+
+  @override
+  String get authorized => 'Authorized';
+
+  @override
+  String get unauthorized => 'Unauthorized';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get subcategory => 'Subcategory';
+
+  @override
+  String get report => 'Report';
+
+  @override
+  String get reportHasNoDataToDisplay => 'Report has NO DATA to display';
+
+  @override
+  String get theReportIsBeingGeneratedAgainSomeReportsTakeLonger =>
+      'The report is being generated again.\n\nSome reports take longer to generate. Wait a few moments, then check the reports again to see whether the last generation date has changed.';
+
+  @override
+  String get lastGenerated => 'Last generated';
+
+  @override
+  String get generate => 'Generate';
+
+  @override
+  String get sendByEmail => 'Send by email?';
+
+  @override
+  String get startedBy => 'Started by';
+
+  @override
+  String get thisProcessHasAlreadyBeenReviewed =>
+      'This process has already been reviewed';
+
+  @override
+  String get vote => 'Vote';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get viewPath => 'View path';
+
+  @override
+  String get filePath => 'File path';
+
+  @override
+  String get spreadsheetDownloaded => 'Spreadsheet downloaded';
+
+  @override
+  String get downloadSpreadsheet => 'Download spreadsheet';
+
+  @override
+  String get downloadPdf => 'Download PDF';
+
+  @override
+  String get pdfDownloaded => 'PDF downloaded';
+
+  @override
+  String get discountAnalysis => 'Discount analysis';
+
+  @override
+  String get profitabilityAnalysis => 'Profitability analysis';
+
+  @override
+  String get noDiscountsFound => 'No discounts found';
+
+  @override
+  String get noProfitabilityDataFound => 'No profitability data found';
+
+  @override
+  String get replacement2 => 'Replacement';
+
+  @override
+  String get netCost => 'Net cost';
+
+  @override
+  String get operatingExp => 'Operating exp.';
+
+  @override
+  String get tax2 => 'Tax';
+
+  @override
+  String get revenue => 'Revenue';
+
+  @override
+  String get profit => 'Profit';
+
+  @override
+  String get margin => 'Margin';
+
+  @override
+  String get min2 => 'Min';
+
+  @override
+  String get unitDiff => 'Unit diff.';
+
+  @override
+  String get totalDiff => 'Total diff.';
+
+  @override
+  String get gross => 'Gross';
+
+  @override
+  String get net2 => 'Net';
+
+  @override
+  String get max => 'Max';
+
+  @override
+  String get difference => 'Difference';
+
+  @override
+  String get awaitingAuthorization => 'Awaiting authorization';
+
+  @override
+  String get unauthorized2 => 'Unauthorized';
+
+  @override
+  String get stockToReplace => 'Stock to replace';
+
+  @override
+  String get selectTheStock => 'Select the stock!';
+
+  @override
+  String get attention3 => 'Attention!!!';
+
+  @override
+  String get confirmingWillUpdateTheProductSStockToTheQuantity =>
+      'Confirming will update the product\'s stock to the quantity you entered!\n\nContinue?';
+
+  @override
+  String get lastAcceptedQty => 'Last ACCEPTED qty';
+
+  @override
+  String get noProcessesFoundWithStatus => 'No processes found with status ';
+
+  @override
+  String get processStartedBy => 'Process started by';
+
+  @override
+  String get authorizers => 'Authorizers';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get linkToThisProduct => 'Link to this product?';
+
+  @override
+  String get countedQty2 => 'Counted qty';
+
+  @override
+  String get xmlDifferences => 'XML differences';
+
+  @override
+  String get notReviewed => 'Not reviewed';
+
+  @override
+  String get reviewed => 'Reviewed';
+
+  @override
+  String get notRegistered => 'Not registered';
+
+  @override
+  String get noReviewedProducts => 'No reviewed products';
+
+  @override
+  String get allProductsHaveAlreadyBeenReviewed =>
+      'All products have already been reviewed';
+
+  @override
+  String get invoiceQty => 'Invoice qty';
+
+  @override
+  String get orderQty => 'Order qty';
+
+  @override
+  String get otherOrderQty => 'Other order qty';
+
+  @override
+  String get qtyDiff => 'Qty diff.';
+
+  @override
+  String get invoiceNetAmount => 'Invoice net amount';
+
+  @override
+  String get orderNetAmount => 'Order net amount';
+
+  @override
+  String get netAmountDiff => 'Net amount diff.';
+
+  @override
+  String get totalNetAmountDiff => 'Total net amount diff.';
+
+  @override
+  String get returnAllQuantitiesOfTheSelectedProducts =>
+      'Return all quantities of the selected products?';
+
+  @override
+  String get returnOnlyTheExcessQuantityOfTheSelectedProducts =>
+      'Return only the excess quantity of the selected products?';
+
+  @override
+  String get acceptTheDiscrepanciesForTheSelectedProducts =>
+      'Accept the discrepancies for the selected products?';
+
+  @override
+  String get voidTheReviewsOfTheSelectedProducts =>
+      'Void the reviews of the selected products?';
+
+  @override
+  String get voidReviews => 'Void reviews';
+
+  @override
+  String get accept => 'Accept';
+
+  @override
+  String get returnExcess => 'Return excess';
+
+  @override
+  String get unableToFindTheDocument => 'Unable to find the document';
+
+  @override
+  String get sourceCompany2 => 'Source company';
+
+  @override
+  String get documentType => 'Document type';
+
+  @override
+  String get nfeKey => 'NFe key';
+
+  @override
+  String get nfeSeries => 'NFe series';
+
+  @override
+  String get verificationCompleted => 'Verification completed!';
+
+  @override
+  String get leavingWillDiscardTheCountedQuantitiesLeaveAnyway =>
+      'Leaving will discard the counted quantities. Leave anyway?';
+
+  @override
+  String get noProductsVerifiedYet => 'No products verified yet';
+
+  @override
+  String get selectTheProductToConfirm => 'Select the product to confirm';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get verified => 'Verified';
+
+  @override
+  String get documents => 'Documents';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get reloadSettings => 'Reload settings';
+
+  @override
+  String get noDocumentsAreUndergoingProductVerification =>
+      'No documents are undergoing product verification';
+
+  @override
+  String get step => 'Step';
+
+  @override
+  String get productSearchType => 'Product search type';
+
+  @override
+  String get autoScan => 'Auto scan';
+
+  @override
+  String get goodsReceipts => 'Goods receipts';
+
+  @override
+  String get numberIssuerStatusNote => 'Number|Issuer|Status|Note';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get thisProductIsNotPendingVerification =>
+      'This product is not pending verification';
+
+  @override
+  String get addNote => 'Add note';
+
+  @override
+  String get editNote => 'Edit note';
+
+  @override
+  String get issuer => 'Issuer';
+
+  @override
+  String get group => 'Group';
+
+  @override
+  String get newNote => 'New note';
+
+  @override
+  String get pendingNote => 'Pending note';
+
+  @override
+  String get alreadyReleased => 'Already released';
+
+  @override
+  String get release => 'Release';
+
+  @override
+  String get thisDocumentIsUndergoingAuthorizationAndCannotBeReleased =>
+      'This document is undergoing authorization and cannot be released';
+
+  @override
+  String get release2 => 'Release?';
+
+  @override
+  String get areYouSureYouWantToReleaseThisDocument =>
+      'Are you sure you want to release this document?';
+
+  @override
+  String get verifyProducts => 'Verify products';
+
+  @override
+  String get defaultNote => 'Default note';
+
+  @override
+  String get confirmNote => 'Confirm note';
+
+  @override
+  String get newExpirationDate => 'New expiration date';
+
+  @override
+  String get none2 => 'None';
+
+  @override
+  String get subtract => 'Subtract';
+
+  @override
+  String get add3 => 'Add';
+
+  @override
+  String get areYouSureYouWantToVoidTheCount =>
+      'Are you sure you want to void the count?';
+
+  @override
+  String get updateRequired => 'Update required!';
+
+  @override
+  String get askBsSupportToUpdateTheSystemToUseThis =>
+      'Ask BS support to update the system to use this feature';
+
+  @override
+  String get weighedProducts => 'Weighed products';
+
+  @override
+  String get noEan => 'No EAN';
+
+  @override
+  String get alreadyCounted => 'Already counted';
+
+  @override
+  String get noExpirationDate => 'No expiration date';
+
+  @override
+  String get countedQuantity => 'Counted quantity';
+
+  @override
+  String get theNewQuantityCannotBeLessThanZero =>
+      'The new quantity cannot be less than zero';
+
+  @override
+  String get personalDetails => 'Personal details';
+
+  @override
+  String get saveDetails => 'Save details?';
+
+  @override
+  String get thereAreStillUnregisteredProductsTheyNeedToBeLinked =>
+      'There are still unregistered products. They need to be linked.';
+
+  @override
+  String get reviewAllProductsBeforeVoting =>
+      'Review all products before voting';
+
+  @override
+  String get cpfCnpj2 => 'CPF/CNPJ ';
+
+  @override
+  String get name2 => 'Name ';
+
+  @override
+  String get shortName => 'Short name ';
+
+  @override
+  String get birthDate => 'Birth date ';
+
+  @override
+  String get password2 => 'Password ';
+
+  @override
+  String get sex => 'Sex ';
+
+  @override
+  String get unableToLoadTheSalesOrderData =>
+      'Unable to load the sales order data';
+
+  @override
+  String get processNotFound => 'Process not found';
+
+  @override
+  String get filterCompany => 'Filter company';
+
+  @override
+  String get filterUsageType => 'Filter usage type';
+
+  @override
+  String get thisPhoneNumberHasAlreadyBeenAdded =>
+      'This phone number has already been added';
+
+  @override
+  String get addPhoneNumber => 'Add phone number';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get monthYear => 'Month/year';
+
+  @override
+  String get noUsageFound => 'No usage found';
+
+  @override
+  String get noResultsFound => 'No results found';
+
+  @override
+  String get requestsByType => 'Requests by type';
+
+  @override
+  String get requestsByUser => 'Requests by user';
+
+  @override
+  String get manageModules => 'Manage modules';
+
+  @override
+  String get usage => 'Usage';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get enteredPhoneNumbers => 'Entered phone numbers';
+
+  @override
+  String get removePhoneNumber => 'Remove phone number?';
+
+  @override
+  String get noCompaniesFound => 'No companies found.';
+
+  @override
+  String get noPermission => 'No permission';
+
+  @override
+  String get onlyAdministratorsCanMakeThisChange =>
+      'Only administrators can make this change';
+
+  @override
+  String get sex2 => 'Sex';
+
+  @override
+  String get shortName2 => 'Short name';
+
+  @override
+  String get confirmPassword => 'Confirm password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get stateTaxRegistration => 'State tax registration';
+
+  @override
+  String get birthDate2 => 'Birth date';
+
+  @override
+  String get companyRegisteredSuccessfully => 'Company registered successfully';
+
+  @override
+  String get createCompany => 'Create company';
+
+  @override
+  String get bsUsername => 'BS username';
+
+  @override
+  String get remoteHttp => 'Remote HTTP';
+
+  @override
+  String get remoteHttps => 'Remote HTTPS';
+
+  @override
+  String get enteredEmails => 'Entered emails';
+
+  @override
+  String get removeEmail => 'Remove email?';
+
+  @override
+  String get localHttp => 'Local HTTP';
+
+  @override
+  String get thisEmailHasAlreadyBeenAdded =>
+      'This email has already been added';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get enterEmail => 'Enter email';
+
+  @override
+  String get localHttps => 'Local HTTPS';
+
+  @override
+  String get companyName => 'Company name';
+
+  @override
+  String get customerSavedSuccessfully => 'Customer saved successfully';
+
+  @override
+  String get details2 => 'Details';
+
+  @override
+  String get unlinkedAgreements => 'Unlinked agreements';
+
+  @override
+  String get cnpj2 => 'CNPJ ';
+
+  @override
+  String get address2 => 'Address ';
+
+  @override
+  String get limitR => 'Limit R\$';
+
+  @override
+  String get link2 => 'Link';
+
+  @override
+  String get linkedAgreements => 'Linked agreements';
+
+  @override
+  String get code2 => 'Code ';
+
+  @override
+  String get limit => 'Limit ';
+
+  @override
+  String get removeAgreement => 'Remove agreement';
+
+  @override
+  String get areYouSureYouWantToRemoveThisAgreement =>
+      'Are you sure you want to remove this agreement?';
+
+  @override
+  String get remoteHttp2 => 'Remote HTTP';
+
+  @override
+  String get remoteHttps2 => 'Remote HTTPS';
+
+  @override
+  String get enabled => 'Enabled';
+
+  @override
+  String get inherit => 'Inherit';
+
+  @override
+  String get disabled => 'Disabled';
+
+  @override
+  String get permissionsChangedSuccessfully =>
+      'Permissions changed successfully';
+
+  @override
+  String get globalPermissions => 'Global permissions';
+
+  @override
+  String get specificPermissions => 'Specific permissions';
+
+  @override
+  String get companyNotFound2 => 'Company not found.';
+
+  @override
+  String get requestTimedOutPleaseTryAgain =>
+      'Request timed out. Please try again.';
+
+  @override
+  String get connectionErrorCheckYourInternetConnection =>
+      'Connection error. Check your internet connection.';
+
+  @override
+  String get invalidLoginCredentialsCheckYourEmailAndPassword =>
+      'Invalid login credentials. Check your email and password.';
+
+  @override
+  String get thePasswordMustContainAtLeast6Characters =>
+      'The password must contain at least 6 characters.';
+
+  @override
+  String get thisEmailIsAlreadyRegistered =>
+      'This email is already registered.';
+
+  @override
+  String get invalidEmailFormat => 'Invalid email format.';
+
+  @override
+  String get thisActionIsTemporarilyBlockedTryAgainLater =>
+      'This action is temporarily blocked. Try again later.';
+
+  @override
+  String get methodNotFoundTellTechnicalSupportThatTheApiIs =>
+      'Method not found. Tell technical support that the API is unavailable or needs updating.';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get postalCode2 => 'Postal code ';
+
+  @override
+  String get deleteAddress => 'Delete address?';
+
+  @override
+  String get addressComplement => 'Address complement ';
+
+  @override
+  String get reference2 => 'Reference ';
+
+  @override
+  String get thisAddressHasAlreadyBeenAdded =>
+      'This address has already been added';
+
+  @override
+  String get labelLayouts => 'Label layouts';
+
+  @override
+  String get reportedIssues => 'Reported issues';
+
+  @override
+  String get noLabelLayoutsFound => 'No label layouts found';
+
+  @override
+  String get printer => 'Printer';
+
+  @override
+  String get noReportedIssues => 'No reported issues';
+
+  @override
+  String get unableToLoadTheImage => 'Unable to load the image';
+
+  @override
+  String get labelPhoto => 'Label photo';
+
+  @override
+  String get canvasImage => 'Canvas image';
+
+  @override
+  String get issueReport => 'Issue report';
+
+  @override
+  String get layout => 'Layout';
+
+  @override
+  String get environment => 'Environment';
+
+  @override
+  String get failedToCaptureTheCanvas => 'Failed to capture the canvas';
+
+  @override
+  String get copyDiagnostics => 'Copy diagnostics';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get reportAPrintingIssue => 'Report a printing issue';
+
+  @override
+  String get checkTheSavedLayoutBeforeTakingAPhoto =>
+      'Check the saved layout before taking a photo.';
+
+  @override
+  String get sendingReport => 'Sending report...';
+
+  @override
+  String get reportCanceled => 'Report canceled.';
+
+  @override
+  String get issueDetails => 'Issue details';
+
+  @override
+  String get describeTheExpectedResultAndTheIssueEncountered =>
+      'Describe the expected result and the issue encountered';
+
+  @override
+  String get iAuthorizeSendingBothImagesTheSavedLayoutMyName =>
+      'I authorize sending both images, the saved layout, my name, company, and safe app/device data to technical support';
+
+  @override
+  String get sendReport => 'Send report';
+
+  @override
+  String get retakeCaptures => 'Retake captures';
+
+  @override
+  String get reportSent => 'Report sent';
+
+  @override
+  String get unableToCompleteTheReport => 'Unable to complete the report.';
+
+  @override
+  String get theEntireLabelIsVisible => 'The entire label is visible';
+
+  @override
+  String get thereIsARulerAboveOrBelowTheLabel =>
+      'There is a ruler above or below the label';
+
+  @override
+  String get thePhotoIsInFocusAndHasNoGlare =>
+      'The photo is in focus and has no glare';
+
+  @override
+  String get takeAnotherPhoto => 'Take another photo';
+
+  @override
+  String get useThisPhoto => 'Use this photo';
+
+  @override
+  String get takePhoto => 'Take photo';
+
+  @override
+  String get addFieldToLayout => 'Add field to layout';
+
+  @override
+  String get layoutSavedSuccessfully => 'Layout saved successfully';
+
+  @override
+  String get allChangesWillBeLostCloseThisScreen =>
+      'All changes will be lost. Close this screen?';
+
+  @override
+  String get discardChanges => 'Discard changes';
+
+  @override
+  String get allChangesWillBeLostRefreshTheData =>
+      'All changes will be lost. Refresh the data?';
+
+  @override
+  String get layoutDetails => 'Layout details';
+
+  @override
+  String get selectThePrinter => 'Select the printer';
+
+  @override
+  String get addField => 'Add field';
+
+  @override
+  String get printerFormAndLabel => 'Printer, form, and label';
+
+  @override
+  String get noFieldsConfigured => 'No fields configured';
+
+  @override
+  String get hideFromPreview => 'Hide from preview';
+
+  @override
+  String get showInPreview => 'Show in preview';
+
+  @override
+  String get reportIssue => 'Report issue';
+
+  @override
+  String get saveTheLayout => 'Save the layout';
+
+  @override
+  String get saveOrDiscardChangesBeforeReportingAnIssue =>
+      'Save or discard changes before reporting an issue.';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get saveTheseChanges => 'Save these changes?';
+
+  @override
+  String get logo => 'Logo';
+
+  @override
+  String get field => 'Field';
+
+  @override
+  String get preview => 'Preview ';
+
+  @override
+  String get approximate => '(APPROXIMATE)';
+
+  @override
+  String get addFieldsToDetermineThePreviewHeight =>
+      'Add fields to determine the preview height';
+
+  @override
+  String get enterAValidWidthAndHeightToPreviewTheLabel =>
+      'Enter a valid width and height to preview the label';
+
+  @override
+  String get printerParameters => 'Printer parameters';
+
+  @override
+  String get temperature => 'Temperature';
+
+  @override
+  String get speed => 'Speed';
+
+  @override
+  String get packetInterval => 'Packet interval';
+
+  @override
+  String get dots => 'dots';
+
+  @override
+  String get width => 'Width';
+
+  @override
+  String get height => 'Height';
+
+  @override
+  String get rightMargin => 'Right margin';
+
+  @override
+  String get bottomMargin => 'Bottom margin';
+
+  @override
+  String get labelDirection => 'Label direction';
+
+  @override
+  String get considerProductPackaging => 'Consider product packaging';
+
+  @override
+  String get enterPrintQuantityPerProduct => 'Enter print quantity per product';
+
+  @override
+  String get printOneLabelForEachUnitSold =>
+      'Print one label for each unit sold';
+
+  @override
+  String get onlyProductsSentToInventoryCountingThatAllowACounted =>
+      'Only products sent to inventory counting that allow a counted quantity';
+
+  @override
+  String get top => 'Top';
+
+  @override
+  String get left => 'Left';
+
+  @override
+  String get bottom => 'Bottom';
+
+  @override
+  String get right => 'Right';
+
+  @override
+  String get layoutName => 'Layout name';
+
+  @override
+  String get fieldsIncompatibleWithTheNewTypeWillBeRemoved =>
+      'Fields incompatible with the new type will be removed.';
+
+  @override
+  String get addressType => 'Address type';
+
+  @override
+  String get main => 'Main';
+
+  @override
+  String get billing => 'Billing';
+
+  @override
+  String get delivery => 'Delivery';
+
+  @override
+  String get notApplicable => 'Not applicable';
+
+  @override
+  String get formType => 'Form type';
+
+  @override
+  String get height2 => 'Height *';
+
+  @override
+  String get topMargin => 'Top margin';
+
+  @override
+  String get leftMargin => 'Left margin';
+
+  @override
+  String get columns => 'Columns';
+
+  @override
+  String get applyFormSizeSettings => 'Apply form size settings';
+
+  @override
+  String get content => 'Content';
+
+  @override
+  String get prefix => 'Prefix';
+
+  @override
+  String get xAxis => 'X axis';
+
+  @override
+  String get yAxis => 'Y axis';
+
+  @override
+  String get size => 'Size';
+
+  @override
+  String get rotation => 'Rotation';
+
+  @override
+  String get imageName => 'Image name';
+
+  @override
+  String get barcodeType => 'Barcode type';
+
+  @override
+  String get dataField => 'Data field';
+
+  @override
+  String get printTextBelowTheBarcode => 'Print text below the barcode';
+
+  @override
+  String get alignment => 'Alignment';
+
+  @override
+  String get format => 'Format';
+
+  @override
+  String get decimalPlaces => 'Decimal places';
+
+  @override
+  String get fontType => 'Font type';
+
+  @override
+  String get fontSize => 'Font size';
+
+  @override
+  String get startingPosition => 'Starting position';
+
+  @override
+  String get maximumCharacters => 'Maximum characters';
+
+  @override
+  String get printBoldText => 'Print bold text';
+
+  @override
+  String get printReverseText => 'Print reverse text';
+
+  @override
+  String get continueAction => 'Continue';
+
+  @override
+  String get voidAction => 'Void';
+
+  @override
+  String get newAction => 'New';
+
+  @override
+  String get returnAction => 'Return';
+
+  @override
+  String get alreadyInModule => 'You are already in this module';
+
+  @override
+  String get wholesalePriceLabel => 'Wholesale price';
+
+  @override
+  String get replacementCostPrefix => 'Replacement cost ';
+
+  @override
+  String get pricePrefix => 'Price ';
+
+  @override
+  String get currentStockPrefix => 'Current stock ';
+
+  @override
+  String get availableForSale => 'Available for sale';
+
+  @override
+  String get retailPrefix => 'Retail ';
+
+  @override
+  String get minimumRetailPrefix => 'Min retail ';
+
+  @override
+  String get minimumRetailOfferPrefix => 'Min retail offer ';
+
+  @override
+  String get minimumWholesalePrefix => 'Min wholesale ';
+
+  @override
+  String get wholesaleOfferPrefix => 'Wholesale offer ';
+
+  @override
+  String get minimumEcommercePrefix => 'Min e-commerce ';
+
+  @override
+  String get minimumEcommerceOfferPrefix => 'Min e-commerce offer ';
+
+  @override
+  String get selectedCompanyAddress => 'Address at the selected company';
+
+  @override
+  String get timeLabel => 'Time';
+
+  @override
+  String get endOfferAction => 'End offer';
+
+  @override
+  String get paymentExceedsOrder =>
+      'The payment total exceeds the product total!\n';
+
+  @override
+  String get customerSearchHint => 'Name|Code|CPF/CNPJ';
+
+  @override
+  String get orderChangeImpacts =>
+      'This change will have the following effects on the order:\n\n';
+
+  @override
+  String get salesOrdersReadErrors => 'sales orders with reading errors';
+
+  @override
+  String get unmarkSendingAll => 'Unmark sending (all)';
+
+  @override
+  String get unmarkSendingSelected => 'Unmark sending (selected)';
+
+  @override
+  String get notAuthorizer =>
+      'You are not an authorizer and cannot vote on this process';
+
+  @override
+  String get statusProduct => 'Status/Product';
+
+  @override
+  String get settingsLoadFailed => 'Unable to load settings';
+
+  @override
+  String get autoScanExplanation =>
+      'When enabled, the camera opens automatically to scan the next product after you confirm a quantity';
+
+  @override
+  String get enteredAddresses => 'Entered addresses';
+
+  @override
+  String get privacyConsentRequired => 'Privacy consent is required';
+
+  @override
+  String get strokeThickness => 'Stroke thickness';
+
+  @override
+  String get barcodeRatio => 'Bar width ratio';
+
+  @override
+  String get noCameraAvailable => 'No camera is available';
+
+  @override
+  String get centerAlignment => 'Center';
+
+  @override
+  String get printQuality => 'Print quality';
+
+  @override
+  String get positioning => 'Positioning';
+
+  @override
+  String get labelSize => 'Label size';
+
+  @override
+  String get barcodeLabel => 'Barcode';
+
+  @override
+  String get otherOption => 'Other';
+
+  @override
+  String get paginatedForm => 'Paginated';
+
+  @override
+  String get continuousForm => 'Continuous';
+
+  @override
+  String get centimeters => 'Centimeters';
+
+  @override
+  String get printerDots => 'Printer dots';
+
+  @override
+  String get agreementLabel => 'Agreement';
+
+  @override
+  String get customerCard => 'Customer card';
+
+  @override
+  String get transportLabel => 'Transport';
+
+  @override
+  String get salesOrderProduct => 'Sales order product';
+
+  @override
+  String get unitaryPacking => 'Unitary';
+
+  @override
+  String get multiplePacking => 'Multiple';
+
+  @override
+  String get bothOptions => 'Both';
+
+  @override
+  String get scaleFactor => 'factor';
+
+  @override
+  String get printerCommandValue => 'command value';
+
+  @override
+  String get paymentsWillBeCleared =>
+      'The current payment methods will be removed';
+
+  @override
+  String get discountsWillBeReset => 'Discounts will be removed';
+
+  @override
+  String get surchargesWillBeReset => 'Surcharges will be removed';
+
+  @override
+  String get deliveryFeesWillBeReset => 'Delivery fees will be removed';
+
+  @override
+  String get customerBlockedForSales =>
+      'The selected customer is blocked from making purchases';
+
+  @override
+  String get automaticDiscountsWillBeRemoved =>
+      'The product\'s automatic discounts will be removed';
+
+  @override
+  String get noBlockade => 'None';
+
+  @override
+  String get offerPriceBlockade => 'Blocked by offer price';
+
+  @override
+  String get automaticDiscountBlockade => 'Blocked by automatic discount';
+
+  @override
+  String get salesAgreementBlockade => 'Blocked by sales agreement';
+
+  @override
+  String get wholesalePriceBlockade => 'Blocked by wholesale price';
+
+  @override
+  String get promotionOrigin => 'Promotion';
+
+  @override
+  String get salesAgreementOrigin => 'Sales agreement';
+
+  @override
+  String get taxExemptionOrigin => 'Tax exemption';
+
+  @override
+  String get employeeBond => 'Employee';
+
+  @override
+  String get simpleUserBond => 'Simple';
+
+  @override
+  String get anyUserCanAuthorize => 'Any user can authorize';
+
+  @override
+  String get allUsersShouldAuthorize => 'All users must authorize';
+
+  @override
+  String get closedProcess => 'Closed process';
+
+  @override
+  String get definedForHandler => 'Defined for the person responsible';
+
+  @override
+  String get goodsReceiptDocumentValue => 'Goods receipt document amount';
+
+  @override
+  String get goodsReceiptDocumentCancellation =>
+      'Goods receipt document cancellation';
+
+  @override
+  String get goodsReceiptDocumentRelease => 'Goods receipt document release';
+
+  @override
+  String get goodsReceiptXmlValidation =>
+      'Goods receipt XML document validation';
+
+  @override
+  String get goodsReceiptPaymentTermsValidation =>
+      'Goods receipt payment terms validation';
+
+  @override
+  String get salesOrderBelowMinimumPrice =>
+      'Sales order with a price below the minimum';
+
+  @override
+  String get salesOrderExcessDiscount =>
+      'Sales order with a discount above the allowed limit';
+
+  @override
+  String get receiptCompleted => 'Used by a goods entry (Completed)';
+
+  @override
+  String get receiptCanceled => 'Canceled (Completed)';
+
+  @override
+  String get countingReceiptProducts => 'Counting products';
+
+  @override
+  String get receiptReleasedAwaitingEntry =>
+      'Released for entry (Awaiting entry)';
+
+  @override
+  String get receiptUnderAuthorization => 'Undergoing authorization';
+
+  @override
+  String get receiptAwaitingProductMaintenance =>
+      'Awaiting product maintenance';
+
+  @override
+  String get receiptAwaitingRelease => 'Awaiting entry release';
+
+  @override
+  String get receiptUnknownStatus => 'Unknown status. Contact support';
+
+  @override
+  String get orderToInvoiceJudgment => 'Order to invoice';
+
+  @override
+  String get invoiceToCountJudgment => 'Invoice to count';
+
+  @override
+  String get orderToCountJudgment => 'Order to count';
+
+  @override
+  String moduleDisabledForCompany(String module) {
+    return 'The $module module is disabled for this company...';
+  }
+
+  @override
+  String userMissingResource(String resource) {
+    return 'Your user does not have permission for: $resource';
+  }
+
+  @override
+  String copiedText(String text) {
+    return 'Copied: $text';
+  }
+
+  @override
+  String searchProductsByType(String type) {
+    return 'Search products ($type)';
+  }
+
+  @override
+  String endNamedOffer(String type) {
+    return 'End $type offer';
+  }
+
+  @override
+  String confirmEndNamedOffer(String type) {
+    return 'Are you sure you want to end the $type offer?';
+  }
+
+  @override
+  String paginationRange(int start, int end, int total) {
+    return '$start-$end of $total';
+  }
+
+  @override
+  String changeValue(String value) {
+    return 'Change $value';
+  }
+
+  @override
+  String addValue(String value) {
+    return 'Add $value';
+  }
+
+  @override
+  String printingUpdateFailed(String error) {
+    return 'Failed to update printing: $error';
+  }
+
+  @override
+  String fromStock(String stock) {
+    return 'From \"$stock\"';
+  }
+
+  @override
+  String toStock(String stock) {
+    return 'To \"$stock\"';
+  }
+
+  @override
+  String paymentDifference(String amount) {
+    return 'Difference = $amount';
+  }
+
+  @override
+  String editingOrderCode(String code) {
+    return 'Editing ($code)';
+  }
+
+  @override
+  String discountWithSymbol(String symbol) {
+    return 'Discount $symbol';
+  }
+
+  @override
+  String priceWithTypeAbbreviation(String type) {
+    return 'Price R\$ ($type)';
+  }
+
+  @override
+  String valueWithSymbol(String symbol) {
+    return 'Amount $symbol';
+  }
+
+  @override
+  String printOrderCode(String code) {
+    return 'Print order $code';
+  }
+
+  @override
+  String priceWithType(String type) {
+    return '$type price';
+  }
+
+  @override
+  String companyWithCode(String code) {
+    return 'Company $code';
+  }
+
+  @override
+  String websiteProductToLink(String name) {
+    return 'Website product \"$name\"\n';
+  }
+
+  @override
+  String productToLink(String name) {
+    return 'Product to link \"$name\"\n';
+  }
+
+  @override
+  String spreadsheetDownloadedAt(String path) {
+    return 'Spreadsheet downloaded to \"$path\"';
+  }
+
+  @override
+  String salesOrderWithCode(String code) {
+    return 'Sales order $code';
+  }
+
+  @override
+  String unsupportedAuthorizationType(String type) {
+    return 'Reviewing authorization processes of type \"$type\" has not been implemented in the app yet';
+  }
+
+  @override
+  String documentConferenceCompleted(String number) {
+    return 'Verification of document $number completed successfully';
+  }
+
+  @override
+  String conferenceConfirmationFailed(String error) {
+    return 'Failed to confirm verification: $error';
+  }
+
+  @override
+  String customersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count customers',
+      one: '$count customer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String requestsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requests',
+      one: '$count request',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String duplicateDataDetails(String details) {
+    return 'This action duplicates data that must be unique. \n$details';
+  }
+
+  @override
+  String cameraOpenFailed(String error) {
+    return 'Unable to open the camera: $error';
+  }
+
+  @override
+  String reportId(String id) {
+    return 'ID: $id';
+  }
+
+  @override
+  String layoutFieldsCount(int count) {
+    return 'Fields ($count)';
+  }
+
+  @override
+  String labelParametersWithUnit(String unit) {
+    return 'Label parameters ($unit)';
+  }
+
+  @override
+  String formParametersWithUnit(String unit) {
+    return 'Form parameters ($unit)';
+  }
+
+  @override
+  String appVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String freeUntilDate(String date) {
+    return 'Free until $date';
+  }
+
+  @override
+  String formattedAddress(
+    String street,
+    String number,
+    String district,
+    String city,
+    String state,
+  ) {
+    return '$street, number $number. $district, $city, $state';
+  }
+
+  @override
+  String lastChangedQuantity(String sign) {
+    return 'Last changed quantity $sign';
+  }
+
+  @override
+  String get percentageType => 'Percentage';
+
+  @override
+  String get reaisType => 'Brazilian reais';
+
+  @override
+  String get withoutJudgment => 'Not reviewed';
+
+  @override
+  String get acceptedJudgment => 'Accepted';
+
+  @override
+  String get returnAllJudgment => 'Return all';
+
+  @override
+  String get hidePasswordAction => 'Hide';
+
+  @override
+  String get showPasswordAction => 'Show';
+
+  @override
+  String printerConnectionFailure(String error) {
+    return 'Unable to connect to the printer\n\n\"$error\"\n\nCheck the printer IP, paper roll, and power. If the problem persists, restart the printer and try again.';
+  }
+
+  @override
+  String orderPrintingFailure(String error) {
+    return 'Failed to print the order\n\n$error';
+  }
+
+  @override
+  String printedSalesOrder(String value) {
+    return 'SALES ORDER $value';
+  }
+
+  @override
+  String printedAt(String value) {
+    return 'Printed on $value';
+  }
+
+  @override
+  String printedOrder(String value) {
+    return 'Order: $value';
+  }
+
+  @override
+  String printedOrderNumber(String value) {
+    return 'Order No.: $value';
+  }
+
+  @override
+  String printedOrderTemplate(String value) {
+    return 'Order template: $value';
+  }
+
+  @override
+  String printedIssueDate(String value) {
+    return 'Issue date: $value';
+  }
+
+  @override
+  String printedCustomer(String value) {
+    return 'Customer: $value';
+  }
+
+  @override
+  String printedSeller(String value) {
+    return 'Salesperson: $value';
+  }
+
+  @override
+  String printedUser(String value) {
+    return 'User: $value';
+  }
+
+  @override
+  String printedSurcharge(String value) {
+    return 'Surcharge: $value';
+  }
+
+  @override
+  String printedPaymentDiscount(String value) {
+    return 'Payment discount: $value';
+  }
+
+  @override
+  String printedPaymentSurcharge(String value) {
+    return 'Payment surcharge: $value';
+  }
+
+  @override
+  String printedShipping(String value) {
+    return 'Shipping: $value';
+  }
+
+  @override
+  String printedNetTotal(String value) {
+    return 'Net total: R\$ $value';
+  }
+
+  @override
+  String printedInstallments(String value) {
+    return ' in $value installments';
+  }
+
+  @override
+  String printedDiscountAmount(String value) {
+    return '  (-) Discount: R\$ $value';
+  }
+
+  @override
+  String printedSurchargeAmount(String value) {
+    return '  (+) Surcharge: R\$ $value';
+  }
+
+  @override
+  String printedItemDiscount(String value) {
+    return 'Discount -$value';
+  }
+
+  @override
+  String printedItemSurcharge(String value) {
+    return 'Surcharge +$value';
+  }
+
+  @override
+  String printedItemShipping(String value) {
+    return 'Shipping +$value';
+  }
+
+  @override
+  String removedPaymentMethods(String methods) {
+    return 'The following payment methods will be removed: $methods';
+  }
+
+  @override
+  String customerSalesBlockDetails(String details) {
+    return 'The customer is blocked from making purchases: $details';
+  }
+
+  @override
+  String confirmOrderChangeImpacts(String impacts) {
+    return 'This change will have the following effects on the order:\n\n$impacts\n\nContinue?';
+  }
+
+  @override
+  String get layoutNameRequired => 'Name: This field is required';
+
+  @override
+  String get layoutPrinterRequired => 'Printer: Select a printer';
+
+  @override
+  String get layoutFormWidthInvalid =>
+      'Form width: Enter a value greater than zero';
+
+  @override
+  String get layoutFormHeightInvalid =>
+      'Form height: Enter a value greater than zero';
+
+  @override
+  String get layoutColumnsInvalid =>
+      'Number of columns: Enter a value greater than zero';
+
+  @override
+  String get layoutWidthInvalid =>
+      'Label width: Enter a value greater than zero';
+
+  @override
+  String get layoutHeightInvalid =>
+      'Label height: Enter a value greater than zero';
+
+  @override
+  String get layoutFormMarginsInvalid => 'Form margins cannot be negative';
+
+  @override
+  String get layoutLabelMarginsInvalid => 'Label margins cannot be negative';
+
+  @override
+  String get layoutTemperatureRequired => 'Print temperature: Select an option';
+
+  @override
+  String get layoutSpeedRequired => 'Print speed: Select an option';
+
+  @override
+  String get layoutIntervalInvalid =>
+      'Packet interval must be greater than zero';
+
+  @override
+  String get layoutFormSizeRequired => 'Form size settings must be applied';
+
+  @override
+  String get layoutAddressRequired => 'Address type: Select an option';
+
+  @override
+  String get layoutAddressInapplicable =>
+      'This address type does not apply to the layout type';
+
+  @override
+  String get layoutFieldRequired => 'Add at least one field to the layout';
+
+  @override
+  String get layoutFieldInapplicable =>
+      'At least one field does not apply to the selected layout type';
+
+  @override
+  String get layoutLabelsExceedForm =>
+      'The labels do not fit within the form width';
+
+  @override
+  String get noSelectedCompany => 'No company selected. Reload the data';
+
+  @override
+  String get noCameraAvailableFailure => 'No camera is available';
+
+  @override
+  String get reportContextUnavailable =>
+      'The report context could not be loaded';
+
+  @override
+  String get reportSavedLayoutRequired => 'Only a saved layout can be reported';
+
+  @override
+  String get reportImagesRequired => 'Both report images must be provided';
+
+  @override
+  String get reportCategoryRequired => 'Select a report category';
+
+  @override
+  String get reportPrivacyRequired => 'Privacy consent is required';
+
+  @override
+  String get processTypeUnsupported => 'Process type not implemented';
+
+  @override
+  String get reportValidationUnsupportedSchema => 'Unsupported schema version';
+
+  @override
+  String get reportValidationInvalidIdempotencyKey =>
+      'Idempotency key must be a UUID';
+
+  @override
+  String get reportValidationSupabaseEnterpriseRequired =>
+      'The app company is required';
+
+  @override
+  String get reportValidationErpEnterpriseRequired =>
+      'The ERP company is required';
+
+  @override
+  String get reportValidationErpUserRequired => 'ERP username is required';
+
+  @override
+  String get reportValidationErpUserTooLong =>
+      'ERP username must contain at most 200 characters';
+
+  @override
+  String get reportValidationErpCompanyRequired =>
+      'ERP company name is required';
+
+  @override
+  String get reportValidationErpCompanyTooLong =>
+      'ERP company name must contain at most 200 characters';
+
+  @override
+  String get reportValidationReportDescriptionRequired =>
+      'Description is required';
+
+  @override
+  String get reportValidationReportDescriptionTooLong =>
+      'Description must contain at most 2000 characters';
+
+  @override
+  String get reportValidationSavedLayoutRequired =>
+      'Only a saved layout can be reported';
+
+  @override
+  String get reportValidationEnvironmentRequired =>
+      'Environment details must be complete';
+
+  @override
+  String get reportValidationPhysicalImageTooLarge =>
+      'The label photo must be at most 5 MiB';
+
+  @override
+  String get reportValidationPhysicalImageDimensionsInvalid =>
+      'Invalid label photo dimensions';
+
+  @override
+  String get reportValidationCanvasImageTooLarge =>
+      'The preview image must be at most 5 MiB';
+
+  @override
+  String get reportValidationCanvasImageDimensionsInvalid =>
+      'Invalid preview image dimensions';
+
+  @override
+  String get reportValidationCapturesNotConfirmed => 'Confirm both captures';
+
+  @override
+  String get deactivatedProperty => 'Deactivated';
+
+  @override
+  String get fiscalClassificationProperty => 'Tax classification';
+
+  @override
+  String get labelPhotoUploadTooLarge =>
+      'The physical photo could not be converted within the upload limit.';
+
+  @override
+  String get labelCanvasUploadTooLarge =>
+      'The canvas preview exceeds the upload limit.';
+
+  @override
+  String get labelCanvasDecodeFailed =>
+      'The canvas preview pixels could not be decoded.';
+
+  @override
+  String get labelCanvasUnreadable =>
+      'The canvas preview is not a readable image.';
+
+  @override
+  String get labelCanvasWebpUnreadable =>
+      'The encoded canvas preview is not a readable WebP image.';
+
+  @override
+  String get labelCanvasBlank =>
+      'The encoded canvas preview has no visible content.';
+
+  @override
+  String get labelImageWebpUnreadable =>
+      'The converted image is not a readable WebP file.';
+
+  @override
+  String get labelImageFileMissing =>
+      'The source image file is missing or empty.';
 }

@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/stock_replacement/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,7 +45,7 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
       n.showToastOnSuccess(
         context,
         previous: p,
-        message: 'Ajuste efetuado com sucesso'.hardcoded,
+        message: context.l10n.adjustmentCompleted,
       );
       n.doOnSuccess(p, () {
         quantityController.clear();
@@ -66,7 +65,7 @@ class _AdjustStocksPageState extends ConsumerState<StockReplacementPage> {
       usePadding: false,
       resizeToAvoidBottomInset: true,
       appBar: BaseAppBar(
-        title: 'Substituição de estoque'.hardcoded,
+        title: context.l10n.coreModulesStockReplacement,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Form(

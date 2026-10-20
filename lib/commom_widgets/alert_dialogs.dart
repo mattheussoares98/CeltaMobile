@@ -1,4 +1,5 @@
 import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ Future<bool?> showAlertDialog({
   String? content,
   Widget? contentWidget,
   String? cancelActionText,
-  String defaultActionText = 'OK',
+  String? defaultActionText,
   List<Widget>? actions,
   VoidCallback? onLongpressTitle,
 }) {
@@ -59,7 +60,7 @@ Future<bool?> showAlertDialog({
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
                   CupertinoDialogAction(
-                    child: Text(defaultActionText),
+                    child: Text(defaultActionText ?? context.l10n.ok),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
@@ -72,7 +73,7 @@ Future<bool?> showAlertDialog({
                       onPressed: () => Navigator.of(context).pop(false),
                     ),
                   TextButton(
-                    child: Text(defaultActionText),
+                    child: Text(defaultActionText ?? context.l10n.ok),
                     onPressed: () {
                       Navigator.of(context).pop(true);
                     },
@@ -90,5 +91,5 @@ Future<bool?> showExceptionAlertDialog({
 }) => showAlertDialog(
   context: context,
   title: title,
-  content: exception.toString(),
+  content: parseErrorMessage(exception, translations: context.l10n),
 );

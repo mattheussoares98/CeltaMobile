@@ -4,13 +4,18 @@ import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/data/datasource/datasource.dart';
 import 'package:celta_inventario/features/sale_request/data/models/models.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
+  final AppLocalizations _l10n;
+
+  BSFGeneratePdfDatasource({AppLocalizations? translations})
+    : _l10n = translations ?? defaultLocalizations;
+
   @override
   Future<Uint8List> generate(BSFSaleRequestModel saleRequest) async {
     final pdf = pw.Document();
@@ -49,30 +54,30 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     return await pdf.save();
   }
 
-  static pw.Widget _buildHeader(BSFSaleRequestModel saleRequest) {
+  pw.Widget _buildHeader(BSFSaleRequestModel saleRequest) {
     return pw.Container(
       alignment: pw.Alignment.centerRight,
       margin: const pw.EdgeInsets.only(bottom: 10.0),
       child: pw.Text(
-        'Pedido Nº: ${saleRequest.personalizedCode}',
+        _l10n.printedOrderNumber(saleRequest.personalizedCode ?? ''),
         style: const pw.TextStyle(fontWeight: pw.FontWeight.bold),
       ),
     );
   }
 
-  static pw.Widget _buildFooter() {
+  pw.Widget _buildFooter() {
     return pw.Container(
       alignment: pw.Alignment.center,
       margin: const pw.EdgeInsets.only(top: 20.0),
       child: pw.Text(
-        'Desenvolvido por Celtaware'.hardcoded,
+        _l10n.developedByCeltaware,
         style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey),
       ),
     );
   }
 
-  static String _formatDate(DateTime? date) {
-    if (date == null) return 'Não informada'.hardcoded;
+  String _formatDate(DateTime? date) {
+    if (date == null) return _l10n.notProvided3;
     final day = date.day.toString().padLeft(2, '0');
     final month = date.month.toString().padLeft(2, '0');
     final year = date.year.toString();
@@ -81,7 +86,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     return '$day/$month/$year $hour:$minutes';
   }
 
-  static String _formatValueType(BSFValueTypeModel? valueType) {
+  String _formatValueType(BSFValueTypeModel? valueType) {
     if (valueType?.value == null || valueType!.value == 0) return '';
     final formatted = valueType.value.toString().toBrazilianNumber();
     if (valueType.type == PercentageOrValue.percentage) {
@@ -90,14 +95,14 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     return 'R\$ $formatted';
   }
 
-  static pw.Widget _buildRequestInfo(BSFSaleRequestModel saleRequest) {
+  pw.Widget _buildRequestInfo(BSFSaleRequestModel saleRequest) {
     final requestTypeName = saleRequest.requestType?.name;
     final requestTypeCode = saleRequest.requestType?.code?.toString();
     final requestTypeStr = switch ((requestTypeCode, requestTypeName)) {
       (final c?, final n?) => '$c - $n',
       (final c?, null) => c,
       (null, final n?) => n,
-      (null, null) => 'Não informado'.hardcoded,
+      (null, null) => _l10n.notProvided4,
     };
 
     final dateStr = _formatDate(saleRequest.dateOfEmission);
@@ -118,36 +123,32 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
         .toBrazilianNumber();
 
     final items = <pw.Widget>[
-      _infoRow('Modelo de Pedido:'.hardcoded, requestTypeStr),
-      _infoRow('Data de Emissão:'.hardcoded, dateStr),
+      _infoRow(_l10n.orderTemplate, requestTypeStr),
+      _infoRow(_l10n.issueDate2, dateStr),
     ];
 
     if (financialDiscountStr.isNotEmpty) {
-      items.add(
-        _infoRow('Desconto Financeiro:'.hardcoded, financialDiscountStr),
-      );
+      items.add(_infoRow(_l10n.paymentDiscount2, financialDiscountStr));
     }
     if (financialIncrementStr.isNotEmpty) {
-      items.add(
-        _infoRow('Acréscimo Financeiro:'.hardcoded, financialIncrementStr),
-      );
+      items.add(_infoRow(_l10n.paymentSurcharge2, financialIncrementStr));
     }
     final discount = saleRequest.toEntity().saleRequestDiscount;
     if (discount > 0) {
       items.add(
         _infoRow(
-          'Desconto:'.hardcoded,
+          _l10n.discount2,
           discount.toString().toBrazilianNumber().addBrazilianCoin(),
         ),
       );
     }
     if (incrementStr.isNotEmpty) {
-      items.add(_infoRow('Acréscimo:'.hardcoded, incrementStr));
+      items.add(_infoRow(_l10n.surcharge2, incrementStr));
     }
     if (deliveryTaxStr.isNotEmpty) {
-      items.add(_infoRow('Frete:'.hardcoded, deliveryTaxStr));
+      items.add(_infoRow(_l10n.shipping, deliveryTaxStr));
     }
-    items.add(_infoRow('Total Líquido:'.hardcoded, 'R\$ $totalLiquidStr'));
+    items.add(_infoRow(_l10n.netTotal3, 'R\$ $totalLiquidStr'));
 
     return pw.Container(
       decoration: pw.BoxDecoration(
@@ -162,7 +163,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _infoRow(String label, String value) {
+  pw.Widget _infoRow(String label, String value) {
     return pw.Padding(
       padding: const pw.EdgeInsets.symmetric(vertical: 1),
       child: pw.Row(
@@ -183,19 +184,21 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _buildCustomerInfo(BSFSaleRequestModel saleRequest) {
+  pw.Widget _buildCustomerInfo(BSFSaleRequestModel saleRequest) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Cliente: ${saleRequest.customer?.name ?? "Não informado".hardcoded}',
+          _l10n.printedCustomer(
+            saleRequest.customer?.name ?? _l10n.notProvided4,
+          ),
           style: const pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
             fontSize: 14,
           ),
         ),
         pw.Text(
-          'Vendedor: ${saleRequest.seller?.name ?? "Não informado".hardcoded}',
+          _l10n.printedSeller(saleRequest.seller?.name ?? _l10n.notProvided4),
           style: const pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
             fontSize: 14,
@@ -203,19 +206,16 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
         ),
         pw.SizedBox(height: 12),
         if (saleRequest.instructions?.isNotEmpty ?? false) ...[
-          _buildInfoSection('Instruções:'.hardcoded, saleRequest.instructions!),
+          _buildInfoSection(_l10n.instructions3, saleRequest.instructions!),
           pw.SizedBox(height: 8),
         ],
         if (saleRequest.observations?.isNotEmpty ?? false)
-          _buildInfoSection(
-            'Observações:'.hardcoded,
-            saleRequest.observations!,
-          ),
+          _buildInfoSection(_l10n.notes4, saleRequest.observations!),
       ],
     );
   }
 
-  static pw.Widget _buildInfoSection(String title, String content) {
+  pw.Widget _buildInfoSection(String title, String content) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -235,7 +235,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _buildPaymentSection(List<BSFFinancialModel> financials) {
+  pw.Widget _buildPaymentSection(List<BSFFinancialModel> financials) {
     // Flatten all payment finalizations from all financials
     final payments = <BSFPaymentFinalizationWrapperModel>[];
     for (final financial in financials) {
@@ -265,7 +265,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Formas de Pagamento'.hardcoded,
+          _l10n.paymentMethods,
           style: const pw.TextStyle(
             fontWeight: pw.FontWeight.bold,
             fontSize: 12,
@@ -282,22 +282,16 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
             pw.TableRow(
               decoration: const pw.BoxDecoration(color: PdfColors.grey200),
               children: [
-                _tableHeaderCell('Pagamento'.hardcoded),
+                _tableHeaderCell(_l10n.payment),
                 if (hasDiscount)
-                  _tableHeaderCell(
-                    'Desc'.hardcoded,
-                    align: pw.Alignment.center,
-                  ),
+                  _tableHeaderCell(_l10n.disc, align: pw.Alignment.center),
                 if (hasIncrement)
-                  _tableHeaderCell(
-                    'Acrés'.hardcoded,
-                    align: pw.Alignment.center,
-                  ),
+                  _tableHeaderCell(_l10n.surch2, align: pw.Alignment.center),
                 _tableHeaderCell(
-                  'Parcelas'.hardcoded,
+                  _l10n.installments,
                   align: pw.Alignment.center,
                 ),
-                _tableHeaderCell('Valor'.hardcoded, align: pw.Alignment.center),
+                _tableHeaderCell(_l10n.amount, align: pw.Alignment.center),
               ],
             ),
             // Payment rows
@@ -331,7 +325,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
                   _tableDataCell(
                     (payment.quantityOfPortions ?? 1) > 1
                         ? '${payment.quantityOfPortions}x'
-                        : 'À vista'.hardcoded,
+                        : _l10n.immediatePayment,
                   ),
 
                   _tableDataCell(
@@ -350,7 +344,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
   /// PERFORMANCE: Built using manual TableRow logic to allow for column spanning.
   /// Columns for Discount, Increment, and Freight are built dynamically
   /// only if there is at least one item with a value in the list.
-  static pw.Widget _buildProductTable(List<BSFProductItemModel> products) {
+  pw.Widget _buildProductTable(List<BSFProductItemModel> products) {
     // PERFORMANCE: Pre-calculating existence of financial adjustments to
     // determine column count and visibility in a single O(n) pass.
     bool hasDiscount = false;
@@ -398,19 +392,16 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
         pw.TableRow(
           decoration: const pw.BoxDecoration(color: PdfColors.grey200),
           children: [
-            _tableHeaderCell('Produto'.hardcoded),
-            _tableHeaderCell('Qtd'.hardcoded, align: pw.Alignment.center),
-            _tableHeaderCell('Preço'.hardcoded, align: pw.Alignment.center),
+            _tableHeaderCell(_l10n.product),
+            _tableHeaderCell(_l10n.quantityShort, align: pw.Alignment.center),
+            _tableHeaderCell(_l10n.price, align: pw.Alignment.center),
             if (hasDiscount)
-              _tableHeaderCell('Desc'.hardcoded, align: pw.Alignment.center),
+              _tableHeaderCell(_l10n.disc, align: pw.Alignment.center),
             if (hasIncrement)
-              _tableHeaderCell('Acrés'.hardcoded, align: pw.Alignment.center),
+              _tableHeaderCell(_l10n.surch2, align: pw.Alignment.center),
             if (hasFreight)
-              _tableHeaderCell('Frete'.hardcoded, align: pw.Alignment.center),
-            _tableHeaderCell(
-              'Total'.hardcoded,
-              align: pw.Alignment.centerRight,
-            ),
+              _tableHeaderCell(_l10n.freight, align: pw.Alignment.center),
+            _tableHeaderCell(_l10n.total, align: pw.Alignment.centerRight),
           ],
         ),
 
@@ -519,11 +510,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
         pw.TableRow(
           decoration: const pw.BoxDecoration(color: PdfColors.grey100),
           children: [
-            _tableDataCell(
-              ''.hardcoded,
-              align: pw.Alignment.centerLeft,
-              bold: true,
-            ),
+            _tableDataCell('', align: pw.Alignment.centerLeft, bold: true),
             _tableDataCell(
               totalQuantity.toString().toBrazilianNumber(3, true),
               bold: true,
@@ -545,7 +532,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _tableHeaderCell(
+  pw.Widget _tableHeaderCell(
     String text, {
     pw.Alignment align = pw.Alignment.centerLeft,
   }) {
@@ -559,7 +546,7 @@ class BSFGeneratePdfDatasource implements IBSFGeneratePdfDatasource {
     );
   }
 
-  static pw.Widget _tableDataCell(
+  pw.Widget _tableDataCell(
     String text, {
     bool isPrice = false,
     pw.Alignment align = pw.Alignment.center,

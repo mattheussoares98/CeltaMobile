@@ -4,7 +4,6 @@ import 'package:celta_inventario/features/process_authorization/domain/entities/
 import 'package:celta_inventario/features/process_authorization/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/models/models.dart';
 import 'package:celta_inventario/features/process_authorization/presentation/pages/vote/vote.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
@@ -42,12 +41,13 @@ class OpenVotePageButton extends ConsumerWidget {
           currentProcess.status !=
               BSFProcessAuthorizationJudgementStatus.awaiting) {
         showToastMessage(
-          'Esse processo já foi julgado'.hardcoded,
+          context.l10n.thisProcessHasAlreadyBeenReviewed,
           type: .error,
         );
         return;
       }
       final loggedUser = await ref.read(validatedUserSessionProvider.future);
+      if (!context.mounted) return;
       final isAuthorizator =
           process?.authorizators?.any(
             (e) =>
@@ -58,10 +58,7 @@ class OpenVotePageButton extends ConsumerWidget {
           false;
 
       if (!isAuthorizator) {
-        showToastMessage(
-          'Você não é um autorizador. Por isso não pode votar nesse processo',
-          type: ToastType.error,
-        );
+        showToastMessage(context.l10n.notAuthorizer, type: ToastType.error);
         return;
       }
       if (context.mounted) {
@@ -99,11 +96,11 @@ class OpenVotePageButton extends ConsumerWidget {
 
     Widget voteButton = usePrimaryButton
         ? PrimaryButton(
-            text: 'Votar'.hardcoded,
+            text: context.l10n.vote,
             onPressed: process == null ? null : onTap,
           )
         : PrimaryTextButton(
-            text: 'Votar'.hardcoded,
+            text: context.l10n.vote,
             onPressed: process == null ? null : onTap,
           );
 

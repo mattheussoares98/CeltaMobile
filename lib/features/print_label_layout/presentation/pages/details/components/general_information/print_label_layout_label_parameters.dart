@@ -1,9 +1,10 @@
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +24,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
     const marginStep = 0.1;
     final unitLabel = unit == BSFPrintLabelCoordinateUnit.centimeter
         ? 'cm'
-        : 'pontos'.hardcoded;
+        : context.l10n.dots;
 
     return Card(
       child: Padding(
@@ -31,7 +32,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            BaseText.title('Parâmetros da etiqueta ($unitLabel)'.hardcoded),
+            BaseText.title(context.l10n.labelParametersWithUnit(unitLabel)),
             gapH8,
             Wrap(
               alignment: .spaceEvenly,
@@ -40,7 +41,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-label-width'),
                   repeatInterval: const Duration(milliseconds: 5),
-                  label: 'Largura'.hardcoded,
+                  label: context.l10n.width,
                   value: _formatValue(layout.labelWidth, unit),
                   currentValue: layout.labelWidth,
                   min: 0,
@@ -52,7 +53,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-label-height'),
-                  label: 'Altura'.hardcoded,
+                  label: context.l10n.height,
                   repeatInterval: const Duration(milliseconds: 5),
                   value: _formatValue(layout.labelHeight, unit),
                   currentValue: layout.labelHeight,
@@ -72,7 +73,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
               children: [
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-label-right-margin'),
-                  label: 'Mg direita'.hardcoded,
+                  label: context.l10n.rightMargin,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelRightMargin, unit),
                   currentValue: layout.labelRightMargin,
@@ -87,7 +88,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
                 ),
                 PrintLabelLayoutValueAdjuster(
                   key: const Key('print-label-layout-label-bottom-margin'),
-                  label: 'Mg inferior'.hardcoded,
+                  label: context.l10n.bottomMargin,
                   repeatInterval: const Duration(milliseconds: 25),
                   value: _formatValue(layout.labelBottomMargin, unit),
                   currentValue: layout.labelBottomMargin,
@@ -105,13 +106,14 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
             ),
             if (capabilities.supportedDirections.isNotEmpty) ...[
               gapH8,
-              BaseText.caption('Direção da etiqueta'.hardcoded),
+              BaseText.caption(context.l10n.labelDirection),
               gapH4,
               BaseSegmentedButtons<BSFPrintLabelDirectionType>(
                 key: const Key('print-label-layout-direction'),
                 items: capabilities.supportedDirections,
                 selectedValue: layout.directionLabelType,
-                itemLabelBuilder: _directionLabel,
+                itemLabelBuilder: (direction) =>
+                    _directionLabel(context, direction),
                 onChanged: capabilities.canEditDirection
                     ? controller.updateDirectionLabelType
                     : null,
@@ -119,13 +121,14 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
             ],
             if (capabilities.showsProductPacking) ...[
               gapH8,
-              BaseText.caption('Considerar embalagem do produto'.hardcoded),
+              BaseText.caption(context.l10n.considerProductPackaging),
               gapH4,
               BaseSegmentedButtons<BSFProductPackingSelectionType>(
                 key: const Key('print-label-layout-product-packing'),
                 items: BSFProductPackingSelectionType.values,
                 selectedValue: layout.considerProductPacking,
-                itemLabelBuilder: (item) => item.label,
+                itemLabelBuilder: (item) =>
+                    context.l10n.productPackingSelectionName(item),
                 onChanged: (value) =>
                     controller.updateConsiderProductPacking(value),
               ),
@@ -134,7 +137,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
               gapH8,
               BaseSwitch(
                 key: const Key('print-label-layout-quantity-per-product'),
-                title: 'Informar quantidade de impressão por produto'.hardcoded,
+                title: context.l10n.enterPrintQuantityPerProduct,
                 value: layout.informPrintQuantityByProduct,
                 onChanged: (value) =>
                     controller.updateInformPrintQuantityByProduct(value),
@@ -144,8 +147,7 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
               gapH8,
               BaseSwitch(
                 key: const Key('print-label-layout-print-by-sold-quantity'),
-                title:
-                    'Imprimir uma etiqueta para cada unidade vendida'.hardcoded,
+                title: context.l10n.printOneLabelForEachUnitSold,
                 value: layout.printProductBySoldQuantity,
                 onChanged: controller.updatePrintProductBySoldQuantity,
               ),
@@ -154,9 +156,9 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
               gapH8,
               BaseSwitch(
                 key: const Key('print-label-layout-balance-behavior'),
-                title:
-                    'Somente produtos enviados para balanço e que permitem quantidade no balanço'
-                        .hardcoded,
+                title: context
+                    .l10n
+                    .onlyProductsSentToInventoryCountingThatAllowACounted,
                 value: layout.goesForBalanceAndQuantityInBalance,
                 onChanged: controller.updateGoesForBalanceAndQuantityInBalance,
               ),
@@ -176,11 +178,13 @@ class PrintLabelLayoutLabelParameters extends ConsumerWidget {
         : value.toStringAsFixed(1);
   }
 
-  String _directionLabel(BSFPrintLabelDirectionType direction) =>
-      switch (direction) {
-        BSFPrintLabelDirectionType.top => 'Superior'.hardcoded,
-        BSFPrintLabelDirectionType.left => 'Esquerda'.hardcoded,
-        BSFPrintLabelDirectionType.bottom => 'Inferior'.hardcoded,
-        BSFPrintLabelDirectionType.right => 'Direita'.hardcoded,
-      };
+  String _directionLabel(
+    BuildContext context,
+    BSFPrintLabelDirectionType direction,
+  ) => switch (direction) {
+    BSFPrintLabelDirectionType.top => context.l10n.top,
+    BSFPrintLabelDirectionType.left => context.l10n.left,
+    BSFPrintLabelDirectionType.bottom => context.l10n.bottom,
+    BSFPrintLabelDirectionType.right => context.l10n.right,
+  };
 }

@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/providers/ec_request_params/ec_request_params.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
@@ -133,6 +134,9 @@ void main() {
               ),
             ],
             child: MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('pt'),
               home: Scaffold(
                 body: Consumer(
                   builder: (context, ref, child) {
@@ -237,6 +241,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: PrintLabelLayoutAddFieldPage(
               layoutCode: 10,
@@ -312,6 +319,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: PrintLabelLayoutAddFieldPage(
               layoutCode: 10,
@@ -384,6 +394,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: Consumer(
               builder: (context, ref, child) {
@@ -507,6 +520,9 @@ void main() {
             ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
           ],
           child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('pt'),
             home: Scaffold(
               body: Consumer(
                 builder: (context, ref, child) {
@@ -582,6 +598,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: Consumer(
               builder: (context, ref, child) {
@@ -656,6 +675,9 @@ void main() {
             ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
           ],
           child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('pt'),
             home: Scaffold(
               body: Consumer(
                 builder: (context, ref, child) {
@@ -789,6 +811,9 @@ void main() {
             ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
           ],
           child: MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('pt'),
             home: Scaffold(
               body: Consumer(
                 builder: (context, ref, child) {
@@ -898,6 +923,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: PrintLabelLayoutFieldItem(
               layoutCode: 10,
@@ -943,6 +971,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('pt'),
           home: Scaffold(
             body: PrintLabelLayoutFieldItem(
               layoutCode: 10,
@@ -981,6 +1012,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('pt'),
           home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),
@@ -1023,6 +1057,9 @@ void main() {
           ecPrintLabelLayoutRepositoryProvider.overrideWithValue(repository),
         ],
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('pt'),
           home: PrintLabelLayoutDetailsPage(labelCode: 10, enterpriseCode: 1),
         ),
       ),

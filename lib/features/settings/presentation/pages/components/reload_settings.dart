@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,10 +13,10 @@ class ReloadSettings extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
-        const Text('Não foi possível carregar as configurações'),
+        Text(context.l10n.settingsLoadFailed),
         gapH32,
         PrimaryButton(
-          text: 'Tentar novamente'.hardcoded,
+          text: context.l10n.tryAgain,
           onPressed: () => ref.invalidate(appSettingsRepositoryProvider),
         ),
       ],

@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class NameField extends StatelessWidget {
@@ -20,8 +19,8 @@ class NameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseTextFormField(
       controller: nameController,
-      hintText: 'Nome'.hardcoded,
-      labelText: 'Nome'.hardcoded,
+      hintText: context.l10n.name,
+      labelText: context.l10n.name,
       focusNode: nameFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([

@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,7 @@ class OriginEnterprisesPage extends ConsumerWidget {
     return BaseScaffold(
       isScrollable: false,
       refreshProvider: enterprisesStateControllerProvider(),
-      appBar: BaseAppBar(title: 'Empresa de origem'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.sourceCompany),
       body: Consumer(
         builder: (context, ref, child) {
           return AsyncValueWidget(
@@ -44,10 +44,8 @@ class OriginEnterprisesPage extends ConsumerWidget {
                   if (!moduleIsEnabled) {
                     showAlertDialog(
                       context: context,
-                      title: 'Módulo desabilitado'.hardcoded,
-                      content:
-                          'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'
-                              .hardcoded,
+                      title: context.l10n.moduleDisabled,
+                      content: context.l10n.moduleDisabledContactAdmin,
                     );
                     return;
                   }

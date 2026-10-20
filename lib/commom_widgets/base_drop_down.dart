@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -94,10 +93,11 @@ class BaseDropDown<T> extends StatelessWidget {
                               if (adviceMessage != null) {
                                 final ok = await showAlertDialog(
                                   context: context,
-                                  title: 'Atenção!'.hardcoded,
+                                  title: context.l10n.attention,
                                   content: adviceMessage,
-                                  defaultActionText: 'Continuar'.hardcoded,
-                                  cancelActionText: 'Cancelar'.hardcoded,
+                                  defaultActionText:
+                                      context.l10n.continueAction,
+                                  cancelActionText: context.l10n.cancel,
                                 );
                                 if (ok != true) return;
                               }
@@ -108,7 +108,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                       builder: (sheetContext) =>
                                           CupertinoActionSheet(
                                             title: BaseText(
-                                              'Selecionar'.hardcoded,
+                                              context.l10n.select2,
                                             ),
                                             actions: centeredItems!.map((item) {
                                               return CupertinoActionSheetAction(
@@ -129,7 +129,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                                     sheetContext,
                                                   ).pop(),
                                                   child: BaseText.titleMedium(
-                                                    'Cancelar'.hardcoded,
+                                                    context.l10n.cancel,
 
                                                     color: CupertinoColors
                                                         .destructiveRed,
@@ -161,7 +161,7 @@ class BaseDropDown<T> extends StatelessWidget {
                                     child:
                                         hint ??
                                         BaseText(
-                                          label ?? 'Selecionar'.hardcoded,
+                                          label ?? context.l10n.select2,
                                           textType: TextType.bodyLarge,
                                           maxLines: 1,
                                           textAlign: TextAlign.center,
@@ -241,7 +241,7 @@ class BaseDropDown<T> extends StatelessWidget {
                             : () {
                                 showAlertDialog(
                                   context: context,
-                                  title: 'Atenção!'.hardcoded,
+                                  title: context.l10n.attention,
                                   content: adviceMessage,
                                 );
                               },

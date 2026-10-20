@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class Margins extends StatelessWidget {
@@ -14,50 +14,50 @@ class Margins extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          BaseText.headline('Margens'.hardcoded, textAlign: TextAlign.center),
+          BaseText.headline(context.l10n.margins, textAlign: TextAlign.center),
           gapH8,
           TitleAndSubTitle(
-            title: 'Varejo ',
+            title: context.l10n.retailPrefix,
             subTitle: (widget.product.PriceCost?.RetailMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Mín varejo ',
+            title: context.l10n.minimumRetailPrefix,
             subTitle: (widget.product.PriceCost?.RetailMinimumMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Mín varejo oferta ',
+            title: context.l10n.minimumRetailOfferPrefix,
             subTitle: (widget.product.PriceCost?.RetailOfferMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Atacado ',
+            title: context.l10n.wholesale,
             subTitle: (widget.product.PriceCost?.WholeMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Mín atacado ',
+            title: context.l10n.minimumWholesalePrefix,
             subTitle: (widget.product.PriceCost?.WholeMinimumMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Oferta atacado ',
+            title: context.l10n.wholesaleOfferPrefix,
             subTitle: (widget.product.PriceCost?.WholeOfferMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Ecommerce ',
+            title: context.l10n.eCommerce,
             subTitle: (widget.product.PriceCost?.ECommerceMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Mín ecommerce ',
+            title: context.l10n.minimumEcommercePrefix,
             subTitle: (widget.product.PriceCost?.ECommerceMinimumMargin ?? 0),
             subTitleIsPercentage: true,
           ),
           TitleAndSubTitle(
-            title: 'Mín ecommerce oferta ',
+            title: context.l10n.minimumEcommerceOfferPrefix,
             subTitle: (widget.product.PriceCost?.ECommerceOfferMargin ?? 0),
             subTitleIsPercentage: true,
           ),

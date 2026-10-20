@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/scaffold/device_orientation_stub
     if (dart.library.io) 'package:celta_inventario/commom_widgets/scaffold/device_orientation_mobile.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -94,10 +93,10 @@ class _BaseScaffold extends ConsumerWidget {
     if (params.refreshConfirmationMessage != null) {
       final confirmed = await showAlertDialog(
         context: context,
-        title: 'Atenção!'.hardcoded,
+        title: context.l10n.attention,
         content: params.refreshConfirmationMessage,
-        cancelActionText: 'Não'.hardcoded,
-        defaultActionText: 'Sim'.hardcoded,
+        cancelActionText: context.l10n.no,
+        defaultActionText: context.l10n.yes,
       );
       if (confirmed != true) return;
     }

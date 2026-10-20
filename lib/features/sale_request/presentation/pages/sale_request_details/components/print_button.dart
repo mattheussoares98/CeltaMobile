@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +24,7 @@ class PrintButton extends ConsumerWidget {
     Future<void> showDialog() async {
       showAlertDialog(
         context: context,
-        title: 'Imprimir'.hardcoded,
+        title: context.l10n.print,
         actions: [],
         contentWidget: SizedBox(
           height: 200,

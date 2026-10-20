@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/reports/domain/entities/entities.dart';
 import 'package:celta_inventario/features/reports/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,10 +16,9 @@ class ExecuteButton extends ConsumerWidget {
       n.doOnSuccess(p, () {
         showAlertDialog(
           context: context,
-          title: 'Atenção!'.hardcoded,
+          title: context.l10n.attention,
           content:
-              'O relatório está sendo gerado novamente.\n\nAlguns relatórios demoram para serem gerados. Por isso, aguarde alguns instantes e consulte os relatórios novamente para verificar se a data da última geração foi alterada'
-                  .hardcoded,
+              context.l10n.theReportIsBeingGeneratedAgainSomeReportsTakeLonger,
         );
       });
     });
@@ -33,7 +31,7 @@ class ExecuteButton extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Última geração'.hardcoded),
+                Text(context.l10n.lastGenerated),
                 Text(
                   report.LastExecutionDate!.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
@@ -48,7 +46,7 @@ class ExecuteButton extends ConsumerWidget {
           child: Consumer(
             builder: (_, ref, _) {
               return PrimaryButton(
-                text: 'Gerar'.hardcoded,
+                text: context.l10n.generate,
                 isLoading: ref.watch(
                   executeScheduleControllerProvider(
                     report.Code,
@@ -57,9 +55,9 @@ class ExecuteButton extends ConsumerWidget {
                 onPressed: () async {
                   bool? value = await showAlertDialog(
                     context: context,
-                    title: 'Enviar por e-mail?'.hardcoded,
-                    defaultActionText: 'Sim'.hardcoded,
-                    cancelActionText: 'Não'.hardcoded,
+                    title: context.l10n.sendByEmail,
+                    defaultActionText: context.l10n.yes,
+                    cancelActionText: context.l10n.no,
                   );
                   ref
                       .read(

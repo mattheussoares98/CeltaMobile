@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +31,13 @@ class PrintLabelProblemReportResult extends ConsumerWidget {
             color: context.theme.colorScheme.primary,
           ),
           gapH16,
-          BaseText.titleLarge('Relatório enviado'.hardcoded),
+          BaseText.titleLarge(context.l10n.reportSent),
           gapH8,
-          BaseText.bodyMedium('ID: ${result.reportId}'.hardcoded),
+          BaseText.bodyMedium(
+            context.l10n.reportId(result.reportId.toString()),
+          ),
           gapH8,
-          PrimaryTextButton(text: 'Fechar'.hardcoded, onPressed: context.pop),
+          PrimaryTextButton(text: context.l10n.close, onPressed: context.pop),
         ],
       ),
     );

@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,7 +38,7 @@ class PrintLabelLayoutAddFieldPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          BaseText.title('Adicionar campo ao leiaute'.hardcoded),
+          BaseText.title(context.l10n.addFieldToLayout),
           gapH16,
           Expanded(
             child: SingleChildScrollView(
@@ -58,7 +58,7 @@ class PrintLabelLayoutAddFieldPage extends ConsumerWidget {
             ),
           ),
           PrimaryButton(
-            text: 'Adicionar'.hardcoded,
+            text: context.l10n.add,
             onPressed: addFieldState.draft == null
                 ? null
                 : () {

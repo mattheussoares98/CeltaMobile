@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -26,8 +26,8 @@ class ScanProductController extends _$ScanProductController {
       final pendingQty = currentState.pendingQuantities[productPackingCode];
 
       if (pendingQty == null || pendingQty <= 0) {
-        throw AppException(
-          'Esse produto não está pendente para conferência'.hardcoded,
+        throw AppException.localized(
+          CoreFailure.thisProductIsNotPendingVerification,
         );
       }
 

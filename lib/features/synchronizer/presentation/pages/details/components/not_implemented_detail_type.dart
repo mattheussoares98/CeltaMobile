@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/providers/services/crashlytics_service.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -53,8 +53,7 @@ class _NotImplementedDetailTypeState
   Widget build(BuildContext context) {
     return Center(
       child: BaseText.error(
-        'A visualização desse tipo de erro ainda não foi implementada'
-            .hardcoded,
+        context.l10n.displayingThisTypeOfErrorHasNotBeenImplementedYet,
       ),
     );
   }

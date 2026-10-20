@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +37,7 @@ class SelectedIconIndicator extends StatelessWidget {
     if (isIOS) {
       return FittedBox(
         child: PrimaryTextButton(
-          text: 'Editar'.hardcoded,
+          text: context.l10n.edit,
           platformIcon: selected ? selectedIcon : notSelectedIcon,
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();

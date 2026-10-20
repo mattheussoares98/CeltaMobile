@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'dart:math' as math;
 import 'dart:typed_data';
 
@@ -5,7 +6,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/models/models.dart';
 import 'package:celta_inventario/features/print_label_layout/presentation/pages/details/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
   final double scaleY;
   final bool isOutsideLabel;
   final bool isInsideFilledBox;
+  final String? fallbackText;
 
   const PrintLabelPreviewElement({
     super.key,
@@ -28,6 +29,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
     required this.scaleY,
     required this.isOutsideLabel,
     required this.isInsideFilledBox,
+    this.fallbackText,
   });
 
   static const _minimumSymbolSize = 24.0;
@@ -119,7 +121,7 @@ class PrintLabelPreviewElement extends StatelessWidget {
 
   Widget _logoPlaceholder(BuildContext context) => Semantics(
     image: true,
-    label: 'Logotipo'.hardcoded,
+    label: context.l10n.logo,
     child: ColoredBox(
       color: context.theme.colorScheme.onSurface.withAlpha(48),
       child: FittedBox(
@@ -327,8 +329,10 @@ class PrintLabelPreviewElement extends StatelessWidget {
     return scaledSize.clamp(4, 72);
   }
 
-  String get _previewText =>
-      previewMetrics.visiblePreviewText(field, fallback: 'Campo'.hardcoded);
+  String get _previewText => previewMetrics.visiblePreviewText(
+    field,
+    fallback: fallbackText ?? defaultLocalizations.field,
+  );
 
   Alignment get _alignment => switch (field.alignmentType) {
     BSFPrintElementAlignmentType.left => Alignment.topLeft,

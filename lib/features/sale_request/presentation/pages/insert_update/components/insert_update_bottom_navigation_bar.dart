@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,10 +41,10 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.search,
             materialIcon: Icons.search,
           ),
-          label: 'Produtos'.hardcoded,
+          label: context.l10n.products,
         ),
         BaseBottomNavigationBarItem(
-          label: 'Cliente'.hardcoded,
+          label: context.l10n.customer,
           isValid: isCustomerValid,
           platformIcon: const PlatformIcon(
             materialIcon: Icons.person,
@@ -57,7 +57,7 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
             cupertinoIcon: CupertinoIcons.cart,
           ),
           badgeLabel: quantity > 0 ? quantity.toString() : null,
-          label: 'Itens'.hardcoded,
+          label: context.l10n.items,
         ),
         BaseBottomNavigationBarItem(
           isValid: isPaymentValid,
@@ -66,14 +66,14 @@ class InsertUpdateBottomNavigationBar extends ConsumerWidget {
             materialIcon: Icons.payment,
             cupertinoIcon: CupertinoIcons.creditcard,
           ),
-          label: 'Pagamento'.hardcoded,
+          label: context.l10n.payment,
         ),
         BaseBottomNavigationBarItem(
           platformIcon: const PlatformIcon(
             cupertinoIcon: CupertinoIcons.info,
             materialIcon: Icons.info,
           ),
-          label: 'Resumo'.hardcoded,
+          label: context.l10n.summary2,
         ),
       ],
     );

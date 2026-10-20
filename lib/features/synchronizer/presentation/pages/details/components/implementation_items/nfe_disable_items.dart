@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -14,24 +13,24 @@ class NfeDisableItems extends StatelessWidget {
       items: items,
       columns: [
         ScrollableTableColumnSpec(
-          headerTitle: 'Empresa'.hardcoded,
+          headerTitle: context.l10n.enterprise,
           minWidth: 70,
           cellBuilder: (item) =>
               BaseText(item.enterprisePersonalizedCode.toString()),
         ),
         ScrollableTableColumnSpec(
-          headerTitle: 'Emissão'.hardcoded,
+          headerTitle: context.l10n.issueDate,
           minWidth: 150,
           cellBuilder: (item) =>
               BaseText(item.issuanceDate.formatDate(.ddMMyyyyHHmm)),
         ),
         ScrollableTableColumnSpec(
-          headerTitle: 'NF'.hardcoded,
+          headerTitle: context.l10n.invoice2,
           minWidth: 60,
           cellBuilder: (item) => BaseText(item.number.toString()),
         ),
         ScrollableTableColumnSpec(
-          headerTitle: 'Série'.hardcoded,
+          headerTitle: context.l10n.series,
           minWidth: 60,
           cellBuilder: (item) => BaseText(item.series),
         ),

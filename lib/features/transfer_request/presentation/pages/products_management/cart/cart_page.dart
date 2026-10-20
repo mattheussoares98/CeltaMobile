@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -5,7 +6,6 @@ import 'package:celta_inventario/core/presentation/controllers/request_type/requ
 import 'package:celta_inventario/features/transfer_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/transfer_request/presentation/pages/products_management/cart/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -41,7 +41,7 @@ class CartPage extends HookConsumerWidget {
     return productsInCartLength == 0
         ? Center(
             child: BaseText.titleMedium(
-              'Nenhum produto adicionado ao carrinho'.hardcoded,
+              context.l10n.noProductsAddedToTheCart,
               textAlign: TextAlign.center,
               color: Colors.red,
             ),

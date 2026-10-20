@@ -526,5 +526,1333 @@
         "type": "String"
       }
     }
-  }
+  },
+  "updateBs": "Atualize o BS",
+  "updateBsToUseThisFeature": "A versão do BS precisa ser atualizada para utilizar essa funcionalidade",
+  "userLacksPermission": "Usuário sem permissão",
+  "start": "Início ",
+  "end": "Fim ",
+  "goToLogin": "Ir para login",
+  "goToHome": "Ir para home",
+  "cameraPermission": "Permissão da câmera",
+  "allowCameraAccessInYourDeviceSettings": "Permita o acesso à câmera nas configurações do dispositivo.",
+  "openSettings": "Abrir configurações",
+  "noProducts": "Nenhum produto",
+  "namePluEanScale": "NOME-PLU-EAN-%-BALANÇA",
+  "no": "Não",
+  "min": " (mín",
+  "noReplacementCost": "Sem custo de reposição",
+  "noPrice": "Sem preço",
+  "eans": "EANs",
+  "currentStock": "Estoque Atual",
+  "noPermissionToViewStock": "Sem permissão p/ ver estoque",
+  "noCurrentStock": "Sem estoque atual",
+  "noAvailableQuantityForSale": "Sem saldo de venda",
+  "balance": "saldo",
+  "offerEnded": "Oferta encerrada",
+  "offerEndedSuccessfullySearchForTheProductAgainToRefresh": "Oferta encerrada com sucesso. Consulte o produto novamente para atualizar as informações",
+  "stocks": "Estoques",
+  "latestPurchases": "Últimas compras",
+  "date": "Data",
+  "packaging": "Embalagem",
+  "prices": "Preços",
+  "addresses": "Endereços",
+  "purchases": "Compras",
+  "costs": "Custos",
+  "margins": "Margens",
+  "appliedPrices": "Preços praticados",
+  "refreshPermissionToEndOffers": "Atualizar permissão para encerrar oferta",
+  "suggestedPrices": "Preços sugeridos",
+  "retail": "Venda ",
+  "wholesale": "Atacado ",
+  "eCommerce": "Ecommerce ",
+  "minimumPrices": "Preços mínimos",
+  "info": "Info",
+  "net": "Líquido ",
+  "averageNet": "Líquido médio ",
+  "tax": "Fiscal ",
+  "netTax": "Fiscal líquido ",
+  "operating": "Operacional ",
+  "actual": "Real ",
+  "actualNet": "Real líquido ",
+  "replacement": "Reposição ",
+  "averageReplacement": "Reposição médio ",
+  "noAddressesRegisteredForThisProduct": "Não há endereços cadastrados para esse produto",
+  "addressEs": "Endereço(s)",
+  "none": "Não há",
+  "onOffer": "Em oferta",
+  "minimumWholesaleQuantity": "Qtd mín atacado",
+  "removeItem": "Remover item?",
+  "quantityInCart": "Qtd no carrinho",
+  "enteredPrice": "Preço digitado",
+  "discount": "Desconto",
+  "technologySolutions": "Tecnologia & Soluções",
+  "pleaseWait": "Aguarde",
+  "timeNotUpdated": "Horário não atualizado",
+  "theTimeCannotBeEarlierThanTheMinimumDate": "O horário não pode ser menor que a data mínima",
+  "ok": "OK",
+  "select2": "Selecionar",
+  "tryAgain": "Tentar novamente",
+  "from": "De ",
+  "to": "Para ",
+  "cart": "Carrinho",
+  "thisProductHasAZeroPriceAndTheSelectedOrder": "O produto está com o preço zerado e o modelo de pedido selecionado não permite alterar o preço",
+  "plu": "PLU",
+  "price": "Preço",
+  "noProductsAddedToTheCart": "Nenhum produto adicionado ao carrinho",
+  "sourceCompany": "Empresa de origem",
+  "destinationCompany": "Empresa de destino",
+  "theSelectedOrderTemplateDoesNotAllowPriceChanges": "O modelo de pedido selecionado não permite alterar o preço",
+  "lastSavedOrder": "Últ ped salvo",
+  "clearCart": "Limpar carrinho",
+  "clearCart2": "Limpar carrinho?",
+  "clear": "Limpar",
+  "orderSearch": "Busca de pedidos",
+  "unmarkForPrinting": "Desmarcar para impressão",
+  "markForPrinting": "Marcar para impressão",
+  "startDate2": "Data início",
+  "message00000000": "00/00/0000",
+  "searchFilters": "Filtros de busca",
+  "customCode2": "Código Personalizado",
+  "enterTheCode": "Digite o código...",
+  "endDate2": "Data final",
+  "printJobSentSuccessfully": "Impressão enviada com sucesso",
+  "orderDetails": "Detalhes do pedido",
+  "unableToGenerateThePdfTryAgain": "Não foi possível gerar o PDF. Tente novamente",
+  "disc": "Desc",
+  "surch": "Acrésc",
+  "print": "Imprimir",
+  "noPaymentDetails": "Sem financeiro",
+  "paymentDetails": "Financeiro",
+  "discounts": "Descontos",
+  "surcharges": "Acréscimos",
+  "type": "Tipo",
+  "emails": "E-mails",
+  "phoneNumbers": "Telefones",
+  "batchSentSuccessfully": "Lote enviado com sucesso",
+  "batch": "Lote",
+  "sourceStock": "Estoque de origem",
+  "noDestination": "Sem destino",
+  "sameStockAsTheSource": "Estoque igual ao de origem",
+  "summary": "Sumário",
+  "grossTotal": "Total bruto",
+  "orderSurcharge": "Acréscimo no pedido",
+  "notAllowed": "Não permitido",
+  "orderDiscount": "Desconto no pedido",
+  "orderDelivery": "Entrega do pedido",
+  "totalSurcharges": "Total dos acréscimos",
+  "totalDiscounts2": "Total dos descontos",
+  "totalDeliveryFees": "Total das taxas de entrega",
+  "netTotal": "Total líquido",
+  "salesperson": "Vendedor",
+  "removeSalesperson": "Remover Vendedor",
+  "selectACustomer": "Selecione um cliente!",
+  "attention2": "Atenção",
+  "theOrderWasSavedSuccessfully": "O pedido foi salvo com sucesso",
+  "calculatePrices": "Calcular preços",
+  "instructions": "Instruções",
+  "emptyBatch": "Lote vazio",
+  "newQty": "Nova qtd",
+  "reason": " (Justificativa)",
+  "request": "Solicitar",
+  "request2": "Solicitar?",
+  "clearBatch": "Limpar lote",
+  "clearBatch2": "Limpar lote?",
+  "searchForAProductToGetStarted": "Pesquise um produto para começar",
+  "enterTheCustomer": "Informe o cliente",
+  "enterAtLeastOneProduct": "Informe pelo menos um produto",
+  "quantityChangedSuccessfully": "Quantidade alterada com sucesso",
+  "failedToAddPayment": "Erro ao adicionar pagamento",
+  "add2": "ADICIONAR",
+  "noPaymentMethodsAreAvailableForThisOrder": "Nenhuma forma de pagamento está disponível para este pedido.",
+  "paymentMethod": "Forma de pagamento",
+  "selectAPaymentMethod": "Selecione uma forma de pagamento",
+  "paymentTerms": "Condição de pagamento",
+  "noPaymentTermsAvailableOnlyPaymentTermsWithFixedInstallments": "Nenhuma condição de pagamento disponível. Somente condições de pagamento com composição fixas aparecerão",
+  "toRegisterPaymentTermsWithFixedInstallmentsOpenCeltabsAnd": "Para cadastrar uma condição com composição fixa, acesse o CeltaBS e vá em \"Cadastros > Financeiro > Condições de pagamento",
+  "noPaymentsAdded": "Nenhum pagamento adicionado",
+  "enteredPayments": "Pagamentos informados",
+  "newPaymentMethod": "Nova forma de pagamento",
+  "missing": "Faltando",
+  "excess": "Sobrando",
+  "paymentSurcharge": "Acréscimo financeiro",
+  "thisOrderTemplateDoesNotAllowPaymentSurcharges": "Esse modelo de pedido não permite acréscimo financeiro.",
+  "paymentDiscount": "Desconto financeiro",
+  "thisOrderTemplateDoesNotAllowPaymentDiscounts": "Esse modelo de pedido não permite desconto financeiro.",
+  "cardNumber": "Número do cartão",
+  "numberOfInstallments": "Qtd parcelas",
+  "expiration": "Validade",
+  "selectTheCustomerSAgreementToUseThisPaymentMethod": "Você só pode utilizar essa forma de pagamento se selecionar o convênio do cliente!",
+  "customerAgreement": "Convênio do cliente",
+  "addProductsToTheOrder": "Adicione produtos no pedido!",
+  "creatingOrder": "Inserindo pedido",
+  "unsavedChanges": "Alterações não salvas",
+  "thereAreUnsavedChangesDoYouReallyWantToLeave": "Existem alterações que não foram salvas. Deseja realmente sair?",
+  "productDetails": "Detalhe do Produto",
+  "confirm2": "CONFIRMAR",
+  "areYouSureYouWantToVoidThisProductS": "Tem certeza que deseja anular a contagem desse produto?",
+  "countedQty": "Qtd contada",
+  "noCountedQuantity": "Sem quantidade contada",
+  "whenEnabledFindingASingleProductAutomaticallyAddsOneUnit": "Quando essa opção está ativa, ao encontrar um único produto na busca, será somado automaticamente 1 quantidade",
+  "insertIndividually": "Inserir individualmente",
+  "thisActionWillRemoveAllAutomaticDiscountsContinue": "Esta ação irá remover todos os descontos automáticos. Deseja continuar?",
+  "grossPrice": "Preço Bruto",
+  "totalDiscounts3": "Total Descontos",
+  "netTotal2": "Total Líquido",
+  "searchByCustomCode": "Pesquisar pelo código personalizado",
+  "frozenProcesses": "Processos congelados",
+  "stockType": "Tipo de estoque",
+  "personResponsible": "Responsável",
+  "frozenOn": "Congelado em",
+  "customer": "Cliente",
+  "items": "Itens",
+  "payment": "Pagamento",
+  "summary2": "Resumo",
+  "agreements": "Convênios",
+  "customerBlocked": "Cliente Bloqueado",
+  "understood": "Entendido",
+  "customerChange": "Alteração do cliente",
+  "continue2": "Deseja prosseguir?",
+  "todaySOrders": "Pedidos de hoje",
+  "noOrdersFound": "Nenhum pedido encontrado",
+  "searchAgain": "Pesquisar novamente",
+  "counts": "Contagens",
+  "noCountsFoundForThisInventoryProcessCreateAtLeast": "Não foram encontradas contagens para esse processe de inventário. Crie pelo menos uma contagem",
+  "notes2": "Obs",
+  "run": "Executar",
+  "selectTheCompany": "Selecione a empresa",
+  "orderNo": "Núm pedido",
+  "totalDelivery": "Total de entrega",
+  "totalSurcharges2": "Total acréscimos",
+  "totalDiscounts4": "Total descontos",
+  "unableToLoadTheOrderTryAgain": "Não foi possível carregar o pedido. Tente novamente",
+  "pdf": "PDF",
+  "theQuantityCannotBeNegative": "A quantidade não pode ficar negativa",
+  "printerIp": "IP da impressora",
+  "yourUserDoesNotHavePermissionToPerformThisAction": "Seu usuário não possui permissão para realizar esse procedimento",
+  "rereadAll": "Reler todos",
+  "rereadSelected": "Reler selecionados",
+  "deleteAll": "Excluir todos",
+  "deleteSelected": "Excluir selecionados",
+  "ignoreAll": "Ignorar todos",
+  "ignoreSelected": "Ignorar selecionados",
+  "resendAll": "Reenviar todos",
+  "resendSelected": "Reenviar selecionados",
+  "unmarkAll": "Desmarcar todos",
+  "unmarkSelected": "Desmarcar selecionados",
+  "rereadAll2": "Reler todas",
+  "rereadSelected2": "Reler selecionadas",
+  "displayingThisTypeOfErrorHasNotBeenImplementedYet": "A visualização desse tipo de erro ainda não foi implementada",
+  "pleaseSelectACustomerBeforeSaving": "Por favor, selecione um cliente antes de salvar.",
+  "addAtLeastOneProductToTheOrder": "Adicione pelo menos um produto ao pedido.",
+  "noOrderTemplateSelectedThisIsAProgrammingErrorPlease": "O modelo de pedido não está selecionado. Esse erro jamais deveria acontecer, é um erro de programação. Entre em contato com o suporte técnico",
+  "thisOrderTemplateRequiresPaymentDetailsPleaseFillInThe": "O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.",
+  "thisOrderTemplateDoesNotAllowPriceChangesProcessThe": "O modelo de pedido não permite alterar os preços. Por isso, processe o carrinho.",
+  "yourUserDoesNotHavePermissionToChangeOrderPrices": "O usuário não possui permissão para alterar os preços no pedido. Por isso, processe o carrinho",
+  "thisOrderHasNotBeenProcessedToCalculatePricesBased": "O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?",
+  "website": "Site",
+  "description": "Descrição",
+  "websiteId": "ID Site",
+  "sentOn": "Data envio",
+  "selectError": "Selecionar erro",
+  "selectOrder": "Selecionar pedido",
+  "lastRead": "Última leitura",
+  "orderCreation": "Criação do pedido",
+  "invoice": "Fatura",
+  "order": "Pedido",
+  "productsNotFound": "Produtos não encontrados",
+  "websiteCode": "Cód site",
+  "product": "Produto",
+  "link": "Associar",
+  "searchForAndSelectTheProductToLink": "Pesquise e selecione o produto a ser associado",
+  "viewProduct": "Consultar produto",
+  "noProductsFound": "Nenhum produto foi encontrado",
+  "linkProduct": "Deseja associar?",
+  "viewOrder": "Visualizar pedido",
+  "register": "Caixa",
+  "errorDate": "Data erro",
+  "cashWithdrawalDate": "Data sangria",
+  "selectProduct": "Selecionar produto",
+  "productIdOnWebsite": "ID do Produto no Site",
+  "errorDescription": "Descrição do erro",
+  "moreErrorInformation": "Mais informações do erro",
+  "productUpload": "Carga do produto",
+  "priceUpload": "Carga de preços",
+  "stockUpload": "Carga de estoques",
+  "notSentToWebsite": "Não enviado ao site",
+  "sentToWebsite": "Enviado ao site",
+  "resend": "Reenviar",
+  "ignored": "Ignorados",
+  "issueDate": "Emissão",
+  "invoice2": "NF",
+  "series": "Série",
+  "orderTemplateNotFound": "Modelo de pedido não encontrado",
+  "thisProductHasNoPrice": "Esse produto não possui preço",
+  "theProductSNetAmountCannotBeNegative": "O valor líquido do produto não pode ser negativo.",
+  "theProductSNetAmountMustBeGreaterThanZero": "O valor líquido do produto deve ser maior que zero",
+  "theProductSNetAmountMustBeGreaterThanZero2": "O valor líquido do produto deve ser maior que zero.",
+  "unexpectedError": "Erro não esperado",
+  "amountExceedsTheAvailableBalance": "Valor excede o disponível",
+  "selectAnAgreement": "Selecione um convênio",
+  "theOrderTemplateDoesNotAllowPaymentSurcharges": "O modelo de pedido não permite acréscimo financeiro",
+  "theAmountMustBeGreaterThanZero": "O valor deve ser maior que zero",
+  "selectTheSurchargeType": "Selecione o tipo de acréscimo",
+  "theOrderTemplateDoesNotAllowPaymentDiscounts": "O modelo de pedido não permite desconto financeiro",
+  "selectTheDiscountType": "Selecione o tipo de desconto",
+  "manualDiscount": "Desconto manual",
+  "invalidState": "Estado inválido",
+  "addProductsToTheOrder2": "Insira produtos no pedido",
+  "enterTheOrderTemplate": "Informe o modelo de pedido",
+  "selectTheWebsite": "Selecione o site",
+  "orderId": "ID do pedido",
+  "addForRereading": "Inserir para releitura",
+  "customerName": "Nome cliente",
+  "registrationDate": "Data cadastro",
+  "customerCode": "Cód cliente",
+  "selectReceipt": "Selecionar cupom",
+  "saleDate": "Dia da venda",
+  "receipt": "Cupom",
+  "pos": "PDV",
+  "creation": "Criação",
+  "openingClosing": "Abertura/Fechamento",
+  "noCustomersFound": "Nenhum cliente foi encontrado",
+  "theEnteredDocumentNumberWasNotFound": "o número de documento informado não foi encontrado",
+  "noErrorsFound": "Nenhum erro foi encontrado",
+  "reload2": "Recarregar",
+  "message404PageNotFound": "404 - Página não encontrada!",
+  "anErrorOccurred": "Ocorreu um erro",
+  "userDoesNotHavePermissionToAccessThisModule": "Usuário sem permissão para acessar este módulo",
+  "rereadingThisDetailTypeHasNotBeenImplemented": "Tipo de detalhe para ler novamente não implementado",
+  "deletingThisDetailTypeHasNotBeenImplemented": "Tipo de detalhe para deletar não implementado",
+  "productDetails2": "Detalhes do produto",
+  "searchProperty": "Pesquisar propriedade...",
+  "notImplementedYet": "Ainda não implementado",
+  "theProductWasNotFound": "O produto não foi encontrado",
+  "notProvided": "Nao informada",
+  "notProvided2": "Nao informado",
+  "notProvided3": "Não informada",
+  "notProvided4": "Não informado",
+  "paymentMethods": "Formas de Pagamento",
+  "itemTotal": "Total do item",
+  "subtotalR": "Subtotal R$",
+  "totalDiscountsR": "Total descontos R$",
+  "totalSurchargesR": "Total acrescimos R$",
+  "totalShippingR": "Total frete R$",
+  "totalR": "TOTAL R$ ",
+  "notes3": "Observacoes ",
+  "instructions2": "Instrucoes ",
+  "salesOrderNotFoundSearchForOrdersAgainToCheck": "Pedido de venda não encontrado. Consulte os pedidos novamente para confirmar se ele está disponível",
+  "developedByCeltaware": "Desenvolvido por Celtaware",
+  "orderTemplate": "Modelo de Pedido:",
+  "issueDate2": "Data de Emissão:",
+  "paymentDiscount2": "Desconto Financeiro:",
+  "paymentSurcharge2": "Acréscimo Financeiro:",
+  "discount2": "Desconto:",
+  "surcharge2": "Acréscimo:",
+  "shipping": "Frete:",
+  "netTotal3": "Total Líquido:",
+  "instructions3": "Instruções:",
+  "notes4": "Observações:",
+  "surch2": "Acrés",
+  "installments": "Parcelas",
+  "immediatePayment": "À vista",
+  "suspended": "Suspenso",
+  "signOut": "Sair",
+  "areYouSureYouWantToSignOut": "Tem certeza que deseja sair?",
+  "create": "Criar",
+  "createSalesOrders": "Crie pedidos de venda",
+  "searchSalesOrders": "Pesquise pedidos de vendas",
+  "createPurchaseOrders": "Crie pedido de compras",
+  "searchPurchaseOrders": "Pesquise pedidos de compras",
+  "authorized": "Autorizado",
+  "unauthorized": "Não autorizado",
+  "category": "Categoria",
+  "subcategory": "Sub categoria",
+  "report": "Relatório",
+  "reportHasNoDataToDisplay": "Relatório SEM DADOS para exibir",
+  "theReportIsBeingGeneratedAgainSomeReportsTakeLonger": "O relatório está sendo gerado novamente.\n\nAlguns relatórios demoram para serem gerados. Por isso, aguarde alguns instantes e consulte os relatórios novamente para verificar se a data da última geração foi alterada",
+  "lastGenerated": "Última geração",
+  "generate": "Gerar",
+  "sendByEmail": "Enviar por e-mail?",
+  "startedBy": "Iniciado por",
+  "thisProcessHasAlreadyBeenReviewed": "Esse processo já foi julgado",
+  "vote": "Votar",
+  "view": "Visualizar",
+  "viewPath": "Visualizar caminho",
+  "filePath": "Caminho do arquivo",
+  "spreadsheetDownloaded": "Planilha baixada",
+  "downloadSpreadsheet": "Baixar planilha",
+  "downloadPdf": "Baixar PDF",
+  "pdfDownloaded": "PDF baixado",
+  "discountAnalysis": "Análise de descontos",
+  "profitabilityAnalysis": "Análise de lucratividade",
+  "noDiscountsFound": "Nenhum desconto encontrado",
+  "noProfitabilityDataFound": "Nenhuma lucratividade encontrada",
+  "replacement2": "Reposição",
+  "netCost": "Cust líq",
+  "operatingExp": "Desp op",
+  "tax2": "Imposto",
+  "revenue": "Faturamento",
+  "profit": "Lucro",
+  "margin": "Margem",
+  "min2": "Mín",
+  "unitDiff": "Dif unit",
+  "totalDiff": "Dif total",
+  "gross": "Bruto",
+  "net2": "Líquido",
+  "max": "Máx",
+  "difference": "Diferença",
+  "awaitingAuthorization": "Aguardando autorização",
+  "unauthorized2": "Não autorizados",
+  "stockToReplace": "Estoque a ser substituído",
+  "selectTheStock": "Você precisa selecionar o estoque!",
+  "attention3": "Atenção!!!",
+  "confirmingWillUpdateTheProductSStockToTheQuantity": "Ao confirmar, o estoque do produto será atualizado para a quantidade que você informou!\n\nDeseja continuar?",
+  "lastAcceptedQty": "Última qtd ASSUMIDA",
+  "noProcessesFoundWithStatus": "Não foram encontrados processos com o status ",
+  "processStartedBy": "Processo iniciado por",
+  "authorizers": "Autorizadores",
+  "reviews": "Julgamentos",
+  "linkToThisProduct": "Deseja associar a esse produto?",
+  "countedQty2": "Qtd contagem",
+  "xmlDifferences": "Diferenças de XML",
+  "notReviewed": "Não julgados",
+  "reviewed": "Julgados",
+  "notRegistered": "Sem cadastro",
+  "noReviewedProducts": "Não há produtos julgados",
+  "allProductsHaveAlreadyBeenReviewed": "Todos produtos já foram julgados",
+  "invoiceQty": "Qtd NF",
+  "orderQty": "Qtd ped",
+  "otherOrderQty": "Qtd outr ped",
+  "qtyDiff": "Dif qtd",
+  "invoiceNetAmount": "Vl líq NF",
+  "orderNetAmount": "Vl líq ped",
+  "netAmountDiff": "Dif vl líq",
+  "totalNetAmountDiff": "Tot dif vl líq",
+  "returnAllQuantitiesOfTheSelectedProducts": "Deseja devolver todas as quantidades dos produtos selecionados?",
+  "returnOnlyTheExcessQuantityOfTheSelectedProducts": "Deseja devolver somente a quantidade excedente dos produtos selecionados?",
+  "acceptTheDiscrepanciesForTheSelectedProducts": "Deseja aceitar as divergências dos produtos selecionados?",
+  "voidTheReviewsOfTheSelectedProducts": "Deseja anular os julgamentos dos produtos selecionados?",
+  "voidReviews": "Anular julgamentos",
+  "accept": "Aceitar",
+  "returnExcess": "Devolver excesso",
+  "unableToFindTheDocument": "Não foi possível encontrar o documento",
+  "sourceCompany2": "Empresa origem",
+  "documentType": "Tipo de documento",
+  "nfeKey": "Chave NFe",
+  "nfeSeries": "Série NFe",
+  "verificationCompleted": "Conferência concluída!",
+  "leavingWillDiscardTheCountedQuantitiesLeaveAnyway": "Ao sair, as quantidades contadas serão perdidas. Deseja sair mesmo assim?",
+  "noProductsVerifiedYet": "Nenhum produto conferido até o momento",
+  "selectTheProductToConfirm": "Selecione o produto que deseja confirmar",
+  "pending": "Pendentes",
+  "verified": "Conferidos",
+  "documents": "Documentos",
+  "settings": "Configurações",
+  "reloadSettings": "Recarregar configurações",
+  "noDocumentsAreUndergoingProductVerification": "Nenhum documento está no processo de conferência de produtos",
+  "step": "Etapa",
+  "productSearchType": "Tipo de pesquisa de produtos",
+  "autoScan": "Auto scan",
+  "goodsReceipts": "Recebimentos",
+  "numberIssuerStatusNote": "Número|Emitente|Status|Observação",
+  "filter": "Filtrar",
+  "thisProductIsNotPendingVerification": "Esse produto não está pendente para conferência",
+  "addNote": "Inserir obs",
+  "editNote": "Alterar obs",
+  "issuer": "Emitente",
+  "group": "Grupo",
+  "newNote": "Nova observação",
+  "pendingNote": "Observação pendente",
+  "alreadyReleased": "Já liberado",
+  "release": "Liberar",
+  "thisDocumentIsUndergoingAuthorizationAndCannotBeReleased": "Esse documento está em processo de autorização e por isso não pode ser liberado",
+  "release2": "Liberar?",
+  "areYouSureYouWantToReleaseThisDocument": "Tem certeza que deseja liberar esse documento?",
+  "verifyProducts": "Conferir produtos",
+  "defaultNote": "Observação padrão",
+  "confirmNote": "Confirmar obs",
+  "newExpirationDate": "Nova validade",
+  "none2": "Nenhuma",
+  "subtract": "Subtrair",
+  "add3": "Somar",
+  "areYouSureYouWantToVoidTheCount": "Tem certeza que deseja anular a contagem?",
+  "updateRequired": "Atualização necesssária!",
+  "askBsSupportToUpdateTheSystemToUseThis": "Para utilizar essa funcionalidade, peça para o suporte do BS atualizar o sistema",
+  "weighedProducts": "Pesáveis",
+  "noEan": "Sem EAN",
+  "alreadyCounted": "Já contados",
+  "noExpirationDate": "Sem validade",
+  "countedQuantity": "Quantidade contada",
+  "theNewQuantityCannotBeLessThanZero": "A nova quantidade não pode ser menor que zero",
+  "personalDetails": "Dados pessoais",
+  "saveDetails": "Salvar dados?",
+  "thereAreStillUnregisteredProductsTheyNeedToBeLinked": "Ainda existem produtos sem cadastros. Eles precisam ser vinculados",
+  "reviewAllProductsBeforeVoting": "Julgue todos os produtos antes de votar",
+  "cpfCnpj2": "CPF/CNPJ ",
+  "name2": "Nome ",
+  "shortName": "Nome reduzido ",
+  "birthDate": "Nascimento ",
+  "password2": "Senha ",
+  "sex": "Sexo ",
+  "unableToLoadTheSalesOrderData": "Não foi possível carregar os dados do pedido de vendas",
+  "processNotFound": "Processo não encontrado",
+  "filterCompany": "Filtrar empresa",
+  "filterUsageType": "Filtrar tipo de uso",
+  "thisPhoneNumberHasAlreadyBeenAdded": "Esse telefone já foi adicionado",
+  "addPhoneNumber": "Adicionar telefone",
+  "update": "Atualizar",
+  "monthYear": "Mês/ano",
+  "noUsageFound": "Nenhum uso encontrado",
+  "noResultsFound": "Nenhum resultado encontrado",
+  "requestsByType": "Requisições por tipo",
+  "requestsByUser": "Requisições por usuário",
+  "manageModules": "Gerenciar módulos",
+  "usage": "Uso",
+  "phone": "Telefone",
+  "enteredPhoneNumbers": "Telefones informados",
+  "removePhoneNumber": "Remover telefone?",
+  "noCompaniesFound": "Nenhuma empresa encontrada.",
+  "noPermission": "Sem permissão",
+  "onlyAdministratorsCanMakeThisChange": "Somente administradores podem fazer essa alteração",
+  "sex2": "Sexo",
+  "shortName2": "Nome reduzido",
+  "confirmPassword": "Confirmar senha",
+  "passwordsDoNotMatch": "As senhas não conferem",
+  "stateTaxRegistration": "Inscrição estadual",
+  "birthDate2": "Nascimento",
+  "companyRegisteredSuccessfully": "Empresa cadastrada com sucesso",
+  "createCompany": "Criar empresa",
+  "bsUsername": "Nome do usuário no BS",
+  "remoteHttp": "HTTP remota",
+  "remoteHttps": "HTTPS remota",
+  "enteredEmails": "E-mails informados",
+  "removeEmail": "Remover e-mail?",
+  "localHttp": "HTTP local",
+  "thisEmailHasAlreadyBeenAdded": "Esse e-mail já foi adicionado",
+  "email": "E-mail",
+  "enterEmail": "Inserir e-mail",
+  "localHttps": "HTTPS local",
+  "companyName": "Nome da empresa",
+  "customerSavedSuccessfully": "Cliente cadastrado/atualizado com sucesso",
+  "details2": "Dados",
+  "unlinkedAgreements": "Convênios sem vínculo",
+  "cnpj2": "CNPJ ",
+  "address2": "Endereço ",
+  "limitR": "Limite R$",
+  "link2": "Vincular",
+  "linkedAgreements": "Convênios vinculados",
+  "code2": "Código ",
+  "limit": "Limite ",
+  "removeAgreement": "Remover convênio",
+  "areYouSureYouWantToRemoveThisAgreement": "Tem certeza que deseja remover esse convênio?",
+  "remoteHttp2": "HTTP remoto",
+  "remoteHttps2": "HTTPS remoto",
+  "enabled": "Habilitado",
+  "inherit": "Herdar",
+  "disabled": "Desabilitado",
+  "permissionsChangedSuccessfully": "Permissões alteradas com sucesso",
+  "globalPermissions": "Permissões globais",
+  "specificPermissions": "Permissões específicas",
+  "companyNotFound2": "Empresa não encontrada.",
+  "requestTimedOutPleaseTryAgain": "Tempo limite atingido. Por favor, tente novamente.",
+  "connectionErrorCheckYourInternetConnection": "Erro de conexão. Verifique a sua internet.",
+  "invalidLoginCredentialsCheckYourEmailAndPassword": "Credenciais de login inválidas. Por favor, verifique seu e-mail e senha.",
+  "thePasswordMustContainAtLeast6Characters": "A senha deve ter pelo menos 6 caracteres.",
+  "thisEmailIsAlreadyRegistered": "Este e-mail já está cadastrado.",
+  "invalidEmailFormat": "Formato de e-mail inválido.",
+  "thisActionIsTemporarilyBlockedTryAgainLater": "Essa ação está bloqueada temporariamente. Tente novamente daqui a pouco.",
+  "methodNotFoundTellTechnicalSupportThatTheApiIs": "O método não foi encontrado. Informe o suporte técnico que a API não está funcionando ou deve ser atualizada",
+  "login": "Login",
+  "postalCode2": "CEP ",
+  "deleteAddress": "Excluir endereço?",
+  "addressComplement": "Complemento ",
+  "reference2": "Referência ",
+  "thisAddressHasAlreadyBeenAdded": "Esse endereço já foi inserido",
+  "labelLayouts": "Leiautes de etiquetas",
+  "reportedIssues": "Problemas reportados",
+  "noLabelLayoutsFound": "Nenhum leiaute de etiqueta encontrado",
+  "printer": "Impressora",
+  "noReportedIssues": "Nenhum problema reportado",
+  "unableToLoadTheImage": "Não foi possível carregar a imagem",
+  "labelPhoto": "Foto da etiqueta",
+  "canvasImage": "Imagem do canvas",
+  "issueReport": "Relato",
+  "layout": "Leiaute",
+  "environment": "Ambiente",
+  "failedToCaptureTheCanvas": "Falha ao capturar o canvas",
+  "copyDiagnostics": "Copiar diagnóstico",
+  "close": "Fechar",
+  "reportAPrintingIssue": "Relatar problema de impressão",
+  "checkTheSavedLayoutBeforeTakingAPhoto": "Confira o leiaute salvo antes de fotografar.",
+  "sendingReport": "Enviando relatório...",
+  "reportCanceled": "Relatório cancelado.",
+  "issueDetails": "Detalhes do problema",
+  "describeTheExpectedResultAndTheIssueEncountered": "Explique o resultado esperado e o problema encontrado",
+  "iAuthorizeSendingBothImagesTheSavedLayoutMyName": "Autorizo o envio das duas imagens, leiaute salvo, meu nome, empresa e dados seguros do app/dispositivo ao suporte técnico",
+  "sendReport": "Enviar relatório",
+  "retakeCaptures": "Refazer capturas",
+  "reportSent": "Relatório enviado",
+  "unableToCompleteTheReport": "Não foi possível concluir o relatório.",
+  "theEntireLabelIsVisible": "A etiqueta inteira está visível",
+  "thereIsARulerAboveOrBelowTheLabel": "Há uma régua acima ou abaixo da etiqueta",
+  "thePhotoIsInFocusAndHasNoGlare": "A foto está focada e sem reflexo",
+  "takeAnotherPhoto": "Tirar outra foto",
+  "useThisPhoto": "Usar esta foto",
+  "takePhoto": "Fotografar",
+  "addFieldToLayout": "Adicionar campo ao leiaute",
+  "layoutSavedSuccessfully": "Leiaute salvo com sucesso",
+  "allChangesWillBeLostCloseThisScreen": "Todas alterações realizadas serão perdidas. Deseja realmente fechar a tela?",
+  "discardChanges": "Descartar alterações",
+  "allChangesWillBeLostRefreshTheData": "Todas as alterações realizadas serão perdidas. Deseja realmente atualizar os dados?",
+  "layoutDetails": "Detalhes do leiaute",
+  "selectThePrinter": "Selecione a impressora",
+  "addField": "Adicionar campo",
+  "printerFormAndLabel": "Impressora, formulário e etiqueta",
+  "noFieldsConfigured": "Nenhum campo configurado",
+  "hideFromPreview": "Ocultar do preview",
+  "showInPreview": "Exibir no preview",
+  "reportIssue": "Relatar problema",
+  "saveTheLayout": "Salve o leiaute",
+  "saveOrDiscardChangesBeforeReportingAnIssue": "Salve ou descarte as alterações antes de relatar um problema.",
+  "saveChanges": "Salvar alterações",
+  "saveTheseChanges": "Deseja realmente salvar as alterações?",
+  "logo": "Logotipo",
+  "field": "Campo",
+  "preview": "Pré-visualização ",
+  "approximate": "(APROXIMADA)",
+  "addFieldsToDetermineThePreviewHeight": "Adicione campos para determinar a altura da pré-visualização",
+  "enterAValidWidthAndHeightToPreviewTheLabel": "Informe uma largura e altura válidas para visualizar a etiqueta",
+  "printerParameters": "Parâmetros da impressora",
+  "temperature": "Temperatura",
+  "speed": "Velocidade",
+  "packetInterval": "Intervalo do pacote",
+  "dots": "pontos",
+  "width": "Largura",
+  "height": "Altura",
+  "rightMargin": "Mg direita",
+  "bottomMargin": "Mg inferior",
+  "labelDirection": "Direção da etiqueta",
+  "considerProductPackaging": "Considerar embalagem do produto",
+  "enterPrintQuantityPerProduct": "Informar quantidade de impressão por produto",
+  "printOneLabelForEachUnitSold": "Imprimir uma etiqueta para cada unidade vendida",
+  "onlyProductsSentToInventoryCountingThatAllowACounted": "Somente produtos enviados para balanço e que permitem quantidade no balanço",
+  "top": "Superior",
+  "left": "Esquerda",
+  "bottom": "Inferior",
+  "right": "Direita",
+  "layoutName": "Nome do leiaute",
+  "fieldsIncompatibleWithTheNewTypeWillBeRemoved": "Os campos incompatíveis com o novo tipo serão removidos.",
+  "addressType": "Tipo de endereço",
+  "main": "Principal",
+  "billing": "Cobrança",
+  "delivery": "Entrega",
+  "notApplicable": "Não se aplica",
+  "formType": "Tipo de formulário",
+  "height2": "Altura *",
+  "topMargin": "Mg superior",
+  "leftMargin": "Mg esquerda",
+  "columns": "Colunas",
+  "applyFormSizeSettings": "Aplicar configuração do tamanho do formulário",
+  "content": "Conteúdo",
+  "prefix": "Prefixo",
+  "xAxis": "Eixo X",
+  "yAxis": "Eixo Y",
+  "size": "Tamanho",
+  "rotation": "Rotação",
+  "imageName": "Nome da imagem",
+  "barcodeType": "Tipo do código de barras",
+  "dataField": "Campo representante do dado",
+  "printTextBelowTheBarcode": "Imprimir o texto abaixo do código de barras",
+  "alignment": "Alinhamento",
+  "format": "Formato",
+  "decimalPlaces": "Casas decimais",
+  "fontType": "Tipo da fonte",
+  "fontSize": "Tamanho da fonte",
+  "startingPosition": "Posição inicial",
+  "maximumCharacters": "Máximo de caracteres",
+  "printBoldText": "Imprimir texto em negrito",
+  "printReverseText": "Imprimir texto reverso",
+  "continueAction": "Continuar",
+  "voidAction": "Anular",
+  "newAction": "Novo",
+  "returnAction": "Devolver",
+  "alreadyInModule": "Você já está no módulo desejado",
+  "wholesalePriceLabel": "Preço atacado",
+  "replacementCostPrefix": "Custo de reposição ",
+  "pricePrefix": "Preço ",
+  "currentStockPrefix": "Estoque atual ",
+  "availableForSale": "Saldo de venda",
+  "retailPrefix": "Varejo ",
+  "minimumRetailPrefix": "Mín varejo ",
+  "minimumRetailOfferPrefix": "Mín varejo oferta ",
+  "minimumWholesalePrefix": "Mín atacado ",
+  "wholesaleOfferPrefix": "Oferta atacado ",
+  "minimumEcommercePrefix": "Mín ecommerce ",
+  "minimumEcommerceOfferPrefix": "Mín ecommerce oferta ",
+  "selectedCompanyAddress": "Endereço na empresa selecionada",
+  "timeLabel": "Horário",
+  "endOfferAction": "Encerrar",
+  "paymentExceedsOrder": "O total das formas de pagamento está maior que o total dos produtos!\n",
+  "customerSearchHint": "Nome|Cód|CPF/CNPJ",
+  "orderChangeImpacts": "Esta alteração terá os seguintes impactos no pedido:\n\n",
+  "salesOrdersReadErrors": "pedidos de vendas com erros durante a leitura",
+  "unmarkSendingAll": "Desmarcar envio (todos)",
+  "unmarkSendingSelected": "Desmarcar envio (selecionados)",
+  "notAuthorizer": "Você não é um autorizador. Por isso não pode votar nesse processo",
+  "statusProduct": "Status/Produto",
+  "settingsLoadFailed": "Não foi possível carregar as configurações",
+  "autoScanExplanation": "Ao ativar essa opção, a câmera será aberta automaticamente para escanear o próximo produto após confirmar uma quantidade",
+  "enteredAddresses": "Endereços informados",
+  "privacyConsentRequired": "O consentimento de privacidade é obrigatório",
+  "strokeThickness": "Espessura do traço",
+  "barcodeRatio": "Proporção das barras",
+  "noCameraAvailable": "Nenhuma câmera está disponível",
+  "centerAlignment": "Centro",
+  "printQuality": "Qualidade da impressão",
+  "positioning": "Posicionamento",
+  "labelSize": "Tamanho da etiqueta",
+  "barcodeLabel": "Código de barras",
+  "otherOption": "Outro",
+  "paginatedForm": "Paginado",
+  "continuousForm": "Contínuo",
+  "centimeters": "Centímetros",
+  "printerDots": "Pontos da impressora",
+  "agreementLabel": "Convênio",
+  "customerCard": "Cartão de cliente",
+  "transportLabel": "Transporte",
+  "salesOrderProduct": "Produto do pedido de venda",
+  "unitaryPacking": "Unitário",
+  "multiplePacking": "Múltiplo",
+  "bothOptions": "Ambos",
+  "scaleFactor": "fator",
+  "printerCommandValue": "valor do comando",
+  "paymentsWillBeCleared": "As formas de pagamento atuais serão removidas",
+  "discountsWillBeReset": "Os descontos serão removidos",
+  "surchargesWillBeReset": "Os acréscimos serão removidos",
+  "deliveryFeesWillBeReset": "As taxas de entrega serão removidas",
+  "customerBlockedForSales": "O cliente selecionado possui bloqueio para vendas",
+  "automaticDiscountsWillBeRemoved": "Os descontos automáticos do produto serão removidos",
+  "noBlockade": "Nenhum",
+  "offerPriceBlockade": "Bloqueio por preço de oferta",
+  "automaticDiscountBlockade": "Bloqueio por desconto automático",
+  "salesAgreementBlockade": "Bloqueio por negociação de venda",
+  "wholesalePriceBlockade": "Bloqueio por preço de atacado",
+  "promotionOrigin": "Promoção",
+  "salesAgreementOrigin": "Negociação de vendas",
+  "taxExemptionOrigin": "Desoneração",
+  "employeeBond": "Funcionário",
+  "simpleUserBond": "Simples",
+  "anyUserCanAuthorize": "Qualquer usuário pode autorizar",
+  "allUsersShouldAuthorize": "Todos os usuários devem autorizar",
+  "closedProcess": "Processo encerrado",
+  "definedForHandler": "Definido para o responsável",
+  "goodsReceiptDocumentValue": "Valor do documento no recebimento",
+  "goodsReceiptDocumentCancellation": "Cancelamento de documento no recebimento",
+  "goodsReceiptDocumentRelease": "Liberação de documento no recebimento",
+  "goodsReceiptXmlValidation": "Validação de documento XML no recebimento",
+  "goodsReceiptPaymentTermsValidation": "Validação de condição de pagamento no recebimento",
+  "salesOrderBelowMinimumPrice": "Pedido de venda com preço abaixo do mínimo",
+  "salesOrderExcessDiscount": "Pedido de venda com desconto acima do permitido",
+  "receiptCompleted": "Utilizado por uma entrada (Finalizado)",
+  "receiptCanceled": "Cancelado (Finalizado)",
+  "countingReceiptProducts": "Efetuando contagem de produtos",
+  "receiptReleasedAwaitingEntry": "Liberado para entrada (Aguardando entrada)",
+  "receiptUnderAuthorization": "Em processo de autorização",
+  "receiptAwaitingProductMaintenance": "Aguardando manutenção de produtos",
+  "receiptAwaitingRelease": "Aguardando liberação para entrada",
+  "receiptUnknownStatus": "Status desconhecido. Avise o suporte",
+  "orderToInvoiceJudgment": "Solicitação para nota fiscal",
+  "invoiceToCountJudgment": "Nota fiscal para contagem",
+  "orderToCountJudgment": "Solicitação para contagem",
+  "moduleDisabledForCompany": "O módulo {module} está desabilitado para essa empresa...",
+  "@moduleDisabledForCompany": {
+    "placeholders": {
+      "module": {
+        "type": "String"
+      }
+    }
+  },
+  "userMissingResource": "Seu usuário não possui permissão para: {resource}",
+  "@userMissingResource": {
+    "placeholders": {
+      "resource": {
+        "type": "String"
+      }
+    }
+  },
+  "copiedText": "Copiado: {text}",
+  "@copiedText": {
+    "placeholders": {
+      "text": {
+        "type": "String"
+      }
+    }
+  },
+  "searchProductsByType": "Consultar produtos ({type})",
+  "@searchProductsByType": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "endNamedOffer": "Encerrar oferta {type}",
+  "@endNamedOffer": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmEndNamedOffer": "Tem certeza que deseja encerrar a oferta {type}?",
+  "@confirmEndNamedOffer": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "paginationRange": "{start}-{end} de {total}",
+  "@paginationRange": {
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "changeValue": "Alterar {value}",
+  "@changeValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "addValue": "Adicionar {value}",
+  "@addValue": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printingUpdateFailed": "Erro ao atualizar impressão: {error}",
+  "@printingUpdateFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "fromStock": "De \"{stock}\"",
+  "@fromStock": {
+    "placeholders": {
+      "stock": {
+        "type": "String"
+      }
+    }
+  },
+  "toStock": "Para \"{stock}\"",
+  "@toStock": {
+    "placeholders": {
+      "stock": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentDifference": "Diferença = {amount}",
+  "@paymentDifference": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "editingOrderCode": "Alterando ({code})",
+  "@editingOrderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "discountWithSymbol": "Desconto {symbol}",
+  "@discountWithSymbol": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "priceWithTypeAbbreviation": "Preço R$ ({type})",
+  "@priceWithTypeAbbreviation": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "valueWithSymbol": "Valor {symbol}",
+  "@valueWithSymbol": {
+    "placeholders": {
+      "symbol": {
+        "type": "String"
+      }
+    }
+  },
+  "printOrderCode": "Imprimir pedido {code}",
+  "@printOrderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "priceWithType": "Preço {type}",
+  "@priceWithType": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "companyWithCode": "Empresa {code}",
+  "@companyWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "websiteProductToLink": "Produto do site \"{name}\"\n",
+  "@websiteProductToLink": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "productToLink": "Produto a ser associado \"{name}\"\n",
+  "@productToLink": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "spreadsheetDownloadedAt": "Planilha baixada em \"{path}\"",
+  "@spreadsheetDownloadedAt": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "salesOrderWithCode": "Pedido de venda {code}",
+  "@salesOrderWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "unsupportedAuthorizationType": "O processo de autorização de tipo \"{type}\" ainda não foi implementado para ser julgado através do aplicativo",
+  "@unsupportedAuthorizationType": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "documentConferenceCompleted": "A conferência do documento {number} foi concluída com sucesso",
+  "@documentConferenceCompleted": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "conferenceConfirmationFailed": "Houve um erro ao tentar confirmar a conferência: {error}",
+  "@conferenceConfirmationFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "customersCount": "{count, plural, one{{count} cliente} other{{count} clientes}}",
+  "@customersCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "requestsCount": "{count, plural, one{{count} requisição} other{{count} requisições}}",
+  "@requestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "duplicateDataDetails": "Essa ação está duplicando dados que não podem ser duplicados. \n{details}",
+  "@duplicateDataDetails": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "cameraOpenFailed": "Não foi possível abrir a câmera: {error}",
+  "@cameraOpenFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "reportId": "ID: {id}",
+  "@reportId": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "layoutFieldsCount": "Campos ({count})",
+  "@layoutFieldsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "labelParametersWithUnit": "Parâmetros da etiqueta ({unit})",
+  "@labelParametersWithUnit": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "formParametersWithUnit": "Parâmetros do formulário ({unit})",
+  "@formParametersWithUnit": {
+    "placeholders": {
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "appVersion": "Versão {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "freeUntilDate": "Grátis até {date}",
+  "@freeUntilDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "formattedAddress": "{street}, número {number}. {district}, {city}, {state}",
+  "@formattedAddress": {
+    "placeholders": {
+      "street": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      },
+      "district": {
+        "type": "String"
+      },
+      "city": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "lastChangedQuantity": "Última quantidade alterada {sign}",
+  "@lastChangedQuantity": {
+    "placeholders": {
+      "sign": {
+        "type": "String"
+      }
+    }
+  },
+  "percentageType": "Porcentagem",
+  "reaisType": "Reais",
+  "withoutJudgment": "Sem julgamento",
+  "acceptedJudgment": "Aceito",
+  "returnAllJudgment": "Devolver tudo",
+  "hidePasswordAction": "Ocultar",
+  "showPasswordAction": "Mostrar",
+  "printerConnectionFailure": "Ocorreu um erro para conectar com a impressora\n\n\"{error}\"\n\nConfirme se o IP da impressora está correto, se ela está com bobina e se ela está ligada. Caso não resolva, reinicie ela e tente novamente",
+  "@printerConnectionFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "orderPrintingFailure": "Ocorreu um erro ao imprimir o pedido\n\n{error}",
+  "@orderPrintingFailure": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "printedSalesOrder": "PEDIDO DE VENDA {value}",
+  "@printedSalesOrder": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedAt": "Impresso em {value}",
+  "@printedAt": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedOrder": "Pedido: {value}",
+  "@printedOrder": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedOrderNumber": "Pedido Nº: {value}",
+  "@printedOrderNumber": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedOrderTemplate": "Modelo de Pedido: {value}",
+  "@printedOrderTemplate": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedIssueDate": "Data de Emissao: {value}",
+  "@printedIssueDate": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedCustomer": "Cliente: {value}",
+  "@printedCustomer": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedSeller": "Vendedor: {value}",
+  "@printedSeller": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedUser": "Usuario: {value}",
+  "@printedUser": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedSurcharge": "Acrescimo: {value}",
+  "@printedSurcharge": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedPaymentDiscount": "Desconto Financeiro: {value}",
+  "@printedPaymentDiscount": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedPaymentSurcharge": "Acrescimo Financeiro: {value}",
+  "@printedPaymentSurcharge": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedShipping": "Frete: {value}",
+  "@printedShipping": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedNetTotal": "Total Liquido: R$ {value}",
+  "@printedNetTotal": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedInstallments": " em {value}x",
+  "@printedInstallments": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedDiscountAmount": "  (-) Desconto: R$ {value}",
+  "@printedDiscountAmount": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedSurchargeAmount": "  (+) Acrescimo: R$ {value}",
+  "@printedSurchargeAmount": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedItemDiscount": "Desconto -{value}",
+  "@printedItemDiscount": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedItemSurcharge": "Acrescimo +{value}",
+  "@printedItemSurcharge": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "printedItemShipping": "Frete +{value}",
+  "@printedItemShipping": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "removedPaymentMethods": "As seguintes formas de pagamento serão removidas: {methods}",
+  "@removedPaymentMethods": {
+    "placeholders": {
+      "methods": {
+        "type": "String"
+      }
+    }
+  },
+  "customerSalesBlockDetails": "O cliente possui bloqueio para vendas: {details}",
+  "@customerSalesBlockDetails": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmOrderChangeImpacts": "Esta alteração terá os seguintes impactos no pedido:\n\n{impacts}\n\nDeseja prosseguir?",
+  "@confirmOrderChangeImpacts": {
+    "placeholders": {
+      "impacts": {
+        "type": "String"
+      }
+    }
+  },
+  "layoutNameRequired": "Nome: Este campo é de preenchimento obrigatório",
+  "layoutPrinterRequired": "Impressora: A impressora não foi informada",
+  "layoutFormWidthInvalid": "Largura do formulário: Informe um valor maior que zero",
+  "layoutFormHeightInvalid": "Altura do formulário: Informe um valor maior que zero",
+  "layoutColumnsInvalid": "Quantidade de colunas: Informe um valor maior que zero",
+  "layoutWidthInvalid": "Largura da etiqueta: Informe um valor maior que zero",
+  "layoutHeightInvalid": "Altura da etiqueta: Informe um valor maior que zero",
+  "layoutFormMarginsInvalid": "As margens do formulário não podem ser negativas",
+  "layoutLabelMarginsInvalid": "As margens da etiqueta não podem ser negativas",
+  "layoutTemperatureRequired": "Temperatura de impressão: Selecione uma opção",
+  "layoutSpeedRequired": "Velocidade de impressão: Selecione uma opção",
+  "layoutIntervalInvalid": "Intervalo entre pacotes deve ser maior que zero",
+  "layoutFormSizeRequired": "A configuração do tamanho do formulário deve ser aplicada",
+  "layoutAddressRequired": "Tipo de endereço: Selecione uma opção",
+  "layoutAddressInapplicable": "O tipo de endereço não se aplica ao tipo de leiaute",
+  "layoutFieldRequired": "Informe pelo menos um campo para o leiaute",
+  "layoutFieldInapplicable": "Existe pelo menos um campo que não se aplica ao tipo de leiaute informado",
+  "layoutLabelsExceedForm": "As etiquetas não cabem na largura do formulário",
+  "noSelectedCompany": "Nenhuma empresa selecionada. Carregue os dados novamente",
+  "noCameraAvailableFailure": "Nenhuma câmera está disponível",
+  "reportContextUnavailable": "Não foi possível carregar o contexto do relatório",
+  "reportSavedLayoutRequired": "Somente um leiaute salvo pode ser relatado",
+  "reportImagesRequired": "As duas imagens do relatório devem ser informadas",
+  "reportCategoryRequired": "A categoria deve ser informada",
+  "reportPrivacyRequired": "O consentimento de privacidade é obrigatório",
+  "processTypeUnsupported": "Tipo de processo não implementado",
+  "reportValidationUnsupportedSchema": "Versão do formato não suportada",
+  "reportValidationInvalidIdempotencyKey": "A chave de identificação deve ser um UUID",
+  "reportValidationSupabaseEnterpriseRequired": "A empresa do aplicativo deve ser informada",
+  "reportValidationErpEnterpriseRequired": "A empresa do ERP deve ser informada",
+  "reportValidationErpUserRequired": "O nome do usuário do ERP deve ser informado",
+  "reportValidationErpUserTooLong": "O nome do usuário do ERP deve conter no máximo 200 caracteres",
+  "reportValidationErpCompanyRequired": "O nome da empresa do ERP deve ser informado",
+  "reportValidationErpCompanyTooLong": "O nome da empresa do ERP deve conter no máximo 200 caracteres",
+  "reportValidationReportDescriptionRequired": "A descrição deve ser informada",
+  "reportValidationReportDescriptionTooLong": "A descrição deve conter no máximo 2000 caracteres",
+  "reportValidationSavedLayoutRequired": "Somente um leiaute salvo pode ser relatado",
+  "reportValidationEnvironmentRequired": "Os dados do ambiente devem estar completos",
+  "reportValidationPhysicalImageTooLarge": "A foto da etiqueta deve ter no máximo 5 MiB",
+  "reportValidationPhysicalImageDimensionsInvalid": "As dimensões da foto da etiqueta são inválidas",
+  "reportValidationCanvasImageTooLarge": "A imagem da pré-visualização deve ter no máximo 5 MiB",
+  "reportValidationCanvasImageDimensionsInvalid": "As dimensões da imagem da pré-visualização são inválidas",
+  "reportValidationCapturesNotConfirmed": "As duas capturas devem ser confirmadas",
+  "deactivatedProperty": "Desativado",
+  "fiscalClassificationProperty": "Classificacao fiscal",
+  "labelPhotoUploadTooLarge": "A foto da etiqueta não pôde ser convertida dentro do limite de envio.",
+  "labelCanvasUploadTooLarge": "A pré-visualização excede o limite de envio.",
+  "labelCanvasDecodeFailed": "Não foi possível decodificar os pixels da pré-visualização.",
+  "labelCanvasUnreadable": "A pré-visualização não é uma imagem legível.",
+  "labelCanvasWebpUnreadable": "A pré-visualização convertida não é uma imagem WebP legível.",
+  "labelCanvasBlank": "A pré-visualização convertida não possui conteúdo visível.",
+  "labelImageWebpUnreadable": "A imagem convertida não é um arquivo WebP legível.",
+  "labelImageFileMissing": "O arquivo de imagem não foi encontrado ou está vazio."
 }

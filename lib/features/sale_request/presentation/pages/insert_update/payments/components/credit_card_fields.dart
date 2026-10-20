@@ -3,7 +3,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,7 +55,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
         BaseTextFormField(
           focusNode: cardNumberFocusNode,
           controller: widget.creditCardController,
-          labelText: 'Número do cartão'.hardcoded,
+          labelText: context.l10n.cardNumber,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
@@ -70,7 +69,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
         BaseTextFormField(
           focusNode: portionsFocusNode,
           controller: widget.portionsController,
-          labelText: 'Qtd parcelas'.hardcoded,
+          labelText: context.l10n.numberOfInstallments,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           textInputAction: TextInputAction.next,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -83,7 +82,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
         BaseTextFormField(
           focusNode: validityFocusNode,
           controller: widget.validityController,
-          labelText: 'Validade'.hardcoded,
+          labelText: context.l10n.expiration,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),

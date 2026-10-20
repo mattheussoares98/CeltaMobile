@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +55,14 @@ class _SelectDateRangeAndSearchButtonState
       children: [
         Flexible(
           child: PrimaryButton(
-            text: 'Início '.hardcoded + _initialDate.formatDate(),
+            text: context.l10n.start + _initialDate.formatDate(),
             onPressed: widget.isLoading ? null : _selectInitialDate,
           ),
         ),
         gapW12,
         Flexible(
           child: PrimaryButton(
-            text: 'Fim '.hardcoded + _finalDate.formatDate(),
+            text: context.l10n.end + _finalDate.formatDate(),
             onPressed: widget.isLoading ? null : _selectFinalDate,
           ),
         ),

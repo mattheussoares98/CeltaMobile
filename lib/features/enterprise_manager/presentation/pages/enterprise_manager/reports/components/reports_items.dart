@@ -64,7 +64,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
       data: (usageReports) {
         if (usageReports?.isEmpty ?? true) {
           return SliverToBoxAdapter(
-            child: Center(child: BaseText('Nenhum uso encontrado'.hardcoded)),
+            child: Center(child: BaseText(context.l10n.noUsageFound)),
           );
         }
 
@@ -114,9 +114,7 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
 
         if (filteredEnterprises.isEmpty) {
           return SliverToBoxAdapter(
-            child: Center(
-              child: BaseText('Nenhum resultado encontrado'.hardcoded),
-            ),
+            child: Center(child: BaseText(context.l10n.noResultsFound)),
           );
         }
 
@@ -135,13 +133,15 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                   children: [
                     Flexible(
                       child: BaseText(
-                        '${filteredEnterprises.length} clientes'.hardcoded,
+                        context.l10n.customersCount(filteredEnterprises.length),
                       ),
                     ),
                     gapW8,
                     Flexible(
                       flex: 2,
-                      child: BaseText('$totalRequests requisições'.hardcoded),
+                      child: BaseText(
+                        context.l10n.requestsCount(totalRequests),
+                      ),
                     ),
                   ],
                 ),
@@ -217,8 +217,8 @@ class _RequestsByTypeOrUser extends StatelessWidget {
       children: [
         BaseText.title(
           groupingByType
-              ? 'Requisições por tipo'.hardcoded
-              : 'Requisições por usuário'.hardcoded,
+              ? context.l10n.requestsByType
+              : context.l10n.requestsByUser,
           color: context.theme.primaryColor,
         ),
         gapH4,

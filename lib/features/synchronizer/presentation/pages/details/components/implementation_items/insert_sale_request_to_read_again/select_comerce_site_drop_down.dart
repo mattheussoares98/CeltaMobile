@@ -35,11 +35,11 @@ class _SelectCommerceSiteDropDown extends ConsumerWidget {
 
         return BaseDropDown<EcCommerceSiteEntity>(
           validator: (value) =>
-              value == null ? 'Selecione o site'.hardcoded : null,
-          hint: Text('Site'.hardcoded),
+              value == null ? context.l10n.selectTheWebsite : null,
+          hint: Text(context.l10n.website),
           showLabelAtTopLeft: true,
           selectedItem: selectedCommerceSite,
-          label: 'Site'.hardcoded,
+          label: context.l10n.website,
           onChanged: onChangeCommerceSite,
           items: items,
         );

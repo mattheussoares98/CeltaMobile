@@ -1,3 +1,6 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/localization/localization.dart';
+import 'package:celta_inventario/localization/providers.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -7,7 +10,6 @@ import 'package:celta_inventario/core/providers/ec_request_params/ec_request_par
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'save_sale_request_controller.g.dart';
@@ -16,6 +18,8 @@ part 'save_sale_request_controller.g.dart';
   dependencies: [InsertUpdateStateController, saleRequestNeedsProcessing],
 )
 class SaveSaleRequestController extends _$SaveSaleRequestController {
+  AppLocalizations get _l10n => ref.read(appLocalizationsProvider);
+
   @override
   FutureOr<void> build(int enterpriseCode) {}
 
@@ -32,23 +36,20 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       final saleRequestId = saleRequest.code ?? 0;
 
       if (customerCode == null) {
-        errorMessage =
-            'Por favor, selecione um cliente antes de salvar.'.hardcoded;
+        errorMessage = _l10n.pleaseSelectACustomerBeforeSaving;
         return;
       } else if (saleRequest.products == null ||
           saleRequest.products!.isEmpty) {
-        errorMessage = 'Adicione pelo menos um produto ao pedido.'.hardcoded;
+        errorMessage = _l10n.addAtLeastOneProductToTheOrder;
         return;
       } else if (saleRequest.requestType == null ||
           saleRequest.requestType?.code == null) {
         errorMessage =
-            'O modelo de pedido não está selecionado. Esse erro jamais deveria acontecer, é um erro de programação. Entre em contato com o suporte técnico'
-                .hardcoded;
+            _l10n.noOrderTemplateSelectedThisIsAProgrammingErrorPlease;
         return;
       } else if (!saleRequest.isPaymentValid) {
         errorMessage =
-            'O modelo de pedido obriga a que o financeiro seja informado. Por favor, preencha as formas de pagamento corretamente.'
-                .hardcoded;
+            _l10n.thisOrderTemplateRequiresPaymentDetailsPleaseFillInThe;
         return;
       }
 
@@ -69,21 +70,16 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
 
         if (!requestTypeAllowChangePriceOrCost) {
           errorMessage =
-              'O modelo de pedido não permite alterar os preços. Por isso, processe o carrinho.'
-                  .hardcoded;
+              _l10n.thisOrderTemplateDoesNotAllowPriceChangesProcessThe;
           return;
         } else if (!canSaveAndNeedProcessCart) {
-          errorMessage =
-              'O usuário não possui permissão para alterar os preços no pedido. Por isso, processe o carrinho'
-                  .hardcoded;
+          errorMessage = _l10n.yourUserDoesNotHavePermissionToChangeOrderPrices;
           return;
         }
       }
 
       if (needsProcessingCart && isOnlyValidating) {
-        errorMessage =
-            'O pedido ainda não foi processado para calcular os preços de acordo com promoções, negociações de vendas, oferta, atacado, preço praticado pelo modelo de pedido, etc!\n\n Deseja salvar mesmo assim?'
-                .hardcoded;
+        errorMessage = _l10n.thisOrderHasNotBeenProcessedToCalculatePricesBased;
         return;
       } else if (isOnlyValidating) {
         return;
@@ -151,7 +147,7 @@ class SaveSaleRequestController extends _$SaveSaleRequestController {
       }
     });
     if (state.hasError) {
-      errorMessage = state.error.toString();
+      errorMessage = parseErrorMessage(state.error, translations: _l10n);
     }
 
     return (errorMessage, canSaveAndNeedProcessCart);

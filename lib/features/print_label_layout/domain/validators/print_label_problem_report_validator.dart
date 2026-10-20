@@ -1,3 +1,4 @@
+import 'package:celta_inventario/features/print_label_layout/domain/validators/print_label_report_validation_failure.dart';
 import 'package:celta_inventario/features/print_label_layout/domain/entities/entities.dart';
 
 abstract final class PrintLabelProblemReportValidator {
@@ -13,47 +14,65 @@ abstract final class PrintLabelProblemReportValidator {
     caseSensitive: false,
   );
 
-  static List<String> validate(PrintLabelProblemReportEntity report) {
-    final errors = <String>[];
+  static List<String> validate(PrintLabelProblemReportEntity report) =>
+      validateFailures(report).map((failure) => failure.message).toList();
+
+  static List<PrintLabelReportValidationFailure> validateFailures(
+    PrintLabelProblemReportEntity report,
+  ) {
+    final errors = <PrintLabelReportValidationFailure>[];
 
     if (report.schemaVersion != schemaVersion) {
-      errors.add('Unsupported schema version');
+      errors.add(PrintLabelReportValidationFailure.unsupportedSchema);
     }
     if (!_uuidPattern.hasMatch(report.idempotencyKey)) {
-      errors.add('Idempotency key must be a UUID');
+      errors.add(PrintLabelReportValidationFailure.invalidIdempotencyKey);
     }
     if (report.supabaseEnterpriseId <= 0) {
-      errors.add('Supabase enterprise must be informed');
+      errors.add(PrintLabelReportValidationFailure.supabaseEnterpriseRequired);
     }
     if (report.erpEnterpriseCode <= 0) {
-      errors.add('ERP enterprise must be informed');
+      errors.add(PrintLabelReportValidationFailure.erpEnterpriseRequired);
     }
     _validateText(
       value: report.erpUserName,
-      label: 'ERP user name',
+      requiredFailure: .erpUserRequired,
+      lengthFailure: .erpUserTooLong,
       maxLength: maxIdentityLength,
       errors: errors,
     );
     _validateText(
       value: report.erpEnterpriseName,
-      label: 'ERP enterprise name',
+      requiredFailure: .erpCompanyRequired,
+      lengthFailure: .erpCompanyTooLong,
       maxLength: maxIdentityLength,
       errors: errors,
     );
     _validateText(
       value: report.description,
-      label: 'Description',
+      requiredFailure: .reportDescriptionRequired,
+      lengthFailure: .reportDescriptionTooLong,
       maxLength: maxDescriptionLength,
       errors: errors,
     );
     if (report.savedLayout.code <= 0) {
-      errors.add('Only a saved layout can be reported');
+      errors.add(PrintLabelReportValidationFailure.savedLayoutRequired);
     }
     _validateEnvironment(report.environment, errors);
-    _validateAttachment('Physical label', report.physicalLabel, errors);
-    _validateAttachment('Canvas preview', report.canvasPreview, errors);
+    _validateAttachment(
+      report.physicalLabel,
+      errors,
+      .physicalImageTooLarge,
+      .physicalImageDimensionsInvalid,
+    );
+    _validateAttachment(
+      report.canvasPreview,
+      errors,
+      .canvasImageTooLarge,
+      .canvasImageDimensionsInvalid,
+    );
     if (!report.captureConfirmation.isConfirmed) {
-      errors.add('Both captures must be confirmed');
+      errors.add(PrintLabelReportValidationFailure.capturesNotConfirmed);
     }
 
     return errors;
@@ -61,45 +80,47 @@ abstract final class PrintLabelProblemReportValidator {
 
   static void _validateText({
     required String value,
-    required String label,
+    required PrintLabelReportValidationFailure requiredFailure,
+    required PrintLabelReportValidationFailure lengthFailure,
     required int maxLength,
-    required List<String> errors,
+    required List<PrintLabelReportValidationFailure> errors,
   }) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) {
-      errors.add('$label must be informed');
+      errors.add(requiredFailure);
     } else if (trimmed.length > maxLength) {
-      errors.add('$label must contain at most $maxLength characters');
+      errors.add(lengthFailure);
     }
   }
 
   static void _validateEnvironment(
     PrintLabelProblemReportEnvironmentEntity environment,
-    List<String> errors,
+    List<PrintLabelReportValidationFailure> errors,
   ) {
     if (environment.appVersion.trim().isEmpty ||
         environment.operatingSystem.trim().isEmpty ||
         environment.operatingSystemVersion.trim().isEmpty ||
         environment.deviceModel.trim().isEmpty) {
-      errors.add('Environment must be complete');
+      errors.add(PrintLabelReportValidationFailure.environmentRequired);
     }
   }
 
   static void _validateAttachment(
-    String label,
     PrintLabelProblemReportAttachmentMetadataEntity attachment,
-    List<String> errors,
+    List<PrintLabelReportValidationFailure> errors,
+    PrintLabelReportValidationFailure sizeFailure,
+    PrintLabelReportValidationFailure dimensionsFailure,
   ) {
     if (attachment.byteLength <= 0 ||
         attachment.byteLength > maxImageByteLength) {
-      errors.add('$label must contain at most 5 MiB');
+      errors.add(sizeFailure);
     }
     if (attachment.width <= 0 ||
         attachment.height <= 0 ||
         attachment.width > maxImageSide ||
         attachment.height > maxImageSide ||
         attachment.width * attachment.height > maxImagePixels) {
-      errors.add('$label dimensions are invalid');
+      errors.add(dimensionsFailure);
     }
   }
 }

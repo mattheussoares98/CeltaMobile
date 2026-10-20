@@ -6,7 +6,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/features/inventory/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/inventory/presentation/pages/products/components/components.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -145,7 +144,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
           n.showToastOnSuccess(
             context,
             previous: p,
-            message: 'Quantidade alterada com sucesso'.hardcoded,
+            message: context.l10n.quantityChangedSuccessfully,
           );
         }
         n.doOnSuccess(p, () async {
@@ -172,7 +171,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
       resizeToAvoidBottomInset: true,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
       appBar: BaseAppBar(
-        title: 'Produtos'.hardcoded,
+        title: context.l10n.products,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       body: Column(

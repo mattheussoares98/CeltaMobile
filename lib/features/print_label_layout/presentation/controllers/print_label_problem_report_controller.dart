@@ -1,3 +1,6 @@
+import 'package:celta_inventario/localization/providers.dart';
+import 'package:celta_inventario/features/print_label_layout/presentation/localization/localization.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:math';
 
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
@@ -34,7 +37,7 @@ class PrintLabelProblemReportController
     if (supabaseEnterprise?.id == null ||
         userSession?.user.name == null ||
         selectedEnterprise?.Code == null) {
-      throw AppException('The report context could not be loaded');
+      throw AppException.localized(CoreFailure.reportContextUnavailable);
     }
 
     return PrintLabelProblemReportState(
@@ -58,7 +61,9 @@ class PrintLabelProblemReportController
   void confirmSnapshot() {
     if (_value.stage != PrintLabelProblemReportStage.snapshot) return;
     if (_value.savedLayout.code <= 0) {
-      _setFailure(AppException('Only a saved layout can be reported'));
+      _setFailure(
+        AppException.localized(CoreFailure.reportSavedLayoutRequired),
+      );
       return;
     }
     state = AsyncData(
@@ -121,7 +126,7 @@ class PrintLabelProblemReportController
 
   void showReview() {
     if (_value.physicalLabel == null || _value.canvasPreview == null) {
-      _setFailure(AppException('Both report images must be informed'));
+      _setFailure(AppException.localized(CoreFailure.reportImagesRequired));
       return;
     }
     state = AsyncData(
@@ -166,16 +171,20 @@ class PrintLabelProblemReportController
     final physicalLabel = _value.physicalLabel;
     final canvasPreview = _value.canvasPreview;
     if (physicalLabel == null || canvasPreview == null) {
-      _setReviewFailure(AppException('Both report images must be informed'));
+      _setReviewFailure(
+        AppException.localized(CoreFailure.reportImagesRequired),
+      );
       return;
     }
     if (_value.category == null) {
-      _setReviewFailure(AppException('A categoria deve ser informada'));
+      _setReviewFailure(
+        AppException.localized(CoreFailure.reportCategoryRequired),
+      );
       return;
     }
     if (!_value.privacyConsentAccepted) {
       _setReviewFailure(
-        AppException('O consentimento de privacidade é obrigatório'),
+        AppException.localized(CoreFailure.reportPrivacyRequired),
       );
       return;
     }
@@ -197,9 +206,21 @@ class PrintLabelProblemReportController
       canvasPreview: canvasPreview.metadata,
       captureConfirmation: _value.captureConfirmation,
     );
-    final validationErrors = PrintLabelProblemReportValidator.validate(report);
+    final validationErrors = PrintLabelProblemReportValidator.validateFailures(
+      report,
+    );
     if (validationErrors.isNotEmpty) {
-      _setReviewFailure(AppException(validationErrors.join('\n')));
+      _setReviewFailure(
+        AppException(
+          validationErrors
+              .map(
+                (failure) => ref
+                    .read(appLocalizationsProvider)
+                    .reportValidationMessage(failure),
+              )
+              .join('\n'),
+        ),
+      );
       return;
     }
 

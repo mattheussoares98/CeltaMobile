@@ -1,7 +1,6 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,8 +25,8 @@ class PhoneField extends ConsumerWidget {
       inputFormatters: [PhoneInputFormatter()],
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: const TextInputType.numberWithOptions(),
-      labelText: 'Telefone'.hardcoded,
-      hintText: 'Telefone'.hardcoded,
+      labelText: context.l10n.phone,
+      hintText: context.l10n.phone,
       onFieldSubmitted: (_) => addPhone(),
       validator: FormValidators.compose([
         NonEmptyValidator(translations: context.l10n),

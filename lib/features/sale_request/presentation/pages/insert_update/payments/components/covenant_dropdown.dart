@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +32,7 @@ class CovenantDropdown extends ConsumerWidget {
 
     if (selectedCovenant == null) {
       return Text(
-        'Você só pode utilizar essa forma de pagamento se selecionar o convênio do cliente!'
-            .hardcoded,
+        context.l10n.selectTheCustomerSAgreementToUseThisPaymentMethod,
         style: context.theme.textTheme.titleSmall?.copyWith(
           fontStyle: FontStyle.italic,
           color: Colors.red,
@@ -45,7 +43,7 @@ class CovenantDropdown extends ConsumerWidget {
     return BaseDropDown<BsfCovenantEntity>(
       selectedItem: selectedCovenant,
       showLabelAtTopLeft: true,
-      label: 'Convênio do cliente'.hardcoded,
+      label: context.l10n.customerAgreement,
       items: [
         DropdownMenuItem(
           value: selectedCovenant,

@@ -1,9 +1,9 @@
+import 'package:celta_inventario/features/sale_request/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +39,7 @@ class DeliveryTaxField extends ConsumerWidget {
           text: TextSpan(
             style: context.theme.textTheme.titleSmall,
             children: [
-              TextSpan(text: 'Taxa de entrega'.hardcoded),
+              TextSpan(text: context.l10n.deliveryFee),
               TextSpan(
                 text:
                     ' (${item.totalDeliveryTax.toString().toBrazilianNumber().addBrazilianCoin()})',
@@ -60,7 +60,7 @@ class DeliveryTaxField extends ConsumerWidget {
                 focusNode: focusNode,
                 controller: controller,
                 onFieldSubmitted: onFieldSubmitted,
-                labelText: 'Valor ${deliveryTaxType.symbol}'.hardcoded,
+                labelText: context.l10n.valueWithSymbol(deliveryTaxType.symbol),
                 hintText: deliveryTaxType.symbol,
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
@@ -87,7 +87,8 @@ class DeliveryTaxField extends ConsumerWidget {
                 child: BaseSegmentedButtons<PercentageOrValue>(
                   items: PercentageOrValue.values,
                   selectedValue: deliveryTaxType,
-                  itemLabelBuilder: (item) => item.name,
+                  itemLabelBuilder: (item) =>
+                      context.l10n.percentageOrValueName(item),
                   onChanged: (value) => ref
                       .read(uiProvider.notifier)
                       .updateDeliveryTaxType(value),

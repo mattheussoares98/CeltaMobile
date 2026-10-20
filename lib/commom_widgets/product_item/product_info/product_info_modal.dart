@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -85,7 +85,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.money_dollar,
                 materialIcon: Icons.attach_money,
               ),
-              label: 'Preços'.hardcoded,
+              label: context.l10n.prices,
             ),
           if (widget.showStocks)
             BottomNavigationBarItem(
@@ -93,7 +93,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.archivebox,
                 materialIcon: Icons.inventory_2_outlined,
               ),
-              label: 'Estoques'.hardcoded,
+              label: context.l10n.stocks,
             ),
           if (widget.showAddresses)
             BottomNavigationBarItem(
@@ -101,7 +101,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.location,
                 materialIcon: Icons.location_pin,
               ),
-              label: 'Endereços'.hardcoded,
+              label: context.l10n.addresses,
             ),
           if (widget.showShoppings)
             BottomNavigationBarItem(
@@ -109,7 +109,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.shopping_cart,
                 materialIcon: Icons.shopping_cart_outlined,
               ),
-              label: 'Compras'.hardcoded,
+              label: context.l10n.purchases,
             ),
           if (widget.showCosts)
             BottomNavigationBarItem(
@@ -117,7 +117,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.creditcard,
                 materialIcon: Icons.credit_card,
               ),
-              label: 'Custos'.hardcoded,
+              label: context.l10n.costs,
             ),
           if (widget.showMargins)
             BottomNavigationBarItem(
@@ -125,7 +125,7 @@ class _ProductInfoModalState extends State<ProductInfoModal> {
                 cupertinoIcon: CupertinoIcons.chart_bar,
                 materialIcon: Icons.bar_chart_rounded,
               ),
-              label: 'Margens'.hardcoded,
+              label: context.l10n.margins,
             ),
         ],
       ),

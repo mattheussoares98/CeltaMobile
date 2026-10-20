@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,7 +79,7 @@ class RequestSummaryWidget extends ConsumerWidget {
                         ),
                         gapW12,
                         Text(
-                          'Resumo'.hardcoded,
+                          context.l10n.summary2,
                           style: context.theme.textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w300,
                           ),
@@ -88,38 +87,38 @@ class RequestSummaryWidget extends ConsumerWidget {
                       ],
                     ),
                     TitleAndSubTitle(
-                      title: 'Núm pedido'.hardcoded,
+                      title: context.l10n.orderNo,
                       copyableSubtitle: true,
                       subTitle: saleRequestNumber,
                     ),
                     if (requestTypePersonalizedCode != null)
                       TitleAndSubTitle(
-                        title: 'Modelo de pedido'.hardcoded,
+                        title: context.l10n.requestTemplate,
                         copyableSubtitle: true,
                         subTitle:
                             '${requestTypePersonalizedCode.isEmpty ? '' : '($requestTypePersonalizedCode)'} $requestTypeName',
                       ),
                     if (sellerName != null)
                       TitleAndSubTitle(
-                        title: 'Vendedor'.hardcoded,
+                        title: context.l10n.salesperson,
                         copyableSubtitle: true,
                         subTitle: sellerName,
                       ),
                     if (dateHourOfCreation != null)
                       TitleAndSubTitle(
-                        title: 'Data'.hardcoded,
+                        title: context.l10n.date,
                         subTitle: dateHourOfCreation.formatDate(
                           DateFormatType.ddMMyyyyHHmm,
                         ),
                       ),
                     if (showCustomer && (customerName?.isNotEmpty ?? false))
                       TitleAndSubTitle(
-                        title: 'Cliente'.hardcoded,
+                        title: context.l10n.customer,
                         subTitle: customerName,
                       ),
                     if (observations?.isNotEmpty ?? false)
                       TitleAndSubTitle(
-                        title: 'Observações'.hardcoded,
+                        title: context.l10n.notes,
                         subTitle: observations,
                       ),
                     if (showDetails)
@@ -137,7 +136,7 @@ class RequestSummaryWidget extends ConsumerWidget {
                               if (requestDetails?.instructions?.isNotEmpty ??
                                   false)
                                 TitleAndSubTitle(
-                                  title: 'Instruções'.hardcoded,
+                                  title: context.l10n.instructions,
                                   subTitle: requestDetails?.instructions,
                                 ),
                               if ((requestDetails?.totalProductsBrut ?? 0) >
@@ -145,25 +144,25 @@ class RequestSummaryWidget extends ConsumerWidget {
                                   requestDetails?.totalProductsBrut !=
                                       requestDetails?.totalLiquid)
                                 TitleAndSubTitle(
-                                  title: 'Total bruto'.hardcoded,
+                                  title: context.l10n.grossTotal,
                                   subTitle: requestDetails?.totalProductsBrut,
                                   subTitleIsPrice: true,
                                 ),
                               if ((requestDetails?.totalFreight ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Total delivery'.hardcoded,
+                                  title: context.l10n.totalDelivery,
                                   subTitle: requestDetails?.totalFreight,
                                   subTitleIsPrice: true,
                                 ),
                               if ((requestDetails?.totalIncrement ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Total acréscimos'.hardcoded,
+                                  title: context.l10n.totalSurcharges2,
                                   subTitle: requestDetails?.totalIncrement,
                                   subTitleIsPrice: true,
                                 ),
                               if ((requestDetails?.totalDiscount ?? 0) > 0)
                                 TitleAndSubTitle(
-                                  title: 'Total descontos'.hardcoded,
+                                  title: context.l10n.totalDiscounts4,
                                   subTitle: requestDetails?.totalDiscount,
                                   subTitleIsPrice: true,
                                 ),
@@ -172,7 +171,7 @@ class RequestSummaryWidget extends ConsumerWidget {
                         },
                       ),
                     TitleAndSubTitle(
-                      title: 'Total líquido'.hardcoded,
+                      title: context.l10n.netTotal,
                       subTitle: totalLiquid,
                       subTitleIsPrice: true,
                     ),

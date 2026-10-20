@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/pages.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +110,7 @@ class _ProductsNotFoundPageState extends ConsumerState<ProductsNotFoundPage> {
         widget.receiptCode,
       ),
       appBar: BaseAppBar(
-        title: 'Produtos não encontrados'.hardcoded,
+        title: context.l10n.productsNotFound,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       floatingActionButton: FloatingActionButton(
@@ -183,11 +182,11 @@ class _ProductItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TitleAndSubTitle(
-                        title: 'EAN'.hardcoded,
+                        title: context.l10n.coreSearchProductTypePreferenceEan,
                         subTitle: product.ean,
                       ),
                       TitleAndSubTitle(
-                        title: 'Quantidade'.hardcoded,
+                        title: context.l10n.quantity,
                         subTitle: product.quantity
                             .toString()
                             .toBrazilianNumber(),
@@ -196,7 +195,7 @@ class _ProductItem extends StatelessWidget {
                           product.observations!.isNotEmpty &&
                           product.observations.toString() != 'null')
                         TitleAndSubTitle(
-                          title: 'Observações'.hardcoded,
+                          title: context.l10n.notes,
                           subTitle: product.observations,
                         ),
                     ],

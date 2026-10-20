@@ -1,5 +1,4 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +57,7 @@ class TitleAndSubTitle extends StatelessWidget {
 
     // Provide visual feedback
     showToastMessage(
-      'Copiado: $text'.hardcoded,
+      context.l10n.copiedText(text),
       duration: const Duration(seconds: 2),
     );
   }

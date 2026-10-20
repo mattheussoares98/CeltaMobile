@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/synchronizer/domain/entities/entities.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/synchronizer/presentation/pages/details/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +56,9 @@ class SynchronizerProductsWithErrosPage extends ConsumerWidget {
           }
 
           final String label = switch (type) {
-            EcProductWithErrorType.error => 'Erro'.hardcoded,
-            EcProductWithErrorType.markedToSendAgain => 'Reenviar'.hardcoded,
-            EcProductWithErrorType.markedToIgnoreError => 'Ignorados'.hardcoded,
+            EcProductWithErrorType.error => context.l10n.error,
+            EcProductWithErrorType.markedToSendAgain => context.l10n.resend,
+            EcProductWithErrorType.markedToIgnoreError => context.l10n.ignored,
           };
 
           return BaseBottomNavigationBarItem(

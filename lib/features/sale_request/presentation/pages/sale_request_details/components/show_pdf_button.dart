@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +42,7 @@ class _ShowPdfButtonState extends ConsumerState<ShowPdfButton> {
               if (bytes == null) {
                 showAlertDialog(
                   context: context,
-                  title:
-                      'Não foi possível gerar o PDF. Tente novamente'.hardcoded,
+                  title: context.l10n.unableToGenerateThePdfTryAgain,
                 );
               } else {
                 context.pushNamed(

@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/auth/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +56,7 @@ class _EnterpriseManagerAuthPageState extends ConsumerState<AuthPage> {
 
     return BaseScaffold(
       isScrollable: false,
-      appBar: BaseAppBar(title: 'Login'.hardcoded),
+      appBar: BaseAppBar(title: context.l10n.login),
       body: ResponsiveScrollableWidget(
         centralize: true,
         child: Form(

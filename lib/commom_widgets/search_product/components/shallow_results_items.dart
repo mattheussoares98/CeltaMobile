@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +100,7 @@ class _EmptyResult extends StatelessWidget {
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p16),
-        child: BaseText('Nenhum produto'.hardcoded),
+        child: BaseText(context.l10n.noProducts),
       ),
     );
   }

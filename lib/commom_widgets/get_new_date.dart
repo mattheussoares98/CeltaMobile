@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,10 +77,7 @@ class GetNewDate {
 
     if (selectedTime == null) {
       if (!context.mounted) return null;
-      showToastMessage(
-        'Horário não atualizado'.hardcoded,
-        type: ToastType.error,
-      );
+      showToastMessage(context.l10n.timeNotUpdated, type: ToastType.error);
 
       return null;
     }
@@ -97,7 +93,7 @@ class GetNewDate {
     if (finalDateTime.isBefore(firstDate)) {
       if (!context.mounted) return null;
       showToastMessage(
-        'O horário não pode ser menor que a data mínima'.hardcoded,
+        context.l10n.theTimeCannotBeEarlierThanTheMinimumDate,
         type: ToastType.error,
       );
       return null;
@@ -141,8 +137,8 @@ class GetNewDate {
                       padding: const EdgeInsets.all(Sizes.p8),
                       child: BaseText.titleMedium(
                         mode == CupertinoDatePickerMode.date
-                            ? 'Data'
-                            : 'Horário',
+                            ? context.l10n.date
+                            : context.l10n.timeLabel,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -160,7 +156,7 @@ class GetNewDate {
                       ),
                     ),
                     CupertinoButton(
-                      child: const BaseText('OK'),
+                      child: BaseText(context.l10n.ok),
                       onPressed: () => context.pop(tempPickedDate),
                     ),
                   ],
