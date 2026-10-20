@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/enterprises/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,9 +25,8 @@ class EnterprisesPage extends ConsumerWidget {
       if (!moduleIsEnabled && context.mounted) {
         showAlertDialog(
           context: context,
-          title: 'Módulo desabilitado'.hardcoded,
-          content:
-              'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo',
+          title: context.l10n.moduleDisabled,
+          content: context.l10n.moduleDisabledContactAdmin,
         );
         return;
       }
@@ -59,12 +58,10 @@ class EnterprisesPage extends ConsumerWidget {
           if (!context.mounted) return;
           final result = await showAlertDialog(
             context: context,
-            title: 'Remover empresa?'.hardcoded,
-            content:
-                'Há produtos informados para essa empresa. Ao remover ela, os produtos serão removidos também'
-                    .hardcoded,
-            defaultActionText: 'Remover'.hardcoded,
-            cancelActionText: 'Cancelar'.hardcoded,
+            title: context.l10n.removeEnterpriseQuestion,
+            content: context.l10n.removeEnterpriseProductsWarning,
+            defaultActionText: context.l10n.remove,
+            cancelActionText: context.l10n.cancel,
           );
 
           if (result == true && context.mounted) {

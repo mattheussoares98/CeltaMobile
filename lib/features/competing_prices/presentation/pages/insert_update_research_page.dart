@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -77,8 +76,9 @@ class _InsertUpdateResearchPageState
       n.doOnSuccess(p, () {
         context.pop();
         showToastMessage(
-          'Pesquisa ${widget.research == null ? 'inserida' : 'alterada'} com sucesso'
-              .hardcoded,
+          context.l10n.priceSurveySaved(
+            widget.research == null ? 'create' : 'update',
+          ),
         );
       });
       n.showAlertDialogOnError(context);
@@ -93,14 +93,14 @@ class _InsertUpdateResearchPageState
             children: [
               BaseText.headline(
                 widget.research == null
-                    ? 'Inserindo pesquisa'.hardcoded
-                    : 'Editando pesquisa'.hardcoded,
+                    ? context.l10n.creatingPriceSurvey
+                    : context.l10n.editingPriceSurvey,
               ),
               gapH32,
               BaseTextFormField(
                 controller: nameController,
-                labelText: 'Nome'.hardcoded,
-                hintText: 'Nome'.hardcoded,
+                labelText: context.l10n.name,
+                hintText: context.l10n.name,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 maxLength: 100,
                 validator: FormValidators.compose([
@@ -114,8 +114,8 @@ class _InsertUpdateResearchPageState
               BaseTextFormField(
                 controller: observarionsController,
                 focusNode: observationsFocusNode,
-                labelText: 'Observações'.hardcoded,
-                hintText: 'Observações'.hardcoded,
+                labelText: context.l10n.notes,
+                hintText: context.l10n.notes,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 maxLength: 300,
                 onFieldSubmitted: (_) => submit(),
@@ -125,8 +125,8 @@ class _InsertUpdateResearchPageState
                 width: 200,
                 child: PrimaryButton(
                   text: widget.research == null
-                      ? 'Inserir'.hardcoded
-                      : 'Editar'.hardcoded,
+                      ? context.l10n.insert
+                      : context.l10n.edit,
                   onPressed: submit,
                   isLoading: isLoading,
                 ),

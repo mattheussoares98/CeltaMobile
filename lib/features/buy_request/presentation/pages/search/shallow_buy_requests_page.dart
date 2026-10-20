@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/search/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,7 +16,7 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
       isScrollable: false,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, Sizes.p8, 0),
       appBar: BaseAppBar(
-        title: 'Consulta de pedidos de compras'.hardcoded,
+        title: context.l10n.purchaseOrderLookup,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: Column(
@@ -52,7 +52,7 @@ class ShallowBuyRequestsPage extends ConsumerWidget {
                     if (buyRequests?.isEmpty == true) {
                       return Center(
                         child: BaseText.error(
-                          'Nenhum pedido de compra foi encontrado'.hardcoded,
+                          context.l10n.noPurchaseOrdersFound,
                         ),
                       );
                     }

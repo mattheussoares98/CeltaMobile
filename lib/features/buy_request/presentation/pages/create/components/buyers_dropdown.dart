@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/buyer/buyer.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -50,7 +50,7 @@ class _BuyersDropdown extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DefaultSmallTitle(title: 'Comprador'.hardcoded),
+        DefaultSmallTitle(title: context.l10n.buyer),
         gapH4,
         Consumer(
           builder: (_, ref, _) {
@@ -83,12 +83,12 @@ class _BuyersDropdown extends StatelessWidget {
                   .toList(),
               validator: (value) {
                 if (value == null) {
-                  return 'Selecione um comprador'.hardcoded;
+                  return context.l10n.selectBuyer;
                 }
                 return null;
               },
               selectedItem: selectedBuyer,
-              label: 'Selecione'.hardcoded,
+              label: context.l10n.select,
               isSimple: true,
             );
           },

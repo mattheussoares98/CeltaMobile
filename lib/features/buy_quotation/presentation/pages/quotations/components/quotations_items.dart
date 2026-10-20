@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -64,30 +63,30 @@ class _QuotationItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleAndSubTitle(
-                title: 'Código'.hardcoded,
+                title: context.l10n.code,
                 subTitle: quotation.Code.toString(),
               ),
               if (quotation.PersonalizedCode != null)
                 TitleAndSubTitle(
-                  title: 'Código personalizado'.hardcoded,
+                  title: context.l10n.customCode,
                   subTitle: quotation.PersonalizedCode.toString(),
                 ),
               if (quotation.DateOfCreation != null)
                 TitleAndSubTitle(
-                  title: 'Data de criação'.hardcoded,
+                  title: context.l10n.creationDate,
                   subTitle: quotation.DateOfCreation?.formatDate(
                     DateFormatType.ddMMyyyyHHmm,
                   ),
                 ),
               TitleAndSubTitle(
-                title: 'Data limite'.hardcoded,
-                emptyMessage: 'Nenhuma data de limite'.hardcoded,
+                title: context.l10n.deadline,
+                emptyMessage: context.l10n.noDeadline,
                 subTitle: quotation.DateOfLimit?.formatDate(),
               ),
               TitleAndSubTitle(
-                title: 'Observações'.hardcoded,
+                title: context.l10n.notes,
                 subTitle: quotation.Observations,
-                emptyMessage: 'Sem observações'.hardcoded,
+                emptyMessage: context.l10n.noNotes,
                 removeColon: quotation.Observations?.isEmpty ?? true,
               ),
             ],

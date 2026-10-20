@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/confirmation/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,13 +18,11 @@ class SelectedEnterprisesQuantity extends ConsumerWidget {
     );
 
     if (enterprisesLength == 0) {
-      return UnselectedMessage(
-        title: 'Selecione pelo menos uma empresa'.hardcoded,
-      );
+      return UnselectedMessage(title: context.l10n.selectEnterprise);
     }
     return SliverToBoxAdapter(
       child: DefaultSmallTitle(
-        title: 'Empresas ($enterprisesLength)'.hardcoded,
+        title: context.l10n.enterprisesCount(enterprisesLength),
       ),
     );
   }

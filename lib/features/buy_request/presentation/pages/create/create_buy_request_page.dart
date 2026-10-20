@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/pages.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,15 +29,14 @@ class _BuyRequestPageState extends ConsumerState<CreateBuyRequestPage> {
     observationsController.dispose();
   }
 
-  final appBarTitles = [
-    'Identificação'.hardcoded,
-    'Empresas'.hardcoded,
-    'Produtos'.hardcoded,
-    'Confirmação'.hardcoded,
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final appBarTitles = [
+      context.l10n.identification,
+      context.l10n.enterprises,
+      context.l10n.products,
+      context.l10n.confirmation,
+    ];
     final pages = [
       IdentificationPage(enterpriseCode: widget.enterpriseCode),
       EnterprisesPage(enterpriseCode: widget.enterpriseCode),

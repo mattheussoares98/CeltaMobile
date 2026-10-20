@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,17 +31,15 @@ class ClearRequestButton extends ConsumerWidget {
 
     return RepaintBoundary(
       child: PrimaryTextButton(
-        text: isDesktop ? 'Limpar pedido'.hardcoded : '',
+        text: isDesktop ? context.l10n.clearOrder : '',
         onPressed: hasSelectedValues
             ? () async {
                 final result = await showAlertDialog(
                   context: context,
-                  title: 'Apagar dados'.hardcoded,
-                  content:
-                      'Tem certeza que deseja remover todos dados inseridos?'
-                          .hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Confirmar'.hardcoded,
+                  title: context.l10n.deleteData,
+                  content: context.l10n.clearOrderConfirmation,
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.confirm,
                 );
 
                 if (result == true && context.mounted) {

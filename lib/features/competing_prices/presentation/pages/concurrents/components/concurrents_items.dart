@@ -6,7 +6,6 @@ import 'package:celta_inventario/core/presentation/widgets/address/address.dart'
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/insert_update_concurrent.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -122,18 +121,18 @@ class ConcurrentItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TitleAndSubTitle(
-                title: 'Código'.hardcoded,
+                title: context.l10n.code,
                 subTitle: concurrent.ConcurrentCode.toString(),
               ),
               TitleAndSubTitle(
-                title: 'Nome'.hardcoded,
+                title: context.l10n.name,
                 subTitle: concurrent.Name.toString(),
               ),
               TitleAndSubTitle(
                 title: null,
                 subTitle: concurrentBindedInResearch == true
-                    ? 'Associado à pesquisa'.hardcoded
-                    : 'Não associado à pesquisa'.hardcoded,
+                    ? context.l10n.associatedWithSurvey
+                    : context.l10n.notAssociatedWithSurvey,
                 subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: concurrentBindedInResearch == true
                       ? Colors.green
@@ -143,7 +142,7 @@ class ConcurrentItem extends StatelessWidget {
               if (concurrent.Observation != null &&
                   concurrent.Observation!.isNotEmpty)
                 TitleAndSubTitle(
-                  title: 'Observação'.hardcoded,
+                  title: context.l10n.notes,
                   subTitle: concurrent.Observation.toString(),
                 ),
               AddressDetails(address: concurrent.Address),
@@ -151,7 +150,7 @@ class ConcurrentItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PrimaryTextButton(
-                    text: 'Alterar concorrente'.hardcoded,
+                    text: context.l10n.editCompetitor,
                     onPressed: () {
                       showModalPage(
                         InsertUpdateConcurrentPage(

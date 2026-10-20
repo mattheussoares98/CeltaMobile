@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class ObservationsField extends StatelessWidget {
@@ -18,8 +18,8 @@ class ObservationsField extends StatelessWidget {
     return BaseTextFormField(
       controller: observationController,
       focusNode: observationFocusNode,
-      labelText: 'Observações'.hardcoded,
-      hintText: 'Observações'.hardcoded,
+      labelText: context.l10n.notes,
+      hintText: context.l10n.notes,
       onFieldSubmitted: (_) => insertUpdate(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       maxLength: 200,

@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/models/models.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +53,8 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
       if (!mounted) return;
       showAlertDialog(
         context: context,
-        title: 'Erro'.hardcoded,
-        content:
-            'Esse erro jamais deveria ocorrer. Entre em contato com o suporte técnico'
-                .hardcoded,
+        title: context.l10n.error,
+        content: context.l10n.unexpectedQuotationError,
       );
       return;
     }
@@ -179,9 +176,8 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
                             }
                           },
                           labelText:
-                              '(${correspondentEnterprise?.PersonalizedCode}) ${correspondentEnterprise?.name}'
-                                  .hardcoded,
-                          hintText: 'Quantidade'.hardcoded,
+                              '(${correspondentEnterprise?.PersonalizedCode}) ${correspondentEnterprise?.name}',
+                          hintText: context.l10n.quantity,
                           validator: FormValidators.compose([
                             NumberValidator(
                               translations: context.l10n,
@@ -201,7 +197,7 @@ class _UpdateQuantitiesState extends ConsumerState<UpdateQuantities> {
           gapW8,
           Flexible(
             child: PrimaryButton(
-              text: 'Confirmar'.hardcoded,
+              text: context.l10n.confirm,
               backgroundColor: context.theme.primaryColor,
               onPressed: confirmQuantities,
             ),

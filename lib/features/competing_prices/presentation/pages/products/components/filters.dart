@@ -1,3 +1,4 @@
+import 'package:celta_inventario/features/competing_prices/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -40,14 +41,14 @@ class Filters extends ConsumerWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: 'Filtrar produtos   '.hardcoded,
+              text: '${context.l10n.filterProducts}   ',
               style: context.theme.textTheme.titleMedium,
             ),
             if (!restrictProducts)
               TextSpan(
                 text: selectedItem.onlyAssociateds
-                    ? '(associados)'.hardcoded
-                    : '(não associados)'.hardcoded,
+                    ? context.l10n.associatedFilter
+                    : context.l10n.unassociatedFilter,
                 style: context.theme.textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
                   color: selectedItem.onlyAssociateds
@@ -76,7 +77,7 @@ class Filters extends ConsumerWidget {
               Consumer(
                 builder: (_, ref, _) {
                   return BaseSwitch(
-                    title: 'Somente associados'.hardcoded,
+                    title: context.l10n.associatedOnly,
                     value: selectedItem.onlyAssociateds,
                     onChanged: (value) {
                       ref
@@ -116,10 +117,10 @@ class Filters extends ConsumerWidget {
                       ),
                     ).select((s) => s.isLoading),
                   ),
-                  text: selectedItem.onlyAssociateds
-                      ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${context.l10n.competingPriceFilterName(selectedItem.searchType).toLowerCase()}'
-                            .hardcoded
-                      : 'Consultar todos não associados'.hardcoded,
+                  text: context.l10n.competingProductsQuery(
+                    onlyAssociated: selectedItem.onlyAssociateds,
+                    searchType: selectedItem.searchType,
+                  ),
                   icon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.search,
                     materialIcon: Icons.search,

@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/competing_prices/data/datasource/datasource.dart';
@@ -23,10 +23,7 @@ class SoapInsertUpdateResearchRepositoryImpl
     final associateConcurrentParams = <String, dynamic>{};
     if (concurrentToAssociate != null) {
       if (researchCode == null) {
-        throw AppException(
-          'Para alterar o concorrente é necessário informar o código da pesquisa'
-              .hardcoded,
-        );
+        throw AppException.localized(CoreFailure.priceSurveyCodeRequired);
       }
 
       associateConcurrentParams["IsAssociatingConcurrents"] = true;

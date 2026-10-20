@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/core/domain/entities/entities.dart';
@@ -29,13 +30,13 @@ class SaveBuyQuotationController extends _$SaveBuyQuotationController {
       );
 
       if (buyQuotation.Buyer == null) {
-        throw AppException('O comprador deve ser informado');
+        throw AppException.localized(CoreFailure.quotationBuyerRequired);
       } else if (buyQuotation.Enterprises == null ||
           buyQuotation.Enterprises!.isEmpty) {
-        throw AppException('Ao menos uma empresa deve ser informada');
+        throw AppException.localized(CoreFailure.quotationEnterpriseRequired);
       } else if (buyQuotation.Products == null ||
           buyQuotation.Products!.isEmpty) {
-        throw AppException('Ao menos um produto deve ser informado');
+        throw AppException.localized(CoreFailure.quotationProductRequired);
       }
 
       ref

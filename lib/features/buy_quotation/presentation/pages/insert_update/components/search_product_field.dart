@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/pages/insert_update/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,10 +99,8 @@ class SearchProductField extends ConsumerWidget {
         if (!context.mounted) return;
         showAlertDialog(
           context: context,
-          title: 'Erro'.hardcoded,
-          content:
-              'Não foi possível adicionar os produtos. Entre em contato com o suporte'
-                  .hardcoded,
+          title: context.l10n.error,
+          content: context.l10n.cannotAddQuotationProducts,
         );
       }
     }

@@ -21,6 +21,12 @@ enum CoreFailure {
   purchasePeriodTooLong(
     'A diferença do período não pode ser maior que 90 dias',
   ),
+  quotationBuyerRequired("O comprador deve ser informado"),
+  quotationEnterpriseRequired("Ao menos uma empresa deve ser informada"),
+  quotationProductRequired("Ao menos um produto deve ser informado"),
+  priceSurveyCodeRequired(
+    "Para alterar o concorrente é necessário informar o código da pesquisa",
+  ),
   cannotOpenUrl('Não foi possível abrir {url}');
 
   const CoreFailure(this.fallback);

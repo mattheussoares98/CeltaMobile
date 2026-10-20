@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 class Code extends StatelessWidget {
   final int code;
@@ -15,7 +15,7 @@ class Code extends StatelessWidget {
 
     return SliverToBoxAdapter(
       child: TitleAndSubTitle(
-        title: 'Código'.hardcoded,
+        title: context.l10n.code,
         subTitle: code.toString(),
       ),
     );

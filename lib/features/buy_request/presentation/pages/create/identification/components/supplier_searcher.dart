@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,12 +67,10 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     if (selectedSupplier != null && hasSelectedEnterprisesOrProducts) {
       final result = await showAlertDialog(
         context: context,
-        title: 'Consultar fornecedores?'.hardcoded,
-        content:
-            'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'
-                .hardcoded,
-        cancelActionText: 'Cancelar'.hardcoded,
-        defaultActionText: 'Consultar'.hardcoded,
+        title: context.l10n.searchSuppliersQuestion,
+        content: context.l10n.supplierSearchRemovesSelection,
+        cancelActionText: context.l10n.cancel,
+        defaultActionText: context.l10n.query,
       );
       if (result == true && context.mounted) {
         loadSuppliers();
@@ -95,15 +92,15 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DefaultSmallTitle(title: 'Fornecedores'.hardcoded),
+        DefaultSmallTitle(title: context.l10n.suppliers),
         gapH8,
         Form(
           key: formKey,
           child: Consumer(
             builder: (_, ref, _) {
               return BaseTextFormField(
-                labelText: 'Fornecedor'.hardcoded,
-                hintText: 'Fornecedor'.hardcoded,
+                labelText: context.l10n.supplier,
+                hintText: context.l10n.supplier,
                 controller: supplierController,
                 validator: FormValidators.compose([
                   NonEmptyValidator(translations: context.l10n),

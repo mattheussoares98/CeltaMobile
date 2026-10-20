@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/buyer/buyer.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,7 +42,7 @@ class BuyersDropdown extends ConsumerWidget {
                   .updateValues(Buyer: buyer);
             },
             selectedItem: selectedBuyer,
-            label: 'Comprador'.hardcoded,
+            label: context.l10n.buyer,
             showLabelAtTopLeft: true,
             items: buyers
                 .map(
@@ -55,7 +55,7 @@ class BuyersDropdown extends ConsumerWidget {
                 .toList(),
             validator: (value) {
               if (value == null) {
-                return 'Selecione um comprador'.hardcoded;
+                return context.l10n.selectBuyer;
               }
               return null;
             },

@@ -22,12 +22,18 @@ class AppBarTitle extends ConsumerWidget {
           if (screenWidth < Breakpoint.tablet)
             FittedBox(
               child: BaseText(
-                'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+                context.l10n.surveyCompetitorTitle(
+                  widget.researchCode,
+                  widget.concurrentCode,
+                ),
               ),
             )
           else
             BaseText(
-              'Pesquisa ${widget.researchCode} - concorrente ${widget.concurrentCode}',
+              context.l10n.surveyCompetitorTitle(
+                widget.researchCode,
+                widget.concurrentCode,
+              ),
             ),
         ] else
           Column(
@@ -55,8 +61,8 @@ class AppBarTitle extends ConsumerWidget {
 
             return BaseText.bodySmall(
               restrictProducts == true
-                  ? 'Produtos restringidos'
-                  : 'Produtos não restringidos',
+                  ? context.l10n.restrictedProducts
+                  : context.l10n.unrestrictedProducts,
               color: restrictProducts == true
                   ? context.theme.primaryColor
                   : Colors.red,

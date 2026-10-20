@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +29,9 @@ class LimitDate extends ConsumerWidget {
           children: [
             Expanded(
               child: TitleAndSubTitle(
-                title: 'Limite'.hardcoded,
+                title: context.l10n.deadline,
                 subTitle: dateOfLimit?.formatDate(DateFormatType.ddMMyyyyHHmm),
-                emptyMessage: 'Sem data de limite'.hardcoded,
+                emptyMessage: context.l10n.noDeadline,
               ),
             ),
             Expanded(
@@ -40,8 +39,8 @@ class LimitDate extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: PrimaryTextButton(
                   text: dateOfLimit == null
-                      ? 'Inserir'.hardcoded
-                      : 'Alterar'.hardcoded,
+                      ? context.l10n.insert
+                      : context.l10n.change,
                   platformIcon: const PlatformIcon(
                     cupertinoIcon: CupertinoIcons.calendar,
                     materialIcon: Icons.date_range,

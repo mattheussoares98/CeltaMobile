@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/presentation/controllers/keyboard/keyboard/keyboard.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +36,9 @@ class FloatingSaveButton extends ConsumerWidget {
             : () async {
                 final result = await showAlertDialog(
                   context: context,
-                  title: 'Salvar pedido?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Sim'.hardcoded,
+                  title: context.l10n.saveOrderQuestion,
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.yes,
                 );
 
                 if (result == true && context.mounted) {
@@ -53,7 +52,7 @@ class FloatingSaveButton extends ConsumerWidget {
                       .insert(observationsController.text);
 
                   if (succeeds && context.mounted) {
-                    showToastMessage('Pedido salvo com sucesso'.hardcoded);
+                    showToastMessage(context.l10n.orderSavedSuccessfully);
                     observationsController.clear();
                   }
                 }

@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/widgets/address/address.dart'
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/insert_update_concurrent/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,8 +78,9 @@ class _UpdateConcurrentPageState
       n.doOnSuccess(p, () {
         context.pop();
         showToastMessage(
-          'Concorrente ${widget.concurrentUpdating == null ? 'inserido' : 'alterado'} com sucesso'
-              .hardcoded,
+          context.l10n.competitorSaved(
+            widget.concurrentUpdating == null ? 'create' : 'update',
+          ),
         );
       });
     });
@@ -93,8 +93,8 @@ class _UpdateConcurrentPageState
             children: [
               BaseText.headline(
                 widget.concurrentUpdating == null
-                    ? 'Inserindo concorrente'.hardcoded
-                    : 'Alterando concorrente'.hardcoded,
+                    ? context.l10n.creatingCompetitor
+                    : context.l10n.editingCompetitor,
                 textAlign: TextAlign.center,
               ),
               gapH16,
@@ -117,7 +117,7 @@ class _UpdateConcurrentPageState
                   child: Column(
                     children: [
                       BaseText.headline(
-                        'Inserir/alterar endereço'.hardcoded,
+                        context.l10n.editAddress,
                         textAlign: TextAlign.center,
                       ),
                       gapH8,
@@ -139,8 +139,8 @@ class _UpdateConcurrentPageState
                 width: 200,
                 child: PrimaryButton(
                   text: widget.concurrentUpdating == null
-                      ? 'Inserir'.hardcoded
-                      : 'Alterar'.hardcoded,
+                      ? context.l10n.insert
+                      : context.l10n.change,
                   onPressed: insertUpdate,
                   isLoading: ref.watch(
                     concurrentsStateControllerProvider.select(

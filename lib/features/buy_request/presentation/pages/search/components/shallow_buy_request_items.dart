@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +34,7 @@ class ShallowBuyRequestItems extends ConsumerWidget {
           return SliverFillRemaining(
             hasScrollBody: false,
             child: Center(
-              child: BaseText.error(
-                'Nenhum pedido de compra foi encontrado'.hardcoded,
-              ),
+              child: BaseText.error(context.l10n.noPurchaseOrdersFound),
             ),
           );
         }

@@ -856,4 +856,368 @@ class AppLocalizationsPt extends AppLocalizations {
   String noSuggestedPriceForType(String priceType, String saleType) {
     return 'Sem preço $priceType $saleType sugerido';
   }
+
+  @override
+  String get quotations => 'Cotações';
+
+  @override
+  String get purchaseOrderLookup => 'Consulta de pedidos de compras';
+
+  @override
+  String get noPurchaseOrdersFound => 'Nenhum pedido de compra foi encontrado';
+
+  @override
+  String get customCode => 'Código personalizado';
+
+  @override
+  String get creationDate => 'Data de criação';
+
+  @override
+  String get deadline => 'Data limite';
+
+  @override
+  String get noDeadline => 'Sem data limite';
+
+  @override
+  String get noNotes => 'Sem observações';
+
+  @override
+  String get creatingPriceSurvey => 'Inserindo pesquisa';
+
+  @override
+  String get editingPriceSurvey => 'Editando pesquisa';
+
+  @override
+  String get insert => 'Inserir';
+
+  @override
+  String get edit => 'Editar';
+
+  @override
+  String get leaveWithoutSaving => 'Sair sem salvar';
+
+  @override
+  String get unsavedChangesWarning =>
+      'Caso tenha feito alguma alteração, ao sair da página sem salvar, essa alteração será perdida. Deseja sair mesmo assim?';
+
+  @override
+  String get inserting => 'Inserindo';
+
+  @override
+  String get changing => 'Alterando';
+
+  @override
+  String get creatingCompetitor => 'Inserindo concorrente';
+
+  @override
+  String get editingCompetitor => 'Alterando concorrente';
+
+  @override
+  String get editAddress => 'Inserir/alterar endereço';
+
+  @override
+  String get change => 'Alterar';
+
+  @override
+  String get pricesChangedSuccessfully => 'Preços alterados com sucesso';
+
+  @override
+  String get productAlreadyAdded => 'Esse produto já foi inserido!';
+
+  @override
+  String get cannotAddQuotationProducts =>
+      'Não foi possível adicionar os produtos. Entre em contato com o suporte';
+
+  @override
+  String get save => 'Salvar';
+
+  @override
+  String get saveChangesPrompt => 'Deseja salvar as alterações?';
+
+  @override
+  String get saveChangesQuestion => 'Salvar alterações?';
+
+  @override
+  String get confirmChanges => 'Confirmar alterações';
+
+  @override
+  String get filterProducts => 'Filtrar produtos';
+
+  @override
+  String get associatedFilter => '(associados)';
+
+  @override
+  String get unassociatedFilter => '(não associados)';
+
+  @override
+  String get associatedOnly => 'Somente associados';
+
+  @override
+  String get loadAllUnassociatedProducts => 'Consultar todos não associados';
+
+  @override
+  String get loadAllAssociatedProducts => 'Consultar todos';
+
+  @override
+  String get loadAssociatedPricedProducts => 'Consultar todos já informados';
+
+  @override
+  String get loadAssociatedUnpricedProducts => 'Consultar todos não informados';
+
+  @override
+  String get retailPrice => 'Venda';
+
+  @override
+  String get retailOfferPrice => 'Venda (oferta)';
+
+  @override
+  String get wholesaleOfferPrice => 'Atacado (oferta)';
+
+  @override
+  String get ecommercePrice => 'Ecommerce';
+
+  @override
+  String get ecommerceOfferPrice => 'Ecommerce (oferta)';
+
+  @override
+  String get associatedWithSurvey => 'Associado à pesquisa';
+
+  @override
+  String get notAssociatedWithSurvey => 'Não associado à pesquisa';
+
+  @override
+  String get editCompetitor => 'Alterar concorrente';
+
+  @override
+  String get unexpectedQuotationError =>
+      'Esse erro jamais deveria ocorrer. Entre em contato com o suporte técnico';
+
+  @override
+  String get pluOrName => 'PLU | Nome';
+
+  @override
+  String get moduleDisabled => 'Módulo desabilitado';
+
+  @override
+  String get moduleDisabledContactAdmin =>
+      'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo';
+
+  @override
+  String get cannotUpdateQuotationEnterprises =>
+      'Não foi possível atualizar as empresas. Entre em contato com o suporte.';
+
+  @override
+  String get enterprises => 'Empresas';
+
+  @override
+  String get cnpj => 'CNPJ';
+
+  @override
+  String get buyer => 'Comprador';
+
+  @override
+  String get selectBuyer => 'Selecione um comprador';
+
+  @override
+  String get priceSurveys => 'Pesquisas cadastradas';
+
+  @override
+  String get selectRequestTemplate => 'Selecione um modelo de pedido';
+
+  @override
+  String get selectSupplier => 'Selecione um fornecedor';
+
+  @override
+  String get selectEnterprise => 'Selecione pelo menos uma empresa';
+
+  @override
+  String get identification => 'Identificação';
+
+  @override
+  String get products => 'Produtos';
+
+  @override
+  String get confirmation => 'Confirmação';
+
+  @override
+  String get requestTemplate => 'Modelo de pedido';
+
+  @override
+  String get changingTemplateRemovesSelection =>
+      'Ao alterar o modelo, as empresas e produtos selecionados serão removidos';
+
+  @override
+  String get selectTemplate => 'Selecione um modelo';
+
+  @override
+  String get select => 'Selecione';
+
+  @override
+  String get cost => 'Custo';
+
+  @override
+  String get clearOrder => 'Limpar pedido';
+
+  @override
+  String get deleteData => 'Apagar dados';
+
+  @override
+  String get clearOrderConfirmation =>
+      'Tem certeza que deseja remover todos dados inseridos?';
+
+  @override
+  String get restrictedProducts => 'Produtos restringidos';
+
+  @override
+  String get unrestrictedProducts => 'Produtos não restringidos';
+
+  @override
+  String get editPriceSurvey => 'Alterar pesquisa';
+
+  @override
+  String get customCodePrefix => 'Cód personalizado: ';
+
+  @override
+  String get deliveredOn => 'Entregue em';
+
+  @override
+  String get removeEnterpriseQuestion => 'Remover empresa?';
+
+  @override
+  String get removeEnterpriseProductsWarning =>
+      'Há produtos informados para essa empresa. Ao remover ela, os produtos serão removidos também';
+
+  @override
+  String get remove => 'Remover';
+
+  @override
+  String get tradeName => 'Nome fantasia';
+
+  @override
+  String get searchSuppliersQuestion => 'Consultar fornecedores?';
+
+  @override
+  String get supplierSearchRemovesSelection =>
+      'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!';
+
+  @override
+  String get query => 'Consultar';
+
+  @override
+  String get suppliers => 'Fornecedores';
+
+  @override
+  String get changeSupplierQuestion => 'Alterar fornecedor?';
+
+  @override
+  String get changingSupplierRemovesSelection =>
+      'Ao alterar o fornecedor, todas empresas e produtos selecionados serão removidos';
+
+  @override
+  String get addProduct => 'Adicione pelo menos um produto';
+
+  @override
+  String get saveOrderQuestion => 'Salvar pedido?';
+
+  @override
+  String get orderSavedSuccessfully => 'Pedido salvo com sucesso';
+
+  @override
+  String get add => 'Adicionar';
+
+  @override
+  String get cpfCnpj => 'CPF/CNPJ';
+
+  @override
+  String get tradeType => 'Tipo comércio';
+
+  @override
+  String get quotationBuyerRequired => 'O comprador deve ser informado';
+
+  @override
+  String get quotationEnterpriseRequired =>
+      'Ao menos uma empresa deve ser informada';
+
+  @override
+  String get quotationProductRequired =>
+      'Ao menos um produto deve ser informado';
+
+  @override
+  String get priceSurveyCodeRequired =>
+      'Para alterar o concorrente é necessário informar o código da pesquisa';
+
+  @override
+  String priceSurveySaved(String operation) {
+    String _temp0 = intl.Intl.selectLogic(operation, {
+      'create': 'Pesquisa inserida com sucesso',
+      'other': 'Pesquisa alterada com sucesso',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String competitorSaved(String operation) {
+    String _temp0 = intl.Intl.selectLogic(operation, {
+      'create': 'Concorrente inserido com sucesso',
+      'other': 'Concorrente alterado com sucesso',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String competitorsForSurvey(int survey) {
+    return 'Concorrentes (pesquisa $survey)';
+  }
+
+  @override
+  String offerPriceLabel(String priceType) {
+    return '$priceType (oferta)';
+  }
+
+  @override
+  String surveyCompetitorTitle(int survey, int competitor) {
+    return 'Pesquisa $survey - concorrente $competitor';
+  }
+
+  @override
+  String productsCount(int count) {
+    return 'Produtos ($count)';
+  }
+
+  @override
+  String filteredProductsCount(int count, int total) {
+    return 'Produtos ($count de $total)';
+  }
+
+  @override
+  String enterprisesCount(int count) {
+    return 'Empresas ($count)';
+  }
+
+  @override
+  String lastSavedOrders(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Últimos pedidos salvos',
+      one: 'Último pedido salvo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String lastOrders(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Últimos pedidos',
+      one: 'Último pedido',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String purchaseOrderDetailsWithCode(String code) {
+    return 'Detalhes pedido ($code)';
+  }
 }

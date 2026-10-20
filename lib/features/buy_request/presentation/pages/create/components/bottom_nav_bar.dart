@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,20 +63,17 @@ class BottomNavBar extends ConsumerWidget {
           if (!context.mounted) return;
 
           if (!buyerIsSelected) {
-            showToastMessage(
-              'Selecione um comprador'.hardcoded,
-              type: ToastType.error,
-            );
+            showToastMessage(context.l10n.selectBuyer, type: ToastType.error);
             return;
           } else if (!requestTypeIsSelected) {
             showToastMessage(
-              'Selecione um modelo de pedido'.hardcoded,
+              context.l10n.selectRequestTemplate,
               type: ToastType.error,
             );
             return;
           } else if (!supplierIsSelected) {
             showToastMessage(
-              'Selecione um fornecedor'.hardcoded,
+              context.l10n.selectSupplier,
               type: ToastType.error,
             );
             return;
@@ -89,7 +86,7 @@ class BottomNavBar extends ConsumerWidget {
         if (index == 2 && !enterprisesAreValid) {
           if (!context.mounted) return;
           showToastMessage(
-            'Selecione pelo menos uma empresa'.hardcoded,
+            context.l10n.selectEnterprise,
             type: ToastType.error,
           );
           return;
@@ -101,7 +98,7 @@ class BottomNavBar extends ConsumerWidget {
       },
       items: [
         BaseBottomNavigationBarItem(
-          label: 'Identificação'.hardcoded,
+          label: context.l10n.identification,
           isValid: isIdentificationValid,
           platformIcon: const PlatformIcon(
             materialIcon: Icons.info,
@@ -109,7 +106,7 @@ class BottomNavBar extends ConsumerWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Empresas'.hardcoded,
+          label: context.l10n.enterprises,
           badgeLabel: enterprisesCount.toString(),
           platformIcon: const PlatformIcon(
             materialIcon: Icons.business,
@@ -117,7 +114,7 @@ class BottomNavBar extends ConsumerWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Produtos'.hardcoded,
+          label: context.l10n.products,
           badgeLabel: productsCount.toString(),
           platformIcon: const PlatformIcon(
             materialIcon: Icons.shopping_cart,
@@ -125,7 +122,7 @@ class BottomNavBar extends ConsumerWidget {
           ),
         ),
         BaseBottomNavigationBarItem(
-          label: 'Confirmação'.hardcoded,
+          label: context.l10n.confirmation,
           isValid: isConfirmationValid,
           platformIcon: const PlatformIcon(
             materialIcon: Icons.check_box_outlined,

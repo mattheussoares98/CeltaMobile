@@ -1,10 +1,10 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -57,7 +57,7 @@ class _RequestDropdown extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DefaultSmallTitle(title: 'Modelo de pedido'.hardcoded),
+        DefaultSmallTitle(title: context.l10n.requestTemplate),
         gapH4,
         Consumer(
           builder: (_, ref, _) {
@@ -88,8 +88,7 @@ class _RequestDropdown extends ConsumerWidget {
 
             return BaseDropDown<BSFRequestTypeEntity?>(
               adviceMessage: hasSelectedEnterprises
-                  ? 'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'
-                        .hardcoded
+                  ? context.l10n.changingTemplateRemovesSelection
                   : null,
               onChanged: enabled ? update : null,
               items: requests
@@ -103,12 +102,12 @@ class _RequestDropdown extends ConsumerWidget {
                   .toList(),
               validator: (value) {
                 if (value == null) {
-                  return 'Selecione um modelo'.hardcoded;
+                  return context.l10n.selectTemplate;
                 }
                 return null;
               },
               selectedItem: selectedSaleRequest,
-              label: 'Selecione'.hardcoded,
+              label: context.l10n.select,
               isSimple: true,
             );
           },

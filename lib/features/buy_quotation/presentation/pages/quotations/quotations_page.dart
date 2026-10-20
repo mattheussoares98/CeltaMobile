@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/pages/quotations/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,7 @@ class QuotationsPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: buyQuotationsStateControllerProvider(enterpriseCode),
       appBar: BaseAppBar(
-        title: 'Cotações'.hardcoded,
+        title: context.l10n.quotations,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: QuotationsItems(enterpriseCode: enterpriseCode),

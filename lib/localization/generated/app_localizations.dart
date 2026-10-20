@@ -1693,6 +1693,624 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Sem preço {priceType} {saleType} sugerido'**
   String noSuggestedPriceForType(String priceType, String saleType);
+
+  /// No description provided for @quotations.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cotações'**
+  String get quotations;
+
+  /// No description provided for @purchaseOrderLookup.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consulta de pedidos de compras'**
+  String get purchaseOrderLookup;
+
+  /// No description provided for @noPurchaseOrdersFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum pedido de compra foi encontrado'**
+  String get noPurchaseOrdersFound;
+
+  /// No description provided for @customCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Código personalizado'**
+  String get customCode;
+
+  /// No description provided for @creationDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data de criação'**
+  String get creationDate;
+
+  /// No description provided for @deadline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Data limite'**
+  String get deadline;
+
+  /// No description provided for @noDeadline.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem data limite'**
+  String get noDeadline;
+
+  /// No description provided for @noNotes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem observações'**
+  String get noNotes;
+
+  /// No description provided for @creatingPriceSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserindo pesquisa'**
+  String get creatingPriceSurvey;
+
+  /// No description provided for @editingPriceSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editando pesquisa'**
+  String get editingPriceSurvey;
+
+  /// No description provided for @insert.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserir'**
+  String get insert;
+
+  /// No description provided for @edit.
+  ///
+  /// In pt, this message translates to:
+  /// **'Editar'**
+  String get edit;
+
+  /// No description provided for @leaveWithoutSaving.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sair sem salvar'**
+  String get leaveWithoutSaving;
+
+  /// No description provided for @unsavedChangesWarning.
+  ///
+  /// In pt, this message translates to:
+  /// **'Caso tenha feito alguma alteração, ao sair da página sem salvar, essa alteração será perdida. Deseja sair mesmo assim?'**
+  String get unsavedChangesWarning;
+
+  /// No description provided for @inserting.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserindo'**
+  String get inserting;
+
+  /// No description provided for @changing.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterando'**
+  String get changing;
+
+  /// No description provided for @creatingCompetitor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserindo concorrente'**
+  String get creatingCompetitor;
+
+  /// No description provided for @editingCompetitor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterando concorrente'**
+  String get editingCompetitor;
+
+  /// No description provided for @editAddress.
+  ///
+  /// In pt, this message translates to:
+  /// **'Inserir/alterar endereço'**
+  String get editAddress;
+
+  /// No description provided for @change.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar'**
+  String get change;
+
+  /// No description provided for @pricesChangedSuccessfully.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preços alterados com sucesso'**
+  String get pricesChangedSuccessfully;
+
+  /// No description provided for @productAlreadyAdded.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse produto já foi inserido!'**
+  String get productAlreadyAdded;
+
+  /// No description provided for @cannotAddQuotationProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível adicionar os produtos. Entre em contato com o suporte'**
+  String get cannotAddQuotationProducts;
+
+  /// No description provided for @save.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar'**
+  String get save;
+
+  /// No description provided for @saveChangesPrompt.
+  ///
+  /// In pt, this message translates to:
+  /// **'Deseja salvar as alterações?'**
+  String get saveChangesPrompt;
+
+  /// No description provided for @saveChangesQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar alterações?'**
+  String get saveChangesQuestion;
+
+  /// No description provided for @confirmChanges.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar alterações'**
+  String get confirmChanges;
+
+  /// No description provided for @filterProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filtrar produtos'**
+  String get filterProducts;
+
+  /// No description provided for @associatedFilter.
+  ///
+  /// In pt, this message translates to:
+  /// **'(associados)'**
+  String get associatedFilter;
+
+  /// No description provided for @unassociatedFilter.
+  ///
+  /// In pt, this message translates to:
+  /// **'(não associados)'**
+  String get unassociatedFilter;
+
+  /// No description provided for @associatedOnly.
+  ///
+  /// In pt, this message translates to:
+  /// **'Somente associados'**
+  String get associatedOnly;
+
+  /// No description provided for @loadAllUnassociatedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar todos não associados'**
+  String get loadAllUnassociatedProducts;
+
+  /// No description provided for @loadAllAssociatedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar todos'**
+  String get loadAllAssociatedProducts;
+
+  /// No description provided for @loadAssociatedPricedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar todos já informados'**
+  String get loadAssociatedPricedProducts;
+
+  /// No description provided for @loadAssociatedUnpricedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar todos não informados'**
+  String get loadAssociatedUnpricedProducts;
+
+  /// No description provided for @retailPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Venda'**
+  String get retailPrice;
+
+  /// No description provided for @retailOfferPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Venda (oferta)'**
+  String get retailOfferPrice;
+
+  /// No description provided for @wholesaleOfferPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atacado (oferta)'**
+  String get wholesaleOfferPrice;
+
+  /// No description provided for @ecommercePrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ecommerce'**
+  String get ecommercePrice;
+
+  /// No description provided for @ecommerceOfferPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ecommerce (oferta)'**
+  String get ecommerceOfferPrice;
+
+  /// No description provided for @associatedWithSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Associado à pesquisa'**
+  String get associatedWithSurvey;
+
+  /// No description provided for @notAssociatedWithSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não associado à pesquisa'**
+  String get notAssociatedWithSurvey;
+
+  /// No description provided for @editCompetitor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar concorrente'**
+  String get editCompetitor;
+
+  /// No description provided for @unexpectedQuotationError.
+  ///
+  /// In pt, this message translates to:
+  /// **'Esse erro jamais deveria ocorrer. Entre em contato com o suporte técnico'**
+  String get unexpectedQuotationError;
+
+  /// No description provided for @pluOrName.
+  ///
+  /// In pt, this message translates to:
+  /// **'PLU | Nome'**
+  String get pluOrName;
+
+  /// No description provided for @moduleDisabled.
+  ///
+  /// In pt, this message translates to:
+  /// **'Módulo desabilitado'**
+  String get moduleDisabled;
+
+  /// No description provided for @moduleDisabledContactAdmin.
+  ///
+  /// In pt, this message translates to:
+  /// **'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo'**
+  String get moduleDisabledContactAdmin;
+
+  /// No description provided for @cannotUpdateQuotationEnterprises.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não foi possível atualizar as empresas. Entre em contato com o suporte.'**
+  String get cannotUpdateQuotationEnterprises;
+
+  /// No description provided for @enterprises.
+  ///
+  /// In pt, this message translates to:
+  /// **'Empresas'**
+  String get enterprises;
+
+  /// No description provided for @cnpj.
+  ///
+  /// In pt, this message translates to:
+  /// **'CNPJ'**
+  String get cnpj;
+
+  /// No description provided for @buyer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Comprador'**
+  String get buyer;
+
+  /// No description provided for @selectBuyer.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione um comprador'**
+  String get selectBuyer;
+
+  /// No description provided for @priceSurveys.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pesquisas cadastradas'**
+  String get priceSurveys;
+
+  /// No description provided for @selectRequestTemplate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione um modelo de pedido'**
+  String get selectRequestTemplate;
+
+  /// No description provided for @selectSupplier.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione um fornecedor'**
+  String get selectSupplier;
+
+  /// No description provided for @selectEnterprise.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione pelo menos uma empresa'**
+  String get selectEnterprise;
+
+  /// No description provided for @identification.
+  ///
+  /// In pt, this message translates to:
+  /// **'Identificação'**
+  String get identification;
+
+  /// No description provided for @products.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos'**
+  String get products;
+
+  /// No description provided for @confirmation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmação'**
+  String get confirmation;
+
+  /// No description provided for @requestTemplate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Modelo de pedido'**
+  String get requestTemplate;
+
+  /// No description provided for @changingTemplateRemovesSelection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao alterar o modelo, as empresas e produtos selecionados serão removidos'**
+  String get changingTemplateRemovesSelection;
+
+  /// No description provided for @selectTemplate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione um modelo'**
+  String get selectTemplate;
+
+  /// No description provided for @select.
+  ///
+  /// In pt, this message translates to:
+  /// **'Selecione'**
+  String get select;
+
+  /// No description provided for @cost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Custo'**
+  String get cost;
+
+  /// No description provided for @clearOrder.
+  ///
+  /// In pt, this message translates to:
+  /// **'Limpar pedido'**
+  String get clearOrder;
+
+  /// No description provided for @deleteData.
+  ///
+  /// In pt, this message translates to:
+  /// **'Apagar dados'**
+  String get deleteData;
+
+  /// No description provided for @clearOrderConfirmation.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tem certeza que deseja remover todos dados inseridos?'**
+  String get clearOrderConfirmation;
+
+  /// No description provided for @restrictedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos restringidos'**
+  String get restrictedProducts;
+
+  /// No description provided for @unrestrictedProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos não restringidos'**
+  String get unrestrictedProducts;
+
+  /// No description provided for @editPriceSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar pesquisa'**
+  String get editPriceSurvey;
+
+  /// No description provided for @customCodePrefix.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cód personalizado: '**
+  String get customCodePrefix;
+
+  /// No description provided for @deliveredOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entregue em'**
+  String get deliveredOn;
+
+  /// No description provided for @removeEnterpriseQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover empresa?'**
+  String get removeEnterpriseQuestion;
+
+  /// No description provided for @removeEnterpriseProductsWarning.
+  ///
+  /// In pt, this message translates to:
+  /// **'Há produtos informados para essa empresa. Ao remover ela, os produtos serão removidos também'**
+  String get removeEnterpriseProductsWarning;
+
+  /// No description provided for @remove.
+  ///
+  /// In pt, this message translates to:
+  /// **'Remover'**
+  String get remove;
+
+  /// No description provided for @tradeName.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nome fantasia'**
+  String get tradeName;
+
+  /// No description provided for @searchSuppliersQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar fornecedores?'**
+  String get searchSuppliersQuestion;
+
+  /// No description provided for @supplierSearchRemovesSelection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!'**
+  String get supplierSearchRemovesSelection;
+
+  /// No description provided for @query.
+  ///
+  /// In pt, this message translates to:
+  /// **'Consultar'**
+  String get query;
+
+  /// No description provided for @suppliers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fornecedores'**
+  String get suppliers;
+
+  /// No description provided for @changeSupplierQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar fornecedor?'**
+  String get changeSupplierQuestion;
+
+  /// No description provided for @changingSupplierRemovesSelection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao alterar o fornecedor, todas empresas e produtos selecionados serão removidos'**
+  String get changingSupplierRemovesSelection;
+
+  /// No description provided for @addProduct.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicione pelo menos um produto'**
+  String get addProduct;
+
+  /// No description provided for @saveOrderQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Salvar pedido?'**
+  String get saveOrderQuestion;
+
+  /// No description provided for @orderSavedSuccessfully.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedido salvo com sucesso'**
+  String get orderSavedSuccessfully;
+
+  /// No description provided for @add.
+  ///
+  /// In pt, this message translates to:
+  /// **'Adicionar'**
+  String get add;
+
+  /// No description provided for @cpfCnpj.
+  ///
+  /// In pt, this message translates to:
+  /// **'CPF/CNPJ'**
+  String get cpfCnpj;
+
+  /// No description provided for @tradeType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo comércio'**
+  String get tradeType;
+
+  /// No description provided for @quotationBuyerRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'O comprador deve ser informado'**
+  String get quotationBuyerRequired;
+
+  /// No description provided for @quotationEnterpriseRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao menos uma empresa deve ser informada'**
+  String get quotationEnterpriseRequired;
+
+  /// No description provided for @quotationProductRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ao menos um produto deve ser informado'**
+  String get quotationProductRequired;
+
+  /// No description provided for @priceSurveyCodeRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Para alterar o concorrente é necessário informar o código da pesquisa'**
+  String get priceSurveyCodeRequired;
+
+  /// No description provided for @priceSurveySaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'{operation, select, create{Pesquisa inserida com sucesso} other{Pesquisa alterada com sucesso}}'**
+  String priceSurveySaved(String operation);
+
+  /// No description provided for @competitorSaved.
+  ///
+  /// In pt, this message translates to:
+  /// **'{operation, select, create{Concorrente inserido com sucesso} other{Concorrente alterado com sucesso}}'**
+  String competitorSaved(String operation);
+
+  /// No description provided for @competitorsForSurvey.
+  ///
+  /// In pt, this message translates to:
+  /// **'Concorrentes (pesquisa {survey})'**
+  String competitorsForSurvey(int survey);
+
+  /// No description provided for @offerPriceLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'{priceType} (oferta)'**
+  String offerPriceLabel(String priceType);
+
+  /// No description provided for @surveyCompetitorTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pesquisa {survey} - concorrente {competitor}'**
+  String surveyCompetitorTitle(int survey, int competitor);
+
+  /// No description provided for @productsCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos ({count})'**
+  String productsCount(int count);
+
+  /// No description provided for @filteredProductsCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos ({count} de {total})'**
+  String filteredProductsCount(int count, int total);
+
+  /// No description provided for @enterprisesCount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Empresas ({count})'**
+  String enterprisesCount(int count);
+
+  /// No description provided for @lastSavedOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Último pedido salvo} other{Últimos pedidos salvos}}'**
+  String lastSavedOrders(int count);
+
+  /// No description provided for @lastOrders.
+  ///
+  /// In pt, this message translates to:
+  /// **'{count, plural, =1{Último pedido} other{Últimos pedidos}}'**
+  String lastOrders(int count);
+
+  /// No description provided for @purchaseOrderDetailsWithCode.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes pedido ({code})'**
+  String purchaseOrderDetailsWithCode(String code);
 }
 
 class _AppLocalizationsDelegate

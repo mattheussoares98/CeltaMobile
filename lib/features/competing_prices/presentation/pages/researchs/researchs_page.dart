@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/researchs/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,7 +17,7 @@ class ResearchsPage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       appBar: BaseAppBar(
-        title: 'Pesquisas cadastradas'.hardcoded,
+        title: context.l10n.priceSurveys,
         selectedEnterpriseCode: enterpriseCode,
         actions: [InsertResearchButton(enterpriseCode: enterpriseCode)],
       ),

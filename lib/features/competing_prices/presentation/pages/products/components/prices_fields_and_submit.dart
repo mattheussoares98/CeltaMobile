@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,9 +63,9 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
 
     final confirmed = await showAlertDialog(
       context: context,
-      title: 'Salvar alterações?'.hardcoded,
-      defaultActionText: 'Sim'.hardcoded,
-      cancelActionText: 'Cancelar'.hardcoded,
+      title: context.l10n.saveChangesQuestion,
+      defaultActionText: context.l10n.yes,
+      cancelActionText: context.l10n.cancel,
     );
 
     if (confirmed != true || !mounted) return;
@@ -132,7 +131,7 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
                 offerController: widget.retailOfferController,
                 focusNode: widget.retailFocusNode,
                 offerFocusNode: widget.retailOfferFocusNode,
-                priceType: 'Venda',
+                priceType: context.l10n.retailPrice,
                 onSubmit: widget.wholeFocusNode.requestFocus,
               ),
               DefaultRowFields(
@@ -140,7 +139,7 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
                 offerController: widget.wholeOfferController,
                 focusNode: widget.wholeFocusNode,
                 offerFocusNode: widget.wholeOfferFocusNode,
-                priceType: 'Atacado',
+                priceType: context.l10n.corePracticedPriceTypeWhole,
                 onSubmit: widget.ecommerceFocusNode.requestFocus,
               ),
               DefaultRowFields(
@@ -148,12 +147,12 @@ class _PricesFieldsAndSubmitState extends ConsumerState<PricesFieldsAndSubmit> {
                 offerController: widget.ecommerceOfferController,
                 focusNode: widget.ecommerceFocusNode,
                 offerFocusNode: widget.ecommerceOfferFocusNode,
-                priceType: 'Ecommerce',
+                priceType: context.l10n.ecommercePrice,
                 onSubmit: hasChangedAnyValue ? insertUpdate : null,
               ),
               gapH8,
               PrimaryButton(
-                text: 'Confirmar alterações'.hardcoded,
+                text: context.l10n.confirmChanges,
                 onPressed: hasChangedAnyValue ? insertUpdate : null,
               ),
             ],

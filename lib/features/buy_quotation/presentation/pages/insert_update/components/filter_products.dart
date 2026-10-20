@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +58,12 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                         filteredProducts.length != totalProductsLength;
 
                     return BaseText.title(
-                      'Produtos (${filteredProducts.length}${hasFiltered ? ' de $totalProductsLength' : ''})'
-                          .hardcoded,
+                      hasFiltered
+                          ? context.l10n.filteredProductsCount(
+                              filteredProducts.length,
+                              totalProductsLength,
+                            )
+                          : context.l10n.productsCount(filteredProducts.length),
                       color: context.theme.primaryColor,
                       fontStyle: FontStyle.italic,
                     );
@@ -72,7 +75,7 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: PrimaryTextButton(
-                    text: 'Filtrar produtos'.hardcoded,
+                    text: context.l10n.filterProducts,
                     onPressed: () {
                       setState(() {
                         expandedFilter = !expandedFilter;
@@ -98,8 +101,8 @@ class _FilterProductsState extends ConsumerState<FilterProducts> {
             BaseTextFormField(
               controller: widget.filterProductsController,
               focusNode: widget.filterProductsFocusNode,
-              hintText: 'PLU | Nome'.hardcoded,
-              labelText: 'Filtrar produtos'.hardcoded,
+              hintText: context.l10n.pluOrName,
+              labelText: context.l10n.filterProducts,
               suffixIcon: IconButton(
                 onPressed: widget.filterProductsController.clear,
                 icon: const PlatformIcon(

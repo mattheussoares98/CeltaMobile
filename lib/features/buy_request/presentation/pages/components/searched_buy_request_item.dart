@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,17 +35,13 @@ class SearchedBuyRequestItem extends StatelessWidget {
                   if (buyRequest.personalizedCode != null && onTapItem != null)
                     BaseRichText(
                       texts: [
-                        BaseText('Cód personalizado: '.hardcoded),
+                        BaseText(context.l10n.customCodePrefix),
                         BaseText.titleMedium(
-                          buyRequest.personalizedCode!
-                              .substring(0, 8)
-                              .hardcoded,
+                          buyRequest.personalizedCode!.substring(0, 8),
                           fontWeight: FontWeight.bold,
                         ),
                         BaseText.titleMedium(
-                          buyRequest.personalizedCode!
-                              .substring(8, 12)
-                              .hardcoded,
+                          buyRequest.personalizedCode!.substring(8, 12),
                           fontWeight: FontWeight.bold,
                           color: context.theme.colorScheme.secondary,
                         ),
@@ -54,31 +49,31 @@ class SearchedBuyRequestItem extends StatelessWidget {
                     ),
                   if (buyRequest.dateOfCreation != null)
                     TitleAndSubTitle(
-                      title: 'Criado em'.hardcoded,
+                      title: context.l10n.createdOn,
                       subTitle: buyRequest.dateOfCreation?.formatDate(
                         .ddMMyyyyHHmm,
                       ),
                     ),
                   if (buyRequest.deliveryDate != null)
                     TitleAndSubTitle(
-                      title: 'Entregue em'.hardcoded,
+                      title: context.l10n.deliveredOn,
                       subTitle: buyRequest.deliveryDate?.formatDate(
                         .ddMMyyyyHHmm,
                       ),
                     ),
                   if (buyRequest.buyer?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Comprador'.hardcoded,
+                      title: context.l10n.buyer,
                       subTitle: buyRequest.buyer?.name,
                     ),
                   if (buyRequest.supplier?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Fornecedor'.hardcoded,
+                      title: context.l10n.supplier,
                       subTitle: buyRequest.supplier?.name,
                     ),
                   if (buyRequest.requestType?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Modelo pedido'.hardcoded,
+                      title: context.l10n.requestTemplate,
                       subTitle: buyRequest.requestType?.name,
                     ),
                   if (onTapItem == null)
@@ -86,20 +81,20 @@ class SearchedBuyRequestItem extends StatelessWidget {
                     _SearchedBuyRequestSummary(processCode: buyRequest.code),
 
                   TitleAndSubTitle(
-                    title: 'Valor líquido'.hardcoded,
+                    title: context.l10n.netAmount,
                     subTitle: buyRequest.totalLiquid ?? 0,
                     subTitleIsPrice: true,
                   ),
                   if (buyRequest.observations?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Observações'.hardcoded,
+                      title: context.l10n.notes,
                       subTitle: buyRequest.observations,
                     ),
                   if (onTapItem != null && PlatformUtil.isIOS)
                     Align(
                       alignment: .centerRight,
                       child: PrimaryTextButton(
-                        text: 'Detalhes'.hardcoded,
+                        text: context.l10n.details,
                         onPressed: onTapItem,
                         platformIcon: const PlatformIcon(
                           cupertinoIcon: CupertinoIcons.pencil,

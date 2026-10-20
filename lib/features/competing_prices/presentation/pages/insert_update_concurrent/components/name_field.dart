@@ -1,7 +1,6 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class NameField extends StatelessWidget {
@@ -17,8 +16,8 @@ class NameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseTextFormField(
       controller: nameController,
-      labelText: 'Nome'.hardcoded,
-      hintText: 'Nome'.hardcoded,
+      labelText: context.l10n.name,
+      hintText: context.l10n.name,
       onFieldSubmitted: (_) => observationFocusNode.requestFocus(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([

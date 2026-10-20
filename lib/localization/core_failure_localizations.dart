@@ -21,6 +21,10 @@ extension CoreFailureLocalizations on AppLocalizations {
     CoreFailure.httpInvalidData => httpInvalidData,
     CoreFailure.companyNotFound => companyNotFound,
     CoreFailure.purchasePeriodTooLong => purchasePeriodTooLong,
+    CoreFailure.quotationBuyerRequired => quotationBuyerRequired,
+    CoreFailure.quotationEnterpriseRequired => quotationEnterpriseRequired,
+    CoreFailure.quotationProductRequired => quotationProductRequired,
+    CoreFailure.priceSurveyCodeRequired => priceSurveyCodeRequired,
     CoreFailure.cannotOpenUrl => cannotOpenUrl(arguments.first),
   };
 }

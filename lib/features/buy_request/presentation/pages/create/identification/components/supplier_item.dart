@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -42,20 +43,23 @@ class SupplierItem extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TitleAndSubTitle(
-                        title: 'Código',
+                        title: context.l10n.code,
                         subTitle: supplier.Code.toString(),
                       ),
                       TitleAndSubTitle(
-                        title: 'CPF/CNPJ',
+                        title: context.l10n.cpfCnpj,
                         subTitle: supplier.CnpjCpfNumber,
                       ),
-                      TitleAndSubTitle(title: 'Nome', subTitle: supplier.Name),
                       TitleAndSubTitle(
-                        title: 'Nome fantasia',
+                        title: context.l10n.name,
+                        subTitle: supplier.Name,
+                      ),
+                      TitleAndSubTitle(
+                        title: context.l10n.tradeName,
                         subTitle: supplier.FantasizesName,
                       ),
                       TitleAndSubTitle(
-                        title: 'Tipo comércio',
+                        title: context.l10n.tradeType,
                         subTitle: supplier.SupplierRegimeType,
                       ),
                     ],

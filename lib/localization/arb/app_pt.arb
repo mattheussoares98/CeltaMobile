@@ -340,5 +340,191 @@
         "type": "String"
       }
     }
+  },
+  "quotations": "Cotações",
+  "purchaseOrderLookup": "Consulta de pedidos de compras",
+  "noPurchaseOrdersFound": "Nenhum pedido de compra foi encontrado",
+  "customCode": "Código personalizado",
+  "creationDate": "Data de criação",
+  "deadline": "Data limite",
+  "noDeadline": "Sem data limite",
+  "noNotes": "Sem observações",
+  "creatingPriceSurvey": "Inserindo pesquisa",
+  "editingPriceSurvey": "Editando pesquisa",
+  "insert": "Inserir",
+  "edit": "Editar",
+  "leaveWithoutSaving": "Sair sem salvar",
+  "unsavedChangesWarning": "Caso tenha feito alguma alteração, ao sair da página sem salvar, essa alteração será perdida. Deseja sair mesmo assim?",
+  "inserting": "Inserindo",
+  "changing": "Alterando",
+  "creatingCompetitor": "Inserindo concorrente",
+  "editingCompetitor": "Alterando concorrente",
+  "editAddress": "Inserir/alterar endereço",
+  "change": "Alterar",
+  "pricesChangedSuccessfully": "Preços alterados com sucesso",
+  "productAlreadyAdded": "Esse produto já foi inserido!",
+  "cannotAddQuotationProducts": "Não foi possível adicionar os produtos. Entre em contato com o suporte",
+  "save": "Salvar",
+  "saveChangesPrompt": "Deseja salvar as alterações?",
+  "saveChangesQuestion": "Salvar alterações?",
+  "confirmChanges": "Confirmar alterações",
+  "filterProducts": "Filtrar produtos",
+  "associatedFilter": "(associados)",
+  "unassociatedFilter": "(não associados)",
+  "associatedOnly": "Somente associados",
+  "loadAllUnassociatedProducts": "Consultar todos não associados",
+  "loadAllAssociatedProducts": "Consultar todos",
+  "loadAssociatedPricedProducts": "Consultar todos já informados",
+  "loadAssociatedUnpricedProducts": "Consultar todos não informados",
+  "retailPrice": "Venda",
+  "retailOfferPrice": "Venda (oferta)",
+  "wholesaleOfferPrice": "Atacado (oferta)",
+  "ecommercePrice": "Ecommerce",
+  "ecommerceOfferPrice": "Ecommerce (oferta)",
+  "associatedWithSurvey": "Associado à pesquisa",
+  "notAssociatedWithSurvey": "Não associado à pesquisa",
+  "editCompetitor": "Alterar concorrente",
+  "unexpectedQuotationError": "Esse erro jamais deveria ocorrer. Entre em contato com o suporte técnico",
+  "pluOrName": "PLU | Nome",
+  "moduleDisabled": "Módulo desabilitado",
+  "moduleDisabledContactAdmin": "O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo",
+  "cannotUpdateQuotationEnterprises": "Não foi possível atualizar as empresas. Entre em contato com o suporte.",
+  "enterprises": "Empresas",
+  "cnpj": "CNPJ",
+  "buyer": "Comprador",
+  "selectBuyer": "Selecione um comprador",
+  "priceSurveys": "Pesquisas cadastradas",
+  "selectRequestTemplate": "Selecione um modelo de pedido",
+  "selectSupplier": "Selecione um fornecedor",
+  "selectEnterprise": "Selecione pelo menos uma empresa",
+  "identification": "Identificação",
+  "products": "Produtos",
+  "confirmation": "Confirmação",
+  "requestTemplate": "Modelo de pedido",
+  "changingTemplateRemovesSelection": "Ao alterar o modelo, as empresas e produtos selecionados serão removidos",
+  "selectTemplate": "Selecione um modelo",
+  "select": "Selecione",
+  "cost": "Custo",
+  "clearOrder": "Limpar pedido",
+  "deleteData": "Apagar dados",
+  "clearOrderConfirmation": "Tem certeza que deseja remover todos dados inseridos?",
+  "restrictedProducts": "Produtos restringidos",
+  "unrestrictedProducts": "Produtos não restringidos",
+  "editPriceSurvey": "Alterar pesquisa",
+  "customCodePrefix": "Cód personalizado: ",
+  "deliveredOn": "Entregue em",
+  "removeEnterpriseQuestion": "Remover empresa?",
+  "removeEnterpriseProductsWarning": "Há produtos informados para essa empresa. Ao remover ela, os produtos serão removidos também",
+  "remove": "Remover",
+  "tradeName": "Nome fantasia",
+  "searchSuppliersQuestion": "Consultar fornecedores?",
+  "supplierSearchRemovesSelection": "Ao consultar os fornecedores, todas empresas e produtos selecionados serão removidos!",
+  "query": "Consultar",
+  "suppliers": "Fornecedores",
+  "changeSupplierQuestion": "Alterar fornecedor?",
+  "changingSupplierRemovesSelection": "Ao alterar o fornecedor, todas empresas e produtos selecionados serão removidos",
+  "addProduct": "Adicione pelo menos um produto",
+  "saveOrderQuestion": "Salvar pedido?",
+  "orderSavedSuccessfully": "Pedido salvo com sucesso",
+  "add": "Adicionar",
+  "cpfCnpj": "CPF/CNPJ",
+  "tradeType": "Tipo comércio",
+  "quotationBuyerRequired": "O comprador deve ser informado",
+  "quotationEnterpriseRequired": "Ao menos uma empresa deve ser informada",
+  "quotationProductRequired": "Ao menos um produto deve ser informado",
+  "priceSurveyCodeRequired": "Para alterar o concorrente é necessário informar o código da pesquisa",
+  "priceSurveySaved": "{operation, select, create{Pesquisa inserida com sucesso} other{Pesquisa alterada com sucesso}}",
+  "@priceSurveySaved": {
+    "placeholders": {
+      "operation": {
+        "type": "String"
+      }
+    }
+  },
+  "competitorSaved": "{operation, select, create{Concorrente inserido com sucesso} other{Concorrente alterado com sucesso}}",
+  "@competitorSaved": {
+    "placeholders": {
+      "operation": {
+        "type": "String"
+      }
+    }
+  },
+  "competitorsForSurvey": "Concorrentes (pesquisa {survey})",
+  "@competitorsForSurvey": {
+    "placeholders": {
+      "survey": {
+        "type": "int"
+      }
+    }
+  },
+  "offerPriceLabel": "{priceType} (oferta)",
+  "@offerPriceLabel": {
+    "placeholders": {
+      "priceType": {
+        "type": "String"
+      }
+    }
+  },
+  "surveyCompetitorTitle": "Pesquisa {survey} - concorrente {competitor}",
+  "@surveyCompetitorTitle": {
+    "placeholders": {
+      "survey": {
+        "type": "int"
+      },
+      "competitor": {
+        "type": "int"
+      }
+    }
+  },
+  "productsCount": "Produtos ({count})",
+  "@productsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filteredProductsCount": "Produtos ({count} de {total})",
+  "@filteredProductsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "enterprisesCount": "Empresas ({count})",
+  "@enterprisesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastSavedOrders": "{count, plural, =1{Último pedido salvo} other{Últimos pedidos salvos}}",
+  "@lastSavedOrders": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastOrders": "{count, plural, =1{Último pedido} other{Últimos pedidos}}",
+  "@lastOrders": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "purchaseOrderDetailsWithCode": "Detalhes pedido ({code})",
+  "@purchaseOrderDetailsWithCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   }
 }

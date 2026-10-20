@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/pages.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,15 +39,18 @@ class ResearchItem extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TitleAndSubTitle(
-                title: 'Código',
+                title: context.l10n.code,
                 subTitle: research.Code.toString(),
               ),
-              TitleAndSubTitle(title: 'Nome', subTitle: research.Name),
+              TitleAndSubTitle(
+                title: context.l10n.name,
+                subTitle: research.Name,
+              ),
               TitleAndSubTitle(
                 title: null,
                 subTitle: research.RestrictProducts
-                    ? 'Produtos restringidos'.hardcoded
-                    : 'Produtos NÃO restringidos'.hardcoded,
+                    ? context.l10n.restrictedProducts
+                    : context.l10n.unrestrictedProducts,
                 subTitleStyle: context.theme.textTheme.titleMedium?.copyWith(
                   color: research.RestrictProducts
                       ? context.theme.primaryColor
@@ -56,7 +58,7 @@ class ResearchItem extends ConsumerWidget {
                 ),
               ),
               TitleAndSubTitle(
-                title: 'Data de criação',
+                title: context.l10n.creationDate,
                 subTitle: research.CreationDate.formatDate(
                   DateFormatType.ddMMyyyyHHmm,
                 ),
@@ -64,14 +66,14 @@ class ResearchItem extends ConsumerWidget {
               if (research.Observation != null &&
                   research.Observation!.isNotEmpty)
                 TitleAndSubTitle(
-                  title: 'Observação',
+                  title: context.l10n.notes,
                   subTitle: research.Observation,
                 ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PrimaryTextButton(
-                    text: 'Alterar pesquisa'.hardcoded,
+                    text: context.l10n.editPriceSurvey,
                     onPressed: () {
                       showModalPage(
                         InsertUpdateResearchPage(

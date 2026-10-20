@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/presentation/controllers/enterprises/enter
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/models/models.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/pages/insert_update/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -107,12 +106,10 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
       onPopInvokedWithResult: () async {
         bool? confirmed = await showAlertDialog(
           context: context,
-          title: 'Atenção'.hardcoded,
-          cancelActionText: 'Cancelar'.hardcoded,
-          defaultActionText: 'Sair sem salvar'.hardcoded,
-          content:
-              'Caso tenha feito alguma alteração, ao sair da página sem salvar, essa alteração será perdida. Deseja sair mesmo assim?'
-                  .hardcoded,
+          title: context.l10n.attention,
+          cancelActionText: context.l10n.cancel,
+          defaultActionText: context.l10n.leaveWithoutSaving,
+          content: context.l10n.unsavedChangesWarning,
         );
 
         if (confirmed == true && context.mounted) {
@@ -120,7 +117,9 @@ class _InsertUpdatePageState extends ConsumerState<InsertUpdatePage> {
         }
       },
       appBar: BaseAppBar(
-        title: widget.code == 0 ? 'Inserindo'.hardcoded : 'Alterando'.hardcoded,
+        title: widget.code == 0
+            ? context.l10n.inserting
+            : context.l10n.changing,
         actions: [
           SaveIconButton(
             enterpriseCode: widget.enterpriseCode,

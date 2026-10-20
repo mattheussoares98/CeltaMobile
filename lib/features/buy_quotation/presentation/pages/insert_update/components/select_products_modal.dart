@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,7 +77,7 @@ class _SelectProductsModalState extends ConsumerState<SelectProductsModal> {
               ),
             ),
             PrimaryButton(
-              text: 'Adicionar',
+              text: context.l10n.add,
               onPressed: () {
                 widget.addProducts(
                   selectedProductsNotifier.value.values.toList(),
@@ -149,7 +148,7 @@ class _ProductItem extends ConsumerWidget {
           onTap: isIOS ? null : toggleSelection,
           clickableBottom: alreadyInBuyQuotation
               ? BaseText.title(
-                  'Esse produto já foi inserido!'.hardcoded,
+                  context.l10n.productAlreadyAdded,
                   color: context.theme.primaryColor,
                   fontStyle: FontStyle.italic,
                 )

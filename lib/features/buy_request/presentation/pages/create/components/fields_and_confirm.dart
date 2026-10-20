@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -86,8 +85,8 @@ class FieldsAndConfirm extends ConsumerWidget {
               child: BaseTextFormField(
                 focusNode: quantityFocusNode,
                 controller: quantityController,
-                labelText: 'Quantidade'.hardcoded,
-                hintText: 'Quantidade'.hardcoded,
+                labelText: context.l10n.quantity,
+                hintText: context.l10n.quantity,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 maxLength: 13,
                 onTap: () {
@@ -138,8 +137,8 @@ class FieldsAndConfirm extends ConsumerWidget {
               },
               focusNode: costFocusNode,
               controller: costController,
-              labelText: 'Custo'.hardcoded,
-              hintText: 'Custo'.hardcoded,
+              labelText: context.l10n.cost,
+              hintText: context.l10n.cost,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
@@ -159,7 +158,7 @@ class FieldsAndConfirm extends ConsumerWidget {
           gapW8,
           Expanded(
             child: PrimaryButton(
-              text: 'Confirmar'.hardcoded,
+              text: context.l10n.confirm,
               onPressed: () => insertProduct(product),
             ),
           ),

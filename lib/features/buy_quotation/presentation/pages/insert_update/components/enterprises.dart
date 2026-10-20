@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/enterprises/enterprises.dart';
 import 'package:celta_inventario/features/buy_quotation/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +39,8 @@ class Enterprises extends ConsumerWidget {
         if (!context.mounted) return;
         showAlertDialog(
           context: context,
-          title: 'Módulo desabilitado'.hardcoded,
-          content:
-              'O módulo está desabilitado para essa empresa. Caso queira habilitar, entre em contato com o setor administrativo',
+          title: context.l10n.moduleDisabled,
+          content: context.l10n.moduleDisabledContactAdmin,
         );
       } else {
         final enterpriseToUpdate = buyQuotationEnterprises.firstWhereOrNull(
@@ -69,10 +67,8 @@ class Enterprises extends ConsumerWidget {
           if (!context.mounted) return;
           showAlertDialog(
             context: context,
-            title: 'Erro'.hardcoded,
-            content:
-                'Não foi possível atualizar as empresas. Entre em contato com o suporte.'
-                    .hardcoded,
+            title: context.l10n.error,
+            content: context.l10n.cannotUpdateQuotationEnterprises,
           );
         }
       }
@@ -100,7 +96,7 @@ class Enterprises extends ConsumerWidget {
               itemBuilder: (_, index) {
                 if (index == 0) {
                   return BaseText.title(
-                    'Empresas'.hardcoded,
+                    context.l10n.enterprises,
                     color: context.theme.primaryColor,
                     fontStyle: FontStyle.italic,
                   );
@@ -163,15 +159,15 @@ class _EnterpriseItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleAndSubTitle(
-                      title: 'Código'.hardcoded,
+                      title: context.l10n.code,
                       subTitle: enterprise.PersonalizedCode.toString(),
                     ),
                     TitleAndSubTitle(
-                      title: 'Empresa'.hardcoded,
+                      title: context.l10n.enterprise,
                       subTitle: enterprise.name,
                     ),
                     TitleAndSubTitle(
-                      title: 'CNPJ'.hardcoded,
+                      title: context.l10n.cnpj,
                       subTitle: enterprise.CnpjNumber,
                     ),
                   ],

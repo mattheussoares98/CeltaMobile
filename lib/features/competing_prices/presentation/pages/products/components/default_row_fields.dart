@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -56,8 +55,8 @@ class DefaultRowFields extends StatelessWidget {
             focusNode: offerFocusNode,
             onFieldSubmitted: (_) => onSubmit?.call(),
             onEditingComplete: PlatformUtil.isIOS ? onSubmit?.call : null,
-            labelText: '$priceType (oferta)'.hardcoded,
-            hintText: '$priceType (oferta)'.hardcoded,
+            labelText: context.l10n.offerPriceLabel(priceType),
+            hintText: context.l10n.offerPriceLabel(priceType),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             maxLength: 13,
             suffixIcon: DefaultDeleteIcon(offerController, offerFocusNode),

@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_quotation/presentation/controllers/controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,10 +38,10 @@ class SaveIconButton extends ConsumerWidget {
                 bool updated = false;
                 bool? pressedOk = await showAlertDialog(
                   context: context,
-                  title: 'Salvar'.hardcoded,
-                  content: 'Deseja salvar as alterações?'.hardcoded,
-                  cancelActionText: 'Cancelar'.hardcoded,
-                  defaultActionText: 'Salvar'.hardcoded,
+                  title: context.l10n.save,
+                  content: context.l10n.saveChangesPrompt,
+                  cancelActionText: context.l10n.cancel,
+                  defaultActionText: context.l10n.save,
                 );
 
                 if (pressedOk == true) {

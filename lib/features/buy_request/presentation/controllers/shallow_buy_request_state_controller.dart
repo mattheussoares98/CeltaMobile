@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -24,9 +25,7 @@ class ShallowBuyRequestStateController
     final ecParams = await ref.read(ecRequestParamsProvider().future);
 
     if (initialDate.difference(finalDate).inDays.abs() > 90) {
-      throw AppException(
-        'A diferença entre as datas não pode ser maior que 90 dias',
-      );
+      throw AppException.localized(CoreFailure.purchasePeriodTooLong);
     }
 
     LoadShallowBuyRequestParams params = LoadShallowBuyRequestParams(
