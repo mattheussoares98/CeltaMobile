@@ -1,5 +1,6 @@
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
 import 'package:celta_inventario/core/presentation/controllers/user_session/user_session.dart';
 import 'package:celta_inventario/exceptions/app_exception.dart';
@@ -173,7 +174,13 @@ void main() {
               ).notifier,
             )
             .load(initialDate, initialDate.add(const Duration(days: 91))),
-        throwsA(isA<AppException>()),
+        throwsA(
+          isA<AppException>().having(
+            (error) => error.failure,
+            'failure',
+            CoreFailure.purchasePeriodTooLong,
+          ),
+        ),
       );
     });
   });

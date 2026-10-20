@@ -205,5 +205,140 @@
   "coreCustomerSexTypeFemale": "Feminino",
   "coreTransferJustificationTypeAdjustStock": "Ajuste de estoque",
   "coreTransferJustificationTypeTransferBetweenStocks": "Transferência entre estoques",
-  "share": "Compartilhar"
+  "share": "Compartilhar",
+  "stockRequired": "Estoque obrigatório",
+  "destinationStock": "Estoque de destino",
+  "adjustmentCompleted": "Ajuste efetuado com sucesso",
+  "replacementCost": "Custo de reposição",
+  "changeReplacementCost": "Alterar custo de reposição",
+  "confirm": "Confirmar",
+  "confirmQuestion": "Confirmar?",
+  "cancel": "Cancelar",
+  "yes": "Sim",
+  "newPrice": "Novo preço",
+  "startBeforeEnd": "A data de início precisa ser anterior a data de término",
+  "endAfterStart": "A data de término precisa ser após a data de início",
+  "startDate": "Início",
+  "endDate": "Término",
+  "saleType": "Tipo de venda",
+  "priceTypeLabel": "Tipo de preço",
+  "replicationParameters": "Parâmetros de replicação",
+  "loadSchedules": "Obter agendamentos",
+  "refreshSchedules": "Atualizar agendamentos",
+  "noSchedulesFound": "Nenhum agendamento foi encontrado",
+  "createdBy": "Criado por",
+  "origin": "Origem",
+  "changedOn": "Alterado em",
+  "scheduledFor": "Será executado em",
+  "changedByClass": "Alterado via classe",
+  "changedByPackings": "Alterado por embalagens",
+  "changedByGrid": "Alterado por grade",
+  "willUpdateClassPrice": "Vai alterar o preço da classe",
+  "willUpdateOperationalGroupPrice": "Vai alterar preço do agrupamento operacional das empresas",
+  "currentPrice": "Praticado",
+  "suggestedPrice": "Sugerido",
+  "minimumPrice": "Mínimo",
+  "belowMinimum": " MENOR QUE O MÍNIMO",
+  "priceAdjustmentProducts": "Produtos (ajuste de preços)",
+  "priceChangedSuccessfully": "Preço alterado com sucesso",
+  "attention": "Atenção!",
+  "selectJustificationAndStock": "Você precisa selecionar a justificativa e o estoque!",
+  "justificationRequired": "Justificativa obrigatória",
+  "justifications": "Justificativas",
+  "noJustification": "Sem justificativa",
+  "noOrigin": "Sem origem",
+  "quantity": "Quantidade",
+  "noPurchasesFound": "Nenhuma compra foi encontrada",
+  "purchaseNotFound": "A compra não foi encontrada",
+  "purchaseDetails": "Detalhes da compra",
+  "backToTop": "Voltar ao topo",
+  "document": "Documento",
+  "entranceUser": "Usuário de entrada",
+  "createdOn": "Criado em",
+  "issuedOn": "Emitido em",
+  "receivedOn": "Entrada em",
+  "buyers": "Compradores",
+  "supplier": "Fornecedor",
+  "orders": "Pedidos",
+  "netAmount": "Valor líquido",
+  "notes": "Observações",
+  "details": "Detalhes",
+  "grossProductsServicesTotal": "Total bruto produtos/serviços",
+  "totalDiscounts": "Total de descontos",
+  "offsets": "Compensações",
+  "surcharge": "Acréscimo",
+  "deliveryFee": "Taxa de entrega",
+  "icmsIssBase": "Base de ICMS e ISS",
+  "icmsIssAmount": "Valor de ICMS e ISS",
+  "icmsStBase": "Base ICMS substituto",
+  "invoiceIcmsStAmount": "Valor ICMS substituto nota fiscal",
+  "gnreIcmsStAmount": "Valor ICMS substituto GNRE",
+  "fcpStAmount": "Valor FCP substituto",
+  "freight": "Frete",
+  "freightInsurance": "Seguro frete",
+  "additionalExpenses": "Despesas acessórias",
+  "ipi": "IPI",
+  "destinationIcms": "ICMS destino",
+  "originIcms": "ICMS origem",
+  "povertyReductionFund": "Fundo de combate à pobreza",
+  "quantityShort": "Qtd",
+  "amount": "Valor",
+  "total": "Total",
+  "cfop": "CFOP",
+  "companyNotFound": "Empresa não encontrada",
+  "purchasePeriodTooLong": "A diferença do período não pode ser maior que 90 dias",
+  "regularPrice": "Venda",
+  "offerPrice": "Oferta",
+  "replicateClass": "Classe",
+  "replicateGrid": "Grade",
+  "replicateOperationalGroup": "Agrupamento operacional",
+  "replicatePackings": "Embalagens",
+  "noCurrentPrice": "Sem preço praticado",
+  "noSuggestedPrice": "Sem preço sugerido",
+  "lastAdjustedQuantity": "Última qtd alterada {direction}",
+  "@lastAdjustedQuantity": {
+    "placeholders": {
+      "direction": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseDetailsWithDocument": "Detalhes da compra ({document})",
+  "@purchaseDetailsWithDocument": {
+    "placeholders": {
+      "document": {
+        "type": "String"
+      }
+    }
+  },
+  "purchaseCancelledBy": "{user} cancelou essa compra",
+  "@purchaseCancelledBy": {
+    "placeholders": {
+      "user": {
+        "type": "String"
+      }
+    }
+  },
+  "noCurrentPriceForType": "Sem preço {priceType} {saleType} praticado",
+  "@noCurrentPriceForType": {
+    "placeholders": {
+      "priceType": {
+        "type": "String"
+      },
+      "saleType": {
+        "type": "String"
+      }
+    }
+  },
+  "noSuggestedPriceForType": "Sem preço {priceType} {saleType} sugerido",
+  "@noSuggestedPriceForType": {
+    "placeholders": {
+      "priceType": {
+        "type": "String"
+      },
+      "saleType": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/features/adjust_cost/domain/entity/entity.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_cost/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -131,7 +130,7 @@ class _ProductItemState extends ConsumerState<ProductItem> {
                 gapW16,
                 Expanded(
                   child: PrimaryButton(
-                    text: 'Confirmar'.hardcoded,
+                    text: context.l10n.confirm,
                     onPressed: () => confirmAdjust(product),
                   ),
                 ),

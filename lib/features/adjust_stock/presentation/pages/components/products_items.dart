@@ -4,7 +4,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,9 +39,8 @@ class ProductsItems extends ConsumerWidget {
         if (!context.mounted) return;
         showAlertDialog(
           context: context,
-          title: 'Atenção!'.hardcoded,
-          content:
-              'Você precisa selecionar a justificativa e o estoque!'.hardcoded,
+          title: context.l10n.attention,
+          content: context.l10n.selectJustificationAndStock,
         );
         return;
       }
@@ -149,9 +147,11 @@ class _ProductItem extends ConsumerWidget {
       clickableBottom:
           lastConfirmedAdjust?.productPackingCode == product.ProductPackingCode
           ? TitleAndSubTitle(
-              title:
-                  'Última qtd alterada ${lastConfirmedAdjust!.operationType == OperationType.entrance ? "+" : "-"}'
-                      .hardcoded,
+              title: context.l10n.lastAdjustedQuantity(
+                lastConfirmedAdjust!.operationType == OperationType.entrance
+                    ? "+"
+                    : "-",
+              ),
               subTitle: lastConfirmedAdjust.quantity
                   .toString()
                   .toBrazilianNumber(3, true),

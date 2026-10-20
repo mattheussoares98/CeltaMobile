@@ -1,6 +1,7 @@
 import 'package:celta_inventario/core/data/datasource/enterprise/enterprise.dart';
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/auth/data/models/models.dart';
 import 'package:celta_inventario/features/auth/domain/repositories/repositories.dart';
@@ -152,7 +153,16 @@ void main() {
         password: password,
       );
 
-      expect(result, throwsA(isA<AppException>()));
+      expect(
+        result,
+        throwsA(
+          isA<AppException>().having(
+            (error) => error.failure,
+            'failure',
+            CoreFailure.companyNotFound,
+          ),
+        ),
+      );
     });
 
     test('should throw when doesnt has working url', () async {

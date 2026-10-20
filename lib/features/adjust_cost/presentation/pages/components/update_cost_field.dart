@@ -1,7 +1,6 @@
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,8 +20,8 @@ class UpdateCostField extends ConsumerWidget {
     return BaseTextFormField(
       controller: controller,
       focusNode: focusNode,
-      hintText: 'Custo de reposição'.hardcoded,
-      labelText: 'Custo de reposição'.hardcoded,
+      hintText: context.l10n.replacementCost,
+      labelText: context.l10n.replacementCost,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       maxLength: 12,
       onFieldSubmitted: (_) => onSubmit(),

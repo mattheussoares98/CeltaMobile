@@ -19,6 +19,8 @@ extension CoreFailureLocalizations on AppLocalizations {
     CoreFailure.httpUnauthorized => httpUnauthorized,
     CoreFailure.httpForbidden => httpForbidden,
     CoreFailure.httpInvalidData => httpInvalidData,
+    CoreFailure.companyNotFound => companyNotFound,
+    CoreFailure.purchasePeriodTooLong => purchasePeriodTooLong,
     CoreFailure.cannotOpenUrl => cannotOpenUrl(arguments.first),
   };
 }

@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,7 +55,7 @@ class _AdjustSalePricePageState extends ConsumerState<AdjustSalePricePage> {
     ref.listen(confirmAdjustControllerProvider, (previous, next) {
       next.showAlertDialogOnError(context);
       next.doOnSuccess(previous, () {
-        showToastMessage('Preço alterado com sucesso'.hardcoded);
+        showToastMessage(context.l10n.priceChangedSuccessfully);
         context.pop();
       });
     });

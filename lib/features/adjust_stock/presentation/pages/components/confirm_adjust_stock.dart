@@ -2,7 +2,6 @@ import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,8 +31,8 @@ class ConfirmAdjustStock extends ConsumerWidget {
             onFieldSubmitted: (_) {
               onConfirm();
             },
-            hintText: "Quantidade".hardcoded,
-            labelText: "Quantidade".hardcoded,
+            hintText: context.l10n.quantity,
+            labelText: context.l10n.quantity,
             validator: FormValidators.compose([
               NonEmptyValidator(translations: context.l10n),
               NumberValidator(
@@ -47,7 +46,7 @@ class ConfirmAdjustStock extends ConsumerWidget {
         gapW8,
         Expanded(
           child: PrimaryButton(
-            text: 'Confirmar'.hardcoded,
+            text: context.l10n.confirm,
             onPressed: onConfirm,
           ),
         ),

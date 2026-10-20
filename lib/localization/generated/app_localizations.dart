@@ -1129,6 +1129,570 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Compartilhar'**
   String get share;
+
+  /// No description provided for @stockRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estoque obrigatório'**
+  String get stockRequired;
+
+  /// No description provided for @destinationStock.
+  ///
+  /// In pt, this message translates to:
+  /// **'Estoque de destino'**
+  String get destinationStock;
+
+  /// No description provided for @adjustmentCompleted.
+  ///
+  /// In pt, this message translates to:
+  /// **'Ajuste efetuado com sucesso'**
+  String get adjustmentCompleted;
+
+  /// No description provided for @replacementCost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Custo de reposição'**
+  String get replacementCost;
+
+  /// No description provided for @changeReplacementCost.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterar custo de reposição'**
+  String get changeReplacementCost;
+
+  /// No description provided for @confirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar'**
+  String get confirm;
+
+  /// No description provided for @confirmQuestion.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar?'**
+  String get confirmQuestion;
+
+  /// No description provided for @cancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// No description provided for @yes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sim'**
+  String get yes;
+
+  /// No description provided for @newPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Novo preço'**
+  String get newPrice;
+
+  /// No description provided for @startBeforeEnd.
+  ///
+  /// In pt, this message translates to:
+  /// **'A data de início precisa ser anterior a data de término'**
+  String get startBeforeEnd;
+
+  /// No description provided for @endAfterStart.
+  ///
+  /// In pt, this message translates to:
+  /// **'A data de término precisa ser após a data de início'**
+  String get endAfterStart;
+
+  /// No description provided for @startDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Início'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In pt, this message translates to:
+  /// **'Término'**
+  String get endDate;
+
+  /// No description provided for @saleType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo de venda'**
+  String get saleType;
+
+  /// No description provided for @priceTypeLabel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Tipo de preço'**
+  String get priceTypeLabel;
+
+  /// No description provided for @replicationParameters.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parâmetros de replicação'**
+  String get replicationParameters;
+
+  /// No description provided for @loadSchedules.
+  ///
+  /// In pt, this message translates to:
+  /// **'Obter agendamentos'**
+  String get loadSchedules;
+
+  /// No description provided for @refreshSchedules.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atualizar agendamentos'**
+  String get refreshSchedules;
+
+  /// No description provided for @noSchedulesFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhum agendamento foi encontrado'**
+  String get noSchedulesFound;
+
+  /// No description provided for @createdBy.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criado por'**
+  String get createdBy;
+
+  /// No description provided for @origin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Origem'**
+  String get origin;
+
+  /// No description provided for @changedOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterado em'**
+  String get changedOn;
+
+  /// No description provided for @scheduledFor.
+  ///
+  /// In pt, this message translates to:
+  /// **'Será executado em'**
+  String get scheduledFor;
+
+  /// No description provided for @changedByClass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterado via classe'**
+  String get changedByClass;
+
+  /// No description provided for @changedByPackings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterado por embalagens'**
+  String get changedByPackings;
+
+  /// No description provided for @changedByGrid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Alterado por grade'**
+  String get changedByGrid;
+
+  /// No description provided for @willUpdateClassPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vai alterar o preço da classe'**
+  String get willUpdateClassPrice;
+
+  /// No description provided for @willUpdateOperationalGroupPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Vai alterar preço do agrupamento operacional das empresas'**
+  String get willUpdateOperationalGroupPrice;
+
+  /// No description provided for @currentPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Praticado'**
+  String get currentPrice;
+
+  /// No description provided for @suggestedPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sugerido'**
+  String get suggestedPrice;
+
+  /// No description provided for @minimumPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mínimo'**
+  String get minimumPrice;
+
+  /// No description provided for @belowMinimum.
+  ///
+  /// In pt, this message translates to:
+  /// **' MENOR QUE O MÍNIMO'**
+  String get belowMinimum;
+
+  /// No description provided for @priceAdjustmentProducts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Produtos (ajuste de preços)'**
+  String get priceAdjustmentProducts;
+
+  /// No description provided for @priceChangedSuccessfully.
+  ///
+  /// In pt, this message translates to:
+  /// **'Preço alterado com sucesso'**
+  String get priceChangedSuccessfully;
+
+  /// No description provided for @attention.
+  ///
+  /// In pt, this message translates to:
+  /// **'Atenção!'**
+  String get attention;
+
+  /// No description provided for @selectJustificationAndStock.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você precisa selecionar a justificativa e o estoque!'**
+  String get selectJustificationAndStock;
+
+  /// No description provided for @justificationRequired.
+  ///
+  /// In pt, this message translates to:
+  /// **'Justificativa obrigatória'**
+  String get justificationRequired;
+
+  /// No description provided for @justifications.
+  ///
+  /// In pt, this message translates to:
+  /// **'Justificativas'**
+  String get justifications;
+
+  /// No description provided for @noJustification.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem justificativa'**
+  String get noJustification;
+
+  /// No description provided for @noOrigin.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem origem'**
+  String get noOrigin;
+
+  /// No description provided for @quantity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Quantidade'**
+  String get quantity;
+
+  /// No description provided for @noPurchasesFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Nenhuma compra foi encontrada'**
+  String get noPurchasesFound;
+
+  /// No description provided for @purchaseNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'A compra não foi encontrada'**
+  String get purchaseNotFound;
+
+  /// No description provided for @purchaseDetails.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes da compra'**
+  String get purchaseDetails;
+
+  /// No description provided for @backToTop.
+  ///
+  /// In pt, this message translates to:
+  /// **'Voltar ao topo'**
+  String get backToTop;
+
+  /// No description provided for @document.
+  ///
+  /// In pt, this message translates to:
+  /// **'Documento'**
+  String get document;
+
+  /// No description provided for @entranceUser.
+  ///
+  /// In pt, this message translates to:
+  /// **'Usuário de entrada'**
+  String get entranceUser;
+
+  /// No description provided for @createdOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Criado em'**
+  String get createdOn;
+
+  /// No description provided for @issuedOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Emitido em'**
+  String get issuedOn;
+
+  /// No description provided for @receivedOn.
+  ///
+  /// In pt, this message translates to:
+  /// **'Entrada em'**
+  String get receivedOn;
+
+  /// No description provided for @buyers.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compradores'**
+  String get buyers;
+
+  /// No description provided for @supplier.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fornecedor'**
+  String get supplier;
+
+  /// No description provided for @orders.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pedidos'**
+  String get orders;
+
+  /// No description provided for @netAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor líquido'**
+  String get netAmount;
+
+  /// No description provided for @notes.
+  ///
+  /// In pt, this message translates to:
+  /// **'Observações'**
+  String get notes;
+
+  /// No description provided for @details.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes'**
+  String get details;
+
+  /// No description provided for @grossProductsServicesTotal.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total bruto produtos/serviços'**
+  String get grossProductsServicesTotal;
+
+  /// No description provided for @totalDiscounts.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total de descontos'**
+  String get totalDiscounts;
+
+  /// No description provided for @offsets.
+  ///
+  /// In pt, this message translates to:
+  /// **'Compensações'**
+  String get offsets;
+
+  /// No description provided for @surcharge.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acréscimo'**
+  String get surcharge;
+
+  /// No description provided for @deliveryFee.
+  ///
+  /// In pt, this message translates to:
+  /// **'Taxa de entrega'**
+  String get deliveryFee;
+
+  /// No description provided for @icmsIssBase.
+  ///
+  /// In pt, this message translates to:
+  /// **'Base de ICMS e ISS'**
+  String get icmsIssBase;
+
+  /// No description provided for @icmsIssAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor de ICMS e ISS'**
+  String get icmsIssAmount;
+
+  /// No description provided for @icmsStBase.
+  ///
+  /// In pt, this message translates to:
+  /// **'Base ICMS substituto'**
+  String get icmsStBase;
+
+  /// No description provided for @invoiceIcmsStAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor ICMS substituto nota fiscal'**
+  String get invoiceIcmsStAmount;
+
+  /// No description provided for @gnreIcmsStAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor ICMS substituto GNRE'**
+  String get gnreIcmsStAmount;
+
+  /// No description provided for @fcpStAmount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor FCP substituto'**
+  String get fcpStAmount;
+
+  /// No description provided for @freight.
+  ///
+  /// In pt, this message translates to:
+  /// **'Frete'**
+  String get freight;
+
+  /// No description provided for @freightInsurance.
+  ///
+  /// In pt, this message translates to:
+  /// **'Seguro frete'**
+  String get freightInsurance;
+
+  /// No description provided for @additionalExpenses.
+  ///
+  /// In pt, this message translates to:
+  /// **'Despesas acessórias'**
+  String get additionalExpenses;
+
+  /// No description provided for @ipi.
+  ///
+  /// In pt, this message translates to:
+  /// **'IPI'**
+  String get ipi;
+
+  /// No description provided for @destinationIcms.
+  ///
+  /// In pt, this message translates to:
+  /// **'ICMS destino'**
+  String get destinationIcms;
+
+  /// No description provided for @originIcms.
+  ///
+  /// In pt, this message translates to:
+  /// **'ICMS origem'**
+  String get originIcms;
+
+  /// No description provided for @povertyReductionFund.
+  ///
+  /// In pt, this message translates to:
+  /// **'Fundo de combate à pobreza'**
+  String get povertyReductionFund;
+
+  /// No description provided for @quantityShort.
+  ///
+  /// In pt, this message translates to:
+  /// **'Qtd'**
+  String get quantityShort;
+
+  /// No description provided for @amount.
+  ///
+  /// In pt, this message translates to:
+  /// **'Valor'**
+  String get amount;
+
+  /// No description provided for @total.
+  ///
+  /// In pt, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @cfop.
+  ///
+  /// In pt, this message translates to:
+  /// **'CFOP'**
+  String get cfop;
+
+  /// No description provided for @companyNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Empresa não encontrada'**
+  String get companyNotFound;
+
+  /// No description provided for @purchasePeriodTooLong.
+  ///
+  /// In pt, this message translates to:
+  /// **'A diferença do período não pode ser maior que 90 dias'**
+  String get purchasePeriodTooLong;
+
+  /// No description provided for @regularPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Venda'**
+  String get regularPrice;
+
+  /// No description provided for @offerPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Oferta'**
+  String get offerPrice;
+
+  /// No description provided for @replicateClass.
+  ///
+  /// In pt, this message translates to:
+  /// **'Classe'**
+  String get replicateClass;
+
+  /// No description provided for @replicateGrid.
+  ///
+  /// In pt, this message translates to:
+  /// **'Grade'**
+  String get replicateGrid;
+
+  /// No description provided for @replicateOperationalGroup.
+  ///
+  /// In pt, this message translates to:
+  /// **'Agrupamento operacional'**
+  String get replicateOperationalGroup;
+
+  /// No description provided for @replicatePackings.
+  ///
+  /// In pt, this message translates to:
+  /// **'Embalagens'**
+  String get replicatePackings;
+
+  /// No description provided for @noCurrentPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço praticado'**
+  String get noCurrentPrice;
+
+  /// No description provided for @noSuggestedPrice.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço sugerido'**
+  String get noSuggestedPrice;
+
+  /// No description provided for @lastAdjustedQuantity.
+  ///
+  /// In pt, this message translates to:
+  /// **'Última qtd alterada {direction}'**
+  String lastAdjustedQuantity(String direction);
+
+  /// No description provided for @purchaseDetailsWithDocument.
+  ///
+  /// In pt, this message translates to:
+  /// **'Detalhes da compra ({document})'**
+  String purchaseDetailsWithDocument(String document);
+
+  /// No description provided for @purchaseCancelledBy.
+  ///
+  /// In pt, this message translates to:
+  /// **'{user} cancelou essa compra'**
+  String purchaseCancelledBy(String user);
+
+  /// No description provided for @noCurrentPriceForType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço {priceType} {saleType} praticado'**
+  String noCurrentPriceForType(String priceType, String saleType);
+
+  /// No description provided for @noSuggestedPriceForType.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sem preço {priceType} {saleType} sugerido'**
+  String noSuggestedPriceForType(String priceType, String saleType);
 }
 
 class _AppLocalizationsDelegate

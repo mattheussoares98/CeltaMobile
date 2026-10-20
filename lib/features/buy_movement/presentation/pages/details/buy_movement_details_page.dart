@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/pages/details/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,9 +77,10 @@ class _BuyMovementDetailsPageState
       refreshProvider: provider,
       appBar: BaseAppBar(
         title: ((shallowBuyMovement?.documentNumber ?? 0) > 0)
-            ? 'Detalhes da compra (${shallowBuyMovement?.documentNumber ?? ''})'
-                  .hardcoded
-            : 'Detalhes da compra'.hardcoded,
+            ? context.l10n.purchaseDetailsWithDocument(
+                shallowBuyMovement?.documentNumber?.toString() ?? '',
+              )
+            : context.l10n.purchaseDetails,
         selectedEnterpriseCode: widget.enterpriseCode,
       ),
       floatingActionButton: ValueListenableBuilder<bool>(
@@ -88,7 +89,7 @@ class _BuyMovementDetailsPageState
           if (!shouldShow) return const SizedBox.shrink();
 
           return FloatingActionButton(
-            tooltip: 'Voltar ao topo'.hardcoded,
+            tooltip: context.l10n.backToTop,
             onPressed: _scrollToTop,
             child: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.arrow_up,

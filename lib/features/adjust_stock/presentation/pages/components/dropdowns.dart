@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,8 +48,8 @@ class Dropdowns extends ConsumerWidget {
         children: [
           BaseText(
             selectedJustification?.Descricao_JustMov == null
-                ? 'Sem justificativa'.hardcoded
-                : '${selectedJustification?.Descricao_JustMov}'.hardcoded,
+                ? context.l10n.noJustification
+                : '${selectedJustification?.Descricao_JustMov}',
             color: selectedJustification?.Descricao_JustMov == null
                 ? Colors.red
                 : context.theme.primaryColor,
@@ -58,8 +57,8 @@ class Dropdowns extends ConsumerWidget {
           ),
           BaseText(
             selectedStockType?.Nome_TipoEstoque == null
-                ? 'Sem origem'.hardcoded
-                : '${selectedStockType?.Nome_TipoEstoque}'.hardcoded,
+                ? context.l10n.noOrigin
+                : '${selectedStockType?.Nome_TipoEstoque}',
             color: selectedStockType?.Nome_TipoEstoque == null
                 ? Colors.red
                 : context.theme.primaryColorDark,

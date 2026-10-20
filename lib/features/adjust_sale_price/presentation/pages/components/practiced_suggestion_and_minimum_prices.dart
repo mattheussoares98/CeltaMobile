@@ -1,8 +1,8 @@
+import 'package:celta_inventario/features/adjust_sale_price/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,18 +69,19 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
         children: [
           RepaintBoundary(
             child: _SuggestionItem(
-              title: 'Praticado '.hardcoded,
+              title: context.l10n.currentPrice,
               value: practicedPrice,
-              emptyMessage:
-                  "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} praticado"
-                      .hardcoded,
+              emptyMessage: context.l10n.missingCurrentPrice(
+                selectedPriceType,
+                selectedSaleType,
+              ),
               anotherMessage:
                   minimumPrice != null &&
                       minimumPrice > 0 &&
                       practicedPrice != null &&
                       practicedPrice < minimumPrice
                   ? TextSpan(
-                      text: " MENOR QUE O MÍNIMO".hardcoded,
+                      text: context.l10n.belowMinimum,
                       style: context.theme.textTheme.titleSmall!.copyWith(
                         color: Colors.red,
                       ),
@@ -89,15 +90,16 @@ class PracticedSuggestionAndMinimumPrices extends ConsumerWidget {
             ),
           ),
           _SuggestionItem(
-            title: 'Sugerido '.hardcoded,
+            title: context.l10n.suggestedPrice,
             value: suggestionPrice,
-            emptyMessage:
-                "Sem preço ${selectedPriceType?.name.toLowerCase()} ${selectedSaleType?.name.toLowerCase()} sugerido"
-                    .hardcoded,
+            emptyMessage: context.l10n.missingSuggestedPrice(
+              selectedPriceType,
+              selectedSaleType,
+            ),
           ),
           if (minimumPrice != null && minimumPrice > 0)
             _SuggestionItem(
-              title: 'Mínimo '.hardcoded,
+              title: context.l10n.minimumPrice,
               value: minimumPrice,
               emptyMessage: "",
             ),
@@ -134,7 +136,7 @@ class _SuggestionItem extends StatelessWidget {
         style: context.theme.textTheme.titleSmall,
         children: [
           TextSpan(
-            text: "R\$ ".hardcoded,
+            text: "R\$ ",
             style: context.theme.textTheme.bodySmall?.copyWith(fontSize: 10),
           ),
           TextSpan(

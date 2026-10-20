@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/pages/shallow/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,7 +16,7 @@ class ShallowBuyMovementsPage extends ConsumerWidget {
       isScrollable: false,
       padding: const EdgeInsets.fromLTRB(Sizes.p8, Sizes.p8, Sizes.p8, 0),
       appBar: BaseAppBar(
-        title: 'Consulta de compras'.hardcoded,
+        title: context.l10n.coreModulesBuyMovement,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: Column(
@@ -51,9 +51,7 @@ class ShallowBuyMovementsPage extends ConsumerWidget {
                   data: (buyMovements) {
                     if (buyMovements?.isEmpty == true) {
                       return Center(
-                        child: BaseText.error(
-                          'Nenhuma compra foi encontrada'.hardcoded,
-                        ),
+                        child: BaseText.error(context.l10n.noPurchasesFound),
                       );
                     }
 

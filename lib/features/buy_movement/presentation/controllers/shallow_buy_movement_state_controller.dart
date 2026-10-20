@@ -6,7 +6,7 @@ import 'package:celta_inventario/core/providers/ec_request_params/ec_request_par
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,9 +26,7 @@ class ShallowBuyMovementStateController
     final ecParams = await ref.read(ecRequestParamsProvider().future);
 
     if (initialDate.difference(finalDate).inDays.abs() > 90) {
-      throw AppException(
-        'A diferença do período não pode ser maior que 90 dias'.hardcoded,
-      );
+      throw AppException.localized(CoreFailure.purchasePeriodTooLong);
     }
     LoadShallowBuyMovementParams params = LoadShallowBuyMovementParams(
       requestParams: ecParams,

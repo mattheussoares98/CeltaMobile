@@ -1,7 +1,6 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,7 +34,7 @@ class BuyMovementProductsItems extends ConsumerWidget {
                       texts: [
                         if (product.priceLookupCode?.isNotEmpty ?? false)
                           BaseText.title(
-                            '(${product.priceLookupCode!}) '.hardcoded,
+                            '(${product.priceLookupCode!}) ',
                             color: context.theme.primaryColor,
                           ),
                         BaseText.title(product.name ?? ''),
@@ -48,21 +47,21 @@ class BuyMovementProductsItems extends ConsumerWidget {
                     SummaryTable(
                       items: [
                         SummaryTableItem(
-                          title: 'Qtd'.hardcoded,
+                          title: context.l10n.quantityShort,
                           value: product.quantity,
                         ),
                         SummaryTableItem(
-                          title: 'Valor'.hardcoded,
+                          title: context.l10n.amount,
                           value: product.value,
                           isPrice: true,
                         ),
                         SummaryTableItem(
-                          title: 'Total'.hardcoded,
+                          title: context.l10n.total,
                           value: product.totalLiquid,
                           isPrice: true,
                         ),
                         SummaryTableItem(
-                          title: 'CFOP'.hardcoded,
+                          title: context.l10n.cfop,
                           value: product.fiscalCode,
                         ),
                       ],

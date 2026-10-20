@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +30,7 @@ class StartAndEndDates extends ConsumerWidget {
       if (selectedEndDate != null &&
           date != null &&
           selectedEndDate.isBefore(date)) {
-        showToastMessage(
-          'A data de início precisa ser anterior a data de término'.hardcoded,
-          type: ToastType.error,
-        );
+        showToastMessage(context.l10n.startBeforeEnd, type: ToastType.error);
       } else {
         ref
             .read(uIStateControllerProvider(plu).notifier)
@@ -46,10 +42,7 @@ class StartAndEndDates extends ConsumerWidget {
       if (selectedStartDate != null &&
           date != null &&
           selectedStartDate.isAfter(date)) {
-        showToastMessage(
-          'A data de término precisa ser após a data de início'.hardcoded,
-          type: ToastType.error,
-        );
+        showToastMessage(context.l10n.endAfterStart, type: ToastType.error);
       } else {
         ref
             .read(uIStateControllerProvider(plu).notifier)
@@ -62,7 +55,7 @@ class StartAndEndDates extends ConsumerWidget {
         children: [
           Expanded(
             child: _GetDateItem(
-              title: 'Início ',
+              title: context.l10n.startDate,
               enabled: true,
               isEndDate: false,
               currentSelectedDate: selectedStartDate,
@@ -73,7 +66,7 @@ class StartAndEndDates extends ConsumerWidget {
           Expanded(
             child: _GetDateItem(
               enabled: enableEndDate,
-              title: 'Término ',
+              title: context.l10n.endDate,
               isEndDate: true,
               currentSelectedDate: selectedEndDate,
               onDateChanged: changeEndDate,
@@ -125,7 +118,7 @@ class _GetDateItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(
-                  child: TitleWidget(title: title.hardcoded, enabled: enabled),
+                  child: TitleWidget(title: title, enabled: enabled),
                 ),
                 IconButton(
                   onPressed: !enabled ? null : updateDate,
@@ -143,7 +136,7 @@ class _GetDateItem extends StatelessWidget {
                 Expanded(
                   child: BaseText.bodyMedium(
                     currentSelectedDate == null && isEndDate
-                        ? "Não definido".hardcoded
+                        ? context.l10n.coreUsageTypeNotDefined
                         : (currentSelectedDate ?? now).formatDate(
                             DateFormatType.ddMMyyyyHHmm,
                           ),

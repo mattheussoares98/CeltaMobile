@@ -5,7 +5,6 @@ import 'package:celta_inventario/core/presentation/controllers/products/products
 import 'package:celta_inventario/core/presentation/controllers/stock/stock.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,7 +71,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
       n.showToastOnSuccess(
         context,
         previous: p,
-        message: 'Ajuste efetuado com sucesso'.hardcoded,
+        message: context.l10n.adjustmentCompleted,
       );
       n.doOnSuccess(p, () {
         quantityController.clear();
@@ -94,7 +93,7 @@ class _AdjustStocksPageState extends ConsumerState<AdjustStocksPage> {
         resizeToAvoidBottomInset: true,
         padding: const EdgeInsets.fromLTRB(Sizes.p8, 0, Sizes.p8, Sizes.p8),
         appBar: BaseAppBar(
-          title: 'Ajuste de estoque'.hardcoded,
+          title: context.l10n.coreBsResourceAdjustStock,
           selectedEnterpriseCode: widget.enterpriseCode,
         ),
         body: CustomScrollView(

@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/pages/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/routing/routing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +33,7 @@ class ShallowBuyMovementItems extends ConsumerWidget {
         if (buyMovements?.isEmpty == true) {
           return SliverFillRemaining(
             hasScrollBody: false,
-            child: Center(
-              child: BaseText.error('A compra não foi encontrado'.hardcoded),
-            ),
+            child: Center(child: BaseText.error(context.l10n.purchaseNotFound)),
           );
         }
 

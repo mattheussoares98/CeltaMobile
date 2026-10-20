@@ -6,7 +6,7 @@ import 'package:celta_inventario/core/data/datasource/user_session/user_session.
 import 'package:celta_inventario/core/data/models/models.dart';
 import 'package:celta_inventario/core/domain/repositories/enterprise/enterprise.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/features/auth/data/models/models.dart';
 
 class AuthRepositoryImpl implements IAuthRepository {
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements IAuthRepository {
       enterpriseName,
     );
     if (enterprise == null) {
-      throw AppException('Empresa não encontrada'.hardcoded);
+      throw AppException.localized(CoreFailure.companyNotFound);
     }
 
     final urlWorking = await soapUrlValidationDatasource.findWorkingUrl([

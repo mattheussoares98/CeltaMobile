@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,9 +45,9 @@ class _PriceFieldAndConfirmButtonState
 
     bool? confirmed = await showAlertDialog(
       context: context,
-      title: 'Confirmar?'.hardcoded,
-      cancelActionText: 'Cencelar'.hardcoded,
-      defaultActionText: 'Sim'.hardcoded,
+      title: context.l10n.confirmQuestion,
+      cancelActionText: context.l10n.cancel,
+      defaultActionText: context.l10n.yes,
     );
 
     if (confirmed != true) {
@@ -80,8 +79,8 @@ class _PriceFieldAndConfirmButtonState
                 controller: priceController,
                 focusNode: priceFocusNode,
                 maxLength: 10,
-                hintText: "Novo preço".hardcoded,
-                labelText: "Novo preço".hardcoded,
+                hintText: context.l10n.newPrice,
+                labelText: context.l10n.newPrice,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onFieldSubmitted: (_) => onPressed(),
                 keyboardType: const TextInputType.numberWithOptions(
@@ -105,7 +104,7 @@ class _PriceFieldAndConfirmButtonState
                   Padding(
                     padding: const EdgeInsets.only(top: Sizes.p8),
                     child: PrimaryButton(
-                      text: 'Confirmar'.hardcoded,
+                      text: context.l10n.confirm,
                       onPressed: onPressed,
                     ),
                   ),

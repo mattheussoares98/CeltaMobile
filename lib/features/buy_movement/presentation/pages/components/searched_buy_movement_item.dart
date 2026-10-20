@@ -2,7 +2,6 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/buy_movement/domain/entities/entities.dart';
 import 'package:celta_inventario/features/buy_movement/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,50 +34,50 @@ class SearchedBuyMovementItem extends StatelessWidget {
                 crossAxisAlignment: .stretch,
                 children: [
                   TitleAndSubTitle(
-                    title: 'Documento',
+                    title: context.l10n.document,
                     subTitle: buyMovement.documentNumber,
                   ),
                   if (buyMovement.userOfEntrance?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Usuário de entrada'.hardcoded,
+                      title: context.l10n.entranceUser,
                       subTitle: buyMovement.userOfEntrance?.name,
                     ),
                   if (buyMovement.dateOfCreation != null)
                     TitleAndSubTitle(
-                      title: 'Criado em'.hardcoded,
+                      title: context.l10n.createdOn,
                       subTitle: buyMovement.dateOfCreation?.formatDate(
                         .ddMMyyyyHHmm,
                       ),
                     ),
                   if (buyMovement.dateOfEmission != null)
                     TitleAndSubTitle(
-                      title: 'Emitido em'.hardcoded,
+                      title: context.l10n.issuedOn,
                       subTitle: buyMovement.dateOfEmission?.formatDate(
                         .ddMMyyyyHHmm,
                       ),
                     ),
                   if (buyMovement.dateOfEntrance != null)
                     TitleAndSubTitle(
-                      title: 'Entrada em'.hardcoded,
+                      title: context.l10n.receivedOn,
                       subTitle: buyMovement.dateOfEntrance?.formatDate(
                         .ddMMyyyyHHmm,
                       ),
                     ),
                   if (buyMovement.buyers?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Compradores'.hardcoded,
+                      title: context.l10n.buyers,
                       subTitle: buyMovement.buyers
                           ?.map((e) => e.name)
                           .join('; '),
                     ),
                   if (buyMovement.supplier?.name?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Fornecedor'.hardcoded,
+                      title: context.l10n.supplier,
                       subTitle: buyMovement.supplier?.name,
                     ),
                   if (buyMovement.requests?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Pedidos'.hardcoded,
+                      title: context.l10n.orders,
                       subTitle: buyMovement.requests?.join('; '),
                     ),
                   if (onTapItem == null)
@@ -86,31 +85,28 @@ class SearchedBuyMovementItem extends StatelessWidget {
                     _SearchedBuyMovementSummary(processCode: buyMovement.code),
 
                   TitleAndSubTitle(
-                    title: 'Valor líquido'.hardcoded,
+                    title: context.l10n.netAmount,
                     subTitle: buyMovement.totalLiquid ?? 0,
                     subTitleIsPrice: true,
                   ),
                   if (buyMovement.observations?.isNotEmpty ?? false)
                     TitleAndSubTitle(
-                      title: 'Observações'.hardcoded,
+                      title: context.l10n.notes,
                       subTitle: buyMovement.observations,
                     ),
                   if (buyMovement.isCancelled == true &&
                       (buyMovement.userOfCancellation?.name?.isNotEmpty ??
                           false))
-                    BaseRichText(
-                      texts: [
-                        BaseText.error(
-                          buyMovement.userOfCancellation?.name ?? '',
-                        ),
-                        BaseText.error(' cancelou essa compra'.hardcoded),
-                      ],
+                    BaseText.error(
+                      context.l10n.purchaseCancelledBy(
+                        buyMovement.userOfCancellation?.name ?? '',
+                      ),
                     ),
                   if (onTapItem != null && PlatformUtil.isIOS)
                     Align(
                       alignment: .centerRight,
                       child: PrimaryTextButton(
-                        text: 'Detalhes'.hardcoded,
+                        text: context.l10n.details,
                         onPressed: onTapItem,
                         platformIcon: const PlatformIcon(
                           cupertinoIcon: CupertinoIcons.pencil,

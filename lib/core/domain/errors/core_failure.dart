@@ -17,6 +17,10 @@ enum CoreFailure {
   httpUnauthorized("Não autorizado. Por favor, faça login novamente"),
   httpForbidden("Acesso negado"),
   httpInvalidData("Dados inválidos"),
+  companyNotFound('Empresa não encontrada'),
+  purchasePeriodTooLong(
+    'A diferença do período não pode ser maior que 90 dias',
+  ),
   cannotOpenUrl('Não foi possível abrir {url}');
 
   const CoreFailure(this.fallback);

@@ -1,8 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/transfer_justification/transfer_justification.dart';
 import 'package:celta_inventario/features/adjust_stock/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,7 +47,7 @@ class JustificationsDropdown extends ConsumerWidget {
             },
             validator: (value) {
               if (value == null) {
-                return 'Justificativa obrigatória'.hardcoded;
+                return context.l10n.justificationRequired;
               }
               return null;
             },
@@ -58,7 +58,7 @@ class JustificationsDropdown extends ConsumerWidget {
               );
             }).toList(),
             selectedItem: selectedJustification,
-            label: 'Justificativas'.hardcoded,
+            label: context.l10n.justifications,
             isSimple: true,
           );
         },

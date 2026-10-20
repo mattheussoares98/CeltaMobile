@@ -18,103 +18,103 @@ class _SearchedBuyMovementSummary extends ConsumerWidget {
                 buyMovementDetails.totalLiquid &&
             (buyMovementDetails.totalBruteFromProductsAndServices ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Total bruto produtos/serviços'.hardcoded,
+            title: context.l10n.grossProductsServicesTotal,
             subTitle: buyMovementDetails.totalBruteFromProductsAndServices,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalDiscount ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Total de descontos'.hardcoded,
+            title: context.l10n.totalDiscounts,
             subTitle: buyMovementDetails.totalDiscount,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalCompensation ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Compensações'.hardcoded,
+            title: context.l10n.offsets,
             subTitle: buyMovementDetails.totalCompensation,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalIncrement ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Acréscimo'.hardcoded,
+            title: context.l10n.surcharge,
             subTitle: buyMovementDetails.totalIncrement,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalDeliveryTax ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Taxa de entrega'.hardcoded,
+            title: context.l10n.deliveryFee,
             subTitle: buyMovementDetails.totalDeliveryTax,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsAndIssBase ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Base de ICMS e ISS'.hardcoded,
+            title: context.l10n.icmsIssBase,
             subTitle: buyMovementDetails.icmsAndIssBase,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsAndIssValue ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Valor de ICMS e ISS'.hardcoded,
+            title: context.l10n.icmsIssAmount,
             subTitle: buyMovementDetails.icmsAndIssValue,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsSubstituteBase ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Base ICMS substituto'.hardcoded,
+            title: context.l10n.icmsStBase,
             subTitle: buyMovementDetails.icmsSubstituteBase,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsSubstituteValueOnFiscalNote ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Valor ICMS substituto nota fiscal'.hardcoded,
+            title: context.l10n.invoiceIcmsStAmount,
             subTitle: buyMovementDetails.icmsSubstituteValueOnFiscalNote,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsSubstituteValueOnGnre ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Valor ICMS substituto GNRE'.hardcoded,
+            title: context.l10n.gnreIcmsStAmount,
             subTitle: buyMovementDetails.icmsSubstituteValueOnGnre,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.fcpSubstituteValue ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Valor FCP substituto'.hardcoded,
+            title: context.l10n.fcpStAmount,
             subTitle: buyMovementDetails.fcpSubstituteValue,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalLiquidOfFreight ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Frete'.hardcoded,
+            title: context.l10n.freight,
             subTitle: buyMovementDetails.totalLiquidOfFreight,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalSecurityOfFreight ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Seguro frete'.hardcoded,
+            title: context.l10n.freightInsurance,
             subTitle: buyMovementDetails.totalSecurityOfFreight,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.totalExpenseAccessory ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'Despesas acessórias'.hardcoded,
+            title: context.l10n.additionalExpenses,
             subTitle: buyMovementDetails.totalExpenseAccessory,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.ipiValue ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'IPI'.hardcoded,
+            title: context.l10n.ipi,
             subTitle: buyMovementDetails.ipiValue,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsValueAtDestiny ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'ICMS destino'.hardcoded,
+            title: context.l10n.destinationIcms,
             subTitle: buyMovementDetails.icmsValueAtDestiny,
             subTitleIsPrice: true,
           ),
         if ((buyMovementDetails.icmsValueAtOrigin ?? 0) > 0)
           TitleAndSubTitle(
-            title: 'ICMS origem'.hardcoded,
+            title: context.l10n.originIcms,
             subTitle: buyMovementDetails.icmsValueAtOrigin,
             subTitleIsPrice: true,
           ),
@@ -122,7 +122,7 @@ class _SearchedBuyMovementSummary extends ConsumerWidget {
                 0) >
             0)
           TitleAndSubTitle(
-            title: 'Fundo de combate à pobreza'.hardcoded,
+            title: context.l10n.povertyReductionFund,
             subTitle:
                 buyMovementDetails.totalFundToCombatPovertyStateDestinyValue,
             subTitleIsPrice: true,

@@ -552,4 +552,298 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get share => 'Share';
+
+  @override
+  String get stockRequired => 'Stock is required';
+
+  @override
+  String get destinationStock => 'Destination stock';
+
+  @override
+  String get adjustmentCompleted => 'Adjustment completed successfully';
+
+  @override
+  String get replacementCost => 'Replacement cost';
+
+  @override
+  String get changeReplacementCost => 'Change replacement cost';
+
+  @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get confirmQuestion => 'Confirm?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get newPrice => 'New price';
+
+  @override
+  String get startBeforeEnd => 'The start date must be before the end date';
+
+  @override
+  String get endAfterStart => 'The end date must be after the start date';
+
+  @override
+  String get startDate => 'Start';
+
+  @override
+  String get endDate => 'End';
+
+  @override
+  String get saleType => 'Sales channel';
+
+  @override
+  String get priceTypeLabel => 'Price type';
+
+  @override
+  String get replicationParameters => 'Replication settings';
+
+  @override
+  String get loadSchedules => 'Load schedules';
+
+  @override
+  String get refreshSchedules => 'Refresh schedules';
+
+  @override
+  String get noSchedulesFound => 'No schedules found';
+
+  @override
+  String get createdBy => 'Created by';
+
+  @override
+  String get origin => 'Origin';
+
+  @override
+  String get changedOn => 'Changed on';
+
+  @override
+  String get scheduledFor => 'Scheduled for';
+
+  @override
+  String get changedByClass => 'Changed by class';
+
+  @override
+  String get changedByPackings => 'Changed by packaging';
+
+  @override
+  String get changedByGrid => 'Changed by variant grid';
+
+  @override
+  String get willUpdateClassPrice => 'Will update the class price';
+
+  @override
+  String get willUpdateOperationalGroupPrice =>
+      'Will update prices for the enterprises\' operational group';
+
+  @override
+  String get currentPrice => 'Current';
+
+  @override
+  String get suggestedPrice => 'Suggested';
+
+  @override
+  String get minimumPrice => 'Minimum';
+
+  @override
+  String get belowMinimum => ' BELOW MINIMUM';
+
+  @override
+  String get priceAdjustmentProducts => 'Products (price adjustment)';
+
+  @override
+  String get priceChangedSuccessfully => 'Price changed successfully';
+
+  @override
+  String get attention => 'Attention!';
+
+  @override
+  String get selectJustificationAndStock =>
+      'Select a justification and a stock!';
+
+  @override
+  String get justificationRequired => 'Justification is required';
+
+  @override
+  String get justifications => 'Justifications';
+
+  @override
+  String get noJustification => 'No justification';
+
+  @override
+  String get noOrigin => 'No origin';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get noPurchasesFound => 'No purchases found';
+
+  @override
+  String get purchaseNotFound => 'Purchase not found';
+
+  @override
+  String get purchaseDetails => 'Purchase details';
+
+  @override
+  String get backToTop => 'Back to top';
+
+  @override
+  String get document => 'Document';
+
+  @override
+  String get entranceUser => 'Receiving user';
+
+  @override
+  String get createdOn => 'Created on';
+
+  @override
+  String get issuedOn => 'Issued on';
+
+  @override
+  String get receivedOn => 'Received on';
+
+  @override
+  String get buyers => 'Buyers';
+
+  @override
+  String get supplier => 'Supplier';
+
+  @override
+  String get orders => 'Orders';
+
+  @override
+  String get netAmount => 'Net amount';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get details => 'Details';
+
+  @override
+  String get grossProductsServicesTotal => 'Gross products/services total';
+
+  @override
+  String get totalDiscounts => 'Total discounts';
+
+  @override
+  String get offsets => 'Offsets';
+
+  @override
+  String get surcharge => 'Surcharge';
+
+  @override
+  String get deliveryFee => 'Delivery fee';
+
+  @override
+  String get icmsIssBase => 'ICMS and ISS base';
+
+  @override
+  String get icmsIssAmount => 'ICMS and ISS amount';
+
+  @override
+  String get icmsStBase => 'ICMS-ST base';
+
+  @override
+  String get invoiceIcmsStAmount => 'Invoice ICMS-ST amount';
+
+  @override
+  String get gnreIcmsStAmount => 'GNRE ICMS-ST amount';
+
+  @override
+  String get fcpStAmount => 'FCP-ST amount';
+
+  @override
+  String get freight => 'Freight';
+
+  @override
+  String get freightInsurance => 'Freight insurance';
+
+  @override
+  String get additionalExpenses => 'Additional expenses';
+
+  @override
+  String get ipi => 'IPI';
+
+  @override
+  String get destinationIcms => 'Destination ICMS';
+
+  @override
+  String get originIcms => 'Origin ICMS';
+
+  @override
+  String get povertyReductionFund => 'Poverty reduction fund';
+
+  @override
+  String get quantityShort => 'Qty';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get cfop => 'CFOP';
+
+  @override
+  String get companyNotFound => 'Company not found';
+
+  @override
+  String get purchasePeriodTooLong => 'The date range cannot exceed 90 days';
+
+  @override
+  String get regularPrice => 'Regular';
+
+  @override
+  String get offerPrice => 'Offer';
+
+  @override
+  String get replicateClass => 'Class';
+
+  @override
+  String get replicateGrid => 'Variant grid';
+
+  @override
+  String get replicateOperationalGroup => 'Operational group';
+
+  @override
+  String get replicatePackings => 'Packaging';
+
+  @override
+  String get noCurrentPrice => 'No current price';
+
+  @override
+  String get noSuggestedPrice => 'No suggested price';
+
+  @override
+  String lastAdjustedQuantity(String direction) {
+    return 'Last adjusted quantity $direction';
+  }
+
+  @override
+  String purchaseDetailsWithDocument(String document) {
+    return 'Purchase details ($document)';
+  }
+
+  @override
+  String purchaseCancelledBy(String user) {
+    return '$user cancelled this purchase';
+  }
+
+  @override
+  String noCurrentPriceForType(String priceType, String saleType) {
+    return 'No current $priceType price for $saleType';
+  }
+
+  @override
+  String noSuggestedPriceForType(String priceType, String saleType) {
+    return 'No suggested $priceType price for $saleType';
+  }
 }

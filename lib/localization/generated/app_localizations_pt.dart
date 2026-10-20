@@ -559,4 +559,301 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get share => 'Compartilhar';
+
+  @override
+  String get stockRequired => 'Estoque obrigatório';
+
+  @override
+  String get destinationStock => 'Estoque de destino';
+
+  @override
+  String get adjustmentCompleted => 'Ajuste efetuado com sucesso';
+
+  @override
+  String get replacementCost => 'Custo de reposição';
+
+  @override
+  String get changeReplacementCost => 'Alterar custo de reposição';
+
+  @override
+  String get confirm => 'Confirmar';
+
+  @override
+  String get confirmQuestion => 'Confirmar?';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get yes => 'Sim';
+
+  @override
+  String get newPrice => 'Novo preço';
+
+  @override
+  String get startBeforeEnd =>
+      'A data de início precisa ser anterior a data de término';
+
+  @override
+  String get endAfterStart =>
+      'A data de término precisa ser após a data de início';
+
+  @override
+  String get startDate => 'Início';
+
+  @override
+  String get endDate => 'Término';
+
+  @override
+  String get saleType => 'Tipo de venda';
+
+  @override
+  String get priceTypeLabel => 'Tipo de preço';
+
+  @override
+  String get replicationParameters => 'Parâmetros de replicação';
+
+  @override
+  String get loadSchedules => 'Obter agendamentos';
+
+  @override
+  String get refreshSchedules => 'Atualizar agendamentos';
+
+  @override
+  String get noSchedulesFound => 'Nenhum agendamento foi encontrado';
+
+  @override
+  String get createdBy => 'Criado por';
+
+  @override
+  String get origin => 'Origem';
+
+  @override
+  String get changedOn => 'Alterado em';
+
+  @override
+  String get scheduledFor => 'Será executado em';
+
+  @override
+  String get changedByClass => 'Alterado via classe';
+
+  @override
+  String get changedByPackings => 'Alterado por embalagens';
+
+  @override
+  String get changedByGrid => 'Alterado por grade';
+
+  @override
+  String get willUpdateClassPrice => 'Vai alterar o preço da classe';
+
+  @override
+  String get willUpdateOperationalGroupPrice =>
+      'Vai alterar preço do agrupamento operacional das empresas';
+
+  @override
+  String get currentPrice => 'Praticado';
+
+  @override
+  String get suggestedPrice => 'Sugerido';
+
+  @override
+  String get minimumPrice => 'Mínimo';
+
+  @override
+  String get belowMinimum => ' MENOR QUE O MÍNIMO';
+
+  @override
+  String get priceAdjustmentProducts => 'Produtos (ajuste de preços)';
+
+  @override
+  String get priceChangedSuccessfully => 'Preço alterado com sucesso';
+
+  @override
+  String get attention => 'Atenção!';
+
+  @override
+  String get selectJustificationAndStock =>
+      'Você precisa selecionar a justificativa e o estoque!';
+
+  @override
+  String get justificationRequired => 'Justificativa obrigatória';
+
+  @override
+  String get justifications => 'Justificativas';
+
+  @override
+  String get noJustification => 'Sem justificativa';
+
+  @override
+  String get noOrigin => 'Sem origem';
+
+  @override
+  String get quantity => 'Quantidade';
+
+  @override
+  String get noPurchasesFound => 'Nenhuma compra foi encontrada';
+
+  @override
+  String get purchaseNotFound => 'A compra não foi encontrada';
+
+  @override
+  String get purchaseDetails => 'Detalhes da compra';
+
+  @override
+  String get backToTop => 'Voltar ao topo';
+
+  @override
+  String get document => 'Documento';
+
+  @override
+  String get entranceUser => 'Usuário de entrada';
+
+  @override
+  String get createdOn => 'Criado em';
+
+  @override
+  String get issuedOn => 'Emitido em';
+
+  @override
+  String get receivedOn => 'Entrada em';
+
+  @override
+  String get buyers => 'Compradores';
+
+  @override
+  String get supplier => 'Fornecedor';
+
+  @override
+  String get orders => 'Pedidos';
+
+  @override
+  String get netAmount => 'Valor líquido';
+
+  @override
+  String get notes => 'Observações';
+
+  @override
+  String get details => 'Detalhes';
+
+  @override
+  String get grossProductsServicesTotal => 'Total bruto produtos/serviços';
+
+  @override
+  String get totalDiscounts => 'Total de descontos';
+
+  @override
+  String get offsets => 'Compensações';
+
+  @override
+  String get surcharge => 'Acréscimo';
+
+  @override
+  String get deliveryFee => 'Taxa de entrega';
+
+  @override
+  String get icmsIssBase => 'Base de ICMS e ISS';
+
+  @override
+  String get icmsIssAmount => 'Valor de ICMS e ISS';
+
+  @override
+  String get icmsStBase => 'Base ICMS substituto';
+
+  @override
+  String get invoiceIcmsStAmount => 'Valor ICMS substituto nota fiscal';
+
+  @override
+  String get gnreIcmsStAmount => 'Valor ICMS substituto GNRE';
+
+  @override
+  String get fcpStAmount => 'Valor FCP substituto';
+
+  @override
+  String get freight => 'Frete';
+
+  @override
+  String get freightInsurance => 'Seguro frete';
+
+  @override
+  String get additionalExpenses => 'Despesas acessórias';
+
+  @override
+  String get ipi => 'IPI';
+
+  @override
+  String get destinationIcms => 'ICMS destino';
+
+  @override
+  String get originIcms => 'ICMS origem';
+
+  @override
+  String get povertyReductionFund => 'Fundo de combate à pobreza';
+
+  @override
+  String get quantityShort => 'Qtd';
+
+  @override
+  String get amount => 'Valor';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get cfop => 'CFOP';
+
+  @override
+  String get companyNotFound => 'Empresa não encontrada';
+
+  @override
+  String get purchasePeriodTooLong =>
+      'A diferença do período não pode ser maior que 90 dias';
+
+  @override
+  String get regularPrice => 'Venda';
+
+  @override
+  String get offerPrice => 'Oferta';
+
+  @override
+  String get replicateClass => 'Classe';
+
+  @override
+  String get replicateGrid => 'Grade';
+
+  @override
+  String get replicateOperationalGroup => 'Agrupamento operacional';
+
+  @override
+  String get replicatePackings => 'Embalagens';
+
+  @override
+  String get noCurrentPrice => 'Sem preço praticado';
+
+  @override
+  String get noSuggestedPrice => 'Sem preço sugerido';
+
+  @override
+  String lastAdjustedQuantity(String direction) {
+    return 'Última qtd alterada $direction';
+  }
+
+  @override
+  String purchaseDetailsWithDocument(String document) {
+    return 'Detalhes da compra ($document)';
+  }
+
+  @override
+  String purchaseCancelledBy(String user) {
+    return '$user cancelou essa compra';
+  }
+
+  @override
+  String noCurrentPriceForType(String priceType, String saleType) {
+    return 'Sem preço $priceType $saleType praticado';
+  }
+
+  @override
+  String noSuggestedPriceForType(String priceType, String saleType) {
+    return 'Sem preço $priceType $saleType sugerido';
+  }
 }

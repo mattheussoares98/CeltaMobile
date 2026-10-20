@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -85,8 +84,8 @@ class _LoadSchedules extends StatelessWidget {
         children: [
           PrimaryTextButton(
             text: schedules == null
-                ? 'Obter agendamentos'.hardcoded
-                : 'Atualizar agendamentos'.hardcoded,
+                ? context.l10n.loadSchedules
+                : context.l10n.refreshSchedules,
             platformIcon: const PlatformIcon(
               cupertinoIcon: CupertinoIcons.timer,
               materialIcon: Icons.timer_outlined,
@@ -95,10 +94,7 @@ class _LoadSchedules extends StatelessWidget {
           ),
           if (schedules?.isEmpty == true) ...[
             gapH8,
-            BaseText.title(
-              'Nenhum agendamento foi encontrado'.hardcoded,
-              color: Colors.red,
-            ),
+            BaseText.title(context.l10n.noSchedulesFound, color: Colors.red),
           ],
         ],
       ),
@@ -121,58 +117,56 @@ class _ScheduleItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleAndSubTitle(
-                title: 'Criado por '.hardcoded,
+                title: context.l10n.createdBy,
                 subTitle: schedule.User,
               ),
               TitleAndSubTitle(
-                title: 'Tipo de preço '.hardcoded,
+                title: context.l10n.priceTypeLabel,
                 subTitle: schedule.PriceTypeString,
               ),
               TitleAndSubTitle(
-                title: 'Origem '.hardcoded,
+                title: context.l10n.origin,
                 subTitle: schedule.OriginString,
               ),
               TitleAndSubTitle(
-                title: 'Alterado em '.hardcoded,
+                title: context.l10n.changedOn,
                 subTitle: schedule.Date.formatDate(DateFormatType.ddMMyyyyHHmm),
               ),
               TitleAndSubTitle(
-                title: 'Será executado em '.hardcoded,
+                title: context.l10n.scheduledFor,
                 subTitle: schedule.ExecutionDate.formatDate(
                   DateFormatType.ddMMyyyyHHmm,
                 ),
               ),
               TitleAndSubTitle(
-                title: 'Novo preço '.hardcoded,
+                title: context.l10n.newPrice,
                 subTitle: schedule.OriginalPrice,
                 subTitleIsPrice: true,
               ),
               if (schedule.AlteredByClass)
                 TitleAndSubTitle(
-                  title: "Alterado via classe".hardcoded,
+                  title: context.l10n.changedByClass,
                   subTitle: null,
                 ),
               if (schedule.AlteredByPackings)
                 TitleAndSubTitle(
-                  title: "Alterado por embalagens".hardcoded,
+                  title: context.l10n.changedByPackings,
                   subTitle: null,
                 ),
               if (schedule.AlteredByGrid)
                 TitleAndSubTitle(
-                  title: "Alterado por grade".hardcoded,
+                  title: context.l10n.changedByGrid,
 
                   subTitle: null,
                 ),
               if (schedule.UpdateClass)
                 TitleAndSubTitle(
-                  title: "Vai alterar o preço da classe".hardcoded,
+                  title: context.l10n.willUpdateClassPrice,
                   subTitle: null,
                 ),
               if (schedule.UpdateEnterpriseOperationalGroup)
                 TitleAndSubTitle(
-                  title:
-                      "Vai alterar preço do agrupamento operacional das empresas"
-                          .hardcoded,
+                  title: context.l10n.willUpdateOperationalGroupPrice,
                   subTitle: null,
                 ),
             ],

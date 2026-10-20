@@ -1,10 +1,10 @@
+import 'package:celta_inventario/features/adjust_sale_price/presentation/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/adjust_sale_price/domain/entities/entities.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/adjust_sale_price/presentation/pages/components/components.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/selected_enterprise_state_controller.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,13 +46,13 @@ class SalesTypeWidget extends ConsumerWidget {
 
     return Column(
       children: [
-        TitleWidget(title: "Tipo de venda".hardcoded),
+        TitleWidget(title: context.l10n.saleType),
         gapH8,
         if (PlatformUtil.isCupertino)
           BaseSegmentedButtons<SaleType>(
             items: items,
             selectedValue: selectedSaleType,
-            itemLabelBuilder: (item) => item.name,
+            itemLabelBuilder: (item) => context.l10n.saleTypeName(item),
             onChanged: updateValue,
           )
         else
@@ -76,7 +76,7 @@ class SalesTypeWidget extends ConsumerWidget {
                     children: items
                         .map(
                           (e) => Flexible(
-                            flex: e.name.length,
+                            flex: context.l10n.saleTypeName(e).length,
                             child: _SaleTypeItem(
                               key: ValueKey('sale_item_${e.name}'),
                               saleType: e,
@@ -105,7 +105,7 @@ class _SaleTypeItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(child: BaseText(saleType.name)),
+            Flexible(child: BaseText(context.l10n.saleTypeName(saleType))),
             Radio(value: saleType),
           ],
         ),
