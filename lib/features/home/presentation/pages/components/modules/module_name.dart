@@ -1,3 +1,4 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class ModuleName extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p4),
       child: Text(
-        module.description,
+        context.l10n.moduleName(module),
         textAlign: TextAlign.center,
         style: context.theme.textTheme.titleSmall?.copyWith(
           fontWeight: FontWeight.w600,

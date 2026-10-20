@@ -2,7 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/discount_presentation_extensions.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/components/product_summary/summary_tooltip.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,8 @@ class CartSummaryTable extends StatelessWidget {
           isPrice: true,
           trailing: SummaryTooltip(
             message:
-                'Preço ${practicedPrice.description.toLowerCase()}'.hardcoded,
+                'Preço ${context.l10n.priceTypeName(practicedPrice).toLowerCase()}'
+                    .hardcoded,
             text: practicedPrice.abbreviation,
           ),
         ),

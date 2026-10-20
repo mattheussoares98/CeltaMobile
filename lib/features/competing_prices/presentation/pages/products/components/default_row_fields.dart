@@ -2,7 +2,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/pages/products/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +41,7 @@ class DefaultRowFields extends StatelessWidget {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: FormValidators.compose([
               NumberValidator(
+                translations: context.l10n,
                 allowDecimal: true,
                 allowEmptyValue: true,
                 needsBeGreaterThanZero: false,
@@ -63,6 +64,7 @@ class DefaultRowFields extends StatelessWidget {
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             validator: FormValidators.compose([
               NumberValidator(
+                translations: context.l10n,
                 allowDecimal: true,
                 allowEmptyValue: true,
                 needsBeGreaterThanZero: false,

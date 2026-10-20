@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/pages/search_sale_request/components/filters/filters.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -42,6 +43,7 @@ class EndDateField extends StatelessWidget {
       ),
       validator: FormValidators.compose([
         DateValidator(
+          translations: context.l10n,
           minimumDate: minimumDate,
           maximumDate: now,
           allowEmptyDate: true,

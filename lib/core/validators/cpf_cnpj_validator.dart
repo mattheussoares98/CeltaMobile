@@ -1,10 +1,15 @@
 import 'package:cpf_cnpj_validator/cnpj_validator.dart';
 import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class CpfCnpjValidator implements StringValidator {
+  CpfCnpjValidator({AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
+
   @override
   String get errorMessage => _errorMessage;
   String _errorMessage = '';
@@ -12,23 +17,23 @@ class CpfCnpjValidator implements StringValidator {
   @override
   bool isValid(String? value) {
     if (value == null || value.isEmpty) {
-      _errorMessage = 'Campo obrigatório'.hardcoded;
+      _errorMessage = translations.requiredField;
       return false;
     } else if (int.tryParse(value) == null) {
-      _errorMessage = 'Digite somente números'.hardcoded;
+      _errorMessage = translations.digitsOnly;
       return false;
     } else if (value.length < 11) {
-      _errorMessage = 'Campo muito curto'.hardcoded;
+      _errorMessage = translations.fieldTooShort;
       return false;
     } else if (value.length == 11) {
       bool cpfIsValid = CPFValidator.isValid(value);
 
-      _errorMessage = cpfIsValid ? '' : 'CPF inválido'.hardcoded;
+      _errorMessage = cpfIsValid ? '' : translations.invalidCpf;
       return cpfIsValid;
     } else {
       bool cnpjIsValid = CNPJValidator.isValid(value);
 
-      _errorMessage = cnpjIsValid ? '' : 'CNPJ inválido'.hardcoded;
+      _errorMessage = cnpjIsValid ? '' : translations.invalidCnpj;
       return cnpjIsValid;
     }
   }

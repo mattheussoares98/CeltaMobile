@@ -1,3 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -135,7 +137,7 @@ class _Error extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BaseText.bodySmall(
-              parseErrorMessage(e),
+              parseErrorMessage(e, translations: context.l10n),
               textAlign: TextAlign.center,
               maxLines: maxLines,
               color: Colors.red,

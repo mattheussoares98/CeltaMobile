@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class DateValidator implements StringValidator {
@@ -10,14 +10,17 @@ class DateValidator implements StringValidator {
   final bool includeDay;
 
   DateValidator({
+    AppLocalizations? translations,
     required this.minimumDate,
     required this.maximumDate,
     this.allowEmptyDate,
     this.includeDay = true,
-  });
+  }) : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
 
   @override
-  String get errorMessage => _errorMessage.hardcoded;
+  String get errorMessage => _errorMessage;
   String _errorMessage = '';
 
   List<DateFormat> get _acceptedFormats => [
@@ -44,7 +47,7 @@ class DateValidator implements StringValidator {
     }
 
     if (parsedDate == null) {
-      _errorMessage = 'Data inválida'.hardcoded;
+      _errorMessage = translations.invalidDate;
       return false;
     }
 
@@ -80,9 +83,10 @@ class DateValidator implements StringValidator {
     if (normalizedParsedDate.isBefore(normalizedStartDate) ||
         normalizedParsedDate.isAfter(normalizedEndDate)) {
       final formatter = DateFormat(includeDay ? 'dd/MM/yyyy' : 'MM/yyyy');
-      _errorMessage =
-          'Período inválido. ${formatter.format(minimumDate)} ~ ${formatter.format(maximumDate)}'
-              .hardcoded;
+      _errorMessage = translations.invalidDateRange(
+        formatter.format(minimumDate),
+        formatter.format(maximumDate),
+      );
       return false;
     }
 

@@ -1,7 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -127,8 +127,8 @@ class _IpToPrintForm extends ConsumerWidget {
                   FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                 ],
                 validator: FormValidators.compose([
-                  const NonEmptyValidator(),
-                  IpValidator(),
+                  NonEmptyValidator(translations: context.l10n),
+                  IpValidator(translations: context.l10n),
                 ]),
                 keyboardType: TextInputType.datetime,
               ),

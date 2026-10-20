@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -17,7 +17,7 @@ class ValidatedUserSession extends _$ValidatedUserSession {
     if (userSession == null ||
         userSession.user.CrossIdentity_Usuario == null ||
         userSession.user.AccessKey == null) {
-      throw AppException('Sessão inválida. Efetue o login novamente'.hardcoded);
+      throw AppException.localized(CoreFailure.invalidSession);
     }
 
     final supabaseEnterprise = await ref

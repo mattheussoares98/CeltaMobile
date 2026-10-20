@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,8 +138,11 @@ class _ValueFieldAndConfirmButtonState
                 },
                 autovalidateMode: AutovalidateMode.onUserInteractionIfError,
                 validator: FormValidators.compose([
-                  const NonEmptyValidator(),
-                  NumberValidator(allowDecimal: true),
+                  NonEmptyValidator(translations: context.l10n),
+                  NumberValidator(
+                    translations: context.l10n,
+                    allowDecimal: true,
+                  ),
                 ]),
               );
             },

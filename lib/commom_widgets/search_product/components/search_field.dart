@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/commom_widgets/search_product/components/components.dart';
 import 'package:celta_inventario/commom_widgets/search_product/mixin/mixin.dart';
@@ -6,7 +7,7 @@ import 'package:celta_inventario/core/presentation/controllers/bs_version/bs_ver
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -85,9 +86,12 @@ class _SearchFieldState extends ConsumerState<SearchField>
               focusNode: widget.focusNode,
               validator: FormValidators.compose([
                 if (widget.allowEmptySearchValue != true)
-                  const NonEmptyValidator(),
+                  NonEmptyValidator(translations: context.l10n),
                 if (pref == SearchProductTypePreference.ean)
-                  NumberValidator(allowDecimal: false),
+                  NumberValidator(
+                    translations: context.l10n,
+                    allowDecimal: false,
+                  ),
               ]),
               onFieldSubmitted: (_) => onSearch(
                 formKey,

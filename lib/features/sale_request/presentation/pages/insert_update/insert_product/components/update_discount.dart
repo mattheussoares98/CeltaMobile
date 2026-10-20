@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +24,10 @@ class AddDiscount extends ConsumerWidget {
     this.onFieldSubmitted,
   });
 
-  Future<bool> _confirmRemoveAutomaticDiscounts(BuildContext context, WidgetRef ref) async {
+  Future<bool> _confirmRemoveAutomaticDiscounts(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
     final product = ref.read(currentProductItemProvider);
     final uiProvider = insertProductUIControllerProvider(product);
     final hasNonManual = ref.read(uiProvider.notifier).hasNonManualDiscounts;
@@ -44,7 +47,11 @@ class AddDiscount extends ConsumerWidget {
     return proceed == true;
   }
 
-  void _updateDiscount(BuildContext context, WidgetRef ref, [String? value]) async {
+  void _updateDiscount(
+    BuildContext context,
+    WidgetRef ref, [
+    String? value,
+  ]) async {
     if (formKey.currentState!.validate() != true) return;
 
     final proceed = await _confirmRemoveAutomaticDiscounts(context, ref);
@@ -57,16 +64,17 @@ class AddDiscount extends ConsumerWidget {
 
     ref
         .read(uiProvider.notifier)
-        .updateDiscount(
-          value: controller.text.toDouble() ?? 0,
-          type: type,
-        );
+        .updateDiscount(value: controller.text.toDouble() ?? 0, type: type);
     if (context.mounted && onFieldSubmitted == null) {
       FocusScope.of(context).nextFocus();
     }
   }
 
-  void _onTypeChanged(BuildContext context, WidgetRef ref, PercentageOrValue type) async {
+  void _onTypeChanged(
+    BuildContext context,
+    WidgetRef ref,
+    PercentageOrValue type,
+  ) async {
     final proceed = await _confirmRemoveAutomaticDiscounts(context, ref);
     if (!proceed) return;
 
@@ -130,6 +138,7 @@ class AddDiscount extends ConsumerWidget {
                       onChanged: (_) => _updateDiscount(context, ref),
                       validator: FormValidators.compose([
                         NumberValidator(
+                          translations: context.l10n,
                           allowDecimal: true,
                           allowEmptyValue: true,
                           needsBeGreaterThanZero: false,

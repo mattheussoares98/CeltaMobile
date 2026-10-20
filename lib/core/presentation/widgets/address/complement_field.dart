@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class ComplementField extends StatelessWidget {
@@ -22,8 +22,8 @@ class ComplementField extends StatelessWidget {
       enabled: !isLoading,
       controller: complementController,
       focusNode: complementFocusNode,
-      labelText: 'Complemento'.hardcoded,
-      hintText: 'Complemento'.hardcoded,
+      labelText: context.l10n.complement,
+      hintText: context.l10n.complement,
       onFieldSubmitted: (_) {
         referenceFocusNode.requestFocus();
       },

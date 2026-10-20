@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class CityField extends StatelessWidget {
@@ -11,8 +11,8 @@ class CityField extends StatelessWidget {
     return BaseTextFormField(
       controller: cityController,
       enabled: false,
-      labelText: 'Cidade'.hardcoded,
-      hintText: 'Cidade'.hardcoded,
+      labelText: context.l10n.city,
+      hintText: context.l10n.city,
     );
   }
 }

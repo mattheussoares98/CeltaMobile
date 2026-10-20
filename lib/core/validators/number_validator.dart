@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class NumberValidator implements StringValidator {
@@ -8,11 +8,14 @@ class NumberValidator implements StringValidator {
   final bool? allowEmptyValue;
 
   NumberValidator({
+    AppLocalizations? translations,
     required this.allowDecimal,
     this.maxDecimalHouses = 2,
     this.needsBeGreaterThanZero = true,
     this.allowEmptyValue,
-  });
+  }) : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
 
   String? _errorMessage;
 
@@ -26,19 +29,19 @@ class NumberValidator implements StringValidator {
     }
 
     if (value == null || value.trim().isEmpty) {
-      _errorMessage = 'Campo obrigatório'.hardcoded;
+      _errorMessage = translations.requiredField;
       return false;
     }
 
     if (RegExp(r'[^\d,.]').hasMatch(value)) {
-      _errorMessage = 'Formato inválido'.hardcoded;
+      _errorMessage = translations.invalidFormat;
       return false;
     }
 
     final separatorCount =
         value.split('.').length - 1 + value.split(',').length - 1;
     if (separatorCount > 1) {
-      _errorMessage = 'Formato inválido'.hardcoded;
+      _errorMessage = translations.invalidFormat;
       return false;
     }
 
@@ -58,13 +61,13 @@ class NumberValidator implements StringValidator {
     final number = num.tryParse(normalizedValue);
 
     if (number == null) {
-      _errorMessage = 'Formato inválido'.hardcoded;
+      _errorMessage = translations.invalidFormat;
       return false;
     }
 
     // 3. If decimals are not allowed, check if the number is an integer
     if (!allowDecimal && number != number.truncate()) {
-      _errorMessage = 'Apenas números inteiros'.hardcoded;
+      _errorMessage = translations.integersOnly;
       return false;
     }
 
@@ -72,13 +75,13 @@ class NumberValidator implements StringValidator {
       // Get the part of the string after the decimal point
       final decimalPart = normalizedValue.split('.').last;
       if (decimalPart.length > maxDecimalHouses!) {
-        _errorMessage = 'Máx $maxDecimalHouses casas decimais'.hardcoded;
+        _errorMessage = translations.maxDecimalPlaces(maxDecimalHouses!);
         return false;
       }
     }
 
     if (needsBeGreaterThanZero && number <= 0) {
-      _errorMessage = 'Deve ser maior que zero'.hardcoded;
+      _errorMessage = translations.greaterThanZero;
       return false;
     }
 

@@ -1,6 +1,7 @@
+import 'package:celta_inventario/exceptions/exceptions.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'dart:convert';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -46,9 +47,7 @@ class SoapLoginDatasource implements ISoapLoginDatasource {
     if (json.decode(response) is Map<String, dynamic>) {
       return UserModel.fromJson(userUpdated);
     } else {
-      throw Exception(
-        'Ocorreu um erro não esperado para efetuar o login'.hardcoded,
-      );
+      throw AppException.localized(CoreFailure.unexpectedLoginError);
     }
   }
 }

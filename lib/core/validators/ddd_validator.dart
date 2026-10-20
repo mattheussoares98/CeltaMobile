@@ -1,9 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class DddValidator implements StringValidator {
+  DddValidator({AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
+
   @override
-  String get errorMessage => 'DDD inválido'.hardcoded;
+  String get errorMessage => translations.invalidAreaCode;
 
   /// A complete set of all valid DDDs in Brazil for fast lookups.
   static const Set<String> _validDdds = {

@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/competing_prices/domain/entities/entities.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -103,7 +103,9 @@ class _InsertUpdateResearchPageState
                 hintText: 'Nome'.hardcoded,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 maxLength: 100,
-                validator: FormValidators.compose([const NonEmptyValidator()]),
+                validator: FormValidators.compose([
+                  NonEmptyValidator(translations: context.l10n),
+                ]),
                 onFieldSubmitted: (_) {
                   observationsFocusNode.requestFocus();
                 },

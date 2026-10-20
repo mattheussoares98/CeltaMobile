@@ -1,9 +1,14 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class EmailValidator implements StringValidator {
+  EmailValidator({AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
+
   @override
-  String get errorMessage => 'Por favor, insira um e-mail válido'.hardcoded;
+  String get errorMessage => translations.invalidEmail;
 
   final RegExp _emailRegex = RegExp(
     r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',

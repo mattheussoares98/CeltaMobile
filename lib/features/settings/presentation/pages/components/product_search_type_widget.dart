@@ -2,7 +2,7 @@ import 'package:celta_inventario/commom_widgets/base_choice_chip.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/settings/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +33,8 @@ class ProductSearchTypeWidget extends StatelessWidget {
               return BaseChoiceChip<SearchProductTypePreference>(
                 items: SearchProductTypePreference.values,
                 selections: [?searchPreference],
-                itemLabelBuilder: (item) => item.name,
+                itemLabelBuilder: (item) =>
+                    context.l10n.searchPreferenceName(item),
                 onChanged: (searchPreference) async {
                   await ref
                       .read(appSettingsStateControllerProvider.notifier)

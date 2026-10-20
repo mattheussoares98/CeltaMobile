@@ -1,3 +1,4 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
@@ -11,7 +12,7 @@ class UrlLaunchDatasource implements IUrlLaunchDatasource {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      throw AppException('Não foi possível abrir $url');
+      throw AppException.localized(CoreFailure.cannotOpenUrl, [url]);
     }
   }
 }

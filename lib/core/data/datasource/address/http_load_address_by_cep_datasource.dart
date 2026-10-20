@@ -1,4 +1,4 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
@@ -17,7 +17,7 @@ class HttpLoadAddressByCepDatasource implements ILoadAddressByCepDatasource {
     );
 
     if ((response as Map).containsKey('erro')) {
-      throw AppException('Esse CEP não foi encontrado'.hardcoded);
+      throw AppException.localized(CoreFailure.postalCodeNotFound);
     }
 
     return SoapAddressModel.fromViaCep(response);

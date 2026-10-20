@@ -1,6 +1,5 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/presentation/controllers/url_launch/url_launch.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,9 +24,9 @@ class DownloadAppPage extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Faça o download do app para utilizar'.hardcoded),
+            Text(context.l10n.downloadAppPrompt),
             PrimaryTextButton(
-              text: 'Baixar'.hardcoded,
+              text: context.l10n.download,
               onPressed: url == null
                   ? null
                   : () {

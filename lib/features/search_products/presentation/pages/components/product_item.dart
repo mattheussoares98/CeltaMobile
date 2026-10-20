@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/features/search_products/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class ProductItem extends ConsumerWidget {
               return Padding(
                 padding: const EdgeInsets.only(bottom: Sizes.p8),
                 child: Text(
-                  'Erro ao atualizar impressão: ${parseErrorMessage(error)}'
+                  'Erro ao atualizar impressão: ${parseErrorMessage(error, translations: context.l10n)}'
                       .hardcoded,
                   textAlign: TextAlign.center,
                   style: context.theme.textTheme.titleSmall?.copyWith(

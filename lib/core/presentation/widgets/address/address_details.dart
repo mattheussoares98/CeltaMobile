@@ -1,7 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 
 class AddressDetails extends StatelessWidget {
@@ -24,7 +24,7 @@ class AddressDetails extends StatelessWidget {
     addressDetails.write(address!.Number);
     addressDetails.write(', ');
     addressDetails.write(address!.State?.name);
-    addressDetails.write('. CEP ');
+    addressDetails.write('. ${context.l10n.postalCode} ');
     addressDetails.write(address!.Zip);
     if (address?.Complement != null && address!.Complement!.isNotEmpty) {
       addressDetails.write('. ');
@@ -36,7 +36,7 @@ class AddressDetails extends StatelessWidget {
     }
 
     return TitleAndSubTitle(
-      title: 'Endereço'.hardcoded,
+      title: context.l10n.address,
       subTitle: addressDetails,
     );
   }

@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,7 +60,9 @@ class _SearchCustomerFieldState extends ConsumerState<SearchCustomerField> {
             hintText: searchByPersonalizedCode
                 ? 'Código personalizado'.hardcoded
                 : 'Nome|Cód|CPF/CNPJ',
-            validator: FormValidators.compose([MinLengthValidator(3)]),
+            validator: FormValidators.compose([
+              MinLengthValidator(3, translations: context.l10n),
+            ]),
             onFieldSubmitted: (_) => onSubmit(),
             suffixIcon: IconButton(
               icon: const PlatformIcon(

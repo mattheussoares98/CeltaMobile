@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class PasswordField extends StatelessWidget {
@@ -31,11 +32,14 @@ class PasswordField extends StatelessWidget {
       validator: (value) {
         if (value == null || value.isEmpty) {
           return null;
-        } else if (MinLengthValidator(3).isValid(value)) {
+        } else if (MinLengthValidator(
+          3,
+          translations: context.l10n,
+        ).isValid(value)) {
           return null;
         }
 
-        return MinLengthValidator(3).errorMessage;
+        return MinLengthValidator(3, translations: context.l10n).errorMessage;
       },
       suffixIcon: DefaultDeleteIcon(controller: passwordController),
     );

@@ -1,6 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,8 +27,9 @@ class UpdateCostField extends ConsumerWidget {
       maxLength: 12,
       onFieldSubmitted: (_) => onSubmit(),
       validator: FormValidators.compose([
-        const NonEmptyValidator(),
+        NonEmptyValidator(translations: context.l10n),
         NumberValidator(
+          translations: context.l10n,
           allowDecimal: true,
           allowEmptyValue: false,
           needsBeGreaterThanZero: false,

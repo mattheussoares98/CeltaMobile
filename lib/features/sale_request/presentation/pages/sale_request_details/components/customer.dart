@@ -1,8 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/sale_request/providers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,7 +68,11 @@ class Customer extends ConsumerWidget {
                       !isInternalCustomer)
                     TitleAndSubTitle(
                       title: 'Tipo'.hardcoded,
-                      subTitle: requestCustomer?.PersonType?.completeName,
+                      subTitle: requestCustomer?.PersonType == null
+                          ? null
+                          : context.l10n.personTypeName(
+                              requestCustomer!.PersonType!,
+                            ),
                     ),
                   if (cpfCnpj != null && !isInternalCustomer)
                     TitleAndSubTitle(

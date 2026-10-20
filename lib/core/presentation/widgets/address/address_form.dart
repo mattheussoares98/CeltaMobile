@@ -3,7 +3,6 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/address/address.dart';
 import 'package:celta_inventario/core/presentation/widgets/address/address.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -251,7 +250,7 @@ class _AddressFormState extends ConsumerState<AddressForm> {
                 ),
                 gapH32,
                 PrimaryButton(
-                  text: 'Adicionar endereço'.hardcoded,
+                  text: context.l10n.addAddress,
                   onPressed: addAddress,
                 ),
               ],

@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/buy_request/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/buy_request/presentation/pages/create/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +105,9 @@ class _SupplierItemsState extends ConsumerState<SupplierSearcher> {
                 labelText: 'Fornecedor'.hardcoded,
                 hintText: 'Fornecedor'.hardcoded,
                 controller: supplierController,
-                validator: FormValidators.compose([const   NonEmptyValidator()]),
+                validator: FormValidators.compose([
+                  NonEmptyValidator(translations: context.l10n),
+                ]),
                 onFieldSubmitted: (_) => onSubmit(),
                 prefixIcon: IconButton(
                   onPressed: supplierController.clear,

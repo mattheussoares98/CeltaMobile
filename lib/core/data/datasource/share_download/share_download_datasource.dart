@@ -1,20 +1,23 @@
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/core/data/datasource/share_download/share_download.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareDownloadDatasource implements IShareDownloadDatasource {
+  ShareDownloadDatasource({AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
+
   @override
   Future<String?> download(FileProperties file, TargetPlatform platform) async {
     if (platform != TargetPlatform.windows &&
         platform != TargetPlatform.macOS &&
         kIsWeb) {
-      throw AppException(
-        'Não deveria cair nesse trecho do código. Acione o suporte técnico'
-            .hardcoded,
-      );
+      throw AppException.localized(CoreFailure.unsupportedDownload);
     }
 
     final response = await FilePicker.saveFile(
@@ -23,9 +26,7 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
     );
 
     if (response == null && !kIsWeb) {
-      throw AppException(
-        'Você precisa selecionar uma pasta para salvar o arquivo'.hardcoded,
-      );
+      throw AppException.localized(CoreFailure.selectSaveFolder);
     }
 
     return response?.path;
@@ -46,7 +47,7 @@ class ShareDownloadDatasource implements IShareDownloadDatasource {
                   mimeType: file.mimeType,
                 ),
               ],
-        text: "Aqui estão os dados gerados pelo CeltaMobile...".hardcoded,
+        text: translations.sharedData,
         fileNameOverrides: [fullName],
       ),
     );

@@ -76,7 +76,7 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
                     ),
                   );
             },
-            tooltip: 'Compartilhar',
+            tooltip: context.l10n.share,
           ),
         IconButton(
           icon: const PlatformIcon(
@@ -84,7 +84,7 @@ class AppBarWithTitle extends ConsumerWidget implements PreferredSizeWidget {
             materialIcon: Icons.search,
           ),
           onPressed: toggleSearchUI,
-          tooltip: 'Pesquisar',
+          tooltip: context.l10n.search,
         ),
       ],
     );

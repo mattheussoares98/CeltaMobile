@@ -1,11 +1,17 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class UrlValidator implements StringValidator {
   final bool? shouldBeHttps;
   final bool? allowEmptyValue;
 
-  UrlValidator({this.shouldBeHttps, this.allowEmptyValue});
+  UrlValidator({
+    this.shouldBeHttps,
+    this.allowEmptyValue,
+    AppLocalizations? translations,
+  }) : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
 
   @override
   String get errorMessage => _errorMessage;
@@ -17,7 +23,7 @@ class UrlValidator implements StringValidator {
     if (allowEmptyValue == true && (value == null || value.isEmpty)) {
       return true;
     } else if (value == null || value.isEmpty) {
-      _errorMessage = 'Campo obrigatório'.hardcoded;
+      _errorMessage = translations.requiredField;
       return false;
     }
 
@@ -31,12 +37,12 @@ class UrlValidator implements StringValidator {
     final bool hasHost = uri?.host.isNotEmpty ?? false;
 
     if (uri == null || !hasValidScheme || !isHttp || !hasHost) {
-      _errorMessage = 'URL inválida'.hardcoded;
+      _errorMessage = translations.invalidUrl;
       return false;
     }
 
     if (shouldBeHttps == true && uri.scheme != 'https') {
-      _errorMessage = 'A URL precisa ser HTTPS'.hardcoded;
+      _errorMessage = translations.httpsRequired;
       return false;
     }
 

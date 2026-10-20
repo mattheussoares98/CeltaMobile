@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class NumberField extends StatelessWidget {
@@ -22,13 +22,13 @@ class NumberField extends StatelessWidget {
       enabled: !isLoading,
       controller: numberController,
       focusNode: numberFocusNode,
-      labelText: 'Número'.hardcoded,
-      hintText: 'Número'.hardcoded,
+      labelText: context.l10n.number,
+      hintText: context.l10n.number,
       maxLength: 5,
       validator: FormValidators.compose([
-        const NonEmptyValidator(),
-        MinLengthValidator(1),
-        NumberValidator(allowDecimal: false),
+        NonEmptyValidator(translations: context.l10n),
+        MinLengthValidator(1, translations: context.l10n),
+        NumberValidator(translations: context.l10n, allowDecimal: false),
       ]),
       onFieldSubmitted: (_) {
         complementFocusNode.requestFocus();

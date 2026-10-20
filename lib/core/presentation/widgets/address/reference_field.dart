@@ -1,5 +1,5 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 
 class ReferenceField extends StatelessWidget {
@@ -21,8 +21,8 @@ class ReferenceField extends StatelessWidget {
       focusNode: referenceFocusNode,
       enabled: !isLoading,
       controller: referenceController,
-      labelText: 'Referência'.hardcoded,
-      hintText: 'Referência'.hardcoded,
+      labelText: context.l10n.reference,
+      hintText: context.l10n.reference,
       onFieldSubmitted: (_) => addAddress(),
     );
   }

@@ -17,9 +17,7 @@ class AppDecorations {
 
     final border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),
-      borderSide: BorderSide(
-        color: colorScheme.onSurface.withAlpha(75),
-      ),
+      borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(75)),
     );
 
     final focusedBorder = OutlineInputBorder(
@@ -34,9 +32,7 @@ class AppDecorations {
 
     final disabledBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(Sizes.p12),
-      borderSide: BorderSide(
-        color: colorScheme.onSurface.withAlpha(50),
-      ),
+      borderSide: BorderSide(color: colorScheme.onSurface.withAlpha(50)),
     );
 
     final fillColor = enabled

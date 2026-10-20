@@ -4,7 +4,7 @@ import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/app_usage/app_usage.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +88,10 @@ class _ReportsItemsState extends ConsumerState<ReportsItems> {
                   }
                   final filteredRequests = e.requests.where((r) {
                     final usageTypeDesc =
-                        r.usageType?.description
-                            .toLowerCase()
+                        (r.usageType == null
+                                ? null
+                                : context.l10n.usageName(r.usageType!))
+                            ?.toLowerCase()
                             .removeWhiteSpaces() ??
                         '';
                     return usageTypeDesc.contains(filterUsage);
@@ -198,7 +200,11 @@ class _RequestsByTypeOrUser extends StatelessWidget {
     final groupedValues =
         groupBy(
             reports,
-            (e) => groupingByType ? e.usageType?.description : e.userName,
+            (e) => groupingByType
+                ? (e.usageType == null
+                      ? null
+                      : context.l10n.usageName(e.usageType!))
+                : e.userName,
           ).entries.map((entry) {
             final name = entry.key;
             final total = entry.value.fold(0, (sum, r) => sum + r.requestCount);

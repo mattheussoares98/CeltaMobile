@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class EnterpriseNameField extends StatelessWidget {
@@ -30,8 +31,8 @@ class EnterpriseNameField extends StatelessWidget {
       labelText: "Nome da empresa".hardcoded,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
-        const NonEmptyValidator(),
-        MinLengthValidator(3),
+        NonEmptyValidator(translations: context.l10n),
+        MinLengthValidator(3, translations: context.l10n),
       ]),
     );
   }

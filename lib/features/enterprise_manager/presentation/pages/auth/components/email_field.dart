@@ -1,6 +1,7 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,9 @@ class EmailField extends StatelessWidget {
       onFieldSubmitted: (_) {
         passwordFocusNode.requestFocus();
       },
-      validator: FormValidators.compose([EmailValidator()]),
+      validator: FormValidators.compose([
+        EmailValidator(translations: context.l10n),
+      ]),
       keyboardType: TextInputType.emailAddress,
       prefixIcon: const PlatformIcon(
         cupertinoIcon: CupertinoIcons.mail_solid,

@@ -11,4 +11,3 @@ class AppVersionStateController extends _$AppVersionStateController {
     return await ref.read(deviceServiceProvider).getAppVersion();
   }
 }
-

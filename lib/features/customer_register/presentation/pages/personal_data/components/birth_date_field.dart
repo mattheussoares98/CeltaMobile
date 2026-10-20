@@ -1,7 +1,7 @@
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +64,7 @@ class BirthDateField extends ConsumerWidget {
       ),
       validator: FormValidators.compose([
         DateValidator(
+          translations: context.l10n,
           minimumDate: minimumDate,
           maximumDate: maximumDate,
           allowEmptyDate: true,

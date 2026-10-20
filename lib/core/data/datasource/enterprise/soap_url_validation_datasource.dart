@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
-
 import 'package:celta_inventario/exceptions/exceptions.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/core/domain/contracts/contracts.dart';
@@ -20,10 +18,7 @@ class SoapUrlValidationDatasource implements ISoapUrlValidationDatasource {
         .where((u) => u.removeWhiteSpaces().isNotEmpty)
         .toList();
 
-    final exception = AppException(
-      'Nenhuma URL está funcionando. Verifique sua conexão com a internet e caso esteja funcionando, entre em contato com o suporte técnico'
-          .hardcoded,
-    );
+    final exception = AppException.localized(CoreFailure.noWorkingUrl);
     if (cleanUrls.isEmpty) {
       throw exception;
     }

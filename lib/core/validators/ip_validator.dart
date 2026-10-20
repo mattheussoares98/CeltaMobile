@@ -1,17 +1,21 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class IpValidator implements StringValidator {
+  IpValidator({AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
+
   String? _errorMessage;
 
   @override
-  String get errorMessage =>
-      _errorMessage ?? 'Formato de IP inválido'.hardcoded;
+  String get errorMessage => _errorMessage ?? translations.invalidIp;
 
   @override
   bool isValid(String? value) {
     if (value == null || value.trim().isEmpty) {
-      _errorMessage = 'Formato de IP inválido'.hardcoded;
+      _errorMessage = translations.invalidIp;
       return false;
     }
 
@@ -28,7 +32,7 @@ class IpValidator implements StringValidator {
       _errorMessage = null;
       return true;
     } else {
-      _errorMessage = 'Formato de IP inválido'.hardcoded;
+      _errorMessage = translations.invalidIp;
       return false;
     }
   }

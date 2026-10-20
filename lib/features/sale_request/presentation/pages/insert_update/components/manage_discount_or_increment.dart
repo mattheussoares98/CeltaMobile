@@ -1,8 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -229,8 +230,11 @@ class _ItemState extends ConsumerState<ManageDiscountOrIncrement> {
                         ),
                         onFieldSubmitted: (_) => _confirmChanges(),
                         validator: FormValidators.compose([
-                          const NonEmptyValidator(),
-                          NumberValidator(allowDecimal: true),
+                          NonEmptyValidator(translations: context.l10n),
+                          NumberValidator(
+                            translations: context.l10n,
+                            allowDecimal: true,
+                          ),
                         ]),
                       ),
                     ),

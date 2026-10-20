@@ -1,10 +1,28 @@
 import 'package:celta_inventario/core/domain/errors/errors.dart';
 import 'package:celta_inventario/exceptions/exceptions.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/extensions/string_modifier.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-String parseErrorMessage(Object? error) {
+String parseErrorMessage(Object? error, {AppLocalizations? translations}) {
+  final l10n = translations ?? defaultLocalizations;
+  // Older HTTP adapters throw factory tear-offs rather than error instances.
+  if (error == HttpError.badRequest) return l10n.httpBadRequest;
+  if (error == HttpError.notFound) return l10n.httpNotFound;
+  if (error == HttpError.serverError) return l10n.httpServerError;
+  if (error == HttpError.unauthorized) return l10n.httpUnauthorized;
+  if (error == HttpError.forbidden) return l10n.httpForbidden;
+  if (error == HttpError.invalidData) return l10n.httpInvalidData;
+  if (error is AppException && error.failure != null) {
+    return l10n.coreFailure(error.failure!, error.arguments);
+  }
+  if (error is BsError && error.failure != null) {
+    return l10n.coreFailure(error.failure!);
+  }
+  if (error is HttpError && error.failure != null) {
+    final message = l10n.coreFailure(error.failure!);
+    return error.details == null ? message : '$message: ${error.details}';
+  }
   late final String message;
   String? supabaseDetails;
 

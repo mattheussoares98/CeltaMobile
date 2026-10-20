@@ -10,7 +10,7 @@ extension AsyncValueUI on AsyncValue {
       showExceptionAlertDialog(
         context: context,
         title: context.l10n.error,
-        exception: parseErrorMessage(error!),
+        exception: parseErrorMessage(error!, translations: context.l10n),
       );
     }
   }
@@ -50,7 +50,10 @@ extension AsyncValueUI on AsyncValue {
 
   void showToastOnError(BuildContext context, AsyncValue? previous) {
     if (previous != null && previous.isLoading && !isLoading && hasError) {
-      showToastMessage(parseErrorMessage(error!), type: ToastType.error);
+      showToastMessage(
+        parseErrorMessage(error!, translations: context.l10n),
+        type: ToastType.error,
+      );
     }
   }
 }

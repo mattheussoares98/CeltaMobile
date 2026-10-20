@@ -1,60 +1,67 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/core/domain/errors/errors.dart';
 
 class HttpError implements Exception {
   final String message;
 
-  HttpError(this.message);
+  HttpError(this.message, {this.failure, this.details});
+
+  final CoreFailure? failure;
+  final String? details;
 
   @override
   String toString() => message;
 
   static HttpError badRequest([String? details]) {
-    final baseMessage = 'Requisição inválida'.hardcoded;
+    const failure = CoreFailure.httpBadRequest;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 
   static HttpError notFound([String? details]) {
-    final baseMessage = 'Recurso não encontrado'.hardcoded;
+    const failure = CoreFailure.httpNotFound;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 
   static HttpError serverError([String? details]) {
-    final baseMessage =
-        'Ocorreu um erro no servidor. Tente novamente mais tarde'.hardcoded;
+    const failure = CoreFailure.httpServerError;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 
   static HttpError unauthorized([String? details]) {
-    final baseMessage =
-        'Não autorizado. Por favor, faça login novamente'.hardcoded;
+    const failure = CoreFailure.httpUnauthorized;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 
   static HttpError forbidden([String? details]) {
-    final baseMessage = 'Acesso negado'.hardcoded;
+    const failure = CoreFailure.httpForbidden;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 
   static HttpError invalidData([String? details]) {
-    final baseMessage = 'Dados inválidos'.hardcoded;
+    const failure = CoreFailure.httpInvalidData;
+    final baseMessage = failure.message(const []);
     final finalMessage = details != null
         ? '$baseMessage: $details'
         : baseMessage;
-    return HttpError(finalMessage);
+    return HttpError(finalMessage, failure: failure, details: details);
   }
 }

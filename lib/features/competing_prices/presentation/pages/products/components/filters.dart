@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/products/products.dart';
 import 'package:celta_inventario/features/competing_prices/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,7 +58,9 @@ class Filters extends ConsumerWidget {
             if (selectedItem.onlyAssociateds &&
                 selectedItem.searchType != SearchProductCompetingPriceType.all)
               TextSpan(
-                text: ' (${selectedItem.searchType.name})'.toLowerCase(),
+                text:
+                    ' (${context.l10n.competingPriceFilterName(selectedItem.searchType)})'
+                        .toLowerCase(),
                 style: context.theme.textTheme.bodySmall?.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
@@ -90,7 +92,8 @@ class Filters extends ConsumerWidget {
                 builder: (_, ref, _) {
                   return BaseSegmentedButtons<SearchProductCompetingPriceType>(
                     selectedValue: selectedItem.searchType,
-                    itemLabelBuilder: (item) => item.name,
+                    itemLabelBuilder: (item) =>
+                        context.l10n.competingPriceFilterName(item),
                     onChanged: (value) {
                       ref
                           .read(selectedItemUIControllerProvider.notifier)
@@ -114,7 +117,7 @@ class Filters extends ConsumerWidget {
                     ).select((s) => s.isLoading),
                   ),
                   text: selectedItem.onlyAssociateds
-                      ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${selectedItem.searchType.name.toLowerCase()}'
+                      ? 'Consultar${selectedItem.searchType == SearchProductCompetingPriceType.all ? '' : ' todos'.hardcoded} ${context.l10n.competingPriceFilterName(selectedItem.searchType).toLowerCase()}'
                             .hardcoded
                       : 'Consultar todos não associados'.hardcoded,
                   icon: const PlatformIcon(

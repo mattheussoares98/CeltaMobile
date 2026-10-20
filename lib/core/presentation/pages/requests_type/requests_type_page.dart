@@ -1,9 +1,9 @@
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/presentation/controllers/request_type/request_type.dart';
 import 'package:celta_inventario/features/enterprises/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +28,7 @@ class RequestsTypePage extends ConsumerWidget {
       isScrollable: false,
       refreshProvider: provider,
       appBar: BaseAppBar(
-        title: 'Modelos de pedido'.hardcoded,
+        title: context.l10n.requestTemplates,
         selectedEnterpriseCode: enterpriseCode,
       ),
       body: Consumer(
@@ -45,13 +45,12 @@ class RequestsTypePage extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Nenhum modelo de pedido foi encontrado\n\nLembre-se que somente modelos que estão com o parâmetro "Permitir a utilização em pedidos feitos por aplicativos" aparecerão aqui'
-                              .hardcoded,
+                          context.l10n.noRequestTemplates,
                           textAlign: TextAlign.center,
                         ),
                         gapH16,
                         PrimaryButton(
-                          text: 'Carregar novamente'.hardcoded,
+                          text: context.l10n.reload,
                           onPressed: () => ref.invalidate(provider),
                         ),
                       ],
@@ -145,7 +144,7 @@ class _RequestTypeItem extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: Sizes.p4),
                       child: Text(
-                        'Modelo padrão'.hardcoded,
+                        context.l10n.defaultTemplate,
                         style: context.theme.textTheme.titleMedium?.copyWith(
                           color: context.theme.colorScheme.secondary,
                           fontStyle: FontStyle.italic,
@@ -158,32 +157,39 @@ class _RequestTypeItem extends StatelessWidget {
               if (request.personalizedCode?.isNotEmpty == true)
                 TitleAndSubTitle(
                   title: module == Modules.transferRequest
-                      ? 'Cód personalizado'.hardcoded
-                      : 'Código'.hardcoded,
+                      ? context.l10n.personalizedCode
+                      : context.l10n.code,
                   subTitle: request.personalizedCode,
                 ),
-              TitleAndSubTitle(title: 'Nome'.hardcoded, subTitle: request.name),
+              TitleAndSubTitle(
+                title: context.l10n.name,
+                subTitle: request.name,
+              ),
               if (module == Modules.transferRequest &&
                   request.operationType != null)
                 TitleAndSubTitle(
-                  title: 'Tipo de operação'.hardcoded,
-                  subTitle: request.operationType?.name,
+                  title: context.l10n.operationType,
+                  subTitle: request.operationType == null
+                      ? null
+                      : context.l10n.operationName(request.operationType!),
                 ),
               TitleAndSubTitle(
                 title: module == Modules.transferRequest
-                    ? 'Preço praticado'.hardcoded
-                    : 'Tipo preço'.hardcoded,
-                subTitle: request.unitValueType?.description,
+                    ? context.l10n.practicedPrice
+                    : context.l10n.priceType,
+                subTitle: request.unitValueType == null
+                    ? null
+                    : context.l10n.priceTypeName(request.unitValueType!),
               ),
               TitleAndSubTitle(
                 title: null,
                 subTitle: request.allowAlterCostOrSalePrice == true
                     ? (module == Modules.transferRequest
-                          ? "Pode alterar preço de custo ou venda".hardcoded
-                          : 'Permite alterar o preço'.hardcoded)
+                          ? context.l10n.canChangeCostOrSalePrice
+                          : context.l10n.canChangePrice)
                     : (module == Modules.transferRequest
-                          ? "Não pode alterar preço de custo ou venda".hardcoded
-                          : 'Não permite alterar o preço'.hardcoded),
+                          ? context.l10n.cannotChangeCostOrSalePrice
+                          : context.l10n.cannotChangePrice),
                 subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
                   color: request.allowAlterCostOrSalePrice == true
                       ? context.theme.primaryColor
@@ -195,8 +201,8 @@ class _RequestTypeItem extends StatelessWidget {
                 TitleAndSubTitle(
                   title: null,
                   subTitle: request.allowUseDiscount == true
-                      ? 'Permite desconto manual'.hardcoded
-                      : 'Não permite desconto manual'.hardcoded,
+                      ? context.l10n.canApplyManualDiscount
+                      : context.l10n.cannotApplyManualDiscount,
                   subTitleStyle: context.theme.textTheme.titleSmall?.copyWith(
                     color: request.allowUseDiscount == true
                         ? context.theme.primaryColor

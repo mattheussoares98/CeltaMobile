@@ -1,9 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 
 class SearchTextAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -40,7 +40,7 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
         controller: widget.searchTextController,
         autofocus: true,
         decoration: InputDecoration(
-          hintText: 'Pesquisar...'.hardcoded,
+          hintText: context.l10n.searchHint,
           border: InputBorder.none,
         ),
         onSubmitted: (_) => widget.performSearch(),
@@ -52,7 +52,7 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
             materialIcon: Icons.search,
           ),
           onPressed: widget.performSearch,
-          tooltip: 'Pesquisar'.hardcoded,
+          tooltip: context.l10n.search,
         ),
         IconButton(
           icon: const PlatformIcon(
@@ -64,7 +64,7 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
               widget.searchResult.previousInstance();
             }
           },
-          tooltip: 'Anterior'.hardcoded,
+          tooltip: context.l10n.previous,
         ),
         IconButton(
           icon: const PlatformIcon(
@@ -76,7 +76,7 @@ class _SearchTextAppBarState extends State<SearchTextAppBar> {
               widget.searchResult.nextInstance();
             }
           },
-          tooltip: 'Próximo'.hardcoded,
+          tooltip: context.l10n.next,
         ),
       ],
     );

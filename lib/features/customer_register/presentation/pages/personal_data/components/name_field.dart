@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/customer_register/presentation/pages/personal_data/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/cupertino.dart';
 
 class NameField extends StatelessWidget {
@@ -24,8 +25,8 @@ class NameField extends StatelessWidget {
       focusNode: nameFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: FormValidators.compose([
-        const   NonEmptyValidator(),
-        MinLengthValidator(3),
+        NonEmptyValidator(translations: context.l10n),
+        MinLengthValidator(3, translations: context.l10n),
       ]),
       onFieldSubmitted: (_) {
         reducedNameFocusNode.requestFocus();

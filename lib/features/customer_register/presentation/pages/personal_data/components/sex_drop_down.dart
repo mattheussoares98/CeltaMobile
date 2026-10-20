@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/features/customer_register/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,7 +31,12 @@ class SexDropDown extends ConsumerWidget {
         return null;
       },
       items: CustomerSexType.values
-          .map((e) => DropdownMenuItem(value: e, child: BaseText(e.name)))
+          .map(
+            (e) => DropdownMenuItem(
+              value: e,
+              child: BaseText(context.l10n.sexName(e)),
+            ),
+          )
           .toList(),
     );
   }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:xml2json/xml2json.dart';
@@ -115,7 +114,8 @@ class SoapAdapter implements SoapRequest {
         !responseBody.containsKey(typeOfResult)) {
       return responseBody['status'];
     } else if (typeOfResult == null) {
-      return 'Sucesso'.hardcoded;
+      // This is a legacy transport result, not a localized display message.
+      return 'Sucesso';
     } else if (responseBody[typeOfResult] != null) {
       if (_isValidResponse(responseBody, typeOfResult)) {
         return responseBody[typeOfResult]["diffgr:diffgram"]["NewDataSet"];
@@ -126,7 +126,7 @@ class SoapAdapter implements SoapRequest {
     } else if (responseBody.toString().toLowerCase().contains('ok')) {
       return null; //only return that has worked
     }
-    throw BsError('Estrutura da resposta inválida');
+    throw BsError.localized(CoreFailure.invalidResponseStructure);
   }
 
   bool _isValidResponse(

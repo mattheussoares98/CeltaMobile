@@ -1,8 +1,9 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/domain/entities/entities.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,8 +76,8 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
           validator: FormValidators.compose([
-            const NonEmptyValidator(),
-            NumberValidator(allowDecimal: false),
+            NonEmptyValidator(translations: context.l10n),
+            NumberValidator(translations: context.l10n, allowDecimal: false),
           ]),
         ),
         BaseTextFormField(
@@ -90,6 +91,7 @@ class CreditCardFieldsState extends ConsumerState<CreditCardFields> {
           inputFormatters: [DateInputFormatter(includeDay: false)],
           validator: FormValidators.compose([
             DateValidator(
+              translations: context.l10n,
               minimumDate: now,
               maximumDate: now.add(const Duration(days: 365 * 10)),
               includeDay: false,

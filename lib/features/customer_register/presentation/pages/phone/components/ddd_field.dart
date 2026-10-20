@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:flutter/material.dart';
@@ -26,13 +27,13 @@ class DddField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType: const TextInputType.numberWithOptions(),
       validator: FormValidators.compose([
-        const NonEmptyValidator(),
-        DddValidator(),
+        NonEmptyValidator(translations: context.l10n),
+        DddValidator(translations: context.l10n),
       ]),
       onChanged: (value) {
         if ([
-          const NonEmptyValidator(),
-          DddValidator(),
+          NonEmptyValidator(translations: context.l10n),
+          DddValidator(translations: context.l10n),
         ].every((validator) => validator.isValid(value))) {
           phoneFocusNode.requestFocus();
         }

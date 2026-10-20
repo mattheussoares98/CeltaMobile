@@ -1,7 +1,8 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/enterprise_manager/presentation/pages/create_enterprise/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
@@ -33,7 +34,9 @@ class PasswordField extends StatelessWidget {
         onPress: isLoading ? null : passwordController.clear,
       ),
       obscureText: true,
-      validator: FormValidators.compose([const NonEmptyValidator()]),
+      validator: FormValidators.compose([
+        NonEmptyValidator(translations: context.l10n),
+      ]),
     );
   }
 }

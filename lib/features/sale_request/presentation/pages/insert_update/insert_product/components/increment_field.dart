@@ -3,7 +3,7 @@ import 'package:celta_inventario/constants/constants.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/sale_request/domain/entities/entities.dart';
 import 'package:celta_inventario/features/sale_request/presentation/controllers/controllers.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,7 +72,11 @@ class IncrementField extends ConsumerWidget {
                       .updateIncrementValue(double.tryParse(value) ?? 0);
                 },
                 validator: FormValidators.compose([
-                  NumberValidator(allowDecimal: true, allowEmptyValue: true),
+                  NumberValidator(
+                    translations: context.l10n,
+                    allowDecimal: true,
+                    allowEmptyValue: true,
+                  ),
                 ]),
               ),
             ),

@@ -1,6 +1,6 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,8 +27,8 @@ class ZipField extends ConsumerWidget {
       enabled: !isLoading,
       focusNode: zipFocusNode,
       maxLength: 8,
-      labelText: 'CEP'.hardcoded,
-      hintText: 'CEP'.hardcoded,
+      labelText: context.l10n.postalCode,
+      hintText: context.l10n.postalCode,
       prefixIcon: IconButton(
         onPressed: () {
           changeShowAllFields(false);
@@ -43,7 +43,7 @@ class ZipField extends ConsumerWidget {
       suffixIcon: isLoading
           ? const LoadingWidget()
           : PrimaryTextButton(
-              text: 'Pesquisar CEP'.hardcoded,
+              text: context.l10n.searchPostalCode,
               onPressed: seekAddress,
             ),
       onChanged: (value) {
@@ -56,9 +56,9 @@ class ZipField extends ConsumerWidget {
         seekAddress();
       },
       validator: FormValidators.compose([
-        const NonEmptyValidator(),
-        NumberValidator(allowDecimal: false),
-        MinLengthValidator(8),
+        NonEmptyValidator(translations: context.l10n),
+        NumberValidator(translations: context.l10n, allowDecimal: false),
+        MinLengthValidator(8, translations: context.l10n),
       ]),
     );
   }

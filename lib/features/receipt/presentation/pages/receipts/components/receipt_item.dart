@@ -4,7 +4,7 @@ import 'package:celta_inventario/core/validators/validators.dart';
 import 'package:celta_inventario/features/receipt/domain/entity/entity.dart';
 import 'package:celta_inventario/features/receipt/presentation/controllers/controllers.dart';
 import 'package:celta_inventario/features/receipt/presentation/pages/receipts/components/components.dart';
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,7 +120,9 @@ class _ReceiptItemState extends ConsumerState<ReceiptItem> {
                       hintText: 'Nova observação'.hardcoded,
                       labelText: 'Nova observação'.hardcoded,
                       validator: shouldInsertObservations
-                          ? FormValidators.compose([const NonEmptyValidator()])
+                          ? FormValidators.compose([
+                              NonEmptyValidator(translations: context.l10n),
+                            ])
                           : null,
                     ),
                   ),

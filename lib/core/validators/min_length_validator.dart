@@ -1,14 +1,16 @@
-import 'package:celta_inventario/localization/string_hardcoded.dart';
+import 'package:celta_inventario/localization/localization.dart';
 import 'package:celta_inventario/core/validators/validators.dart';
 
 class MinLengthValidator implements StringValidator {
   final int minLength;
 
-  MinLengthValidator(this.minLength);
+  MinLengthValidator(this.minLength, {AppLocalizations? translations})
+    : translations = translations ?? defaultLocalizations;
+
+  final AppLocalizations translations;
 
   @override
-  String get errorMessage =>
-      'Precisa ter pelo menos $minLength caracteres'.hardcoded;
+  String get errorMessage => translations.minimumLength(minLength);
 
   @override
   bool isValid(String? value) {

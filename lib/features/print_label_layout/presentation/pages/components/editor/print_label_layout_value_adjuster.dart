@@ -1,3 +1,4 @@
+import 'package:celta_inventario/utils/utils.dart';
 import 'dart:async';
 
 import 'package:celta_inventario/commom_widgets/commom_widgets.dart';
@@ -155,6 +156,7 @@ class PrintLabelLayoutValueAdjuster extends HookWidget {
                     },
                     validator: FormValidators.compose([
                       NumberValidator(
+                        translations: context.l10n,
                         allowDecimal: resolvedAcceptDecimal,
                         allowEmptyValue: min == 0,
                         needsBeGreaterThanZero: min > 0,
