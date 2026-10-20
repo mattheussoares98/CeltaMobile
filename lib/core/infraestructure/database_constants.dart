@@ -14,6 +14,7 @@ class DatabaseConstants {
     transferRequest,
     userSession,
     saleRequestDraft,
+    localization,
   ];
 
   static const appSettings = _HiveBoxConfig('app_settings');
@@ -30,6 +31,7 @@ class DatabaseConstants {
   static const transferRequest = _HiveBoxConfig('transfer_request');
   static const userSession = _HiveBoxConfig('user_session');
   static const installationIdKey = 'installation_id';
+  static const localization = _HiveBoxConfig('localization');
   static const saleRequestDraft = _HiveBoxConfig('sale_request_draft');
 }
 
